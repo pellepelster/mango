@@ -47,6 +47,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Entity/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/extends"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/jvmtype"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/naturalKeyAttributes"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/attributes"/>
     </genClasses>
     <genClasses ecoreClass="Mango.ecore#//ValueObject">

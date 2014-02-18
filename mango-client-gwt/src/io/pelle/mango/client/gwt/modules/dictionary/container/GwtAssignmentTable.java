@@ -55,7 +55,7 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 
 	public GwtAssignmentTable(AssignmentTable<VOType> assignmentTable)
 	{
-		super(assignmentTable.getControls());
+		super(assignmentTable);
 
 		this.assignmentTable = assignmentTable;
 		setWidth("100%");

@@ -13,6 +13,7 @@ package io.pelle.mango.client.web.modules.dictionary.editor;
 
 import io.pelle.mango.client.base.module.IModule;
 import io.pelle.mango.client.base.module.ModuleUtils;
+import io.pelle.mango.client.base.modules.dictionary.editor.IDictionaryEditor;
 import io.pelle.mango.client.web.module.BaseModuleFactory;
 import io.pelle.mango.client.web.module.ModuleHandler;
 
@@ -31,6 +32,11 @@ public class DictionaryEditorModuleFactory extends BaseModuleFactory
 	}
 
 	public static void openEditorForId(String dictionaryName, long voId)
+	{
+		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName, voId));
+	}
+
+	public static void openEditorForId(String dictionaryName, long voId, AsyncCallback<IDictionaryEditor<?>> callback)
 	{
 		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName, voId));
 	}

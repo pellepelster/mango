@@ -11,23 +11,31 @@
  */
 package io.pelle.mango.client.web.test.modules.dictionary;
 
+import io.pelle.mango.client.base.db.vos.UUID;
+import io.pelle.mango.client.base.layout.IModuleUI;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.web.test.MangoAsyncGwtTestCase.AsyncTestItem;
+import io.pelle.mango.client.web.module.ModuleHandler;
+import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
+import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper.AsyncTestItem;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings("rawtypes")
-public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> extends BaseDictionaryModuleTestUIAsyncHelper<DictionarySearchModuleTestUI, VOType> {
+public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> extends BaseDictionaryModuleTestUIAsyncHelper<DictionarySearchModuleTestUI> {
+
 	public DictionarySearchModuleTestUIAsyncHelper(String parentUuid, LinkedList<AsyncTestItem> asyncTestItems, Map<String, Object> asyncTestItemResults) {
 		super(parentUuid, asyncTestItems, asyncTestItemResults);
 	}
 
 	public void assertTitle(final String expectedTitle) {
-		this.getAsyncTestItems().add(new AsyncTestItem() {
+		this.getAsyncTestItems().add(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertTitle(expectedTitle);
@@ -42,7 +50,7 @@ public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 	}
 
 	public void assertResultCount(final int expectedResultCount) {
-		this.getAsyncTestItems().add(new AsyncTestItem() {
+		this.getAsyncTestItems().add(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertResultCount(expectedResultCount);
@@ -56,8 +64,38 @@ public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 		});
 	}
 
+	public DictionaryEditorModuleTestUIAsyncHelper<VOType> openEditor() {
+		final String uuid = UUID.uuid();
+
+		this.getAsyncTestItems().add(new BaseAsyncTestItem() {
+			@Override
+			public void run(final AsyncCallback<Object> asyncCallback) {
+
+				String dictionaryName = getAsyncTestItemResult().getModule().getDictionaryModel().getName();
+
+				getAsyncTestItemResult().getModule().getDictionarySearch().getDictionaryResult().activateSelection();
+
+				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName, 0), null, new HashMap<String, Object>(), new BaseErrorAsyncCallback<IModuleUI>() {
+					@Override
+					public void onSuccess(IModuleUI result) {
+						getAsyncTestItemResults().put(uuid, result);
+						asyncCallback.onSuccess(result);
+					}
+				});
+			}
+
+			@Override
+			public String getDescription() {
+				return "openEditor";
+			}
+		});
+
+		return new DictionaryEditorModuleTestUIAsyncHelper<VOType>(uuid, getAsyncTestItems(), getAsyncTestItemResults());
+
+	}
+
 	public void execute() {
-		this.getAsyncTestItems().add(new AsyncTestItem() {
+		this.getAsyncTestItems().add(new BaseAsyncTestItem() {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().search(new BaseErrorAsyncCallback<DictionarySearchModuleTestUI>() {
@@ -71,6 +109,26 @@ public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 			@Override
 			public String getDescription() {
 				return "execute";
+			}
+		});
+	}
+
+	public void getResultList(final BaseErrorAsyncCallback<List<ITableRow<VOType>>> resultListAsyncCallback) {
+		this.getAsyncTestItems().add(new AsyncTestItem() {
+			
+			@Override
+			public void run(AsyncCallback<Object> asyncCallback) {
+				resultListAsyncCallback.onSuccess(getAsyncTestItemResult().getDictionarySearch().getDictionaryResult().getRows());
+			}
+
+			@Override
+			public String getDescription() {
+				return "getResultList";
+			}
+
+			@Override
+			public boolean getStop() {
+				return true;
 			}
 		});
 	}

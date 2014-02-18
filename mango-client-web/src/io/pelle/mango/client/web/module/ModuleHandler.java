@@ -79,6 +79,10 @@ public final class ModuleHandler {
 		startUIModule(moduleUrl, null, new HashMap<String, Object>(), null);
 	}
 
+	public void startUIModule(final String moduleUrl, AsyncCallback<IModuleUI> callback) {
+		startUIModule(moduleUrl, null, new HashMap<String, Object>(), callback);
+	}
+
 	public void startUIModule(final String moduleUrl, Map<String, Object> parameters) {
 		startUIModule(moduleUrl, null, parameters, null);
 	}

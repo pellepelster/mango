@@ -11,7 +11,7 @@
  */
 package io.pelle.mango.client.web.test.modules.dictionary;
 
-import io.pelle.mango.client.web.test.MangoAsyncGwtTestCase.AsyncTestItem;
+import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper.AsyncTestItem;
 
 import java.util.LinkedList;
 import java.util.Map;

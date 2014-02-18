@@ -37,6 +37,7 @@ project MangoDemo {
 		} 
 
 		entity Entity1 {
+			naturalkey { stringDatatype1 }
 			string StringDatatype1 stringDatatype1
 			boolean BooleanDatatype1 booleanDatatype1
 			string StringDatatype1 0..n stringDatatype1List

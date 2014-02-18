@@ -1,10 +1,10 @@
 package io.pelle.mango.client.base.vo;
 
-import io.pelle.mango.client.base.vo.query.CompareExpression;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
-import io.pelle.mango.client.base.vo.query.LikeExpression;
-import io.pelle.mango.client.base.vo.query.StringExpression;
+import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
+import io.pelle.mango.client.base.vo.query.expressions.LikeExpression;
+import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 
 public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor<String> {
 

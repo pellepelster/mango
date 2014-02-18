@@ -13,10 +13,12 @@ package io.pelle.mango.client.gwt.modules.dictionary;
 
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.IAssignmentTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.container.BaseTableRowKeyProvider;
+import io.pelle.mango.client.web.modules.dictionary.container.BaseTableElement;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrategy;
 
@@ -29,6 +31,8 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IBaseTable.ITableRow<VOType>>
@@ -47,11 +51,14 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 
 	public static final int DEFAULT_MAX_RESULTS = 15;
 
-	public BaseCellTable(List<BaseDictionaryControl<? extends IBaseControlModel, ?>> baseControls)
+	private BaseTableElement<VOType, ?> baseTableElement;
+	
+	public BaseCellTable(BaseTableElement<VOType, ?> baseTableElement)
 	{
 		super(KEYPROVIDER);
 		dataProvider.addDataDisplay(this);
-		this.baseControls = baseControls;
+		this.baseTableElement = baseTableElement;
+		this.baseControls = baseTableElement.getControls();
 	}
 
 	protected void createModelColumns()
@@ -66,6 +73,23 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 		}
 
 		setSelectionModel(selectionModel);
+		addDomHandler(new DoubleClickHandler()
+		{
+			/** {@inheritDoc} */
+			@Override
+			public void onDoubleClick(DoubleClickEvent event)
+			{
+				baseTableElement.activateSelection();
+			}
+		}, DoubleClickEvent.getType());
+
+		selectionModel.addSelectionChangeHandler(new Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				baseTableElement.setSelection(selectionModel.getSelectedObject());
+			}
+		});
 	}
 
 	public void setRows(List<IBaseTable.ITableRow<VOType>> rows)
@@ -76,25 +100,6 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 	protected IBaseTable.ITableRow<VOType> getSelection()
 	{
 		return selectionModel.getSelectedObject();
-	}
-
-	public void addVOActivationHandler(final SimpleCallback<IBaseTable.ITableRow<VOType>> voActivationHandler)
-	{
-		addDomHandler(new DoubleClickHandler()
-		{
-
-			/** {@inheritDoc} */
-			@Override
-			public void onDoubleClick(DoubleClickEvent event)
-			{
-
-				if (selectionModel.getSelectedObject() != null)
-				{
-					voActivationHandler.onCallback(selectionModel.getSelectedObject());
-				}
-			}
-		}, DoubleClickEvent.getType());
-
 	}
 
 	protected abstract Column<VOType, ?> getColumn(BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl);

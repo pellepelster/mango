@@ -6,12 +6,13 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.search.IFilterModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.query.CompareExpression;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
-import io.pelle.mango.client.base.vo.query.PathExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.base.vo.query.StringExpression;
+import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
+import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
+import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
+import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
@@ -42,7 +43,7 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 	public DictionarySearch(IDictionaryModel dictionaryModel) {
 		super(dictionaryModel, null);
 
-		this.dictionaryResult = new DictionaryResult<VOType>(getModel().getSearchModel().getResultModel(), this);
+		this.dictionaryResult = new DictionaryResult<VOType>(getModel(), this);
 
 		for (IFilterModel filterModel : getModel().getSearchModel().getFilterModels()) {
 			this.dictionaryFilters.add(new DictionaryFilter(filterModel, this));
@@ -63,12 +64,11 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 
 		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : baseControls) {
 
-			PathExpression pathExpression = new PathExpression(getModel().getVOClass().getName(), baseControl.getModel().getAttributePath());
-
 			if (baseControl instanceof TextControl) {
 
 				TextControl textControl = (TextControl) baseControl;
-				CompareExpression compareExpression = new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new StringExpression(textControl.getValue()));
+				
+				IBooleanExpression compareExpression = ExpressionFactory.createStringEqualsExpression(getModel().getVOClass(), baseControl.getModel().getAttributePath(), textControl.getValue());
 
 				if (expression == null) {
 					expression = compareExpression;

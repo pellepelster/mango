@@ -3,7 +3,7 @@ package io.pelle.mango.client.base.vo;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.EntityCompareExpression;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
-import io.pelle.mango.client.base.vo.query.LongExpression;
+import io.pelle.mango.client.base.vo.query.expressions.LongExpression;
 
 public class EntityAttributeDescriptor<T extends IVOEntity> extends BaseExpressionAttributeDescriptor<T> {
 

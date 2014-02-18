@@ -1,8 +1,9 @@
 package io.pelle.mango.client.web.test.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
-import io.pelle.mango.client.web.test.MangoAsyncGwtTestCase.AsyncTestItem;
+import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper.AsyncTestItem;
 import io.pelle.mango.client.web.test.modules.dictionary.BaseAsyncHelper;
+import io.pelle.mango.client.web.test.modules.dictionary.BaseAsyncTestItem;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -16,7 +17,7 @@ public abstract class BaseControlTestAsyncHelper<T extends BaseControlTest<? ext
 	}
 
 	public void setValue(final ValueType value) {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().setValue(value);
@@ -32,7 +33,7 @@ public abstract class BaseControlTestAsyncHelper<T extends BaseControlTest<? ext
 	}
 
 	public void assertValue(final ValueType expectedValue) {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertValue(expectedValue);
@@ -47,7 +48,7 @@ public abstract class BaseControlTestAsyncHelper<T extends BaseControlTest<? ext
 	}
 
 	public void parse(final String valueString) {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().parse(valueString);
@@ -62,7 +63,7 @@ public abstract class BaseControlTestAsyncHelper<T extends BaseControlTest<? ext
 	}
 
 	public void assertMandatory() {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertMandatory();
@@ -78,7 +79,7 @@ public abstract class BaseControlTestAsyncHelper<T extends BaseControlTest<? ext
 	}
 
 	public void assertHasErrors() {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertHasErrors();
@@ -94,7 +95,7 @@ public abstract class BaseControlTestAsyncHelper<T extends BaseControlTest<? ext
 	}
 
 	public void assertHasNoErrors() {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertHasNoErrors();
@@ -110,7 +111,7 @@ public abstract class BaseControlTestAsyncHelper<T extends BaseControlTest<? ext
 	}
 
 	public void assertHasErrorWithText(final String text) {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertHasErrorWithText(text);

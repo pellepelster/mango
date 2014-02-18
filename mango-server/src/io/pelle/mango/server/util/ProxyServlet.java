@@ -507,7 +507,6 @@ public class ProxyServlet extends HttpServlet {
 	 *            The {@link HttpServletRequest} that contains the POST data to
 	 *            be sent via the {@link PostMethod}
 	 */
-	@SuppressWarnings("unchecked")
 	private void handleStandardPost(PostMethod postMethodProxyRequest, HttpServletRequest httpServletRequest) {
 		// Get the client POST data as a Map
 		Map<String, String[]> postParameters = httpServletRequest.getParameterMap();
@@ -638,7 +637,6 @@ public class ProxyServlet extends HttpServlet {
 	 */
 	private void setProxyRequestHeaders(HttpServletRequest httpServletRequest, HttpMethod httpMethodProxyRequest) {
 		// Get an Enumeration of all of the header names sent by the client
-		@SuppressWarnings("unchecked")
 		Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
 		while (headerNames.hasMoreElements()) {
 			String headerName = headerNames.nextElement();
@@ -652,7 +650,6 @@ public class ProxyServlet extends HttpServlet {
 			// sending the header as a comma separated list.
 			// Thus, we get an Enumeration of the header values sent by the
 			// client
-			@SuppressWarnings("unchecked")
 			Enumeration<String> headerValues = httpServletRequest.getHeaders(headerName);
 			while (headerValues.hasMoreElements()) {
 				String headerValue = headerValues.nextElement();

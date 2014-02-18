@@ -21,6 +21,8 @@ import java.util.Map;
  */
 public interface IValidationMessage extends IMessage
 {
+	final static String NATURAL_KEY_CONTEXT_KEY = "naturalKey";
+
 	final static String ATTRIBUTE_CONTEXT_KEY = "attribute";
 
 	final static String VOCLASS_CONTEXT_KEY = "voClass";

@@ -1,8 +1,9 @@
 package io.pelle.mango.client.web.test.modules.dictionary.container;
 
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.web.test.MangoAsyncGwtTestCase.AsyncTestItem;
+import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper.AsyncTestItem;
 import io.pelle.mango.client.web.test.modules.dictionary.BaseAsyncHelper;
+import io.pelle.mango.client.web.test.modules.dictionary.BaseAsyncTestItem;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.LinkedList;
@@ -17,7 +18,7 @@ public class EditableTableTestAsyncHelper<VOType extends IBaseVO> extends BaseAs
 	}
 
 	public void add() {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().add(new BaseErrorAsyncCallback() {
@@ -37,7 +38,7 @@ public class EditableTableTestAsyncHelper<VOType extends IBaseVO> extends BaseAs
 	}
 
 	public void delete() {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().delete(new BaseErrorAsyncCallback() {
@@ -57,7 +58,7 @@ public class EditableTableTestAsyncHelper<VOType extends IBaseVO> extends BaseAs
 	}
 
 	public void assertRowCount(final int expectedRowCount) {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertRowCount(expectedRowCount);

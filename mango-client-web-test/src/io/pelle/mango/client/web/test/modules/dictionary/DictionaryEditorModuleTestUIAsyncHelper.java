@@ -14,7 +14,7 @@ package io.pelle.mango.client.web.test.modules.dictionary;
 import io.pelle.mango.client.base.db.vos.UUID;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.web.test.MangoAsyncGwtTestCase.AsyncTestItem;
+import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper.AsyncTestItem;
 import io.pelle.mango.client.web.test.modules.dictionary.container.EditableTableTestAsyncHelper;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
@@ -24,13 +24,14 @@ import java.util.Map;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings("rawtypes")
-public class DictionaryEditorModuleTestUIAsyncHelper<VOType extends IBaseVO> extends BaseDictionaryModuleTestUIAsyncHelper<DictionaryEditorModuleTestUI, VOType> {
+public class DictionaryEditorModuleTestUIAsyncHelper<VOType extends IBaseVO> extends BaseDictionaryModuleTestUIAsyncHelper<DictionaryEditorModuleTestUI> {
+	
 	public DictionaryEditorModuleTestUIAsyncHelper(String asynTestItemResultId, LinkedList<AsyncTestItem> asyncTestItems, Map<String, Object> asyncTestItemResults) {
 		super(asynTestItemResultId, asyncTestItems, asyncTestItemResults);
 	}
 
 	public void assertTitle(final String expectedTitle) {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertTitle(expectedTitle);
@@ -46,7 +47,7 @@ public class DictionaryEditorModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 	}
 
 	public void assertHasNoErrors() {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertHasNoErrors();
@@ -62,7 +63,7 @@ public class DictionaryEditorModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 	}
 
 	public void assertHasErrors(final int errorCount) {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().assertHasErrors(errorCount);
@@ -80,7 +81,7 @@ public class DictionaryEditorModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 	public <TableVOType extends IBaseVO> EditableTableTestAsyncHelper<TableVOType> getEditableTableTest(final EditableTableModel<TableVOType> tableModel) {
 		final String uuid = UUID.uuid();
 
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				DictionaryEditorModuleTestUIAsyncHelper.this.getAsyncTestItemResults().put(uuid, getAsyncTestItemResult().getEditableTableTest(tableModel));
@@ -98,7 +99,7 @@ public class DictionaryEditorModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 	}
 
 	public void save() {
-		this.addAsyncTestItem(new AsyncTestItem() {
+		this.addAsyncTestItem(new BaseAsyncTestItem() {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().save(new BaseErrorAsyncCallback<DictionaryEditorModuleTestUI>() {

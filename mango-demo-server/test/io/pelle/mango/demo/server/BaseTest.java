@@ -12,7 +12,7 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/MangoTestApplicationContext.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/DBBaseApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml",
+@ContextConfiguration(locations = { "classpath:/MangoBaseApplicationContext.xml", "classpath:/MangoTestApplicationContext.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/DBBaseApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml",
 		"classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoSpringServices-gen.xml" })
 @TransactionConfiguration(defaultRollback = false)
 @Transactional

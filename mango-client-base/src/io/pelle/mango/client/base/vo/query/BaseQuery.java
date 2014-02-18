@@ -2,6 +2,7 @@ package io.pelle.mango.client.base.vo.query;
 
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.query.expressions.BooleanExpression;
 
 import java.io.Serializable;
 import java.util.ArrayList;

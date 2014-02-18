@@ -273,7 +273,6 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
-	@Ignore
 	public void testGenericGetterSetterEnumeration1Datatype() {
 		Entity1VO entity1VO = new Entity1VO();
 		assertEquals(null, entity1VO.get("enumeration1Datatype"));
@@ -287,4 +286,12 @@ public class EntityModelGeneratorTest {
 		assertEquals(Entity6.class, Entity6.STRING1.getParent().getVOEntityClass());
 		assertEquals(Entity7.class, Entity7.STRING1.getParent().getVOEntityClass());
 	}
+
+	@Test
+	public void testNaturalKey() {
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("abc");
+		assertEquals("abc", entity1VO.getNaturalKey());
+	}
+
 }

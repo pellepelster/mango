@@ -27,6 +27,7 @@ import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 
+@SuppressWarnings({ "rawtypes", "unchecked"} )
 public class DictionarySearchModuleUIFactory<VOType extends IBaseVO> extends BaseModuleUIFactory<Panel, IGwtModuleUI> {
 	public DictionarySearchModuleUIFactory() {
 		super(new String[] { DictionarySearchModule.SEARCH_QUERY_RESULT_UI_MODULE_ID, DictionarySearchModule.SEARCH_QUERY_UI_MODULE_ID, DictionarySearchModule.SEARCH_UI_MODULE_ID });

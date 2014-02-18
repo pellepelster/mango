@@ -1,9 +1,9 @@
 package io.pelle.mango.client.base.vo;
 
-import io.pelle.mango.client.base.vo.query.CompareExpression;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
-import io.pelle.mango.client.base.vo.query.LongExpression;
+import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
+import io.pelle.mango.client.base.vo.query.expressions.LongExpression;
 
 public class LongAttributeDescriptor extends BaseExpressionAttributeDescriptor<Long> {
 

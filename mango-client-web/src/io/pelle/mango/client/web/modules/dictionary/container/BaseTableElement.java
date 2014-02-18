@@ -3,12 +3,15 @@ package io.pelle.mango.client.web.modules.dictionary.container;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseTableModel;
+import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
+import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends IBaseTableModel> extends BaseContainerElement<ModelType> implements IBaseTable<VOType> {
@@ -18,6 +21,8 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 	private List<ITableRow<VOType>> selection = new ArrayList<ITableRow<VOType>>();
 
 	private List<TableUpdateListener> tableUpdateListeners = new ArrayList<TableUpdateListener>();
+
+	private Optional<SimpleCallback<VOType>> activationCallback = Optional.absent();
 
 	public BaseTableElement(ModelType baseTable, BaseDictionaryElement<IBaseModel> parent) {
 		super(baseTable, parent);
@@ -45,7 +50,7 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 		fireTableUpdateListeners();
 	}
 
-	private void setSelection(ITableRow<VOType> tableRow) {
+	public void setSelection(ITableRow<VOType> tableRow) {
 		this.selection.clear();
 		this.selection.add(tableRow);
 	}
@@ -108,5 +113,15 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 		List<ITableRow<VOType>> rowsToDelete = new ArrayList<ITableRow<VOType>>();
 		rowsToDelete.add(tableRowToDelete);
 		delete(rowsToDelete, asyncCallback);
+	}
+
+	public void addActivateCallback(SimpleCallback<VOType> activationCallback) {
+		this.activationCallback = Optional.fromNullable(activationCallback);
+	}
+	
+	public void activateSelection() {
+		if (activationCallback.isPresent() && !getSelection().isEmpty()) {
+			activationCallback.get().onCallback(getSelection().get(0).getVO());
+		}
 	}
 }

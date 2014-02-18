@@ -11,12 +11,9 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary;
 
-import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.TableUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
-import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
 
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -29,13 +26,6 @@ public class DictionaryResultPanel<VOType extends IBaseVO> extends VerticalPanel
 
 		resultCellTable = new ResultCellTable<VOType>(dictionaryResult);
 		resultCellTable.setWidth("100%");
-		resultCellTable.addVOActivationHandler(new SimpleCallback<IBaseTable.ITableRow<VOType>>() {
-			/** {@inheritDoc} */
-			@Override
-			public void onCallback(IBaseTable.ITableRow<VOType> tableRow) {
-				DictionaryEditorModuleFactory.openEditorForId(dictionaryModel.getName(), tableRow.getVO().getId());
-			}
-		});
 
 		dictionaryResult.addTableUpdateListeners(new TableUpdateListener() {
 			@Override

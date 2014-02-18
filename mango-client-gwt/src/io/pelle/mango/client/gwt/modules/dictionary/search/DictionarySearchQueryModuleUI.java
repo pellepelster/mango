@@ -26,25 +26,13 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-/**
- * UI for the navigation module
- * 
- * @author pelle
- * 
- */
-public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements
-		ISearchUpdateListener, IGwtModuleUI<DictionarySearchModule<VOType>>
-{
+public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements ISearchUpdateListener, IGwtModuleUI<DictionarySearchModule<VOType>> {
 
 	public static final String DICTIONARY_SEARCH_INPUT_PANEL_STYLE = "dictionarySearchInputPanel";
 
 	private final VerticalPanel verticalPanel;
 
-	/**
-	 * @param module
-	 */
-	public DictionarySearchQueryModuleUI(final DictionarySearchModule<VOType> module)
-	{
+	public DictionarySearchQueryModuleUI(final DictionarySearchModule<VOType> module) {
 		super(module, DictionarySearchModule.SEARCH_QUERY_UI_MODULE_ID);
 
 		verticalPanel = new VerticalPanel();
@@ -56,14 +44,11 @@ public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseD
 		final TextBox searchTextBox = new TextBox();
 		searchTextBox.setWidth("95%");
 		searchTextPanel.add(searchTextBox);
-		searchTextBox.addKeyDownHandler(new KeyDownHandler()
-		{
+		searchTextBox.addKeyDownHandler(new KeyDownHandler() {
 
 			@Override
-			public void onKeyDown(KeyDownEvent event)
-			{
-				ModuleHandler.getInstance().startUIModule(DictionarySearchModule.getSearchQueryResultModuleLocator(searchTextBox.getText()),
-						Direction.CENTER.toString());
+			public void onKeyDown(KeyDownEvent event) {
+				ModuleHandler.getInstance().startUIModule(DictionarySearchModule.getSearchQueryResultModuleLocator(searchTextBox.getText()), Direction.CENTER.toString());
 			}
 		});
 
@@ -71,19 +56,16 @@ public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseD
 
 	/** {@inheritDoc} */
 	@Override
-	public Panel getContainer()
-	{
+	public Panel getContainer() {
 		return verticalPanel;
 	}
 
 	@Override
-	public String getTitle()
-	{
+	public String getTitle() {
 		return getModule().getTitle();
 	}
 
 	@Override
-	public void onUpdate()
-	{
+	public void onUpdate() {
 	}
 }

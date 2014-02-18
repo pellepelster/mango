@@ -2,11 +2,13 @@ package io.pelle.mango.dsl.generator.client;
 
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
+import io.pelle.mango.client.base.db.vos.NaturalKey;
 import io.pelle.mango.client.base.vo.BaseVO;
 import io.pelle.mango.client.base.vo.EntityDescriptor;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor;
+import io.pelle.mango.dsl.ModelUtil;
 import io.pelle.mango.dsl.generator.AttributeUtils;
 import io.pelle.mango.dsl.generator.BaseEntityGenerator;
 import io.pelle.mango.dsl.generator.client.ClientNameUtils;
@@ -136,11 +138,60 @@ public class VOGenerator extends BaseEntityGenerator {
     CharSequence _genericVOGetter = this.genericVOGetter(entity);
     _builder.append(_genericVOGetter, "\t");
     _builder.newLineIfNotEmpty();
-    _builder.newLine();
     _builder.append("\t");
     CharSequence _genericVOSetter = this.genericVOSetter(entity);
     _builder.append(_genericVOSetter, "\t");
     _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
+    {
+      EList<EntityAttribute> _naturalKeyAttributes = entity.getNaturalKeyAttributes();
+      boolean _isEmpty = _naturalKeyAttributes.isEmpty();
+      boolean _not = (!_isEmpty);
+      if (_not) {
+        _builder.append("\t");
+        _builder.append("@java.lang.Override");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("public String getNaturalKey() ");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("{");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("\t");
+        _builder.append("java.lang.StringBuffer sb = new java.lang.StringBuffer();");
+        _builder.newLine();
+        {
+          EList<EntityAttribute> _naturalKeyAttributes_1 = entity.getNaturalKeyAttributes();
+          boolean _hasElements = false;
+          for(final EntityAttribute naturalKeyAttribute : _naturalKeyAttributes_1) {
+            if (!_hasElements) {
+              _hasElements = true;
+            } else {
+              _builder.appendImmediate("sb.append(\", \");", "\t\t");
+            }
+            _builder.append("\t");
+            _builder.append("\t");
+            _builder.append("sb.append(this.get");
+            String _name_5 = naturalKeyAttribute.getName();
+            String _firstUpper = StringExtensions.toFirstUpper(_name_5);
+            _builder.append(_firstUpper, "\t\t");
+            _builder.append("());");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("\t");
+        _builder.append("\t");
+        _builder.append("return sb.toString();");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t");
+        _builder.newLine();
+      }
+    }
     _builder.append("}");
     _builder.newLine();
     return _builder;
@@ -268,24 +319,41 @@ public class VOGenerator extends BaseEntityGenerator {
   
   public CharSequence changeTrackingAttributeGetterSetter(final EntityAttribute entityAttribute) {
     StringConcatenation _builder = new StringConcatenation();
+    {
+      Entity _parentEntity = ModelUtil.getParentEntity(entityAttribute);
+      EList<EntityAttribute> _naturalKeyAttributes = _parentEntity.getNaturalKeyAttributes();
+      boolean _contains = _naturalKeyAttributes.contains(entityAttribute);
+      if (_contains) {
+        _builder.append("@");
+        String _name = NaturalKey.class.getName();
+        _builder.append(_name, "");
+        _builder.append("( order = ");
+        Entity _parentEntity_1 = ModelUtil.getParentEntity(entityAttribute);
+        EList<EntityAttribute> _naturalKeyAttributes_1 = _parentEntity_1.getNaturalKeyAttributes();
+        int _indexOf = _naturalKeyAttributes_1.indexOf(entityAttribute);
+        _builder.append(_indexOf, "");
+        _builder.append(")");
+      }
+    }
+    _builder.newLineIfNotEmpty();
     String _type = this._clientTypeUtils.getType(entityAttribute);
-    String _name = entityAttribute.getName();
+    String _name_1 = entityAttribute.getName();
     String _initializer = this._clientTypeUtils.getInitializer(entityAttribute);
-    CharSequence _attribute = this._attributeUtils.attribute(_type, _name, _initializer);
+    CharSequence _attribute = this._attributeUtils.attribute(_type, _name_1, _initializer);
     _builder.append(_attribute, "");
     _builder.newLineIfNotEmpty();
     CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(entityAttribute, null);
     _builder.append(_compileEntityAttributeDescriptor, "");
     _builder.newLineIfNotEmpty();
     String _type_1 = this._clientTypeUtils.getType(entityAttribute);
-    String _name_1 = entityAttribute.getName();
-    String _attributeName = this._clientNameUtils.attributeName(_name_1);
+    String _name_2 = entityAttribute.getName();
+    String _attributeName = this._clientNameUtils.attributeName(_name_2);
     CharSequence _ter = this._attributeUtils.getter(_type_1, _attributeName);
     _builder.append(_ter, "");
     _builder.newLineIfNotEmpty();
     String _type_2 = this._clientTypeUtils.getType(entityAttribute);
-    String _name_2 = entityAttribute.getName();
-    String _attributeName_1 = this._clientNameUtils.attributeName(_name_2);
+    String _name_3 = entityAttribute.getName();
+    String _attributeName_1 = this._clientNameUtils.attributeName(_name_3);
     CharSequence _changeTrackingSetter = this._attributeUtils.changeTrackingSetter(_type_2, _attributeName_1);
     _builder.append(_changeTrackingSetter, "");
     _builder.newLineIfNotEmpty();

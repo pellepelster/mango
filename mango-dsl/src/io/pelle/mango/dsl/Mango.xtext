@@ -43,6 +43,7 @@ EnumerationValue: ID;
 //-----------------------------------------------------------------------------
 Entity:
 	'entity' name=ID ('extends' extends=[Entity|QualifiedName])? ('jvmtype' jvmtype=[types::JvmType|QualifiedName])? '{'
+		("naturalkey {" naturalKeyAttributes+=[EntityAttribute | QualifiedName ] (", " naturalKeyAttributes+=[EntityAttribute | QualifiedName ])* "}")?
 		(attributes+=EntityAttribute)*
 	'}';
 

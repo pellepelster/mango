@@ -1,6 +1,7 @@
 package io.pelle.mango.client.web.test.modules.dictionary.controls;
 
-import io.pelle.mango.client.web.test.MangoAsyncGwtTestCase.AsyncTestItem;
+import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper.AsyncTestItem;
+import io.pelle.mango.client.web.test.modules.dictionary.BaseAsyncTestItem;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -18,7 +19,7 @@ public class DateControlTestAsyncHelper extends BaseControlTestAsyncHelper<DateC
 
 	public void assertValueWithoutMillies(final Date expectedValue)
 	{
-		this.addAsyncTestItem(new AsyncTestItem()
+		this.addAsyncTestItem(new BaseAsyncTestItem()
 		{
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback)

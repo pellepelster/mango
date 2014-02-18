@@ -1,4 +1,6 @@
-package io.pelle.mango.client.base.vo.query;
+package io.pelle.mango.client.base.vo.query.expressions;
+
+import io.pelle.mango.client.base.vo.query.IAliasProvider;
 
 import com.google.common.base.Objects;
 

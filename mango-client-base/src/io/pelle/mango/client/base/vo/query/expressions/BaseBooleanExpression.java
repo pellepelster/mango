@@ -1,4 +1,9 @@
-package io.pelle.mango.client.base.vo.query;
+package io.pelle.mango.client.base.vo.query.expressions;
+
+import io.pelle.mango.client.base.vo.query.IAliasProvider;
+import io.pelle.mango.client.base.vo.query.IBooleanExpression;
+import io.pelle.mango.client.base.vo.query.IExpression;
+import io.pelle.mango.client.base.vo.query.LOGICAL_OPERATOR;
 
 import java.util.HashMap;
 import java.util.Map;

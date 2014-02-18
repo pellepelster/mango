@@ -1,6 +1,7 @@
 package io.pelle.mango.client.base.vo.query;
 
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.query.expressions.BaseBooleanExpression;
 
 import com.google.common.base.Objects;
 

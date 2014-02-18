@@ -1,6 +1,6 @@
 package io.pelle.mango.client.web.test.modules.dictionary.controls;
 
-import io.pelle.mango.client.web.test.MangoAsyncGwtTestCase.AsyncTestItem;
+import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper.AsyncTestItem;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;

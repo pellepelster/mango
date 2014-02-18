@@ -1,6 +1,6 @@
 package io.pelle.mango.client.base.vo;
 
-import io.pelle.mango.client.base.vo.query.PathExpression;
+import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
 
 public abstract class BaseExpressionAttributeDescriptor<T> extends AttributeDescriptor<T> {
 
