@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+	<servlet>
+		<servlet-name>ProxyServlet</servlet-name>
+		<servlet-class>io.pelle.mango.server.util.ProxyServlet</servlet-class>
+		<init-param>
+			<param-name>proxyHost</param-name>
+			<param-value>localhost</param-value>
+		</init-param>
+		<init-param>
+			<param-name>proxyPort</param-name>
+			<param-value>9090</param-value>
+		</init-param>
+		<init-param>
+			<param-name>proxyPath</param-name>
+			<param-value>/</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>ProxyServlet</servlet-name>
+		<url-pattern>/remote/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

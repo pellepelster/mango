@@ -1,0 +1,295 @@
+<project name="mango-feature" default="buildAll">
+
+	<property name="build.timestamp" value="20140101" />
+	<property name="version" value="0.0.0" />
+	<property name="pde.eclipse.location" value="${user.home}/java/eclipse_pdebuild" />
+
+	<property name="context.qualifier" value="${build.timestamp}" />
+
+	
+	<property name="build.dir" value="build" />
+	
+	<property name="build.type" value="CI" />
+	<property name="build.number" value="1" />
+	<property name="revision.number" value="1" />
+	
+	<property name="updatesite.location" value="${basedir}/${build.dir}/updatesite" />
+	<property name="pde.build.location" value="${java.io.tmpdir}/mango" />
+
+	<property file="build.properties" />
+
+
+	<target name="buildAll" depends="pde.clean, pde.init">
+
+		<antcall target="pde.build" />
+		<antcall target="updatesite.create.metadata" />
+		
+	</target>
+
+	<!--
+	<target name="jar" depends="compile">
+		<zip destfile="${build.dir}/updatesite.zip">
+			<fileset dir="${build.dir}/updatesite" includes="**/*" />
+		</zip>
+	</target>
+	-->
+
+	<target name="pde.clean">
+		<delete dir="${pde.build.location}" />
+	</target>
+
+	<target name="pde.init">
+
+		<property name="artefact.suffix" value="${version}.${context.qualifier}" />
+
+		<delete dir="${pde.build.location}"/>
+		
+		<mkdir dir="${pde.build.location}" />
+		<mkdir dir="${pde.build.location}/updatesite" />
+
+		<mkdir dir="${pde.build.location}/artefact-temp/plugins" />
+		<mkdir dir="${pde.build.location}/artefact-temp/features" />
+
+		<!-- plugins -->
+		<copy todir="${pde.build.location}/artefact-temp/plugins">
+			<fileset dir="../">
+				<include name="mango-dsl-ui/**" />
+				<include name="mango-dsl/**" />
+				<include name="mango-libs/**" />
+				<include name="mango-base/**" />
+				<include name="mango-server-base/**" />
+				<include name="mango-client-base/**" />
+			</fileset>
+		</copy>
+		<echo>replace 0.0.0.qualifier' with ${artefact.suffix}</echo>
+		<copy todir="${pde.build.location}/artefact-temp/plugins" overwrite="true" verbose="true">
+			<fileset dir="../">
+				<include name="mango-dsl-ui/META-INF/MANIFEST.MF" />
+				<include name="manog-dsl-ui/plugin.xml" />
+				<include name="mango.base/META-INF/MANIFEST.MF" />
+				<include name="mango.base/plugin.xml" />
+				<include name="mango-client-base/META-INF/MANIFEST.MF" />
+				<include name="mango-client-base/plugin.xml" />
+				<include name="mango-server-base/META-INF/MANIFEST.MF" />
+				<include name="mango-server-base/plugin.xml" />
+				<include name="mango-dsl/META-INF/MANIFEST.MF" />
+				<include name="mango-dsl/plugin.xml" />
+				<include name="mango-dsl-sdk/META-INF/MANIFEST.MF" />
+				<include name="mango-dsl-sdk/feature.xml" />
+				<include name="mango-dsl-libs/META-INF/MANIFEST.MF" />
+				<include name="mango-dsl-libs/feature.xml" />
+			</fileset>
+
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="0.0.0.qualifier" to="${artefact.suffix}" />
+				</tokenfilter>
+			</filterchain>
+		</copy>
+
+		<!-- feature -->
+		<copy todir="${pde.build.location}/artefact-temp/features">
+			<fileset dir="../">
+				<include name="mango-dsl-sdk/**" />
+			</fileset>
+		</copy>
+		<echo>replace 0.0.0.qualifier' with ${artefact.suffix}</echo>
+		<copy todir="${pde.build.location}/artefact-temp/features" overwrite="true" verbose="true">
+			<fileset dir="../">
+				<include name="mango-dsl-sdk/META-INF/MANIFEST.MF" />
+				<include name="mango-dsl-sdk/feature.xml" />
+			</fileset>
+
+			<filterchain>
+				<tokenfilter>
+					<replacestring from="0.0.0.qualifier" to="${artefact.suffix}" />
+				</tokenfilter>
+			</filterchain>
+		</copy>
+	</target>
+
+
+	<target name="info">
+		<echo message="rootLocation: '${pde.build.location}'" />
+		<echo message="baseLocation: '${pde.eclipse.location}'" />
+		<echo message="equinox.launcher.version: '${equinox.launcher.version}'" />
+		<echo message="pde.build.version: '${pde.build.version}'" />
+		<echo message="context.qualifier: '${context.qualifier}'" />
+		<echo message="artefact.suffix: '${artefact.suffix}'" />
+	</target>
+	
+	<target name="pde.build">
+
+		<pde-version pdeLocation="${pde.eclipse.location}" />
+
+		<antcall target="info" />
+
+		<java classname="org.eclipse.equinox.launcher.Main" fork="true" failonerror="true">
+			<arg value="-consoleLog" />
+			<arg value="-application" />
+			<arg line="-data /tmp/workspace" />
+			<arg value="org.eclipse.ant.core.antRunner" />
+			<arg value="-buildfile" />
+			<arg value="${pde.eclipse.location}/plugins/org.eclipse.pde.build_${pde.build.version}/scripts/build.xml" />
+			<arg value="-Dtimestamp=${build.timestamp}" />
+			<arg value="-DbuildType=${build.type}" />
+			<arg value="-DbuildId=mango" />
+
+			<arg value="-DrootLocation=${pde.build.location}" />
+			<arg value="-DbaseLocation=${pde.eclipse.location}" />
+			<arg value="-Dbase=${pde.eclipse.location}" />
+
+			<arg value="-DeclipseLocation=${pde.eclipse.location}" />
+			<arg value="-DgenerateFeatureVersionSuffix=false" />
+			<arg value="-Dgenerate.p2.metadata=true" />
+			<arg value="-Dp2.metadata.repo=file:${buildDirectory}/${build.type}-${build.number}.mango.metadata" />
+			<arg value="-Dp2.artifact.repo=file:${buildDirectory}/${build.type}-${build.number}.mango.metadata" />
+			<arg value="-Dp2.metadata.repo.name=mango" />
+			<arg value="-Dp2.artifact.repo.name=mango" />
+			<arg value="-DforceContextQualifier=${context.qualifier}" />
+			<arg value="-DoutputUpdateJars=true" />
+			<arg value="-DpluginPath=${pde.build.location}" />
+
+			<classpath>
+				<pathelement location="${pde.eclipse.location}/plugins/org.eclipse.equinox.launcher_${equinox.launcher.version}.jar" />
+			</classpath>
+
+		</java>
+
+		<unzip dest="${pde.build.location}/updatesite/">
+			<fileset dir="${pde.build.location}/artefact-temp/${build.type}.mango/" includes="mango-dsl*.zip" />
+		</unzip>
+
+	</target>
+
+	<target name="updatesite.import.bundles">
+
+		<pde-version pdeLocation="${pde.eclipse.location}" />
+		
+		<antcall target="info" />
+
+		<delete dir="${updatesite.location}" />
+		<mkdir dir="${updatesite.location}" />
+		<copy todir="${updatesite.location}">
+			<fileset dir="${pde.build.location}/updatesite/mango/" includes="**/*" />
+		</copy>
+
+		<echo>replace 0.0.0.qualifier' with ${artefact.suffix}</echo>
+		<copy file="${basedir}/configuration/site.xml" tofile="${updatesite.location}/site.xml" verbose="true" overwrite="true">
+			<filterchain>
+				<replacestring from="0.0.0.qualifier" to="${artefact.suffix}" />
+				<replacestring from="%environment%" to="${updatesite.environment}" />
+			</filterchain>
+		</copy>
+	</target>
+
+	<target name="updatesite.create.metadata" depends="updatesite.import.bundles">
+
+		<property name="metatdata.target.dir" value="${updatesite.location}" />
+		<java classname="org.eclipse.equinox.launcher.Main" fork="true" failonerror="true">
+			<arg value="-consoleLog" />
+			<arg value="-application" />
+			<arg value="org.eclipse.equinox.p2.publisher.EclipseGenerator" />
+			<arg value="-updateSite" />
+			<arg value="${metatdata.target.dir}" />
+			<arg value="-site" />
+			<arg value="file:${metatdata.target.dir}/site.xml" />
+			<arg value="-metadataRepository" />
+			<arg value="file:${metatdata.target.dir}" />
+			<arg value="-metadataRepositoryName" />
+			<arg value="'Mango Update Site'" />
+			<arg value="-artifactRepository" />
+			<arg value="file:${metatdata.target.dir}" />
+			<arg value="-artifactRepositoryName" />
+			<arg value="'Mango Artifacts'" />
+			<arg value="-compress" />
+			<arg value="-reusePack200Files" />
+			<arg value="-noDefaultIUs" />
+			<arg value="-vmargs" />
+			<arg value="-Xmx256M" />
+			<classpath>
+				<pathelement location="${pde.eclipse.location}/plugins/org.eclipse.equinox.launcher_${equinox.launcher.version}.jar" />
+			</classpath>
+		</java>
+	</target>
+
+	<macrodef name="pde-version">
+		<!-- location of the eclipse distribution -->
+		<attribute name="pdeLocation" />
+
+		<!-- prefix to use for the property names -->
+		<attribute name="propertyPrefix" default="" />
+
+		<sequential>
+
+			<!-- find equinox launcher jar -->
+			<path id="equinox.launcher.file.id">
+				<fileset dir="@{pdeLocation}">
+					<include name="plugins/org.eclipse.equinox.launcher_*.jar" />
+				</fileset>
+			</path>
+			<property name="equinox.launcher.file" refid="equinox.launcher.file.id" />
+
+			<!-- fail if no launcher found -->
+			<condition property="no.launcher.found">
+				<equals arg1="${equinox.launcher.file}" arg2="" trim="true" />
+			</condition>
+			<fail if="no.launcher.found" message="no equinox launcher found at '@{pdeLocation}/plugins'" />
+			<echo message="equinox launcher found at '${equinox.launcher.file}'" />
+
+			<!-- find pde build plugin dir -->
+			<path id="pde.build.dir.id">
+				<dirset dir="@{pdeLocation}">
+					<include name="plugins/org.eclipse.pde.build_*" />
+				</dirset>
+			</path>
+			<property name="pde.build.dir" refid="pde.build.dir.id" />
+
+			<!-- fail if pde build plugin dir found -->
+			<condition property="no.pde.build.dir">
+				<equals arg1="${pde.build.dir}" arg2="" trim="true" />
+			</condition>
+			<fail if="no.pde.build.dir" message="no pde build plugin dir found at '@{pdeLocation}/plugins'" />
+			<echo message="pde build plugin dir found at '${pde.build.dir}'" />
+
+
+			<!-- write to property file and use regex to extract launcher version -->
+			<delete file="${java.io.tmpdir}/pde_version.helper" />
+			<propertyfile file="${java.io.tmpdir}/pde_version.helper">
+				<entry key="equinox.launcher.version" value="${equinox.launcher.file}" />
+			</propertyfile>
+
+			<replaceregexp byline="true">
+				<regexp pattern="equinox.launcher.version=.*org.eclipse.equinox.launcher_(.*).jar" />
+				<substitution expression="@{propertyPrefix}equinox.launcher.version=\1" />
+				<fileset dir="${java.io.tmpdir}">
+					<include name="pde_version.helper" />
+				</fileset>
+			</replaceregexp>
+
+			<!-- read back propertyfile -->
+			<property file="${java.io.tmpdir}/pde_version.helper" />
+
+			<!-- write to property file and use regex to extract build plugin version -->
+			<delete file="${java.io.tmpdir}/pde_version.helper" />
+			<propertyfile file="${java.io.tmpdir}/pde_version.helper">
+				<entry key="pde.build.version" value="${pde.build.dir}" />
+			</propertyfile>
+
+			<replaceregexp byline="true">
+				<regexp pattern="pde.build.version=.*org.eclipse.pde.build_(.*)" />
+				<substitution expression="@{propertyPrefix}pde.build.version=\1" />
+				<fileset dir="${java.io.tmpdir}">
+					<include name="pde_version.helper" />
+				</fileset>
+			</replaceregexp>
+
+			<!-- read back propertyfile -->
+			<property file="${java.io.tmpdir}/pde_version.helper" />
+
+			<delete file="${java.io.tmpdir}/pde_version.helper" />
+
+		</sequential>
+	</macrodef>
+
+</project>

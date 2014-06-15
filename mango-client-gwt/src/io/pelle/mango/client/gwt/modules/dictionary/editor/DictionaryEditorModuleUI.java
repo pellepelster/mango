@@ -1,0 +1,157 @@
+/**
+ * Copyright (c) 2013 Christian Pelster.
+ * 
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Christian Pelster - initial API and implementation
+ */
+package io.pelle.mango.client.gwt.modules.dictionary.editor;
+
+import io.pelle.mango.client.base.layout.IModuleUI;
+import io.pelle.mango.client.base.module.ModuleUtils;
+import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
+import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
+import io.pelle.mango.client.base.util.HumanizedMessagePopup;
+import io.pelle.mango.client.base.util.HumanizedMessagePopup.MESSAGE_TYPE;
+import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.GwtStyles;
+import io.pelle.mango.client.gwt.modules.dictionary.ActionBar;
+import io.pelle.mango.client.gwt.modules.dictionary.BaseDictionaryModuleUI;
+import io.pelle.mango.client.gwt.modules.dictionary.DictionaryEditorPanel;
+import io.pelle.mango.client.web.MangoClientWeb;
+import io.pelle.mango.client.web.module.ModuleHandler;
+import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Optional;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
+/**
+ * UI for the navigation module
+ * 
+ * @author pelle
+ * 
+ */
+public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionaryEditorModule<VOType>> implements IEditorUpdateListener {
+
+	private final VerticalPanel verticalPanel;
+
+	private static final String DICTIONARY_SAVE_BUTTON_DEBUG_ID = "DictionarySaveButton";
+
+	private static final String DICTIONARY_BACK_BUTTON_DEBUG_ID = "DictionaryBackButton";
+
+	private static final String DICTIONARY_REFRESH_BUTTON_DEBUG_ID = "DictionaryRefreshButton";
+
+	private final HTML editorTitle;
+
+	@SuppressWarnings("rawtypes")
+	public DictionaryEditorModuleUI(DictionaryEditorModule<VOType> editorModule, final Optional<IModuleUI> previousModuleUI) {
+		super(editorModule, DictionaryEditorModule.UI_MODULE_ID);
+
+		verticalPanel = new VerticalPanel();
+
+		verticalPanel.addStyleName(GwtStyles.DEBUG_BORDER);
+		verticalPanel.setWidth("100%");
+
+		// - action panel ------------------------------------------------------
+		ActionBar actionBar = new ActionBar();
+		verticalPanel.add(actionBar);
+
+		// - title -------------------------------------------------------------
+		editorTitle = new HTML(editorModule.getTitle());
+		editorTitle.addStyleName(GwtStyles.TITLE);
+		verticalPanel.add(editorTitle);
+
+		DictionaryEditorPanel<VOType> dictionaryEditorPanel = new DictionaryEditorPanel<VOType>(getModule());
+		verticalPanel.add(dictionaryEditorPanel);
+
+		if (previousModuleUI.isPresent()) {
+
+			actionBar.addSingleButton(MangoClientWeb.RESOURCES.back(), MangoClientWeb.MESSAGES.editorBack(), new ClickHandler() {
+				/** {@inheritDoc} */
+				@Override
+				public void onClick(ClickEvent event) {
+					ModuleHandler.getInstance().closeCurrentAndShow(previousModuleUI.get());
+				}
+			}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_BACK_BUTTON_DEBUG_ID);
+
+		}
+
+		actionBar.addSingleButton(MangoClientWeb.RESOURCES.editorSave(), MangoClientWeb.MESSAGES.editorSave(), new ClickHandler() {
+			/** {@inheritDoc} */
+			@Override
+			public void onClick(ClickEvent event) {
+				save();
+			}
+		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_SAVE_BUTTON_DEBUG_ID);
+
+		final Button refreshButton = actionBar.addSingleButton(MangoClientWeb.RESOURCES.editorRefresh(), MangoClientWeb.MESSAGES.editorRefresh(), new ClickHandler() {
+			/** {@inheritDoc} */
+			@Override
+			public void onClick(ClickEvent event) {
+				getModule().getDictionaryEditor().refresh();
+			}
+
+		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_REFRESH_BUTTON_DEBUG_ID);
+		// refreshButton.setEnabled(false);
+
+		for (final IButton button : getModule().getEditorButtons()) {
+			actionBar.addSingleButton(button);
+
+		}
+
+		getModule().addUpdateListener(this);
+	}
+
+	@Override
+	public void onUpdate() {
+		// refreshButton.setEnabled(!baseVO.isNew());
+		editorTitle.setText(getModule().getTitle());
+	}
+
+	private void save() {
+		if (getModule().getDictionaryEditor().getValidationMessages().hasErrors()) {
+			HumanizedMessagePopup.showMessageAndFadeAfterMouseMove(MangoClientWeb.MESSAGES.editorContainsErrors(), MESSAGE_TYPE.ERROR);
+		} else {
+			getModule().getDictionaryEditor().save();
+		}
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public boolean close() {
+
+		if (getModule().getDictionaryEditor().isDirty()) {
+			return Window.confirm(MangoClientWeb.MESSAGES.editorClose());
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public boolean isInstanceOf(String moduleUrl) {
+		return super.isInstanceOf(moduleUrl) && Objects.equal(getModule().getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public Panel getContainer() {
+		return verticalPanel;
+	}
+
+	@Override
+	public String getTitle() {
+		return getModule().getTitle();
+	}
+
+}

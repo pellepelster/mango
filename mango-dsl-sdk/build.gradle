@@ -1,0 +1,32 @@
+ant.properties['version'] = version
+ant.properties['build.timestamp'] = buildTimeStamp
+
+if (versionQualifier)
+{
+	ant.properties['context.qualifier'] = versionQualifier
+}
+else
+{
+	ant.properties['context.qualifier'] = buildTimeStamp
+}
+
+ant.importBuild 'build.xml'
+
+dependencies {
+	project(':mango-libs')
+	project(':mango-dsl')
+}
+
+task zipUpdateSite(dependsOn: buildAll, type: Zip) {
+	from buildDir.name + '/updatesite'
+}
+
+compileJava.dependsOn buildAll, zipUpdateSite
+
+artifacts {
+	archives (zipUpdateSite) {
+		name "updatesite"
+	}
+}
+
+buildAll.dependsOn(":mango-libs:build")

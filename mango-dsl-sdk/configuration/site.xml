@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/io.pelle.mango.dsl.sdk_0.0.0.qualifier" id="io.pelle.mango.dsl.sdk" version="0.0.0.qualifier" os="linux,win32" ws="gtk,win32">
+      <category name="Mango"/>
+   </feature>
+   <category-def name="Mango" label="Mango"/>
+</site>

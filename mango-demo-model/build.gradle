@@ -1,0 +1,8 @@
+apply from: '../mango-build/mangomodelcommon.gradle'
+
+dependencies {
+	
+	compile project(path: ':mango-model', configuration: 'generatedVOs')
+	compile project(path: ':mango-model', configuration: 'generatedEntities')
+	
+}

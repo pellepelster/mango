@@ -1,0 +1,10 @@
+----------------------------------------------------------------
+Sun Jun 15 22:18:01 CEST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): instance a816c00e-0146-a12d-f209-00001190c8b8 
+on database directory /home/pelle/git/mango/mango-build/build/mangodemo-db  with class loader java.net.URLClassLoader@3d1309b8 
+Loaded from file:/home/pelle/.gradle/caches/modules-2/files-2.1/org.apache.derby/derby/10.9.1.0/4538cf5564ab3c262eec65c55fdb13965625589c/derby-10.9.1.0.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_55-b14
+user.dir=/home/pelle/git/mango/mango-build
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

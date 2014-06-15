@@ -1,0 +1,41 @@
+dependencies {
+	compile 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.6.0'
+	compile 'org.eclipse.xtext:org.eclipse.xtext.xbase:2.6.0'
+	compile 'org.eclipse.xtext:org.eclipse.xtext:2.6.0'
+	compile 'org.eclipse.xtext:org.eclipse.xtext.builder.standalone:2.6.0'
+	
+	compile project(':mango-db')
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src', 'src-gen', 'xtend-gen' ]
+		}
+		resources {
+			srcDirs = ['src', 'src-gen', 'xtend-gen' ]
+		}
+	}
+}
+
+task runWorkflow(type: JavaExec) {
+
+	main = "org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"
+	
+	classpath = configurations.compile
+	classpath += files('src')
+	
+	args = [ "classpath:///io/pelle/mango/dsl/GenerateMango.mwe2" ]
+}
+
+compileJava.dependsOn runWorkflow
+
+libDir = new File('lib')
+
+task copyRuntimeLibs(type: Copy) {
+	libDir.mkdirs()
+	into libDir
+	from configurations.runtime
+}
+
+build.dependsOn(copyRuntimeLibs)

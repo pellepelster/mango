@@ -1,0 +1,108 @@
+project MangoDemo {
+
+	package io.pelle.^mango.test {
+		
+		stringdatatype StringDatatype1 {
+		}
+
+		stringdatatype StringDatatype2 {
+		}
+
+		stringdatatype StringDatatype3 {
+		}
+
+		stringdatatype StringDatatype4 {
+		}		
+
+		booleandatatype BooleanDatatype1 {
+		}
+		
+		entitydatatype Entity2Datatype {
+			entity Entity2
+		}
+
+		binarydatatype BinaryDatatype1 {
+		}
+
+		entitydatatype Entity3Datatype {
+			entity Entity3
+		}
+
+		enumeration Enumeration1 {
+			EnumerationValue1, EnumerationValue2 
+		} 
+
+		enumerationdatatype Enumeration1Datatype {
+			enumeration Enumeration1
+		} 
+
+		entity Entity1 {
+			string StringDatatype1 stringDatatype1
+			boolean BooleanDatatype1 booleanDatatype1
+			string StringDatatype1 0..n stringDatatype1List
+			entity Entity2Datatype entity2Datatype
+			enumeration Enumeration1Datatype enumeration1Datatype
+		}
+
+		entity Entity2 {
+			string StringDatatype2 stringDatatype2
+			entity Entity3Datatype 0..n entity3Datatypes
+		}
+
+		entity Entity3 {
+			string StringDatatype3 stringDatatype3
+			binary BinaryDatatype1 binaryDatatype1
+		}
+
+		entity Entity4 extends Entity3 {
+			string StringDatatype4 stringDatatype4
+		}
+
+		entity Entity5 {
+			entity Entity4 entity4
+			entity Entity4 0..n entity4s
+			string string1
+			binary binary1
+			boolean boolean1
+			enumeration Enumeration1 enumeration1
+		}
+
+		valueobject ValueObject1 {
+			string string1
+			entity Entity5 entity5
+		}
+		
+		dictionary Testdictionary1 {
+			
+			entity Entity1
+			
+			dictionarycontrols {
+				
+				textcontrol Textcontrol1 {
+					entityattribute Entity1.stringDatatype1
+				}
+				
+			}
+
+			dictionarysearch DictionarySearch1 {
+				dictionaryfilter DictionaryFilter1 {
+					textcontrol ref Textcontrol1
+				}
+				
+				dictionaryresult DictionaryResult1 {
+					textcontrol ref Textcontrol1
+				}
+			}
+						
+			dictionaryeditor DictionaryEditor1 {
+				textcontrol ref Textcontrol1
+			}
+		}
+		
+		navigationnode Navigation {
+			navigationnode Dictionary1 {
+				dictionarySearch Testdictionary1.DictionarySearch1
+			}
+		}
+	}
+}

@@ -1,0 +1,1 @@
+includeFlat 'projectname-model', 'projectname-server-web'

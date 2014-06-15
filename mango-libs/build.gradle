@@ -1,0 +1,42 @@
+dependencies {
+	compile group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
+	compile group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt
+	//compile group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
+	compile group: "commons-beanutils", name: "commons-beanutils-core", version: "1.8.3"
+	compile group: 'com.google.guava', name: 'guava', version: versions.guava
+	compile 'com.google.code.findbugs:jsr305:2.0.3'
+	
+	compile (group: "org.springframework.security", name: "spring-security-web", version: versions.spring_security) {
+		exclude module: "spring-tx"
+		exclude module: "spring-context"
+		exclude module: "spring-core"
+		exclude module: "spring-beans"
+		exclude module: "spring-expression"
+		exclude module: "spring-jdbc"
+		exclude module: "spring-web"
+		exclude module: "spring-webmvc"
+		exclude module: "spring-aop"
+	}
+	
+	compile (group: "org.springframework.security", name: "spring-security-config", version: versions.spring_security) {
+		exclude module: "spring-tx"
+		exclude module: "spring-context"
+		exclude module: "spring-core"
+		exclude module: "spring-beans"
+		exclude module: "spring-expression"
+		exclude module: "spring-jdbc"
+		exclude module: "spring-web"
+		exclude module: "spring-webmvc"
+		exclude module: "spring-aop"
+	}
+}
+
+libDir = new File('lib')
+
+task copyRuntimeLibs(type: Copy) {
+	libDir.mkdirs()
+	into libDir
+	from configurations.runtime
+}
+
+build.dependsOn(copyRuntimeLibs)

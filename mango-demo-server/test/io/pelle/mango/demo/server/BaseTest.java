@@ -1,0 +1,37 @@
+package io.pelle.mango.demo.server;
+
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.junit.runner.RunWith;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
+import org.springframework.transaction.annotation.Transactional;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:/MangoTestApplicationContext.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/DBBaseApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml",
+		"classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoSpringServices-gen.xml" })
+@TransactionConfiguration(defaultRollback = false)
+@Transactional
+@TestExecutionListeners({ TransactionalTestExecutionListener.class })
+public abstract class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
+
+	public BaseTest() {
+
+		BasicDataSource dataSource = new BasicDataSource();
+
+		dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+		dataSource.setUrl("jdbc:hsqldb:mem:example");
+
+		SimpleNamingContextBuilder builder = new SimpleNamingContextBuilder();
+		builder.bind("java:comp/env/jdbc/mangodemo", dataSource);
+		try {
+			builder.activate();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+}

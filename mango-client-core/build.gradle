@@ -1,0 +1,8 @@
+dependencies {
+	compile project(':mango-client-base')
+}
+
+jar {
+	from sourceSets.main.allSource
+	from sourceSets.main.output.classesDir
+}

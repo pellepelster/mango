@@ -1,0 +1,55 @@
+dependencies {
+	
+	compile project(':mango-client-base')
+	
+	testCompile group: "org.springframework", name: "spring-test", version: versions.spring
+	testCompile group: "org.apache.derby", name: "derby", version: "10.9.1.0"
+
+	compile group: "org.springframework", name: "spring-tx", version: versions.spring
+	compile group: "org.springframework", name: "spring-context", version: versions.spring
+	compile group: "org.springframework", name: "spring-core", version: versions.spring
+	compile group: "org.springframework", name: "spring-beans", version: versions.spring
+	compile group: "org.springframework", name: "spring-expression", version: versions.spring
+	compile group: "org.springframework", name: "spring-jdbc", version: versions.spring
+	compile group: "org.springframework", name: "spring-web", version: versions.spring
+	compile group: "org.springframework", name: "spring-webmvc", version: versions.spring
+	compile group: "org.springframework", name: "spring-aop", version: versions.spring
+	
+	compile (group: 'org.springframework.security', name: 'spring-security-core', version: versions.spring_security) {
+		exclude module: "spring-tx"
+		exclude module: "spring-context"
+		exclude module: "spring-core"
+		exclude module: "spring-beans"
+		exclude module: "spring-expression"
+		exclude module: "spring-jdbc"
+		exclude module: "spring-web"
+		exclude module: "spring-webmvc"
+		exclude module: "spring-aop"
+	}
+	
+	compile (group: "org.springframework.security", name: "spring-security-web", version: versions.spring_security) {
+		exclude module: "spring-tx"
+		exclude module: "spring-context"
+		exclude module: "spring-core"
+		exclude module: "spring-beans"
+		exclude module: "spring-expression"
+		exclude module: "spring-jdbc"
+		exclude module: "spring-web"
+		exclude module: "spring-webmvc"
+		exclude module: "spring-aop"
+	}
+	
+	compile (group: "org.springframework.security", name: "spring-security-config", version: versions.spring_security) {
+		exclude module: "spring-tx"
+		exclude module: "spring-context"
+		exclude module: "spring-core"
+		exclude module: "spring-beans"
+		exclude module: "spring-expression"
+		exclude module: "spring-jdbc"
+		exclude module: "spring-web"
+		exclude module: "spring-webmvc"
+		exclude module: "spring-aop"
+	}
+	
+}
+

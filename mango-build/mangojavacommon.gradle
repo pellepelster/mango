@@ -1,0 +1,5 @@
+allprojects {
+	apply plugin: 'java'
+}
+
+apply from: '../mango-build/mangocommon.gradle'

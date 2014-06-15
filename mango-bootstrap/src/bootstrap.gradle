@@ -1,0 +1,71 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+ext.templateOutputDir = file("${buildDir}/${projectName.toLowerCase()}")
+
+repositories {
+
+	mavenCentral()
+
+	ivy {
+		name "localDevelopmentRepository"
+		url System.properties['user.home'] + "/.gradle/mango_repository"
+		layout "maven"
+	}
+}
+
+configurations { 
+	projectTemplate 
+}
+
+dependencies {
+	projectTemplate group: 'io.pelle.mango', name: 'mango-project-template', version: '+', ext: 'zip'
+}
+
+task extractProjectTemplate(type: Copy) {
+	
+	templateOutputDir.deleteDir()
+	templateOutputDir.mkdirs()
+	into templateOutputDir
+
+	configurations.projectTemplate.filter { 
+		println "extracting ${it} to ${templateOutputDir}"
+		it.toString().endsWith(".zip") 
+	}.each { 
+		from zipTree(it)
+	}
+
+	eachFile { details ->
+		details.path = replaceFileNameTokens(details.path)
+	}
+	
+	filter { String line ->
+        "${replaceTextFileTokens(line)}"
+    }	
+}
+
+task copyProjectTemplate(type: Copy) {
+	println "copying templates to ${outputDir}"
+	into file("${outputDir}")
+	from templateOutputDir
+	exclude 'projectname*/**'
+}
+
+def replaceFileNameTokens(def tokenString)  {
+	def packagePathName = packageName.replaceAll('\\.', '/')
+	tokenString = tokenString.replaceAll('packagename', "${packagePathName}")
+	replaceCommonTokens(tokenString)
+}
+
+def replaceTextFileTokens(def tokenString)  {
+	tokenString = tokenString.replaceAll('packagename', "${packageName}")
+	replaceCommonTokens(tokenString)
+}
+
+def replaceCommonTokens(def tokenString)  {
+	tokenString = tokenString.replaceAll('projectname', "${projectName.toLowerCase()}")
+	tokenString = tokenString.replaceAll('ProjectName', "${projectName}")
+	tokenString
+}
+
+extractProjectTemplate.dependsOn(configurations.projectTemplate)
+copyProjectTemplate.dependsOn(extractProjectTemplate)

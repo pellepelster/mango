@@ -1,0 +1,32 @@
+repositories {
+
+	mavenCentral()
+	
+	ivy {
+		name "localDevelopmentRepository"
+		url System.properties['user.home'] + "/.gradle/mango_repository"
+		layout "maven"
+	}
+	
+}
+
+configurations {
+	bootstrap
+}
+
+dependencies { 
+	bootstrap group: 'io.pelle.mango', name: 'mango-bootstrap', version: '+', transitive: false
+}
+    
+task extractBootstrapGradle(type: Copy) {
+
+	configurations.bootstrap.asFileTree.each {
+		println "extracting ${it} to ${bootstrapTempDir}"
+		from(zipTree(it))
+	}
+
+	into bootstrapTempDir
+	
+	println "###bootstrap.gradle###"
+}
+

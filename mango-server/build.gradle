@@ -1,0 +1,15 @@
+dependencies {
+	
+	compile project(':mango-server-base')
+	compile project(':mango-db')
+	
+	compile project(path: ':mango-model', configuration: 'generatedVOs')
+	compile project(path: ':mango-model', configuration: 'generatedEntities')
+	
+	
+	compile group: "org.springframework", name: "spring-web", version: versions.spring
+	compile group: "org.springframework", name: "spring-webmvc", version: versions.spring
+
+	compile group: "javax.servlet", name: "servlet-api", version: "2.5"
+	
+}

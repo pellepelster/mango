@@ -1,0 +1,27 @@
+def buildProjectTemplate = fileTree("../projectname-build").matching {
+	exclude "bin", "build", "*TestDB", "derby.log"
+}
+
+def modelProjectTemplate = fileTree("../projectname-model").matching {
+	exclude "bin", "build", "src-gen*"
+}
+
+def serverWebProjectTemplate = fileTree("../projectname-server-web").matching {
+	exclude "bin", "build", ".gradle"
+}
+
+task zipProjectTemplates(type: Zip) {
+	into('projectname-build') {
+		from buildProjectTemplate
+	}
+	into('projectname-model') {
+		from modelProjectTemplate
+	}
+	into('projectname-server-web') {
+		from serverWebProjectTemplate
+	}
+}
+
+artifacts {
+	archives zipProjectTemplates
+}

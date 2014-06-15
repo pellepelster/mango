@@ -1,0 +1,109 @@
+apply plugin: 'xtext'
+
+xtext {
+	version = '2.5.3' // the current default, can be omitted
+	encoding = 'UTF-8' //the default, can be omitted
+
+	languages{
+		
+		mango {
+			setup = 'io.pelle.mango.dsl.MangoStandaloneSetup'
+			consumesJava = true
+		}
+	}
+}
+
+dependencies {
+	
+	xtextTooling project(':mango-dsl')
+	xtextTooling project(':mango-db')
+	xtextTooling project(':mango-server-base')
+	
+	compile project(':mango-db')
+	compile project(':mango-server-base')
+	project(':mango-dsl')
+	
+	testCompile project(path: ':mango-db', configuration: 'testArtifacts')
+}
+
+configurations {
+	generatedEntities
+	generatedVOs
+	generatedEntitiesSources
+	generatedVOsSources
+}
+
+sourceSets {
+	
+	generatedVOs {
+		java {
+			srcDirs = [ 'src-gen-vos' ]
+		}
+		resources {
+			srcDirs = [ 'src-gen-vos' ]
+		}
+		
+		compileClasspath += project.sourceSets.main.compileClasspath
+	}
+
+	generatedEntities {
+		
+		java {
+			srcDirs = [ 'src-gen-entities' ]
+		}
+		resources {
+			srcDirs = [ 'src-gen-entities' ]
+		}
+		
+		compileClasspath += project.sourceSets.main.compileClasspath
+		compileClasspath += project.sourceSets.generatedVOs.output
+	}
+
+	test {
+		
+		java {
+			srcDirs = [ 'test', 'src-gen-entities', 'src-gen-vos' ]
+		}
+		resources {
+			srcDirs = [ 'test', 'src-gen-entities', 'src-gen-vos' ]
+		}
+		
+		compileClasspath += project.sourceSets.generatedEntities.output
+
+		compileClasspath += project.sourceSets.generatedVOs.output
+		
+	}
+
+}
+
+task generatedEntitiesJar(type: Jar, dependsOn: compileGeneratedEntitiesJava) {
+	classifier 'entities-generated'
+	from sourceSets.generatedEntities.output
+}
+
+task generatedEntitiesSourceJar(type: Jar, dependsOn: compileGeneratedEntitiesJava) {
+	classifier 'entities-generated-sources'
+	from sourceSets.generatedEntities.allSource
+	exclude('**/persistence.xml')
+}
+
+task generatedVOsJar(type: Jar, dependsOn: project.compileGeneratedVOsJava) {
+	classifier 'vos-generated'
+	from sourceSets.generatedVOs.output
+}
+
+task generatedVOsSourceJar(type: Jar, dependsOn: compileGeneratedVOsJava) {
+	classifier 'vos-generated-sources'
+	from sourceSets.generatedVOs.allSource
+}
+
+compileGeneratedEntitiesJava.dependsOn("xtextGenerate")
+processGeneratedEntitiesResources.dependsOn("xtextGenerate")
+compileGeneratedVOsJava.dependsOn("xtextGenerate")
+processGeneratedVOsResources.dependsOn("xtextGenerate")
+
+artifacts {
+	archives sourceJar, javadocJar
+	generatedEntities generatedEntitiesJar, generatedEntitiesSourceJar
+	generatedVOs generatedVOsJar, generatedVOsSourceJar
+}

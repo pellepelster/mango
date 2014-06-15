@@ -1,0 +1,18 @@
+project ProjectName {
+
+	package packagename {
+
+		stringdatatype TodoTitle {
+		}
+
+		booleandatatype TodoCompleted {
+		}
+
+		entity Todo {
+			string TodoTitle title
+			boolean TodoCompleted completed
+		}
+			
+	}
+	
+}

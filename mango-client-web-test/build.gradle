@@ -1,0 +1,9 @@
+dependencies {
+	compile project(':mango-client-web')
+	compile group: 'junit', name: 'junit', version: '4.11'
+}
+
+jar {
+	from sourceSets.main.allSource
+	from sourceSets.main.output.classesDir
+}

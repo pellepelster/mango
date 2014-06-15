@@ -1,0 +1,9 @@
+dependencies {
+	compile project(path: ':mango-model', configuration: 'generatedVOs')
+	compile project(':mango-client-core')
+}
+
+jar {
+	from sourceSets.main.allSource
+	from sourceSets.main.output.classesDir
+}

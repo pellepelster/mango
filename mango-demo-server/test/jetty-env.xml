@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<!-- <Configure class="org.eclipse.jetty.webapp.WebAppContext">  -->
+<Configure class="org.eclipse.jetty.server.Server">
+
+	<New id="jdbc/mangodemo" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg></Arg>
+		<Arg>jdbc/mangodemo</Arg>
+		<Arg>
+            <New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
+                <Set name="driverClassName">org.apache.derby.jdbc.EmbeddedDriver</Set>
+                <Set name="url">jdbc:derby:build/mangodemo-db;create=true;</Set>
+                <Set name="username">mangodemo</Set>
+                <Set name="password">mangodemo</Set>
+            </New>
+		
+		</Arg>
+	</New>
+
+</Configure>

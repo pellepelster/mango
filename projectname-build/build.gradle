@@ -1,0 +1,33 @@
+buildscript {
+	
+	repositories {
+
+		ivy {
+			name "localDevelopmentRepository"
+			url System.properties['user.home'] + "/.gradle/mango_repository"
+			layout "maven"
+
+		}
+
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+'
+	}
+}
+
+configure(subprojects.findAll { it.name.endsWith("-build")})
+{ 
+	apply plugin: 'MangoBuildProject'
+}
+
+configure(subprojects.findAll { it.name.endsWith("-model")})
+{
+	apply plugin: 'MangoModelProject'
+}
+
+configure(subprojects.findAll { it.name.endsWith("-server-web")})
+{
+	apply plugin: 'MangoServerWebProject'
+}

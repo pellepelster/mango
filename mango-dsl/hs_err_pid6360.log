@@ -1,0 +1,79 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00000000577a45c5, pid=6360, tid=5260
+#
+# JRE version: Java(TM) SE Runtime Environment (7.0_55-b13) (build 1.7.0_55-b13)
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (24.55-b03 mixed mode windows-amd64 compressed oops)
+# Problematic frame:
+# V  [jvm.dll+0x945c5]
+#
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   http://bugreport.sun.com/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000001db4000):  JavaThread "main" [_thread_in_vm, id=5260, stack(0x0000000002190000,0x0000000002290000)]
+
+siginfo: ExceptionCode=0xc0000005, reading address 0x0000000680000000
+
+Registers:
+RAX=0x000000077fffffbd, RBX=0x0000000000000145, RCX=0x000000000228d730, RDX=0xffffffff00000043
+RSP=0x000000000228d708, RBP=0x000000000228d740, RSI=0x00000000000000f0, RDI=0x000000000000000d
+R8 =0x000000007fffffbd, R9 =0x000000007fffffbd, R10=0x0000000000000145, R11=0x000000077fffffbd
+R12=0x0000000001db4790, R13=0x0000000000000041, R14=0x00000007800cc0a8, R15=0x0000000001db4a78
+RIP=0x00000000577a45c5, EFLAGS=0x0000000000010292
+
+Top of Stack: (sp=0x000000000228d708)
+0x000000000228d708:   0000000057819cd4 00000000000003d8
+0x000000000228d718:   00000000000000e0 00000007800cc728
+0x000000000228d728:   000000000228d740 000000077fffffbd
+0x000000000228d738:   00000000000000aa 0000000001db46a0
+0x000000000228d748:   000000000228d7f0 0000000001db4690
+0x000000000228d758:   0000000001db4790 0000000001f427c0
+0x000000000228d768:   00000007800cc6f8 00000007800cc0a8
+0x000000000228d778:   00000000578194cc 00000007800cc0a8
+0x000000000228d788:   000000002d000000 000000000228d7f0
+0x000000000228d798:   000000007a000000 0000000000000e60
+0x000000000228d7a8:   0000000000000003 0000000000000002
+0x000000000228d7b8:   0000000001db4690 0000000000000df0
+0x000000000228d7c8:   0000000057819723 00000000000003d8
+0x000000000228d7d8:   00000007800cc0a8 0000000001f427c0
+0x000000000228d7e8:   0000000000000018 0000000001db4dd8
+0x000000000228d7f8:   0000028c00000145 000000aa000002ff 
+
+Instructions: (pc=0x00000000577a45c5)
+0x00000000577a45a5:   cc cc cc cc cc cc cc cc cc cc cc 4c 63 01 41 8d
+0x00000000577a45b5:   44 90 10 48 63 d0 48 8b 01 48 83 e2 fc 49 2b d0
+0x00000000577a45c5:   8b 0c 02 0f b6 c1 89 4c 24 10 0f b6 4c 24 11 c1
+0x00000000577a45d5:   e0 08 0b c1 0f b6 4c 24 12 c1 e0 08 0b c1 0f b6 
+
+
+Register to memory mapping:
+
+RAX=0x000000077fffffbd is pointing into object: 0x000000077ffffe38
+{constMethod} 
+ - klass: {other class}
+ - constants:       0x000000077fffe1d8 constant pool [337] for 'org/antlr/stringtemplate/language/GroupLexer' cache=0x00000007800c7560
+bci_from(000000077FFFFFBD) = 325; print_codes():
+RBX=0x0000000000000145 is an unknown value
+RCX=0x000000000228d730 is pointing into the stack for thread: 0x0000000001db4000
+RDX=0xffffffff00000043 is an unknown value
+RSP=0x000000000228d708 is pointing into the stack for thread: 0x0000000001db4000
+RBP=0x000000000228d740 is pointing into the stack for thread: 0x0000000001db4000
+RSI=0x00000000000000f0 is an unknown value
+RDI=0x000000000000000d is an unknown value
+R8 =0x000000007fffffbd is an unknown value
+R9 =0x000000007fffffbd is an unknown value
+R10=0x0000000000000145 is an unknown value
+R11=0x000000077fffffbd is pointing into object: 0x000000077ffffe38
+{constMethod} 
+ - klass: {other class}
+ - constants:       0x000000077fffe1d8 constant pool [337] for 'org/antlr/stringtemplate/language/GroupLexer' cache=0x00000007800c7560
+bci_from(000000077FFFFFBD) = 325; print_codes():
+R12=0x0000000001db4790 is an unknown value
+R13=0x0000000000000041 is an unknown value
+R14=

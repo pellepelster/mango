@@ -1,0 +1,159 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+repositories {
+	
+	mavenCentral()
+	
+	ivy {
+		name "snapshotLocalRepository"
+		url System.properties['user.home'] + "/.gradle/mango_snapshot"
+		layout "maven"
+	}
+
+	ivy {
+		name "buildRepository"
+		url "../mango-build/build/repository"
+		layout "maven"
+	}
+	
+	maven {
+		name "localMavenRepository"
+		url System.properties['user.home'] + "/.m2/repository"
+	}
+}
+
+task javadocJar(type: Jar) {
+	classifier = 'javadoc'
+	from javadoc
+}
+
+task sourceJar(type:Jar, dependsOn: testClasses) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+	exclude('**/persistence.xml')
+}
+
+jar.dependsOn(sourceJar)
+
+task testJar(type: Jar, dependsOn: testClasses) {
+	classifier = 'test'
+	from sourceSets.test.output
+}
+
+task testSourceJar(type: Jar, dependsOn: testClasses) {
+	classifier = 'test-sources'
+	from sourceSets.test.allSource
+	exclude('**/persistence.xml')
+}
+
+configurations {
+	testArtifacts.extendsFrom(testRuntime)
+	archives.extendsFrom(testArtifacts)
+	snapshotLocal.extendsFrom(archives)
+	buildRepository.extendsFrom(archives)
+}
+
+artifacts {
+	testArtifacts testJar, testSourceJar
+	archives sourceJar, javadocJar
+}
+
+ext {
+	buildTimeStamp = getBuildTimeStamp()
+ 	isReleaseVersion = false
+}
+
+def getBuildTimeStamp() {
+	def date = new Date()
+	def formattedDate = date.format('yyyyMMddHHmmss')
+	return formattedDate
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+	
+	if (taskGraph.hasTask(':uploadArchives')) {
+		isReleaseVersion = true
+	} else {
+		isReleaseVersion = false
+	}
+	
+	if (!versionQualifier)
+	{
+		versionQualifier = buildTimeStamp
+	}
+
+	version = version + "-" + versionQualifier
+	
+	println "version set to $version"
+}
+
+signing {
+	required { 
+		isReleaseVersion && gradle.taskGraph.hasTask(":uploadArchives")
+	}
+	
+	sign configurations.archives
+}
+
+uploadBuildRepository {
+	repositories { 
+		add project.repositories.buildRepository
+	}
+}
+
+uploadSnapshotLocal {
+	repositories { 
+ 		add project.repositories.snapshotLocalRepository
+	}
+}
+
+uploadArchives {
+	
+	repositories {
+		
+		mavenDeployer {
+			
+			beforeDeployment { MavenDeployment deployment ->
+				signing.signPom(deployment)
+			}
+
+			repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+				authentication(userName: ossrhUsername, password: ossrhPassword)
+			}
+
+			pom.project {
+				name 'mango'
+				packaging 'jar'
+				// optionally artifactId can be defined here
+				description 'mango web framework'
+				url 'http://pellepelster.github.io/mango/'
+
+				scm {
+					connection 'scm:git:git@github.com:pellepelster/mango.git'
+					developerConnection 'scm:git:git@github.com:pellepelster/mango.git'
+					url 'https://github.com/pellepelster/mango'
+				}
+
+				licenses {
+					license {
+						name 'The Apache Software License, Version 2.0'
+						url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+
+				developers {
+					developer {
+						id 'pelle'
+						name 'Pelle Pelster'
+						email 'pelle@pelle.io'
+					}
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,9 @@
+dependencies {
+	compile project(':mango-client-web')
+	compile 'com.googlecode.gwtupload:gwtupload:1.0.1'
+}
+
+jar {
+	from sourceSets.main.allSource
+	from sourceSets.main.output.classesDir
+}

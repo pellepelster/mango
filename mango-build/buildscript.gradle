@@ -1,0 +1,15 @@
+buildscript {
+	repositories {
+
+		maven {
+			name "localMavenRepository"
+			url System.properties['user.home'] + "/.m2/repository"
+		}
+		
+		ivy {
+			name "localDevelopmentRepository"
+			url System.properties['user.home'] + "/.gradle/mango_repository"
+			layout "maven"
+		}
+	}
+}
