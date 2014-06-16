@@ -7,6 +7,8 @@ import io.pelle.mango.test.Entity2;
 import io.pelle.mango.test.Entity3;
 import io.pelle.mango.test.Entity4;
 import io.pelle.mango.test.Entity5;
+import io.pelle.mango.test.Entity6;
+import io.pelle.mango.test.Entity7;
 import io.pelle.mango.test.client.ENUMERATION1;
 import io.pelle.mango.test.client.Entity1VO;
 import io.pelle.mango.test.client.Entity2VO;
@@ -261,7 +263,7 @@ public class EntityModelGeneratorTest {
 		assertEquals(ENUMERATION1.class, Entity5VO.ENUMERATION1.getListAttributeType());
 		assertEquals("enumeration1", Entity5VO.ENUMERATION1.getAttributeName());
 	}
-	
+
 	@Test
 	public void testGenericGetterSetterStringDatatype1() {
 		Entity1VO entity1VO = new Entity1VO();
@@ -277,5 +279,11 @@ public class EntityModelGeneratorTest {
 		assertEquals(null, entity1VO.get("enumeration1Datatype"));
 		entity1VO.set("enumeration1Datatype", ENUMERATION1.ENUMERATIONVALUE1);
 		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, entity1VO.get("enumeration1Datatype"));
+	}
+
+	@Test
+	public void testExtendsAttributeDescriptors() {
+		assertEquals(Entity6.class, Entity6.STRING1.getParent().getVOEntityClass());
+		assertEquals(Entity7.class, Entity7.STRING1.getParent().getVOEntityClass());
 	}
 }

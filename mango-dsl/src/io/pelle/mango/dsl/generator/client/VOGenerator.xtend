@@ -36,7 +36,13 @@ public class «entity.voName» extends «IF entity.extends != null»«voFullQual
 	public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.
 		name»<«entity.type»>(«entity.typeClass»);
 
-	«compileGetAttributeDescriptors(entity)»
+		«compileGetAttributeDescriptors(entity)»
+		
+		«IF entity.extends != null»
+			«FOR entityAttribute : entity.extends.attributes»
+				«entityAttribute.compileEntityAttributeDescriptor(entity.extends)»
+			«ENDFOR»
+		«ENDIF»
 
 	public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.
 		name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
@@ -100,7 +106,7 @@ public enum «enumeration.enumerationName» {
 	def changeTrackingAttributeGetterSetter(EntityAttribute entityAttribute) '''
 «attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
 
-«entityAttribute.compileEntityAttributeDescriptor»
+«entityAttribute.compileEntityAttributeDescriptor(null)»
 
 «getter(getType(entityAttribute), entityAttribute.name.attributeName)»
 

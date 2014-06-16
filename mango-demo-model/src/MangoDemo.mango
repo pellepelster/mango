@@ -66,6 +66,14 @@ project MangoDemo {
 			boolean boolean1
 			enumeration Enumeration1 enumeration1
 		}
+		
+		entity Entity6 {
+			string string1
+		}
+
+		entity Entity7 extends Entity6 {
+			string string2
+		}
 
 		valueobject ValueObject1 {
 			string string1

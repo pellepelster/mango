@@ -94,7 +94,7 @@ public class «entityName(entity)» extends «IF entity.extends != null»«entit
 «entityAttribute.compileEntityAttributeJpaAnnotations»
 «attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
 
-«entityAttribute.compileEntityAttributeDescriptor»
+«entityAttribute.compileEntityAttributeDescriptor(null)»
 
 «getter(getType(entityAttribute), entityAttribute.name.attributeName)»
 

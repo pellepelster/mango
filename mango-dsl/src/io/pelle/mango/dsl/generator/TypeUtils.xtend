@@ -169,12 +169,12 @@ class TypeUtils {
 	//-----------------
 	// EntityAttribute
 	//-----------------
-	def compileEntityAttributeDescriptorCommon(EntityAttribute entityAttribute) '''
-	public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«entityAttribute.parentEntity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)»);
+	def compileEntityAttributeDescriptorCommon(EntityAttribute entityAttribute, Entity entity) '''
+	public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«IF entity == null»«entityAttribute.parentEntity.entityConstantName»«ELSE»«entity.entityConstantName»«ENDIF», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)»);
 	'''	
 
-	def dispatch compileEntityAttributeDescriptor(EntityAttribute entityAttribute) {
-		entityAttribute.compileEntityAttributeDescriptorCommon
+	def dispatch compileEntityAttributeDescriptor(EntityAttribute entityAttribute, Entity entity) {
+		entityAttribute.compileEntityAttributeDescriptorCommon(entity)
 	} 
 
 	def dispatch String getType(EntityAttribute entityAttribute)
@@ -347,8 +347,8 @@ class TypeUtils {
 		String.name
 	}
 
-	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute) '''
-	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entityAttribute.parentEntity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
+	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
+	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«IF entity == null»«entityAttribute.parentEntity.entityConstantName»«ELSE»«entity.entityConstantName»«ENDIF», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
 	'''	
 
 	//-----------------
@@ -406,9 +406,9 @@ class TypeUtils {
 		getRawType(entityAttribute.type) + ".class"
 	}
 
-	def dispatch compileEntityAttributeDescriptor(EntityEntityAttribute entityAttribute) '''
+	def dispatch compileEntityAttributeDescriptor(EntityEntityAttribute entityAttribute, Entity entity) '''
 	«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
-	«entityAttribute.compileEntityAttributeDescriptorCommon»
+	«entityAttribute.compileEntityAttributeDescriptorCommon(null)»
 	«ELSE»
 public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»> «entityAttribute.name.attributeConstantName» = new «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»>(«entityAttribute.parentEntity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
 	«ENDIF»
