@@ -27,10 +27,10 @@ dependencies {
 }
 
 configurations {
-	generatedEntities
-	generatedVOs
-	generatedEntitiesSources
-	generatedVOsSources
+	archives.extendsFrom(generatedEntities)
+	archives.extendsFrom(generatedVOs)
+	archives.extendsFrom(generatedEntitiesSources)
+	archives.extendsFrom(generatedVOsSources)
 }
 
 sourceSets {
