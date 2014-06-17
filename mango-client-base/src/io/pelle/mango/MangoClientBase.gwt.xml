@@ -11,4 +11,6 @@
  
 	<source path="client.base" />
 
+	<entry-point class="io.pelle.mango.client.base.MangoClientBase"/>
+
 </module>

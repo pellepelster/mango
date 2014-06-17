@@ -17,7 +17,6 @@ import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListene
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
-import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
 import io.pelle.mango.client.web.test.modules.dictionary.container.EditableTableTest;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import junit.framework.Assert;
@@ -35,7 +34,7 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 	private DictionaryEditorModule<VOType> module;
 
 	public DictionaryEditorModuleTestUI(DictionaryEditorModule<VOType> module) {
-		super(module, DictionarySearchModule.SEARCH_UI_MODULE_ID);
+		super(module, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
 		this.module = module;
 		module.addUpdateListener(this);
 	}

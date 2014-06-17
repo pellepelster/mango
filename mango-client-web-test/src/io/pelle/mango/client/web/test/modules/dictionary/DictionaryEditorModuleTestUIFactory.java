@@ -28,7 +28,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public class DictionaryEditorModuleTestUIFactory extends BaseModuleUIFactory<Object, DictionaryEditorModuleTestUI> {
 
 	public DictionaryEditorModuleTestUIFactory() {
-		super(new String[] { DictionaryEditorModule.UI_MODULE_ID });
+		super(new String[] { DictionaryEditorModule.EDITOR_UI_MODULE_ID });
 	}
 
 	@Override

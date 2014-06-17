@@ -15,7 +15,9 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class BaseEntityServiceImpl implements IBaseEntityService {
 
 	@Autowired

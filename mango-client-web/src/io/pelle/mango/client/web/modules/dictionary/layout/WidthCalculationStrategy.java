@@ -11,10 +11,10 @@
  */
 package io.pelle.mango.client.web.modules.dictionary.layout;
 
+import io.pelle.mango.client.base.MangoClientBase;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IEnumerationControlModel;
-import io.pelle.mango.client.base.util.GwtCommons;
 
 public final class WidthCalculationStrategy {
 	private static WidthCalculationStrategy instance;
@@ -36,7 +36,7 @@ public final class WidthCalculationStrategy {
 	}
 
 	private float getWidth(int characters, boolean uppercase, float factor) {
-		float width = characters * GwtCommons.getInstance().getAverageCharacterWidth(uppercase);
+		float width = characters * MangoClientBase.getInstance().getAverageCharacterWidth(uppercase);
 
 		return width * factor;
 	}

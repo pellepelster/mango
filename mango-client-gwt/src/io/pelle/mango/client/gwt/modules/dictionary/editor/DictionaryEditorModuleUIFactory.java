@@ -31,7 +31,7 @@ public class DictionaryEditorModuleUIFactory<VOType extends IBaseVO> extends Bas
 
 	public DictionaryEditorModuleUIFactory()
 	{
-		super(new String[] { DictionaryEditorModule.UI_MODULE_ID });
+		super(new String[] { DictionaryEditorModule.EDITOR_UI_MODULE_ID });
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class DictionaryEditorModuleUIFactory<VOType extends IBaseVO> extends Bas
 					@Override
 					public void onSuccess(IModule result)
 					{
-						if (supports(moduleUrl, DictionaryEditorModule.UI_MODULE_ID))
+						if (supports(moduleUrl, DictionaryEditorModule.EDITOR_UI_MODULE_ID))
 						{
 							moduleCallback.onSuccess(new DictionaryEditorModuleUI((DictionaryEditorModule) result, (Optional<IModuleUI>) previousModuleUI));
 						}

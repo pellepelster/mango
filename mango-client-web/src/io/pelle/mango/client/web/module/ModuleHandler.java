@@ -106,6 +106,7 @@ public final class ModuleHandler {
 		if (moduleUI.isPresent()) {
 			LOG.info("ui module for url '" + moduleUrl + "' already started (" + moduleUI.get().toString() + ")");
 			moduleUI.get().updateUrl(moduleUrl);
+			callback.onSuccess(moduleUI.get());
 
 			MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI.get(), location);
 		} else {

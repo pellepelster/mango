@@ -4,7 +4,7 @@
     editorDirectory="/mango-dsl.editor/src" modelPluginID="mango-dsl" forceOverwrite="true"
     modelName="Mango" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     complianceLevel="5.0" copyrightFields="false" editPluginID="mango-dsl.edit" editorPluginID="mango-dsl.editor"
-    runtimeVersion="2.9" usedGenPackages="platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types">
+    runtimeVersion="2.10" usedGenPackages="platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types">
   <genPackages prefix="Mango" basePackage="io.pelle.mango.dsl" disposableProviderFactory="true"
       fileExtensions="mango" ecorePackage="Mango.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//Cardinality">

@@ -56,7 +56,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	@SuppressWarnings("rawtypes")
 	public DictionaryEditorModuleUI(DictionaryEditorModule<VOType> editorModule, final Optional<IModuleUI> previousModuleUI) {
-		super(editorModule, DictionaryEditorModule.UI_MODULE_ID);
+		super(editorModule, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
 
 		verticalPanel = new VerticalPanel();
 

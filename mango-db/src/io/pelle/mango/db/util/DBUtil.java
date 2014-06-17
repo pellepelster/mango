@@ -21,20 +21,30 @@ import java.util.Set;
  */
 public final class DBUtil {
 
+	@SuppressWarnings("unchecked")
+	public static Class<? extends IVOEntity> getClassOrDie(String className)
+	{
+		try {
+			return (Class<? extends IVOEntity>) Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public static Map<Class<?>, Set<String>> getClassLoadAssociations(SelectQuery<?> selectQuery) {
 
 		Map<Class<?>, Set<String>> classLoadAssociations = new HashMap<>();
 
 		for (Entity entity : selectQuery.getFroms()) {
 
-			addFirstLevelIBaseVOAttributes(entity.getVOEntityClass(), classLoadAssociations);
+			addFirstLevelIBaseVOAttributes(getClassOrDie(entity.getClassName()), classLoadAssociations);
 
-			Set<String> associations = getAssociations(entity.getVOEntityClass(), classLoadAssociations);
+			Set<String> associations = getAssociations(getClassOrDie(entity.getClassName()), classLoadAssociations);
 
 			for (Join join : entity.getJoins()) {
 				associations.add(join.getField());
 
-				addJoinAssociations(join, entity.getVOEntityClass(), classLoadAssociations);
+				addJoinAssociations(join, getClassOrDie(entity.getClassName()), classLoadAssociations);
 			}
 
 		}

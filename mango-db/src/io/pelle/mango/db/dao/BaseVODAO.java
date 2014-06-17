@@ -4,6 +4,7 @@ import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.db.query.ServerCountQuery;
 import io.pelle.mango.db.util.DBUtil;
 import io.pelle.mango.db.util.EntityVOMapper;
 
@@ -17,6 +18,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
@@ -112,7 +114,7 @@ public class BaseVODAO extends BaseDAO implements IBaseVODAO {
 
 	@Override
 	public <T extends IBaseVO> long count(CountQuery<T> countQuery) {
-		return (long) entityManager.createQuery(countQuery.getJPQL(EntityVOMapper.getInstance())).getSingleResult();
+		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}
 
 }

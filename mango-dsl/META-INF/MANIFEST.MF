@@ -35,8 +35,8 @@ Require-Bundle: org.eclipse.xtext;visibility:=reexport,
  mango-server-base,
  org.eclipse.xtext.xbase.lib,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
- mango-client-base,
- mango-libs
+ mango-libs,
+ mango-client-base
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-ActivationPolicy: lazy

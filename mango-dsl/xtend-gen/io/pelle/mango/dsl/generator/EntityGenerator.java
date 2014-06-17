@@ -273,7 +273,7 @@ public class EntityGenerator extends BaseEntityGenerator {
     _builder.append(_attribute, "");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    CharSequence _compileEntityAttributeDescriptor = this._typeUtils.compileEntityAttributeDescriptor(entityAttribute);
+    CharSequence _compileEntityAttributeDescriptor = this._typeUtils.compileEntityAttributeDescriptor(entityAttribute, null);
     _builder.append(_compileEntityAttributeDescriptor, "");
     _builder.newLineIfNotEmpty();
     _builder.newLine();

@@ -183,7 +183,7 @@ public class TypeUtils {
     }
   }
   
-  public CharSequence compileEntityAttributeDescriptorCommon(final EntityAttribute entityAttribute) {
+  public CharSequence compileEntityAttributeDescriptorCommon(final EntityAttribute entityAttribute, final Entity entity) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("public static ");
     String _name = IAttributeDescriptor.class.getName();
@@ -202,9 +202,17 @@ public class TypeUtils {
     String _type_1 = this.getType(entityAttribute);
     _builder.append(_type_1, "");
     _builder.append(">(");
-    Entity _parentEntity = this._attributeUtils.getParentEntity(entityAttribute);
-    String _entityConstantName = this._nameUtils.entityConstantName(_parentEntity);
-    _builder.append(_entityConstantName, "");
+    {
+      boolean _equals = Objects.equal(entity, null);
+      if (_equals) {
+        Entity _parentEntity = this._attributeUtils.getParentEntity(entityAttribute);
+        String _entityConstantName = this._nameUtils.entityConstantName(_parentEntity);
+        _builder.append(_entityConstantName, "");
+      } else {
+        String _entityConstantName_1 = this._nameUtils.entityConstantName(entity);
+        _builder.append(_entityConstantName_1, "");
+      }
+    }
     _builder.append(", \"");
     String _name_3 = entityAttribute.getName();
     String _attributeName = this._nameUtils.attributeName(_name_3);
@@ -220,8 +228,8 @@ public class TypeUtils {
     return _builder;
   }
   
-  protected CharSequence _compileEntityAttributeDescriptor(final EntityAttribute entityAttribute) {
-    return this.compileEntityAttributeDescriptorCommon(entityAttribute);
+  protected CharSequence _compileEntityAttributeDescriptor(final EntityAttribute entityAttribute, final Entity entity) {
+    return this.compileEntityAttributeDescriptorCommon(entityAttribute, entity);
   }
   
   protected String _getType(final EntityAttribute entityAttribute) {
@@ -365,7 +373,7 @@ public class TypeUtils {
     return String.class.getName();
   }
   
-  protected CharSequence _compileEntityAttributeDescriptor(final StringEntityAttribute entityAttribute) {
+  protected CharSequence _compileEntityAttributeDescriptor(final StringEntityAttribute entityAttribute, final Entity entity) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("public static ");
     String _name = StringAttributeDescriptor.class.getName();
@@ -378,9 +386,17 @@ public class TypeUtils {
     String _name_2 = StringAttributeDescriptor.class.getName();
     _builder.append(_name_2, "");
     _builder.append("(");
-    Entity _parentEntity = this._attributeUtils.getParentEntity(entityAttribute);
-    String _entityConstantName = this._nameUtils.entityConstantName(_parentEntity);
-    _builder.append(_entityConstantName, "");
+    {
+      boolean _equals = Objects.equal(entity, null);
+      if (_equals) {
+        Entity _parentEntity = this._attributeUtils.getParentEntity(entityAttribute);
+        String _entityConstantName = this._nameUtils.entityConstantName(_parentEntity);
+        _builder.append(_entityConstantName, "");
+      } else {
+        String _entityConstantName_1 = this._nameUtils.entityConstantName(entity);
+        _builder.append(_entityConstantName_1, "");
+      }
+    }
     _builder.append(", \"");
     String _name_3 = entityAttribute.getName();
     String _attributeName = this._nameUtils.attributeName(_name_3);
@@ -434,13 +450,13 @@ public class TypeUtils {
     return (_rawType + ".class");
   }
   
-  protected CharSequence _compileEntityAttributeDescriptor(final EntityEntityAttribute entityAttribute) {
+  protected CharSequence _compileEntityAttributeDescriptor(final EntityEntityAttribute entityAttribute, final Entity entity) {
     StringConcatenation _builder = new StringConcatenation();
     {
       Cardinality _cardinality = entityAttribute.getCardinality();
       boolean _equals = Objects.equal(_cardinality, Cardinality.ONETOMANY);
       if (_equals) {
-        CharSequence _compileEntityAttributeDescriptorCommon = this.compileEntityAttributeDescriptorCommon(entityAttribute);
+        CharSequence _compileEntityAttributeDescriptorCommon = this.compileEntityAttributeDescriptorCommon(entityAttribute, null);
         _builder.append(_compileEntityAttributeDescriptorCommon, "");
         _builder.newLineIfNotEmpty();
       } else {
@@ -705,16 +721,16 @@ public class TypeUtils {
     }
   }
   
-  public CharSequence compileEntityAttributeDescriptor(final EntityAttribute entityAttribute) {
+  public CharSequence compileEntityAttributeDescriptor(final EntityAttribute entityAttribute, final Entity entity) {
     if (entityAttribute instanceof StringEntityAttribute) {
-      return _compileEntityAttributeDescriptor((StringEntityAttribute)entityAttribute);
+      return _compileEntityAttributeDescriptor((StringEntityAttribute)entityAttribute, entity);
     } else if (entityAttribute instanceof EntityEntityAttribute) {
-      return _compileEntityAttributeDescriptor((EntityEntityAttribute)entityAttribute);
+      return _compileEntityAttributeDescriptor((EntityEntityAttribute)entityAttribute, entity);
     } else if (entityAttribute != null) {
-      return _compileEntityAttributeDescriptor(entityAttribute);
+      return _compileEntityAttributeDescriptor(entityAttribute, entity);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
-        Arrays.<Object>asList(entityAttribute).toString());
+        Arrays.<Object>asList(entityAttribute, entity).toString());
     }
   }
   

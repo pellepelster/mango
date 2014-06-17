@@ -1,16 +1,16 @@
 package io.pelle.mango.client.base.vo.query;
 
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-import io.pelle.mango.client.base.vo.IEntityVOMapper;
 import io.pelle.mango.client.base.vo.IVOEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.google.common.base.Optional;
 
-public abstract class BaseQuery<T extends IVOEntity, Q> {
+@SuppressWarnings("serial")
+public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable {
 
 	protected IAliasProvider aliasProvider = new AliasProvider();
 
@@ -18,51 +18,8 @@ public abstract class BaseQuery<T extends IVOEntity, Q> {
 
 	private List<Entity> froms = new ArrayList<Entity>();
 
-	protected String getWhereClause() {
-
-		StringBuilder result = new StringBuilder();
-
-		if (whereExpression.isPresent()) {
-			result.append("WHERE ");
-			result.append(whereExpression.get().getJPQL(aliasProvider));
-		}
-
-		return result.toString();
-	}
-
-	protected String getSelectClause() {
-		String result = "";
-		String delimiter = "";
-
-		for (IEntity entity : froms) {
-			result += delimiter + entity.getAlias();
-			delimiter = ", ";
-		}
-
-		return result;
-	}
-
-	protected String getFromClause(IEntityVOMapper entityVOMapper) {
-		String result = "";
-		String delimiter = "";
-
-		for (Entity entity : froms) {
-			result += delimiter + "" + entity.getName(entityVOMapper) + " " + entity.getAlias();
-			delimiter = ", ";
-		}
-
-		return result;
-	}
-
-	protected String getJoinClause() {
-
-		StringBuilder result = new StringBuilder();
-
-		for (Entity entity : froms) {
-			addJoins(result, entity.getAlias(), entity.getJoins());
-		}
-
-		return result.toString();
+	public BaseQuery() {
+		super();
 	}
 
 	public Q join(IAttributeDescriptor<?>... attributeDescriptors) {
@@ -79,14 +36,9 @@ public abstract class BaseQuery<T extends IVOEntity, Q> {
 
 		return getQuery();
 	}
-
-	private void addJoins(StringBuilder result, String parentAlias, Collection<Join> joins) {
-
-		for (Join join : joins) {
-			result.append(" ");
-			result.append(join.getJoinType() + " " + parentAlias + "." + join.getField() + " " + join.getAlias());
-			addJoins(result, join.getAlias(), join.getJoins());
-		}
+	
+	public IAliasProvider getAliasProvider() {
+		return aliasProvider;
 	}
 
 	public static BooleanExpression and(IExpression expression1, IExpression expression2) {
@@ -101,6 +53,10 @@ public abstract class BaseQuery<T extends IVOEntity, Q> {
 		return froms;
 	}
 
+	public void setFroms(List<Entity> froms) {
+		this.froms = froms;
+	}
+
 	public Q where(IExpression expression) {
 		whereExpression = Optional.of(expression);
 		return getQuery();
@@ -108,4 +64,9 @@ public abstract class BaseQuery<T extends IVOEntity, Q> {
 	}
 
 	protected abstract Q getQuery();
+
+	public Optional<IExpression> getWhereExpression() {
+		return whereExpression;
+	}
+
 }

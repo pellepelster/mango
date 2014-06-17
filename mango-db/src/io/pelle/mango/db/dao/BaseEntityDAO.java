@@ -18,6 +18,7 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.IUser;
 import io.pelle.mango.db.copy.ObjectFieldDescriptor;
 import io.pelle.mango.db.copy.ObjectFieldIterator;
+import io.pelle.mango.db.query.ServerCountQuery;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.base.IBaseClientEntity;
 import io.pelle.mango.server.base.IBaseInfoEntity;
@@ -297,6 +298,6 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 
 	@Override
 	public <T extends IBaseEntity> long count(CountQuery<T> countQuery) {
-		return (long) entityManager.createQuery(countQuery.getJPQL(EntityVOMapper.getInstance())).getSingleResult();
+		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}
 }

@@ -13,7 +13,6 @@ import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.ValueObject
 import java.util.List
-import io.pelle.mango.dsl.ModelUtil
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -40,7 +39,7 @@ public class «entity.voName» extends «IF entity.extends != null»«voFullQual
 		
 		«IF entity.extends != null»
 			«FOR entityAttribute : entity.extends.attributes»
-				«entityAttribute.compileEntityAttributeDescriptor(entity.extends)»
+				«entityAttribute.compileEntityAttributeDescriptor(entity)»
 			«ENDFOR»
 		«ENDIF»
 

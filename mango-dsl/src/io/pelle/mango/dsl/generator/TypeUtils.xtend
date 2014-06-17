@@ -11,7 +11,6 @@ import io.pelle.mango.client.base.vo.EntityAttributeDescriptor
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
 import io.pelle.mango.client.base.vo.IBaseVO
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor
-import io.pelle.mango.client.base.vo.query.SelectQuery
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.mango.BinaryDataType
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
@@ -50,6 +49,7 @@ import java.util.List
 
 import static io.pelle.mango.dsl.mango.MangoTypes.*
 import static io.pelle.mango.dsl.mango.SimpleTypes.*
+import io.pelle.mango.client.base.vo.query.SelectQuery
 
 /**
  * Generates code from your model files on save.

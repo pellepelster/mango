@@ -1,4 +1,4 @@
-package io.pelle.mango.client.base.util;
+package io.pelle.mango.client.base;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,11 +8,11 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootPanel;
 
-public class GwtCommons implements EntryPoint {
+public class MangoClientBase implements EntryPoint {
 
-	private static GwtCommons instance;
+	private static MangoClientBase instance;
 
-	public static GwtCommons getInstance() {
+	public static MangoClientBase getInstance() {
 		if (instance == null) {
 			throw new RuntimeException("GwtCommons module not loaded, add GwtCommons to your module definitions xml");
 		}
@@ -26,7 +26,7 @@ public class GwtCommons implements EntryPoint {
 
 	/**
 	 * Returns the average character width using the default seed
-	 * {@link GwtCommons#DEFAULT_CHARACTER_WIDTH_SEED}
+	 * {@link MangoClientBase#DEFAULT_CHARACTER_WIDTH_SEED}
 	 *
 	 * @return average character width
 	 */
@@ -36,7 +36,7 @@ public class GwtCommons implements EntryPoint {
 
 	/**
 	 * Returns the average character width using the default seed
-	 * {@link GwtCommons#DEFAULT_CHARACTER_WIDTH_SEED}
+	 * {@link MangoClientBase#DEFAULT_CHARACTER_WIDTH_SEED}
 	 *
 	 * @param uppercase
 	 *            true to compute the width for uppercase characters

@@ -1,14 +1,22 @@
 package io.pelle.mango.client.base.vo.query;
 
-import io.pelle.mango.client.base.vo.IEntityVOMapper;
 import io.pelle.mango.client.base.vo.IVOEntity;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T>> implements Serializable {
 
+	public SelectQuery() {
+		super();
+	}
+
+	public SelectQuery(String className) {
+		getFroms().add(new Entity(aliasProvider, className));
+	}
+
 	public SelectQuery(Class<? extends IVOEntity> from) {
-		getFroms().add(new Entity(aliasProvider, from));
+		getFroms().add(new Entity(aliasProvider, from.getName()));
 	}
 
 	public static final <T extends IVOEntity> SelectQuery<T> selectFrom(Class<T> entity) {
@@ -16,20 +24,8 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 	}
 
 	public SelectQuery<T> from(Class<? extends IVOEntity> from) {
-		getFroms().add(new Entity(aliasProvider, from));
+		getFroms().add(new Entity(aliasProvider, from.getName()));
 		return this;
-	}
-
-	public String getJPQL(IEntityVOMapper entityVOMapper) {
-
-		String result = "SELECT " + getSelectClause() + " FROM " + getFromClause(entityVOMapper) + " " + getJoinClause() + " " + getWhereClause();
-
-		return result.trim().replaceAll("\\b\\s{2,}\\b", " ");
-
-	}
-
-	public SelectQuery() {
-		super();
 	}
 
 	@Override

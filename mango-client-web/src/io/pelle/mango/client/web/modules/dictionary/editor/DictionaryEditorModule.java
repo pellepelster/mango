@@ -44,9 +44,9 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
 
 	public final static String MODULE_LOCATOR = ModuleUtils.getBaseModuleUrl(MODULE_ID);
 
-	public final static String UI_MODULE_ID = MODULE_ID;
+	public final static String EDITOR_UI_MODULE_ID = MODULE_ID;
 
-	public final static String UI_MODULE_LOCATOR = ModuleUtils.getBaseUIModuleUrl(UI_MODULE_ID);
+	public final static String UI_MODULE_LOCATOR = ModuleUtils.getBaseUIModuleUrl(EDITOR_UI_MODULE_ID);
 
 	public static final String getModuleUrlForDictionary(String dictionaryName, long voId) {
 		return UI_MODULE_LOCATOR + "&" + EDITORDICTIONARYNAME_PARAMETER_ID + "=" + dictionaryName + "&" + ID_PARAMETER_ID + "=" + voId;

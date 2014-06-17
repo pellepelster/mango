@@ -1,34 +1,30 @@
 package io.pelle.mango.client.base.vo.query;
 
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-import io.pelle.mango.client.base.vo.IEntityVOMapper;
-import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.Join.JOIN_TYPE;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Represents an entity for an JPQL query
- * 
- * @author pelle
- * @version $Rev: 662 $, $Date: 2010-08-30 20:58:04 +0200 (Mon, 30 Aug 2010) $
- * 
- */
-public class Entity implements IEntity {
+@SuppressWarnings("serial")
+public class Entity implements IEntity, Serializable {
 
 	/** Entity class */
-	private final Class<? extends IVOEntity> voEntityClass;
+	private String className;
 
 	private String alias;
 
 	/** Joins for this entity */
-	private final Map<String, Join> joins = new HashMap<String, Join>();
+	private Map<String, Join> joins = new HashMap<String, Join>();
 
 	private IAliasProvider aliasProvider;
 
+	public Entity() {
+	}
+	
 	/**
 	 * Constructor for <code>Entity</code>
 	 * 
@@ -37,9 +33,9 @@ public class Entity implements IEntity {
 	 * @param aliasProvider
 	 * @param entityClass
 	 */
-	public Entity(IAliasProvider aliasProvider, Class<? extends IVOEntity> voEntityClass) {
-		this.voEntityClass = voEntityClass;
-		this.alias = aliasProvider.getAliasFor(voEntityClass);
+	public Entity(IAliasProvider aliasProvider, String className) {
+		this.className = className;
+		this.alias = aliasProvider.getAliasFor(className);
 		this.aliasProvider = aliasProvider;
 
 	}
@@ -47,12 +43,13 @@ public class Entity implements IEntity {
 	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object obj) {
+		
 		if (obj instanceof Entity) {
-			return ((Entity) obj).voEntityClass.equals(voEntityClass);
+			return ((Entity) obj).className.equals(className);
 		}
 
-		if (obj instanceof Class<?>) {
-			return ((Class<?>) obj).equals(voEntityClass);
+		if (obj instanceof String) {
+			return ((String) obj).equals(className);
 		}
 
 		return false;
@@ -64,13 +61,8 @@ public class Entity implements IEntity {
 		return alias;
 	}
 
-	/**
-	 * The entity class
-	 * 
-	 * @return
-	 */
-	public Class<? extends IVOEntity> getVOEntityClass() {
-		return voEntityClass;
+	public String getClassName() {
+		return className;
 	}
 
 	public Join join(IAttributeDescriptor<?> attributeDescriptor) {
@@ -92,19 +84,11 @@ public class Entity implements IEntity {
 		return new ArrayList<Join>(joins.values());
 	}
 
-	/**
-	 * Name for this entity
-	 * 
-	 * @return
-	 */
-	public String getName(IEntityVOMapper entityVOMapper) {
-		return entityVOMapper.getEntityClass(voEntityClass).getSimpleName();
-	}
 
 	/** {@inheritDoc} */
 	@Override
 	public int hashCode() {
-		return voEntityClass.hashCode();
+		return className.hashCode();
 	}
 
 }
