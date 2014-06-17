@@ -1,6 +1,8 @@
 package io.pelle.mango.client.base.vo.query;
 
-public interface IExpression {
+import java.io.Serializable;
+
+public interface IExpression extends Serializable {
 
 	String getJPQL(IAliasProvider aliasProvider);
 

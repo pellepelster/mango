@@ -2,8 +2,8 @@ package io.pelle.mango.client.base.vo.query;
 
 public interface IBooleanExpression extends IExpression {
 
-	IExpression and(IExpression expression);
+	IBooleanExpression and(IExpression expression);
 
-	IExpression or(IExpression expression);
+	IBooleanExpression or(IExpression expression);
 
 }

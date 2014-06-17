@@ -2,6 +2,7 @@ package io.pelle.mango.client.base.vo.query;
 
 import com.google.common.base.Objects;
 
+@SuppressWarnings("serial")
 public class CompareExpression extends BaseBooleanExpression {
 
 	private IExpression expression1;
@@ -9,6 +10,9 @@ public class CompareExpression extends BaseBooleanExpression {
 	private ComparisonOperator comparisonOperator;
 
 	private IExpression expression2;
+
+	public CompareExpression() {
+	}
 
 	public CompareExpression(IExpression expression1, ComparisonOperator comparisonOperator, IExpression expression2) {
 		super();
@@ -19,7 +23,7 @@ public class CompareExpression extends BaseBooleanExpression {
 
 	@Override
 	public String getJPQL(IAliasProvider aliasProvider) {
-		return (expression1.getJPQL(aliasProvider) + " " + comparisonOperator.toString() + " " +  expression2.getJPQL(aliasProvider) + " " + super.getJPQL(aliasProvider)).trim();
+		return (expression1.getJPQL(aliasProvider) + " " + comparisonOperator.toString() + " " + expression2.getJPQL(aliasProvider) + " " + super.getJPQL(aliasProvider)).trim();
 	}
 
 	@Override

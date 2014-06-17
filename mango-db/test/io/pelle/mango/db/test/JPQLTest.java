@@ -81,6 +81,15 @@ public class JPQLTest extends TestCase {
 	}
 
 	@Test
+	public void testEntityCriteria1() {
+		DBTest3 test3 = new DBTest3();
+		test3.setId(9);
+
+		ServerSelectQuery<DBTest2> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest2.class).where(DBTest2.TEST3.eq(test3)));
+		assertEquals("SELECT x0 FROM DBTest2 x0 WHERE x0.test3.id = 9", query.getJPQL(EntityVOMapper.INSTANCE));
+	}
+
+	@Test
 	public void testSelectCount() {
 		CountQuery<DBTest1> query = countFrom(DBTest1.class);
 		assertEquals("SELECT COUNT(x0) FROM DBTest1 x0", ServerCountQuery.adapt(query).getJPQL(EntityVOMapper.INSTANCE));

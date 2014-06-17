@@ -2,11 +2,15 @@ package io.pelle.mango.client.base.vo.query;
 
 import com.google.common.base.Objects;
 
+@SuppressWarnings("serial")
 public class BooleanExpression extends BaseBooleanExpression {
 
 	private IExpression expression1;
 	private LOGICAL_OPERATOR logicalOperator;
 	private IExpression expression2;
+
+	public BooleanExpression() {
+	}
 
 	public BooleanExpression(IExpression expression1, LOGICAL_OPERATOR logicalOperator, IExpression expression2) {
 		super();

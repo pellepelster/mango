@@ -33,7 +33,7 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestCase<Test1VO> {
 
 	@Test
 	public void testSimpleCreateAndSearch() {
-		
+
 		MangoClientWebTest.getInstance();
 		MangoDemoClientConfiguration.registerAll();
 
@@ -47,17 +47,18 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestCase<Test1VO> {
 		editor.save();
 
 		DictionarySearchModuleTestUIAsyncHelper<Test1VO> search = openSearch(MangoDemoDictionaryModel.TESTDICTIONARY1);
+		textControl = search.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.TEXTCONTROL1);
+		textControl.setValue(text);
 		search.execute();
 		search.assertResultCount(1);
 
 		runAsyncTests();
 	}
 
-	
 	@Test
 	@Ignore
 	public void testTextControl() {
-		
+
 		MangoClientWebTest.getInstance();
 		MangoDemoClientConfiguration.registerAll();
 

@@ -82,26 +82,21 @@ public enum «enumeration.enumerationName» {
 	}
 
 	def compileValueObjectAttribute(EntityAttribute entityAttribute) '''
-«attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
-
-«getter(getType(entityAttribute), entityAttribute.name.attributeName)»
-
-«setter(getType(entityAttribute), entityAttribute.name.attributeName)»
-'''
+	«attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
+	«getter(getType(entityAttribute), entityAttribute.name.attributeName)»
+	«setter(getType(entityAttribute), entityAttribute.name.attributeName)»
+	'''
 
 	def compileVOAttribute(EntityAttribute entityAttribute) '''
-«changeTrackingAttributeGetterSetter(entityAttribute)»
-'''
+	«changeTrackingAttributeGetterSetter(entityAttribute)»
+	'''
 
 	def changeTrackingAttributeGetterSetter(EntityAttribute entityAttribute) '''
-«attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
-
-«entityAttribute.compileEntityAttributeDescriptor(null)»
-
-«getter(getType(entityAttribute), entityAttribute.name.attributeName)»
-
-«changeTrackingSetter(getType(entityAttribute), entityAttribute.name.attributeName)»
-'''
+	«attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
+	«entityAttribute.compileEntityAttributeDescriptor(null)»
+	«getter(getType(entityAttribute), entityAttribute.name.attributeName)»
+	«changeTrackingSetter(getType(entityAttribute), entityAttribute.name.attributeName)»
+	'''
 
 //- genericVOGetter -----------------------------------------------------------
 def genericVOGetter(Entity entity) '''

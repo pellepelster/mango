@@ -1,10 +1,7 @@
 package io.pelle.mango.client.base.vo.query;
 
-import java.io.Serializable;
-
-public class StringExpression implements Serializable, IExpression {
-
-	private static final long serialVersionUID = -7175999509584167909L;
+@SuppressWarnings("serial")
+public class StringExpression implements IExpression {
 
 	private String value;
 
@@ -34,7 +31,7 @@ public class StringExpression implements Serializable, IExpression {
 
 	@Override
 	public String getJPQL(IAliasProvider aliasProvider) {
-		return "'" +  value + "'";
+		return "'" + value + "'";
 	}
 
 }

@@ -3,23 +3,34 @@ package io.pelle.mango.client.web.modules.dictionary.search;
 import io.pelle.mango.client.base.modules.dictionary.IVOWrapper;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.search.IFilterModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.query.CompareExpression;
+import io.pelle.mango.client.base.vo.query.ComparisonOperator;
+import io.pelle.mango.client.base.vo.query.IBooleanExpression;
+import io.pelle.mango.client.base.vo.query.PathExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.base.vo.query.StringExpression;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
+import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
 import io.pelle.mango.client.web.modules.dictionary.filter.DictionaryFilter;
+import io.pelle.mango.client.web.modules.dictionary.query.DictionaryCompositeQuery;
 import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.client.web.util.DummyAsyncCallback;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElement<IDictionaryModel> {
+
 	private DictionaryResult<VOType> dictionaryResult;
 
 	private List<DictionaryFilter<VOType>> dictionaryFilters = new ArrayList<DictionaryFilter<VOType>>();
@@ -45,6 +56,30 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 	public void search(final AsyncCallback<List<IBaseTable.ITableRow<VOType>>> asyncCallback) {
 
 		SelectQuery<VOType> selectQuery = (SelectQuery<VOType>) SelectQuery.selectFrom(getModel().getVOClass());
+
+		Collection<BaseDictionaryControl<? extends IBaseControlModel, ?>> baseControls = DictionaryCompositeQuery.create(getActiveFilter().getRootComposite()).getAllControls();
+
+		IBooleanExpression expression = null;
+
+		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : baseControls) {
+
+			PathExpression pathExpression = new PathExpression(getModel().getVOClass().getName(), baseControl.getModel().getAttributePath());
+
+			if (baseControl instanceof TextControl) {
+
+				TextControl textControl = (TextControl) baseControl;
+				CompareExpression compareExpression = new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new StringExpression(textControl.getValue()));
+
+				if (expression == null) {
+					expression = compareExpression;
+				} else {
+					expression = expression.and(compareExpression);
+				}
+			}
+
+		}
+
+		selectQuery.where(expression);
 
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().filter(selectQuery, new BaseErrorAsyncCallback<List<VOType>>() {
 

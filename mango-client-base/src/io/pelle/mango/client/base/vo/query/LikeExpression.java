@@ -2,6 +2,7 @@ package io.pelle.mango.client.base.vo.query;
 
 import com.google.common.base.Objects;
 
+@SuppressWarnings("serial")
 public class LikeExpression extends BaseBooleanExpression {
 
 	private PathExpression expression1;
@@ -9,6 +10,9 @@ public class LikeExpression extends BaseBooleanExpression {
 	private StringExpression expression2;
 
 	private boolean caseInsensitive = false;
+
+	public LikeExpression() {
+	}
 
 	public LikeExpression(PathExpression expression1, StringExpression expression2, boolean caseInsensitive) {
 		super();

@@ -4,6 +4,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 
 import com.google.common.base.Objects;
 
+@SuppressWarnings("serial")
 public class EntityCompareExpression extends BaseBooleanExpression {
 
 	private IExpression expression1;
@@ -11,6 +12,9 @@ public class EntityCompareExpression extends BaseBooleanExpression {
 	private ComparisonOperator comparisonOperator;
 
 	private IExpression expression2;
+
+	public EntityCompareExpression() {
+	}
 
 	public EntityCompareExpression(IExpression expression1, ComparisonOperator comparisonOperator, IExpression expression2) {
 		super();

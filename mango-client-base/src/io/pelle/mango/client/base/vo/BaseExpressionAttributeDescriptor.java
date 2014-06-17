@@ -8,7 +8,7 @@ public abstract class BaseExpressionAttributeDescriptor<T> extends AttributeDesc
 
 	public BaseExpressionAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> attributeType, Class<?> attributeListType) {
 		super(entityDescriptor, attributeName, attributeType, attributeListType);
-		entityFieldExpression = new PathExpression(entityDescriptor.getVOEntityClass(), attributeName);
+		entityFieldExpression = new PathExpression(entityDescriptor.getVOEntityClass().getName(), attributeName);
 	}
 
 	public BaseExpressionAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> attributeType) {

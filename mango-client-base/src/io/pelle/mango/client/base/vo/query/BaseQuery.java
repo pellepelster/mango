@@ -36,7 +36,7 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 
 		return getQuery();
 	}
-	
+
 	public IAliasProvider getAliasProvider() {
 		return aliasProvider;
 	}

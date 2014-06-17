@@ -3,6 +3,7 @@ package io.pelle.mango.client.base.vo.query;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("serial")
 public abstract class BaseBooleanExpression implements IBooleanExpression {
 
 	private Map<IExpression, LOGICAL_OPERATOR> expressions = new HashMap<IExpression, LOGICAL_OPERATOR>();
@@ -12,13 +13,13 @@ public abstract class BaseBooleanExpression implements IBooleanExpression {
 	}
 
 	@Override
-	public IExpression and(IExpression andExpression) {
+	public IBooleanExpression and(IExpression andExpression) {
 		expressions.put(andExpression, LOGICAL_OPERATOR.AND);
 		return this;
 	}
 
 	@Override
-	public IExpression or(IExpression orExpression) {
+	public IBooleanExpression or(IExpression orExpression) {
 		expressions.put(orExpression, LOGICAL_OPERATOR.OR);
 		return this;
 	}
