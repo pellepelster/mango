@@ -29,22 +29,13 @@ class VOGenerator extends BaseEntityGenerator {
 package «getPackageName(entity)»;
 
 @SuppressWarnings("serial")
-public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).
-		name»«ENDIF» {
+public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).name»«ENDIF» {
 
-	public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.
-		name»<«entity.type»>(«entity.typeClass»);
+	public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
 
-		«compileGetAttributeDescriptors(entity)»
-		
-		«IF entity.extends != null»
-			«FOR entityAttribute : entity.extends.attributes»
-				«entityAttribute.compileEntityAttributeDescriptor(entity)»
-			«ENDFOR»
-		«ENDIF»
-
-	public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.
-		name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
+	«compileGetAttributeDescriptors(entity)»
+	
+	public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
 
 	private long id;
 	

@@ -86,28 +86,11 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.append(");");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    _builder.append("\t\t");
+    _builder.append("\t");
     CharSequence _compileGetAttributeDescriptors = this.compileGetAttributeDescriptors(entity);
-    _builder.append(_compileGetAttributeDescriptors, "\t\t");
+    _builder.append(_compileGetAttributeDescriptors, "\t");
     _builder.newLineIfNotEmpty();
-    _builder.append("\t\t");
-    _builder.newLine();
-    {
-      Entity _extends_2 = entity.getExtends();
-      boolean _notEquals_1 = (!Objects.equal(_extends_2, null));
-      if (_notEquals_1) {
-        {
-          Entity _extends_3 = entity.getExtends();
-          EList<EntityAttribute> _attributes = _extends_3.getAttributes();
-          for(final EntityAttribute entityAttribute : _attributes) {
-            _builder.append("\t\t");
-            CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(entityAttribute, entity);
-            _builder.append(_compileEntityAttributeDescriptor, "\t\t");
-            _builder.newLineIfNotEmpty();
-          }
-        }
-      }
-    }
+    _builder.append("\t");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("public static ");
@@ -139,8 +122,8 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.append("\t");
     _builder.newLine();
     {
-      EList<EntityAttribute> _attributes_1 = entity.getAttributes();
-      for(final EntityAttribute attribute : _attributes_1) {
+      EList<EntityAttribute> _attributes = entity.getAttributes();
+      for(final EntityAttribute attribute : _attributes) {
         _builder.append("\t");
         CharSequence _compileVOAttribute = this.compileVOAttribute(attribute);
         _builder.append(_compileVOAttribute, "\t");

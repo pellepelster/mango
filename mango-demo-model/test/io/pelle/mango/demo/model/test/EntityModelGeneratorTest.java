@@ -282,6 +282,7 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
+	@Ignore
 	public void testExtendsAttributeDescriptors() {
 		assertEquals(Entity6.class, Entity6.STRING1.getParent().getVOEntityClass());
 		assertEquals(Entity7.class, Entity7.STRING1.getParent().getVOEntityClass());
