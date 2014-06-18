@@ -15,9 +15,19 @@ class BaseEntityGenerator {
 		public static «IAttributeDescriptor.name»<?>[] getAttributeDescriptors() {
 			
 			return new «IAttributeDescriptor.name»[]{
-				«FOR attribute : entity.attributes SEPARATOR ", "»
-					«attribute.name.attributeConstantName»
-				«ENDFOR»
+				
+				«IF !GeneratorUtil.isExtendedByOtherEntity(entity)»
+				
+					«FOR attribute : entity.attributes SEPARATOR ", "»
+						«attribute.name.attributeConstantName»
+					«ENDFOR»
+					«IF !entity.attributes.empty»,«ENDIF»
+					«IF entity.extends != null»
+						«FOR attribute : entity.extends.attributes SEPARATOR ", "»
+							«attribute.name.attributeConstantName»
+						«ENDFOR»
+					«ENDIF»
+				«ENDIF»
 			};
 		}
 	'''

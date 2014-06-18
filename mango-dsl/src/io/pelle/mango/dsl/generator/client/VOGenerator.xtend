@@ -1,20 +1,21 @@
 package io.pelle.mango.dsl.generator.client
 
 import com.google.inject.Inject
+import io.pelle.mango.client.base.db.vos.NaturalKey
 import io.pelle.mango.client.base.vo.BaseVO
 import io.pelle.mango.client.base.vo.EntityDescriptor
 import io.pelle.mango.client.base.vo.IEntityDescriptor
 import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
+import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.AttributeUtils
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
+import io.pelle.mango.dsl.generator.GeneratorUtil
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.ValueObject
 import java.util.List
-import io.pelle.mango.dsl.ModelUtil
-import io.pelle.mango.client.base.db.vos.NaturalKey
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -34,20 +35,27 @@ class VOGenerator extends BaseEntityGenerator {
 		public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).name»«ENDIF» {
 		
 			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
-		
+
 			«compileGetAttributeDescriptors(entity)»
 			
 			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
+
+			«IF entity.extends != null»
+				«FOR attribute : entity.extends.attributes»
+				«attribute.compileEntityAttributeDescriptor(null)»
+				«ENDFOR»
+			«ENDIF»
 		
 			private long id;
 			
 			«getterSetter("long", IVOEntity.ID_FIELD_NAME)»
 			
 			«FOR attribute : entity.attributes»
-			«attribute.compileVOAttribute»
+				«attribute.compileVOAttribute»
 			«ENDFOR»
 			
 			«entity.genericVOGetter»
+			
 			«entity.genericVOSetter»
 			
 			«IF !entity.naturalKeyAttributes.isEmpty»
@@ -108,7 +116,9 @@ class VOGenerator extends BaseEntityGenerator {
 	def changeTrackingAttributeGetterSetter(EntityAttribute entityAttribute) '''
 		«IF ModelUtil.getParentEntity(entityAttribute).naturalKeyAttributes.contains(entityAttribute)»@«NaturalKey.name»( order = «ModelUtil.getParentEntity(entityAttribute).naturalKeyAttributes.indexOf(entityAttribute)»)«ENDIF»
 		«attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
+		«IF !GeneratorUtil.isExtendedByOtherEntity(ModelUtil.getParentEntity(entityAttribute))»
 		«entityAttribute.compileEntityAttributeDescriptor(null)»
+		«ENDIF»
 		«getter(getType(entityAttribute), entityAttribute.name.attributeName)»
 		«changeTrackingSetter(getType(entityAttribute), entityAttribute.name.attributeName)»
 	'''

@@ -225,9 +225,9 @@ public class EntityModelGeneratorTest {
 
 	@Test
 	public void testEntity3VOBinaryDatatype1() {
-		assertEquals(byte[].class, Entity3VO.BINARYDATATYPE1.getAttributeType());
-		assertEquals(byte[].class, Entity3VO.BINARYDATATYPE1.getListAttributeType());
-		assertEquals("binaryDatatype1", Entity3VO.BINARYDATATYPE1.getAttributeName());
+		assertEquals(byte[].class, Entity4VO.BINARYDATATYPE1.getAttributeType());
+		assertEquals(byte[].class, Entity4VO.BINARYDATATYPE1.getListAttributeType());
+		assertEquals("binaryDatatype1", Entity4VO.BINARYDATATYPE1.getAttributeName());
 	}
 
 	// -------------------------------------------------------------------------

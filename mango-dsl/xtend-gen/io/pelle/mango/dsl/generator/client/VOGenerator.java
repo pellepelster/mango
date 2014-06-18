@@ -11,6 +11,7 @@ import io.pelle.mango.client.base.vo.LongAttributeDescriptor;
 import io.pelle.mango.dsl.ModelUtil;
 import io.pelle.mango.dsl.generator.AttributeUtils;
 import io.pelle.mango.dsl.generator.BaseEntityGenerator;
+import io.pelle.mango.dsl.generator.GeneratorUtil;
 import io.pelle.mango.dsl.generator.client.ClientNameUtils;
 import io.pelle.mango.dsl.generator.client.ClientTypeUtils;
 import io.pelle.mango.dsl.mango.Entity;
@@ -112,6 +113,23 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.append("\");");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
+    {
+      Entity _extends_2 = entity.getExtends();
+      boolean _notEquals_1 = (!Objects.equal(_extends_2, null));
+      if (_notEquals_1) {
+        {
+          Entity _extends_3 = entity.getExtends();
+          EList<EntityAttribute> _attributes = _extends_3.getAttributes();
+          for(final EntityAttribute attribute : _attributes) {
+            _builder.append("\t");
+            CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(attribute, null);
+            _builder.append(_compileEntityAttributeDescriptor, "\t");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    _builder.newLine();
     _builder.append("\t");
     _builder.append("private long id;");
     _builder.newLine();
@@ -124,10 +142,10 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.append("\t");
     _builder.newLine();
     {
-      EList<EntityAttribute> _attributes = entity.getAttributes();
-      for(final EntityAttribute attribute : _attributes) {
+      EList<EntityAttribute> _attributes_1 = entity.getAttributes();
+      for(final EntityAttribute attribute_1 : _attributes_1) {
         _builder.append("\t");
-        CharSequence _compileVOAttribute = this.compileVOAttribute(attribute);
+        CharSequence _compileVOAttribute = this.compileVOAttribute(attribute_1);
         _builder.append(_compileVOAttribute, "\t");
         _builder.newLineIfNotEmpty();
       }
@@ -138,6 +156,8 @@ public class VOGenerator extends BaseEntityGenerator {
     CharSequence _genericVOGetter = this.genericVOGetter(entity);
     _builder.append(_genericVOGetter, "\t");
     _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.newLine();
     _builder.append("\t");
     CharSequence _genericVOSetter = this.genericVOSetter(entity);
     _builder.append(_genericVOSetter, "\t");
@@ -342,9 +362,16 @@ public class VOGenerator extends BaseEntityGenerator {
     CharSequence _attribute = this._attributeUtils.attribute(_type, _name_1, _initializer);
     _builder.append(_attribute, "");
     _builder.newLineIfNotEmpty();
-    CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(entityAttribute, null);
-    _builder.append(_compileEntityAttributeDescriptor, "");
-    _builder.newLineIfNotEmpty();
+    {
+      Entity _parentEntity_2 = ModelUtil.getParentEntity(entityAttribute);
+      boolean _isExtendedByOtherEntity = GeneratorUtil.isExtendedByOtherEntity(_parentEntity_2);
+      boolean _not = (!_isExtendedByOtherEntity);
+      if (_not) {
+        CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(entityAttribute, null);
+        _builder.append(_compileEntityAttributeDescriptor, "");
+        _builder.newLineIfNotEmpty();
+      }
+    }
     String _type_1 = this._clientTypeUtils.getType(entityAttribute);
     String _name_2 = entityAttribute.getName();
     String _attributeName = this._clientNameUtils.attributeName(_name_2);
