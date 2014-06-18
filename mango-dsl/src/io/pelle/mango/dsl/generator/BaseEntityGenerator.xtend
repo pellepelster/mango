@@ -2,17 +2,29 @@ package io.pelle.mango.dsl.generator
 
 import com.google.inject.Inject
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
-import io.pelle.mango.dsl.generator.client.ClientNameUtils
+import io.pelle.mango.dsl.generator.util.EntityUtils
+import io.pelle.mango.dsl.generator.util.NameUtils
+import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.Entity
 
 class BaseEntityGenerator {
 
 	@Inject 
-	extension 
-	ClientNameUtils
+	extension NameUtils
 
 	@Inject
 	extension EntityUtils
+
+	@Inject
+	extension TypeUtils
+	
+	def attributeDescriptorsFromExtends(Entity entity) '''
+		«IF entity.extends != null»
+			«FOR attribute : entity.extends.attributes»
+			«attribute.compileEntityAttributeDescriptor(entity)»
+			«ENDFOR»
+		«ENDIF»
+	'''
 	
 	def compileGetAttributeDescriptors(Entity entity) '''
 		

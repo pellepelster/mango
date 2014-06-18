@@ -1,4 +1,4 @@
-package io.pelle.mango.dsl.generator;
+package io.pelle.mango.dsl.generator.util;
 
 import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.EntityAttribute;

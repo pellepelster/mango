@@ -8,9 +8,9 @@ import io.pelle.mango.client.base.vo.IEntityDescriptor
 import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.ModelUtil
-import io.pelle.mango.dsl.generator.AttributeUtils
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
-import io.pelle.mango.dsl.generator.EntityUtils
+import io.pelle.mango.dsl.generator.util.AttributeUtils
+import io.pelle.mango.dsl.generator.util.EntityUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.Enumeration
@@ -39,15 +39,11 @@ class VOGenerator extends BaseEntityGenerator {
 		
 			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
 
-			«compileGetAttributeDescriptors(entity)»
-			
 			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
 
-			«IF entity.extends != null»
-				«FOR attribute : entity.extends.attributes»
-				«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
-				«ENDFOR»
-			«ENDIF»
+			«entity.attributeDescriptorsFromExtends»
+
+			«entity.compileGetAttributeDescriptors»
 		
 			private long id;
 			

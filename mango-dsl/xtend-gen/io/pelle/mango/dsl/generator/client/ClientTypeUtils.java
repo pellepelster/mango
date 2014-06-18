@@ -1,8 +1,8 @@
 package io.pelle.mango.dsl.generator.client;
 
 import com.google.inject.Inject;
-import io.pelle.mango.dsl.generator.TypeUtils;
 import io.pelle.mango.dsl.generator.client.ClientNameUtils;
+import io.pelle.mango.dsl.generator.util.TypeUtils;
 import io.pelle.mango.dsl.mango.BinaryDataType;
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute;
 import io.pelle.mango.dsl.mango.BooleanDataType;

@@ -3,8 +3,9 @@ package io.pelle.mango.dsl.generator;
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-import io.pelle.mango.dsl.generator.EntityUtils;
-import io.pelle.mango.dsl.generator.client.ClientNameUtils;
+import io.pelle.mango.dsl.generator.util.EntityUtils;
+import io.pelle.mango.dsl.generator.util.NameUtils;
+import io.pelle.mango.dsl.generator.util.TypeUtils;
 import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.EntityAttribute;
 import org.eclipse.emf.common.util.EList;
@@ -15,11 +16,35 @@ import org.eclipse.xtext.xbase.lib.Extension;
 public class BaseEntityGenerator {
   @Inject
   @Extension
-  private ClientNameUtils _clientNameUtils;
+  private NameUtils _nameUtils;
   
   @Inject
   @Extension
   private EntityUtils _entityUtils;
+  
+  @Inject
+  @Extension
+  private TypeUtils _typeUtils;
+  
+  public CharSequence attributeDescriptorsFromExtends(final Entity entity) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      Entity _extends = entity.getExtends();
+      boolean _notEquals = (!Objects.equal(_extends, null));
+      if (_notEquals) {
+        {
+          Entity _extends_1 = entity.getExtends();
+          EList<EntityAttribute> _attributes = _extends_1.getAttributes();
+          for(final EntityAttribute attribute : _attributes) {
+            CharSequence _compileEntityAttributeDescriptor = this._typeUtils.compileEntityAttributeDescriptor(attribute, entity);
+            _builder.append(_compileEntityAttributeDescriptor, "");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+      }
+    }
+    return _builder;
+  }
   
   public CharSequence compileGetAttributeDescriptors(final Entity entity) {
     StringConcatenation _builder = new StringConcatenation();
@@ -57,7 +82,7 @@ public class BaseEntityGenerator {
             _builder.append("\t\t");
             _builder.append("\t");
             String _name_2 = attribute.getName();
-            String _attributeConstantName = this._clientNameUtils.attributeConstantName(_name_2);
+            String _attributeConstantName = this._nameUtils.attributeConstantName(_name_2);
             _builder.append(_attributeConstantName, "\t\t\t");
             _builder.newLineIfNotEmpty();
           }
@@ -90,7 +115,7 @@ public class BaseEntityGenerator {
                 _builder.append("\t\t");
                 _builder.append("\t");
                 String _name_3 = attribute_1.getName();
-                String _attributeConstantName_1 = this._clientNameUtils.attributeConstantName(_name_3);
+                String _attributeConstantName_1 = this._nameUtils.attributeConstantName(_name_3);
                 _builder.append(_attributeConstantName_1, "\t\t\t");
                 _builder.newLineIfNotEmpty();
               }
