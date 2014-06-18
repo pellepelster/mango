@@ -11,7 +11,7 @@ import io.pelle.mango.client.base.vo.LongAttributeDescriptor;
 import io.pelle.mango.dsl.ModelUtil;
 import io.pelle.mango.dsl.generator.AttributeUtils;
 import io.pelle.mango.dsl.generator.BaseEntityGenerator;
-import io.pelle.mango.dsl.generator.GeneratorUtil;
+import io.pelle.mango.dsl.generator.EntityUtils;
 import io.pelle.mango.dsl.generator.client.ClientNameUtils;
 import io.pelle.mango.dsl.generator.client.ClientTypeUtils;
 import io.pelle.mango.dsl.mango.Entity;
@@ -37,6 +37,10 @@ public class VOGenerator extends BaseEntityGenerator {
   @Inject
   @Extension
   private ClientTypeUtils _clientTypeUtils;
+  
+  @Inject
+  @Extension
+  private EntityUtils _entityUtils;
   
   public CharSequence compileVO(final Entity entity) {
     StringConcatenation _builder = new StringConcatenation();
@@ -122,7 +126,8 @@ public class VOGenerator extends BaseEntityGenerator {
           EList<EntityAttribute> _attributes = _extends_3.getAttributes();
           for(final EntityAttribute attribute : _attributes) {
             _builder.append("\t");
-            CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(attribute, null);
+            Entity _parentEntity = this._attributeUtils.getParentEntity(attribute);
+            CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(attribute, _parentEntity);
             _builder.append(_compileEntityAttributeDescriptor, "\t");
             _builder.newLineIfNotEmpty();
           }
@@ -337,49 +342,50 @@ public class VOGenerator extends BaseEntityGenerator {
     return _builder;
   }
   
-  public CharSequence changeTrackingAttributeGetterSetter(final EntityAttribute entityAttribute) {
+  public CharSequence changeTrackingAttributeGetterSetter(final EntityAttribute attribute) {
     StringConcatenation _builder = new StringConcatenation();
     {
-      Entity _parentEntity = ModelUtil.getParentEntity(entityAttribute);
+      Entity _parentEntity = this._attributeUtils.getParentEntity(attribute);
       EList<EntityAttribute> _naturalKeyAttributes = _parentEntity.getNaturalKeyAttributes();
-      boolean _contains = _naturalKeyAttributes.contains(entityAttribute);
+      boolean _contains = _naturalKeyAttributes.contains(attribute);
       if (_contains) {
         _builder.append("@");
         String _name = NaturalKey.class.getName();
         _builder.append(_name, "");
         _builder.append("( order = ");
-        Entity _parentEntity_1 = ModelUtil.getParentEntity(entityAttribute);
+        Entity _parentEntity_1 = ModelUtil.getParentEntity(attribute);
         EList<EntityAttribute> _naturalKeyAttributes_1 = _parentEntity_1.getNaturalKeyAttributes();
-        int _indexOf = _naturalKeyAttributes_1.indexOf(entityAttribute);
+        int _indexOf = _naturalKeyAttributes_1.indexOf(attribute);
         _builder.append(_indexOf, "");
         _builder.append(")");
       }
     }
     _builder.newLineIfNotEmpty();
-    String _type = this._clientTypeUtils.getType(entityAttribute);
-    String _name_1 = entityAttribute.getName();
-    String _initializer = this._clientTypeUtils.getInitializer(entityAttribute);
+    String _type = this._clientTypeUtils.getType(attribute);
+    String _name_1 = attribute.getName();
+    String _initializer = this._clientTypeUtils.getInitializer(attribute);
     CharSequence _attribute = this._attributeUtils.attribute(_type, _name_1, _initializer);
     _builder.append(_attribute, "");
     _builder.newLineIfNotEmpty();
     {
-      Entity _parentEntity_2 = ModelUtil.getParentEntity(entityAttribute);
-      boolean _isExtendedByOtherEntity = GeneratorUtil.isExtendedByOtherEntity(_parentEntity_2);
+      Entity _parentEntity_2 = this._attributeUtils.getParentEntity(attribute);
+      boolean _isExtendedByOtherEntity = this._entityUtils.isExtendedByOtherEntity(_parentEntity_2);
       boolean _not = (!_isExtendedByOtherEntity);
       if (_not) {
-        CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(entityAttribute, null);
+        Entity _parentEntity_3 = this._attributeUtils.getParentEntity(attribute);
+        CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(attribute, _parentEntity_3);
         _builder.append(_compileEntityAttributeDescriptor, "");
         _builder.newLineIfNotEmpty();
       }
     }
-    String _type_1 = this._clientTypeUtils.getType(entityAttribute);
-    String _name_2 = entityAttribute.getName();
+    String _type_1 = this._clientTypeUtils.getType(attribute);
+    String _name_2 = attribute.getName();
     String _attributeName = this._clientNameUtils.attributeName(_name_2);
     CharSequence _ter = this._attributeUtils.getter(_type_1, _attributeName);
     _builder.append(_ter, "");
     _builder.newLineIfNotEmpty();
-    String _type_2 = this._clientTypeUtils.getType(entityAttribute);
-    String _name_3 = entityAttribute.getName();
+    String _type_2 = this._clientTypeUtils.getType(attribute);
+    String _name_3 = attribute.getName();
     String _attributeName_1 = this._clientNameUtils.attributeName(_name_3);
     CharSequence _changeTrackingSetter = this._attributeUtils.changeTrackingSetter(_type_2, _attributeName_1);
     _builder.append(_changeTrackingSetter, "");

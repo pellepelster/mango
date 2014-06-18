@@ -386,17 +386,8 @@ public class TypeUtils {
     String _name_2 = StringAttributeDescriptor.class.getName();
     _builder.append(_name_2, "");
     _builder.append("(");
-    {
-      boolean _equals = Objects.equal(entity, null);
-      if (_equals) {
-        Entity _parentEntity = this._attributeUtils.getParentEntity(entityAttribute);
-        String _entityConstantName = this._nameUtils.entityConstantName(_parentEntity);
-        _builder.append(_entityConstantName, "");
-      } else {
-        String _entityConstantName_1 = this._nameUtils.entityConstantName(entity);
-        _builder.append(_entityConstantName_1, "");
-      }
-    }
+    String _entityConstantName = this._nameUtils.entityConstantName(entity);
+    _builder.append(_entityConstantName, "");
     _builder.append(", \"");
     String _name_3 = entityAttribute.getName();
     String _attributeName = this._nameUtils.attributeName(_name_3);

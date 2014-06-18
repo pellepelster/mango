@@ -10,7 +10,7 @@ import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.AttributeUtils
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
-import io.pelle.mango.dsl.generator.GeneratorUtil
+import io.pelle.mango.dsl.generator.EntityUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.Enumeration
@@ -27,6 +27,9 @@ class VOGenerator extends BaseEntityGenerator {
 
 	@Inject
 	extension ClientTypeUtils
+	
+	@Inject
+	extension EntityUtils
 
 	def compileVO(Entity entity) '''
 		package «getPackageName(entity)»;
@@ -42,7 +45,7 @@ class VOGenerator extends BaseEntityGenerator {
 
 			«IF entity.extends != null»
 				«FOR attribute : entity.extends.attributes»
-				«attribute.compileEntityAttributeDescriptor(null)»
+				«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
 				«ENDFOR»
 			«ENDIF»
 		
@@ -113,14 +116,14 @@ class VOGenerator extends BaseEntityGenerator {
 		«changeTrackingAttributeGetterSetter(entityAttribute)»
 	'''
 
-	def changeTrackingAttributeGetterSetter(EntityAttribute entityAttribute) '''
-		«IF ModelUtil.getParentEntity(entityAttribute).naturalKeyAttributes.contains(entityAttribute)»@«NaturalKey.name»( order = «ModelUtil.getParentEntity(entityAttribute).naturalKeyAttributes.indexOf(entityAttribute)»)«ENDIF»
-		«attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
-		«IF !GeneratorUtil.isExtendedByOtherEntity(ModelUtil.getParentEntity(entityAttribute))»
-		«entityAttribute.compileEntityAttributeDescriptor(null)»
+	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
+		«IF attribute.parentEntity.naturalKeyAttributes.contains(attribute)»@«NaturalKey.name»( order = «ModelUtil.getParentEntity(attribute).naturalKeyAttributes.indexOf(attribute)»)«ENDIF»
+		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
+		«IF !attribute.parentEntity.extendedByOtherEntity»
+		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
 		«ENDIF»
-		«getter(getType(entityAttribute), entityAttribute.name.attributeName)»
-		«changeTrackingSetter(getType(entityAttribute), entityAttribute.name.attributeName)»
+		«getter(getType(attribute), attribute.name.attributeName)»
+		«changeTrackingSetter(getType(attribute), attribute.name.attributeName)»
 	'''
 
 	//- genericVOGetter -----------------------------------------------------------

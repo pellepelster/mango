@@ -10,11 +10,6 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.server.base.BaseEntityVOMapper
 
-/**
- * Generates code from your model files on save.
- * 
- * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
- */
 class VOMapperGenerator {
 
 	@Inject 

@@ -15,18 +15,19 @@ import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.server.base.BaseEntity
 
-/**
- * Generates code from your model files on save.
- * 
- * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
- */
 class EntityGenerator extends BaseEntityGenerator {
 
-	@Inject extension AttributeUtils
+	@Inject
+	extension AttributeUtils
 
-	@Inject extension NameUtils
+	@Inject
+	extension NameUtils
 
-	@Inject extension TypeUtils
+	@Inject
+	extension TypeUtils
+
+	@Inject
+	extension EntityUtils
 
 	def compileEntity(Entity entity) '''
 package «getPackageName(entity)»;
@@ -35,20 +36,23 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "«entity.entityTableName»")
-«IF GeneratorUtil.isExtendedByOtherEntity(entity)»
+«IF entity.isExtendedByOtherEntity»
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.JOINED)
 @javax.persistence.PrimaryKeyJoinColumn(name="«entity.entityTableIdColumnName»")
 «ENDIF»
 «IF entity.extends != null»
 «ELSE»
 «ENDIF»
-public class «entityName(entity)» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» {
+public class «entityName(entity)» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.
+		jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» {
 
-	public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
+	public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.
+		name»<«entity.type»>(«entity.typeClass»);
 
 	«compileGetAttributeDescriptors(entity)»
 
-	public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
+	public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.
+		name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
 
 	«IF entity.extends == null»
 	@Id
@@ -69,18 +73,19 @@ public class «entityName(entity)» extends «IF entity.extends != null»«entit
 	def compileEntityAttribute(EntityAttribute entityAttribute) '''
 «changeTrackingAttributeGetterSetter(entityAttribute)»
 '''
+
 	// jpa annotations
 	def dispatch compileEntityAttributeJpaAnnotations(EntityAttribute entityAttribute) '''
 @Column(name = "«entityAttribute.entityTableColumnName»")
 '''
 
 	def dispatch compileEntityAttributeJpaAnnotations(StringEntityAttribute entityAttribute) '''
-	«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
-	@javax.persistence.ElementCollection(fetch=javax.persistence.FetchType.EAGER)
-	«ELSE»
-	@Column(name = "«entityAttribute.entityTableColumnName»")
-	«ENDIF»
-'''
+		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
+			@javax.persistence.ElementCollection(fetch=javax.persistence.FetchType.EAGER)
+		«ELSE»
+			@Column(name = "«entityAttribute.entityTableColumnName»")
+		«ENDIF»
+	'''
 
 	def dispatch compileEntityAttributeJpaAnnotations(EntityEntityAttribute entityAttribute) '''
 «IF entityAttribute.cardinality == Cardinality.ONETOMANY»
@@ -90,15 +95,15 @@ public class «entityName(entity)» extends «IF entity.extends != null»«entit
 «ENDIF»
 '''
 
-	def changeTrackingAttributeGetterSetter(EntityAttribute entityAttribute) '''
-«entityAttribute.compileEntityAttributeJpaAnnotations»
-«attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
+	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
+«attribute.compileEntityAttributeJpaAnnotations»
+«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
 
-«entityAttribute.compileEntityAttributeDescriptor(null)»
+«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
 
-«getter(getType(entityAttribute), entityAttribute.name.attributeName)»
+«getter(getType(attribute), attribute.name.attributeName)»
 
-«changeTrackingSetter(getType(entityAttribute), entityAttribute.name.attributeName)»
-'''	
+«changeTrackingSetter(getType(attribute), attribute.name.attributeName)»
+'''
 
 }

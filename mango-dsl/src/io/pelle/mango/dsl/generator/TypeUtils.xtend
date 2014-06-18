@@ -348,7 +348,7 @@ class TypeUtils {
 	}
 
 	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
-	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«IF entity == null»«entityAttribute.parentEntity.entityConstantName»«ELSE»«entity.entityConstantName»«ENDIF», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
+	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
 	'''	
 
 	//-----------------

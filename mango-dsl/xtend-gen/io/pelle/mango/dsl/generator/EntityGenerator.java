@@ -11,7 +11,7 @@ import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor;
 import io.pelle.mango.dsl.generator.AttributeUtils;
 import io.pelle.mango.dsl.generator.BaseEntityGenerator;
-import io.pelle.mango.dsl.generator.GeneratorUtil;
+import io.pelle.mango.dsl.generator.EntityUtils;
 import io.pelle.mango.dsl.generator.NameUtils;
 import io.pelle.mango.dsl.generator.TypeUtils;
 import io.pelle.mango.dsl.mango.Cardinality;
@@ -26,11 +26,6 @@ import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.xbase.lib.Extension;
 
-/**
- * Generates code from your model files on save.
- * 
- * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
- */
 @SuppressWarnings("all")
 public class EntityGenerator extends BaseEntityGenerator {
   @Inject
@@ -44,6 +39,10 @@ public class EntityGenerator extends BaseEntityGenerator {
   @Inject
   @Extension
   private TypeUtils _typeUtils;
+  
+  @Inject
+  @Extension
+  private EntityUtils _entityUtils;
   
   public CharSequence compileEntity(final Entity entity) {
     StringConcatenation _builder = new StringConcatenation();
@@ -64,7 +63,7 @@ public class EntityGenerator extends BaseEntityGenerator {
     _builder.append("\")");
     _builder.newLineIfNotEmpty();
     {
-      boolean _isExtendedByOtherEntity = GeneratorUtil.isExtendedByOtherEntity(entity);
+      boolean _isExtendedByOtherEntity = this._entityUtils.isExtendedByOtherEntity(entity);
       if (_isExtendedByOtherEntity) {
         _builder.append("@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.JOINED)");
         _builder.newLine();
@@ -261,31 +260,32 @@ public class EntityGenerator extends BaseEntityGenerator {
     return _builder;
   }
   
-  public CharSequence changeTrackingAttributeGetterSetter(final EntityAttribute entityAttribute) {
+  public CharSequence changeTrackingAttributeGetterSetter(final EntityAttribute attribute) {
     StringConcatenation _builder = new StringConcatenation();
-    CharSequence _compileEntityAttributeJpaAnnotations = this.compileEntityAttributeJpaAnnotations(entityAttribute);
+    CharSequence _compileEntityAttributeJpaAnnotations = this.compileEntityAttributeJpaAnnotations(attribute);
     _builder.append(_compileEntityAttributeJpaAnnotations, "");
     _builder.newLineIfNotEmpty();
-    String _type = this._typeUtils.getType(entityAttribute);
-    String _name = entityAttribute.getName();
-    String _initializer = this._typeUtils.getInitializer(entityAttribute);
+    String _type = this._typeUtils.getType(attribute);
+    String _name = attribute.getName();
+    String _initializer = this._typeUtils.getInitializer(attribute);
     CharSequence _attribute = this._attributeUtils.attribute(_type, _name, _initializer);
     _builder.append(_attribute, "");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    CharSequence _compileEntityAttributeDescriptor = this._typeUtils.compileEntityAttributeDescriptor(entityAttribute, null);
+    Entity _parentEntity = this._attributeUtils.getParentEntity(attribute);
+    CharSequence _compileEntityAttributeDescriptor = this._typeUtils.compileEntityAttributeDescriptor(attribute, _parentEntity);
     _builder.append(_compileEntityAttributeDescriptor, "");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    String _type_1 = this._typeUtils.getType(entityAttribute);
-    String _name_1 = entityAttribute.getName();
+    String _type_1 = this._typeUtils.getType(attribute);
+    String _name_1 = attribute.getName();
     String _attributeName = this._nameUtils.attributeName(_name_1);
     CharSequence _ter = this._attributeUtils.getter(_type_1, _attributeName);
     _builder.append(_ter, "");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
-    String _type_2 = this._typeUtils.getType(entityAttribute);
-    String _name_2 = entityAttribute.getName();
+    String _type_2 = this._typeUtils.getType(attribute);
+    String _name_2 = attribute.getName();
     String _attributeName_1 = this._nameUtils.attributeName(_name_2);
     CharSequence _changeTrackingSetter = this._attributeUtils.changeTrackingSetter(_type_2, _attributeName_1);
     _builder.append(_changeTrackingSetter, "");

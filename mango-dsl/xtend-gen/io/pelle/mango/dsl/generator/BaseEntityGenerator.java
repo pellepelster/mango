@@ -3,7 +3,7 @@ package io.pelle.mango.dsl.generator;
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-import io.pelle.mango.dsl.generator.GeneratorUtil;
+import io.pelle.mango.dsl.generator.EntityUtils;
 import io.pelle.mango.dsl.generator.client.ClientNameUtils;
 import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.EntityAttribute;
@@ -16,6 +16,10 @@ public class BaseEntityGenerator {
   @Inject
   @Extension
   private ClientNameUtils _clientNameUtils;
+  
+  @Inject
+  @Extension
+  private EntityUtils _entityUtils;
   
   public CharSequence compileGetAttributeDescriptors(final Entity entity) {
     StringConcatenation _builder = new StringConcatenation();
@@ -36,7 +40,7 @@ public class BaseEntityGenerator {
     _builder.append("\t\t");
     _builder.newLine();
     {
-      boolean _isExtendedByOtherEntity = GeneratorUtil.isExtendedByOtherEntity(entity);
+      boolean _isExtendedByOtherEntity = this._entityUtils.isExtendedByOtherEntity(entity);
       boolean _not = (!_isExtendedByOtherEntity);
       if (_not) {
         _builder.append("\t\t");

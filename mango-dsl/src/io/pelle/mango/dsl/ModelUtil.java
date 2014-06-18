@@ -27,8 +27,10 @@ import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import com.google.common.base.Function;
+import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 
 public class ModelUtil {
 	private static Logger LOG = Logger.getLogger(ModelUtil.class);
@@ -43,6 +45,7 @@ public class ModelUtil {
 	public static PackageDeclaration getSingleRootPackage(Model model) {
 		return ModelQuery.createQuery(model).getRootPackages().getSingleResult();
 	}
+
 	//
 	// public static boolean hasSingleRootPackage(Model model) {
 	// return ModelQuery.createQuery(model).getRootPackages().hasExactlyOne();
@@ -242,4 +245,33 @@ public class ModelUtil {
 	public static String getParentDictionaryName(EObject eObject) {
 		return getParentDictionary(eObject).getName();
 	}
+
+	public static boolean isExtendedByOtherEntity(final Entity entity) {
+
+		return Iterators.any(getRoot(entity).eAllContents(), new Predicate<EObject>() {
+
+			@Override
+			public boolean apply(EObject input) {
+
+				if (input instanceof Entity) {
+					Entity otherEntity = (Entity) input;
+					return otherEntity.getExtends() != null && otherEntity.getExtends().equals(entity);
+				}
+
+				return false;
+			}
+		});
+	}
+
+	public static EObject getRoot(EObject eObject) {
+
+		EObject current = eObject;
+
+		while (current.eContainer() != null) {
+			current = current.eContainer();
+		}
+
+		return current;
+	}
+
 }
