@@ -28,16 +28,14 @@ import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public abstract class BaseDataGrid<VOType extends IBaseVO> extends DataGrid<IBaseTable.ITableRow<VOType>>
-{
+public abstract class BaseDataGrid<VOType extends IBaseVO> extends DataGrid<IBaseTable.ITableRow<VOType>> {
 	private ListDataProvider<IBaseTable.ITableRow<VOType>> dataProvider = new ListDataProvider<IBaseTable.ITableRow<VOType>>();
 
 	private final SingleSelectionModel<IBaseTable.ITableRow<VOType>> selectionModel;
 
 	private List<BaseDictionaryControl<?, ?>> baseControls;
 
-	public BaseDataGrid(List<BaseDictionaryControl<?, ?>> baseControls)
-	{
+	public BaseDataGrid(List<BaseDictionaryControl<?, ?>> baseControls) {
 		super(new BaseTableRowKeyProvider<VOType>());
 
 		selectionModel = new SingleSelectionModel<IBaseTable.ITableRow<VOType>>(getKeyProvider());
@@ -47,10 +45,8 @@ public abstract class BaseDataGrid<VOType extends IBaseVO> extends DataGrid<IBas
 		dataProvider.addDataDisplay(this);
 	}
 
-	protected void createModelColumns()
-	{
-		for (BaseDictionaryControl<?, ?> baseControl : baseControls)
-		{
+	protected void createModelColumns() {
+		for (BaseDictionaryControl<?, ?> baseControl : baseControls) {
 			TextHeader textHeader = new TextHeader(DictionaryModelUtil.getColumnLabel(baseControl.getModel()));
 			addColumn(getColumn(baseControl), textHeader);
 		}
@@ -58,18 +54,14 @@ public abstract class BaseDataGrid<VOType extends IBaseVO> extends DataGrid<IBas
 		setSelectionModel(selectionModel);
 	}
 
-	public void addVOSelectHandler(final SimpleCallback<IBaseTable.ITableRow<VOType>> voSelectHandler)
-	{
-		addDomHandler(new DoubleClickHandler()
-		{
+	public void addVOSelectHandler(final SimpleCallback<IBaseTable.ITableRow<VOType>> voSelectHandler) {
+		addDomHandler(new DoubleClickHandler() {
 
 			/** {@inheritDoc} */
 			@Override
-			public void onDoubleClick(DoubleClickEvent event)
-			{
+			public void onDoubleClick(DoubleClickEvent event) {
 
-				if (selectionModel.getSelectedObject() != null)
-				{
+				if (selectionModel.getSelectedObject() != null) {
 					voSelectHandler.onCallback(selectionModel.getSelectedObject());
 				}
 			}
@@ -77,20 +69,17 @@ public abstract class BaseDataGrid<VOType extends IBaseVO> extends DataGrid<IBas
 
 	}
 
-	public IBaseTable.ITableRow<VOType> getCurrentSelection()
-	{
+	public IBaseTable.ITableRow<VOType> getCurrentSelection() {
 		return selectionModel.getSelectedObject();
 	}
 
-	public ListDataProvider<IBaseTable.ITableRow<VOType>> getDataProvider()
-	{
+	public ListDataProvider<IBaseTable.ITableRow<VOType>> getDataProvider() {
 		return dataProvider;
 	}
 
-	protected abstract Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl baseControl);
+	protected abstract Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl<?, ?> baseControl);
 
-	public void setRows(List<IBaseTable.ITableRow<VOType>> rows)
-	{
+	public void setRows(List<IBaseTable.ITableRow<VOType>> rows) {
 		dataProvider.setList(rows);
 	}
 

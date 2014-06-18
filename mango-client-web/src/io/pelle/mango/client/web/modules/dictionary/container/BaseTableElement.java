@@ -6,7 +6,6 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseTable
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
-import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 
 	private Optional<SimpleCallback<VOType>> activationCallback = Optional.absent();
 
-	public BaseTableElement(ModelType baseTable, BaseDictionaryElement<IBaseModel> parent) {
+	public BaseTableElement(ModelType baseTable, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(baseTable, parent);
 	}
 
@@ -97,9 +96,12 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 		delete(getSelection(), asyncCallback);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void update() {
+
 		if (getModel().getAttributePath() != null) {
+
 			List<VOType> vos = (List<VOType>) getVOWrapper().get(getModel().getAttributePath());
 
 			this.rowList = new TableRowList<VOType, ModelType>(vos, this);
@@ -118,7 +120,7 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 	public void addActivateCallback(SimpleCallback<VOType> activationCallback) {
 		this.activationCallback = Optional.fromNullable(activationCallback);
 	}
-	
+
 	public void activateSelection() {
 		if (activationCallback.isPresent() && !getSelection().isEmpty()) {
 			activationCallback.get().onCallback(getSelection().get(0).getVO());

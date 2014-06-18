@@ -42,8 +42,7 @@ import com.google.gwt.view.client.ListDataProvider;
  * @author pelle
  * 
  */
-public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VOType> implements IContainer<Panel>
-{
+public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VOType> implements IContainer<Panel> {
 
 	private final AssignmentTable<VOType> assignmentTable;
 
@@ -53,8 +52,7 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 
 	private final SimpleLayoutPanel simpleLayoutPanel = new SimpleLayoutPanel();
 
-	public GwtAssignmentTable(AssignmentTable<VOType> assignmentTable)
-	{
+	public GwtAssignmentTable(AssignmentTable<VOType> assignmentTable) {
 		super(assignmentTable);
 
 		this.assignmentTable = assignmentTable;
@@ -78,21 +76,16 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 		createModelColumns();
 
 		TextHeader textHeader = new TextHeader("");
-		Column<IBaseTable.ITableRow<VOType>, Void> column = new Column<IBaseTable.ITableRow<VOType>, Void>(new ImageActionCell(MangoClientWeb.RESOURCES.delete(),
-				new SimpleCallback<IBaseTable.ITableRow<VOType>>()
-				{
+		Column<IBaseTable.ITableRow<VOType>, Void> column = new Column<IBaseTable.ITableRow<VOType>, Void>(new ImageActionCell(MangoClientWeb.RESOURCES.delete(), new SimpleCallback<IBaseTable.ITableRow<VOType>>() {
 
-					@Override
-					public void onCallback(IBaseTable.ITableRow<VOType> vo)
-					{
-						dataProvider.getList().remove(vo);
-						// fireValueChanges();
-					}
-				}))
-		{
 			@Override
-			public Void getValue(IBaseTable.ITableRow<VOType> vo)
-			{
+			public void onCallback(IBaseTable.ITableRow<VOType> vo) {
+				dataProvider.getList().remove(vo);
+				// fireValueChanges();
+			}
+		})) {
+			@Override
+			public Void getValue(IBaseTable.ITableRow<VOType> vo) {
 				return null;
 			}
 		};
@@ -103,47 +96,35 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Column<VOType, ?> getColumn(BaseDictionaryControl baseControl)
-	{
+	protected Column<VOType, ?> getColumn(BaseDictionaryControl baseControl) {
 		return (Column<VOType, ?>) ControlHandler.getInstance().createColumn(baseControl, false, dataProvider, this);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Panel getContainer()
-	{
+	public Panel getContainer() {
 		return verticalPanel;
 	}
 
-	public void setContent(Object content)
-	{
-		if (content instanceof List)
-		{
+	public void setContent(Object content) {
+		if (content instanceof List) {
 			this.dataProvider.getList().clear();
 			this.dataProvider.getList().addAll((Collection<IBaseTable.ITableRow<VOType>>) content);
-		}
-		else
-		{
+		} else {
 			throw new RuntimeException("unsupported content type '" + content.getClass().getName() + "'");
 		}
 	}
 
-	private void createAddButton(VerticalPanel buttonPanel)
-	{
+	private void createAddButton(VerticalPanel buttonPanel) {
 		ImageButton addButton = new ImageButton(MangoClientWeb.RESOURCES.add());
-		addButton.addClickHandler(new ClickHandler()
-		{
+		addButton.addClickHandler(new ClickHandler() {
 			@Override
-			public void onClick(ClickEvent event)
-			{
-				VOSelectionPopup.create(assignmentTable, new SimpleCallback<VOType>()
-				{
+			public void onClick(ClickEvent event) {
+				VOSelectionPopup.create(assignmentTable, new SimpleCallback<VOType>() {
 
 					@Override
-					public void onCallback(VOType vo)
-					{
-						if (!dataProvider.getList().contains(vo))
-						{
+					public void onCallback(VOType vo) {
+						if (!dataProvider.getList().contains(vo)) {
 							throw new RuntimeException("TODO");
 							// dataProvider.getList().add(new TableRow<VOType,
 							// IBaseTableModel>(vo));

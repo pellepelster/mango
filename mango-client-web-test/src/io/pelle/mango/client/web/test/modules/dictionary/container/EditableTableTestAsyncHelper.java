@@ -19,6 +19,7 @@ public class EditableTableTestAsyncHelper<VOType extends IBaseVO> extends BaseAs
 
 	public void add() {
 		this.addAsyncTestItem(new BaseAsyncTestItem() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().add(new BaseErrorAsyncCallback() {
@@ -39,6 +40,7 @@ public class EditableTableTestAsyncHelper<VOType extends IBaseVO> extends BaseAs
 
 	public void delete() {
 		this.addAsyncTestItem(new BaseAsyncTestItem() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
 				getAsyncTestItemResult().delete(new BaseErrorAsyncCallback() {

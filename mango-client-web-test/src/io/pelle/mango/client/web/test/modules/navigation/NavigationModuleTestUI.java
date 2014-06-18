@@ -22,12 +22,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-/**
- * UI for the navigation module
- * 
- * @author pelle
- * 
- */
 public class NavigationModuleTestUI extends BaseModuleUI<Object, ModuleNavigationModule> {
 
 	private List<NavigationTreeTestElement> navigationTreeRoots;
@@ -52,7 +46,7 @@ public class NavigationModuleTestUI extends BaseModuleUI<Object, ModuleNavigatio
 	}
 
 	public void getRootElements(final AsyncCallback<List<NavigationTreeTestElement>> asyncCallback) {
-		NavigationModuleTestUI.this.navigationTreeRoots = new ArrayList(Collections2.transform(this.getModule().getNavigationTreeRoots(), new Function<NavigationTreeElement, NavigationTreeTestElement>() {
+		NavigationModuleTestUI.this.navigationTreeRoots = new ArrayList<NavigationTreeTestElement>(Collections2.transform(this.getModule().getNavigationTreeRoots(), new Function<NavigationTreeElement, NavigationTreeTestElement>() {
 
 			@Override
 			public NavigationTreeTestElement apply(NavigationTreeElement input) {

@@ -33,23 +33,14 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
-/**
- * GWT based factory for {@link IBaseControlModel} derived controls
- * 
- * @author pelle
- * 
- */
 @SuppressWarnings("unchecked")
-public class ControlHandler<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>> implements
-		IGwtControlFactory<ControlModelType, ControlType>
-{
+public class ControlHandler<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>> implements IGwtControlFactory<ControlModelType, ControlType> {
 
 	private static ControlHandler<IBaseControlModel, BaseDictionaryControl<IBaseControlModel, ?>> instance;
 
 	private static List<IGwtControlFactory<?, ?>> controlFactories = new ArrayList<IGwtControlFactory<?, ?>>();
 
-	private ControlHandler()
-	{
+	private ControlHandler() {
 		super();
 		controlFactories.add(new TextControlFactory());
 		controlFactories.add(new IntegerControlFactory());
@@ -62,10 +53,8 @@ public class ControlHandler<ControlModelType extends IBaseControlModel, ControlT
 		controlFactories.add(new FileControlFactory());
 	}
 
-	public static ControlHandler<IBaseControlModel, BaseDictionaryControl<IBaseControlModel, ?>> getInstance()
-	{
-		if (instance == null)
-		{
+	public static ControlHandler<IBaseControlModel, BaseDictionaryControl<IBaseControlModel, ?>> getInstance() {
+		if (instance == null) {
 			instance = new ControlHandler<IBaseControlModel, BaseDictionaryControl<IBaseControlModel, ?>>();
 		}
 
@@ -74,26 +63,20 @@ public class ControlHandler<ControlModelType extends IBaseControlModel, ControlT
 
 	/** {@inheritDoc} */
 	@Override
-	@SuppressWarnings("rawtypes")
-	public Column createColumn(ControlType baseControl, boolean editable, ListDataProvider<?> listDataProvider, AbstractCellTable<?> abstractCellTable)
-	{
+	public Column createColumn(ControlType baseControl, boolean editable, ListDataProvider<?> listDataProvider, AbstractCellTable<?> abstractCellTable) {
 		return getControlFactory(baseControl).createColumn(baseControl, editable, listDataProvider, abstractCellTable);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType)
-	{
+	public Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType) {
 		return getControlFactory(baseControl).createControl(baseControl, layoutType);
 	}
 
-	private IGwtControlFactory<ControlModelType, ControlType> getControlFactory(BaseDictionaryControl<ControlModelType, ?> baseControl)
-	{
+	private IGwtControlFactory<ControlModelType, ControlType> getControlFactory(BaseDictionaryControl<ControlModelType, ?> baseControl) {
 
-		for (IGwtControlFactory<?, ?> controlFactory : controlFactories)
-		{
-			if (controlFactory.supports(baseControl))
-			{
+		for (IGwtControlFactory<?, ?> controlFactory : controlFactories) {
+			if (controlFactory.supports(baseControl)) {
 				return (IGwtControlFactory<ControlModelType, ControlType>) controlFactory;
 			}
 		}
@@ -103,8 +86,7 @@ public class ControlHandler<ControlModelType extends IBaseControlModel, ControlT
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControl)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
 		return true;
 	}
 

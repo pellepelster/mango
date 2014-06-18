@@ -19,7 +19,7 @@ public class NavigationTreeTestElement {
 		super();
 		this.navigationTreeElement = navigationTreeElement;
 
-		this.children = new ArrayList(Collections2.transform(navigationTreeElement.getChildren(), new Function<NavigationTreeElement, NavigationTreeTestElement>() {
+		this.children = new ArrayList<NavigationTreeTestElement>(Collections2.transform(navigationTreeElement.getChildren(), new Function<NavigationTreeElement, NavigationTreeTestElement>() {
 
 			@Override
 			public NavigationTreeTestElement apply(NavigationTreeElement input) {
