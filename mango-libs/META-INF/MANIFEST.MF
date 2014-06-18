@@ -15,7 +15,8 @@ Bundle-ClassPath: .,
  lib/spring-security-config-3.2.4.RELEASE.jar,
  lib/spring-security-core-3.2.4.RELEASE.jar,
  lib/spring-security-web-3.2.4.RELEASE.jar,
- lib/commons-beanutils-core-1.8.3.jar
+ lib/commons-beanutils-core-1.8.3.jar,
+ lib/commons-logging-1.1.1.jar
 Bundle-Vendor: http://pelle.io
 Export-Package: com.google.common.annotations,
  com.google.common.base;uses:="new com.google.common.base",
@@ -52,6 +53,7 @@ Export-Package: com.google.common.annotations,
  org.apache.commons.beanutils.locale,
  org.apache.commons.beanutils.locale.converters,
  org.apache.commons.collections,
+ org.apache.commons.logging,
  org.springframework.security.access;uses:="org.springframework.aop.framework,org.springframework.security.core",
  org.springframework.security.access.annotation;uses:="org.springframework.security.access.method,org.springframework.security.core,org.springframework.security.access",
  org.springframework.security.access.event;
