@@ -25,6 +25,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings("rawtypes")
@@ -75,13 +76,15 @@ public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 
 				getAsyncTestItemResult().getModule().getDictionarySearch().getDictionaryResult().activateSelection();
 
-				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName, 0), null, new HashMap<String, Object>(), new BaseErrorAsyncCallback<IModuleUI>() {
+				AsyncCallback<IModuleUI> moduleCallback = new BaseErrorAsyncCallback<IModuleUI>() {
 					@Override
 					public void onSuccess(IModuleUI result) {
 						getAsyncTestItemResults().put(uuid, result);
 						asyncCallback.onSuccess(result);
 					}
-				});
+				};
+				
+				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName, 0), null, new HashMap<String, Object>(), Optional.of(moduleCallback));
 			}
 
 			@Override

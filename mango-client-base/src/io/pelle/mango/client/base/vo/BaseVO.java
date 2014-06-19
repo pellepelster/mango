@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.db.vos.UUID;
 import java.util.HashMap;
 
 public abstract class BaseVO implements IBaseVO {
+	
 	private ChangeTracker changeTracker = new ChangeTracker();
 
 	private static final long serialVersionUID = -3339163131084690483L;

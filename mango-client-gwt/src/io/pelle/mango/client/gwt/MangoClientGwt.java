@@ -11,15 +11,35 @@
  */
 package io.pelle.mango.client.gwt;
 
-import com.google.gwt.core.client.EntryPoint;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class MangoClientGwt implements EntryPoint
-{
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.UmbrellaException;
+
+public class MangoClientGwt implements EntryPoint {
+
+	private Logger LOG = Logger.getLogger("MangoClientGwt");
 
 	/** {@inheritDoc} */
 	@Override
-	public void onModuleLoad()
-	{
+	public void onModuleLoad() {
+		GWT.setUncaughtExceptionHandler(new GWT.UncaughtExceptionHandler() {
+			public void onUncaughtException(Throwable e) {
+				Throwable unwrapped = unwrap(e);
+				LOG.log(Level.SEVERE, unwrapped.getMessage(), unwrapped);
+			}
+		});
 	}
 
+	private Throwable unwrap(Throwable e) {
+		if (e instanceof UmbrellaException) {
+			UmbrellaException ue = (UmbrellaException) e;
+			if (ue.getCauses().size() == 1) {
+				return unwrap(ue.getCauses().iterator().next());
+			}
+		}
+		return e;
+	}
 }

@@ -11,7 +11,6 @@
  */
 package io.pelle.mango.client.base.module;
 
-import java.util.Map;
 
 /**
  * MyAdmin module interface

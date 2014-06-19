@@ -65,15 +65,11 @@ public class DictionaryNavigationGenerator {
     _builder.append(" {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
-    _builder.newLine();
-    _builder.append("\t");
     _builder.append("public static class RootNavigationNode extends ");
     String _name = NavigationTreeElement.class.getName();
     _builder.append(_name, "\t");
     _builder.append(" {");
     _builder.newLineIfNotEmpty();
-    _builder.append("\t");
-    _builder.newLine();
     {
       TreeIterator<EObject> _eAllContents = model.eAllContents();
       Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_eAllContents);

@@ -26,7 +26,7 @@ import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 
-public class DictionaryEditorModuleUIFactory<VOType extends IBaseVO> extends BaseModuleUIFactory<Panel, DictionaryEditorModuleUI>
+public class DictionaryEditorModuleUIFactory<VOType extends IBaseVO> extends BaseModuleUIFactory<Panel, DictionaryEditorModuleUI<?>>
 {
 
 	public DictionaryEditorModuleUIFactory()
@@ -35,7 +35,7 @@ public class DictionaryEditorModuleUIFactory<VOType extends IBaseVO> extends Bas
 	}
 
 	@Override
-	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionaryEditorModuleUI> moduleCallback, Map<String, Object> parameters,
+	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionaryEditorModuleUI<?>> moduleCallback, Map<String, Object> parameters,
 			final Optional<IModuleUI> previousModuleUI)
 	{
 		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, DictionaryEditorModule.MODULE_LOCATOR), parameters,

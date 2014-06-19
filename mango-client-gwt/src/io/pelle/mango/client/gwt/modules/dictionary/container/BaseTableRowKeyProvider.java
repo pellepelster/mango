@@ -21,7 +21,7 @@ public class BaseTableRowKeyProvider<VOType extends IBaseVO> implements Provides
 	@Override
 	public Object getKey(IBaseTable.ITableRow<VOType> item)
 	{
-		return item;
+		return item.getVO();
 	}
 
 }

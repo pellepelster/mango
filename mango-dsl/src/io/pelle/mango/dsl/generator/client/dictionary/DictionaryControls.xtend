@@ -67,9 +67,7 @@ class DictionaryControls {
 			«ENDIF»
 		
 			«IF dictionaryControl.baseControl.labels != null»
-	
 				«dictionaryControlLabelSetters(dictionaryControl, dictionaryControl.baseControl.labels)»
-	
 				//IF dictionaryControl.baseControl.entityattribute != null
 				//	dictionaryControl.baseControl.entityattribute.dictionaryControlTypeSetters
 				//ENDIF

@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.web.modules.dictionary.editor;
 
+import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.module.IModule;
 import io.pelle.mango.client.base.module.ModuleUtils;
 import io.pelle.mango.client.base.modules.dictionary.editor.IDictionaryEditor;
@@ -20,6 +21,7 @@ import io.pelle.mango.client.web.module.ModuleHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class DictionaryEditorModuleFactory extends BaseModuleFactory
@@ -43,7 +45,7 @@ public class DictionaryEditorModuleFactory extends BaseModuleFactory
 
 	public static void openEditor(String dictionaryName)
 	{
-		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName), null, new HashMap<String, Object>(), null);
+		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName), null, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>>absent());
 	}
 
 	public static void openEditor(String dictionaryName, Map<String, Object> parameters)

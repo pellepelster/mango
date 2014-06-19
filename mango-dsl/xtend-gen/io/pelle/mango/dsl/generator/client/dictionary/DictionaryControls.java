@@ -141,21 +141,19 @@ public class DictionaryControls {
           Labels _labels = _baseControl_4.getLabels();
           boolean _notEquals_2 = (!Objects.equal(_labels, null));
           if (_notEquals_2) {
-            _builder.newLine();
-            _builder.append("\t\t\t");
+            _builder.append("\t");
             BaseDictionaryControl _baseControl_5 = dictionaryControl.getBaseControl();
             Labels _labels_1 = _baseControl_5.getLabels();
             CharSequence _dictionaryControlLabelSetters = this.dictionaryControlLabelSetters(dictionaryControl, _labels_1);
-            _builder.append(_dictionaryControlLabelSetters, "\t\t\t");
+            _builder.append(_dictionaryControlLabelSetters, "\t");
             _builder.newLineIfNotEmpty();
-            _builder.newLine();
-            _builder.append("\t\t\t");
+            _builder.append("\t");
             _builder.append("//IF dictionaryControl.baseControl.entityattribute != null");
             _builder.newLine();
-            _builder.append("\t\t\t");
+            _builder.append("\t");
             _builder.append("//\tdictionaryControl.baseControl.entityattribute.dictionaryControlTypeSetters");
             _builder.newLine();
-            _builder.append("\t\t\t");
+            _builder.append("\t");
             _builder.append("//ENDIF");
             _builder.newLine();
           }

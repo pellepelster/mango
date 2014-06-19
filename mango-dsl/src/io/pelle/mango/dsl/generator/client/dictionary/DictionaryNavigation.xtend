@@ -31,9 +31,7 @@ class DictionaryNavigationGenerator {
 		package «model.modelPackageName»;
 		
 		public class «model.navigationNodeClassName» {
-	
 			public static class RootNavigationNode extends «NavigationTreeElement.name» {
-	
 			«FOR navigationNode : model.eAllContents.toIterable.filter(typeof(NavigationNode)).filter[!(it.eContainer instanceof NavigationNode)]»
 			public «navigationNode.navigationyNodeClassFullQualifiedName» «navigationNode.navigationNodeConstantName» = new «navigationNode.navigationyNodeClassFullQualifiedName»();
 			«ENDFOR»

@@ -6,13 +6,9 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.search.IFilterModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
 import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
-import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
-import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
@@ -28,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElement<IDictionaryModel> {
@@ -60,26 +57,30 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 
 		Collection<BaseDictionaryControl<? extends IBaseControlModel, ?>> baseControls = DictionaryCompositeQuery.create(getActiveFilter().getRootComposite()).getAllControls();
 
-		IBooleanExpression expression = null;
+		Optional<IBooleanExpression> expression = Optional.absent();
 
 		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : baseControls) {
 
 			if (baseControl instanceof TextControl) {
 
 				TextControl textControl = (TextControl) baseControl;
-				
-				IBooleanExpression compareExpression = ExpressionFactory.createStringEqualsExpression(getModel().getVOClass(), baseControl.getModel().getAttributePath(), textControl.getValue());
 
-				if (expression == null) {
-					expression = compareExpression;
-				} else {
-					expression = expression.and(compareExpression);
+				Optional<IBooleanExpression> compareExpression = ExpressionFactory.createStringEqualsExpression(getModel().getVOClass(), baseControl.getModel().getAttributePath(), textControl.getValue());
+
+				if (compareExpression.isPresent()) {
+					if (expression.isPresent()) {
+						expression = Optional.of(expression.get().and(compareExpression.get()));
+					} else {
+						expression = compareExpression;
+					}
 				}
 			}
-
 		}
 
-		selectQuery.where(expression);
+		if (expression.isPresent())
+		{
+			selectQuery.where(expression.get());
+		}
 
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().filter(selectQuery, new BaseErrorAsyncCallback<List<VOType>>() {
 

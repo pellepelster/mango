@@ -49,6 +49,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 	final static Logger LOG = Logger.getLogger("GWTLayoutFactory");
 
 	private class PanelLayoutInfo {
+		
 		private final int size;
 
 		private final boolean supportsMultipleChildren;

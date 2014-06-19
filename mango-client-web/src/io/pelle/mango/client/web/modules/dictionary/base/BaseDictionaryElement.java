@@ -48,7 +48,7 @@ public abstract class BaseDictionaryElement<ModelType extends IBaseModel> implem
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BaseDictionaryElement other = (BaseDictionaryElement) obj;
+		BaseDictionaryElement<?> other = (BaseDictionaryElement<?>) obj;
 		if (this.model == null) {
 			if (other.model != null)
 				return false;

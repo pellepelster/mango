@@ -3,6 +3,7 @@ package io.pelle.mango.client.web.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public abstract class BaseAsyncCallback<T, C> implements AsyncCallback<T>
@@ -13,11 +14,11 @@ public abstract class BaseAsyncCallback<T, C> implements AsyncCallback<T>
 	{
 	}
 
-	public BaseAsyncCallback(AsyncCallback<C> parentCallback)
+	public BaseAsyncCallback(Optional<AsyncCallback<C>> parentCallback)
 	{
-		if (parentCallback != null)
+		if (parentCallback.isPresent())
 		{
-			this.parentCallbacks.add(parentCallback);
+			this.parentCallbacks.add(parentCallback.get());
 		}
 	}
 

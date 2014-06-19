@@ -23,7 +23,7 @@ public class AliasProvider implements IAliasProvider, Serializable {
 		if (key instanceof String) {
 			aliasKey = key;
 		} else if (key instanceof Class) {
-			aliasKey  = ((Class) key).getName();
+			aliasKey  = ((Class<?>) key).getName();
 		} 
 
 		if (!aliases.containsKey(aliasKey)) {

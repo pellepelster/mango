@@ -17,27 +17,27 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.google.common.base.Optional;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class MangoAsyncGwtTestHelper<VOType extends IBaseVO>  {
-	
+public class MangoAsyncGwtTestHelper<VOType extends IBaseVO> {
+
 	public interface AsyncTestItem {
-		
+
 		void run(AsyncCallback<Object> asyncCallback);
 
 		String getDescription();
-		
+
 		boolean getStop();
-		
+
 	};
-	
+
 	public interface GwtTestCaseAdapter {
-		
+
 		void finishTest();
-		
+
 		void delayTestFinish(int delay);
 
 	};
@@ -47,7 +47,7 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO>  {
 	private LinkedList<AsyncTestItem> asyncTestItems = new LinkedList<AsyncTestItem>();
 
 	private Map<String, Object> asyncTestItemResults = new HashMap<String, Object>();
-	
+
 	public MangoAsyncGwtTestHelper(GwtTestCaseAdapter gwtTestCaseAdapter) {
 		this.gwtTestCaseAdapter = gwtTestCaseAdapter;
 	}
@@ -81,14 +81,16 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO>  {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
 
-				ModuleHandler.getInstance().startUIModule(DictionarySearchModule.geSearchModuleLocator(baseModel.getName()), null, new HashMap<String, Object>(), new BaseErrorAsyncCallback<IModuleUI>() {
+				AsyncCallback<IModuleUI> moduleCallback = new BaseErrorAsyncCallback<IModuleUI>() {
 
 					@Override
 					public void onSuccess(IModuleUI result) {
 						asyncTestItemResults.put(uuid, result);
 						asyncCallback.onSuccess(result);
 					}
-				});
+				};
+
+				ModuleHandler.getInstance().startUIModule(DictionarySearchModule.geSearchModuleLocator(baseModel.getName()), null, new HashMap<String, Object>(), Optional.of(moduleCallback));
 
 			}
 
@@ -107,14 +109,17 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO>  {
 		this.asyncTestItems.add(new BaseAsyncTestItem() {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
-				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getName()), null, new HashMap<String, Object>(), new BaseErrorAsyncCallback<IModuleUI>() {
+				
+				AsyncCallback<IModuleUI> moduleCallback = new BaseErrorAsyncCallback<IModuleUI>() {
 
 					@Override
 					public void onSuccess(IModuleUI result) {
 						asyncTestItemResults.put(uuid, result);
 						asyncCallback.onSuccess(result);
 					}
-				});
+				};
+				
+				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getName()), null, new HashMap<String, Object>(), Optional.of(moduleCallback));
 			}
 
 			@Override
@@ -125,21 +130,24 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO>  {
 
 		return new DictionaryEditorModuleTestUIAsyncHelper<VOType>(uuid, this.asyncTestItems, this.asyncTestItemResults);
 	}
-	
+
 	public DictionaryEditorModuleTestUIAsyncHelper<VOType> openEditor(final BaseModel baseModel, final long id) {
 		final String uuid = UUID.uuid();
 
 		this.asyncTestItems.add(new BaseAsyncTestItem() {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
-				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getName(), id), null, new HashMap<String, Object>(), new BaseErrorAsyncCallback<IModuleUI>() {
+				
+				AsyncCallback<IModuleUI> moduleCallback = new BaseErrorAsyncCallback<IModuleUI>() {
 
 					@Override
 					public void onSuccess(IModuleUI result) {
 						asyncTestItemResults.put(uuid, result);
 						asyncCallback.onSuccess(result);
 					}
-				});
+				};
+				
+				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getName(), id), null, new HashMap<String, Object>(), Optional.of(moduleCallback));
 			}
 
 			@Override

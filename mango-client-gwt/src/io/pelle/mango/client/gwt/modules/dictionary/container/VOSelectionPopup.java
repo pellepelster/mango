@@ -33,7 +33,6 @@ public class VOSelectionPopup<VOType extends IBaseVO> extends BaseVOSelectionPop
 		this.baseControls = baseControls;
 	}
 
-	@SuppressWarnings("unchecked")
 	private void refreshTable() {
 
 		SelectQuery<VOType> selectQuery = SelectQuery.selectFrom(voClass);

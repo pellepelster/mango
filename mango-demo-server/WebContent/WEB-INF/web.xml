@@ -20,8 +20,7 @@
             classpath:/DBBaseApplicationContext.xml,
             classpath:/MangoDemoDB-gen.xml,
             classpath:/MangoDemoBaseApplicationContext-gen.xml,
-            classpath:/MangoSpringServices-gen.xml,
-            classpath:/MangoGWTRemoteServices-gen.xml
+            classpath:/MangoSpringServices-gen.xml
 			</param-value>
 	</context-param>
 

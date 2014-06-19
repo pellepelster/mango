@@ -16,6 +16,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.google.common.base.Optional;
+
 /**
  * Checks all {@link IBaseVO} derived Vo's whether they contain values in
  * {@link NaturalKey} annotated properties that are already present in the
@@ -50,30 +52,34 @@ public class NaturalKeyValidator implements IValidator {
 		List<IValidationMessage> result = new ArrayList<IValidationMessage>();
 
 		SelectQuery<IBaseVO> selectQuery = (SelectQuery<IBaseVO>) SelectQuery.selectFrom(vo.getClass());
-		IBooleanExpression expression = null;
+		Optional<IBooleanExpression> expression = Optional.absent();
 		
 		for (IAttributeDescriptor<?> attributeDescriptor : new AnnotationIterator(vo.getClass(), NaturalKey.class))
 		{
-			IBooleanExpression compareExpression =  ExpressionFactory.createStringEqualsExpression(vo.getClass(), attributeDescriptor.getAttributeName(), vo.get(attributeDescriptor.getAttributeName()).toString());
+			Optional<IBooleanExpression> compareExpression =  ExpressionFactory.createStringEqualsExpression(vo.getClass(), attributeDescriptor.getAttributeName(), vo.get(attributeDescriptor.getAttributeName()).toString());
 
-			if (expression == null)
-			{
-				expression = compareExpression;
+			if (compareExpression.isPresent()) {
+				if (expression.isPresent()) {
+					expression = Optional.of(expression.get().and(compareExpression.get()));
+				} else {
+					expression = compareExpression;
+				}
 			}
-			else
-			{
-				expression = expression.and(compareExpression);
-			}
+
 		}
 		
-		selectQuery.where(expression);
-
-		List<IBaseVO> filterResult = this.baseVODAO.filter(selectQuery);
-
-		if (filterResult.size() > 1 || (filterResult.size() == 1 && filterResult.get(0).getOid() != vo.getOid()))
+		if (expression.isPresent())
 		{
-			result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY, CollectionUtils.getMap(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, vo.getNaturalKey())));
+			selectQuery.where(expression.get());
+			
+			List<IBaseVO> filterResult = this.baseVODAO.filter(selectQuery);
+
+			if (filterResult.size() > 1 || (filterResult.size() == 1 && filterResult.get(0).getOid() != vo.getOid()))
+			{
+				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY, CollectionUtils.getMap(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, vo.getNaturalKey())));
+			}
 		}
+
 
 		return result;
 	}

@@ -31,6 +31,11 @@ dependencies {
 gwt {
     gwtVersion = versions.gwt
     modules 'io.pelle.mango.demo.DemoClient'
+    
+	src += files(project(':mango-client-base').sourceSets.main.allJava.srcDirs) + 
+			files(project(':mango-client-core').sourceSets.main.allJava.srcDirs) + 
+			files(project(':mango-client-web').sourceSets.main.allJava.srcDirs) +
+			files(project(':mango-client-gwt').sourceSets.main.allJava.srcDirs)
 }
 
 libDir = new File('lib-gwt-test')
@@ -44,3 +49,4 @@ task copyGwtTestLibs(type: Copy) {
 test.dependsOn(copyGwtTestLibs)
 test.dependsOn(project(':mango-demo-server').tasks.test)
 
+//superDevTask.dependsOn(JavaPlugin.COMPILE_JAVA_TASK_NAME, JavaPlugin.PROCESS_RESOURCES_TASK_NAME);

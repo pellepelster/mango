@@ -10,7 +10,9 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.editor.IEditorModel;
 import io.pelle.mango.client.base.util.CollectionUtils;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.query.IExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.DictionaryElementUtil;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
@@ -89,8 +91,10 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 	public void load(long id, final AsyncCallback<Void> callback) {
 
-		SelectQuery<VOType> selectQuery = new SelectQuery<VOType>(IBaseVO.class);
-
+		SelectQuery<VOType> selectQuery = new SelectQuery<VOType>(dictionaryModel.getVOClass());
+		IExpression expression = ExpressionFactory.createLongExpression(dictionaryModel.getVOClass(), IBaseVO.ID_FIELD_NAME, id);
+		selectQuery.where(expression);
+		
 		if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent().getName())) {
 		}
 
@@ -148,7 +152,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 				Collection<BaseDictionaryElement<?>> baseDictionaryElements = DictionaryElementUtil.getElementsForAttributePath(getRootElement(), attributePath);
 
-				for (BaseDictionaryElement baseDictionaryElement : baseDictionaryElements) {
+				for (BaseDictionaryElement<?> baseDictionaryElement : baseDictionaryElements) {
 					baseDictionaryElement.addValidationMessage(validationMessage);
 				}
 			}

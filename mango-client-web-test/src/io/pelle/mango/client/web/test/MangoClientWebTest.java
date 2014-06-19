@@ -8,6 +8,7 @@ import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.HashMap;
 
+import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -31,7 +32,7 @@ public class MangoClientWebTest {
 	}
 
 	public <T extends IModuleUI> void startUIModule(final String moduleLocator, Class<T> moduleType, final String location, final AsyncCallback<T> asyncCallback) {
-		ModuleHandler.getInstance().startUIModule(moduleLocator, null, new HashMap<String, Object>(), (AsyncCallback<IModuleUI>) asyncCallback);
+		ModuleHandler.getInstance().startUIModule(moduleLocator, null, new HashMap<String, Object>(), Optional.fromNullable((AsyncCallback<IModuleUI>) asyncCallback));
 	}
 
 	public void deleteAllVOs(Class<? extends IBaseVO> voClass, final AsyncCallback asyncCallback) {

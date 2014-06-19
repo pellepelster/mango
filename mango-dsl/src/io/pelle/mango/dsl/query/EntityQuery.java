@@ -1,10 +1,6 @@
 package io.pelle.mango.dsl.query;
 
 import io.pelle.mango.dsl.mango.Entity;
-import io.pelle.mango.dsl.mango.EntityType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class EntityQuery
 {

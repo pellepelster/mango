@@ -32,7 +32,7 @@ public class Message implements IMessage, Serializable
 
 	private String humanMessage;
 
-	private Message()
+	public Message()
 	{
 		super();
 	}
