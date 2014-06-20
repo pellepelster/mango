@@ -24,6 +24,9 @@ class GWTServices {
 	
 		<bean id="gwtUrlMapping" class="org.gwtwidgets.server.spring.GWTHandler">
 			<property name="order" value="10"/>
+			<property name="serviceExporterFactory">
+				<ref bean="rpcServiceExporterFactory" />
+			</property>
 			<property name="mappings">
 				<map>
 					«FOR service: model.eAllContents.toIterable.filter(Service)»
@@ -32,6 +35,9 @@ class GWTServices {
 				</map>
 			</property>
 		</bean>
+
+		<bean id="rpcServiceExporterFactory" class="io.pelle.mango.server.gwt.MangoRPCServiceExporterFactory" />
+
 	</beans>
 	'''
 	

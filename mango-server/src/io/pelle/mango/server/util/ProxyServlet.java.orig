@@ -1,7 +1,6 @@
 package io.pelle.mango.server.util;
 
 import io.pelle.mango.client.base.util.XPathUtil;
-import io.pelle.mango.server.base.util.ProxyServletHeaders;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -64,10 +63,39 @@ public class ProxyServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
+	 * Key for redirect location header.
+	 */
+	private static final String STRING_LOCATION_HEADER_NAME = "Location";
+
+	/**
+	 * Key for content type header.
+	 */
+	private static final String STRING_CONTENT_ENGINE_HEADER_NAME = "Content-Type";
+
+	/**
+	 * Key for content length header.
+	 */
+	private static final String STRING_CONTENT_LENGTH_HEADER_NAME = "Content-Length";
+
+	/**
+	 * Key for host header
+	 */
+	private static final String STRING_HOST_HEADER_NAME = "Host";
+
+	/**
 	 * The directory to use to temporarily store uploaded files
 	 */
 	private static final File FILE_UPLOAD_TEMP_DIRECTORY = new File(System.getProperty("java.io.tmpdir"));
 
+	/**
+	 * Key for proxy servlet information
+	 */
+	public static final String PROXY_SERVLET_URL_HEADER_NAME = "X-ProxyServlet-Path";
+
+	/**
+	 * Original url
+	 */
+	public static final String PROXY_SERVLET_ORIGINAL_BASE_URL_HEADER_NAME = "X-ProxyServlet-OriginalPath";
 
 	/**
 	 * The host to which we are proxying requests. Default value is "localhost".
@@ -194,10 +222,10 @@ public class ProxyServlet extends HttpServlet {
 		// Hooray for open source software
 		if (proxyResponseCode >= HttpServletResponse.SC_MULTIPLE_CHOICES /* 300 */&& proxyResponseCode < HttpServletResponse.SC_NOT_MODIFIED /* 304 */) {
 			String statusCode = Integer.toString(proxyResponseCode);
-			String location = httpMethodProxyRequest.getResponseHeader(ProxyServletHeaders.STRING_LOCATION_HEADER_NAME).getValue();
+			String location = httpMethodProxyRequest.getResponseHeader(STRING_LOCATION_HEADER_NAME).getValue();
 
 			if (location == null) {
-				throw new ServletException("Received status code: " + statusCode + " but no " + ProxyServletHeaders.STRING_LOCATION_HEADER_NAME + " header was found in the response");
+				throw new ServletException("Received status code: " + statusCode + " but no " + STRING_LOCATION_HEADER_NAME + " header was found in the response");
 			}
 			// Modify the redirect to go to this proxy servlet rather that the
 			// proxied host
@@ -232,7 +260,7 @@ public class ProxyServlet extends HttpServlet {
 			// header and the data on disk has not changed; server
 			// responds w/ a 304 saying I'm not going to send the
 			// body because the file has not changed.
-			httpServletResponse.setIntHeader(ProxyServletHeaders.STRING_CONTENT_LENGTH_HEADER_NAME, 0);
+			httpServletResponse.setIntHeader(STRING_CONTENT_LENGTH_HEADER_NAME, 0);
 			httpServletResponse.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
 			return;
 		}
@@ -271,10 +299,10 @@ public class ProxyServlet extends HttpServlet {
 
 		if (isBodyParameterGzipped(responseHeaders)) {
 			if (!this.followRedirects && proxyResponseCode == HttpServletResponse.SC_MOVED_TEMPORARILY) {
-				response = httpMethodProxyRequest.getResponseHeader(ProxyServletHeaders.STRING_LOCATION_HEADER_NAME).getValue();
+				response = httpMethodProxyRequest.getResponseHeader(STRING_LOCATION_HEADER_NAME).getValue();
 				httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 				proxyResponseCode = HttpServletResponse.SC_OK;
-				httpServletResponse.setHeader(ProxyServletHeaders.STRING_LOCATION_HEADER_NAME, response);
+				httpServletResponse.setHeader(STRING_LOCATION_HEADER_NAME, response);
 			} else {
 				response = new String(ungzip(httpMethodProxyRequest.getResponseBody()));
 			}
@@ -462,7 +490,7 @@ public class ProxyServlet extends HttpServlet {
 			// request. However, we are creating a new request with a new chunk
 			// boundary string, so it is necessary that we re-set the
 			// content-type string to reflect the new chunk boundary string
-			postMethodProxyRequest.setRequestHeader(ProxyServletHeaders.STRING_CONTENT_ENGINE_HEADER_NAME, multipartRequestEntity.getContentType());
+			postMethodProxyRequest.setRequestHeader(STRING_CONTENT_ENGINE_HEADER_NAME, multipartRequestEntity.getContentType());
 		} catch (FileUploadException fileUploadException) {
 			throw new ServletException(fileUploadException);
 		}
@@ -612,7 +640,7 @@ public class ProxyServlet extends HttpServlet {
 		Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
 		while (headerNames.hasMoreElements()) {
 			String headerName = headerNames.nextElement();
-			if (headerName.equalsIgnoreCase(ProxyServletHeaders.STRING_CONTENT_LENGTH_HEADER_NAME)) {
+			if (headerName.equalsIgnoreCase(STRING_CONTENT_LENGTH_HEADER_NAME)) {
 				continue;
 			}
 
@@ -629,7 +657,7 @@ public class ProxyServlet extends HttpServlet {
 				// In case the proxy host is running multiple virtual servers,
 				// rewrite the Host header to ensure that we get content from
 				// the correct virtual server
-				if (headerName.equalsIgnoreCase(ProxyServletHeaders.STRING_HOST_HEADER_NAME)) {
+				if (headerName.equalsIgnoreCase(STRING_HOST_HEADER_NAME)) {
 					headerValue = getProxyHostAndPort();
 				}
 
@@ -639,8 +667,8 @@ public class ProxyServlet extends HttpServlet {
 			}
 		}
 
-		Header proxyHeader = new Header(ProxyServletHeaders.PROXY_SERVLET_URL_HEADER_NAME, getProxyURL());
-		Header originalUrlHeader = new Header(ProxyServletHeaders.PROXY_SERVLET_ORIGINAL_BASE_URL_HEADER_NAME, getOriginalURL(httpServletRequest));
+		Header proxyHeader = new Header(PROXY_SERVLET_URL_HEADER_NAME, getProxyURL());
+		Header originalUrlHeader = new Header(PROXY_SERVLET_ORIGINAL_BASE_URL_HEADER_NAME, getOriginalURL(httpServletRequest));
 
 		// Set the same header on the proxy request
 		httpMethodProxyRequest.setRequestHeader(proxyHeader);

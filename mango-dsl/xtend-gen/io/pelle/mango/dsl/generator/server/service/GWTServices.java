@@ -47,6 +47,15 @@ public class GWTServices {
     _builder.append("<property name=\"order\" value=\"10\"/>");
     _builder.newLine();
     _builder.append("\t\t");
+    _builder.append("<property name=\"serviceExporterFactory\">");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.append("<ref bean=\"rpcServiceExporterFactory\" />");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("</property>");
+    _builder.newLine();
+    _builder.append("\t\t");
     _builder.append("<property name=\"mappings\">");
     _builder.newLine();
     _builder.append("\t\t\t");
@@ -76,6 +85,11 @@ public class GWTServices {
     _builder.newLine();
     _builder.append("\t");
     _builder.append("</bean>");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("<bean id=\"rpcServiceExporterFactory\" class=\"io.pelle.mango.server.gwt.MangoRPCServiceExporterFactory\" />");
+    _builder.newLine();
     _builder.newLine();
     _builder.append("</beans>");
     _builder.newLine();

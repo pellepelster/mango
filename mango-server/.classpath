@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
 	<classpathentry kind="src" path="/mango-server-base" exported="true"/>
 	<classpathentry kind="src" path="/mango-db" exported="true"/>
