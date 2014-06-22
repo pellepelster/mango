@@ -9,6 +9,10 @@ class AttributeUtils {
 	@Inject
 	extension NameUtils
 
+	def boolean isNaturalKeyAttribute(EntityAttribute entityAttribute) {
+		return entityAttribute.parentEntity.naturalKeyAttributes.contains(entityAttribute)
+	}
+
 	def Entity getParentEntity(EntityAttribute entityAttribute) {
 		return entityAttribute.eContainer as Entity;
 	}

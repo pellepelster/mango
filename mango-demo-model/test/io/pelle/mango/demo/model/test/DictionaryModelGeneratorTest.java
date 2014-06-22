@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import io.pelle.mango.test.client.MangoDemoDictionaryModel;
 
 import org.junit.Test;
@@ -16,4 +17,10 @@ public class DictionaryModelGeneratorTest {
 	public void testStringDatatype1GetAttributePath() {
 		assertEquals("stringDatatype1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getAttributePath());
 	}
+
+	@Test
+	public void testNauralKeyIsMandatory() {
+		assertTrue(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.isMandatory());
+	}
+
 }

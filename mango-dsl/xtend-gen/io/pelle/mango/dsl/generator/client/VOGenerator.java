@@ -331,17 +331,15 @@ public class VOGenerator extends BaseEntityGenerator {
   public CharSequence changeTrackingAttributeGetterSetter(final EntityAttribute attribute) {
     StringConcatenation _builder = new StringConcatenation();
     {
-      Entity _parentEntity = this._attributeUtils.getParentEntity(attribute);
-      EList<EntityAttribute> _naturalKeyAttributes = _parentEntity.getNaturalKeyAttributes();
-      boolean _contains = _naturalKeyAttributes.contains(attribute);
-      if (_contains) {
+      boolean _isNaturalKeyAttribute = this._attributeUtils.isNaturalKeyAttribute(attribute);
+      if (_isNaturalKeyAttribute) {
         _builder.append("@");
         String _name = NaturalKey.class.getName();
         _builder.append(_name, "");
         _builder.append("( order = ");
-        Entity _parentEntity_1 = ModelUtil.getParentEntity(attribute);
-        EList<EntityAttribute> _naturalKeyAttributes_1 = _parentEntity_1.getNaturalKeyAttributes();
-        int _indexOf = _naturalKeyAttributes_1.indexOf(attribute);
+        Entity _parentEntity = ModelUtil.getParentEntity(attribute);
+        EList<EntityAttribute> _naturalKeyAttributes = _parentEntity.getNaturalKeyAttributes();
+        int _indexOf = _naturalKeyAttributes.indexOf(attribute);
         _builder.append(_indexOf, "");
         _builder.append(")");
       }
@@ -354,12 +352,12 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.append(_attribute, "");
     _builder.newLineIfNotEmpty();
     {
-      Entity _parentEntity_2 = this._attributeUtils.getParentEntity(attribute);
-      boolean _isExtendedByOtherEntity = this._entityUtils.isExtendedByOtherEntity(_parentEntity_2);
+      Entity _parentEntity_1 = this._attributeUtils.getParentEntity(attribute);
+      boolean _isExtendedByOtherEntity = this._entityUtils.isExtendedByOtherEntity(_parentEntity_1);
       boolean _not = (!_isExtendedByOtherEntity);
       if (_not) {
-        Entity _parentEntity_3 = this._attributeUtils.getParentEntity(attribute);
-        CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(attribute, _parentEntity_3);
+        Entity _parentEntity_2 = this._attributeUtils.getParentEntity(attribute);
+        CharSequence _compileEntityAttributeDescriptor = this._clientTypeUtils.compileEntityAttributeDescriptor(attribute, _parentEntity_2);
         _builder.append(_compileEntityAttributeDescriptor, "");
         _builder.newLineIfNotEmpty();
       }

@@ -113,7 +113,7 @@ class VOGenerator extends BaseEntityGenerator {
 	'''
 
 	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
-		«IF attribute.parentEntity.naturalKeyAttributes.contains(attribute)»@«NaturalKey.name»( order = «ModelUtil.getParentEntity(attribute).naturalKeyAttributes.indexOf(attribute)»)«ENDIF»
+		«IF attribute.naturalKeyAttribute»@«NaturalKey.name»( order = «ModelUtil.getParentEntity(attribute).naturalKeyAttributes.indexOf(attribute)»)«ENDIF»
 		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
 		«IF !attribute.parentEntity.extendedByOtherEntity»
 		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»

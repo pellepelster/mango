@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import io.pelle.mango.dsl.generator.util.NameUtils;
 import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.EntityAttribute;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -15,6 +16,12 @@ public class AttributeUtils {
   @Inject
   @Extension
   private NameUtils _nameUtils;
+  
+  public boolean isNaturalKeyAttribute(final EntityAttribute entityAttribute) {
+    Entity _parentEntity = this.getParentEntity(entityAttribute);
+    EList<EntityAttribute> _naturalKeyAttributes = _parentEntity.getNaturalKeyAttributes();
+    return _naturalKeyAttributes.contains(entityAttribute);
+  }
   
   public Entity getParentEntity(final EntityAttribute entityAttribute) {
     EObject _eContainer = entityAttribute.eContainer();

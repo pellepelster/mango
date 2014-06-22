@@ -13,6 +13,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.IntegerContr
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel
 import io.pelle.mango.dsl.ModelUtil
+import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.DictionaryBigDecimalControl
 import io.pelle.mango.dsl.mango.DictionaryBooleanControl
@@ -34,6 +35,9 @@ class DictionaryControls {
 
 	@Inject 
 	extension TypeUtils
+	
+	@Inject 
+	extension AttributeUtils
 
 	def dictionaryControlClass(DictionaryControl dictionaryControl) ''''''
 
@@ -64,6 +68,11 @@ class DictionaryControls {
 			
 			«IF dictionaryControl.baseControl.entityattribute != null»
 				«dictionaryControl.dictionaryConstantName».setAttributePath("«dictionaryControl.baseControl.entityattribute.name»");
+				
+				«IF dictionaryControl.baseControl.entityattribute.naturalKeyAttribute»
+					// natural key attribute
+					«dictionaryControl.dictionaryConstantName».setMandatory(true);
+				«ENDIF»
 			«ENDIF»
 		
 			«IF dictionaryControl.baseControl.labels != null»

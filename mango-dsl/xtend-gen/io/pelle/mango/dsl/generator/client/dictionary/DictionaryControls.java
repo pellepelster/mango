@@ -15,6 +15,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceCon
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel;
 import io.pelle.mango.dsl.ModelUtil;
 import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNameUtils;
+import io.pelle.mango.dsl.generator.util.AttributeUtils;
 import io.pelle.mango.dsl.generator.util.TypeUtils;
 import io.pelle.mango.dsl.mango.BaseDictionaryControl;
 import io.pelle.mango.dsl.mango.Dictionary;
@@ -46,6 +47,10 @@ public class DictionaryControls {
   @Inject
   @Extension
   private TypeUtils _typeUtils;
+  
+  @Inject
+  @Extension
+  private AttributeUtils _attributeUtils;
   
   public CharSequence dictionaryControlClass(final DictionaryControl dictionaryControl) {
     StringConcatenation _builder = new StringConcatenation();
@@ -133,17 +138,34 @@ public class DictionaryControls {
             _builder.append(_name, "\t");
             _builder.append("\");");
             _builder.newLineIfNotEmpty();
+            _builder.append("\t");
+            _builder.newLine();
+            {
+              BaseDictionaryControl _baseControl_4 = dictionaryControl.getBaseControl();
+              EntityAttribute _entityattribute_2 = _baseControl_4.getEntityattribute();
+              boolean _isNaturalKeyAttribute = this._attributeUtils.isNaturalKeyAttribute(_entityattribute_2);
+              if (_isNaturalKeyAttribute) {
+                _builder.append("\t");
+                _builder.append("// natural key attribute");
+                _builder.newLine();
+                _builder.append("\t");
+                String _dictionaryConstantName_2 = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
+                _builder.append(_dictionaryConstantName_2, "\t");
+                _builder.append(".setMandatory(true);");
+                _builder.newLineIfNotEmpty();
+              }
+            }
           }
         }
         _builder.newLine();
         {
-          BaseDictionaryControl _baseControl_4 = dictionaryControl.getBaseControl();
-          Labels _labels = _baseControl_4.getLabels();
+          BaseDictionaryControl _baseControl_5 = dictionaryControl.getBaseControl();
+          Labels _labels = _baseControl_5.getLabels();
           boolean _notEquals_2 = (!Objects.equal(_labels, null));
           if (_notEquals_2) {
             _builder.append("\t");
-            BaseDictionaryControl _baseControl_5 = dictionaryControl.getBaseControl();
-            Labels _labels_1 = _baseControl_5.getLabels();
+            BaseDictionaryControl _baseControl_6 = dictionaryControl.getBaseControl();
+            Labels _labels_1 = _baseControl_6.getLabels();
             CharSequence _dictionaryControlLabelSetters = this.dictionaryControlLabelSetters(dictionaryControl, _labels_1);
             _builder.append(_dictionaryControlLabelSetters, "\t");
             _builder.newLineIfNotEmpty();
