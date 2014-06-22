@@ -22,26 +22,19 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import java.util.Collections;
 import java.util.List;
 
-public class MandatoryValidator extends BaseValidator
-{
-	private boolean isEmpty(Object value)
-	{
+public class MandatoryValidator extends BaseValidator {
+	private boolean isEmpty(Object value) {
 		return value == null || value.toString().isEmpty();
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public List<IValidationMessage> validate(Object value, IContentAwareModel databindingAwareModel)
-	{
-		if (isEmpty(value) && databindingAwareModel instanceof IBaseControlModel)
-		{
+	public List<IValidationMessage> validate(Object value, IContentAwareModel databindingAwareModel) {
+		if (isEmpty(value) && databindingAwareModel instanceof IBaseControlModel) {
 			IBaseControlModel baseControlModel = (IBaseControlModel) databindingAwareModel;
 
-			return resultListHelper(new ValidationMessage(IMessage.SEVERITY.ERROR, MandatoryValidator.class.getName(),
-					MangoClientWeb.MESSAGES.mandatoryMessage(DictionaryModelUtil.getEditorLabel(baseControlModel))));
-		}
-		else
-		{
+			return resultListHelper(new ValidationMessage(IMessage.SEVERITY.ERROR, MandatoryValidator.class.getName(), MangoClientWeb.MESSAGES.mandatoryMessage(DictionaryModelUtil.getEditorLabel(baseControlModel))));
+		} else {
 			return Collections.emptyList();
 		}
 	}

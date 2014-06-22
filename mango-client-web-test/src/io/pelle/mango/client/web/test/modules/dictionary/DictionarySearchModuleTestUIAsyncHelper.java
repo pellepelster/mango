@@ -83,7 +83,7 @@ public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 						asyncCallback.onSuccess(result);
 					}
 				};
-				
+
 				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName, 0), null, new HashMap<String, Object>(), Optional.of(moduleCallback));
 			}
 
@@ -118,7 +118,7 @@ public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 
 	public void getResultList(final BaseErrorAsyncCallback<List<ITableRow<VOType>>> resultListAsyncCallback) {
 		this.getAsyncTestItems().add(new AsyncTestItem() {
-			
+
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				resultListAsyncCallback.onSuccess(getAsyncTestItemResult().getDictionarySearch().getDictionaryResult().getRows());
@@ -129,10 +129,6 @@ public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 				return "getResultList";
 			}
 
-			@Override
-			public boolean getStop() {
-				return true;
-			}
 		});
 	}
 }

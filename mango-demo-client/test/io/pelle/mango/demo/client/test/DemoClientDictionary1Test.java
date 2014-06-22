@@ -14,7 +14,6 @@ package io.pelle.mango.demo.client.test;
 import io.pelle.mango.client.base.db.vos.UUID;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper;
-import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper.GwtTestCaseAdapter;
 import io.pelle.mango.client.web.test.MangoClientWebTest;
 import io.pelle.mango.client.web.test.modules.dictionary.DictionaryEditorModuleTestUIAsyncHelper;
 import io.pelle.mango.client.web.test.modules.dictionary.DictionarySearchModuleTestUIAsyncHelper;
@@ -26,48 +25,35 @@ import io.pelle.mango.test.client.MangoDemoDictionaryModel;
 
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.google.gwt.junit.client.GWTTestCase;
-
-public class DemoClientDictionary1Test extends GWTTestCase {
+public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO> {
 
 	@Override
 	public String getModuleName() {
 		return "io.pelle.mango.demo.DemoClientTest";
 	}
 
+	@Override
+	protected void gwtSetUp() throws Exception {
+		MangoClientWebTest.getInstance();
+		MangoDemoClientConfiguration.registerAll();
+	}
+
 	@Test
-	public void testSimpleCreateAndSearchOpenEditor(MangoAsyncGwtTestHelper<Entity1VO> mangoTestHelper, long id, String text) {
+	public void testSimpleCreateAndSearchOpenEditor(long id, String text) {
 
-		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = mangoTestHelper.openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1, id);
-
+		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1, id);
 		TextControlTestAsyncHelper textControl = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
 		textControl.assertValue(text);
 
-		mangoTestHelper.runAsyncTests();
+		runAsyncTests();
 	}
 
 	@Test
 	public void testSimpleCreateAndSearch() {
 
-		MangoClientWebTest.getInstance();
-		MangoDemoClientConfiguration.registerAll();
-		final MangoAsyncGwtTestHelper<Entity1VO> mangoTestHelper = new MangoAsyncGwtTestHelper<Entity1VO>(new GwtTestCaseAdapter() {
-
-			@Override
-			public void finishTest() {
-				DemoClientDictionary1Test.this.finishTest();
-			}
-
-			@Override
-			public void delayTestFinish(int delay) {
-				DemoClientDictionary1Test.this.delayTestFinish(delay);
-			}
-		});
-
-		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = mangoTestHelper.openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
 
 		final String text = UUID.uuid();
 
@@ -76,7 +62,7 @@ public class DemoClientDictionary1Test extends GWTTestCase {
 		textControl.setValue(text);
 		editor.save();
 
-		DictionarySearchModuleTestUIAsyncHelper<Entity1VO> search = mangoTestHelper.openSearch(MangoDemoDictionaryModel.TESTDICTIONARY1);
+		DictionarySearchModuleTestUIAsyncHelper<Entity1VO> search = openSearch(MangoDemoDictionaryModel.TESTDICTIONARY1);
 		textControl = search.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.TEXTCONTROL1);
 		textControl.setValue(text);
 		search.execute();
@@ -85,34 +71,33 @@ public class DemoClientDictionary1Test extends GWTTestCase {
 		search.getResultList(new BaseErrorAsyncCallback<List<ITableRow<Entity1VO>>>() {
 			@Override
 			public void onSuccess(List<ITableRow<Entity1VO>> result) {
-				testSimpleCreateAndSearchOpenEditor(mangoTestHelper, result.get(0).getVO().getId(), text);
+				testSimpleCreateAndSearchOpenEditor(result.get(0).getVO().getId(), text);
 			}
 		});
 
-		mangoTestHelper.runAsyncTests();
+		runAsyncTests();
 	}
 
 	@Test
-	@Ignore
 	public void testTextControl() {
 
-		// MangoClientWebTest.getInstance();
-		// MangoDemoClientConfiguration.registerAll();
-		//
-		// DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor =
-		// openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
-		//
-		// // text control TextControlTestAsyncHelper textControl =
-		// editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
-		// //
-		// textControl.assertMandatory(); // //
-		// textControl.assertHasNoErrors(); // textControl.setValue("xxx");
-		// // // textControl.assertHasNoErrors(); //
-		// textControl.setValue(null); //
-		// textControl.assertHasErrorWithText("Input is needed for field \"TextControl1\"");
-		// //
-		// editor.assertHasErrors(1);
-		//
+		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+
+		// text control
+		TextControlTestAsyncHelper textControl = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+
+		// natural key field is always mandatory
+		textControl.assertMandatory();
+
+		// test mandatory handling
+		textControl.assertHasNoErrors();
+		textControl.setValue("xxx");
+		textControl.assertHasNoErrors();
+		textControl.setValue("");
+		textControl.assertHasErrorWithText("Input is needed for field \"Textcontrol1\"");
+
+		editor.assertHasErrors(1);
+
 		// String text = UUID.uuid();
 		//
 		// textControl.setValue(text); // textControl.assertHasNoErrors();
@@ -131,8 +116,8 @@ public class DemoClientDictionary1Test extends GWTTestCase {
 		// textControl.setValue(text); // editor.save(); //
 		// textControl.assertHasErrors(); //
 		// textControl.assertHasErrorWithText("Duplicate value");
-		//
-		// runAsyncTests();
+
+		runAsyncTests();
 	}
 
 }

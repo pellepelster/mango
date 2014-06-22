@@ -9,11 +9,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class RecursiveAsyncCallback implements AsyncCallback<Object> {
+
 	private final LinkedList<AsyncTestItem> asyncTestItems;
 
 	private final AsyncCallback finalCallback;
-
-	private boolean hasStop = false;
 
 	public RecursiveAsyncCallback(LinkedList<AsyncTestItem> asyncTestItems, AsyncCallback<?> finalCallback) {
 		super();
@@ -28,22 +27,14 @@ public class RecursiveAsyncCallback implements AsyncCallback<Object> {
 
 	@Override
 	public void onSuccess(Object result) {
-		if (!this.asyncTestItems.isEmpty()) {
-			AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
 
-			
-			if (asyncTestItem.getStop()) {
-				hasStop = true;
-			}
+		if (this.asyncTestItems.isEmpty()) {
+			this.finalCallback.onSuccess(result);
+		} else {
+			AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
 
 			GWT.log("running async test item '" + asyncTestItem.getDescription() + "'");
 			asyncTestItem.run(new RecursiveAsyncCallback(this.asyncTestItems, this.finalCallback));
-
-		} else {
-			if (!hasStop)
-			{
-				this.finalCallback.onSuccess(result);
-			}
 		}
 
 	}

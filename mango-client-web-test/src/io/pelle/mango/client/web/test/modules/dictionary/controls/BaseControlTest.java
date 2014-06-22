@@ -9,6 +9,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
 public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, ValueType> implements IControlUpdateListener {
@@ -57,13 +58,14 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 	}
 
 	public void assertHasErrorWithText(String text) {
+
 		for (IValidationMessage validationMessage : this.validationMessages) {
-			if (validationMessage.getMessage().contains(text)) {
+			if (validationMessage.getMessage().equals(text)) {
 				return;
 			}
 		}
 
-		Assert.fail("message with containing '" + text + "' not found");
+		Assert.fail("message with containing '" + text + "' not found (messages: " + Joiner.on(", ").join(validationMessages) + ")");
 	}
 
 	@Override

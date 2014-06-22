@@ -19,10 +19,13 @@ import java.util.Map;
 
 import com.google.common.base.Optional;
 import com.google.gwt.core.shared.GWT;
+import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
-public class MangoAsyncGwtTestHelper<VOType extends IBaseVO> {
+public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GWTTestCase {
+
+	private int runningCounter = 0;
 
 	public interface AsyncTestItem {
 
@@ -30,26 +33,13 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO> {
 
 		String getDescription();
 
-		boolean getStop();
-
 	};
-
-	public interface GwtTestCaseAdapter {
-
-		void finishTest();
-
-		void delayTestFinish(int delay);
-
-	};
-
-	private GwtTestCaseAdapter gwtTestCaseAdapter;
 
 	private LinkedList<AsyncTestItem> asyncTestItems = new LinkedList<AsyncTestItem>();
 
 	private Map<String, Object> asyncTestItemResults = new HashMap<String, Object>();
 
-	public MangoAsyncGwtTestHelper(GwtTestCaseAdapter gwtTestCaseAdapter) {
-		this.gwtTestCaseAdapter = gwtTestCaseAdapter;
+	public MangoAsyncGwtTestHelper() {
 	}
 
 	public MangoAsyncGwtTestHelper<VOType> deleteAllVOs(final Class<VOType> voClass) {
@@ -109,7 +99,7 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO> {
 		this.asyncTestItems.add(new BaseAsyncTestItem() {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
-				
+
 				AsyncCallback<IModuleUI> moduleCallback = new BaseErrorAsyncCallback<IModuleUI>() {
 
 					@Override
@@ -118,7 +108,7 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO> {
 						asyncCallback.onSuccess(result);
 					}
 				};
-				
+
 				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getName()), null, new HashMap<String, Object>(), Optional.of(moduleCallback));
 			}
 
@@ -137,7 +127,7 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO> {
 		this.asyncTestItems.add(new BaseAsyncTestItem() {
 			@Override
 			public void run(final AsyncCallback<Object> asyncCallback) {
-				
+
 				AsyncCallback<IModuleUI> moduleCallback = new BaseErrorAsyncCallback<IModuleUI>() {
 
 					@Override
@@ -146,7 +136,7 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO> {
 						asyncCallback.onSuccess(result);
 					}
 				};
-				
+
 				ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getName(), id), null, new HashMap<String, Object>(), Optional.of(moduleCallback));
 			}
 
@@ -160,18 +150,26 @@ public class MangoAsyncGwtTestHelper<VOType extends IBaseVO> {
 	}
 
 	public void runAsyncTests() {
+
+		runningCounter++;
+
 		AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
 
 		GWT.log("runnung async test item '" + asyncTestItem.toString() + "'");
+
 		asyncTestItem.run(new RecursiveAsyncCallback(this.asyncTestItems, new BaseErrorAsyncCallback<Object>() {
 			@Override
 			public void onSuccess(Object result) {
-				asyncTestItemResults.clear();
-				MangoAsyncGwtTestHelper.this.gwtTestCaseAdapter.finishTest();
+
+				runningCounter--;
+
+				if (MangoAsyncGwtTestHelper.this.asyncTestItems.isEmpty() && (runningCounter == 0)) {
+					MangoAsyncGwtTestHelper.this.finishTest();
+				}
 			}
 
 		}));
 
-		gwtTestCaseAdapter.delayTestFinish(1000 * 60 * 5);
+		MangoAsyncGwtTestHelper.this.delayTestFinish(1000 * 60 * 5);
 	}
 }

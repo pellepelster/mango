@@ -25,7 +25,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings("rawtypes")
 public class DictionaryEditorModuleTestUIAsyncHelper<VOType extends IBaseVO> extends BaseDictionaryModuleTestUIAsyncHelper<DictionaryEditorModuleTestUI> {
-	
+
 	public DictionaryEditorModuleTestUIAsyncHelper(String asynTestItemResultId, LinkedList<AsyncTestItem> asyncTestItems, Map<String, Object> asyncTestItemResults) {
 		super(asynTestItemResultId, asyncTestItems, asyncTestItemResults);
 	}
