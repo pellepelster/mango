@@ -55,7 +55,6 @@ war {
 	from 'war'
 	webInf { from 'WebContent/WEB-INF' }
 	metaInf { from 'WebContent/META-INF' }
-	
 	from project(':mango-demo-client').tasks.compileGwt.outputs
 }
 

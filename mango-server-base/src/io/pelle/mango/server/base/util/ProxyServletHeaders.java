@@ -22,11 +22,12 @@ public interface ProxyServletHeaders {
 	 */
 	static final String STRING_HOST_HEADER_NAME = "Host";
 
-
 	/**
 	 * Key for proxy servlet information
 	 */
 	static final String PROXY_SERVLET_URL_HEADER_NAME = "X-ProxyServlet-Path";
+
+	static final String GWT_FORWARDED_TO = "x-gwt-forwarded-to";
 
 	/**
 	 * Original url

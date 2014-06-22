@@ -19,6 +19,25 @@ public class MangoGWTRPCServiceExporter extends GWTRPCServiceExporter {
 	@Override
 	protected SerializationPolicy doGetSerializationPolicy(HttpServletRequest request, String moduleBaseURL, String strongName) {
 
+		if (request.getHeader(ProxyServletHeaders.GWT_FORWARDED_TO) != null) {
+
+			String gwtForwardedTo = request.getHeader(ProxyServletHeaders.GWT_FORWARDED_TO);
+
+			try {
+				URL url = new URL(moduleBaseURL);
+				String newModuleBaseURl = gwtForwardedTo + url.getFile();
+				SerializationPolicy serializationPolicy = super.doGetSerializationPolicy(request, newModuleBaseURl, strongName);
+
+				if (serializationPolicy != null) {
+					return serializationPolicy;
+				}
+
+			} catch (MalformedURLException e) {
+				throw new RuntimeException(e);
+			}
+
+		}
+
 		String newModuleBaseUrl = moduleBaseURL;
 		String originalModuleBaseURL = moduleBaseURL;
 
@@ -64,5 +83,4 @@ public class MangoGWTRPCServiceExporter extends GWTRPCServiceExporter {
 		return super.doGetSerializationPolicy(request, moduleBaseURL, strongName);
 
 	}
-
 }
