@@ -45,41 +45,41 @@ public class NaturalKeyValidator implements IValidator {
 	}
 
 	@Override
-	public List<IValidationMessage> validate(Object o)
-	{
+	public List<IValidationMessage> validate(Object o) {
 		IBaseVO vo = (IBaseVO) o;
-		
+
 		List<IValidationMessage> result = new ArrayList<IValidationMessage>();
 
 		SelectQuery<IBaseVO> selectQuery = (SelectQuery<IBaseVO>) SelectQuery.selectFrom(vo.getClass());
 		Optional<IBooleanExpression> expression = Optional.absent();
-		
-		for (IAttributeDescriptor<?> attributeDescriptor : new AnnotationIterator(vo.getClass(), NaturalKey.class))
-		{
-			Optional<IBooleanExpression> compareExpression =  ExpressionFactory.createStringEqualsExpression(vo.getClass(), attributeDescriptor.getAttributeName(), vo.get(attributeDescriptor.getAttributeName()).toString());
 
-			if (compareExpression.isPresent()) {
-				if (expression.isPresent()) {
-					expression = Optional.of(expression.get().and(compareExpression.get()));
-				} else {
-					expression = compareExpression;
+		for (IAttributeDescriptor<?> attributeDescriptor : new AnnotationIterator(vo.getClass(), NaturalKey.class)) {
+			Optional<Object> naturalKey = Optional.fromNullable(vo.get(attributeDescriptor.getAttributeName()));
+
+			if (naturalKey.isPresent() && !naturalKey.get().toString().isEmpty()) {
+				Optional<IBooleanExpression> compareExpression = ExpressionFactory.createStringEqualsExpression(vo.getClass(), attributeDescriptor.getAttributeName(), vo.get(attributeDescriptor.getAttributeName()).toString());
+
+				if (compareExpression.isPresent()) {
+					if (expression.isPresent()) {
+						expression = Optional.of(expression.get().and(compareExpression.get()));
+					} else {
+						expression = compareExpression;
+					}
 				}
+			} else {
+				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY_MANDATORY, CollectionUtils.getMap(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, attributeDescriptor.getAttributeName())));
 			}
-
 		}
-		
-		if (expression.isPresent())
-		{
+
+		if (expression.isPresent()) {
 			selectQuery.where(expression.get());
-			
+
 			List<IBaseVO> filterResult = this.baseVODAO.filter(selectQuery);
 
-			if (filterResult.size() > 1 || (filterResult.size() == 1 && filterResult.get(0).getOid() != vo.getOid()))
-			{
+			if (filterResult.size() > 1 || (filterResult.size() == 1 && filterResult.get(0).getOid() != vo.getOid())) {
 				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY, CollectionUtils.getMap(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, vo.getNaturalKey())));
 			}
 		}
-
 
 		return result;
 	}

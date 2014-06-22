@@ -19,7 +19,7 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
-	
+
 	@Autowired
 	private IBaseVODAO baseVODAO;
 
@@ -37,7 +37,7 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 	public void testFilter() {
 
 		baseVODAO.deleteAll(Entity1VO.class);
-		
+
 		Entity1VO entity1VO = new Entity1VO();
 		entity1VO.setStringDatatype1("aaa");
 
@@ -45,12 +45,11 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 
 		assertEquals("aaa", result.getVO().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());
-		
-		
+
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
 		assertEquals(1, filterResult.size());
 	}
-	
+
 	@Test
 	public void testValidateAndSave() {
 
@@ -67,7 +66,7 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 	public void testValidateAndCreate() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
-		
+
 		Entity1VO entity1VO = new Entity1VO();
 		entity1VO.setStringDatatype1("aaa");
 
@@ -78,8 +77,19 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 	}
 
 	@Test
-	public void testValidateAndSaveDuplicateNaturalKey()
-	{
+	public void testValidateAndSaveEmptyNaturalKey() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		Entity1VO entity1VO = new Entity1VO();
+		Result<Entity1VO> result1 = this.baseEntityService.validateAndSave(entity1VO);
+		assertEquals(1, result1.getValidationMessages().size());
+
+		assertEquals("Natural key attribute \"stringDatatype1\" can not be empty", result1.getValidationMessages().get(0).getMessage());
+	}
+
+	@Test
+	public void testValidateAndSaveDuplicateNaturalKey() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
 		Entity1VO entity1VO = new Entity1VO();

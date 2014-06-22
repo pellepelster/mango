@@ -26,6 +26,7 @@ import io.pelle.mango.test.client.MangoDemoDictionaryModel;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.gwt.junit.client.GWTTestCase;
@@ -44,7 +45,7 @@ public class DemoClientDictionary1Test extends GWTTestCase {
 
 		TextControlTestAsyncHelper textControl = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
 		textControl.assertValue(text);
-		
+
 		mangoTestHelper.runAsyncTests();
 	}
 
@@ -91,47 +92,47 @@ public class DemoClientDictionary1Test extends GWTTestCase {
 		mangoTestHelper.runAsyncTests();
 	}
 
-	/**
-	 * @Test
-	 * @Ignore public void testTextControl() {
-	 * 
-	 *         MangoClientWebTest.getInstance();
-	 *         MangoDemoClientConfiguration.registerAll();
-	 * 
-	 *         DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor =
-	 *         openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
-	 * 
-	 *         // text control TextControlTestAsyncHelper textControl =
-	 *         editor.getTextControlTest
-	 *         (MangoDemoDictionaryModel.TESTDICTIONARY1
-	 *         .DICTIONARY_EDITOR1.TEXTCONTROL1); //
-	 *         textControl.assertMandatory(); // //
-	 *         textControl.assertHasNoErrors(); // textControl.setValue("xxx");
-	 *         // // textControl.assertHasNoErrors(); //
-	 *         textControl.setValue(null); //
-	 *         textControl.assertHasErrorWithText(
-	 *         "Input is needed for field \"TextControl1\""); //
-	 *         editor.assertHasErrors(1);
-	 * 
-	 *         String text = UUID.uuid();
-	 * 
-	 *         textControl.setValue(text); // textControl.assertHasNoErrors();
-	 *         // editor.assertHasErrors(0);
-	 * 
-	 *         editor.save();
-	 * 
-	 *         // editor.assertTitle("Dictionary1 " + text);
-	 * 
-	 *         // test natural key errors // editor =
-	 *         openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
-	 * 
-	 *         // text control // textControl = //
-	 *         editor.getTextControlTest(MangoDemoDictionaryModel
-	 *         .TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1); //
-	 *         textControl.setValue(text); // editor.save(); //
-	 *         textControl.assertHasErrors(); //
-	 *         textControl.assertHasErrorWithText("Duplicate value");
-	 * 
-	 *         runAsyncTests(); }
-	 */
+	@Test
+	@Ignore
+	public void testTextControl() {
+
+		// MangoClientWebTest.getInstance();
+		// MangoDemoClientConfiguration.registerAll();
+		//
+		// DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor =
+		// openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+		//
+		// // text control TextControlTestAsyncHelper textControl =
+		// editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+		// //
+		// textControl.assertMandatory(); // //
+		// textControl.assertHasNoErrors(); // textControl.setValue("xxx");
+		// // // textControl.assertHasNoErrors(); //
+		// textControl.setValue(null); //
+		// textControl.assertHasErrorWithText("Input is needed for field \"TextControl1\"");
+		// //
+		// editor.assertHasErrors(1);
+		//
+		// String text = UUID.uuid();
+		//
+		// textControl.setValue(text); // textControl.assertHasNoErrors();
+		// // editor.assertHasErrors(0);
+		//
+		// editor.save();
+		//
+		// // editor.assertTitle("Dictionary1 " + text);
+		//
+		// // test natural key errors // editor =
+		// openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+		//
+		// // text control // textControl = //
+		// editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+		// //
+		// textControl.setValue(text); // editor.save(); //
+		// textControl.assertHasErrors(); //
+		// textControl.assertHasErrorWithText("Duplicate value");
+		//
+		// runAsyncTests();
+	}
+
 }
