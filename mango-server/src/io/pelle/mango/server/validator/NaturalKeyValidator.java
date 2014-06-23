@@ -13,6 +13,7 @@ import io.pelle.mango.db.dao.BaseVODAO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -44,6 +45,7 @@ public class NaturalKeyValidator implements IValidator {
 		this.baseVODAO = baseVODAO;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<IValidationMessage> validate(Object o) {
 		IBaseVO vo = (IBaseVO) o;
@@ -53,7 +55,12 @@ public class NaturalKeyValidator implements IValidator {
 		SelectQuery<IBaseVO> selectQuery = (SelectQuery<IBaseVO>) SelectQuery.selectFrom(vo.getClass());
 		Optional<IBooleanExpression> expression = Optional.absent();
 
-		for (IAttributeDescriptor<?> attributeDescriptor : new AnnotationIterator(vo.getClass(), NaturalKey.class)) {
+		Optional<IAttributeDescriptor> naturalKeyAttributeDescriptor = Optional.absent();
+
+		for (IAttributeDescriptor attributeDescriptor : new AnnotationIterator(vo.getClass(), NaturalKey.class)) {
+
+			naturalKeyAttributeDescriptor = Optional.of(attributeDescriptor);
+
 			Optional<Object> naturalKey = Optional.fromNullable(vo.get(attributeDescriptor.getAttributeName()));
 
 			if (naturalKey.isPresent() && !naturalKey.get().toString().isEmpty()) {
@@ -76,8 +83,14 @@ public class NaturalKeyValidator implements IValidator {
 
 			List<IBaseVO> filterResult = this.baseVODAO.filter(selectQuery);
 
+			Map<String, Object> contextMap = CollectionUtils.getMap(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, vo.getNaturalKey());
+
+			if (naturalKeyAttributeDescriptor.isPresent()) {
+				contextMap.put(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, naturalKeyAttributeDescriptor.get().getAttributeName());
+			}
+
 			if (filterResult.size() > 1 || (filterResult.size() == 1 && filterResult.get(0).getOid() != vo.getOid())) {
-				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY, CollectionUtils.getMap(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, vo.getNaturalKey())));
+				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY, contextMap));
 			}
 		}
 
