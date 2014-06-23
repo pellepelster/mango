@@ -17,17 +17,14 @@ import io.pelle.mango.client.base.module.IModule;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.util.BaseAsyncCallback;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.logging.Logger;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -114,7 +111,7 @@ public final class ModuleHandler {
 
 	};
 
-	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters, Optional<AsyncCallback<IModuleUI>> callback) {
+	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters, final Optional<AsyncCallback<IModuleUI>> callback) {
 		
 		final String location = getLocation(location1);
 		
@@ -125,6 +122,7 @@ public final class ModuleHandler {
 		if (moduleUI.isPresent()) {
 			LOG.info("ui module for url '" + moduleUrl + "' already started (" + moduleUI.get().toString() + ")");
 			moduleUI.get().updateUrl(moduleUrl);
+			
 			if (callback.isPresent())
 			{
 				callback.get().onSuccess(moduleUI.get());
@@ -140,7 +138,10 @@ public final class ModuleHandler {
 						ModuleHandler.this.getModuleStack(location).add(moduleUI);
 						MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
 
-						callParentCallbacks(moduleUI);
+						if (callback.isPresent())
+						{
+							callback.get().onSuccess(moduleUI);
+						}
 					}
 				}, parameters, peekCurrentModule(location));
 			} else {

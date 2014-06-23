@@ -11,14 +11,16 @@
  */
 package io.pelle.mango.client.web.test.modules.dictionary;
 
-import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.web.MangoClientWeb;
+import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
+import io.pelle.mango.client.web.modules.dictionary.events.DictionaryEditorEventHandler;
+import io.pelle.mango.client.web.modules.dictionary.events.DictionaryEditorSavedEvent;
 import io.pelle.mango.client.web.test.modules.dictionary.container.EditableTableTest;
-import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import junit.framework.Assert;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -69,13 +71,22 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 	}
 
 	public void save(final AsyncCallback<DictionaryEditorModuleTestUI<VOType>> asyncCallback) {
-		this.module.getDictionaryEditor().save(new BaseErrorAsyncCallback<Result<VOType>>(asyncCallback) {
+		
+		MangoClientWeb.EVENT_BUS.addHandler(DictionaryEditorSavedEvent.TYPE, new DictionaryEditorEventHandler() {
+
 			@Override
-			public void onSuccess(Result<VOType> result) {
-				asyncCallback.onSuccess(DictionaryEditorModuleTestUI.this);
+			public void onSaved(DictionaryEditor<? extends IBaseVO> editor) {
+				
+				if (editor.getModel().getName().equals(getModule().getDictionaryEditor().getModel().getName()))
+				{
+					asyncCallback.onSuccess(DictionaryEditorModuleTestUI.this);
+				}
 			}
 		});
-	}
+		
+		this.module.getDictionaryEditor().save();
+	}		
+		
 
 	@Override
 	public void onUpdate() {

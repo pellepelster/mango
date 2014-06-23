@@ -11,6 +11,7 @@ import junit.framework.Assert;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
+import com.google.gwt.core.shared.GWT;
 
 public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, ValueType> implements IControlUpdateListener {
 	private ValueType value;
@@ -65,7 +66,9 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 			}
 		}
 
-		Assert.fail("message with containing '" + text + "' not found (messages: " + Joiner.on(", ").join(validationMessages) + ")");
+		String message = "message containing '" + text + "' not found (messages: " + Joiner.on(", ").join(validationMessages) + ")"; 
+		GWT.log(message);
+		Assert.fail(message);
 	}
 
 	@Override

@@ -51,7 +51,7 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
 	}
 
 	@Test
-	public void testSimpleCreateAndSearch() {
+	public void testEntity1CreateAndSearch() {
 
 		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
 
@@ -79,7 +79,7 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
 	}
 
 	@Test
-	public void testTextControl() {
+	public void testTextControlMandatory() {
 
 		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
 
@@ -89,35 +89,46 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
 		// natural key field is always mandatory
 		textControl.assertMandatory();
 
+		String text = UUID.uuid();
+
 		// test mandatory handling
 		textControl.assertHasNoErrors();
-		textControl.setValue("xxx");
+		textControl.setValue(text);
 		textControl.assertHasNoErrors();
 		textControl.setValue("");
 		textControl.assertHasErrorWithText("Input is needed for field \"Textcontrol1\"");
 
 		editor.assertHasErrors(1);
 
-		// String text = UUID.uuid();
-		//
-		// textControl.setValue(text); // textControl.assertHasNoErrors();
-		// // editor.assertHasErrors(0);
-		//
-		// editor.save();
-		//
-		// // editor.assertTitle("Dictionary1 " + text);
-		//
-		// // test natural key errors // editor =
-		// openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
-		//
-		// // text control // textControl = //
-		// editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
-		// //
-		// textControl.setValue(text); // editor.save(); //
-		// textControl.assertHasErrors(); //
-		// textControl.assertHasErrorWithText("Duplicate value");
-
+		textControl.setValue(text); 
+		textControl.assertHasNoErrors();
+		editor.assertHasErrors(0);
+		editor.save();
+		
 		runAsyncTests();
 	}
 
+	@Test
+	public void testDuplicateNaturalKey() {
+
+		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+
+		TextControlTestAsyncHelper textControl = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+
+		String text = UUID.uuid();
+		textControl.setValue(text);
+		editor.save();
+
+
+		editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+
+		textControl =  editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+		textControl.setValue(text); 
+		editor.save(); 
+		
+		textControl.assertHasErrorWithText("Duplicate value");
+		textControl.assertHasErrors();
+
+		runAsyncTests();
+	}
 }

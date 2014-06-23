@@ -1,6 +1,7 @@
 package io.pelle.mango.client.web.util;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.google.common.base.Optional;
@@ -22,22 +23,19 @@ public abstract class BaseAsyncCallback<T, C> implements AsyncCallback<T>
 		}
 	}
 
-	public void addParentCallback(AsyncCallback<C> parentCallback)
-	{
-		if (parentCallback != null)
-		{
-			this.parentCallbacks.add(parentCallback);
-		}
-	}
+//	public void addParentCallback(AsyncCallback<C> parentCallback)
+//	{
+//		this.parentCallbacks.add(parentCallback);
+//	}
 
-	protected void callParentCallbacks(C result)
-	{
-		for (AsyncCallback<C> parentCallback : this.parentCallbacks)
-		{
-			parentCallback.onSuccess(result);
-		}
-		this.parentCallbacks.clear();
-	}
+//	protected void callParentCallbacks(C result)
+//	{
+//		for (Iterator<AsyncCallback<C>> iterator = this.parentCallbacks.iterator(); iterator.hasNext();) {
+//			AsyncCallback<C> parentCallback = iterator.next();
+//			iterator.remove();
+//			parentCallback.onSuccess(result);
+//		}
+//	}
 
 	@Override
 	public void onFailure(Throwable caught)
@@ -51,6 +49,7 @@ public abstract class BaseAsyncCallback<T, C> implements AsyncCallback<T>
 		{
 			parentCallback.onFailure(caught);
 		}
+		
 		this.parentCallbacks.clear();
 	}
 }

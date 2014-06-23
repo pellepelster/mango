@@ -1,0 +1,1998 @@
+From d586cca1f49f575e7e96dd720ad8967cb4d9bac6 Mon Sep 17 00:00:00 2001
+From: pelle <pelle@pelle.io>
+Date: Mon, 23 Jun 2014 17:20:58 +0200
+Subject: [PATCH] tmp
+
+---
+ .../io/pelle/mango/client/base/db/vos/Result.java  |   3 +-
+ .../client/web/test/MangoAsyncGwtTestHelper.java   |  11 +-
+ .../dictionary/BaseDictionaryModuleTestUI.java     |   3 +-
+ .../BaseDictionaryModuleTestUIAsyncHelper.java     |   1 +
+ .../dictionary/DictionaryEditorModuleTestUI.java   |  23 +-
+ .../dictionary/controls/BaseControlTest.java       |   5 +-
+ .../mango/client/web/module/ModuleHandler.java     |  11 +-
+ .../modules/dictionary/IBaseDictionaryModule.java  |   3 +-
+ .../dictionary/editor/DictionaryEditor.java        |  12 +-
+ .../dictionary/editor/DictionaryEditorModule.java  |   9 +-
+ .../events/DictionaryEditorEventHandler.java       |  22 +
+ .../events/DictionaryEditorSavedEvent.java         |  47 ++
+ .../mango/client/web/util/BaseAsyncCallback.java   |  29 +-
+ mango-demo-client/DemoClientDictionary1Test.launch |   2 +-
+ .../client/test/DemoClientDictionary1Test.java     |  55 +-
+ mango-demo-server/WebContent/WEB-INF/web.xml       |   1 +
+ .../demo/server/DemoBaseEntityServiceTest.java     |  28 +-
+ mango-dsl-ui/plugin.xml_gen                        |  46 +-
+ mango-dsl/model/generated/Mango.ecore              | 678 ++++++++++-----------
+ mango-dsl/model/generated/Mango.genmodel           | 616 +++++++++----------
+ 20 files changed, 864 insertions(+), 741 deletions(-)
+ create mode 100644 mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/events/DictionaryEditorEventHandler.java
+ create mode 100644 mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/events/DictionaryEditorSavedEvent.java
+
+diff --git a/mango-client-base/src/io/pelle/mango/client/base/db/vos/Result.java b/mango-client-base/src/io/pelle/mango/client/base/db/vos/Result.java
+index eb83c36..bdf1628 100644
+--- a/mango-client-base/src/io/pelle/mango/client/base/db/vos/Result.java
++++ b/mango-client-base/src/io/pelle/mango/client/base/db/vos/Result.java
+@@ -18,10 +18,11 @@ import java.io.Serializable;
+ import java.util.ArrayList;
+ import java.util.List;
+ 
++@SuppressWarnings("serial")
+ public class Result<VOType extends IBaseVO> implements Serializable
+ {
+-	private static final long serialVersionUID = 2971295762387189829L;
+ 	private VOType vo;
++	
+ 	private List<IValidationMessage> validationMessages = new ArrayList<IValidationMessage>();
+ 
+ 	public Result()
+diff --git a/mango-client-web-test/src/io/pelle/mango/client/web/test/MangoAsyncGwtTestHelper.java b/mango-client-web-test/src/io/pelle/mango/client/web/test/MangoAsyncGwtTestHelper.java
+index 65d861b..a7475f6 100644
+--- a/mango-client-web-test/src/io/pelle/mango/client/web/test/MangoAsyncGwtTestHelper.java
++++ b/mango-client-web-test/src/io/pelle/mango/client/web/test/MangoAsyncGwtTestHelper.java
+@@ -40,6 +40,7 @@ public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GW
+ 	private Map<String, Object> asyncTestItemResults = new HashMap<String, Object>();
+ 
+ 	public MangoAsyncGwtTestHelper() {
++		this.toString();
+ 	}
+ 
+ 	public MangoAsyncGwtTestHelper<VOType> deleteAllVOs(final Class<VOType> voClass) {
+@@ -151,9 +152,11 @@ public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GW
+ 
+ 	public void runAsyncTests() {
+ 
+-		if (this.recursiveAsyncCallback == null) {
++		MangoAsyncGwtTestHelper.this.delayTestFinish(1000 * 60 * 5);
++
++		AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
+ 
+-			AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
++		if (this.recursiveAsyncCallback == null) {
+ 
+ 			GWT.log("runnung async test item '" + asyncTestItem.getDescription() + "', async test items left: " + asyncTestItems.size());
+ 
+@@ -169,9 +172,7 @@ public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GW
+ 			});
+ 
+ 			this.recursiveAsyncCallback = recursiveAsyncCallback;
+-			asyncTestItem.run(recursiveAsyncCallback);
+ 		}
+-
+-		MangoAsyncGwtTestHelper.this.delayTestFinish(1000 * 60 * 5);
++		asyncTestItem.run(this.recursiveAsyncCallback);
+ 	}
+ }
+diff --git a/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/BaseDictionaryModuleTestUI.java b/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/BaseDictionaryModuleTestUI.java
+index b0ec095..a62b59e 100644
+--- a/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/BaseDictionaryModuleTestUI.java
++++ b/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/BaseDictionaryModuleTestUI.java
+@@ -41,6 +41,7 @@ import io.pelle.mango.client.web.test.modules.dictionary.controls.TextControlTes
+  * 
+  */
+ public abstract class BaseDictionaryModuleTestUI {
++	
+ 	private IBaseDictionaryModule baseDictionaryModule;
+ 
+ 	private final String uiModuleId;
+@@ -88,7 +89,7 @@ public abstract class BaseDictionaryModuleTestUI {
+ 	}
+ 
+ 	public boolean isInstanceOf(String moduleUrl) {
+-		return this.uiModuleId.equals(ModuleUtils.getUIModuleId(moduleUrl));
++		return this.baseDictionaryModule.isInstanceOf(moduleUrl);
+ 	}
+ 
+ 	public void updateUrl(String moduleUrl) {
+diff --git a/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/BaseDictionaryModuleTestUIAsyncHelper.java b/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/BaseDictionaryModuleTestUIAsyncHelper.java
+index 389b364..27a0d1c 100644
+--- a/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/BaseDictionaryModuleTestUIAsyncHelper.java
++++ b/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/BaseDictionaryModuleTestUIAsyncHelper.java
+@@ -40,6 +40,7 @@ public class BaseDictionaryModuleTestUIAsyncHelper<T extends BaseDictionaryModul
+ 	}
+ 
+ 	public TextControlTestAsyncHelper getTextControlTest(final TextControlModel controlModel) {
++		
+ 		final String uuid = UUID.uuid();
+ 
+ 		this.addAsyncTestItem(new BaseAsyncTestItem() {
+diff --git a/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/DictionaryEditorModuleTestUI.java b/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/DictionaryEditorModuleTestUI.java
+index 9fbc934..970dd27 100644
+--- a/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/DictionaryEditorModuleTestUI.java
++++ b/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/DictionaryEditorModuleTestUI.java
+@@ -11,14 +11,16 @@
+  */
+ package io.pelle.mango.client.web.test.modules.dictionary;
+ 
+-import io.pelle.mango.client.base.db.vos.Result;
+ import io.pelle.mango.client.base.layout.IModuleUI;
+ import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
+ import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel;
+ import io.pelle.mango.client.base.vo.IBaseVO;
++import io.pelle.mango.client.web.MangoClientWeb;
++import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
+ import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
++import io.pelle.mango.client.web.modules.dictionary.events.DictionaryEditorEventHandler;
++import io.pelle.mango.client.web.modules.dictionary.events.DictionaryEditorSavedEvent;
+ import io.pelle.mango.client.web.test.modules.dictionary.container.EditableTableTest;
+-import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
+ import junit.framework.Assert;
+ 
+ import com.google.gwt.user.client.rpc.AsyncCallback;
+@@ -69,13 +71,22 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
+ 	}
+ 
+ 	public void save(final AsyncCallback<DictionaryEditorModuleTestUI<VOType>> asyncCallback) {
+-		this.module.getDictionaryEditor().save(new BaseErrorAsyncCallback<Result<VOType>>(asyncCallback) {
++		
++		MangoClientWeb.EVENT_BUS.addHandler(DictionaryEditorSavedEvent.TYPE, new DictionaryEditorEventHandler() {
++
+ 			@Override
+-			public void onSuccess(Result<VOType> result) {
+-				asyncCallback.onSuccess(DictionaryEditorModuleTestUI.this);
++			public void onSaved(DictionaryEditor<? extends IBaseVO> editor) {
++				
++				if (editor.getModel().getName().equals(getModule().getDictionaryEditor().getModel().getName()))
++				{
++					asyncCallback.onSuccess(DictionaryEditorModuleTestUI.this);
++				}
+ 			}
+ 		});
+-	}
++		
++		this.module.getDictionaryEditor().save();
++	}		
++		
+ 
+ 	@Override
+ 	public void onUpdate() {
+diff --git a/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/controls/BaseControlTest.java b/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/controls/BaseControlTest.java
+index a37b05e..a57663c 100644
+--- a/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/controls/BaseControlTest.java
++++ b/mango-client-web-test/src/io/pelle/mango/client/web/test/modules/dictionary/controls/BaseControlTest.java
+@@ -11,6 +11,7 @@ import junit.framework.Assert;
+ 
+ import com.google.common.base.Joiner;
+ import com.google.common.collect.Lists;
++import com.google.gwt.core.shared.GWT;
+ 
+ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, ValueType> implements IControlUpdateListener {
+ 	private ValueType value;
+@@ -65,7 +66,9 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
+ 			}
+ 		}
+ 
+-		Assert.fail("message with containing '" + text + "' not found (messages: " + Joiner.on(", ").join(validationMessages) + ")");
++		String message = "message containing '" + text + "' not found (messages: " + Joiner.on(", ").join(validationMessages) + ")"; 
++		GWT.log(message);
++		Assert.fail(message);
+ 	}
+ 
+ 	@Override
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/module/ModuleHandler.java b/mango-client-web/src/io/pelle/mango/client/web/module/ModuleHandler.java
+index 40d34d6..e0c554c 100644
+--- a/mango-client-web/src/io/pelle/mango/client/web/module/ModuleHandler.java
++++ b/mango-client-web/src/io/pelle/mango/client/web/module/ModuleHandler.java
+@@ -17,17 +17,14 @@ import io.pelle.mango.client.base.module.IModule;
+ import io.pelle.mango.client.web.MangoClientWeb;
+ import io.pelle.mango.client.web.util.BaseAsyncCallback;
+ 
+-import java.util.ArrayList;
+ import java.util.HashMap;
+ import java.util.LinkedHashMap;
+-import java.util.List;
+ import java.util.Map;
+ import java.util.Stack;
+ import java.util.logging.Logger;
+ 
+ import com.google.common.base.Optional;
+ import com.google.common.base.Predicate;
+-import com.google.common.base.Predicates;
+ import com.google.common.collect.Iterables;
+ import com.google.gwt.core.shared.GWT;
+ import com.google.gwt.event.shared.EventBus;
+@@ -114,7 +111,7 @@ public final class ModuleHandler {
+ 
+ 	};
+ 
+-	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters, Optional<AsyncCallback<IModuleUI>> callback) {
++	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters, final Optional<AsyncCallback<IModuleUI>> callback) {
+ 		
+ 		final String location = getLocation(location1);
+ 		
+@@ -125,6 +122,7 @@ public final class ModuleHandler {
+ 		if (moduleUI.isPresent()) {
+ 			LOG.info("ui module for url '" + moduleUrl + "' already started (" + moduleUI.get().toString() + ")");
+ 			moduleUI.get().updateUrl(moduleUrl);
++			
+ 			if (callback.isPresent())
+ 			{
+ 				callback.get().onSuccess(moduleUI.get());
+@@ -140,7 +138,10 @@ public final class ModuleHandler {
+ 						ModuleHandler.this.getModuleStack(location).add(moduleUI);
+ 						MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
+ 
+-						callParentCallbacks(moduleUI);
++						if (callback.isPresent())
++						{
++							callback.get().onSuccess(moduleUI);
++						}
+ 					}
+ 				}, parameters, peekCurrentModule(location));
+ 			} else {
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/IBaseDictionaryModule.java b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/IBaseDictionaryModule.java
+index ed59999..5fcfe52 100644
+--- a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/IBaseDictionaryModule.java
++++ b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/IBaseDictionaryModule.java
+@@ -1,8 +1,9 @@
+ package io.pelle.mango.client.web.modules.dictionary;
+ 
++import io.pelle.mango.client.base.module.IModule;
+ import io.pelle.mango.client.base.modules.dictionary.model.BaseModel;
+ 
+-public interface IBaseDictionaryModule
++public interface IBaseDictionaryModule extends IModule
+ {
+ 	<ElementType> ElementType getElement(BaseModel<ElementType> baseModel);
+ }
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/editor/DictionaryEditor.java b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/editor/DictionaryEditor.java
+index 72520ab..bf57cec 100644
+--- a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/editor/DictionaryEditor.java
++++ b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/editor/DictionaryEditor.java
+@@ -17,6 +17,7 @@ import io.pelle.mango.client.web.MangoClientWeb;
+ import io.pelle.mango.client.web.modules.dictionary.DictionaryElementUtil;
+ import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
+ import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule.EditorMode;
++import io.pelle.mango.client.web.modules.dictionary.events.DictionaryEditorSavedEvent;
+ import io.pelle.mango.client.web.modules.dictionary.events.VOSavedEvent;
+ import io.pelle.mango.client.web.util.BaseAsyncCallback;
+ import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
+@@ -120,11 +121,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
+ 
+ 	}
+ 
+-	public void save() {
+-		save(null);
+-	}
+-
+ 	private final BaseAsyncCallback<Result<VOType>, Result<VOType>> internalSaveCallback = new BaseAsyncCallback<Result<VOType>, Result<VOType>>() {
++
+ 		/** {@inheritDoc} */
+ 		@Override
+ 		public void onSuccess(Result<VOType> result) {
+@@ -134,8 +132,9 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
+ 			} else {
+ 				DictionaryEditor.this.addValidationMessages(result.getValidationMessages());
+ 			}
++			
++			MangoClientWeb.EVENT_BUS.fireEvent(new DictionaryEditorSavedEvent(DictionaryEditor.this));
+ 
+-			super.callParentCallbacks(result);
+ 		}
+ 	};
+ 
+@@ -160,8 +159,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
+ 
+ 	}
+ 
+-	public void save(AsyncCallback<Result<VOType>> asyncCallback) {
+-		this.internalSaveCallback.addParentCallback(asyncCallback);
++	public void save() {
+ 
+ 		// if (!this.dataBindingContext.hasErrors())
+ 		// {
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/editor/DictionaryEditorModule.java b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/editor/DictionaryEditorModule.java
+index b98506a..315cf69 100644
+--- a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/editor/DictionaryEditorModule.java
++++ b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/editor/DictionaryEditorModule.java
+@@ -128,6 +128,13 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
+ 
+ 	@Override
+ 	public boolean isInstanceOf(String moduleUrl) {
+-		return MODULE_ID.equals(ModuleUtils.getModuleId(moduleUrl));
++		return getModuleUrl().equals(moduleUrl);
+ 	}
++
++	@Override
++	public String getModuleUrl() {
++		return getModuleUrlForDictionary(getEditorDictionaryName(), dictionaryEditor.getVO().getOid());
++	}
++
++	
+ }
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/events/DictionaryEditorEventHandler.java b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/events/DictionaryEditorEventHandler.java
+new file mode 100644
+index 0000000..bbae9c2
+--- /dev/null
++++ b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/events/DictionaryEditorEventHandler.java
+@@ -0,0 +1,22 @@
++/**
++ * Copyright (c) 2013 Christian Pelster.
++ * 
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ * 
++ * Contributors:
++ *     Christian Pelster - initial API and implementation
++ */
++package io.pelle.mango.client.web.modules.dictionary.events;
++
++import io.pelle.mango.client.base.vo.IBaseVO;
++import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
++
++import com.google.gwt.event.shared.EventHandler;
++
++public interface DictionaryEditorEventHandler extends EventHandler
++{
++	void onSaved(DictionaryEditor<? extends IBaseVO> editor);
++}
+\ No newline at end of file
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/events/DictionaryEditorSavedEvent.java b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/events/DictionaryEditorSavedEvent.java
+new file mode 100644
+index 0000000..42bce5f
+--- /dev/null
++++ b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/events/DictionaryEditorSavedEvent.java
+@@ -0,0 +1,47 @@
++/**
++ * Copyright (c) 2013 Christian Pelster.
++ * 
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ * 
++ * Contributors:
++ *     Christian Pelster - initial API and implementation
++ */
++package io.pelle.mango.client.web.modules.dictionary.events;
++
++import io.pelle.mango.client.base.vo.IBaseVO;
++import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
++
++import com.google.gwt.event.shared.GwtEvent;
++
++public class DictionaryEditorSavedEvent extends GwtEvent<DictionaryEditorEventHandler>
++{
++	private final DictionaryEditor<? extends IBaseVO> editor;
++	
++	public DictionaryEditorSavedEvent(DictionaryEditor<? extends IBaseVO> editor)
++	{
++		super();
++		this.editor = editor;
++	}
++
++	public DictionaryEditor<? extends IBaseVO> getEditor() {
++		return editor;
++	}
++
++	public static Type<DictionaryEditorEventHandler> TYPE = new Type<DictionaryEditorEventHandler>();
++
++	@Override
++	public Type<DictionaryEditorEventHandler> getAssociatedType()
++	{
++		return TYPE;
++	}
++
++	@Override
++	protected void dispatch(DictionaryEditorEventHandler handler)
++	{
++		handler.onSaved(editor);
++	}
++
++}
+\ No newline at end of file
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/util/BaseAsyncCallback.java b/mango-client-web/src/io/pelle/mango/client/web/util/BaseAsyncCallback.java
+index 9e5b173..483ef57 100644
+--- a/mango-client-web/src/io/pelle/mango/client/web/util/BaseAsyncCallback.java
++++ b/mango-client-web/src/io/pelle/mango/client/web/util/BaseAsyncCallback.java
+@@ -1,6 +1,7 @@
+ package io.pelle.mango.client.web.util;
+ 
+ import java.util.ArrayList;
++import java.util.Iterator;
+ import java.util.List;
+ 
+ import com.google.common.base.Optional;
+@@ -22,22 +23,19 @@ public abstract class BaseAsyncCallback<T, C> implements AsyncCallback<T>
+ 		}
+ 	}
+ 
+-	public void addParentCallback(AsyncCallback<C> parentCallback)
+-	{
+-		if (parentCallback != null)
+-		{
+-			this.parentCallbacks.add(parentCallback);
+-		}
+-	}
++//	public void addParentCallback(AsyncCallback<C> parentCallback)
++//	{
++//		this.parentCallbacks.add(parentCallback);
++//	}
+ 
+-	protected void callParentCallbacks(C result)
+-	{
+-		for (AsyncCallback<C> parentCallback : this.parentCallbacks)
+-		{
+-			parentCallback.onSuccess(result);
+-		}
+-		this.parentCallbacks.clear();
+-	}
++//	protected void callParentCallbacks(C result)
++//	{
++//		for (Iterator<AsyncCallback<C>> iterator = this.parentCallbacks.iterator(); iterator.hasNext();) {
++//			AsyncCallback<C> parentCallback = iterator.next();
++//			iterator.remove();
++//			parentCallback.onSuccess(result);
++//		}
++//	}
+ 
+ 	@Override
+ 	public void onFailure(Throwable caught)
+@@ -51,6 +49,7 @@ public abstract class BaseAsyncCallback<T, C> implements AsyncCallback<T>
+ 		{
+ 			parentCallback.onFailure(caught);
+ 		}
++		
+ 		this.parentCallbacks.clear();
+ 	}
+ }
+diff --git a/mango-demo-client/DemoClientDictionary1Test.launch b/mango-demo-client/DemoClientDictionary1Test.launch
+index 9eefae7..76caca6 100644
+--- a/mango-demo-client/DemoClientDictionary1Test.launch
++++ b/mango-demo-client/DemoClientDictionary1Test.launch
+@@ -8,7 +8,7 @@
+ </listAttribute>
+ <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value=""/>
+ <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+-<stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
++<stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value="testDuplicateNaturalKey"/>
+ <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>
+ <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
+ <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;runtimeClasspathEntry containerPath=&quot;org.eclipse.jdt.launching.JRE_CONTAINER&quot; javaProject=&quot;mango-demo-client&quot; path=&quot;1&quot; type=&quot;4&quot;/&gt;&#13;&#10;"/>
+diff --git a/mango-demo-client/test/io/pelle/mango/demo/client/test/DemoClientDictionary1Test.java b/mango-demo-client/test/io/pelle/mango/demo/client/test/DemoClientDictionary1Test.java
+index 75ce1a5..ef78111 100644
+--- a/mango-demo-client/test/io/pelle/mango/demo/client/test/DemoClientDictionary1Test.java
++++ b/mango-demo-client/test/io/pelle/mango/demo/client/test/DemoClientDictionary1Test.java
+@@ -51,7 +51,7 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
+ 	}
+ 
+ 	@Test
+-	public void testSimpleCreateAndSearch() {
++	public void testEntity1CreateAndSearch() {
+ 
+ 		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+ 
+@@ -79,7 +79,7 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
+ 	}
+ 
+ 	@Test
+-	public void testTextControl() {
++	public void testTextControlMandatory() {
+ 
+ 		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+ 
+@@ -89,35 +89,46 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
+ 		// natural key field is always mandatory
+ 		textControl.assertMandatory();
+ 
++		String text = UUID.uuid();
++
+ 		// test mandatory handling
+ 		textControl.assertHasNoErrors();
+-		textControl.setValue("xxx");
++		textControl.setValue(text);
+ 		textControl.assertHasNoErrors();
+ 		textControl.setValue("");
+ 		textControl.assertHasErrorWithText("Input is needed for field \"Textcontrol1\"");
+ 
+ 		editor.assertHasErrors(1);
+ 
+-		// String text = UUID.uuid();
+-		//
+-		// textControl.setValue(text); // textControl.assertHasNoErrors();
+-		// // editor.assertHasErrors(0);
+-		//
+-		// editor.save();
+-		//
+-		// // editor.assertTitle("Dictionary1 " + text);
+-		//
+-		// // test natural key errors // editor =
+-		// openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
+-		//
+-		// // text control // textControl = //
+-		// editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+-		// //
+-		// textControl.setValue(text); // editor.save(); //
+-		// textControl.assertHasErrors(); //
+-		// textControl.assertHasErrorWithText("Duplicate value");
+-
++		textControl.setValue(text); 
++		textControl.assertHasNoErrors();
++		editor.assertHasErrors(0);
++		editor.save();
++		
+ 		runAsyncTests();
+ 	}
+ 
++	@Test
++	public void testDuplicateNaturalKey() {
++
++		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
++
++		TextControlTestAsyncHelper textControl = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
++
++		String text = UUID.uuid();
++		textControl.setValue(text);
++		editor.save();
++
++
++		editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
++
++		textControl =  editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
++		textControl.setValue(text); 
++		editor.save(); 
++		
++		textControl.assertHasErrorWithText("Duplicate value");
++		textControl.assertHasErrors();
++
++		runAsyncTests();
++	}
+ }
+diff --git a/mango-demo-server/WebContent/WEB-INF/web.xml b/mango-demo-server/WebContent/WEB-INF/web.xml
+index 9d0efde..a0da3f4 100644
+--- a/mango-demo-server/WebContent/WEB-INF/web.xml
++++ b/mango-demo-server/WebContent/WEB-INF/web.xml
+@@ -20,6 +20,7 @@
+             classpath:/DBBaseApplicationContext.xml,
+             classpath:/MangoDemoDB-gen.xml,
+             classpath:/MangoDemoBaseApplicationContext-gen.xml,
++            classpath:/MangoBaseApplicationContext.xml,
+             classpath:/MangoSpringServices-gen.xml
+ 			</param-value>
+ 	</context-param>
+diff --git a/mango-demo-server/test/io/pelle/mango/demo/server/DemoBaseEntityServiceTest.java b/mango-demo-server/test/io/pelle/mango/demo/server/DemoBaseEntityServiceTest.java
+index c45abf3..1aaca11 100644
+--- a/mango-demo-server/test/io/pelle/mango/demo/server/DemoBaseEntityServiceTest.java
++++ b/mango-demo-server/test/io/pelle/mango/demo/server/DemoBaseEntityServiceTest.java
+@@ -77,33 +77,51 @@ public class DemoBaseEntityServiceTest extends BaseTest {
+ 	}
+ 
+ 	@Test
+-	public void testValidateAndSaveEmptyNaturalKey() {
++	public void testValidateAndCreateEmptyNaturalKey() {
+ 
+ 		baseEntityService.deleteAll(Entity1VO.class.getName());
+ 
+ 		Entity1VO entity1VO = new Entity1VO();
+-		Result<Entity1VO> result1 = this.baseEntityService.validateAndSave(entity1VO);
++		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
+ 		assertEquals(1, result1.getValidationMessages().size());
+ 
+ 		assertEquals("Natural key attribute \"stringDatatype1\" can not be empty", result1.getValidationMessages().get(0).getMessage());
+ 	}
+ 
+ 	@Test
+-	public void testValidateAndSaveDuplicateNaturalKey() {
++	public void testValidateAndCreateDuplicateNaturalKey() {
+ 		baseEntityService.deleteAll(Entity1VO.class.getName());
+ 
+ 		Entity1VO entity1VO = new Entity1VO();
+ 		entity1VO.setStringDatatype1("aaa");
+-		Result<Entity1VO> result1 = this.baseEntityService.validateAndSave(entity1VO);
++		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
+ 		assertEquals(0, result1.getValidationMessages().size());
+ 
+ 		entity1VO = new Entity1VO();
+ 		entity1VO.setStringDatatype1("aaa");
+ 
+-		Result<Entity1VO> result2 = this.baseEntityService.validateAndSave(entity1VO);
++		Result<Entity1VO> result2 = this.baseEntityService.validateAndCreate(entity1VO);
+ 		assertEquals(1, result2.getValidationMessages().size());
+ 		assertEquals("Entity \"aaa\" already exists", result2.getValidationMessages().get(0).getMessage());
+ 	}
++	
++	@Test
++	public void testCreateAndSaveNaturalKey() {
++		
++		baseEntityService.deleteAll(Entity1VO.class.getName());
++
++		Entity1VO entity1VO = new Entity1VO();
++		entity1VO.setStringDatatype1("aaa");
++		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
++		assertEquals(0, result1.getValidationMessages().size());
++
++		entity1VO = result1.getVO(); 
++		assertEquals("aaa", entity1VO.getStringDatatype1());
++		entity1VO.setBooleanDatatype1(true);
++
++		Result<Entity1VO> result2 = this.baseEntityService.validateAndSave(entity1VO);
++		assertEquals(0, result2.getValidationMessages().size());
++	}
+ 
+ 	public void setBaseVODAO(IBaseVODAO baseVODAO) {
+ 		this.baseVODAO = baseVODAO;
+diff --git a/mango-dsl-ui/plugin.xml_gen b/mango-dsl-ui/plugin.xml_gen
+index b5d555c..f7c28cd 100644
+--- a/mango-dsl-ui/plugin.xml_gen
++++ b/mango-dsl-ui/plugin.xml_gen
+@@ -223,29 +223,29 @@
+         </resourceServiceProvider>
+     </extension>
+ 
+-
+-	<!-- marker definitions for io.pelle.mango.dsl.Mango -->
+-	<extension
+-	        id="mango.check.fast"
+-	        name="Mango Problem"
+-	        point="org.eclipse.core.resources.markers">
+-	    <super type="org.eclipse.xtext.ui.check.fast"/>
+-	    <persistent value="true"/>
+-	</extension>
+-	<extension
+-	        id="mango.check.normal"
+-	        name="Mango Problem"
+-	        point="org.eclipse.core.resources.markers">
+-	    <super type="org.eclipse.xtext.ui.check.normal"/>
+-	    <persistent value="true"/>
+-	</extension>
+-	<extension
+-	        id="mango.check.expensive"
+-	        name="Mango Problem"
+-	        point="org.eclipse.core.resources.markers">
+-	    <super type="org.eclipse.xtext.ui.check.expensive"/>
+-	    <persistent value="true"/>
+-	</extension>
++
++	<!-- marker definitions for io.pelle.mango.dsl.Mango -->
++	<extension
++	        id="mango.check.fast"
++	        name="Mango Problem"
++	        point="org.eclipse.core.resources.markers">
++	    <super type="org.eclipse.xtext.ui.check.fast"/>
++	    <persistent value="true"/>
++	</extension>
++	<extension
++	        id="mango.check.normal"
++	        name="Mango Problem"
++	        point="org.eclipse.core.resources.markers">
++	    <super type="org.eclipse.xtext.ui.check.normal"/>
++	    <persistent value="true"/>
++	</extension>
++	<extension
++	        id="mango.check.expensive"
++	        name="Mango Problem"
++	        point="org.eclipse.core.resources.markers">
++	    <super type="org.eclipse.xtext.ui.check.expensive"/>
++	    <persistent value="true"/>
++	</extension>
+ 
+    <extension
+          point="org.eclipse.xtext.builder.participant">
+diff --git a/mango-dsl/model/generated/Mango.ecore b/mango-dsl/model/generated/Mango.ecore
+index 0fdf083..776d6b1 100644
+--- a/mango-dsl/model/generated/Mango.ecore
++++ b/mango-dsl/model/generated/Mango.ecore
+@@ -1,339 +1,339 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mango" nsURI="http://www.pelle.io/mango/dsl/Mango" nsPrefix="mango">
+-  <eClassifiers xsi:type="ecore:EClass" name="ModelRoot">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
+-        eType="#//AbstractElement" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//ModelRoot"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="PackageDeclaration" eSuperTypes="#//ModelRoot #//AbstractElement"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="AbstractElement"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="Import" eSuperTypes="#//AbstractElement">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedNamespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Enumeration" eSuperTypes="#//AbstractElement #//EnumerationAttributeType">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumerationValues" unique="false"
+-        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Entity" eSuperTypes="#//AbstractElement #//EntityAttributeType">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="#//Entity"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="jvmtype" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmType"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="naturalKeyAttributes" unique="false"
+-        upperBound="-1" eType="#//EntityAttribute"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+-        eType="#//EntityAttribute" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ValueObject" eSuperTypes="#//AbstractElement">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="#//ValueObject"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="jvmtype" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmType"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+-        eType="#//EntityAttribute" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ValueObjectType" eSuperTypes="#//MethodReturnType">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//ValueObject"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Datatype" eSuperTypes="#//AbstractElement #//MethodType">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="SimpleDataType" eSuperTypes="#//Datatype"/>
+-  <eClassifiers xsi:type="ecore:EEnum" name="Cardinality">
+-    <eLiterals name="onetoone" literal="0..1"/>
+-    <eLiterals name="onetomany" value="1" literal="0..n"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EEnum" name="SimpleTypes">
+-    <eLiterals name="long" literal="Long"/>
+-    <eLiterals name="integer" value="1" literal="Integer"/>
+-    <eLiterals name="bigdecimal" value="2" literal="BigDecimal"/>
+-    <eLiterals name="string" value="3" literal="String"/>
+-    <eLiterals name="boolean" value="4" literal="Boolean"/>
+-    <eLiterals name="reference" value="5" literal="Reference"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="CustomType" eSuperTypes="#//MethodReturnType">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="CustomEntityAttribute" eSuperTypes="#//MethodParameter">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="EntityAttribute" eSuperTypes="#//MethodParameter"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="SimpleDatatypeEntityAttribute" eSuperTypes="#//EntityAttribute"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="SimpleTypeType" eSuperTypes="#//MethodReturnType">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//SimpleTypes"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="StringDataType" eSuperTypes="#//SimpleDataType"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="StringEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//StringDataType"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="MapDataType">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keyType" eType="#//SimpleTypes"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueType" eType="#//SimpleTypes"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="MapEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//MapDataType"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keyType" eType="#//SimpleTypes"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueType" eType="#//SimpleTypes"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="BooleanDataType" eSuperTypes="#//SimpleDataType"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="BooleanEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//BooleanDataType"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="IntegerDataType" eSuperTypes="#//SimpleDataType"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="IntegerEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//IntegerDataType"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="LongDataType">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="LongEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//LongDataType"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="BinaryDataType" eSuperTypes="#//SimpleDataType"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="BinaryEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//BinaryDataType"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="EntityDataType" eSuperTypes="#//Datatype #//EntityAttributeType">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="entity" eType="#//Entity"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="EntityAttributeType"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="EntityEntityAttribute" eSuperTypes="#//EntityAttribute">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//EntityAttributeType"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//MethodReturnType">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//EntityAttributeType"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="EnumerationDataType" eSuperTypes="#//SimpleDataType #//EnumerationAttributeType">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="enumeration" eType="#//Enumeration"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="EnumerationAttributeType"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="EnumerationEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//EnumerationAttributeType"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Dictionary" eSuperTypes="#//AbstractElement">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="entity" eType="#//Entity"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pluralLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionarycontrols" upperBound="-1"
+-        eType="#//DictionaryControl" containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="labelcontrols" upperBound="-1"
+-        eType="#//DictionaryControl" containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionarysearch" eType="#//DictionarySearch"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionaryeditor" eType="#//DictionaryEditor"
+-        containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionarySearch">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionaryfilters" upperBound="-1"
+-        eType="#//DictionaryFilter" containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionaryresult" eType="#//DictionaryResult"
+-        containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryEditor">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="containercontents" upperBound="-1"
+-        eType="#//DictionaryContainerContent" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryFilter">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="containercontents" upperBound="-1"
+-        eType="#//DictionaryContainerContent" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryResult">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="resultcolumns" upperBound="-1"
+-        eType="#//DictionaryControl" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ColumnLayout">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ColumnLayoutData">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnspan" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryContainer" eSuperTypes="#//DictionaryContainerContent">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="layoutdata" eType="#//ColumnLayoutData"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="layout" eType="#//ColumnLayout"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="containercontents" upperBound="-1"
+-        eType="#//DictionaryContainerContent" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryComposite" eSuperTypes="#//DictionaryContainer"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryEditableTable" eSuperTypes="#//DictionaryContainer">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="entityattribute" eType="#//EntityAttribute"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="columncontrols" upperBound="-1"
+-        eType="#//DictionaryControl" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryAssignmentTable" eSuperTypes="#//DictionaryContainer">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="entityattribute" eType="#//EntityAttribute"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionary" eType="#//Dictionary"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="columncontrols" upperBound="-1"
+-        eType="#//DictionaryControl" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryContainerContent">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Labels">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filterLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="editorLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="toolTip" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EEnum" name="ControlType">
+-    <eLiterals name="text" literal="text"/>
+-    <eLiterals name="dropdown" value="1" literal="dropdown"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="BaseDictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="entityattribute" eType="#//EntityAttribute"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="labels" eType="#//Labels"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="readonly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryControl" eSuperTypes="#//DictionaryContainerContent">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="baseControl" eType="#//BaseDictionaryControl"
+-        containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryControlGroup" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryControlGroup"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="groupcontrols" upperBound="-1"
+-        eType="#//DictionaryControl" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryHierarchicalControl">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryTextControl"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="baseControl" eType="#//BaseDictionaryControl"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hierarchicalId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryTextControl" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryTextControl"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryIntegerControl" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryIntegerControl"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryBigDecimalControl" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryBigDecimalControl"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryBooleanControl" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryBooleanControl"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryDateControl" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryDateControl"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryEnumerationControl" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryEnumerationControl"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryReferenceControl" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryReferenceControl"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionary" eType="#//Dictionary"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="controlType" eType="#//ControlType"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="labelcontrols" upperBound="-1"
+-        eType="#//DictionaryControl" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="DictionaryFileControl" eSuperTypes="#//DictionaryControl">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryFileControl"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//AbstractElement">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="moduledefinition" eType="#//ModuleDefinition"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="moduleParameters" upperBound="-1"
+-        eType="#//ModuleParameter" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ModuleParameter">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="moduleDefinitionParameter"
+-        eType="#//ModuleDefinitionParameter"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ModuleDefinition" eSuperTypes="#//AbstractElement">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="moduleDefinitionParameters"
+-        upperBound="-1" eType="#//ModuleDefinitionParameter" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ModuleDefinitionParameter">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//SimpleTypes"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="MethodType"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="MethodParameter">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="MethodReturnType">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ServiceOptions">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nonpublic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="ServiceMethod">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="genericTypeDefinition"
+-        eType="#//GenericTypeDefinition" containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="#//MethodReturnType"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="methodParameters" upperBound="-1"
+-        eType="#//MethodParameter" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Service" eSuperTypes="#//AbstractElement">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="remoteServiceOptions" eType="#//ServiceOptions"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="remoteMethods" upperBound="-1"
+-        eType="#//ServiceMethod" containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="GenericEntityAttribute" eSuperTypes="#//MethodParameter">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//GenericTypeDefinition"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="MangoEntityAttribute" eSuperTypes="#//MethodParameter">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//MangoTypes"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="generic" eType="#//Generic"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="GenericType" eSuperTypes="#//MethodReturnType #//Generic">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="genericTypeDefinition"
+-        eType="#//GenericTypeDefinition"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="GenericTypeTypes"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="GenericTypeDefinition">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="genericType" eType="#//GenericTypeTypes"
+-        containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="GenericWildcardType" eSuperTypes="#//Generic">
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="genericType" eType="#//GenericTypeTypes"
+-        containment="true"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="Generic"/>
+-  <eClassifiers xsi:type="ecore:EClass" name="MangoType" eSuperTypes="#//GenericTypeTypes">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//MangoTypes"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="generic" eType="#//Generic"
+-        containment="true"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EEnum" name="MangoTypes">
+-    <eLiterals name="selectquery" literal="SelectQuery"/>
+-    <eLiterals name="ibasevo" value="1" literal="IBaseVO"/>
+-    <eLiterals name="ihierarchicalvo" value="2" literal="IHierarchicalVO"/>
+-    <eLiterals name="ibaseclientvo" value="3" literal="IBaseClientVO"/>
+-  </eClassifiers>
+-  <eClassifiers xsi:type="ecore:EClass" name="NavigationNode" eSuperTypes="#//AbstractElement">
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionaryEditor" eType="#//DictionaryEditor"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionarySearch" eType="#//DictionarySearch"/>
+-    <eStructuralFeatures xsi:type="ecore:EReference" name="navigationNodes" upperBound="-1"
+-        eType="#//NavigationNode" containment="true"/>
+-  </eClassifiers>
+-</ecore:EPackage>
++<?xml version="1.0" encoding="UTF-8"?>
++<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
++    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mango" nsURI="http://www.pelle.io/mango/dsl/Mango" nsPrefix="mango">
++  <eClassifiers xsi:type="ecore:EClass" name="ModelRoot">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="elements" upperBound="-1"
++        eType="#//AbstractElement" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Model" eSuperTypes="#//ModelRoot"/>
++  <eClassifiers xsi:type="ecore:EClass" name="PackageDeclaration" eSuperTypes="#//ModelRoot #//AbstractElement"/>
++  <eClassifiers xsi:type="ecore:EClass" name="AbstractElement"/>
++  <eClassifiers xsi:type="ecore:EClass" name="Import" eSuperTypes="#//AbstractElement">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="importedNamespace" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Enumeration" eSuperTypes="#//AbstractElement #//EnumerationAttributeType">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="enumerationValues" unique="false"
++        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Entity" eSuperTypes="#//AbstractElement #//EntityAttributeType">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="#//Entity"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="jvmtype" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmType"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="naturalKeyAttributes" unique="false"
++        upperBound="-1" eType="#//EntityAttribute"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
++        eType="#//EntityAttribute" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ValueObject" eSuperTypes="#//AbstractElement">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="extends" eType="#//ValueObject"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="jvmtype" eType="ecore:EClass platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmType"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
++        eType="#//EntityAttribute" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ValueObjectType" eSuperTypes="#//MethodReturnType">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//ValueObject"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Datatype" eSuperTypes="#//AbstractElement #//MethodType">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="SimpleDataType" eSuperTypes="#//Datatype"/>
++  <eClassifiers xsi:type="ecore:EEnum" name="Cardinality">
++    <eLiterals name="onetoone" literal="0..1"/>
++    <eLiterals name="onetomany" value="1" literal="0..n"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EEnum" name="SimpleTypes">
++    <eLiterals name="long" literal="Long"/>
++    <eLiterals name="integer" value="1" literal="Integer"/>
++    <eLiterals name="bigdecimal" value="2" literal="BigDecimal"/>
++    <eLiterals name="string" value="3" literal="String"/>
++    <eLiterals name="boolean" value="4" literal="Boolean"/>
++    <eLiterals name="reference" value="5" literal="Reference"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="CustomType" eSuperTypes="#//MethodReturnType">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="CustomEntityAttribute" eSuperTypes="#//MethodParameter">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="EntityAttribute" eSuperTypes="#//MethodParameter"/>
++  <eClassifiers xsi:type="ecore:EClass" name="SimpleDatatypeEntityAttribute" eSuperTypes="#//EntityAttribute"/>
++  <eClassifiers xsi:type="ecore:EClass" name="SimpleTypeType" eSuperTypes="#//MethodReturnType">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//SimpleTypes"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="StringDataType" eSuperTypes="#//SimpleDataType"/>
++  <eClassifiers xsi:type="ecore:EClass" name="StringEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//StringDataType"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="MapDataType">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keyType" eType="#//SimpleTypes"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueType" eType="#//SimpleTypes"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="MapEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//MapDataType"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="keyType" eType="#//SimpleTypes"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="valueType" eType="#//SimpleTypes"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="BooleanDataType" eSuperTypes="#//SimpleDataType"/>
++  <eClassifiers xsi:type="ecore:EClass" name="BooleanEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//BooleanDataType"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="IntegerDataType" eSuperTypes="#//SimpleDataType"/>
++  <eClassifiers xsi:type="ecore:EClass" name="IntegerEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//IntegerDataType"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="LongDataType">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="LongEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//LongDataType"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="BinaryDataType" eSuperTypes="#//SimpleDataType"/>
++  <eClassifiers xsi:type="ecore:EClass" name="BinaryEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//BinaryDataType"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="EntityDataType" eSuperTypes="#//Datatype #//EntityAttributeType">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="entity" eType="#//Entity"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="EntityAttributeType"/>
++  <eClassifiers xsi:type="ecore:EClass" name="EntityEntityAttribute" eSuperTypes="#//EntityAttribute">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//EntityAttributeType"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="EntityType" eSuperTypes="#//MethodReturnType">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//EntityAttributeType"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="EnumerationDataType" eSuperTypes="#//SimpleDataType #//EnumerationAttributeType">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="enumeration" eType="#//Enumeration"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="EnumerationAttributeType"/>
++  <eClassifiers xsi:type="ecore:EClass" name="EnumerationEntityAttribute" eSuperTypes="#//SimpleDatatypeEntityAttribute">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//EnumerationAttributeType"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Dictionary" eSuperTypes="#//AbstractElement">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="entity" eType="#//Entity"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pluralLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionarycontrols" upperBound="-1"
++        eType="#//DictionaryControl" containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="labelcontrols" upperBound="-1"
++        eType="#//DictionaryControl" containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionarysearch" eType="#//DictionarySearch"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionaryeditor" eType="#//DictionaryEditor"
++        containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionarySearch">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionaryfilters" upperBound="-1"
++        eType="#//DictionaryFilter" containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionaryresult" eType="#//DictionaryResult"
++        containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryEditor">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="containercontents" upperBound="-1"
++        eType="#//DictionaryContainerContent" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryFilter">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="containercontents" upperBound="-1"
++        eType="#//DictionaryContainerContent" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryResult">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="resultcolumns" upperBound="-1"
++        eType="#//DictionaryControl" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ColumnLayout">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columns" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ColumnLayoutData">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnspan" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryContainer" eSuperTypes="#//DictionaryContainerContent">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="layoutdata" eType="#//ColumnLayoutData"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="layout" eType="#//ColumnLayout"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="containercontents" upperBound="-1"
++        eType="#//DictionaryContainerContent" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryComposite" eSuperTypes="#//DictionaryContainer"/>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryEditableTable" eSuperTypes="#//DictionaryContainer">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="entityattribute" eType="#//EntityAttribute"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="columncontrols" upperBound="-1"
++        eType="#//DictionaryControl" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryAssignmentTable" eSuperTypes="#//DictionaryContainer">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="entityattribute" eType="#//EntityAttribute"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionary" eType="#//Dictionary"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="columncontrols" upperBound="-1"
++        eType="#//DictionaryControl" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryContainerContent">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Labels">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="filterLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="editorLabel" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="toolTip" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EEnum" name="ControlType">
++    <eLiterals name="text" literal="text"/>
++    <eLiterals name="dropdown" value="1" literal="dropdown"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="BaseDictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="entityattribute" eType="#//EntityAttribute"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="labels" eType="#//Labels"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="mandatory" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="width" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="readonly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryControl" eSuperTypes="#//DictionaryContainerContent">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="baseControl" eType="#//BaseDictionaryControl"
++        containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryControlGroup" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryControlGroup"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="groupcontrols" upperBound="-1"
++        eType="#//DictionaryControl" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryHierarchicalControl">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryTextControl"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="baseControl" eType="#//BaseDictionaryControl"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="hierarchicalId" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryTextControl" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryTextControl"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryIntegerControl" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryIntegerControl"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryBigDecimalControl" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryBigDecimalControl"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryBooleanControl" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryBooleanControl"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryDateControl" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryDateControl"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryEnumerationControl" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryEnumerationControl"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryReferenceControl" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryReferenceControl"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionary" eType="#//Dictionary"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="controlType" eType="#//ControlType"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="labelcontrols" upperBound="-1"
++        eType="#//DictionaryControl" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="DictionaryFileControl" eSuperTypes="#//DictionaryControl">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//DictionaryFileControl"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//AbstractElement">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="moduledefinition" eType="#//ModuleDefinition"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="moduleParameters" upperBound="-1"
++        eType="#//ModuleParameter" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ModuleParameter">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="moduleDefinitionParameter"
++        eType="#//ModuleDefinitionParameter"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ModuleDefinition" eSuperTypes="#//AbstractElement">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="moduleDefinitionParameters"
++        upperBound="-1" eType="#//ModuleDefinitionParameter" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ModuleDefinitionParameter">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//SimpleTypes"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="MethodType"/>
++  <eClassifiers xsi:type="ecore:EClass" name="MethodParameter">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="MethodReturnType">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ServiceOptions">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="nonpublic" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="ServiceMethod">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="genericTypeDefinition"
++        eType="#//GenericTypeDefinition" containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="returnType" eType="#//MethodReturnType"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="methodParameters" upperBound="-1"
++        eType="#//MethodParameter" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Service" eSuperTypes="#//AbstractElement">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="remoteServiceOptions" eType="#//ServiceOptions"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="remoteMethods" upperBound="-1"
++        eType="#//ServiceMethod" containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="GenericEntityAttribute" eSuperTypes="#//MethodParameter">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//GenericTypeDefinition"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="MangoEntityAttribute" eSuperTypes="#//MethodParameter">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//MangoTypes"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="generic" eType="#//Generic"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="GenericType" eSuperTypes="#//MethodReturnType #//Generic">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="genericTypeDefinition"
++        eType="#//GenericTypeDefinition"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="GenericTypeTypes"/>
++  <eClassifiers xsi:type="ecore:EClass" name="GenericTypeDefinition">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="genericType" eType="#//GenericTypeTypes"
++        containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="GenericWildcardType" eSuperTypes="#//Generic">
++    <eStructuralFeatures xsi:type="ecore:EReference" name="genericType" eType="#//GenericTypeTypes"
++        containment="true"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="Generic"/>
++  <eClassifiers xsi:type="ecore:EClass" name="MangoType" eSuperTypes="#//GenericTypeTypes">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//MangoTypes"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="generic" eType="#//Generic"
++        containment="true"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="#//Cardinality"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EEnum" name="MangoTypes">
++    <eLiterals name="selectquery" literal="SelectQuery"/>
++    <eLiterals name="ibasevo" value="1" literal="IBaseVO"/>
++    <eLiterals name="ihierarchicalvo" value="2" literal="IHierarchicalVO"/>
++    <eLiterals name="ibaseclientvo" value="3" literal="IBaseClientVO"/>
++  </eClassifiers>
++  <eClassifiers xsi:type="ecore:EClass" name="NavigationNode" eSuperTypes="#//AbstractElement">
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EAttribute" name="label" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionaryEditor" eType="#//DictionaryEditor"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="dictionarySearch" eType="#//DictionarySearch"/>
++    <eStructuralFeatures xsi:type="ecore:EReference" name="navigationNodes" upperBound="-1"
++        eType="#//NavigationNode" containment="true"/>
++  </eClassifiers>
++</ecore:EPackage>
+diff --git a/mango-dsl/model/generated/Mango.genmodel b/mango-dsl/model/generated/Mango.genmodel
+index 78f8720..7e25dc9 100644
+--- a/mango-dsl/model/generated/Mango.genmodel
++++ b/mango-dsl/model/generated/Mango.genmodel
+@@ -1,308 +1,308 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/mango-dsl/src-gen" editDirectory="/mango-dsl.edit/src"
+-    editorDirectory="/mango-dsl.editor/src" modelPluginID="mango-dsl" forceOverwrite="true"
+-    modelName="Mango" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+-    complianceLevel="5.0" copyrightFields="false" editPluginID="mango-dsl.edit" editorPluginID="mango-dsl.editor"
+-    runtimeVersion="2.10" usedGenPackages="platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types">
+-  <genPackages prefix="Mango" basePackage="io.pelle.mango.dsl" disposableProviderFactory="true"
+-      fileExtensions="mango" ecorePackage="Mango.ecore#/">
+-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//Cardinality">
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//Cardinality/onetoone"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//Cardinality/onetomany"/>
+-    </genEnums>
+-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//SimpleTypes">
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/long"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/integer"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/bigdecimal"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/string"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/boolean"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/reference"/>
+-    </genEnums>
+-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//ControlType">
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//ControlType/text"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//ControlType/dropdown"/>
+-    </genEnums>
+-    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//MangoTypes">
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//MangoTypes/selectquery"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//MangoTypes/ibasevo"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//MangoTypes/ihierarchicalvo"/>
+-      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//MangoTypes/ibaseclientvo"/>
+-    </genEnums>
+-    <genClasses ecoreClass="Mango.ecore#//ModelRoot">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModelRoot/name"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ModelRoot/elements"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Model"/>
+-    <genClasses ecoreClass="Mango.ecore#//PackageDeclaration"/>
+-    <genClasses ecoreClass="Mango.ecore#//AbstractElement"/>
+-    <genClasses ecoreClass="Mango.ecore#//Import">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Import/importedNamespace"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Enumeration">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Enumeration/name"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Enumeration/enumerationValues"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Entity">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Entity/name"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/extends"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/jvmtype"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/naturalKeyAttributes"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/attributes"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ValueObject">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ValueObject/name"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//ValueObject/extends"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//ValueObject/jvmtype"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ValueObject/attributes"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ValueObjectType">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//ValueObjectType/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Datatype">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Datatype/name"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//SimpleDataType"/>
+-    <genClasses ecoreClass="Mango.ecore#//CustomType">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//CustomType/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//CustomEntityAttribute">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//CustomEntityAttribute/type"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//CustomEntityAttribute/cardinality"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//EntityAttribute"/>
+-    <genClasses ecoreClass="Mango.ecore#//SimpleDatatypeEntityAttribute"/>
+-    <genClasses ecoreClass="Mango.ecore#//SimpleTypeType">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//SimpleTypeType/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//StringDataType"/>
+-    <genClasses ecoreClass="Mango.ecore#//StringEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//StringEntityAttribute/type"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//StringEntityAttribute/cardinality"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//MapDataType">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapDataType/name"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapDataType/keyType"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapDataType/valueType"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//MapEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//MapEntityAttribute/type"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapEntityAttribute/keyType"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapEntityAttribute/valueType"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//BooleanDataType"/>
+-    <genClasses ecoreClass="Mango.ecore#//BooleanEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//BooleanEntityAttribute/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//IntegerDataType"/>
+-    <genClasses ecoreClass="Mango.ecore#//IntegerEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//IntegerEntityAttribute/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//LongDataType">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//LongDataType/name"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//LongEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//LongEntityAttribute/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//BinaryDataType"/>
+-    <genClasses ecoreClass="Mango.ecore#//BinaryEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//BinaryEntityAttribute/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//EntityDataType">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EntityDataType/entity"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//EntityAttributeType"/>
+-    <genClasses ecoreClass="Mango.ecore#//EntityEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EntityEntityAttribute/type"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//EntityEntityAttribute/cardinality"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//EntityType">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EntityType/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//EnumerationDataType">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EnumerationDataType/enumeration"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//EnumerationAttributeType"/>
+-    <genClasses ecoreClass="Mango.ecore#//EnumerationEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EnumerationEntityAttribute/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Dictionary">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Dictionary/name"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/entity"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Dictionary/label"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Dictionary/pluralLabel"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/dictionarycontrols"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/labelcontrols"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/dictionarysearch"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/dictionaryeditor"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionarySearch">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionarySearch/name"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionarySearch/label"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionarySearch/dictionaryfilters"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionarySearch/dictionaryresult"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryEditor">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryEditor/name"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryEditor/label"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryEditor/containercontents"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryFilter">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryFilter/name"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryFilter/containercontents"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryResult">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryResult/name"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryResult/resultcolumns"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ColumnLayout">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ColumnLayout/columns"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ColumnLayoutData">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ColumnLayoutData/columnspan"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryContainer">
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryContainer/layoutdata"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryContainer/layout"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryContainer/containercontents"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryComposite"/>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryEditableTable">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryEditableTable/entityattribute"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryEditableTable/columncontrols"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryAssignmentTable">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryAssignmentTable/entityattribute"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryAssignmentTable/dictionary"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryAssignmentTable/columncontrols"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryContainerContent">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryContainerContent/name"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Labels">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/label"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/filterLabel"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/columnLabel"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/editorLabel"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/toolTip"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//BaseDictionaryControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//BaseDictionaryControl/entityattribute"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//BaseDictionaryControl/labels"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//BaseDictionaryControl/mandatory"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//BaseDictionaryControl/width"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//BaseDictionaryControl/readonly"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryControl">
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryControl/baseControl"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryControlGroup">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryControlGroup/ref"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryControlGroup/groupcontrols"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryHierarchicalControl">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryHierarchicalControl/name"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryHierarchicalControl/ref"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryHierarchicalControl/baseControl"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryHierarchicalControl/hierarchicalId"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryTextControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryTextControl/ref"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryIntegerControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryIntegerControl/ref"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryBigDecimalControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryBigDecimalControl/ref"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryBooleanControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryBooleanControl/ref"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryDateControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryDateControl/ref"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryEnumerationControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryEnumerationControl/ref"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryReferenceControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryReferenceControl/ref"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryReferenceControl/dictionary"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryReferenceControl/controlType"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryReferenceControl/labelcontrols"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//DictionaryFileControl">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryFileControl/ref"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Module">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Module/name"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Module/moduledefinition"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Module/moduleParameters"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ModuleParameter">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//ModuleParameter/moduleDefinitionParameter"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModuleParameter/value"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ModuleDefinition">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModuleDefinition/name"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ModuleDefinition/moduleDefinitionParameters"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ModuleDefinitionParameter">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModuleDefinitionParameter/name"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModuleDefinitionParameter/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//MethodType"/>
+-    <genClasses ecoreClass="Mango.ecore#//MethodParameter">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MethodParameter/name"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//MethodReturnType">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MethodReturnType/cardinality"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ServiceOptions">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ServiceOptions/nonpublic"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//ServiceMethod">
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ServiceMethod/genericTypeDefinition"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ServiceMethod/name"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ServiceMethod/returnType"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ServiceMethod/methodParameters"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Service">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Service/name"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Service/remoteServiceOptions"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Service/remoteMethods"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//GenericEntityAttribute">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//GenericEntityAttribute/type"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//MangoEntityAttribute">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MangoEntityAttribute/type"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//MangoEntityAttribute/generic"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MangoEntityAttribute/cardinality"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//GenericType">
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//GenericType/genericTypeDefinition"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//GenericTypeTypes"/>
+-    <genClasses ecoreClass="Mango.ecore#//GenericTypeDefinition">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//GenericTypeDefinition/name"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//GenericTypeDefinition/genericType"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//GenericWildcardType">
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//GenericWildcardType/genericType"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//Generic"/>
+-    <genClasses ecoreClass="Mango.ecore#//MangoType">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MangoType/type"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//MangoType/generic"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MangoType/cardinality"/>
+-    </genClasses>
+-    <genClasses ecoreClass="Mango.ecore#//NavigationNode">
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//NavigationNode/name"/>
+-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//NavigationNode/label"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//NavigationNode/module"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//NavigationNode/dictionaryEditor"/>
+-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//NavigationNode/dictionarySearch"/>
+-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//NavigationNode/navigationNodes"/>
+-    </genClasses>
+-  </genPackages>
+-</genmodel:GenModel>
++<?xml version="1.0" encoding="UTF-8"?>
++<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
++    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/mango-dsl/src-gen" editDirectory="/mango-dsl.edit/src"
++    editorDirectory="/mango-dsl.editor/src" modelPluginID="mango-dsl" forceOverwrite="true"
++    modelName="Mango" updateClasspath="false" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
++    complianceLevel="5.0" copyrightFields="false" editPluginID="mango-dsl.edit" editorPluginID="mango-dsl.editor"
++    runtimeVersion="2.10" usedGenPackages="platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types">
++  <genPackages prefix="Mango" basePackage="io.pelle.mango.dsl" disposableProviderFactory="true"
++      fileExtensions="mango" ecorePackage="Mango.ecore#/">
++    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//Cardinality">
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//Cardinality/onetoone"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//Cardinality/onetomany"/>
++    </genEnums>
++    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//SimpleTypes">
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/long"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/integer"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/bigdecimal"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/string"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/boolean"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//SimpleTypes/reference"/>
++    </genEnums>
++    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//ControlType">
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//ControlType/text"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//ControlType/dropdown"/>
++    </genEnums>
++    <genEnums typeSafeEnumCompatible="false" ecoreEnum="Mango.ecore#//MangoTypes">
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//MangoTypes/selectquery"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//MangoTypes/ibasevo"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//MangoTypes/ihierarchicalvo"/>
++      <genEnumLiterals ecoreEnumLiteral="Mango.ecore#//MangoTypes/ibaseclientvo"/>
++    </genEnums>
++    <genClasses ecoreClass="Mango.ecore#//ModelRoot">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModelRoot/name"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ModelRoot/elements"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Model"/>
++    <genClasses ecoreClass="Mango.ecore#//PackageDeclaration"/>
++    <genClasses ecoreClass="Mango.ecore#//AbstractElement"/>
++    <genClasses ecoreClass="Mango.ecore#//Import">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Import/importedNamespace"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Enumeration">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Enumeration/name"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Enumeration/enumerationValues"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Entity">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Entity/name"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/extends"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/jvmtype"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/naturalKeyAttributes"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Entity/attributes"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ValueObject">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ValueObject/name"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//ValueObject/extends"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//ValueObject/jvmtype"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ValueObject/attributes"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ValueObjectType">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//ValueObjectType/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Datatype">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Datatype/name"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//SimpleDataType"/>
++    <genClasses ecoreClass="Mango.ecore#//CustomType">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//CustomType/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//CustomEntityAttribute">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//CustomEntityAttribute/type"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//CustomEntityAttribute/cardinality"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//EntityAttribute"/>
++    <genClasses ecoreClass="Mango.ecore#//SimpleDatatypeEntityAttribute"/>
++    <genClasses ecoreClass="Mango.ecore#//SimpleTypeType">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//SimpleTypeType/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//StringDataType"/>
++    <genClasses ecoreClass="Mango.ecore#//StringEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//StringEntityAttribute/type"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//StringEntityAttribute/cardinality"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//MapDataType">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapDataType/name"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapDataType/keyType"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapDataType/valueType"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//MapEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//MapEntityAttribute/type"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapEntityAttribute/keyType"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MapEntityAttribute/valueType"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//BooleanDataType"/>
++    <genClasses ecoreClass="Mango.ecore#//BooleanEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//BooleanEntityAttribute/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//IntegerDataType"/>
++    <genClasses ecoreClass="Mango.ecore#//IntegerEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//IntegerEntityAttribute/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//LongDataType">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//LongDataType/name"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//LongEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//LongEntityAttribute/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//BinaryDataType"/>
++    <genClasses ecoreClass="Mango.ecore#//BinaryEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//BinaryEntityAttribute/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//EntityDataType">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EntityDataType/entity"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//EntityAttributeType"/>
++    <genClasses ecoreClass="Mango.ecore#//EntityEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EntityEntityAttribute/type"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//EntityEntityAttribute/cardinality"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//EntityType">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EntityType/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//EnumerationDataType">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EnumerationDataType/enumeration"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//EnumerationAttributeType"/>
++    <genClasses ecoreClass="Mango.ecore#//EnumerationEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//EnumerationEntityAttribute/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Dictionary">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Dictionary/name"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/entity"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Dictionary/label"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Dictionary/pluralLabel"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/dictionarycontrols"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/labelcontrols"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/dictionarysearch"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Dictionary/dictionaryeditor"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionarySearch">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionarySearch/name"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionarySearch/label"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionarySearch/dictionaryfilters"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionarySearch/dictionaryresult"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryEditor">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryEditor/name"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryEditor/label"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryEditor/containercontents"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryFilter">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryFilter/name"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryFilter/containercontents"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryResult">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryResult/name"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryResult/resultcolumns"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ColumnLayout">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ColumnLayout/columns"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ColumnLayoutData">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ColumnLayoutData/columnspan"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryContainer">
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryContainer/layoutdata"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryContainer/layout"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryContainer/containercontents"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryComposite"/>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryEditableTable">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryEditableTable/entityattribute"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryEditableTable/columncontrols"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryAssignmentTable">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryAssignmentTable/entityattribute"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryAssignmentTable/dictionary"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryAssignmentTable/columncontrols"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryContainerContent">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryContainerContent/name"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Labels">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/label"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/filterLabel"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/columnLabel"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/editorLabel"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Labels/toolTip"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//BaseDictionaryControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//BaseDictionaryControl/entityattribute"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//BaseDictionaryControl/labels"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//BaseDictionaryControl/mandatory"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//BaseDictionaryControl/width"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//BaseDictionaryControl/readonly"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryControl">
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryControl/baseControl"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryControlGroup">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryControlGroup/ref"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryControlGroup/groupcontrols"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryHierarchicalControl">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryHierarchicalControl/name"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryHierarchicalControl/ref"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryHierarchicalControl/baseControl"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryHierarchicalControl/hierarchicalId"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryTextControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryTextControl/ref"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryIntegerControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryIntegerControl/ref"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryBigDecimalControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryBigDecimalControl/ref"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryBooleanControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryBooleanControl/ref"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryDateControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryDateControl/ref"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryEnumerationControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryEnumerationControl/ref"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryReferenceControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryReferenceControl/ref"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryReferenceControl/dictionary"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//DictionaryReferenceControl/controlType"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryReferenceControl/labelcontrols"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//DictionaryFileControl">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//DictionaryFileControl/ref"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Module">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Module/name"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//Module/moduledefinition"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Module/moduleParameters"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ModuleParameter">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//ModuleParameter/moduleDefinitionParameter"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModuleParameter/value"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ModuleDefinition">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModuleDefinition/name"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ModuleDefinition/moduleDefinitionParameters"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ModuleDefinitionParameter">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModuleDefinitionParameter/name"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ModuleDefinitionParameter/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//MethodType"/>
++    <genClasses ecoreClass="Mango.ecore#//MethodParameter">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MethodParameter/name"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//MethodReturnType">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MethodReturnType/cardinality"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ServiceOptions">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ServiceOptions/nonpublic"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//ServiceMethod">
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ServiceMethod/genericTypeDefinition"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//ServiceMethod/name"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ServiceMethod/returnType"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//ServiceMethod/methodParameters"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Service">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//Service/name"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Service/remoteServiceOptions"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//Service/remoteMethods"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//GenericEntityAttribute">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//GenericEntityAttribute/type"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//MangoEntityAttribute">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MangoEntityAttribute/type"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//MangoEntityAttribute/generic"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MangoEntityAttribute/cardinality"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//GenericType">
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//GenericType/genericTypeDefinition"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//GenericTypeTypes"/>
++    <genClasses ecoreClass="Mango.ecore#//GenericTypeDefinition">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//GenericTypeDefinition/name"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//GenericTypeDefinition/genericType"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//GenericWildcardType">
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//GenericWildcardType/genericType"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//Generic"/>
++    <genClasses ecoreClass="Mango.ecore#//MangoType">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MangoType/type"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//MangoType/generic"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//MangoType/cardinality"/>
++    </genClasses>
++    <genClasses ecoreClass="Mango.ecore#//NavigationNode">
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//NavigationNode/name"/>
++      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Mango.ecore#//NavigationNode/label"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//NavigationNode/module"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//NavigationNode/dictionaryEditor"/>
++      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Mango.ecore#//NavigationNode/dictionarySearch"/>
++      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Mango.ecore#//NavigationNode/navigationNodes"/>
++    </genClasses>
++  </genPackages>
++</genmodel:GenModel>
+-- 
+1.9.2.msysgit.0
+

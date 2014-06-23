@@ -128,6 +128,13 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
 
 	@Override
 	public boolean isInstanceOf(String moduleUrl) {
-		return MODULE_ID.equals(ModuleUtils.getModuleId(moduleUrl));
+		return getModuleUrl().equals(moduleUrl);
 	}
+
+	@Override
+	public String getModuleUrl() {
+		return getModuleUrlForDictionary(getEditorDictionaryName(), dictionaryEditor.getVO().getOid());
+	}
+
+	
 }

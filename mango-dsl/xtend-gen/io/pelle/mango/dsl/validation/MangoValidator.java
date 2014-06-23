@@ -3,11 +3,13 @@
  */
 package io.pelle.mango.dsl.validation;
 
+import io.pelle.mango.dsl.validation.AbstractMangoValidator;
+
 /**
  * Custom validation rules.
  * 
  * see http://www.eclipse.org/Xtext/documentation.html#validation
  */
 @SuppressWarnings("all")
-public class MangoValidator /* implements AbstractMangoValidator  */{
+public class MangoValidator extends AbstractMangoValidator {
 }

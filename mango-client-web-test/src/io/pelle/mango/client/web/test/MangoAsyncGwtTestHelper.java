@@ -40,6 +40,7 @@ public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GW
 	private Map<String, Object> asyncTestItemResults = new HashMap<String, Object>();
 
 	public MangoAsyncGwtTestHelper() {
+		this.toString();
 	}
 
 	public MangoAsyncGwtTestHelper<VOType> deleteAllVOs(final Class<VOType> voClass) {
@@ -151,9 +152,11 @@ public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GW
 
 	public void runAsyncTests() {
 
-		if (this.recursiveAsyncCallback == null) {
+		MangoAsyncGwtTestHelper.this.delayTestFinish(1000 * 60 * 5);
 
-			AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
+		AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
+
+		if (this.recursiveAsyncCallback == null) {
 
 			GWT.log("runnung async test item '" + asyncTestItem.getDescription() + "', async test items left: " + asyncTestItems.size());
 
@@ -169,9 +172,7 @@ public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GW
 			});
 
 			this.recursiveAsyncCallback = recursiveAsyncCallback;
-			asyncTestItem.run(recursiveAsyncCallback);
 		}
-
-		MangoAsyncGwtTestHelper.this.delayTestFinish(1000 * 60 * 5);
+		asyncTestItem.run(this.recursiveAsyncCallback);
 	}
 }

@@ -40,6 +40,7 @@ public class BaseDictionaryModuleTestUIAsyncHelper<T extends BaseDictionaryModul
 	}
 
 	public TextControlTestAsyncHelper getTextControlTest(final TextControlModel controlModel) {
+		
 		final String uuid = UUID.uuid();
 
 		this.addAsyncTestItem(new BaseAsyncTestItem() {

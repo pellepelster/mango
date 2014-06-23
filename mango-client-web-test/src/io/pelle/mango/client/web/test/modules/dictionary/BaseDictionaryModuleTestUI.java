@@ -41,6 +41,7 @@ import io.pelle.mango.client.web.test.modules.dictionary.controls.TextControlTes
  * 
  */
 public abstract class BaseDictionaryModuleTestUI {
+	
 	private IBaseDictionaryModule baseDictionaryModule;
 
 	private final String uiModuleId;
@@ -88,7 +89,7 @@ public abstract class BaseDictionaryModuleTestUI {
 	}
 
 	public boolean isInstanceOf(String moduleUrl) {
-		return this.uiModuleId.equals(ModuleUtils.getUIModuleId(moduleUrl));
+		return this.baseDictionaryModule.isInstanceOf(moduleUrl);
 	}
 
 	public void updateUrl(String moduleUrl) {

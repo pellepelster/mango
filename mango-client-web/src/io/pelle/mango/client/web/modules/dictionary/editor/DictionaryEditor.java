@@ -17,6 +17,7 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.DictionaryElementUtil;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule.EditorMode;
+import io.pelle.mango.client.web.modules.dictionary.events.DictionaryEditorSavedEvent;
 import io.pelle.mango.client.web.modules.dictionary.events.VOSavedEvent;
 import io.pelle.mango.client.web.util.BaseAsyncCallback;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
@@ -120,11 +121,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 	}
 
-	public void save() {
-		save(null);
-	}
-
 	private final BaseAsyncCallback<Result<VOType>, Result<VOType>> internalSaveCallback = new BaseAsyncCallback<Result<VOType>, Result<VOType>>() {
+
 		/** {@inheritDoc} */
 		@Override
 		public void onSuccess(Result<VOType> result) {
@@ -134,8 +132,9 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 			} else {
 				DictionaryEditor.this.addValidationMessages(result.getValidationMessages());
 			}
+			
+			MangoClientWeb.EVENT_BUS.fireEvent(new DictionaryEditorSavedEvent(DictionaryEditor.this));
 
-			super.callParentCallbacks(result);
 		}
 	};
 
@@ -160,8 +159,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 	}
 
-	public void save(AsyncCallback<Result<VOType>> asyncCallback) {
-		this.internalSaveCallback.addParentCallback(asyncCallback);
+	public void save() {
 
 		// if (!this.dataBindingContext.hasErrors())
 		// {

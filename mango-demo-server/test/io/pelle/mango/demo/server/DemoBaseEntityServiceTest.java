@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.IBaseEntityService;
 import io.pelle.mango.client.base.db.vos.Result;
+import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.test.client.Entity1VO;
@@ -77,32 +78,52 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 	}
 
 	@Test
-	public void testValidateAndSaveEmptyNaturalKey() {
+	public void testValidateAndCreateEmptyNaturalKey() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
 		Entity1VO entity1VO = new Entity1VO();
-		Result<Entity1VO> result1 = this.baseEntityService.validateAndSave(entity1VO);
+		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
 		assertEquals(1, result1.getValidationMessages().size());
 
 		assertEquals("Natural key attribute \"stringDatatype1\" can not be empty", result1.getValidationMessages().get(0).getMessage());
+		assertEquals("stringDatatype1", result1.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
 	}
 
 	@Test
-	public void testValidateAndSaveDuplicateNaturalKey() {
+	public void testValidateAndCreateDuplicateNaturalKey() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
 		Entity1VO entity1VO = new Entity1VO();
 		entity1VO.setStringDatatype1("aaa");
-		Result<Entity1VO> result1 = this.baseEntityService.validateAndSave(entity1VO);
+		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
 		assertEquals(0, result1.getValidationMessages().size());
 
 		entity1VO = new Entity1VO();
 		entity1VO.setStringDatatype1("aaa");
 
-		Result<Entity1VO> result2 = this.baseEntityService.validateAndSave(entity1VO);
+		Result<Entity1VO> result2 = this.baseEntityService.validateAndCreate(entity1VO);
 		assertEquals(1, result2.getValidationMessages().size());
 		assertEquals("Entity \"aaa\" already exists", result2.getValidationMessages().get(0).getMessage());
+		assertEquals("stringDatatype1", result2.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
+	}
+
+	@Test
+	public void testCreateAndSaveNaturalKey() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
+		assertEquals(0, result1.getValidationMessages().size());
+
+		entity1VO = result1.getVO();
+		assertEquals("aaa", entity1VO.getStringDatatype1());
+		entity1VO.setBooleanDatatype1(true);
+
+		Result<Entity1VO> result2 = this.baseEntityService.validateAndSave(entity1VO);
+		assertEquals(0, result2.getValidationMessages().size());
 	}
 
 	public void setBaseVODAO(IBaseVODAO baseVODAO) {

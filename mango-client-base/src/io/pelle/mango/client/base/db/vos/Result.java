@@ -18,10 +18,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class Result<VOType extends IBaseVO> implements Serializable
 {
-	private static final long serialVersionUID = 2971295762387189829L;
 	private VOType vo;
+	
 	private List<IValidationMessage> validationMessages = new ArrayList<IValidationMessage>();
 
 	public Result()
