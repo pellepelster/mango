@@ -86,7 +86,7 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
 		assertEquals(1, result1.getValidationMessages().size());
 
-		assertEquals("Natural key attribute \"stringDatatype1\" can not be empty", result1.getValidationMessages().get(0).getMessage());
+		assertEquals("Natural key attribute 'stringDatatype1' can not be empty for entity 'io.pelle.mango.test.client.Entity1VO'", result1.getValidationMessages().get(0).getMessage());
 		assertEquals("stringDatatype1", result1.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
 	}
 
@@ -104,7 +104,7 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 
 		Result<Entity1VO> result2 = this.baseEntityService.validateAndCreate(entity1VO);
 		assertEquals(1, result2.getValidationMessages().size());
-		assertEquals("Entity \"aaa\" already exists", result2.getValidationMessages().get(0).getMessage());
+		assertEquals("An entity with the natural key 'aaa' already exists", result2.getValidationMessages().get(0).getMessage());
 		assertEquals("stringDatatype1", result2.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
 	}
 

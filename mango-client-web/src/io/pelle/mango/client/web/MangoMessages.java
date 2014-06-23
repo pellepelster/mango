@@ -15,8 +15,7 @@ import com.google.gwt.i18n.client.LocalizableResource.Generate;
 import com.google.gwt.i18n.client.Messages;
 
 @Generate(format = "com.google.gwt.i18n.rebind.format.PropertiesFormat")
-public interface MangoMessages extends Messages
-{
+public interface MangoMessages extends Messages {
 
 	static final String MANDATORY_MESSAGE_KEY = "mandatory.message.key";
 
@@ -72,7 +71,7 @@ public interface MangoMessages extends Messages
 	String integerParseError(String value);
 
 	@Key(MANDATORY_MESSAGE_KEY)
-	@DefaultMessage("Input is needed for field \"{0}\"")
+	@DefaultMessage("Input is needed for ''{0}''")
 	String mandatoryMessage(@Optional String fieldLabel);
 
 	@DefaultMessage("Navigation")

@@ -3,7 +3,6 @@ package io.pelle.mango.server.validator;
 import io.pelle.mango.client.base.db.vos.NaturalKey;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
-import io.pelle.mango.client.base.util.CollectionUtils;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
@@ -12,6 +11,7 @@ import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
 import io.pelle.mango.db.dao.BaseVODAO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +48,9 @@ public class NaturalKeyValidator implements IValidator {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<IValidationMessage> validate(Object o) {
+
 		IBaseVO vo = (IBaseVO) o;
+		Map<String, Object> contextMap = new HashMap<String, Object>();
 
 		List<IValidationMessage> result = new ArrayList<IValidationMessage>();
 
@@ -64,6 +66,9 @@ public class NaturalKeyValidator implements IValidator {
 			Optional<Object> naturalKey = Optional.fromNullable(vo.get(attributeDescriptor.getAttributeName()));
 
 			if (naturalKey.isPresent() && !naturalKey.get().toString().isEmpty()) {
+
+				contextMap.put(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, naturalKey.get().toString());
+
 				Optional<IBooleanExpression> compareExpression = ExpressionFactory.createStringEqualsExpression(vo.getClass(), attributeDescriptor.getAttributeName(), vo.get(attributeDescriptor.getAttributeName()).toString());
 
 				if (compareExpression.isPresent()) {
@@ -74,7 +79,10 @@ public class NaturalKeyValidator implements IValidator {
 					}
 				}
 			} else {
-				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY_MANDATORY, CollectionUtils.getMap(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, attributeDescriptor.getAttributeName())));
+				contextMap.put(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, attributeDescriptor.getAttributeName());
+				contextMap.put(IValidationMessage.VOCLASS_CONTEXT_KEY, vo.getClass().getName());
+
+				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY_MANDATORY, contextMap));
 			}
 		}
 
@@ -82,8 +90,6 @@ public class NaturalKeyValidator implements IValidator {
 			selectQuery.where(expression.get());
 
 			List<IBaseVO> filterResult = this.baseVODAO.filter(selectQuery);
-
-			Map<String, Object> contextMap = CollectionUtils.getMap(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, vo.getNaturalKey());
 
 			if (naturalKeyAttributeDescriptor.isPresent()) {
 				contextMap.put(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, naturalKeyAttributeDescriptor.get().getAttributeName());

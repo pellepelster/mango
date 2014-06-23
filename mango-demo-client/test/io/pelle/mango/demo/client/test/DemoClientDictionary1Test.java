@@ -96,15 +96,15 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
 		textControl.setValue(text);
 		textControl.assertHasNoErrors();
 		textControl.setValue("");
-		textControl.assertHasErrorWithText("Input is needed for field \"Textcontrol1\"");
+		textControl.assertHasErrorWithText("Input is needed for 'Textcontrol1'");
 
 		editor.assertHasErrors(1);
 
-		textControl.setValue(text); 
+		textControl.setValue(text);
 		textControl.assertHasNoErrors();
 		editor.assertHasErrors(0);
 		editor.save();
-		
+
 		runAsyncTests();
 	}
 
@@ -119,13 +119,12 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
 		textControl.setValue(text);
 		editor.save();
 
-
 		editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
 
-		textControl =  editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
-		textControl.setValue(text); 
-		editor.save(); 
-		
+		textControl = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+		textControl.setValue(text);
+		editor.save();
+
 		textControl.assertHasErrorWithText("Duplicate value");
 		textControl.assertHasErrors();
 
