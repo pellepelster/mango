@@ -3,11 +3,9 @@
  */
 package io.pelle.mango.dsl.ui.contentassist;
 
-import io.pelle.mango.dsl.ui.contentassist.AbstractMangoProposalProvider;
-
 /**
  * see http://www.eclipse.org/Xtext/documentation.html#contentAssist on how to customize content assistant
  */
 @SuppressWarnings("all")
-public class MangoProposalProvider extends AbstractMangoProposalProvider {
+public class MangoProposalProvider /* implements AbstractMangoProposalProvider  */{
 }

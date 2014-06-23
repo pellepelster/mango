@@ -25,7 +25,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GWTTestCase {
 
-	private int runningCounter = 0;
+	private RecursiveAsyncCallback recursiveAsyncCallback;
 
 	public interface AsyncTestItem {
 
@@ -151,24 +151,26 @@ public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GW
 
 	public void runAsyncTests() {
 
-		runningCounter++;
+		if (this.recursiveAsyncCallback == null) {
 
-		AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
+			AsyncTestItem asyncTestItem = this.asyncTestItems.removeFirst();
 
-		GWT.log("runnung async test item '" + asyncTestItem.toString() + "'");
+			GWT.log("runnung async test item '" + asyncTestItem.getDescription() + "', async test items left: " + asyncTestItems.size());
 
-		asyncTestItem.run(new RecursiveAsyncCallback(this.asyncTestItems, new BaseErrorAsyncCallback<Object>() {
-			@Override
-			public void onSuccess(Object result) {
+			final RecursiveAsyncCallback recursiveAsyncCallback = new RecursiveAsyncCallback(this.asyncTestItems, new BaseErrorAsyncCallback<Object>() {
+				@Override
+				public void onSuccess(Object result) {
 
-				runningCounter--;
-
-				if (MangoAsyncGwtTestHelper.this.asyncTestItems.isEmpty() && (runningCounter == 0)) {
-					MangoAsyncGwtTestHelper.this.finishTest();
+					if (asyncTestItems.isEmpty()) {
+						MangoAsyncGwtTestHelper.this.finishTest();
+					}
 				}
-			}
 
-		}));
+			});
+
+			this.recursiveAsyncCallback = recursiveAsyncCallback;
+			asyncTestItem.run(recursiveAsyncCallback);
+		}
 
 		MangoAsyncGwtTestHelper.this.delayTestFinish(1000 * 60 * 5);
 	}
