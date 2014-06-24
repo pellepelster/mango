@@ -19,8 +19,10 @@ import java.util.Map;
  * @author pelle
  * 
  */
-public interface IValidationMessage extends IMessage
-{
+public interface IValidationMessage extends IMessage {
+
+	final static String DICTIONARY_EDITOR_LABEL_CONTEXT_KEY = "dictionaryEditorLabel";
+
 	final static String NATURAL_KEY_CONTEXT_KEY = "naturalKey";
 
 	final static String ATTRIBUTE_CONTEXT_KEY = "attribute";

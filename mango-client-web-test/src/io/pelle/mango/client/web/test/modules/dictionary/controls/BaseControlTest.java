@@ -3,22 +3,15 @@ package io.pelle.mango.client.web.test.modules.dictionary.controls;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import junit.framework.Assert;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.Lists;
 import com.google.gwt.core.shared.GWT;
 
 public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, ValueType> implements IControlUpdateListener {
 	private ValueType value;
 
 	private ElementType baseControl;
-
-	private List<IValidationMessage> validationMessages = new ArrayList<IValidationMessage>();
 
 	public BaseControlTest(ElementType baseControl) {
 		this.baseControl = baseControl;
@@ -51,22 +44,22 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 	}
 
 	public void assertHasErrors() {
-		Assert.assertFalse(this.validationMessages.isEmpty());
+		Assert.assertTrue(this.baseControl.getValidationMessages().hasErrors());
 	}
 
 	public void assertHasNoErrors() {
-		Assert.assertTrue(this.validationMessages.isEmpty());
+		Assert.assertFalse(this.baseControl.getValidationMessages().hasErrors());
 	}
 
 	public void assertHasErrorWithText(String text) {
 
-		for (IValidationMessage validationMessage : this.validationMessages) {
-			if (validationMessage.getMessage().equals(text)) {
+		for (IValidationMessage validationMessage : baseControl.getValidationMessages()) {
+			if (validationMessage.getHumanMessage().equals(text)) {
 				return;
 			}
 		}
 
-		String message = "message containing '" + text + "' not found (messages: " + Joiner.on(", ").join(validationMessages) + ")"; 
+		String message = "message containing '" + text + "' not found (messages: " + Joiner.on(", ").join(baseControl.getValidationMessages()) + ")";
 		GWT.log(message);
 		Assert.fail(message);
 	}
@@ -74,7 +67,6 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 	@Override
 	public void onUpdate() {
 		this.value = this.baseControl.getValue();
-		this.validationMessages = Lists.newArrayList(getBaseControl().getValidationMessages());
 	}
 
 }

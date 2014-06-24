@@ -125,8 +125,8 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
 		textControl.setValue(text);
 		editor.save();
 
-		textControl.assertHasErrorWithText("Duplicate value");
 		textControl.assertHasErrors();
+		textControl.assertHasErrorWithText("The Testdictionary1 '" + text + "' already exists");
 
 		runAsyncTests();
 	}

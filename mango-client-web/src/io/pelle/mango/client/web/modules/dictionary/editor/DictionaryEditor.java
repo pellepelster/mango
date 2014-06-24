@@ -6,6 +6,7 @@ import io.pelle.mango.client.base.modules.dictionary.editor.IDictionaryEditor;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
+import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.editor.IEditorModel;
 import io.pelle.mango.client.base.util.CollectionUtils;
@@ -17,17 +18,18 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.DictionaryElementUtil;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule.EditorMode;
-import io.pelle.mango.client.web.modules.dictionary.events.DictionaryEditorSavedEvent;
 import io.pelle.mango.client.web.modules.dictionary.events.VOSavedEvent;
 import io.pelle.mango.client.web.util.BaseAsyncCallback;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -95,7 +97,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 		SelectQuery<VOType> selectQuery = new SelectQuery<VOType>(dictionaryModel.getVOClass());
 		IExpression expression = ExpressionFactory.createLongExpression(dictionaryModel.getVOClass(), IBaseVO.ID_FIELD_NAME, id);
 		selectQuery.where(expression);
-		
+
 		if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent().getName())) {
 		}
 
@@ -121,7 +123,11 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 	}
 
-	private final BaseAsyncCallback<Result<VOType>, Result<VOType>> internalSaveCallback = new BaseAsyncCallback<Result<VOType>, Result<VOType>>() {
+	private class SaveCallback extends BaseAsyncCallback<Result<VOType>, Result<VOType>> {
+
+		public SaveCallback(Optional<AsyncCallback<Result<VOType>>> parentCallback) {
+			super(parentCallback);
+		}
 
 		/** {@inheritDoc} */
 		@Override
@@ -132,9 +138,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 			} else {
 				DictionaryEditor.this.addValidationMessages(result.getValidationMessages());
 			}
-			
-			MangoClientWeb.EVENT_BUS.fireEvent(new DictionaryEditorSavedEvent(DictionaryEditor.this));
 
+			callParentCallbacks(result);
 		}
 	};
 
@@ -145,13 +150,21 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 	}
 
 	protected void addValidationMessages(List<IValidationMessage> validationMessages) {
+
+		Map<String, Object> messageContext = new HashMap<String, Object>();
+		messageContext.put(IValidationMessage.DICTIONARY_EDITOR_LABEL_CONTEXT_KEY, DictionaryModelUtil.getEditorLabel(dictionaryModel));
+
 		for (IValidationMessage validationMessage : validationMessages) {
+
 			if (validationMessage.getContext().containsKey(IValidationMessage.ATTRIBUTE_CONTEXT_KEY)) {
+
 				String attributePath = validationMessage.getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY).toString();
 
 				Collection<BaseDictionaryElement<?>> baseDictionaryElements = DictionaryElementUtil.getElementsForAttributePath(getRootElement(), attributePath);
 
 				for (BaseDictionaryElement<?> baseDictionaryElement : baseDictionaryElements) {
+
+					validationMessage.getContext().putAll(messageContext);
 					baseDictionaryElement.addValidationMessage(validationMessage);
 				}
 			}
@@ -160,6 +173,10 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 	}
 
 	public void save() {
+		save(Optional.<AsyncCallback<Result<VOType>>> absent());
+	}
+
+	public void save(final Optional<AsyncCallback<Result<VOType>>> callback) {
 
 		// if (!this.dataBindingContext.hasErrors())
 		// {
@@ -177,24 +194,27 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 						runningHooks.remove(baseEditorHook);
 
 						if (runningHooks.isEmpty() && Iterables.all(hookResults, Predicates.equalTo(true))) {
-							internalSave();
+							internalSave(callback);
 						}
 					}
 				}, this.voWrapper.getVO());
 			}
 		} else {
-			internalSave();
+			internalSave(callback);
 		}
 		// }
 	}
 
-	private void internalSave() {
+	private void internalSave(Optional<AsyncCallback<Result<VOType>>> callback) {
+
+		SaveCallback saveCallback = new SaveCallback(callback);
+
 		switch (getEditorMode()) {
 		case INSERT:
-			MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().validateAndCreate(this.voWrapper.getVO(), this.internalSaveCallback);
+			MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().validateAndCreate(this.voWrapper.getVO(), saveCallback);
 			break;
 		case UPDATE:
-			MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().validateAndSave(this.voWrapper.getVO(), this.internalSaveCallback);
+			MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().validateAndSave(this.voWrapper.getVO(), saveCallback);
 			break;
 		default:
 			throw new RuntimeException("editor mode '" + getEditorMode().toString() + "' not implemented");

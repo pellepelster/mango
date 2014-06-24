@@ -85,7 +85,7 @@ public class ValidationMessage implements IValidationMessage, Serializable {
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("message", message).add("code", code).add("severity", severity).toString();
+		return Objects.toStringHelper(this).add("humanMesage", getHumanMessage()).add("message", getMessage()).add("code", getCode()).add("severity", getSeverity().toString()).toString();
 	}
 
 	@Override
