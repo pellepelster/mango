@@ -12,6 +12,7 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.Functions.Function0;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 @SuppressWarnings("all")
@@ -20,7 +21,12 @@ public class VOMapperGenerator {
   @Extension
   private NameUtils _nameUtils;
   
-  private ClientNameUtils clientNameUtils = new ClientNameUtils();
+  private ClientNameUtils clientNameUtils = new Function0<ClientNameUtils>() {
+    public ClientNameUtils apply() {
+      ClientNameUtils _clientNameUtils = new ClientNameUtils();
+      return _clientNameUtils;
+    }
+  }.apply();
   
   public CharSequence compileVOMapper(final Model model) {
     StringConcatenation _builder = new StringConcatenation();
@@ -68,19 +74,19 @@ public class VOMapperGenerator {
         _builder.append("\t\t\t");
         _builder.append("put(");
         String _voFullQualifiedName = this.clientNameUtils.voFullQualifiedName(entity);
-        _builder.append(_voFullQualifiedName, "\t\t\t");
+        _builder.append(_voFullQualifiedName, "			");
         _builder.append(".class, ");
         String _entityFullQualifiedName = this._nameUtils.entityFullQualifiedName(entity);
-        _builder.append(_entityFullQualifiedName, "\t\t\t");
+        _builder.append(_entityFullQualifiedName, "			");
         _builder.append(".class);");
         _builder.newLineIfNotEmpty();
         _builder.append("\t\t\t");
         _builder.append("put(");
         String _entityFullQualifiedName_1 = this._nameUtils.entityFullQualifiedName(entity);
-        _builder.append(_entityFullQualifiedName_1, "\t\t\t");
+        _builder.append(_entityFullQualifiedName_1, "			");
         _builder.append(".class, ");
         String _voFullQualifiedName_1 = this.clientNameUtils.voFullQualifiedName(entity);
-        _builder.append(_voFullQualifiedName_1, "\t\t\t");
+        _builder.append(_voFullQualifiedName_1, "			");
         _builder.append(".class);");
         _builder.newLineIfNotEmpty();
       }

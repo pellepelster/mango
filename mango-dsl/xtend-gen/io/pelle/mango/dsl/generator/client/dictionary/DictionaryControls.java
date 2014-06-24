@@ -112,13 +112,13 @@ public class DictionaryControls {
         _builder.newLine();
         _builder.append("\t");
         String _dictionaryConstantName = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
-        _builder.append(_dictionaryConstantName, "\t");
+        _builder.append(_dictionaryConstantName, "	");
         _builder.append(".setMandatory(");
         BaseDictionaryControl _baseControl_1 = dictionaryControl.getBaseControl();
         boolean _isMandatory = _baseControl_1.isMandatory();
         String _string = Boolean.valueOf(_isMandatory).toString();
         String _lowerCase = _string.toLowerCase();
-        _builder.append(_lowerCase, "\t");
+        _builder.append(_lowerCase, "	");
         _builder.append(");");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
@@ -130,12 +130,12 @@ public class DictionaryControls {
           if (_notEquals_1) {
             _builder.append("\t");
             String _dictionaryConstantName_1 = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
-            _builder.append(_dictionaryConstantName_1, "\t");
+            _builder.append(_dictionaryConstantName_1, "	");
             _builder.append(".setAttributePath(\"");
             BaseDictionaryControl _baseControl_3 = dictionaryControl.getBaseControl();
             EntityAttribute _entityattribute_1 = _baseControl_3.getEntityattribute();
             String _name = _entityattribute_1.getName();
-            _builder.append(_name, "\t");
+            _builder.append(_name, "	");
             _builder.append("\");");
             _builder.newLineIfNotEmpty();
             _builder.append("\t");
@@ -150,7 +150,7 @@ public class DictionaryControls {
                 _builder.newLine();
                 _builder.append("\t");
                 String _dictionaryConstantName_2 = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
-                _builder.append(_dictionaryConstantName_2, "\t");
+                _builder.append(_dictionaryConstantName_2, "	");
                 _builder.append(".setMandatory(true);");
                 _builder.newLineIfNotEmpty();
               }
@@ -167,7 +167,7 @@ public class DictionaryControls {
             BaseDictionaryControl _baseControl_6 = dictionaryControl.getBaseControl();
             Labels _labels_1 = _baseControl_6.getLabels();
             CharSequence _dictionaryControlLabelSetters = this.dictionaryControlLabelSetters(dictionaryControl, _labels_1);
-            _builder.append(_dictionaryControlLabelSetters, "\t");
+            _builder.append(_dictionaryControlLabelSetters, "	");
             _builder.newLineIfNotEmpty();
             _builder.append("\t");
             _builder.append("//IF dictionaryControl.baseControl.entityattribute != null");
@@ -196,10 +196,10 @@ public class DictionaryControls {
           if (_notEquals_1) {
             _builder.append("\t");
             String _dictionaryConstantName = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
-            _builder.append(_dictionaryConstantName, "\t");
+            _builder.append(_dictionaryConstantName, "	");
             _builder.append(".setLabel(\"");
             String _label_1 = labels.getLabel();
-            _builder.append(_label_1, "\t");
+            _builder.append(_label_1, "	");
             _builder.append("\");");
             _builder.newLineIfNotEmpty();
           }
@@ -211,10 +211,10 @@ public class DictionaryControls {
           if (_notEquals_2) {
             _builder.append("\t");
             String _dictionaryConstantName_1 = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
-            _builder.append(_dictionaryConstantName_1, "\t");
+            _builder.append(_dictionaryConstantName_1, "	");
             _builder.append(".setColumnLabel(\"");
             String _columnLabel_1 = labels.getColumnLabel();
-            _builder.append(_columnLabel_1, "\t");
+            _builder.append(_columnLabel_1, "	");
             _builder.append("\");");
             _builder.newLineIfNotEmpty();
           }
@@ -226,10 +226,10 @@ public class DictionaryControls {
           if (_notEquals_3) {
             _builder.append("\t");
             String _dictionaryConstantName_2 = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
-            _builder.append(_dictionaryConstantName_2, "\t");
+            _builder.append(_dictionaryConstantName_2, "	");
             _builder.append(".setEditorLabel(\"");
             String _editorLabel_1 = labels.getEditorLabel();
-            _builder.append(_editorLabel_1, "\t");
+            _builder.append(_editorLabel_1, "	");
             _builder.append("\");");
             _builder.newLineIfNotEmpty();
           }
@@ -241,10 +241,10 @@ public class DictionaryControls {
           if (_notEquals_4) {
             _builder.append("\t");
             String _dictionaryConstantName_3 = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
-            _builder.append(_dictionaryConstantName_3, "\t");
+            _builder.append(_dictionaryConstantName_3, "	");
             _builder.append(".setFilterLabel(\"");
             String _filterLabel_1 = labels.getFilterLabel();
-            _builder.append(_filterLabel_1, "\t");
+            _builder.append(_filterLabel_1, "	");
             _builder.append("\");");
             _builder.newLineIfNotEmpty();
           }
@@ -371,7 +371,7 @@ public class DictionaryControls {
       for(final DictionaryControl dictionaryLabelControl : _labelcontrols) {
         _builder.append("\t");
         CharSequence _dictionaryConstant = this.dictionaryConstant(dictionaryLabelControl);
-        _builder.append(_dictionaryConstant, "\t");
+        _builder.append(_dictionaryConstant, "	");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -379,7 +379,7 @@ public class DictionaryControls {
     _builder.append("\t");
     _builder.append("public ");
     String _dictionaryClassName_1 = this._dictionaryNameUtils.dictionaryClassName(dictionaryControl);
-    _builder.append(_dictionaryClassName_1, "\t");
+    _builder.append(_dictionaryClassName_1, "	");
     _builder.append("(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
@@ -387,7 +387,7 @@ public class DictionaryControls {
     _builder.append("\t\t");
     _builder.append("super(\"");
     String _controlName = ModelUtil.getControlName(dictionaryControl);
-    _builder.append(_controlName, "\t\t");
+    _builder.append(_controlName, "		");
     _builder.append("\", parent);");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
@@ -396,7 +396,7 @@ public class DictionaryControls {
       for(final DictionaryControl dictionaryLabelControl_1 : _labelcontrols_1) {
         _builder.append("\t\t");
         Object _dictionaryControlConstantSetters = this.dictionaryControlConstantSetters(dictionaryControl);
-        _builder.append(_dictionaryControlConstantSetters, "\t\t");
+        _builder.append(_dictionaryControlConstantSetters, "		");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -407,7 +407,7 @@ public class DictionaryControls {
         _builder.append("\t\t");
         _builder.append("this.getLabelControls().add(");
         String _dictionaryConstantName = this._dictionaryNameUtils.dictionaryConstantName(dictionaryLabelControl_2);
-        _builder.append(_dictionaryConstantName, "\t\t");
+        _builder.append(_dictionaryConstantName, "		");
         _builder.append(");");
         _builder.newLineIfNotEmpty();
       }
@@ -432,7 +432,7 @@ public class DictionaryControls {
         _builder.append("\t");
         DictionaryReferenceControl _ref_1 = dictionaryControl.getRef();
         Object _dictionaryControlConstantSetters = this.dictionaryControlConstantSetters(_ref_1);
-        _builder.append(_dictionaryControlConstantSetters, "\t");
+        _builder.append(_dictionaryControlConstantSetters, "	");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -440,7 +440,7 @@ public class DictionaryControls {
     _builder.newLine();
     _builder.append("\t");
     CharSequence _dictionaryControlCommonSetters = this.dictionaryControlCommonSetters(dictionaryControl);
-    _builder.append(_dictionaryControlCommonSetters, "\t");
+    _builder.append(_dictionaryControlCommonSetters, "	");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     {
@@ -449,11 +449,11 @@ public class DictionaryControls {
       if (_notEquals_1) {
         _builder.append("\t");
         String _dictionaryConstantName = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl);
-        _builder.append(_dictionaryConstantName, "\t");
+        _builder.append(_dictionaryConstantName, "	");
         _builder.append(".setDictionaryName(\"");
         Dictionary _dictionary_1 = dictionaryControl.getDictionary();
         String _name = _dictionary_1.getName();
-        _builder.append(_name, "\t");
+        _builder.append(_name, "	");
         _builder.append("\");");
         _builder.newLineIfNotEmpty();
       }

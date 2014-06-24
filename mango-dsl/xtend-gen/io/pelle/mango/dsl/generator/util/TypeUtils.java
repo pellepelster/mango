@@ -69,37 +69,36 @@ public class TypeUtils {
   
   public String getTypeClassWithCardinality(final Cardinality cardinality, final String type) {
     String _switchResult = null;
-    if (cardinality != null) {
-      switch (cardinality) {
-        case ONETOMANY:
-          String _name = List.class.getName();
-          _switchResult = (_name + ".class");
-          break;
-        default:
-          _switchResult = (type + ".class");
-          break;
+    boolean _matched = false;
+    if (!_matched) {
+      if (Objects.equal(cardinality,Cardinality.ONETOMANY)) {
+        _matched=true;
+        String _name = List.class.getName();
+        String _plus = (_name + ".class");
+        _switchResult = _plus;
       }
-    } else {
-      _switchResult = (type + ".class");
+    }
+    if (!_matched) {
+      String _plus_1 = (type + ".class");
+      _switchResult = _plus_1;
     }
     return _switchResult;
   }
   
   public String getTypeWithCardinality(final Cardinality cardinality, final String type) {
     String _switchResult = null;
-    if (cardinality != null) {
-      switch (cardinality) {
-        case ONETOMANY:
-          String _name = List.class.getName();
-          String _plus = (_name + "<");
-          String _plus_1 = (_plus + type);
-          _switchResult = (_plus_1 + ">");
-          break;
-        default:
-          _switchResult = type;
-          break;
+    boolean _matched = false;
+    if (!_matched) {
+      if (Objects.equal(cardinality,Cardinality.ONETOMANY)) {
+        _matched=true;
+        String _name = List.class.getName();
+        String _plus = (_name + "<");
+        String _plus_1 = (_plus + type);
+        String _plus_2 = (_plus_1 + ">");
+        _switchResult = _plus_2;
       }
-    } else {
+    }
+    if (!_matched) {
       _switchResult = type;
     }
     return _switchResult;
@@ -116,46 +115,55 @@ public class TypeUtils {
   
   protected String _getType(final SimpleTypeType simpleTypeType) {
     SimpleTypes _type = simpleTypeType.getType();
-    return this.getType(_type);
+    String _type_1 = this.getType(_type);
+    return _type_1;
   }
   
   protected String _getType(final Datatype dataType) {
     String _typeClass = this.getTypeClass(dataType);
     String _format = String.format("Datatype \'%s\' not supported", _typeClass);
-    throw new RuntimeException(_format);
+    RuntimeException _runtimeException = new RuntimeException(_format);
+    throw _runtimeException;
   }
   
   protected String _getTypeClass(final Datatype dataType) {
     String _type = this.getType(dataType);
-    return (_type + ".class");
+    String _plus = (_type + ".class");
+    return _plus;
   }
   
   protected String _getRawType(final Datatype dataType) {
-    return this.getType(dataType);
+    String _type = this.getType(dataType);
+    return _type;
   }
   
   protected String _getRawTypeClass(final Datatype dataType) {
-    return this.getTypeClass(dataType);
+    String _typeClass = this.getTypeClass(dataType);
+    return _typeClass;
   }
   
   protected String _getType(final Entity entity) {
-    return this._nameUtils.entityFullQualifiedName(entity);
+    String _entityFullQualifiedName = this._nameUtils.entityFullQualifiedName(entity);
+    return _entityFullQualifiedName;
   }
   
   protected String _getType(final EntityType entityType) {
     Cardinality _cardinality = entityType.getCardinality();
     EntityAttributeType _type = entityType.getType();
     String _type_1 = this.getType(_type);
-    return this.getTypeWithCardinality(_cardinality, _type_1);
+    String _typeWithCardinality = this.getTypeWithCardinality(_cardinality, _type_1);
+    return _typeWithCardinality;
   }
   
   protected String _getTypeClass(final Entity entity) {
     String _type = this.getType(entity);
-    return (_type + ".class");
+    String _plus = (_type + ".class");
+    return _plus;
   }
   
   protected String _getRawType(final Entity entity) {
-    return this.getType(entity);
+    String _type = this.getType(entity);
+    return _type;
   }
   
   protected String _getType(final MangoEntityAttribute entityAttribute) {
@@ -221,27 +229,32 @@ public class TypeUtils {
   }
   
   protected CharSequence _compileEntityAttributeDescriptor(final EntityAttribute entityAttribute, final Entity entity) {
-    return this.compileEntityAttributeDescriptorCommon(entityAttribute, entity);
+    CharSequence _compileEntityAttributeDescriptorCommon = this.compileEntityAttributeDescriptorCommon(entityAttribute, entity);
+    return _compileEntityAttributeDescriptorCommon;
   }
   
   protected String _getType(final EntityAttribute entityAttribute) {
     String _typeClass = this.getTypeClass(entityAttribute);
     String _format = String.format("EntityAttribute \'%s\' not supported", _typeClass);
-    throw new RuntimeException(_format);
+    RuntimeException _runtimeException = new RuntimeException(_format);
+    throw _runtimeException;
   }
   
   protected String _getRawType(final EntityAttribute entityAttribute) {
-    return this.getType(entityAttribute);
+    String _type = this.getType(entityAttribute);
+    return _type;
   }
   
   protected String _getTypeClass(final EntityAttribute entityAttribute) {
     String _type = this.getType(entityAttribute);
-    return (_type + ".class");
+    String _plus = (_type + ".class");
+    return _plus;
   }
   
   protected String _getRawTypeClass(final EntityAttribute entityAttribute) {
     String _rawType = this.getRawType(entityAttribute);
-    return (_rawType + ".class");
+    String _plus = (_rawType + ".class");
+    return _plus;
   }
   
   protected String _getType(final CustomEntityAttribute entityAttribute) {
@@ -251,7 +264,8 @@ public class TypeUtils {
     if (_notEquals) {
       Cardinality _cardinality = entityAttribute.getCardinality();
       String _type_1 = entityAttribute.getType();
-      _xifexpression = this.getTypeWithCardinality(_cardinality, _type_1);
+      String _typeWithCardinality = this.getTypeWithCardinality(_cardinality, _type_1);
+      _xifexpression = _typeWithCardinality;
     }
     return _xifexpression;
   }
@@ -259,48 +273,65 @@ public class TypeUtils {
   protected String _getType(final CustomType customType) {
     Cardinality _cardinality = customType.getCardinality();
     String _type = customType.getType();
-    return this.getTypeWithCardinality(_cardinality, _type);
+    String _typeWithCardinality = this.getTypeWithCardinality(_cardinality, _type);
+    return _typeWithCardinality;
   }
   
   protected String _getType(final MangoTypes mangoTypes) {
-    if (mangoTypes != null) {
-      switch (mangoTypes) {
-        case IBASEVO:
-          return IBaseVO.class.getName();
-        case IBASECLIENTVO:
-          return IBaseClientEntity.class.getName();
-        case SELECTQUERY:
-          return SelectQuery.class.getName();
-        case IHIERARCHICALVO:
-          return IHierarchicalVO.class.getName();
-        default:
-          break;
+    String _switchResult = null;
+    boolean _matched = false;
+    if (!_matched) {
+      if (Objects.equal(mangoTypes,MangoTypes.IBASEVO)) {
+        _matched=true;
+        return IBaseVO.class.getName();
       }
     }
-    return null;
+    if (!_matched) {
+      if (Objects.equal(mangoTypes,MangoTypes.IBASECLIENTVO)) {
+        _matched=true;
+        return IBaseClientEntity.class.getName();
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(mangoTypes,MangoTypes.SELECTQUERY)) {
+        _matched=true;
+        return SelectQuery.class.getName();
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(mangoTypes,MangoTypes.IHIERARCHICALVO)) {
+        _matched=true;
+        return IHierarchicalVO.class.getName();
+      }
+    }
+    return _switchResult;
   }
   
   protected String _getType(final MangoType mangoType) {
     Cardinality _cardinality = mangoType.getCardinality();
     MangoTypes _type = mangoType.getType();
     String _type_1 = this.getType(_type);
-    return this.getTypeWithCardinality(_cardinality, _type_1);
+    String _typeWithCardinality = this.getTypeWithCardinality(_cardinality, _type_1);
+    return _typeWithCardinality;
   }
   
   protected String _getType(final GenericType genericType) {
     Cardinality _cardinality = genericType.getCardinality();
     GenericTypeDefinition _genericTypeDefinition = genericType.getGenericTypeDefinition();
     String _name = _genericTypeDefinition.getName();
-    return this.getTypeWithCardinality(_cardinality, _name);
+    String _typeWithCardinality = this.getTypeWithCardinality(_cardinality, _name);
+    return _typeWithCardinality;
   }
   
   protected String _getType(final GenericTypeDefinition genericTypeDefinition) {
-    return genericTypeDefinition.getName();
+    String _name = genericTypeDefinition.getName();
+    return _name;
   }
   
   protected String _getType(final GenericEntityAttribute genericEntityAttribute) {
     GenericTypeDefinition _type = genericEntityAttribute.getType();
-    return this.getType(_type);
+    String _type_1 = this.getType(_type);
+    return _type_1;
   }
   
   protected String _getType(final MapEntityAttribute mapEntityAttribute) {
@@ -320,7 +351,8 @@ public class TypeUtils {
   }
   
   protected String _getType(final Enumeration enumeration) {
-    ClientNameUtils clientNameUtils = new ClientNameUtils();
+    ClientNameUtils _clientNameUtils = new ClientNameUtils();
+    ClientNameUtils clientNameUtils = _clientNameUtils;
     return clientNameUtils.enumerationFullQualifiedName(enumeration);
   }
   
@@ -352,17 +384,20 @@ public class TypeUtils {
   protected String _getType(final StringEntityAttribute entityAttribute) {
     Cardinality _cardinality = entityAttribute.getCardinality();
     String _rawType = this.getRawType(entityAttribute);
-    return this.getTypeWithCardinality(_cardinality, _rawType);
+    String _typeWithCardinality = this.getTypeWithCardinality(_cardinality, _rawType);
+    return _typeWithCardinality;
   }
   
   protected String _getTypeClass(final StringEntityAttribute entityAttribute) {
     Cardinality _cardinality = entityAttribute.getCardinality();
     String _rawType = this.getRawType(entityAttribute);
-    return this.getTypeClassWithCardinality(_cardinality, _rawType);
+    String _typeClassWithCardinality = this.getTypeClassWithCardinality(_cardinality, _rawType);
+    return _typeClassWithCardinality;
   }
   
   protected String _getRawType(final StringEntityAttribute entityAttribute) {
-    return String.class.getName();
+    String _name = String.class.getName();
+    return _name;
   }
   
   protected CharSequence _compileEntityAttributeDescriptor(final StringEntityAttribute entityAttribute, final Entity entity) {
@@ -412,25 +447,29 @@ public class TypeUtils {
     Cardinality _cardinality = entityAttribute.getCardinality();
     EntityAttributeType _type = entityAttribute.getType();
     String _type_1 = this.getType(_type);
-    return this.getTypeWithCardinality(_cardinality, _type_1);
+    String _typeWithCardinality = this.getTypeWithCardinality(_cardinality, _type_1);
+    return _typeWithCardinality;
   }
   
   protected String _getTypeClass(final EntityEntityAttribute entityAttribute) {
     Cardinality _cardinality = entityAttribute.getCardinality();
     EntityAttributeType _type = entityAttribute.getType();
     String _type_1 = this.getType(_type);
-    return this.getTypeClassWithCardinality(_cardinality, _type_1);
+    String _typeClassWithCardinality = this.getTypeClassWithCardinality(_cardinality, _type_1);
+    return _typeClassWithCardinality;
   }
   
   protected String _getRawType(final EntityEntityAttribute entityAttribute) {
     EntityAttributeType _type = entityAttribute.getType();
-    return this.getType(_type);
+    String _type_1 = this.getType(_type);
+    return _type_1;
   }
   
   protected String _getRawTypeClass(final EntityEntityAttribute entityAttribute) {
     EntityAttributeType _type = entityAttribute.getType();
     String _rawType = this.getRawType(_type);
-    return (_rawType + ".class");
+    String _plus = (_rawType + ".class");
+    return _plus;
   }
   
   protected CharSequence _compileEntityAttributeDescriptor(final EntityEntityAttribute entityAttribute, final Entity entity) {
@@ -481,12 +520,14 @@ public class TypeUtils {
   
   protected String _getType(final EnumerationEntityAttribute entityAttribute) {
     EnumerationAttributeType _type = entityAttribute.getType();
-    return this.getType(_type);
+    String _type_1 = this.getType(_type);
+    return _type_1;
   }
   
   protected String _getRawType(final EnumerationEntityAttribute entityAttribute) {
     EnumerationAttributeType _type = entityAttribute.getType();
-    return this.getType(_type);
+    String _type_1 = this.getType(_type);
+    return _type_1;
   }
   
   protected String _getInitializer(final EntityAttribute entityAttribute) {
@@ -500,21 +541,21 @@ public class TypeUtils {
   protected String _getInitializer(final StringEntityAttribute entityAttribute) {
     String _switchResult = null;
     Cardinality _cardinality = entityAttribute.getCardinality();
-    if (_cardinality != null) {
-      switch (_cardinality) {
-        case ONETOMANY:
-          String _name = ChangeTrackingArrayList.class.getName();
-          String _plus = ("new " + _name);
-          String _plus_1 = (_plus + "<");
-          String _name_1 = String.class.getName();
-          String _plus_2 = (_plus_1 + _name_1);
-          _switchResult = (_plus_2 + ">()");
-          break;
-        default:
-          _switchResult = null;
-          break;
+    final Cardinality _switchValue = _cardinality;
+    boolean _matched = false;
+    if (!_matched) {
+      if (Objects.equal(_switchValue,Cardinality.ONETOMANY)) {
+        _matched=true;
+        String _name = ChangeTrackingArrayList.class.getName();
+        String _plus = ("new " + _name);
+        String _plus_1 = (_plus + "<");
+        String _name_1 = String.class.getName();
+        String _plus_2 = (_plus_1 + _name_1);
+        String _plus_3 = (_plus_2 + ">()");
+        _switchResult = _plus_3;
       }
-    } else {
+    }
+    if (!_matched) {
       _switchResult = null;
     }
     return _switchResult;
@@ -523,21 +564,21 @@ public class TypeUtils {
   protected String _getInitializer(final EntityEntityAttribute entityAttribute) {
     String _switchResult = null;
     Cardinality _cardinality = entityAttribute.getCardinality();
-    if (_cardinality != null) {
-      switch (_cardinality) {
-        case ONETOMANY:
-          String _name = ChangeTrackingArrayList.class.getName();
-          String _plus = ("new " + _name);
-          String _plus_1 = (_plus + "<");
-          String _rawType = this.getRawType(entityAttribute);
-          String _plus_2 = (_plus_1 + _rawType);
-          _switchResult = (_plus_2 + ">()");
-          break;
-        default:
-          _switchResult = null;
-          break;
+    final Cardinality _switchValue = _cardinality;
+    boolean _matched = false;
+    if (!_matched) {
+      if (Objects.equal(_switchValue,Cardinality.ONETOMANY)) {
+        _matched=true;
+        String _name = ChangeTrackingArrayList.class.getName();
+        String _plus = ("new " + _name);
+        String _plus_1 = (_plus + "<");
+        String _rawType = this.getRawType(entityAttribute);
+        String _plus_2 = (_plus_1 + _rawType);
+        String _plus_3 = (_plus_2 + ">()");
+        _switchResult = _plus_3;
       }
-    } else {
+    }
+    if (!_matched) {
       _switchResult = null;
     }
     return _switchResult;
@@ -550,29 +591,48 @@ public class TypeUtils {
    * '''
    */
   public String parseSimpleTypeFromString(final SimpleTypes simpleTypes, final String parameterName) {
-    if (simpleTypes != null) {
-      switch (simpleTypes) {
-        case LONG:
-          return (("java.lang.Long.parseLong(" + parameterName) + ")");
-        case BIGDECIMAL:
-          return (("java.lang.BigDecimal.parse(" + parameterName) + ")");
-        case BOOLEAN:
-          return (("java.lang.Boolean.parseBoolean(" + parameterName) + ")");
-        case INTEGER:
-          return (("java.lang.Integer.parseInt(" + parameterName) + ")");
-        case STRING:
-          return parameterName;
-        default:
-          String _format = String.format("simple type \'%s\' not implemented", simpleTypes);
-          throw new RuntimeException(_format);
+    boolean _matched = false;
+    if (!_matched) {
+      if (Objects.equal(simpleTypes,SimpleTypes.LONG)) {
+        _matched=true;
+        String _plus = ("java.lang.Long.parseLong(" + parameterName);
+        return (_plus + ")");
       }
-    } else {
-      String _format = String.format("simple type \'%s\' not implemented", simpleTypes);
-      throw new RuntimeException(_format);
     }
+    if (!_matched) {
+      if (Objects.equal(simpleTypes,SimpleTypes.BIGDECIMAL)) {
+        _matched=true;
+        String _plus_1 = ("java.lang.BigDecimal.parse(" + parameterName);
+        return (_plus_1 + ")");
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(simpleTypes,SimpleTypes.BOOLEAN)) {
+        _matched=true;
+        String _plus_2 = ("java.lang.Boolean.parseBoolean(" + parameterName);
+        return (_plus_2 + ")");
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(simpleTypes,SimpleTypes.INTEGER)) {
+        _matched=true;
+        String _plus_3 = ("java.lang.Integer.parseInt(" + parameterName);
+        return (_plus_3 + ")");
+      }
+    }
+    if (!_matched) {
+      if (Objects.equal(simpleTypes,SimpleTypes.STRING)) {
+        _matched=true;
+        return parameterName;
+      }
+    }
+    String _format = String.format("simple type \'%s\' not implemented", simpleTypes);
+    RuntimeException _runtimeException = new RuntimeException(_format);
+    throw _runtimeException;
   }
   
   public String genericTypeDefinition(final GenericTypeDefinition genericTypeDefinition) {
+    String _xifexpression = null;
     boolean _notEquals = (!Objects.equal(genericTypeDefinition, null));
     if (_notEquals) {
       String _name = genericTypeDefinition.getName();
@@ -583,7 +643,7 @@ public class TypeUtils {
       String _plus_2 = (_plus_1 + _type);
       return (_plus_2 + ">");
     }
-    return null;
+    return _xifexpression;
   }
   
   public String getType(final Object dataType) {

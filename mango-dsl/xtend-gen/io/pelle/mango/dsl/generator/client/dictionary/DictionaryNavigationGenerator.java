@@ -67,17 +67,18 @@ public class DictionaryNavigationGenerator {
     _builder.append("\t");
     _builder.append("public static class RootNavigationNode extends ");
     String _name = NavigationTreeElement.class.getName();
-    _builder.append(_name, "\t");
+    _builder.append(_name, "	");
     _builder.append(" {");
     _builder.newLineIfNotEmpty();
     {
       TreeIterator<EObject> _eAllContents = model.eAllContents();
       Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_eAllContents);
       Iterable<NavigationNode> _filter = Iterables.<NavigationNode>filter(_iterable, NavigationNode.class);
-      final Function1<NavigationNode, Boolean> _function = new Function1<NavigationNode, Boolean>() {
+      final Function1<NavigationNode,Boolean> _function = new Function1<NavigationNode,Boolean>() {
         public Boolean apply(final NavigationNode it) {
           EObject _eContainer = it.eContainer();
-          return Boolean.valueOf((!(_eContainer instanceof NavigationNode)));
+          boolean _not = (!(_eContainer instanceof NavigationNode));
+          return Boolean.valueOf(_not);
         }
       };
       Iterable<NavigationNode> _filter_1 = IterableExtensions.<NavigationNode>filter(_filter, _function);
@@ -85,13 +86,13 @@ public class DictionaryNavigationGenerator {
         _builder.append("\t");
         _builder.append("public ");
         String _navigationyNodeClassFullQualifiedName = this._dictionaryNameUtils.navigationyNodeClassFullQualifiedName(navigationNode);
-        _builder.append(_navigationyNodeClassFullQualifiedName, "\t");
+        _builder.append(_navigationyNodeClassFullQualifiedName, "	");
         _builder.append(" ");
         String _navigationNodeConstantName = this._dictionaryNameUtils.navigationNodeConstantName(navigationNode);
-        _builder.append(_navigationNodeConstantName, "\t");
+        _builder.append(_navigationNodeConstantName, "	");
         _builder.append(" = new ");
         String _navigationyNodeClassFullQualifiedName_1 = this._dictionaryNameUtils.navigationyNodeClassFullQualifiedName(navigationNode);
-        _builder.append(_navigationyNodeClassFullQualifiedName_1, "\t");
+        _builder.append(_navigationyNodeClassFullQualifiedName_1, "	");
         _builder.append("();");
         _builder.newLineIfNotEmpty();
       }
@@ -108,10 +109,11 @@ public class DictionaryNavigationGenerator {
       TreeIterator<EObject> _eAllContents_1 = model.eAllContents();
       Iterable<EObject> _iterable_1 = IteratorExtensions.<EObject>toIterable(_eAllContents_1);
       Iterable<NavigationNode> _filter_2 = Iterables.<NavigationNode>filter(_iterable_1, NavigationNode.class);
-      final Function1<NavigationNode, Boolean> _function_1 = new Function1<NavigationNode, Boolean>() {
+      final Function1<NavigationNode,Boolean> _function_1 = new Function1<NavigationNode,Boolean>() {
         public Boolean apply(final NavigationNode it) {
           EObject _eContainer = it.eContainer();
-          return Boolean.valueOf((!(_eContainer instanceof NavigationNode)));
+          boolean _not = (!(_eContainer instanceof NavigationNode));
+          return Boolean.valueOf(_not);
         }
       };
       Iterable<NavigationNode> _filter_3 = IterableExtensions.<NavigationNode>filter(_filter_2, _function_1);
@@ -119,7 +121,7 @@ public class DictionaryNavigationGenerator {
         _builder.append("\t\t\t");
         _builder.append("getChildren().add(");
         String _navigationNodeConstantName_1 = this._dictionaryNameUtils.navigationNodeConstantName(navigationNode_1);
-        _builder.append(_navigationNodeConstantName_1, "\t\t\t");
+        _builder.append(_navigationNodeConstantName_1, "			");
         _builder.append(");");
         _builder.newLineIfNotEmpty();
       }
@@ -170,13 +172,13 @@ public class DictionaryNavigationGenerator {
         _builder.append("\t");
         _builder.append("public ");
         String _navigationyNodeClassFullQualifiedName = this._dictionaryNameUtils.navigationyNodeClassFullQualifiedName(childNavigationNode);
-        _builder.append(_navigationyNodeClassFullQualifiedName, "\t");
+        _builder.append(_navigationyNodeClassFullQualifiedName, "	");
         _builder.append(" ");
         String _navigationNodeConstantName = this._dictionaryNameUtils.navigationNodeConstantName(childNavigationNode);
-        _builder.append(_navigationNodeConstantName, "\t");
+        _builder.append(_navigationNodeConstantName, "	");
         _builder.append(" = new ");
         String _navigationyNodeClassFullQualifiedName_1 = this._dictionaryNameUtils.navigationyNodeClassFullQualifiedName(childNavigationNode);
-        _builder.append(_navigationyNodeClassFullQualifiedName_1, "\t");
+        _builder.append(_navigationyNodeClassFullQualifiedName_1, "	");
         _builder.append("();");
         _builder.newLineIfNotEmpty();
       }
@@ -185,13 +187,13 @@ public class DictionaryNavigationGenerator {
     _builder.append("\t");
     _builder.append("public ");
     String _navigationNodeClassName_1 = this._dictionaryNameUtils.navigationNodeClassName(navigationNode);
-    _builder.append(_navigationNodeClassName_1, "\t");
+    _builder.append(_navigationNodeClassName_1, "	");
     _builder.append("() {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
     _builder.append("super(\"");
     String _name_1 = navigationNode.getName();
-    _builder.append(_name_1, "\t\t");
+    _builder.append(_name_1, "		");
     _builder.append("\");");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
@@ -202,7 +204,7 @@ public class DictionaryNavigationGenerator {
         _builder.append("\t\t");
         _builder.append("getChildren().add(");
         String _navigationNodeConstantName_1 = this._dictionaryNameUtils.navigationNodeConstantName(childNavigationNode_1);
-        _builder.append(_navigationNodeConstantName_1, "\t\t");
+        _builder.append(_navigationNodeConstantName_1, "		");
         _builder.append(");");
         _builder.newLineIfNotEmpty();
       }
@@ -212,7 +214,7 @@ public class DictionaryNavigationGenerator {
     _builder.append("\t\t");
     _builder.append("setLabel(\"");
     String _name_2 = navigationNode.getName();
-    _builder.append(_name_2, "\t\t");
+    _builder.append(_name_2, "		");
     _builder.append("\");");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
@@ -223,11 +225,11 @@ public class DictionaryNavigationGenerator {
       if (_notEquals) {
         _builder.append("\t\t");
         _builder.append("setModuleLocator(");
-        _builder.append(IModuleUI.UI_MODULE_ID_PARAMETER_NAME, "\t\t");
+        _builder.append(IModuleUI.UI_MODULE_ID_PARAMETER_NAME, "		");
         _builder.append(" + \"=");
         Module _module_1 = navigationNode.getModule();
         String _name_3 = _module_1.getName();
-        _builder.append(_name_3, "\t\t");
+        _builder.append(_name_3, "		");
         _builder.append("\");");
         _builder.newLineIfNotEmpty();
       } else {
@@ -236,12 +238,12 @@ public class DictionaryNavigationGenerator {
         if (_notEquals_1) {
           _builder.append("\t\t");
           _builder.append("setModuleLocator(\"");
-          _builder.append(IModuleUI.UI_MODULE_ID_PARAMETER_NAME, "\t\t");
+          _builder.append(IModuleUI.UI_MODULE_ID_PARAMETER_NAME, "		");
           _builder.append("=DictionaryEditor&\" + io.pelle.mango.client.modules.BaseDictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID + \"=");
           DictionaryEditor _dictionaryEditor_1 = navigationNode.getDictionaryEditor();
           Dictionary _parentDictionary = ModelUtil.getParentDictionary(_dictionaryEditor_1);
           String _name_4 = _parentDictionary.getName();
-          _builder.append(_name_4, "\t\t");
+          _builder.append(_name_4, "		");
           _builder.append("\");");
           _builder.newLineIfNotEmpty();
         } else {
@@ -250,12 +252,12 @@ public class DictionaryNavigationGenerator {
           if (_notEquals_2) {
             _builder.append("\t\t");
             _builder.append("setModuleLocator(\"");
-            _builder.append(IModuleUI.UI_MODULE_ID_PARAMETER_NAME, "\t\t");
+            _builder.append(IModuleUI.UI_MODULE_ID_PARAMETER_NAME, "		");
             _builder.append("=DictionarySearch&\" + io.pelle.mango.client.modules.BaseDictionarySearchModule.SEARCHDICTIONARYNAME_PARAMETER_ID + \"=");
             DictionarySearch _dictionarySearch_1 = navigationNode.getDictionarySearch();
             Dictionary _parentDictionary_1 = ModelUtil.getParentDictionary(_dictionarySearch_1);
             String _name_5 = _parentDictionary_1.getName();
-            _builder.append(_name_5, "\t\t");
+            _builder.append(_name_5, "		");
             _builder.append("\");");
             _builder.newLineIfNotEmpty();
           } else {
@@ -264,10 +266,10 @@ public class DictionaryNavigationGenerator {
             if (_notEquals_3) {
               _builder.append("\t\t");
               _builder.append("setModuleLocator(\"");
-              _builder.append(IModuleUI.UI_MODULE_ID_PARAMETER_NAME, "\t\t");
+              _builder.append(IModuleUI.UI_MODULE_ID_PARAMETER_NAME, "		");
               _builder.append("=ModuleNavigationOverview&\" + io.pelle.mango.client.modules.BaseModuleNavigationModule.NAVIGATIONTREEELEMENTNAME_PARAMETER_ID + \"=");
               String _name_7 = navigationNode.getName();
-              _builder.append(_name_7, "\t\t");
+              _builder.append(_name_7, "		");
               _builder.append("\");");
               _builder.newLineIfNotEmpty();
             }

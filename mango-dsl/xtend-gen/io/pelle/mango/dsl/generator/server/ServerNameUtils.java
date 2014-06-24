@@ -21,13 +21,15 @@ public class ServerNameUtils extends NameUtils {
       String _name = packageDeclaration.getName();
       String _packageName = this.getPackageName(_name);
       String _plus = (_packageName + ".");
-      _xifexpression = (_plus + GeneratorConstants.SERVER_PACKAGE_POSTFIX);
+      String _plus_1 = (_plus + GeneratorConstants.SERVER_PACKAGE_POSTFIX);
+      _xifexpression = _plus_1;
     } else {
       EObject _eContainer_1 = packageDeclaration.eContainer();
       String _packageName_1 = this.getPackageName(_eContainer_1);
       String _name_1 = packageDeclaration.getName();
       String _packageName_2 = this.getPackageName(_name_1);
-      _xifexpression = this.combinePackageName(_packageName_1, _packageName_2);
+      String _combinePackageName = this.combinePackageName(_packageName_1, _packageName_2);
+      _xifexpression = _combinePackageName;
     }
     return _xifexpression;
   }
@@ -57,22 +59,22 @@ public class ServerNameUtils extends NameUtils {
     return (_firstUpper + "Impl");
   }
   
-  public String getPackageName(final Object packageDeclaration) {
-    if (packageDeclaration instanceof Dictionary) {
-      return _getPackageName((Dictionary)packageDeclaration);
-    } else if (packageDeclaration instanceof PackageDeclaration) {
-      return _getPackageName((PackageDeclaration)packageDeclaration);
-    } else if (packageDeclaration instanceof DictionaryEditor) {
-      return _getPackageName((DictionaryEditor)packageDeclaration);
-    } else if (packageDeclaration instanceof DictionarySearch) {
-      return _getPackageName((DictionarySearch)packageDeclaration);
-    } else if (packageDeclaration instanceof String) {
-      return _getPackageName((String)packageDeclaration);
-    } else if (packageDeclaration instanceof EObject) {
-      return _getPackageName((EObject)packageDeclaration);
+  public String getPackageName(final Object dictionary) {
+    if (dictionary instanceof Dictionary) {
+      return _getPackageName((Dictionary)dictionary);
+    } else if (dictionary instanceof PackageDeclaration) {
+      return _getPackageName((PackageDeclaration)dictionary);
+    } else if (dictionary instanceof DictionaryEditor) {
+      return _getPackageName((DictionaryEditor)dictionary);
+    } else if (dictionary instanceof DictionarySearch) {
+      return _getPackageName((DictionarySearch)dictionary);
+    } else if (dictionary instanceof String) {
+      return _getPackageName((String)dictionary);
+    } else if (dictionary instanceof EObject) {
+      return _getPackageName((EObject)dictionary);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
-        Arrays.<Object>asList(packageDeclaration).toString());
+        Arrays.<Object>asList(dictionary).toString());
     }
   }
 }

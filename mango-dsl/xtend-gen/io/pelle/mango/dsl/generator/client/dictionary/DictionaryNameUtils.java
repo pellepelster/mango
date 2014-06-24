@@ -72,7 +72,8 @@ public class DictionaryNameUtils extends ClientNameUtils {
   
   public String dictionaryConstantName(final Dictionary dictionary) {
     String _name = dictionary.getName();
-    return this.constantName(_name);
+    String _constantName = this.constantName(_name);
+    return _constantName;
   }
   
   public String navigationNodeClassName(final NavigationNode navigationNode) {
@@ -95,7 +96,8 @@ public class DictionaryNameUtils extends ClientNameUtils {
   
   public String navigationNodeConstantName(final NavigationNode navigationNode) {
     String _name = navigationNode.getName();
-    return this.constantName(_name);
+    String _constantName = this.constantName(_name);
+    return _constantName;
   }
   
   public String navigationNodeClassName(final Model model) {
@@ -137,7 +139,8 @@ public class DictionaryNameUtils extends ClientNameUtils {
   
   public String dictionaryConstantName(final DictionaryEditor dictionaryEditor) {
     String _name = dictionaryEditor.getName();
-    return this.constantName(_name);
+    String _constantName = this.constantName(_name);
+    return _constantName;
   }
   
   public String dictionaryClassName(final DictionarySearch dictionarySearch) {
@@ -160,7 +163,8 @@ public class DictionaryNameUtils extends ClientNameUtils {
   
   public String dictionaryConstantName(final DictionarySearch dictionarySearch) {
     String _name = dictionarySearch.getName();
-    return this.constantName(_name);
+    String _constantName = this.constantName(_name);
+    return _constantName;
   }
   
   public String dictionaryClassName(final DictionaryFilter dictionaryFilter) {
@@ -183,7 +187,8 @@ public class DictionaryNameUtils extends ClientNameUtils {
   
   public String dictionaryConstantName(final DictionaryFilter dictionaryFilter) {
     String _name = dictionaryFilter.getName();
-    return this.constantName(_name);
+    String _constantName = this.constantName(_name);
+    return _constantName;
   }
   
   public String dictionaryClassName(final DictionaryResult dictionaryResult) {
@@ -206,7 +211,8 @@ public class DictionaryNameUtils extends ClientNameUtils {
   
   public String dictionaryConstantName(final DictionaryResult dictionaryResult) {
     String _name = dictionaryResult.getName();
-    return this.constantName(_name);
+    String _constantName = this.constantName(_name);
+    return _constantName;
   }
   
   public String dictionaryClassName(final DictionaryControl dictionaryControl) {
@@ -229,7 +235,8 @@ public class DictionaryNameUtils extends ClientNameUtils {
   
   public String dictionaryConstantName(final DictionaryControl dictionaryControl) {
     String _controlName = ModelUtil.getControlName(dictionaryControl);
-    return this.constantName(_controlName);
+    String _constantName = this.constantName(_controlName);
+    return _constantName;
   }
   
   public String dictionaryClassName(final DictionaryContainer dictionaryContainer) {
@@ -252,6 +259,7 @@ public class DictionaryNameUtils extends ClientNameUtils {
   
   public String dictionaryConstantName(final DictionaryContainer dictionaryContainer) {
     String _name = dictionaryContainer.getName();
-    return this.constantName(_name);
+    String _constantName = this.constantName(_name);
+    return _constantName;
   }
 }

@@ -42,7 +42,8 @@ public class BaseServices {
     String _plus = (_type + " ");
     String _name = methodParameter.getName();
     String _firstLower = StringExtensions.toFirstLower(_name);
-    return (_plus + _firstLower);
+    String _plus_1 = (_plus + _firstLower);
+    return _plus_1;
   }
   
   public CharSequence serviceMethod(final ServiceMethod serviceMethod) {

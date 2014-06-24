@@ -56,7 +56,7 @@ public class DictionaryContainerGenerator {
       for(final DictionaryContainer dictionaryContainer : _filter) {
         _builder.append("\t");
         CharSequence _dictionaryConstant = this.dictionaryConstant(dictionaryContainer);
-        _builder.append(_dictionaryConstant, "\t");
+        _builder.append(_dictionaryConstant, "	");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -66,7 +66,7 @@ public class DictionaryContainerGenerator {
       for(final DictionaryControl dictionaryControl : _filter_1) {
         _builder.append("\t");
         CharSequence _dictionaryConstant_1 = this._dictionaryControls.dictionaryConstant(dictionaryControl);
-        _builder.append(_dictionaryConstant_1, "\t");
+        _builder.append(_dictionaryConstant_1, "	");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -159,7 +159,7 @@ public class DictionaryContainerGenerator {
     _builder.append("\t");
     _builder.append("package ");
     String _packageName = this._dictionaryNameUtils.getPackageName(dictionaryContainer);
-    _builder.append(_packageName, "\t");
+    _builder.append(_packageName, "	");
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -167,26 +167,26 @@ public class DictionaryContainerGenerator {
     _builder.append("\t");
     _builder.append("@");
     String _name = SuppressWarnings.class.getName();
-    _builder.append(_name, "\t");
+    _builder.append(_name, "	");
     _builder.append("(\"all\")");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.append("public class ");
     String _dictionaryClassName = this._dictionaryNameUtils.dictionaryClassName(dictionaryContainer);
-    _builder.append(_dictionaryClassName, "\t");
+    _builder.append(_dictionaryClassName, "	");
     _builder.append(" extends de.pellepelster.myadmin.client.base.modules.dictionary.model.containers.CompositeModel {");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t\t");
     EList<DictionaryContainerContent> _containercontents = dictionaryContainer.getContainercontents();
     CharSequence _dictionaryClass = this.dictionaryClass(_containercontents);
-    _builder.append(_dictionaryClass, "\t\t");
+    _builder.append(_dictionaryClass, "		");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t\t");
     _builder.append("public ");
     String _dictionaryClassName_1 = this._dictionaryNameUtils.dictionaryClassName(dictionaryContainer);
-    _builder.append(_dictionaryClassName_1, "\t\t");
+    _builder.append(_dictionaryClassName_1, "		");
     _builder.append("(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t\t");
@@ -194,14 +194,14 @@ public class DictionaryContainerGenerator {
     _builder.append("\t\t\t");
     _builder.append("super(\"");
     String _name_1 = dictionaryContainer.getName();
-    _builder.append(_name_1, "\t\t\t");
+    _builder.append(_name_1, "			");
     _builder.append("\", parent);");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t\t\t");
     EList<DictionaryContainerContent> _containercontents_1 = dictionaryContainer.getContainercontents();
     CharSequence _dictionaryContainerContentsConstructor = this.dictionaryContainerContentsConstructor(_containercontents_1);
-    _builder.append(_dictionaryContainerContentsConstructor, "\t\t\t");
+    _builder.append(_dictionaryContainerContentsConstructor, "			");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t\t");
     _builder.newLine();
@@ -227,7 +227,7 @@ public class DictionaryContainerGenerator {
     _builder.append("\t");
     _builder.append("package ");
     String _packageName = this._dictionaryNameUtils.getPackageName(dictionaryContainer);
-    _builder.append(_packageName, "\t");
+    _builder.append(_packageName, "	");
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -235,16 +235,16 @@ public class DictionaryContainerGenerator {
     _builder.append("\t");
     _builder.append("@");
     String _name = SuppressWarnings.class.getName();
-    _builder.append(_name, "\t");
+    _builder.append(_name, "	");
     _builder.append("(\"all\")");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.append("public class ");
     String _dictionaryClassName = this._dictionaryNameUtils.dictionaryClassName(dictionaryContainer);
-    _builder.append(_dictionaryClassName, "\t");
+    _builder.append(_dictionaryClassName, "	");
     _builder.append(" extends ");
     String _name_1 = EditableTableModel.class.getName();
-    _builder.append(_name_1, "\t");
+    _builder.append(_name_1, "	");
     _builder.append(" {");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
@@ -253,7 +253,7 @@ public class DictionaryContainerGenerator {
       for(final DictionaryControl dictionaryControl : _columncontrols) {
         _builder.append("\t\t");
         CharSequence _dictionaryConstant = this._dictionaryControls.dictionaryConstant(dictionaryControl);
-        _builder.append(_dictionaryConstant, "\t\t");
+        _builder.append(_dictionaryConstant, "		");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -261,10 +261,10 @@ public class DictionaryContainerGenerator {
     _builder.append("\t\t");
     _builder.append("public ");
     String _dictionaryClassName_1 = this._dictionaryNameUtils.dictionaryClassName(dictionaryContainer);
-    _builder.append(_dictionaryClassName_1, "\t\t");
+    _builder.append(_dictionaryClassName_1, "		");
     _builder.append("(");
     String _name_2 = BaseModel.class.getName();
-    _builder.append(_name_2, "\t\t");
+    _builder.append(_name_2, "		");
     _builder.append("<?> parent) {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t\t");
@@ -272,7 +272,7 @@ public class DictionaryContainerGenerator {
     _builder.append("\t\t\t");
     _builder.append("super(\"");
     String _name_3 = dictionaryContainer.getName();
-    _builder.append(_name_3, "\t\t\t");
+    _builder.append(_name_3, "			");
     _builder.append("\", parent);");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
@@ -282,12 +282,12 @@ public class DictionaryContainerGenerator {
         _builder.append("\t\t\t");
         _builder.append("this.getControls().add(");
         String _dictionaryConstantName = this._dictionaryNameUtils.dictionaryConstantName(dictionaryControl_1);
-        _builder.append(_dictionaryConstantName, "\t\t\t");
+        _builder.append(_dictionaryConstantName, "			");
         _builder.append(");");
         _builder.newLineIfNotEmpty();
         _builder.append("\t\t\t");
         Object _dictionaryControlConstantSetters = this._dictionaryControls.dictionaryControlConstantSetters(dictionaryControl_1);
-        _builder.append(_dictionaryControlConstantSetters, "\t\t\t");
+        _builder.append(_dictionaryControlConstantSetters, "			");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -297,14 +297,14 @@ public class DictionaryContainerGenerator {
     EntityAttribute _entityattribute = dictionaryContainer.getEntityattribute();
     Entity _entity = ModelUtil.getEntity(_entityattribute);
     String _voFullQualifiedName = this._dictionaryNameUtils.voFullQualifiedName(_entity);
-    _builder.append(_voFullQualifiedName, "\t\t\t");
+    _builder.append(_voFullQualifiedName, "			");
     _builder.append(".class);");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t\t");
     _builder.append("setAttributePath(\"");
     EntityAttribute _entityattribute_1 = dictionaryContainer.getEntityattribute();
     String _name_4 = _entityattribute_1.getName();
-    _builder.append(_name_4, "\t\t\t");
+    _builder.append(_name_4, "			");
     _builder.append("\");");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");

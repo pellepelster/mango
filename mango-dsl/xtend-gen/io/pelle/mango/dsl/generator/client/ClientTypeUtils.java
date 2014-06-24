@@ -50,12 +50,14 @@ public class ClientTypeUtils extends TypeUtils {
   }
   
   protected String _getType(final Entity entity) {
-    return this._clientNameUtils.voFullQualifiedName(entity);
+    String _voFullQualifiedName = this._clientNameUtils.voFullQualifiedName(entity);
+    return _voFullQualifiedName;
   }
   
   protected String _getTypeClass(final Entity entity) {
     String _type = this.getType(entity);
-    return (_type + ".class");
+    String _plus = (_type + ".class");
+    return _plus;
   }
   
   public String getType(final Object dataType) {
@@ -127,20 +129,20 @@ public class ClientTypeUtils extends TypeUtils {
     }
   }
   
-  public String getTypeClass(final EObject entity) {
-    if (entity instanceof StringEntityAttribute) {
-      return _getTypeClass((StringEntityAttribute)entity);
-    } else if (entity instanceof EntityEntityAttribute) {
-      return _getTypeClass((EntityEntityAttribute)entity);
-    } else if (entity instanceof Datatype) {
-      return _getTypeClass((Datatype)entity);
-    } else if (entity instanceof Entity) {
-      return _getTypeClass((Entity)entity);
-    } else if (entity instanceof EntityAttribute) {
-      return _getTypeClass((EntityAttribute)entity);
+  public String getTypeClass(final EObject entityAttribute) {
+    if (entityAttribute instanceof StringEntityAttribute) {
+      return _getTypeClass((StringEntityAttribute)entityAttribute);
+    } else if (entityAttribute instanceof EntityEntityAttribute) {
+      return _getTypeClass((EntityEntityAttribute)entityAttribute);
+    } else if (entityAttribute instanceof Datatype) {
+      return _getTypeClass((Datatype)entityAttribute);
+    } else if (entityAttribute instanceof Entity) {
+      return _getTypeClass((Entity)entityAttribute);
+    } else if (entityAttribute instanceof EntityAttribute) {
+      return _getTypeClass((EntityAttribute)entityAttribute);
     } else {
       throw new IllegalArgumentException("Unhandled parameter types: " +
-        Arrays.<Object>asList(entity).toString());
+        Arrays.<Object>asList(entityAttribute).toString());
     }
   }
 }

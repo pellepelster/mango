@@ -74,51 +74,51 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.append("\t");
     _builder.append("public static final ");
     String _name_1 = IEntityDescriptor.class.getName();
-    _builder.append(_name_1, "\t");
+    _builder.append(_name_1, "	");
     _builder.append("<");
     String _voFullQualifiedName_1 = this._clientNameUtils.voFullQualifiedName(entity);
-    _builder.append(_voFullQualifiedName_1, "\t");
+    _builder.append(_voFullQualifiedName_1, "	");
     _builder.append("> ");
     String _entityConstantName = this._clientNameUtils.entityConstantName(entity);
-    _builder.append(_entityConstantName, "\t");
+    _builder.append(_entityConstantName, "	");
     _builder.append(" = new ");
     String _name_2 = EntityDescriptor.class.getName();
-    _builder.append(_name_2, "\t");
+    _builder.append(_name_2, "	");
     _builder.append("<");
     String _type = this._clientTypeUtils.getType(entity);
-    _builder.append(_type, "\t");
+    _builder.append(_type, "	");
     _builder.append(">(");
     String _typeClass = this._clientTypeUtils.getTypeClass(entity);
-    _builder.append(_typeClass, "\t");
+    _builder.append(_typeClass, "	");
     _builder.append(");");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t");
     _builder.append("public static ");
     String _name_3 = LongAttributeDescriptor.class.getName();
-    _builder.append(_name_3, "\t");
+    _builder.append(_name_3, "	");
     _builder.append(" ");
     String _attributeConstantName = this._clientNameUtils.attributeConstantName(IVOEntity.ID_FIELD_NAME);
-    _builder.append(_attributeConstantName, "\t");
+    _builder.append(_attributeConstantName, "	");
     _builder.append(" = new ");
     String _name_4 = LongAttributeDescriptor.class.getName();
-    _builder.append(_name_4, "\t");
+    _builder.append(_name_4, "	");
     _builder.append("(");
     String _entityConstantName_1 = this._clientNameUtils.entityConstantName(entity);
-    _builder.append(_entityConstantName_1, "\t");
+    _builder.append(_entityConstantName_1, "	");
     _builder.append(", \"");
-    _builder.append(IVOEntity.ID_FIELD_NAME, "\t");
+    _builder.append(IVOEntity.ID_FIELD_NAME, "	");
     _builder.append("\");");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t");
     CharSequence _attributeDescriptorsFromExtends = this.attributeDescriptorsFromExtends(entity);
-    _builder.append(_attributeDescriptorsFromExtends, "\t");
+    _builder.append(_attributeDescriptorsFromExtends, "	");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t");
     CharSequence _compileGetAttributeDescriptors = this.compileGetAttributeDescriptors(entity);
-    _builder.append(_compileGetAttributeDescriptors, "\t");
+    _builder.append(_compileGetAttributeDescriptors, "	");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
     _builder.append("\t");
@@ -128,7 +128,7 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.newLine();
     _builder.append("\t");
     CharSequence _terSetter = this._attributeUtils.getterSetter("long", IVOEntity.ID_FIELD_NAME);
-    _builder.append(_terSetter, "\t");
+    _builder.append(_terSetter, "	");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.newLine();
@@ -137,7 +137,7 @@ public class VOGenerator extends BaseEntityGenerator {
       for(final EntityAttribute attribute : _attributes) {
         _builder.append("\t");
         CharSequence _compileVOAttribute = this.compileVOAttribute(attribute);
-        _builder.append(_compileVOAttribute, "\t");
+        _builder.append(_compileVOAttribute, "	");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -145,13 +145,13 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.newLine();
     _builder.append("\t");
     CharSequence _genericVOGetter = this.genericVOGetter(entity);
-    _builder.append(_genericVOGetter, "\t");
+    _builder.append(_genericVOGetter, "	");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.newLine();
     _builder.append("\t");
     CharSequence _genericVOSetter = this.genericVOSetter(entity);
-    _builder.append(_genericVOSetter, "\t");
+    _builder.append(_genericVOSetter, "	");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
     _builder.newLine();
@@ -180,14 +180,14 @@ public class VOGenerator extends BaseEntityGenerator {
             if (!_hasElements) {
               _hasElements = true;
             } else {
-              _builder.appendImmediate("sb.append(\", \");", "\t\t");
+              _builder.appendImmediate("sb.append(\", \");", "		");
             }
             _builder.append("\t");
             _builder.append("\t");
             _builder.append("sb.append(this.get");
             String _name_5 = naturalKeyAttribute.getName();
             String _firstUpper = StringExtensions.toFirstUpper(_name_5);
-            _builder.append(_firstUpper, "\t\t");
+            _builder.append(_firstUpper, "		");
             _builder.append("());");
             _builder.newLineIfNotEmpty();
           }
@@ -236,7 +236,7 @@ public class VOGenerator extends BaseEntityGenerator {
     _builder.append("\t");
     _builder.append("public ");
     String _voName_1 = this._clientNameUtils.voName(valueObject);
-    _builder.append(_voName_1, "\t");
+    _builder.append(_voName_1, "	");
     _builder.append("() {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -248,7 +248,7 @@ public class VOGenerator extends BaseEntityGenerator {
       for(final EntityAttribute attribute : _attributes) {
         _builder.append("\t");
         CharSequence _compileValueObjectAttribute = this.compileValueObjectAttribute(attribute);
-        _builder.append(_compileValueObjectAttribute, "\t");
+        _builder.append(_compileValueObjectAttribute, "	");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -279,11 +279,11 @@ public class VOGenerator extends BaseEntityGenerator {
         if (!_hasElements) {
           _hasElements = true;
         } else {
-          _builder.appendImmediate(", ", "\t");
+          _builder.appendImmediate(", ", "	");
         }
         _builder.append("\t");
         String _upperCase = enumerationValue.toUpperCase();
-        _builder.append(_upperCase, "\t");
+        _builder.append(_upperCase, "	");
         _builder.newLineIfNotEmpty();
       }
     }
@@ -388,7 +388,7 @@ public class VOGenerator extends BaseEntityGenerator {
         _builder.append("\t");
         _builder.append("if (\"");
         String _name = attribute.getName();
-        _builder.append(_name, "\t");
+        _builder.append(_name, "	");
         _builder.append("\".equals(name))");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
@@ -398,7 +398,7 @@ public class VOGenerator extends BaseEntityGenerator {
         _builder.append("\t");
         _builder.append("return this.");
         String _name_1 = attribute.getName();
-        _builder.append(_name_1, "\t\t");
+        _builder.append(_name_1, "		");
         _builder.append(";");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
@@ -430,7 +430,7 @@ public class VOGenerator extends BaseEntityGenerator {
         _builder.append("\t");
         _builder.append("if (\"");
         String _name = attribute.getName();
-        _builder.append(_name, "\t");
+        _builder.append(_name, "	");
         _builder.append("\".equals(name))");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
@@ -441,10 +441,10 @@ public class VOGenerator extends BaseEntityGenerator {
         _builder.append("set");
         String _name_1 = attribute.getName();
         String _firstUpper = StringExtensions.toFirstUpper(_name_1);
-        _builder.append(_firstUpper, "\t\t");
+        _builder.append(_firstUpper, "		");
         _builder.append("((");
         String _type = this._clientTypeUtils.getType(attribute);
-        _builder.append(_type, "\t\t");
+        _builder.append(_type, "		");
         _builder.append(") value);");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");

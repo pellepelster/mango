@@ -69,10 +69,10 @@ public class GWTServices {
         _builder.append("\t\t\t\t");
         _builder.append("<entry key=\"/rpc/");
         String _serviceSpringName = this._serverNameUtils.serviceSpringName(service);
-        _builder.append(_serviceSpringName, "\t\t\t\t");
+        _builder.append(_serviceSpringName, "				");
         _builder.append("\" value-ref=\"");
         String _serviceSpringName_1 = this._serverNameUtils.serviceSpringName(service);
-        _builder.append(_serviceSpringName_1, "\t\t\t\t");
+        _builder.append(_serviceSpringName_1, "				");
         _builder.append("\" />");
         _builder.newLineIfNotEmpty();
       }

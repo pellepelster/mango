@@ -28,10 +28,11 @@ public class NameUtils {
     } else {
       boolean _isEmpty = packageName1.isEmpty();
       boolean _not = (!_isEmpty);
-      _and = _not;
+      _and = (_notEquals && _not);
     }
     if (_and) {
-      return ((packageName1 + ".") + packageName2);
+      String _plus = (packageName1 + ".");
+      return (_plus + packageName2);
     } else {
       return packageName2;
     }
@@ -139,12 +140,14 @@ public class NameUtils {
   public String gwtClientModuleFullQualifiedFileName(final Model model) {
     String _xblockexpression = null;
     {
-      NameUtils nameUtils = new NameUtils();
+      NameUtils _nameUtils = new NameUtils();
+      NameUtils nameUtils = _nameUtils;
       String _modelPackageName = nameUtils.modelPackageName(model);
       String _replaceAll = _modelPackageName.replaceAll("\\.", "/");
       String _plus = (_replaceAll + "/");
       String _gwtClientGeneratedModuleDefinitionFileName = this.gwtClientGeneratedModuleDefinitionFileName(model);
-      _xblockexpression = (_plus + _gwtClientGeneratedModuleDefinitionFileName);
+      String _plus_1 = (_plus + _gwtClientGeneratedModuleDefinitionFileName);
+      _xblockexpression = (_plus_1);
     }
     return _xblockexpression;
   }

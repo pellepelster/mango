@@ -59,7 +59,7 @@ public class BaseEntityGenerator {
     _builder.append("\t");
     _builder.append("return new ");
     String _name_1 = IAttributeDescriptor.class.getName();
-    _builder.append(_name_1, "\t");
+    _builder.append(_name_1, "	");
     _builder.append("[]{");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
@@ -77,13 +77,13 @@ public class BaseEntityGenerator {
             if (!_hasElements) {
               _hasElements = true;
             } else {
-              _builder.appendImmediate(", ", "\t\t\t");
+              _builder.appendImmediate(", ", "			");
             }
             _builder.append("\t\t");
             _builder.append("\t");
             String _name_2 = attribute.getName();
             String _attributeConstantName = this._nameUtils.attributeConstantName(_name_2);
-            _builder.append(_attributeConstantName, "\t\t\t");
+            _builder.append(_attributeConstantName, "			");
             _builder.newLineIfNotEmpty();
           }
         }
@@ -110,13 +110,13 @@ public class BaseEntityGenerator {
                 if (!_hasElements_1) {
                   _hasElements_1 = true;
                 } else {
-                  _builder.appendImmediate(", ", "\t\t\t");
+                  _builder.appendImmediate(", ", "			");
                 }
                 _builder.append("\t\t");
                 _builder.append("\t");
                 String _name_3 = attribute_1.getName();
                 String _attributeConstantName_1 = this._nameUtils.attributeConstantName(_name_3);
-                _builder.append(_attributeConstantName_1, "\t\t\t");
+                _builder.append(_attributeConstantName_1, "			");
                 _builder.newLineIfNotEmpty();
               }
             }

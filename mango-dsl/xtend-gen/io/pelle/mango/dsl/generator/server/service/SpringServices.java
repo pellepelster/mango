@@ -48,10 +48,10 @@ public class SpringServices {
         _builder.append("\t\t");
         _builder.append("<bean id=\"");
         String _serviceSpringName = this._serverNameUtils.serviceSpringName(service);
-        _builder.append(_serviceSpringName, "\t\t");
+        _builder.append(_serviceSpringName, "		");
         _builder.append("\" class=\"");
         String _serviceImplFullQualifiedName = this._serverNameUtils.serviceImplFullQualifiedName(service);
-        _builder.append(_serviceImplFullQualifiedName, "\t\t");
+        _builder.append(_serviceImplFullQualifiedName, "		");
         _builder.append("\" />");
         _builder.newLineIfNotEmpty();
       }

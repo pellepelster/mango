@@ -45,7 +45,7 @@ public class GWTClient extends BaseServices {
     _builder.newLine();
     _builder.append("\t");
     _builder.append("<source path=\"");
-    _builder.append(GeneratorConstants.CLIENT_PACKAGE_POSTFIX, "\t");
+    _builder.append(GeneratorConstants.CLIENT_PACKAGE_POSTFIX, "	");
     _builder.append("\" />");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
@@ -61,7 +61,7 @@ public class GWTClient extends BaseServices {
     _builder.append("\t");
     _builder.append("package ");
     String _modelPackageName = this._dictionaryNameUtils.modelPackageName(model);
-    _builder.append(_modelPackageName, "\t");
+    _builder.append(_modelPackageName, "	");
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -69,7 +69,7 @@ public class GWTClient extends BaseServices {
     _builder.append("\t\t");
     _builder.append("public class ");
     String _gwtClientconfigurationName = this._dictionaryNameUtils.gwtClientconfigurationName(model);
-    _builder.append(_gwtClientconfigurationName, "\t\t");
+    _builder.append(_gwtClientconfigurationName, "		");
     _builder.append(" {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -77,7 +77,7 @@ public class GWTClient extends BaseServices {
     _builder.append("\t\t");
     _builder.append("private ");
     String _gwtClientconfigurationName_1 = this._dictionaryNameUtils.gwtClientconfigurationName(model);
-    _builder.append(_gwtClientconfigurationName_1, "\t\t");
+    _builder.append(_gwtClientconfigurationName_1, "		");
     _builder.append("() {");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
@@ -124,13 +124,13 @@ public class GWTClient extends BaseServices {
       for(final Dictionary dictionary : _filter_1) {
         _builder.append("\t\t\t");
         String _name = DictionaryModelProvider.class.getName();
-        _builder.append(_name, "\t\t\t");
+        _builder.append(_name, "			");
         _builder.append(".registerDictionary(");
         String _dictionaryClassFullQualifiedName = this._dictionaryNameUtils.dictionaryClassFullQualifiedName(model);
-        _builder.append(_dictionaryClassFullQualifiedName, "\t\t\t");
+        _builder.append(_dictionaryClassFullQualifiedName, "			");
         _builder.append(".");
         String _dictionaryConstantName = this._dictionaryNameUtils.dictionaryConstantName(dictionary);
-        _builder.append(_dictionaryConstantName, "\t\t\t");
+        _builder.append(_dictionaryConstantName, "			");
         _builder.append(");");
         _builder.newLineIfNotEmpty();
       }
@@ -154,10 +154,10 @@ public class GWTClient extends BaseServices {
         _builder.append("\t\t");
         _builder.append("\t");
         String _name_1 = NavigationTreeProvider.class.getName();
-        _builder.append(_name_1, "\t\t\t");
+        _builder.append(_name_1, "			");
         _builder.append(".addRootNavigationElement(");
         String _navigationNodeClassName = this._dictionaryNameUtils.navigationNodeClassName(model);
-        _builder.append(_navigationNodeClassName, "\t\t\t");
+        _builder.append(_navigationNodeClassName, "			");
         _builder.append(".ROOT);");
         _builder.newLineIfNotEmpty();
         _builder.append("\t\t");

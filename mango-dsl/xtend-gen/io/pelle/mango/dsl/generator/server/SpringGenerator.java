@@ -70,7 +70,7 @@ public class SpringGenerator {
     _builder.append("\t\t\t\t");
     _builder.append("<property name=\"targetPersistenceUnitName\" value=\"");
     String _persistenceUnitName = this._nameUtils.persistenceUnitName(model);
-    _builder.append(_persistenceUnitName, "\t\t\t\t");
+    _builder.append(_persistenceUnitName, "				");
     _builder.append("\" />");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t\t");
@@ -89,7 +89,7 @@ public class SpringGenerator {
     _builder.append("  \t");
     _builder.append("<jee:jndi-lookup id=\"dataSource\" jndi-name=\"java:comp/env/jdbc/");
     String _jndiName = this._nameUtils.jndiName(model);
-    _builder.append(_jndiName, "  \t");
+    _builder.append(_jndiName, "  	");
     _builder.append("\"/>");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
@@ -106,7 +106,7 @@ public class SpringGenerator {
     _builder.append("\t\t");
     _builder.append("<property name=\"persistenceUnitName\" value=\"");
     String _persistenceUnitName_1 = this._nameUtils.persistenceUnitName(model);
-    _builder.append(_persistenceUnitName_1, "\t\t");
+    _builder.append(_persistenceUnitName_1, "		");
     _builder.append("\" />");
     _builder.newLineIfNotEmpty();
     _builder.append("\t\t");
@@ -178,7 +178,7 @@ public class SpringGenerator {
     _builder.append("\t");
     _builder.append("<context:component-scan base-package=\"");
     String _modelPackageName = this._nameUtils.modelPackageName(model);
-    _builder.append(_modelPackageName, "\t");
+    _builder.append(_modelPackageName, "	");
     _builder.append("\" />");
     _builder.newLineIfNotEmpty();
     _builder.newLine();
@@ -212,7 +212,7 @@ public class SpringGenerator {
     _builder.append("\t\t");
     _builder.append("<persistence-unit name=\"");
     String _persistenceUnitName = this._nameUtils.persistenceUnitName(model);
-    _builder.append(_persistenceUnitName, "\t\t");
+    _builder.append(_persistenceUnitName, "		");
     _builder.append("\">");
     _builder.newLineIfNotEmpty();
     {
@@ -223,7 +223,7 @@ public class SpringGenerator {
         _builder.append("\t\t");
         _builder.append("<class>");
         String _entityFullQualifiedName = this._nameUtils.entityFullQualifiedName(entity);
-        _builder.append(_entityFullQualifiedName, "\t\t");
+        _builder.append(_entityFullQualifiedName, "		");
         _builder.append("</class>");
         _builder.newLineIfNotEmpty();
       }

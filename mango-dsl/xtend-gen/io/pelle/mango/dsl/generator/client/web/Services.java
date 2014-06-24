@@ -41,7 +41,7 @@ public class Services extends BaseServices {
       for(final ServiceMethod remoteMethod : _remoteMethods) {
         _builder.append("\t");
         CharSequence _serviceMethod = this.serviceMethod(remoteMethod);
-        _builder.append(_serviceMethod, "\t");
+        _builder.append(_serviceMethod, "	");
         _builder.newLineIfNotEmpty();
       }
     }

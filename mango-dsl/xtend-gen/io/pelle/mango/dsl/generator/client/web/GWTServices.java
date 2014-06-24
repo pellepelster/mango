@@ -143,39 +143,39 @@ public class GWTServices extends BaseServices {
         _builder.append("\t");
         _builder.append("public ");
         String _gwtAsyncServiceInterfaceFullQualifiedName = this._clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service);
-        _builder.append(_gwtAsyncServiceInterfaceFullQualifiedName, "\t");
+        _builder.append(_gwtAsyncServiceInterfaceFullQualifiedName, "	");
         _builder.append(" get");
         String _serviceName = this._clientNameUtils.serviceName(service);
-        _builder.append(_serviceName, "\t");
+        _builder.append(_serviceName, "	");
         _builder.append("() {");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
         _builder.append("\t");
         _builder.append("final ");
         String _gwtAsyncServiceInterfaceFullQualifiedName_1 = this._clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service);
-        _builder.append(_gwtAsyncServiceInterfaceFullQualifiedName_1, "\t\t");
+        _builder.append(_gwtAsyncServiceInterfaceFullQualifiedName_1, "		");
         _builder.append(" service = (");
         String _gwtAsyncServiceInterfaceFullQualifiedName_2 = this._clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service);
-        _builder.append(_gwtAsyncServiceInterfaceFullQualifiedName_2, "\t\t");
+        _builder.append(_gwtAsyncServiceInterfaceFullQualifiedName_2, "		");
         _builder.append(") com.google.gwt.core.client.GWT.create(");
         String _gwtServiceInterfaceFullQualifiedName = this._clientNameUtils.gwtServiceInterfaceFullQualifiedName(service);
-        _builder.append(_gwtServiceInterfaceFullQualifiedName, "\t\t");
+        _builder.append(_gwtServiceInterfaceFullQualifiedName, "		");
         _builder.append(".class);");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
         _builder.append("\t");
         String _name = ServiceDefTarget.class.getName();
-        _builder.append(_name, "\t\t");
+        _builder.append(_name, "		");
         _builder.append(" formEndpoint = (");
         String _name_1 = ServiceDefTarget.class.getName();
-        _builder.append(_name_1, "\t\t");
+        _builder.append(_name_1, "		");
         _builder.append(") service;");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
         _builder.append("\t");
         _builder.append("formEndpoint.setServiceEntryPoint(getModuleBaseUrl() + \"/");
         String _serviceSpringName = this._clientNameUtils.serviceSpringName(service);
-        _builder.append(_serviceSpringName, "\t\t");
+        _builder.append(_serviceSpringName, "		");
         _builder.append("\");");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
@@ -213,10 +213,10 @@ public class GWTServices extends BaseServices {
       for(final Service service : _filter) {
         _builder.append("\t");
         String _gwtAsyncServiceInterfaceFullQualifiedName = this._clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service);
-        _builder.append(_gwtAsyncServiceInterfaceFullQualifiedName, "\t");
+        _builder.append(_gwtAsyncServiceInterfaceFullQualifiedName, "	");
         _builder.append(" get");
         String _serviceName = this._clientNameUtils.serviceName(service);
-        _builder.append(_serviceName, "\t");
+        _builder.append(_serviceName, "	");
         _builder.append("();");
         _builder.newLineIfNotEmpty();
       }
@@ -269,7 +269,7 @@ public class GWTServices extends BaseServices {
       for(final ServiceMethod remoteMethod : _remoteMethods) {
         _builder.append("\t");
         CharSequence _serviceMethodAsync = this.serviceMethodAsync(remoteMethod);
-        _builder.append(_serviceMethodAsync, "\t");
+        _builder.append(_serviceMethodAsync, "	");
         _builder.append(";");
         _builder.newLineIfNotEmpty();
       }
@@ -360,11 +360,11 @@ public class GWTServices extends BaseServices {
     _builder.append("\t");
     _builder.append("private ");
     String _serviceInterfaceName = this._clientNameUtils.serviceInterfaceName(service);
-    _builder.append(_serviceInterfaceName, "\t");
+    _builder.append(_serviceInterfaceName, "	");
     _builder.append(" ");
     String _name = service.getName();
     String _firstLower = StringExtensions.toFirstLower(_name);
-    _builder.append(_firstLower, "\t");
+    _builder.append(_firstLower, "	");
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -372,14 +372,14 @@ public class GWTServices extends BaseServices {
     _builder.append("\t");
     _builder.append("public ");
     String _gwtAsyncAdapterName_1 = this._clientNameUtils.gwtAsyncAdapterName(service);
-    _builder.append(_gwtAsyncAdapterName_1, "\t");
+    _builder.append(_gwtAsyncAdapterName_1, "	");
     _builder.append("(");
     String _serviceInterfaceName_1 = this._clientNameUtils.serviceInterfaceName(service);
-    _builder.append(_serviceInterfaceName_1, "\t");
+    _builder.append(_serviceInterfaceName_1, "	");
     _builder.append(" ");
     String _name_1 = service.getName();
     String _firstLower_1 = StringExtensions.toFirstLower(_name_1);
-    _builder.append(_firstLower_1, "\t");
+    _builder.append(_firstLower_1, "	");
     _builder.append(")");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -389,11 +389,11 @@ public class GWTServices extends BaseServices {
     _builder.append("this.");
     String _name_2 = service.getName();
     String _firstLower_2 = StringExtensions.toFirstLower(_name_2);
-    _builder.append(_firstLower_2, "\t\t");
+    _builder.append(_firstLower_2, "		");
     _builder.append(" = ");
     String _name_3 = service.getName();
     String _firstLower_3 = StringExtensions.toFirstLower(_name_3);
-    _builder.append(_firstLower_3, "\t\t");
+    _builder.append(_firstLower_3, "		");
     _builder.append(";");
     _builder.newLineIfNotEmpty();
     _builder.append("\t");
@@ -406,7 +406,7 @@ public class GWTServices extends BaseServices {
         _builder.append("\t");
         _builder.append("public ");
         CharSequence _serviceMethodAsync = this.serviceMethodAsync(serviceMethod);
-        _builder.append(_serviceMethodAsync, "\t");
+        _builder.append(_serviceMethodAsync, "	");
         _builder.newLineIfNotEmpty();
         _builder.append("\t");
         _builder.append("{");
@@ -428,11 +428,11 @@ public class GWTServices extends BaseServices {
             _builder.append("callback.onSuccess(this.");
             String _name_4 = service.getName();
             String _firstLower_4 = StringExtensions.toFirstLower(_name_4);
-            _builder.append(_firstLower_4, "\t\t");
+            _builder.append(_firstLower_4, "		");
             _builder.append(".");
             String _name_5 = serviceMethod.getName();
             String _firstLower_5 = StringExtensions.toFirstLower(_name_5);
-            _builder.append(_firstLower_5, "\t\t");
+            _builder.append(_firstLower_5, "		");
             _builder.append("(");
             {
               EList<MethodParameter> _methodParameters = serviceMethod.getMethodParameters();
@@ -441,11 +441,11 @@ public class GWTServices extends BaseServices {
                 if (!_hasElements) {
                   _hasElements = true;
                 } else {
-                  _builder.appendImmediate(", ", "\t\t");
+                  _builder.appendImmediate(", ", "		");
                 }
                 String _name_6 = methodParameter.getName();
                 String _firstLower_6 = StringExtensions.toFirstLower(_name_6);
-                _builder.append(_firstLower_6, "\t\t");
+                _builder.append(_firstLower_6, "		");
               }
             }
             _builder.append("));");
@@ -456,11 +456,11 @@ public class GWTServices extends BaseServices {
             _builder.append("this.");
             String _name_7 = service.getName();
             String _firstLower_7 = StringExtensions.toFirstLower(_name_7);
-            _builder.append(_firstLower_7, "\t\t");
+            _builder.append(_firstLower_7, "		");
             _builder.append(".");
             String _name_8 = serviceMethod.getName();
             String _firstLower_8 = StringExtensions.toFirstLower(_name_8);
-            _builder.append(_firstLower_8, "\t\t");
+            _builder.append(_firstLower_8, "		");
             _builder.append("(");
             {
               EList<MethodParameter> _methodParameters_1 = serviceMethod.getMethodParameters();
@@ -469,11 +469,11 @@ public class GWTServices extends BaseServices {
                 if (!_hasElements_1) {
                   _hasElements_1 = true;
                 } else {
-                  _builder.appendImmediate(", ", "\t\t");
+                  _builder.appendImmediate(", ", "		");
                 }
                 String _name_9 = methodParameter_1.getName();
                 String _firstLower_9 = StringExtensions.toFirstLower(_name_9);
-                _builder.append(_firstLower_9, "\t\t");
+                _builder.append(_firstLower_9, "		");
               }
             }
             _builder.append(");");
