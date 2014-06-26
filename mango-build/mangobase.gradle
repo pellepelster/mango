@@ -19,18 +19,6 @@ repositories {
 	}
 }
 
-gradle.taskGraph.whenReady { taskGraph ->
-	
-	if (taskGraph.hasTask(':uploadArchives')) {
-		isReleaseVersion = true
-	} else {
-		version = version + "-SNAPSHOT"
-		isReleaseVersion = false
-	}
-	
-	println "version set to $version"
-}
-
 signing {
 	required { 
 		isReleaseVersion && gradle.taskGraph.hasTask(":uploadArchives")

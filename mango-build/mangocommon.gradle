@@ -59,35 +59,6 @@ artifacts {
 	archives sourceJar, javadocJar
 }
 
-ext {
-	buildTimeStamp = getBuildTimeStamp()
- 	isReleaseVersion = false
-}
-
-def getBuildTimeStamp() {
-	def date = new Date()
-	def formattedDate = date.format('yyyyMMddHHmmss')
-	return formattedDate
-}
-
-gradle.taskGraph.whenReady { taskGraph ->
-	
-	if (taskGraph.hasTask(':uploadArchives')) {
-		isReleaseVersion = true
-	} else {
-		isReleaseVersion = false
-	}
-	
-	if (!versionQualifier)
-	{
-		versionQualifier = buildTimeStamp
-	}
-
-	version = version + "-" + versionQualifier
-	
-	println "version set to $version"
-}
-
 signing {
 	required { 
 		isReleaseVersion && gradle.taskGraph.hasTask(":uploadArchives")

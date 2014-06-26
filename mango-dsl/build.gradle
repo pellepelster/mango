@@ -1,5 +1,5 @@
 dependencies {
-	
+
 	compile 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.6.0'
 	compile 'org.eclipse.xtext:org.eclipse.xtext.xbase:2.6.0'
 	compile 'org.eclipse.xtext:org.eclipse.xtext:2.6.0'
@@ -8,48 +8,50 @@ dependencies {
 	compile 'commons-beanutils:commons-beanutils-core:1.8.3'
 	compile project(':mango-client-base')
 	compile project(':mango-server-base')
-	
 }
 
 apply plugin: 'xtend'
 
 buildscript {
-	repositories {
-	  mavenCentral()
-	}
-	dependencies {
-	  classpath 'org.xtend:xtend-gradle-plugin:0.1.+'
-	}
-  }
+	repositories { mavenCentral() }
+	dependencies { classpath 'org.xtend:xtend-gradle-plugin:0.1.+' }
+}
 
 sourceSets {
-    main {
-        java {
-            srcDirs = [ 'src', 'xtend-gen', 'src-gen' ] 
+	main {
+		java {
+			srcDirs = [
+				'src',
+				'xtend-gen',
+				'src-gen'
+			]
+		}
+		resources {
+			srcDirs = [
+				'src',
+				'xtend-gen',
+				'src-gen'
+			]
+		}
 
-        }
-        resources {
-            srcDirs = [ 'src', 'xtend-gen', 'src-gen' ] 
-        }
-		
 		xtendOutputDir = 'xtend-gen'
-    }
+	}
 }
 
 eclipse {
-    project {
-	    natures 'org.eclipse.xtext.ui.shared.xtextNature'
-	    buildCommand 'org.eclipse.xtext.ui.shared.xtextBuilder'
-    }
+	project {
+		natures 'org.eclipse.xtext.ui.shared.xtextNature'
+		buildCommand 'org.eclipse.xtext.ui.shared.xtextBuilder'
+	}
 }
 
 task generateXtext(type: JavaExec) {
-    main = "org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"
-
-    classpath = configurations.compile
-    classpath += files('src')
-
-    args = [ "classpath:///io/pelle/mango/dsl/GenerateMango.mwe2" ]
+	main = "org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"
+	classpath = configurations.compile
+	classpath += files('src')
+	args = [
+		"classpath:///io/pelle/mango/dsl/GenerateMango.mwe2"
+	]
 }
 
 xtend {
