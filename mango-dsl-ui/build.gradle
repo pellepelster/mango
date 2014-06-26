@@ -1,10 +1,6 @@
 dependencies {
-	compile 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.6.0'
-	compile 'org.eclipse.xtext:org.eclipse.xtext.xbase:2.6.0'
-	compile 'org.eclipse.xtext:org.eclipse.xtext:2.6.0'
-	compile 'org.eclipse.xtext:org.eclipse.xtext.builder.standalone:2.6.0'
-	
-	compile project(':mango-db')
+	compile project(':mango-dsl')
+	compile 'org.eclipse.xtend:org.eclipse.xtend.lib:2.4.3'
 }
 
 buildscript {
@@ -16,7 +12,14 @@ buildscript {
     }
 
     dependencies {
+        classpath project(':mango-dsl')
+		classpath 'org.eclipse.xtend:org.eclipse.xtend.lib:2.4.3'
         classpath 'org.eclipse.xtend:org.eclipse.xtend.standalone:2.4.3'
+//		classpath 'org.eclipse.xtext:org.eclipse.xtext.xbase.lib:2.6.0'
+//		classpath  'org.eclipse.xtext:org.eclipse.xtext.xtext:2.6.0'
+//		classpath  'org.eclipse.xtext:org.eclipse.xtext.xbase:2.6.0'
+//		classpath  'org.eclipse.xtext:org.eclipse.xtext:2.6.0'
+//		classpath  'org.eclipse.xtext:org.eclipse.xtext.builder.standalone:2.6.0'
     }
 }
 
@@ -80,15 +83,6 @@ eclipse {
     }
 }
 
-task generateXtext(type: JavaExec) {
-    main = "org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"
-
-    classpath = configurations.compile
-    classpath += files('src')
-
-    args = [ "classpath:///io/pelle/mango/dsl/GenerateMango.mwe2" ]
-}
-
 import org.apache.log4j.BasicConfigurator
 import org.eclipse.xtend.core.XtendStandaloneSetup
 import org.eclipse.xtend.core.compiler.batch.XtendBatchCompiler
@@ -117,16 +111,6 @@ task generateXtend {
     }
 }
 
-copyTempSources.dependsOn generateXtext
+copyTempSources
 generateXtend.dependsOn copyTempSources
 compileJava.dependsOn generateXtend
-
-libDir = new File('lib')
-
-task copyRuntimeLibs(type: Copy) {
-    libDir.mkdirs()
-    into libDir
-    from configurations.runtime
-}
-
-build.dependsOn(copyRuntimeLibs)
