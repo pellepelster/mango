@@ -1,242 +1,30 @@
 package io.pelle.mango.dsl.generator.server;
 
-import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import io.pelle.mango.dsl.generator.util.NameUtils;
-import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.Model;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 
 @SuppressWarnings("all")
 public class SpringGenerator {
   @Inject
   @Extension
-  private NameUtils _nameUtils;
+  private /* NameUtils */Object _nameUtils;
   
   public CharSequence compileSpringDBApplicationContext(final Model model) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("<beans xmlns=\"http://www.springframework.org/schema/beans\"");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xmlns:jee=\"http://www.springframework.org/schema/jee\"");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xmlns:context=\"http://www.springframework.org/schema/context\"");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xsi:schemaLocation=\"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd");
-    _builder.newLine();
-    _builder.append("           ");
-    _builder.append("http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd");
-    _builder.newLine();
-    _builder.append("           ");
-    _builder.append("http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd\">");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("<bean id=\"persistenceUnitManager\" class=\"org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager\">");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<property name=\"persistenceXmlLocations\">");
-    _builder.newLine();
-    _builder.append("    \t\t");
-    _builder.append("<list>");
-    _builder.newLine();
-    _builder.append("      \t\t\t");
-    _builder.append("<value>classpath*:META-INF/persistence.xml</value>");
-    _builder.newLine();
-    _builder.append("    \t\t");
-    _builder.append("</list>");
-    _builder.newLine();
-    _builder.append("  \t\t");
-    _builder.append("</property>");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<property name=\"persistenceUnitPostProcessors\">");
-    _builder.newLine();
-    _builder.append("\t\t\t");
-    _builder.append("<bean class=\"io.pelle.mango.db.util.MergingPersistenceUnitPostProcessor\">");
-    _builder.newLine();
-    _builder.append("\t\t\t\t");
-    _builder.append("<property name=\"targetPersistenceUnitName\" value=\"");
-    String _persistenceUnitName = this._nameUtils.persistenceUnitName(model);
-    _builder.append(_persistenceUnitName, "				");
-    _builder.append("\" />");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\t\t\t");
-    _builder.append("</bean>");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("</property>");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<property name=\"defaultDataSource\" ref=\"dataSource\"/>");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("</bean>");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("  \t");
-    _builder.append("<jee:jndi-lookup id=\"dataSource\" jndi-name=\"java:comp/env/jdbc/");
-    String _jndiName = this._nameUtils.jndiName(model);
-    _builder.append(_jndiName, "  	");
-    _builder.append("\"/>");
-    _builder.newLineIfNotEmpty();
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("<bean class=\"org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean\" id=\"entityManagerFactory\">");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<property name=\"dataSource\" ref=\"dataSource\" />");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<property name=\"jpaVendorAdapter\" ref=\"jpaAdapter\" />");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<property name=\"persistenceUnitName\" value=\"");
-    String _persistenceUnitName_1 = this._nameUtils.persistenceUnitName(model);
-    _builder.append(_persistenceUnitName_1, "		");
-    _builder.append("\" />");
-    _builder.newLineIfNotEmpty();
-    _builder.append("\t\t");
-    _builder.append("<property name=\"persistenceUnitManager\" ref=\"persistenceUnitManager\" />");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<property name=\"jpaProperties\">");
-    _builder.newLine();
-    _builder.append("\t\t\t");
-    _builder.append("<props>");
-    _builder.newLine();
-    _builder.append("\t\t\t\t");
-    _builder.append("<prop key=\"hibernate.hbm2ddl.auto\">create</prop>");
-    _builder.newLine();
-    _builder.append("\t\t\t\t");
-    _builder.append("<prop key=\"hibernate.query.substitutions\">true 1, false 0</prop>");
-    _builder.newLine();
-    _builder.append("\t\t\t\t");
-    _builder.append("<prop key=\"hibernate.connection.autocommit\">true</prop>");
-    _builder.newLine();
-    _builder.append("\t\t\t\t");
-    _builder.append("<prop key=\"hibernate.FlushMode\">AUTO</prop>");
-    _builder.newLine();
-    _builder.append("\t\t\t\t");
-    _builder.append("<prop key=\"hibernate.show_sql\">true</prop>");
-    _builder.newLine();
-    _builder.append("\t\t\t\t");
-    _builder.append("<prop key=\"hibernate.format_sql\">true</prop>");
-    _builder.newLine();
-    _builder.append("\t\t\t");
-    _builder.append("</props>");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("</property>");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("</bean>");
-    _builder.newLine();
-    _builder.append("</beans>");
-    _builder.newLine();
-    return _builder;
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method persistenceUnitName is undefined for the type SpringGenerator"
+      + "\nThe method jndiName is undefined for the type SpringGenerator"
+      + "\nThe method persistenceUnitName is undefined for the type SpringGenerator");
   }
   
   public CharSequence compileBaseApplicationContext(final Model model) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("<beans xmlns=\"http://www.springframework.org/schema/beans\"");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" ");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xmlns:context=\"http://www.springframework.org/schema/context\"");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xsi:schemaLocation=\"http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd");
-    _builder.newLine();
-    _builder.append("           ");
-    _builder.append("http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd\">");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("<context:component-scan base-package=\"io.pelle.mango\" />");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("<context:component-scan base-package=\"");
-    String _modelPackageName = this._nameUtils.modelPackageName(model);
-    _builder.append(_modelPackageName, "	");
-    _builder.append("\" />");
-    _builder.newLineIfNotEmpty();
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("<context:annotation-config/>");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("<bean class=\"io.pelle.mango.db.util.EntityVOMapper\" factory-method=\"getInstance\" />\t");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("</beans>");
-    _builder.newLine();
-    return _builder;
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method modelPackageName is undefined for the type SpringGenerator");
   }
   
   public CharSequence compilePersistenceXml(final Model model) {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("<persistence version=\"1.0\"");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xmlns=\"http://java.sun.com/xml/ns/persistence\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd\">");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("<persistence-unit name=\"");
-    String _persistenceUnitName = this._nameUtils.persistenceUnitName(model);
-    _builder.append(_persistenceUnitName, "		");
-    _builder.append("\">");
-    _builder.newLineIfNotEmpty();
-    {
-      TreeIterator<EObject> _eAllContents = model.eAllContents();
-      Iterable<EObject> _iterable = IteratorExtensions.<EObject>toIterable(_eAllContents);
-      Iterable<Entity> _filter = Iterables.<Entity>filter(_iterable, Entity.class);
-      for(final Entity entity : _filter) {
-        _builder.append("\t\t");
-        _builder.append("<class>");
-        String _entityFullQualifiedName = this._nameUtils.entityFullQualifiedName(entity);
-        _builder.append(_entityFullQualifiedName, "		");
-        _builder.append("</class>");
-        _builder.newLineIfNotEmpty();
-      }
-    }
-    _builder.append("\t\t");
-    _builder.append("<exclude-unlisted-classes>false</exclude-unlisted-classes>");
-    _builder.newLine();
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("</persistence-unit>");
-    _builder.newLine();
-    _builder.append("</persistence>");
-    _builder.newLine();
-    return _builder;
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method persistenceUnitName is undefined for the type SpringGenerator"
+      + "\nThe method entityFullQualifiedName is undefined for the type SpringGenerator");
   }
 }
