@@ -31,9 +31,8 @@ dependencies {
 	}
 }
 
-libDir = new File('lib')
-
 task copyRuntimeLibs(type: Copy) {
+	def libDir = new File('lib')
 	libDir.mkdirs()
 	into libDir
 	from configurations.runtime
