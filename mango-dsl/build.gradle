@@ -54,6 +54,16 @@ task generateXtext(type: JavaExec) {
 	]
 }
 
+compileXtend.doFirst {
+	def xtendOutputDir = file(sourceSets.main.xtendOutputDir)
+
+	if(xtendOutputDir.exists() ) {
+		xtendOutputDir.delete()
+	}
+	
+	xtendOutputDir.mkdirs()
+}
+
 xtend {
 	fork = true
 	useDaemon = true

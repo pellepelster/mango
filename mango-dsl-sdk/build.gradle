@@ -15,6 +15,7 @@ ant.importBuild 'build.xml'
 dependencies {
 	project(':mango-libs')
 	project(':mango-dsl')
+	project(':mango-dsl-ui')
 }
 
 task zipUpdateSite(dependsOn: buildAll, type: Zip) {
