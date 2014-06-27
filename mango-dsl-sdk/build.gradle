@@ -13,9 +13,9 @@ else
 ant.importBuild 'build.xml'
 
 dependencies {
-	project(':mango-libs')
-	project(':mango-dsl')
-	project(':mango-dsl-ui')
+	compile project(':mango-libs')
+	compile project(':mango-dsl')
+	compile project(':mango-dsl-ui')
 }
 
 task zipUpdateSite(dependsOn: buildAll, type: Zip) {
@@ -30,4 +30,6 @@ artifacts {
 	}
 }
 
+buildAll.dependsOn(":mango-dsl-ui:build")
 buildAll.dependsOn(":mango-libs:build")
+buildAll.dependsOn(":mango-dsl:build")
