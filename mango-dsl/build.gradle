@@ -1,41 +1,65 @@
 dependencies {
+
 	compile 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.6.0'
 	compile 'org.eclipse.xtext:org.eclipse.xtext.xbase:2.6.0'
 	compile 'org.eclipse.xtext:org.eclipse.xtext:2.6.0'
 	compile 'org.eclipse.xtext:org.eclipse.xtext.builder.standalone:2.6.0'
-	
-	compile project(':mango-db')
+	compile 'org.eclipse.xtend:org.eclipse.xtend.lib:2.6.+'
+	compile 'commons-beanutils:commons-beanutils-core:1.8.3'
+	compile project(':mango-client-base')
+	compile project(':mango-server-base')
+}
+
+apply plugin: 'xtend'
+
+buildscript {
+	repositories { mavenCentral() }
+	dependencies { classpath 'org.xtend:xtend-gradle-plugin:0.1.+' }
 }
 
 sourceSets {
 	main {
 		java {
-			srcDirs = ['src', 'src-gen', 'xtend-gen' ]
+			srcDirs = [
+				'src',
+				'xtend-gen',
+				'src-gen'
+			]
 		}
 		resources {
-			srcDirs = ['src', 'src-gen', 'xtend-gen' ]
+			srcDirs = [
+				'src',
+				'xtend-gen',
+				'src-gen'
+			]
 		}
+
+		xtendOutputDir = 'xtend-gen'
 	}
 }
 
-task runWorkflow(type: JavaExec) {
+eclipse {
+	project {
+		natures 'org.eclipse.xtext.ui.shared.xtextNature'
+		buildCommand 'org.eclipse.xtext.ui.shared.xtextBuilder'
+	}
+}
 
+task generateXtext(type: JavaExec) {
 	main = "org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"
-	
 	classpath = configurations.compile
 	classpath += files('src')
-	
-	args = [ "classpath:///io/pelle/mango/dsl/GenerateMango.mwe2" ]
+	args = [
+		"classpath:///io/pelle/mango/dsl/GenerateMango.mwe2"
+	]
 }
 
-compileJava.dependsOn runWorkflow
-
-libDir = new File('lib')
-
-task copyRuntimeLibs(type: Copy) {
-	libDir.mkdirs()
-	into libDir
-	from configurations.runtime
+xtend {
+	fork = true
+	useDaemon = true
+	xtendAsPrimaryDebugSource = true
+	hideSyntheticVariables = false
+	encoding = "UTF-8"
 }
 
-build.dependsOn(copyRuntimeLibs)
+compileXtend.dependsOn generateXtext

@@ -25,14 +25,40 @@ buildscript {
 
 ext {
 	repositoryDir = project.buildDir.absolutePath + "/repository"
+	buildTimeStamp = getBuildTimeStamp()
+	isReleaseVersion = false
+	
+	versions = [
+		spring: "4.0.3.RELEASE",
+		spring_security: "3.2.4.RELEASE",
+		gwt: "2.6.1",
+		guava: "17.0"
+	]
 }
 
-ext.versions = [
-	spring: "4.0.3.RELEASE",
-	spring_security: "3.2.4.RELEASE",
-	gwt: "2.6.1",
-	guava: "17.0"
-]
+def getBuildTimeStamp() {
+	def date = new Date()
+	def formattedDate = date.format('yyyyMMddHHmmss')
+	return formattedDate
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+	
+	if (taskGraph.hasTask(':uploadArchives')) {
+		isReleaseVersion = true
+	} else {
+		isReleaseVersion = false
+	}
+	
+	if (!versionQualifier)
+	{
+		versionQualifier = buildTimeStamp
+	}
+
+	version = version + "-" + versionQualifier
+	
+	println "version set to $version"
+}
 
 allprojects {
 

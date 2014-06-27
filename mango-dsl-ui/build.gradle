@@ -1,0 +1,42 @@
+dependencies {
+	compile 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.6.0'
+	compile 'org.eclipse.xtext:org.eclipse.xtext.xbase:2.6.0'
+	compile 'org.eclipse.xtend:org.eclipse.xtend.lib:2.4.3'
+	compile project(':mango-dsl')
+}
+
+buildscript {
+	repositories { mavenCentral() }
+	dependencies { classpath 'org.xtend:xtend-gradle-plugin:0.1.+' }
+}
+
+apply plugin: 'xtend'
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [ 'src', 'xtend-gen', 'src-gen' ] 
+
+        }
+        resources {
+            srcDirs = [ 'src', 'xtend-gen', 'src-gen' ] 
+        }
+		
+		xtendOutputDir = 'xtend-gen'
+    }
+}
+
+eclipse {
+    project {
+	    natures 'org.eclipse.xtext.ui.shared.xtextNature'
+	    buildCommand 'org.eclipse.xtext.ui.shared.xtextBuilder'
+    }
+}
+
+xtend {
+	fork = true
+	useDaemon = true
+	xtendAsPrimaryDebugSource = true
+	hideSyntheticVariables = false
+	encoding = "UTF-8"
+}
