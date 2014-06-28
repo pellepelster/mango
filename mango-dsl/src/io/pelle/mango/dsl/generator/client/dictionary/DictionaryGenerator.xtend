@@ -18,6 +18,7 @@ import io.pelle.mango.dsl.mango.DictionaryResult
 import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.Model
 import org.eclipse.xtext.generator.IFileSystemAccess
+import io.pelle.mango.dsl.emf.EmfModelQuery
 
 class DictionaryGenerator {
 
@@ -97,7 +98,7 @@ class DictionaryGenerator {
 	package «dictionaryEditor.packageName»;
 	
 	@«SuppressWarnings.name»("all")
-	public class «dictionaryEditor.dictionaryClassName» extends «EditorModel.name»<«ModelUtil.getParentDictionary(dictionaryEditor).entity.voFullQualifiedName»> {
+	public class «dictionaryEditor.dictionaryClassName» extends «EditorModel.name»<«EmfModelQuery.createEObjectQuery(dictionaryEditor).getParentByType(Dictionary).match.entity.voFullQualifiedName»> {
 	
 		private class RootComposite extends «CompositeModel.name» {
 

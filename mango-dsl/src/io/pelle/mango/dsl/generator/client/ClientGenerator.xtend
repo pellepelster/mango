@@ -5,8 +5,6 @@ package io.pelle.mango.dsl.generator.client
 
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.GeneratorConstants
-import io.pelle.mango.dsl.generator.client.dictionary.DictionaryGenerator
-import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNavigationGenerator
 import io.pelle.mango.dsl.generator.client.web.GWTClient
 import io.pelle.mango.dsl.generator.client.web.GWTServices
 import io.pelle.mango.dsl.generator.client.web.Services
@@ -19,6 +17,8 @@ import io.pelle.mango.dsl.mango.ValueObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import io.pelle.mango.dsl.generator.client.dictionary.DictionaryGenerator
+import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNavigationGenerator
 
 class ClientGenerator implements IGenerator {
 

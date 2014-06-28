@@ -7,7 +7,7 @@ import io.pelle.mango.client.base.vo.EntityDescriptor
 import io.pelle.mango.client.base.vo.IEntityDescriptor
 import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
-import io.pelle.mango.dsl.ModelUtil
+import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.EntityUtils
@@ -113,7 +113,7 @@ class VOGenerator extends BaseEntityGenerator {
 	'''
 
 	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
-		«IF attribute.naturalKeyAttribute»@«NaturalKey.name»( order = «ModelUtil.getParentEntity(attribute).naturalKeyAttributes.indexOf(attribute)»)«ENDIF»
+		«IF attribute.naturalKeyAttribute»@«NaturalKey.name»( order = «EmfModelQuery.createEObjectQuery(attribute).getParentByType(Entity).match.naturalKeyAttributes.indexOf(attribute)»)«ENDIF»
 		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
 		«IF !attribute.parentEntity.extendedByOtherEntity»
 		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»

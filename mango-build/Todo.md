@@ -1,4 +1,3 @@
-* [DSL] Run XTend Generator during build
 * [DSL] Generic Type Scopes should be local
 * [DSL] Real java type system for java references (MyAdminType) 
 * [DSL] Rename *EntityAttributes to something more descriptive 

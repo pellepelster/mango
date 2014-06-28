@@ -1,6 +1,5 @@
 package io.pelle.mango.dsl;
 
-import io.pelle.mango.dsl.mango.Dictionary;
 import io.pelle.mango.dsl.mango.DictionaryControl;
 import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.EntityAttribute;
@@ -122,35 +121,6 @@ public class ModelUtil {
 		return null;
 	}
 
-	public static <T extends EObject> T getParentEObject(EObject eObject, Class<T> eObjectClass) {
-		return getParentEObject(eObject, eObjectClass, true);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T extends EObject> T getParentEObject(EObject eObject, Class<T> eObjectClass, boolean optional) {
-		EObject currentEObject = eObject;
-
-		int count = 0;
-		while (currentEObject != null && !eObjectClass.isAssignableFrom(currentEObject.getClass())) {
-			// see EcoreUtil.getRootContainer(EObject)
-			if (++count > 100000) {
-				break;
-			}
-			currentEObject = currentEObject.eContainer();
-		}
-
-		if (currentEObject != null) {
-			return (T) currentEObject;
-		} else {
-			if (optional) {
-				return null;
-			} else {
-				throw new RuntimeException(String.format("no parent object of type '%s' found for '%s'", eObjectClass.getName(), eObject.toString()));
-			}
-
-		}
-	}
-
 	public static Object getControlRef(Object dictionaryControl) {
 		try {
 			return PropertyUtils.getProperty(dictionaryControl, "ref");
@@ -219,14 +189,6 @@ public class ModelUtil {
 		return controlHierarchy;
 	}
 
-	public static Dictionary getParentDictionary(EObject eObject) {
-		return getParentEObject(eObject, Dictionary.class, false);
-	}
-
-	public static Entity getParentEntity(EObject eObject) {
-		return getParentEObject(eObject, Entity.class, false);
-	}
-
 	public static List<Entity> getEntityHierarchy(Entity entity) {
 		List<Entity> entityHierarchy = new ArrayList<Entity>();
 
@@ -240,10 +202,6 @@ public class ModelUtil {
 		}
 
 		return entityHierarchy;
-	}
-
-	public static String getParentDictionaryName(EObject eObject) {
-		return getParentDictionary(eObject).getName();
 	}
 
 	public static boolean isExtendedByOtherEntity(final Entity entity) {
