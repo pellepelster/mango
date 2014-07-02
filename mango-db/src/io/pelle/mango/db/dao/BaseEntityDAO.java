@@ -55,11 +55,15 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 
 	private final String UNKNOWN_USERNAME = "<unknown>";
 
-	private Timer createTimer;
+	private Optional<Timer> createTimer = Optional.absent();
 
 	public <T extends IBaseEntity> T create(T entity) {
 
-		final Timer.Context context = createTimer.time();
+		Optional<Timer.Context> context = Optional.absent();
+
+		if (createTimer.isPresent()) {
+			context = Optional.of(createTimer.get().time());
+		}
 
 		try {
 
@@ -88,7 +92,9 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 
 			return result;
 		} finally {
-			context.stop();
+			if (context.isPresent()) {
+				context.get().stop();
+			}
 		}
 	}
 
@@ -316,7 +322,7 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 
 	@Autowired
 	public void setMetricRegistry(MetricRegistry metricRegistry) {
-		createTimer = metricRegistry.timer(name(BaseEntityDAO.class, "create"));
+		createTimer = Optional.fromNullable(metricRegistry.timer(name(BaseEntityDAO.class, "create")));
 	}
 
 }
