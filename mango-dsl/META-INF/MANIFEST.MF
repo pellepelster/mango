@@ -5,6 +5,7 @@ Bundle-SymbolicName: mango-dsl;singleton:=true
 Bundle-Version: 0.0.0.qualifier
 Bundle-Vendor: http://pelle.io
 Export-Package: io.pelle.mango.dsl,
+ io.pelle.mango.dsl.emf,
  io.pelle.mango.dsl.formatting,
  io.pelle.mango.dsl.generator,
  io.pelle.mango.dsl.generator.client.web,

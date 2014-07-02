@@ -39,10 +39,6 @@ public abstract class MangoAsyncGwtTestHelper<VOType extends IBaseVO> extends GW
 
 	private Map<String, Object> asyncTestItemResults = new HashMap<String, Object>();
 
-	public MangoAsyncGwtTestHelper() {
-		this.toString();
-	}
-
 	public MangoAsyncGwtTestHelper<VOType> deleteAllVOs(final Class<VOType> voClass) {
 		this.asyncTestItems.add(new BaseAsyncTestItem() {
 

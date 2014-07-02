@@ -20,6 +20,8 @@ dependencies {
 	compile group: "commons-lang", name: "commons-lang", version: "2.6"
 	compile group: "aopalliance", name: "aopalliance", version: "1.0"
 	compile group: "cglib", name: "cglib", version: "3.1"
-	
+
+	compile group: 'com.codahale.metrics', name: 'metrics-core', version: '3.0.2'
+
 }
 

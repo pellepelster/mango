@@ -26,9 +26,6 @@ dependencies {
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.5'
 	compile group: 'log4j', name: 'log4j', version: '1.2.17'
 	
-	compile group: 'com.codahale.metrics', name: 'metrics-servlets', version: '3.0.2'
-	compile group: 'com.codahale.metrics', name: 'metrics-core', version: '3.0.2'
-	
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.3.1'
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.3.1'
 	

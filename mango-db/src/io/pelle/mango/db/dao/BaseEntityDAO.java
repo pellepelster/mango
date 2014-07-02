@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.db.dao;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.query.CountQuery;
@@ -35,10 +36,13 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Optional;
 
 @Component
@@ -51,32 +55,41 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 
 	private final String UNKNOWN_USERNAME = "<unknown>";
 
+	private Timer createTimer;
+
 	public <T extends IBaseEntity> T create(T entity) {
 
-		if (entity instanceof IBaseClientEntity) {
-			populateClients(((IBaseClientEntity) entity), new ArrayList<IBaseClientEntity>());
+		final Timer.Context context = createTimer.time();
 
-			LOG.debug(String.format("creating entity '%s' for client '%s'", entity.getClass().getName(), getCurrentUser().getClient()));
-		} else {
-			LOG.debug(String.format("creating entity '%s'", entity.getClass().getName()));
-		}
+		try {
 
-		if (entity instanceof IBaseInfoEntity) {
-			IBaseInfoEntity infoEntity = (IBaseInfoEntity) entity;
+			if (entity instanceof IBaseClientEntity) {
+				populateClients(((IBaseClientEntity) entity), new ArrayList<IBaseClientEntity>());
 
-			if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
-				infoEntity.setUpdateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-				infoEntity.setCreateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+				LOG.debug(String.format("creating entity '%s' for client '%s'", entity.getClass().getName(), getCurrentUser().getClient()));
+			} else {
+				LOG.debug(String.format("creating entity '%s'", entity.getClass().getName()));
 			}
 
-			Date now = new Date();
-			infoEntity.setCreateDate(now);
-			infoEntity.setUpdateDate(now);
+			if (entity instanceof IBaseInfoEntity) {
+				IBaseInfoEntity infoEntity = (IBaseInfoEntity) entity;
+
+				if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
+					infoEntity.setUpdateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+					infoEntity.setCreateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+				}
+
+				Date now = new Date();
+				infoEntity.setCreateDate(now);
+				infoEntity.setUpdateDate(now);
+			}
+
+			T result = mergeRecursive(entity);
+
+			return result;
+		} finally {
+			context.stop();
 		}
-
-		T result = mergeRecursive(entity);
-
-		return result;
 	}
 
 	public <T extends IBaseEntity> void delete(T entity) {
@@ -300,4 +313,10 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 	public <T extends IBaseEntity> long count(CountQuery<T> countQuery) {
 		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}
+
+	@Autowired
+	public void setMetricRegistry(MetricRegistry metricRegistry) {
+		createTimer = metricRegistry.timer(name(BaseEntityDAO.class, "create"));
+	}
+
 }

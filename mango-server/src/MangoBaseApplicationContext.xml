@@ -8,4 +8,8 @@
 
 	<bean class="io.pelle.mango.server.validator.NaturalKeyValidator" />
     
+    <bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry"/>
+    
+    <bean class="io.pelle.mango.server.MangoApplicationContext"/>
+    
 </beans>

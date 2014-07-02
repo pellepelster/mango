@@ -17,19 +17,16 @@
 			http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
 			http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
             http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry"/>
 
-    <bean class="com.codahale.metrics.health.HealthCheckRegistry"/>
-
-    <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
-        <property name="attributes">
-            <map>
-                <!-- inject the following beans into the servlet
-       context so the servlets can access them. -->
-                <entry key="com.codahale.metrics.servlets.MetricsServlet.registry">
-                    <ref bean="metricRegistry"/>
-                </entry>
-            </map>
-        </property>
-    </bean>
+ 	<bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+	    <property name="attributes">
+	        <map>
+	            <!-- inject the following beans into the servlet
+	   context so the servlets can access them. -->
+	            <entry key="com.codahale.metrics.servlets.MetricsServlet.registry">
+	                <ref bean="metricRegistry"/>
+	            </entry>
+	        </map>
+	    </property>
+	</bean>
 </beans>
