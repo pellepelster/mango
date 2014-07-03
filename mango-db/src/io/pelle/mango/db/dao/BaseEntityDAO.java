@@ -320,7 +320,7 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}
 
-	@Autowired
+	@Autowired(required = false)
 	public void setMetricRegistry(MetricRegistry metricRegistry) {
 		createTimer = Optional.fromNullable(metricRegistry.timer(name(BaseEntityDAO.class, "create")));
 	}
