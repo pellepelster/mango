@@ -18,6 +18,8 @@
 
 	<property file="build.properties" />
 
+	<echo message="updatesite.location: ${updatesite.location}" />
+	<echo message="pde.build.location: ${pde.build.location}" />
 
 	<target name="buildAll" depends="pde.clean, pde.init">
 
