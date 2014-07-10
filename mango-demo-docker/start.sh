@@ -1,20 +1,18 @@
 #!/bin/sh
 
 DOCKER_CONTAINER_NAME="mango-demo"
-DOCKER_IMAGE_NAME="mango-demo-docker"
-SSH_USER="mango"
-SSH_PASSWORD=$SSH_USER
 
 # check if container already present
-TMP=$(docker inspect ${DOCKER_CONTAINER_NAME})
+TMP=$(docker ps -a | grep ${DOCKER_CONTAINER_NAME})
+CONTAINER_FOUND=$?
+TMP=$(docker ps | grep ${DOCKER_CONTAINER_NAME})
+CONTAINER_RUNNING=$?
 
-if [ $? -eq 0 ]; then
+if [ $CONTAINER_FOUND -eq 0 ]; then
 
     echo -n "container '${DOCKER_CONTAINER_NAME}' found, "
 
-	TMP=$(docker inspect ${DOCKER_CONTAINER_NAME} | grep Running | grep true)
-	
-	if [ $? -eq 0 ]; then
+	if [ $CONTAINER_RUNNING -eq 0 ]; then
 		echo "already running"
 	else
 		echo "not running, starting..."
@@ -24,10 +22,14 @@ if [ $? -eq 0 ]; then
 
 else
     echo -n "container '${DOCKER_CONTAINER_NAME}' not found, creating..."
-    TMP=$(docker run -d -P --name ${DOCKER_CONTAINER_NAME} ${DOCKER_IMAGE_NAME})
+    TMP=$(docker run -d -P --name ${DOCKER_CONTAINER_NAME} ${DOCKER_CONTAINER_NAME})
     echo "done"
 fi
 
+#wait for container
+sleep 2
+
+# find ssh port
 SSH_URL=$(docker port ${DOCKER_CONTAINER_NAME} 22)
 SSH_URL_REGEX="(.*):(.*)"
 
@@ -36,4 +38,4 @@ SSH_PORT=$(echo $SSH_URL | awk -F  ":" '/1/ {print $2}')
 
 echo "ssh running at ${SSH_INTERFACE}:${SSH_PORT}"
 
-ssh -X -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ${SSH_USER}@${SSH_INTERFACE} -p ${SSH_PORT} firefox
+ssh -i ssh/id_rsa -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -Y -X root@${SSH_INTERFACE} -p ${SSH_PORT} eclipse/eclipse -data workspace
