@@ -14,7 +14,7 @@
 	<property name="revision.number" value="1" />
 	
 	<property name="updatesite.location" value="${basedir}/${build.dir}/updatesite" />
-	<property name="pde.build.location" value="${java.io.tmpdir}/mango" />
+	<property name="pde.build.location" value="${basedir}/${build.dir}/mango" />
 
 	<property file="build.properties" />
 
