@@ -10,18 +10,15 @@ else
 	ant.properties['context.qualifier'] = buildTimeStamp
 }
 
-ant.importBuild 'build.xml'
-
-dependencies {
-	project(':mango-libs')
-	project(':mango-dsl')
+task(pdeBuild) <<
+{
+	ant.importBuild 'build.xml'
+	buildAll
 }
 
-task zipUpdateSite(dependsOn: buildAll, type: Zip) {
+task zipUpdateSite(dependsOn: pdeBuild, type: Zip) {
 	from buildDir.name + '/updatesite'
 }
-
-compileJava.dependsOn buildAll, zipUpdateSite
 
 artifacts {
 	archives (zipUpdateSite) {
@@ -29,4 +26,6 @@ artifacts {
 	}
 }
 
-buildAll.dependsOn(":mango-libs:build")
+pdeBuild.dependsOn(":mango-dsl-ui:build")
+pdeBuild.dependsOn(":mango-libs:build")
+pdeBuild.dependsOn(":mango-dsl:build")
