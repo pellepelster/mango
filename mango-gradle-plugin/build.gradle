@@ -1,6 +1,30 @@
 apply plugin: 'groovy'
 apply from: '../mango-build/mangocommon.gradle'
 
+def getBuildTimeStamp() {
+	def date = new Date()
+	def formattedDate = date.format('yyyyMMddHHmmss')
+	return formattedDate
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+	
+	if (taskGraph.hasTask(':uploadArchives')) {
+		isReleaseVersion = true
+	} else {
+		isReleaseVersion = false
+	}
+	
+	if (!versionQualifier)
+	{
+		versionQualifier = buildTimeStamp
+	}
+
+	version = version + "-" + versionQualifier
+	
+	println "version set to $version"
+}
+
 repositories {
 	
 	mavenCentral()
