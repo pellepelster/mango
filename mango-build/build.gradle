@@ -1,3 +1,5 @@
+apply from: '../mango-build/mangocommon.gradle'
+
 buildscript {
 	
 	repositories {
@@ -14,9 +16,8 @@ buildscript {
 			url System.properties['user.home'] + "/.gradle/mango_snapshot"
 			layout "maven"
 		}
-	
 	}
-
+	
 	dependencies {
 		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '0.0.2'
 		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+'
@@ -25,8 +26,6 @@ buildscript {
 
 ext {
 	repositoryDir = project.buildDir.absolutePath + "/repository"
-	buildTimeStamp = getBuildTimeStamp()
-	isReleaseVersion = false
 	
 	versions = [
 		spring: "4.0.3.RELEASE",
@@ -36,35 +35,11 @@ ext {
 	]
 }
 
-def getBuildTimeStamp() {
-	def date = new Date()
-	def formattedDate = date.format('yyyyMMddHHmmss')
-	return formattedDate
-}
+subprojects {
 
-gradle.taskGraph.whenReady { taskGraph ->
-	
-	if (taskGraph.hasTask(':uploadArchives')) {
-		isReleaseVersion = true
-	} else {
-		isReleaseVersion = false
-	}
-	
-	if (!versionQualifier)
-	{
-		versionQualifier = buildTimeStamp
-	}
-
-	version = version + "-" + versionQualifier
-	
-	println "version set to $version"
-}
-
-allprojects {
+	apply from: '../mango-build/mangojavacommon.gradle'
 
 	apply plugin: 'eclipse'
-	
-	apply from: '../mango-build/mangojavacommon.gradle'
 	
 	javadoc.enabled = false
 	javadocJar.enabled = false
