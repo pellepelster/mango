@@ -14,5 +14,5 @@ then
 tar -xzvf ${ECLIPSE_FILE}
 fi
 
-sudo docker rm -f mango-demo
-sudo docker build -t mango-demo .
+sudo docker rm -f pellepelster/mango-demo
+sudo docker build -t pellepelster/mango-demo .

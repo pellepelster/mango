@@ -1,32 +1,35 @@
-#!/bin/sh
+#!/bin/bash
+
+DOCKER_IMAGE_NAME="pellepelster/mango-demo"
 
 DOCKER_CONTAINER_NAME="mango-demo"
 
 # check if container already present
 TMP=$(docker ps -a | grep ${DOCKER_CONTAINER_NAME})
 CONTAINER_FOUND=$?
+
 TMP=$(docker ps | grep ${DOCKER_CONTAINER_NAME})
 CONTAINER_RUNNING=$?
 
 if [ $CONTAINER_FOUND -eq 0 ]; then
 
-    echo -n "container '${DOCKER_CONTAINER_NAME}' found, "
+	echo -n "container '${DOCKER_CONTAINER_NAME}' found, "
 
 	if [ $CONTAINER_RUNNING -eq 0 ]; then
 		echo "already running"
 	else
-		echo "not running, starting..."
+		echo -n "not running, starting..."
 		TMP=$(docker start ${DOCKER_CONTAINER_NAME})
 		echo "done"
 	fi
 
 else
-    echo -n "container '${DOCKER_CONTAINER_NAME}' not found, creating..."
-    TMP=$(docker run -d -P --name ${DOCKER_CONTAINER_NAME} ${DOCKER_CONTAINER_NAME})
-    echo "done"
+	echo -n "container '${DOCKER_CONTAINER_NAME}' not found, creating..."
+	TMP=$(docker run -d -P --name ${DOCKER_CONTAINER_NAME} ${DOCKER_IMAGE_NAME})
+	echo "done"
 fi
 
-#wait for container
+#wait for container to come up
 sleep 2
 
 # find ssh port
