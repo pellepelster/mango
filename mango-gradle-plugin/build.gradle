@@ -1,6 +1,8 @@
 apply plugin: 'groovy'
 apply from: '../mango-build/mangocommon.gradle'
 
+version = version + "-" + versionQualifier
+
 repositories {
 	
 	mavenCentral()
