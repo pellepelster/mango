@@ -7,29 +7,25 @@ def getBuildTimeStamp() {
 ext {
 	buildTimeStamp = getBuildTimeStamp()
 	isReleaseVersion = false
+	versionQualifier = buildTimeStamp 
 }
 
-allprojects {
+gradle.taskGraph.whenReady { taskGraph ->
 
-
-	gradle.taskGraph.whenReady { taskGraph ->
-	
-		if (taskGraph.hasTask(':uploadArchives')) {
-			isReleaseVersion = true
-		} else {
-			isReleaseVersion = false
-		}
-		
-		if (!versionQualifier)
-		{
-			versionQualifier = buildTimeStamp
-		}
-	
-		version = version + "-" + versionQualifier
+	if (taskGraph.hasTask(':uploadArchives')) {
+		isReleaseVersion = true
+	} else {
+		isReleaseVersion = false
 	}
+	
+}
+	
+allprojects {
 	
 	apply plugin: 'maven'
 	apply plugin: 'signing'
+
+	version = version + "-" + versionQualifier
 
 
 	repositories {
