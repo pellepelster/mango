@@ -1,8 +1,6 @@
 apply plugin: 'groovy'
 apply from: '../mango-build/mangocommon.gradle'
 
-version = version + "-" + versionQualifier
-
 repositories {
 	
 	mavenCentral()
@@ -41,4 +39,5 @@ file("../mango-build/gradle.properties").withReader { reader ->
 	buildProperties.load(reader)
 	version = buildProperties.version
 	group = buildProperties.group
+	version = version + "-" + versionQualifier
 }

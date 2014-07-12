@@ -35,7 +35,7 @@ ext {
 	]
 }
 
-subprojects {
+allprojects {
 
 	apply from: '../mango-build/mangojavacommon.gradle'
 

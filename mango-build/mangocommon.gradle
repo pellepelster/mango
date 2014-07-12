@@ -7,7 +7,13 @@ def getBuildTimeStamp() {
 ext {
 	buildTimeStamp = getBuildTimeStamp()
 	isReleaseVersion = false
-	versionQualifier = buildTimeStamp 
+}
+
+if (!versionQualifier)
+{
+	ext {
+		versionQualifier = buildTimeStamp 
+	}
 }
 
 gradle.taskGraph.whenReady { taskGraph ->
@@ -26,7 +32,6 @@ allprojects {
 	apply plugin: 'signing'
 
 	version = version + "-" + versionQualifier
-
 
 	repositories {
 		
