@@ -1,4 +1,13 @@
 apply plugin: 'groovy'
+
+file("../mango-build/gradle.properties").withReader { reader ->
+	def buildProperties = new Properties()
+	buildProperties.load(reader)
+	version = buildProperties.version
+	group = buildProperties.group
+	version = version + "-" + versionQualifier
+}
+
 apply from: '../mango-build/mangocommon.gradle'
 
 repositories {
@@ -32,12 +41,4 @@ uploadArchives {
 dependencies {
     compile gradleApi()
     compile localGroovy()
-}
-
-file("../mango-build/gradle.properties").withReader { reader ->
-	def buildProperties = new Properties()
-	buildProperties.load(reader)
-	version = buildProperties.version
-	group = buildProperties.group
-	version = version + "-" + versionQualifier
 }
