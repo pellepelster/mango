@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER" exported="true"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
-	<classpathentry kind="con" path="org.springsource.ide.eclipse.gradle.classpathcontainer" exported="true"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER" exported="true"/>
 	<classpathentry kind="src" path="/mango-demo-server" exported="true"/>
 	<classpathentry kind="src" path="/mango-demo-model" exported="true"/>
 	<classpathentry kind="src" path="/mango-client-web-test" exported="true"/>
