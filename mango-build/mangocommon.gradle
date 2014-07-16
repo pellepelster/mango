@@ -9,13 +9,6 @@ ext {
 	isReleaseVersion = false
 }
 
-if (!versionQualifier)
-{
-	ext {
-		versionQualifier = buildTimeStamp 
-	}
-}
-
 gradle.taskGraph.whenReady { taskGraph ->
 
 	if (taskGraph.hasTask(':uploadArchives')) {
@@ -31,7 +24,13 @@ allprojects {
 	apply plugin: 'maven'
 	apply plugin: 'signing'
 
-	version = version + "-" + versionQualifier
+	if (!versionQualifier)
+	{
+		versionQualifier = buildTimeStamp 
+	}
+	
+
+	version = mangoVersion + "-" + versionQualifier
 
 	repositories {
 		

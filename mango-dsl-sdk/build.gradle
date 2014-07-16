@@ -1,19 +1,21 @@
-ant.properties['version'] = version
-ant.properties['build.timestamp'] = buildTimeStamp
-
-if (versionQualifier)
-{
-	ant.properties['context.qualifier'] = versionQualifier
-}
-else
-{
-	ant.properties['context.qualifier'] = buildTimeStamp
-}
 
 task(pdeBuild) <<
 {
+	ant.properties['version'] = mangoVersion
+	ant.properties['buildTimeStamp'] = buildTimeStamp
+	
+	if (versionQualifier)
+	{
+		ant.properties['versionQualifier'] = versionQualifier
+	}
+	else
+	{
+		ant.properties['versionQualifier'] = buildTimeStamp
+	}
+	
 	ant.importBuild 'build.xml'
-	buildAll
+
+	buildAll.execute()
 }
 
 task zipUpdateSite(dependsOn: pdeBuild, type: Zip) {

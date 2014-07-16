@@ -4,8 +4,9 @@
 	<property name="version" value="0.0.0" />
 	<property name="pde.eclipse.location" value="${user.home}/java/eclipse_pdebuild" />
 
-	<property name="context.qualifier" value="${build.timestamp}" />
-
+	<property name="context.qualifier" value="${versionQualifier}" />
+	
+	<property name="artefact.suffix" value="${version}-${versionQualifier}" />
 	
 	<property name="build.dir" value="build" />
 	
@@ -24,8 +25,10 @@
 	<echo message="pde.build.location: ${pde.build.location}" />
 	<mkdir dir="${pde.build.location}"/>
 
-	<target name="buildAll" depends="pde.clean, pde.init">
+	<target name="buildAll">
 
+		<antcall target="pde.clean" />
+		<antcall target="pde.init" />
 		<antcall target="pde.build" />
 		<antcall target="updatesite.create.metadata" />
 		
@@ -44,8 +47,6 @@
 	</target>
 
 	<target name="pde.init">
-
-		<property name="artefact.suffix" value="${version}.${context.qualifier}" />
 
 		<delete dir="${pde.build.location}"/>
 		
