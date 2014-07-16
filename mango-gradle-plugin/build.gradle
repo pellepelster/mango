@@ -3,7 +3,7 @@ apply plugin: 'groovy'
 file("../mango-build/gradle.properties").withReader { reader ->
 	def buildProperties = new Properties()
 	buildProperties.load(reader)
-	version = buildProperties.version
+	mangoVersion = buildProperties.mangoVersion
 	group = buildProperties.group
 	version = version + "-" + versionQualifier
 }
