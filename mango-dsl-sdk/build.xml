@@ -6,7 +6,7 @@
 
 	<property name="context.qualifier" value="${versionQualifier}" />
 	
-	<property name="artefact.suffix" value="${version}-${versionQualifier}" />
+	<property name="artefact.suffix" value="${version}.${versionQualifier}-1" />
 	
 	<property name="build.dir" value="build" />
 	
