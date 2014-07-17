@@ -24,7 +24,7 @@ task zipUpdateSite(dependsOn: pdeBuild, type: Zip) {
 
 artifacts {
 	archives (zipUpdateSite) {
-		name "updatesite"
+		classifier "updatesite"
 	}
 }
 
