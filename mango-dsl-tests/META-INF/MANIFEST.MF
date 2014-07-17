@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: io.pelle.mango.dsl.tests
-Bundle-Vendor: http://pelle.io
+Bundle-Vendor: pelle.io
 Bundle-Version: 0.0.0.qualifier
 Bundle-SymbolicName: mango-dsl-tests;singleton:=true
 Bundle-ActivationPolicy: lazy

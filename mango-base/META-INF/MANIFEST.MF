@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: mango-base
 Bundle-SymbolicName: mango-base
 Bundle-Version: 0.0.0.qualifier
-Bundle-Vendor: http://pelle.io
+Bundle-Vendor: pelle.io
 Export-Package: io.pelle.mango.base,
  io.pelle.mango.base.jpql
 Require-Bundle: mango-libs

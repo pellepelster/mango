@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: mango-server-base
 Bundle-SymbolicName: mango-server-base
 Bundle-Version: 0.0.0.qualifier
-Bundle-Vendor: http://pelle.io
+Bundle-Vendor: pelle.io
 Require-Bundle: mango-base,
  mango-client-base,
  mango-libs

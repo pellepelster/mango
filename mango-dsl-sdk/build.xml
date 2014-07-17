@@ -72,8 +72,8 @@
 			<fileset dir="../">
 				<include name="mango-dsl-ui/META-INF/MANIFEST.MF" />
 				<include name="manog-dsl-ui/plugin.xml" />
-				<include name="mango.base/META-INF/MANIFEST.MF" />
-				<include name="mango.base/plugin.xml" />
+				<include name="mango-base/META-INF/MANIFEST.MF" />
+				<include name="mango-base/plugin.xml" />
 				<include name="mango-client-base/META-INF/MANIFEST.MF" />
 				<include name="mango-client-base/plugin.xml" />
 				<include name="mango-server-base/META-INF/MANIFEST.MF" />
@@ -82,8 +82,8 @@
 				<include name="mango-dsl/plugin.xml" />
 				<include name="mango-dsl-sdk/META-INF/MANIFEST.MF" />
 				<include name="mango-dsl-sdk/feature.xml" />
-				<include name="mango-dsl-libs/META-INF/MANIFEST.MF" />
-				<include name="mango-dsl-libs/feature.xml" />
+				<include name="mango-libs/META-INF/MANIFEST.MF" />
+				<include name="mango-libs/plugin.xml" />
 			</fileset>
 
 			<filterchain>
@@ -130,7 +130,7 @@
 
 		<antcall target="info" />
 
-		<java classname="org.eclipse.equinox.launcher.Main" fork="true" failonerror="true">
+		<java classname="org.eclipse.equinox.launcher.Main" fork="true" failonerror="true" logerror="true" output="pde_build.log">
 			<arg value="-consoleLog" />
 			<arg value="-application" />
 			<arg line="-data /tmp/workspace" />

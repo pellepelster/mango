@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: mango-client-base
 Bundle-SymbolicName: mango-client-base
 Bundle-Version: 0.0.0.qualifier
-Bundle-Vendor: http://pelle.io
+Bundle-Vendor: pelle.io
 Require-Bundle: mango-base;visibility:=reexport,
  mango-libs
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

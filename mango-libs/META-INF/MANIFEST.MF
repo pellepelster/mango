@@ -16,7 +16,7 @@ Bundle-ClassPath: .,
  lib/jsr305-2.0.3.jar,
  lib/commons-beanutils-core-1.8.3.jar,
  lib/commons-logging-1.1.1.jar
-Bundle-Vendor: http://pelle.io
+Bundle-Vendor: pelle.io
 Export-Package: com.google.common.annotations,
  com.google.common.base,
  com.google.common.base.internal,
