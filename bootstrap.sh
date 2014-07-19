@@ -48,7 +48,7 @@ repositories {
 	
 	ivy {
 		name "localDevelopmentRepository"
-		url System.properties['user.home'] + "/.gradle/mango_repository"
+		url System.properties['user.home'] + "/.gradle/mango_snapshot"
 		layout "maven"
 	}
 	
