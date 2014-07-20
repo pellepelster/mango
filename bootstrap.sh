@@ -92,4 +92,4 @@ echo "starting bootstrap with: package name '$PACKAGE_NAME', project name '$PROJ
 
 OUTPUT_DIR=$(pwd)
 
-gradle --build-file ${TEMP_DIR}/${GRADLE_BOOTSTRAP_FILE} copyProjectTemplate -PpackageName=$PACKAGE_NAME -PprojectName=$PROJECT_NAME -PoutputDir=$OUTPUT_DIR
+gradle --refresh-dependencies --rerun-task --build-file ${TEMP_DIR}/${GRADLE_BOOTSTRAP_FILE} copyProjectTemplate -PpackageName=$PACKAGE_NAME -PprojectName=$PROJECT_NAME -PoutputDir=$OUTPUT_DIR
