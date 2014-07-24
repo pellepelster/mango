@@ -44,13 +44,13 @@ echo "writing temporary gradle bootstrap file to '${TEMP_GRALDE_FILE}'"
 cat > ${TEMP_GRALDE_FILE} <<EOF
 repositories {
 
-	mavenCentral()
-	
 	ivy {
 		name "localDevelopmentRepository"
 		url System.properties['user.home'] + "/.gradle/mango_snapshot"
 		layout "maven"
 	}
+	
+	mavenCentral()
 	
 }
 
