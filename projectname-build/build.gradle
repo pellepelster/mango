@@ -1,13 +1,18 @@
+ext {
+	localDevelopmentRepository = System.properties['user.home'] + "/.gradle/mango_snapshot"
+}
+
+
 buildscript {
 	
 	repositories {
 
 		ivy {
 			name "localDevelopmentRepository"
-			url System.properties['user.home'] + "/.gradle/mango_snapshot"
+			url localDevelopmentRepository
 			layout "maven"
-
 		}
+
 
 		mavenCentral()
 	}

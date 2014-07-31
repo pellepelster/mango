@@ -1,8 +1,18 @@
 apply from: '../mango-build/mangocommon.gradle'
 
 buildscript {
+
+	ext {
+		localDevelopmentRepository = System.properties['user.home'] + "/.gradle/mango_development"
+	}
 	
 	repositories {
+
+		ivy {
+			name "localDevelopmentRepository"
+			url localDevelopmentRepository
+			layout "maven"
+		}
 
 		mavenCentral()
 		
@@ -10,12 +20,7 @@ buildscript {
 			name "localMavenRepository"
 			url System.properties['user.home'] + "/.m2/repository"
 		}
-
-		ivy {
-			name "snapshotLocalRepository"
-			url System.properties['user.home'] + "/.gradle/mango_snapshot"
-			layout "maven"
-		}
+	
 	}
 	
 	dependencies {

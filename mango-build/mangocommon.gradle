@@ -7,6 +7,7 @@ def getBuildTimeStamp() {
 ext {
 	buildTimeStamp = getBuildTimeStamp()
 	isReleaseVersion = false
+	localDevelopmentRepository = System.properties['user.home'] + "/.gradle/mango_development"
 }
 
 gradle.taskGraph.whenReady { taskGraph ->
@@ -34,24 +35,14 @@ allprojects {
 
 	repositories {
 		
+		ivy {
+			name "localDevelopmentRepository"
+			url file(localDevelopmentRepository)
+			layout "maven"
+		}
+		
 		mavenCentral()
 		
-		ivy {
-			name "snapshotLocalRepository"
-			url System.properties['user.home'] + "/.gradle/mango_snapshot"
-			layout "maven"
-		}
-	
-		ivy {
-			name "buildRepository"
-			url "../mango-build/build/repository"
-			layout "maven"
-		}
-		
-		maven {
-			name "localMavenRepository"
-			url System.properties['user.home'] + "/.m2/repository"
-		}
 	}
 	
 	task(versionInfo) << {
@@ -63,8 +54,7 @@ allprojects {
 
 	configurations {
 		archives.extendsFrom(testArtifacts)
-		snapshotLocal.extendsFrom(archives)
-		buildRepository.extendsFrom(archives)
+		localDevelopment.extendsFrom(archives)
 	}
 	
 	signing {
@@ -75,15 +65,9 @@ allprojects {
 		sign configurations.archives
 	}
 
-	uploadBuildRepository {
+	uploadLocalDevelopment {
 		repositories { 
-			add project.repositories.buildRepository
-		}
-	}
-	
-	uploadSnapshotLocal {
-		repositories { 
-	 		add project.repositories.snapshotLocalRepository
+			add project.repositories.localDevelopmentRepository
 		}
 	}
 	

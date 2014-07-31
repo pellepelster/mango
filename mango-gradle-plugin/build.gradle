@@ -1,5 +1,9 @@
 apply plugin: 'groovy'
 
+ext {
+	localDevelopmentRepository = System.properties['user.home'] + "/.gradle/mango_development"
+}
+
 file("../mango-build/gradle.properties").withReader { reader ->
 	def buildProperties = new Properties()
 	buildProperties.load(reader)
@@ -12,6 +16,12 @@ apply from: '../mango-build/mangocommon.gradle'
 
 repositories {
 	
+	ivy {
+		name "localDevelopmentRepository"
+		url file(localDevelopmentRepository)
+		layout "maven"
+	}
+
 	mavenCentral()
 	
 	maven {
@@ -19,12 +29,6 @@ repositories {
 		url System.properties['user.home'] + "/.m2/repository"
 	}
 
-	ivy {
-		name "localDevelopmentRepository"
-		url System.properties['user.home'] + "/.gradle/mango_repository"
-		layout "maven"
-	}
-	
 }
 
 dependencies {
