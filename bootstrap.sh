@@ -46,7 +46,7 @@ repositories {
 
 	ivy {
 		name "releaseBuildRepository"
-		url "../mango-build/build/repository"
+		url "repository"
 		layout "maven"
 	}
 
