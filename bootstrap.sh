@@ -5,6 +5,10 @@ PROJECT_FQDN_NAME=
 PROJECT_NAME=
 PACKAGE_NAME=
 
+GRADLE_WRAPPER_BASE="https://raw.githubusercontent.com/pellepelster/mango/master"
+BOOTSTRAP_GROUP_NAME="io.pelle.mango"
+BOOTSTRAP_NAME="mango-bootstrap"
+
 PROJECT_NAME_REGEX='(([a-z][a-z0-9]*\.)*)([A-Z]([A-Z]|[a-z]|[a-z0-9])*)'
 
 TEMP=`getopt -o p: --long project-name: -n 'bootstrap.sh' -- "$@"`
@@ -37,11 +41,31 @@ fi
 PACKAGE_NAME=${PACKAGE_NAME%?}
 
 TEMP_DIR=$(mktemp -d);
-TEMP_GRALDE_FILE=$(mktemp -p ${TEMP_DIR} --suffix .gradle);
 
-echo "writing temporary gradle bootstrap file to '${TEMP_GRALDE_FILE}'"
+echo "downloading gradle wrapper to '${TEMP_DIR}'"
 
-cat > ${TEMP_GRALDE_FILE} <<EOF
+GRADLE_WRAPPER_FILES=(gradlew gradle/wrapper/gradle-wrapper.jar gradle/wrapper/gradle-wrapper.properties)
+
+for FILE in "${GRADLE_WRAPPER_FILES[@]}"
+do
+	DIRECTORY="${TEMP_DIR}/$(dirname $FILE)"
+	
+	if [ -d "${DIRECTORY}" ]; then
+		mkdir -p "${DIRECTORY}"
+	fi
+	
+	wget "${GRADLE_WRAPPER_BASE}/${FILE}" -qP ${DIRECTORY}
+
+done
+
+GRADLE_WRAPPER="${TEMP_DIR}/gradlew"
+chmod +x $GRADLE_WRAPPER 
+
+TEMP_GRADLE_FILE=$(mktemp -p ${TEMP_DIR} --suffix .gradle);
+
+echo "writing temporary gradle bootstrap file to '${TEMP_GRADLE_FILE}'"
+
+cat > ${TEMP_GRADLE_FILE} <<EOF
 repositories {
 
 	ivy {
@@ -64,7 +88,7 @@ configurations {
 }
 
 dependencies { 
-	bootstrap group: 'io.pelle.mango', name: 'mango-bootstrap', version: '+', transitive: false
+	bootstrap group: '${BOOTSTRAP_GROUP_NAME}', name: '${BOOTSTRAP_NAME}', version: '+', transitive: false
 }
     
 task extractBootstrapGradle(type: Copy) {
@@ -80,9 +104,9 @@ task extractBootstrapGradle(type: Copy) {
 }
 EOF
 
-echo "executing temporary gradle bootstrap file '${TEMP_GRALDE_FILE}'"
+echo "executing temporary gradle bootstrap file '${TEMP_GRADLE_FILE}'"
 
-GRADLE_OUTPUT=$(gradle --build-file ${TEMP_GRALDE_FILE} extractBootstrapGradle -PbootstrapTempDir=$TEMP_DIR)
+GRADLE_OUTPUT=$($GRADLE_WRAPPER --build-file ${TEMP_GRADLE_FILE} extractBootstrapGradle -PbootstrapTempDir=$TEMP_DIR)
 
 if [[ $GRADLE_OUTPUT =~ (###(.*)###) ]]; then
 	GRADLE_BOOTSTRAP_FILE=${BASH_REMATCH[2]}
@@ -97,4 +121,4 @@ echo "starting bootstrap with: package name '$PACKAGE_NAME', project name '$PROJ
 
 OUTPUT_DIR=$(pwd)
 
-gradle --refresh-dependencies --rerun-tasks --build-file ${TEMP_DIR}/${GRADLE_BOOTSTRAP_FILE} copyProjectTemplate -PpackageName=$PACKAGE_NAME -PprojectName=$PROJECT_NAME -PoutputDir=$OUTPUT_DIR
+$GRADLE_WRAPPER --refresh-dependencies --rerun-tasks --build-file ${TEMP_DIR}/${GRADLE_BOOTSTRAP_FILE} copyProjectTemplate -PpackageName=$PACKAGE_NAME -PprojectName=$PROJECT_NAME -PoutputDir=$OUTPUT_DIR
