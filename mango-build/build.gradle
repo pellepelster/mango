@@ -2,25 +2,8 @@ apply from: '../mango-build/mangocommon.gradle'
 
 buildscript {
 
-	ext {
-		localDevelopmentRepository = System.properties['user.home'] + "/.gradle/mango_development"
-	}
-	
 	repositories {
-
-		ivy {
-			name "localDevelopmentRepository"
-			url localDevelopmentRepository
-			layout "maven"
-		}
-
 		mavenCentral()
-		
-		maven {
-			name "localMavenRepository"
-			url System.properties['user.home'] + "/.m2/repository"
-		}
-	
 	}
 	
 	dependencies {
@@ -30,8 +13,7 @@ buildscript {
 }
 
 ext {
-	repositoryDir = project.buildDir.absolutePath + "/repository"
-	
+
 	versions = [
 		spring: "4.0.3.RELEASE",
 		spring_security: "3.2.4.RELEASE",

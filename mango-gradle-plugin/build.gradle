@@ -1,48 +1,10 @@
+apply from: '../mango-build/mangocommon.gradle'
+	
 apply plugin: 'groovy'
 
-ext {
-	localDevelopmentRepository = System.properties['user.home'] + "/.gradle/mango_development"
-}
-
-file("../mango-build/gradle.properties").withReader { reader ->
-	def buildProperties = new Properties()
-	buildProperties.load(reader)
-	mangoVersion = buildProperties.mangoVersion
-	group = buildProperties.group
-	version = version + "-" + versionQualifier
-}
-
-apply from: '../mango-build/mangocommon.gradle'
-
-repositories {
-	
-	ivy {
-		name "localDevelopmentRepository"
-		url file(localDevelopmentRepository)
-		layout "maven"
-	}
-
-	mavenCentral()
-	
-	maven {
-		name "localMavenRepository"
-		url System.properties['user.home'] + "/.m2/repository"
-	}
-
-}
 
 dependencies {
 	compile group: 'org.xtext', name: 'xtext-gradle-plugin', version: '0.0.2'
-}
-
-
-uploadArchives {
-	repositories {
-		add project.repositories.localDevelopmentRepository
-	}
-}
-
-dependencies {
     compile gradleApi()
     compile localGroovy()
 }
