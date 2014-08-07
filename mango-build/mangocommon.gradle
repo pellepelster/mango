@@ -50,7 +50,7 @@ allprojects {
 		
 	}
 	
-	task(info) << {
+	task(versionInfo) << {
 		println "======================================="
 		println "version: $version"
 		println "isReleaseVersion: $isReleaseVersion"
