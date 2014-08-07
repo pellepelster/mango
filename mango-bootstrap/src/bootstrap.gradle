@@ -2,17 +2,22 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 ext {
 	templateOutputDir = file("${buildDir}/${projectName.toLowerCase()}")
-	localDevelopmentRepository = System.properties['user.home'] + "/.gradle/mango_development"
 }
 
 repositories {
 
 	ivy {
-		name "localDevelopmentRepository"
-		url localDevelopmentRepository
+		name "releaseBuildRepository"
+		url "../mango-build/build/repository"
 		layout "maven"
 	}
 
+	ivy {
+		name "localDevelopmentRepository"
+		url System.properties['user.home'] + "/.gradle/mango_development"
+		layout "maven"
+	}
+	
 	mavenCentral()
 
 }

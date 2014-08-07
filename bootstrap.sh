@@ -45,13 +45,18 @@ cat > ${TEMP_GRALDE_FILE} <<EOF
 repositories {
 
 	ivy {
-		name "localDevelopmentRepository"
-		url System.properties['user.home'] + "/.gradle/mango_snapshot"
+		name "releaseBuildRepository"
+		url "../mango-build/build/repository"
 		layout "maven"
 	}
-	
+
+	ivy {
+		name "localDevelopmentRepository"
+		url System.properties['user.home'] + "/.gradle/mango_development"
+		layout "maven"
+	}
+
 	mavenCentral()
-	
 }
 
 configurations {
