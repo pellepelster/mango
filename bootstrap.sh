@@ -10,6 +10,7 @@ BOOTSTRAP_GROUP_NAME="io.pelle.mango"
 BOOTSTRAP_NAME="mango-bootstrap"
 
 PROJECT_NAME_REGEX='(([a-z][a-z0-9]*\.)*)([A-Z]([A-Z]|[a-z]|[a-z0-9])*)'
+OUTPUT_DIR=$(pwd)
 
 TEMP=`getopt -o p: --long project-name: -n 'bootstrap.sh' -- "$@"`
 eval set -- "$TEMP"
@@ -34,7 +35,7 @@ else
 		PROJECT_NAME=${BASH_REMATCH[3]}
 		PACKAGE_NAME=${BASH_REMATCH[1]}
 	else
-		echo "please provide a project name in the format 'org.example.path.ProjectName'"
+		echo "please provide a project name in the format 'org.example.Project1'"
 		exit 1;
 	fi
 fi
@@ -119,6 +120,5 @@ fi
 
 echo "starting bootstrap with: package name '$PACKAGE_NAME', project name '$PROJECT_NAME', output dir '$OUTPUT_DIR'"
 
-OUTPUT_DIR=$(pwd)
 
-$GRADLE_WRAPPER --refresh-dependencies --rerun-tasks --build-file ${TEMP_DIR}/${GRADLE_BOOTSTRAP_FILE} copyProjectTemplate -PpackageName=$PACKAGE_NAME -PprojectName=$PROJECT_NAME -PtemplateOutputDir=$OUTPUT_DIR
+$GRADLE_WRAPPER --refresh-dependencies --rerun-tasks --build-file ${TEMP_DIR}/${GRADLE_BOOTSTRAP_FILE} copyProjectTemplate -PpackageName=$PACKAGE_NAME -PprojectName=$PROJECT_NAME -PoutputDir=$OUTPUT_DIR

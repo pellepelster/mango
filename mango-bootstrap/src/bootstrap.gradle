@@ -73,7 +73,6 @@ def replaceTextFileTokens(def tokenString)  {
 def replaceCommonTokens(def tokenString)  {
 	tokenString = tokenString.replaceAll('projectname', "${projectName.toLowerCase()}")
 	tokenString = tokenString.replaceAll('ProjectName', "${projectName}")
-	tokenString
 }
 
 extractProjectTemplate.dependsOn(configurations.projectTemplate)
