@@ -53,8 +53,13 @@ task extractProjectTemplate(type: Copy) {
 }
 
 task copyProjectTemplate(type: Copy) {
-	println "copying templates to ${outputDir}"
-	into file("${outputDir}")
+
+	newOutputDir = file("${outputDir}/${projectName.toLowerCase()}")
+	newOutputDir.mkdirs()
+
+	println "copying templates to ${newOutputDir}"
+	
+	into file("${newOutputDir}")
 	from templateOutputDir
 	exclude 'projectname*/**'
 }

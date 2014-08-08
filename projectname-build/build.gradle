@@ -1,25 +1,42 @@
-ext {
-	localDevelopmentRepository = System.properties['user.home'] + "/.gradle/mango_snapshot"
-}
-
-
 buildscript {
 	
 	repositories {
 
 		ivy {
 			name "localDevelopmentRepository"
-			url localDevelopmentRepository
+			url System.properties['user.home'] + "/.gradle/mango_development"
 			layout "maven"
 		}
 
-
+		ivy {
+			name "releaseBuildRepository"
+			url "mango-build/build/repository"
+			layout "maven"
+		}
+		
 		mavenCentral()
 	}
 
 	dependencies {
 		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+'
 	}
+}
+
+repositories {
+
+		ivy {
+			name "localDevelopmentRepository"
+			url System.properties['user.home'] + "/.gradle/mango_development"
+			layout "maven"
+		}
+
+		ivy {
+			name "releaseBuildRepository"
+			url "mango-build/build/repository"
+			layout "maven"
+		}
+		
+		mavenCentral()
 }
 
 configure(subprojects.findAll { it.name.endsWith("-build")})
