@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 ext {
 	templateOutputDir = file("${buildDir}/${projectName.toLowerCase()}")
+	fullOutputDir = "${outputDir}/${projectName.toLowerCase()}"
 }
 
 repositories {
@@ -54,7 +55,7 @@ task extractProjectTemplate(type: Copy) {
 
 task copyProjectTemplate(type: Copy) {
 
-	newOutputDir = file("${outputDir}/${projectName.toLowerCase()}")
+	newOutputDir = file(fullOutputDir)
 	newOutputDir.mkdirs()
 
 	println "copying templates to ${newOutputDir}"
@@ -80,5 +81,12 @@ def replaceCommonTokens(def tokenString)  {
 	tokenString = tokenString.replaceAll('ProjectName', "${projectName}")
 }
 
+task createWrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+    jarFile = file(fullOutputDir + "/gradle/wrapper/gradle-wrapper.jar")
+    scriptFile = file(fullOutputDir + "/gradlew")
+}
+
+extractProjectTemplate.dependsOn(createWrapper)
 extractProjectTemplate.dependsOn(configurations.projectTemplate)
 copyProjectTemplate.dependsOn(extractProjectTemplate)
