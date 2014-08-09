@@ -1,6 +1,6 @@
 package packagename.projectname;
 
-import static io.pelle.mango.db.jpql.SelectQuery.selectFrom;
+import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import io.pelle.mango.db.dao.IBaseVODAO;
 
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import packagename.TodoVO;
+import packagename.client.TodoVO;
 
 @Component
 public class TodoService {

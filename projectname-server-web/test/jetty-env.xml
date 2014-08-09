@@ -3,8 +3,8 @@
 <!-- <Configure class="org.eclipse.jetty.webapp.WebAppContext">  -->
 <Configure class="org.eclipse.jetty.server.Server">
 
-	<New id="jdbc/ProjectName" class="org.eclipse.jetty.plus.jndi.Resource">
-		<Arg>jdbc/ProjectName</Arg>
+	<New id="jdbc/projectname" class="org.eclipse.jetty.plus.jndi.Resource">
+		<Arg>jdbc/projectname</Arg>
 		<Arg>
 			<New class="org.apache.derby.jdbc.EmbeddedDataSource">
 				<Set name="DatabaseName">ProjectNameTestDB</Set>

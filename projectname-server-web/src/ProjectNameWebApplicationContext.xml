@@ -9,7 +9,7 @@
 			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
 			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/ProjectName" />
+	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/projectname" />
 
 	<mvc:annotation-driven>
 		<mvc:message-converters register-defaults="true">
@@ -20,15 +20,11 @@
 		</mvc:message-converters>
 	</mvc:annotation-driven>
 
-	<bean id="jacksonObjectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
-	<bean
-		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="jacksonObjectMapper" />
-		<property name="targetMethod" value="configure" />
-		<property name="arguments">
+	<bean name="jacksonObjectMapper" class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean" autowire="no">
+		<property name="featuresToDisable">
 			<list>
+				<value type="com.fasterxml.jackson.databind.SerializationFeature">FAIL_ON_EMPTY_BEANS</value>
 				<value type="com.fasterxml.jackson.databind.DeserializationFeature">FAIL_ON_UNKNOWN_PROPERTIES</value>
-				<value>false</value>
 			</list>
 		</property>
 	</bean>
