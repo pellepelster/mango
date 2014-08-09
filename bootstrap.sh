@@ -71,9 +71,10 @@ repositories {
 
 	ivy {
 		name "releaseBuildRepository"
-		url "mango-build/build/repository"
+		url System.getenv("WORKSPACE") + "/mango-build/build/repository"
 		layout "maven"
 	}
+
 
 	ivy {
 		name "localDevelopmentRepository"
