@@ -13,7 +13,7 @@ import packagename.client.TodoVO;
 public class TodoServiceTest extends BaseDBTest {
 
 	public TodoServiceTest() {
-		super("ProjectName");
+		super("projectname");
 	}
 
 	@Autowired
