@@ -8,7 +8,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import packagename.TodoVO;
+import packagename.client.TodoVO;
 
 import com.jayway.restassured.response.ValidatableResponse;
 
