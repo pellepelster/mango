@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import packagename.TodoVO;
+import packagename.client.TodoVO;
 
 @ContextConfiguration(locations = { "classpath:/ProjectNameApplicationContext.xml", "classpath:/ProjectNameDB-gen.xml", "classpath:/ProjectNameBaseApplicationContext-gen.xml" })
 public class TodoServiceTest extends BaseDBTest {
