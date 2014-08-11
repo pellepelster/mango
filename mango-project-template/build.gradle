@@ -10,6 +10,10 @@ def serverWebProjectTemplate = fileTree("../projectname-server-web").matching {
 	exclude "bin", "build", ".gradle"
 }
 
+def clientProjectTemplate = fileTree("../projectname-client").matching {
+	exclude "bin", "build", ".gradle"
+}
+
 task zipProjectTemplates(type: Zip) {
 	into('projectname-build') {
 		from buildProjectTemplate
@@ -19,6 +23,9 @@ task zipProjectTemplates(type: Zip) {
 	}
 	into('projectname-server-web') {
 		from serverWebProjectTemplate
+	}
+	into('projectname-client') {
+		from clientProjectTemplate
 	}
 }
 

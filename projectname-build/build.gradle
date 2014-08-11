@@ -57,3 +57,8 @@ configure(subprojects.findAll { it.name.endsWith("-server-web")})
 {
 	apply plugin: 'MangoServerWebProject'
 }
+
+configure(subprojects.findAll { it.name.endsWith("-client")})
+{
+	apply plugin: 'MangoBaseProject'
+}

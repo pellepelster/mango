@@ -55,7 +55,7 @@ task extractProjectTemplate(type: Copy) {
 
 task copyProjectTemplate(type: Copy) {
 
-	newOutputDir = file(fullOutputDir)
+	def newOutputDir = file(fullOutputDir)
 	newOutputDir.mkdirs()
 
 	println "copying templates to ${newOutputDir}"

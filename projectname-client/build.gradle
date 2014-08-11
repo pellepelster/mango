@@ -1,0 +1,42 @@
+buildscript {
+
+	repositories {
+	
+		maven {
+			url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/'
+		}
+		
+		mavenCentral()
+	}
+	
+	dependencies {
+		classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:+'
+	}
+	
+}
+
+apply plugin: 'gwt'
+
+configurations {
+	gwt
+	gwtTest
+}
+
+dependencies {
+	compile group: "io.pelle.mango", name: "mango-client-web-test", version: '+'
+	compile group: "io.pelle.mango", name: "mango-client-gwt", version: '+'
+	compile project(path: ':projectname-model', configuration: 'generatedVOs')
+}
+
+gwt {
+	gwtVersion = '2.6.1'
+	modules 'packagename.ProjectNameAdminClient'
+}
+
+ext.gwtTestLibDir = new File('lib-gwt-test')
+
+task copyGwtTestLibs(type: Copy) {
+	gwtTestLibDir.mkdirs()
+	into gwtTestLibDir
+	from configurations.gwtTest
+}

@@ -42,7 +42,7 @@ dependencies {
 	testCompile group: 'junit', name: 'junit', version: '4.11'
 	testCompile group: "org.springframework", name: "spring-test", version: '4.0.3.RELEASE'
 	testCompile group: "org.apache.tomcat", name: "dbcp", version: '6.0.39'
-	testCompile group: 'io.pelle.mango', name: 'mango-db', version: '+'
+	testCompile group: 'io.pelle.mango', name: 'mango-db', version: '+', configuration: 'testArtifacts'
 	
 }
 
@@ -55,9 +55,8 @@ war {
 	from 'war'
 	webInf { from 'src/WEB-INF' }
 	metaInf { from 'src/META-INF' }
-	//classpath fileTree('additionalLibs') // adds a file-set to the WEB-INF/lib dir.
-	//classpath configurations.moreLibs // adds a configuration to the WEB-INF/lib dir.
 	//webXml = file('WebContent/WEB-INF/web.xml')
+	from project(':projectname-client').tasks.compileGwt.outputs
 }
 
 task jettyEclipseRunDaemon() {

@@ -8,7 +8,7 @@ import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.springframework.http.MediaType;
 
-import packagename.TodoVO;
+import packagename.client.TodoVO;
 
 import com.jayway.restassured.response.ValidatableResponse;
 
@@ -19,7 +19,7 @@ public class TodoServiceRestTest {
 
 		String todoTitle = UUID.randomUUID().toString();
 
-		String baseUrl = "http://localhost:9090/rest/";
+		String baseUrl = "http://localhost:9090/remote/";
 		given().get(baseUrl + "/todos/deleteAll").then();
 
 		given().get(baseUrl + "/todos").then().assertThat().body("", Matchers.hasSize(0));
@@ -36,7 +36,7 @@ public class TodoServiceRestTest {
 
 		String todoTitle = UUID.randomUUID().toString();
 
-		String baseUrl = "http://localhost:9090/rest/";
+		String baseUrl = "http://localhost:9090/remote/";
 		given().get(baseUrl + "/todos/deleteAll").then();
 
 		given().get(baseUrl + "/todos").then().assertThat().body("", Matchers.hasSize(0));
@@ -63,7 +63,7 @@ public class TodoServiceRestTest {
 
 		String todoTitle = UUID.randomUUID().toString();
 
-		String baseUrl = "http://localhost:9090/rest/";
+		String baseUrl = "http://localhost:9090/remote/";
 		given().get(baseUrl + "/todos/deleteAll").then();
 
 		given().get(baseUrl + "/todos").then().assertThat().body("", Matchers.hasSize(0));
