@@ -1,1 +1,1 @@
-includeFlat 'projectname-model', 'projectname-server-web'
+includeFlat 'projectname-model', 'projectname-server-web', 'projectname-client'

@@ -21,6 +21,7 @@
             classpath:/DBBaseApplicationContext.xml,
             classpath:/ProjectNameDB-gen.xml,
             classpath:/ProjectNameBaseApplicationContext-gen.xml,
+            classpath:/MangoSpringServices-gen.xml
 		</param-value>
 	</context-param>
 
@@ -29,14 +30,14 @@
 	</listener>
 
 	<servlet>
-		<servlet-name>rest</servlet-name>
+		<servlet-name>remote</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>rest</servlet-name>
-		<url-pattern>/rest/*</url-pattern>
+		<servlet-name>remote</servlet-name>
+		<url-pattern>/remote/*</url-pattern>
 	</servlet-mapping>
 
 </web-app>

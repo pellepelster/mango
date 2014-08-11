@@ -38,11 +38,11 @@ gwt {
 			files(project(':mango-client-gwt').sourceSets.main.allJava.srcDirs)
 }
 
-libDir = new File('lib-gwt-test')
+ext.gwtTestLibDir = new File('lib-gwt-test')
 
 task copyGwtTestLibs(type: Copy) {
-	libDir.mkdirs()
-	into libDir
+	gwtTestLibDir.mkdirs()
+	into gwtTestLibDir
 	from configurations.gwtTest
 }
 

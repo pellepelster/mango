@@ -9,7 +9,7 @@ angular.module('todomvc')
 	.controller('TodoCtrl', function TodoCtrl($scope, Todos, $routeParams, $filter, $resource, todoStorage) {
 		'use strict';
 
-		var Todo = $resource('rest/todos/:todoId', { userId: '@id' });
+		var Todo = $resource('../remote/todos/:todoId', { userId: '@id' });
 
 		$scope.todos = Todo.query();
 

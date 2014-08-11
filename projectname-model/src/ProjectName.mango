@@ -13,31 +13,34 @@ project ProjectName {
 			boolean TodoCompleted completed
 		}
 			
-	}
+		dictionary Todo {
+			entity packagename.Todo
+			
+			dictionarycontrols {
+				textcontrol TodoTitle {
+					entityattribute packagename.Todo.title
+				}
+			}
 	
-	dictionary Todo {
-		entity packagename.Todo
-		
-		dictionarycontrols {
-			textcontrol TodoTitle {
-				entityattribute packagename.Todo.title
+			dictionarysearch TodoSearch {
+				
+				dictionaryfilter TodoFilter {
+					textcontrol ref TodoTitle
+				}
+				
+				dictionaryresult TodoResult {
+					textcontrol ref TodoTitle
+				}
+			}
+			
+			dictionaryeditor TodoEditor {
+				textcontrol ref TodoTitle
 			}
 		}
+		
+		navigationnode Todo {
+			dictionarySearch TodoSearch
+		}
+	}
 
-		dictionarysearch TodoSearch {
-			
-			dictionaryfilter TodoFilter {
-				textcontrol ref TodoTitle
-			}
-			
-			dictionaryresult TodoResult {
-				textcontrol ref TodoTitle
-			}
-		}
-		
-		dictionaryeditor TodoEditor {
-			textcontrol ref TodoTitle
-		}
-	}
-	
 }

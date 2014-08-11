@@ -5,6 +5,6 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface ProjectNameResources extends ClientBundle
 {
-	@Source("todo.png")
-	ImageResource address();
+//	@Source("todo.png")
+//	ImageResource todo();
 }

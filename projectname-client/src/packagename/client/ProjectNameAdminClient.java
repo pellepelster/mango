@@ -9,7 +9,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
-import packagename.ProjectNameClientConfiguration;
+import packagename.client.ProjectNameClientConfiguration;
 
 public class ProjectNameAdminClient implements EntryPoint {
 	private static final ProjectNameResources RESOURCES = GWT

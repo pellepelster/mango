@@ -30,13 +30,13 @@ dependencies {
 
 gwt {
 	gwtVersion = '2.6.1'
-	modules 'projectname.ProjectNameAdminClient'
+	modules 'packagename.ProjectNameAdminClient'
 }
 
-libDir = new File('lib-gwt-test')
+ext.gwtTestLibDir = new File('lib-gwt-test')
 
 task copyGwtTestLibs(type: Copy) {
-	libDir.mkdirs()
-	into libDir
+	gwtTestLibDir.mkdirs()
+	into gwtTestLibDir
 	from configurations.gwtTest
 }
