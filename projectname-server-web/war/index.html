@@ -1,68 +1,51 @@
-<!doctype html>
-<html lang="en" data-framework="angularjs">
-	<head>
-		<meta charset="utf-8">
-		<title>ProjectName Todo</title>
-		<link rel="stylesheet" href="bower_components/todomvc-common/base.css">
-		<style>[ng-cloak] { display: none; }</style>
-	</head>
-	<body ng-app="todomvc">
-		<ng-view />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<script type="text/ng-template" id="todomvc-index.html">
-			<section id="todoapp" ng-controller="TodoCtrl">
+	<title>ProjectName</title>
 
-					<header id="header">
-					<h1>ProjectName Todo</h1>
-					<form id="todo-form" ng-submit="addTodo()">
-						<input id="new-todo" placeholder="What needs to be done?" ng-model="newTodo" autofocus>
-					</form>
-				</header>
-				<section id="main" ng-show="todos.length" ng-cloak>
-					<input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
-					<label for="toggle-all">Mark all as complete</label>
-					
-					<ul id="todo-list">
-						<li ng-repeat="todo in todos | filter:statusFilter track by $index" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
-							<div class="view">
-								<input class="toggle" type="checkbox" ng-model="todo.completed">
-								<label ng-dblclick="editTodo(todo)">{{todo.title}}</label>
-								<button class="destroy" ng-click="removeTodo(todo)"></button>
-							</div>
-							<form ng-submit="doneEditing(todo)">
-								<input class="edit" ng-trim="false" ng-model="todo.title" todo-escape="revertEditing(todo)" ng-blur="doneEditing(todo)" todo-focus="todo == editedTodo">
-							</form>
-						</li>
-					</ul>
-				</section>
-				<footer id="footer" ng-show="todos.length" ng-cloak>
-					<span id="todo-count"><strong>{{remainingCount}}</strong>
-						<ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
-					</span>
-					<ul id="filters">
-						<li>
-							<a ng-class="{selected: status == ''} " href="#/">All</a>
-						</li>
-						<li>
-							<a ng-class="{selected: status == 'active'}" href="#/active">Active</a>
-						</li>
-						<li>
-							<a ng-class="{selected: status == 'completed'}" href="#/completed">Completed</a>
-						</li>
-					</ul>
-					<button id="clear-completed" ng-click="clearCompletedTodos()" ng-show="completedCount">Clear completed ({{completedCount}})</button>
-				</footer>
-			</section>
-		</script>
-		<script src="bower_components/todomvc-common/base.js"></script>
-		<script src="bower_components/angular/angular.js"></script>
-		<script src="bower_components/angular-route/angular-route.js"></script>
-		<script src="bower_components/angular-resource/angular-resource.js"></script>
-		<script src="js/app.js"></script>
-		<script src="js/controllers/todoCtrl.js"></script>
-		<script src="js/services/todoStorage.js"></script>
-		<script src="js/services/todoService.js"></script>
-		<script src="js/directives/todoFocus.js"></script>
-		<script src="js/directives/todoEscape.js"></script>
-	</body>
+	<link href="https:////maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+  
+	<div class="jumbotron">
+		<h1>ProjectName</h1>
+		<p>The project example template contains two user interfaces, an "end-user" friendly UI and an generic CRUD UI</p>
+	</div>
+
+	<div class="row">
+    	<div class="col-md-4 col-md-offset-2">
+        	<h2>End User</h2>
+			<p>A user friendly UI, using AngularJs and rest for server communication.</p>
+		</div>
+		<div class="col-md-4">
+			<h2>Generic CRUD</h2>
+			<p>Generic CRUD interface using GWT and the following UI definition:
+			<pre>...</pre></p>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 col-md-offset-2">
+			<p><a role="button" href="ProjectNameWeb/index.html" class="btn btn-primary">View »</a></p>
+		</div>
+		<div class="col-md-4">
+			<p><a role="button" href="ProjectNameAdmin/index.html" class="btn btn-primary">View »</a></p>
+		</div>
+	</div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	
+</body>
 </html>
