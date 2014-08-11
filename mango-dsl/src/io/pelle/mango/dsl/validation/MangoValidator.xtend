@@ -9,7 +9,7 @@ package io.pelle.mango.dsl.validation
  *
  * see http://www.eclipse.org/Xtext/documentation.html#validation
  */
-class MangoValidator extends AbstractMangoValidator {
+class MangoValidator {
 
 //  public static val INVALID_NAME = 'invalidName'
 //
