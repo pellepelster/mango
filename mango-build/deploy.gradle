@@ -1,0 +1,57 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath 'org.hidetake:gradle-ssh-plugin:0.1.7'
+	}
+}
+ 
+apply plugin: 'ssh'
+
+ext {
+	host = "host.tld"
+}
+
+remotes {
+
+	host1 {
+		host = host
+		user = 'ubuntu'
+		identity = file(System.properties['user.home'] + '/.ssh/pelle_aws.pem')
+	}
+}
+ 
+ssh {
+	config(StrictHostKeyChecking: 'no') // needed for deploying to EC2
+}
+ 
+task deployWar(type: SshTask) {
+
+	def tomcatHome = '/var/lib/tomcat7/webapps'
+	def warFile = file("Todo.md")
+	
+	session(remotes.host1) {
+
+		println "==== stopping tomcat ===="
+		execute("sudo /etc/init.d/tomcat7 stop")
+
+		println "==== cleaning ${tomcatHome}/${warFile.name}* ===="
+		execute("sudo -u tomcat7 rm -rf ${tomcatHome}/${warFile.name}*")
+
+		println "==== starting tomcat ===="
+		execute("sudo /etc/init.d/tomcat7 start")
+	
+		def remoteWarFile = tomcatHome + "/" + warFile.name
+		println "==== uploading war file $warFile.name to $remoteWarFile ===="
+		
+//		put(warFile, "${remoteWarTarget}.new")
+		
+//		println "removing old war"
+//		execute("rm ${tomcatHome}/${warName}.war")
+		
+//		println "activating new war"
+//		execute("mv ${tomcatHome}/${warName}.war{.new,}")
+	}
+}
