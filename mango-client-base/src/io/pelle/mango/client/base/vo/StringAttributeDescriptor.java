@@ -20,6 +20,10 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 		return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new StringExpression(value));
 	}
 
+	public IBooleanExpression eqIgnoreCase(String value) {
+		return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS_NO_CASE, new StringExpression(value));
+	}
+
 	public IBooleanExpression caseInsensitiveLike(String value) {
 		return new LikeExpression(entityFieldExpression, new StringExpression(value), true);
 	}
