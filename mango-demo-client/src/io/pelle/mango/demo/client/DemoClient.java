@@ -18,8 +18,9 @@ public class DemoClient implements EntryPoint {
 	/** {@inheritDoc} */
 	@Override
 	public void onModuleLoad() {
-		GWTLayoutFactory gwtLayoutFactory = new GWTLayoutFactory(Unit.PX);
-		MangoClientWeb.getInstance().setLayoutFactory(gwtLayoutFactory);
+		
+		MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
+		
 		init();
 
 		// MyAdmin.getInstance().startModule(HierarchicalTreeModule.MODULE_ID,

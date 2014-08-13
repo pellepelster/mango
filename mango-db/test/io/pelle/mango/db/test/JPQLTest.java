@@ -90,6 +90,18 @@ public class JPQLTest extends TestCase {
 	}
 
 	@Test
+	public void testStringEquals() {
+		ServerSelectQuery<DBTest2> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest2.class).where(DBTest2.TEST1.eq("aaa")));
+		assertEquals("SELECT x0 FROM DBTest2 x0 WHERE x0.test1 = 'aaa'", query.getJPQL(EntityVOMapper.INSTANCE));
+	}
+
+	@Test
+	public void testStringEqualsIgnoreCase() {
+		ServerSelectQuery<DBTest2> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest2.class).where(DBTest2.TEST1.eqIgnoreCase("aaa")));
+		assertEquals("SELECT x0 FROM DBTest2 x0 WHERE LOWER(x0.test1) = LOWER('aaa')", query.getJPQL(EntityVOMapper.INSTANCE));
+	}
+
+	@Test
 	public void testSelectCount() {
 		CountQuery<DBTest1> query = countFrom(DBTest1.class);
 		assertEquals("SELECT COUNT(x0) FROM DBTest1 x0", ServerCountQuery.adapt(query).getJPQL(EntityVOMapper.INSTANCE));

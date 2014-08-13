@@ -20,6 +20,7 @@
   
 	<div class="jumbotron">
 		<h1>ProjectName</h1>
+<<<<<<< HEAD
 		<p>The project example template contains two user interfaces, an "end-user" friendly UI and an generic CRUD UI</p>
 	</div>
 
@@ -41,6 +42,61 @@
 		</div>
 		<div class="col-md-4">
 			<p><a role="button" href="ProjectNameAdminClient/ProjectNameAdminClient.html" class="btn btn-primary">View »</a></p>
+		<p>The project example template contains two user interfaces, an "end-user" friendly UI and an generic CRUD UI based om the mango DSL. Both interfaces share the same entities that also are generated from the DSL.</p>
+	</div>
+
+	<div class="row">
+    	<div class="col-md-4 col-md-offset-2">
+        	<h2>End User</h2>
+			<p>A user friendly UI, using AngularJs and rest for server communication. Below the definition of the entity that is used for DB storage.</p>
+<pre>
+stringdatatype TodoTitle {
+}
+
+booleandatatype TodoCompleted {
+}
+
+entity Todo {
+	string TodoTitle title
+	boolean TodoCompleted completed
+}
+</pre>
+			<a role="button" href="ProjectNameWeb/index.html" class="btn btn-danger">View »</a>
+
+		</div>
+		<div class="col-md-4">
+			<h2>Generic CRUD</h2>
+			<p>Generic CRUD interface using GWT and the following UI definition:</p>
+<pre>
+dictionary Todo {
+
+	entity packagename.Todo
+	
+	dictionarycontrols {
+		textcontrol TodoTitle {
+			entityattribute packagename.Todo.title
+		}
+	}
+
+	dictionarysearch TodoSearch {
+		
+		dictionaryfilter TodoFilter {
+			textcontrol ref TodoTitle
+		}
+		
+		dictionaryresult TodoResult {
+			textcontrol ref TodoTitle
+		}
+	}
+	
+	dictionaryeditor TodoEditor {
+		textcontrol ref TodoTitle
+	}
+}
+</pre>
+			
+			<a role="button" href="ProjectNameAdminClient/ProjectNameAdminClient.html" class="btn btn-danger">View »</a>
+			
 		</div>
 	</div>
 

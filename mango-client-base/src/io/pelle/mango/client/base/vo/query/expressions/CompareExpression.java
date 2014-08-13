@@ -27,7 +27,7 @@ public class CompareExpression extends BaseBooleanExpression {
 
 	@Override
 	public String getJPQL(IAliasProvider aliasProvider) {
-		return (expression1.getJPQL(aliasProvider) + " " + comparisonOperator.toString() + " " + expression2.getJPQL(aliasProvider) + " " + super.getJPQL(aliasProvider)).trim();
+		return (comparisonOperator.operand1Function(expression1.getJPQL(aliasProvider)) + " " + comparisonOperator.toString() + " " + comparisonOperator.operand2Function(expression2.getJPQL(aliasProvider)) + " " + super.getJPQL(aliasProvider)).trim();
 	}
 
 	@Override

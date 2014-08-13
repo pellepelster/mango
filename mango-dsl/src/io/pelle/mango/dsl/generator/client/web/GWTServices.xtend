@@ -57,9 +57,13 @@ public class «model.gwtRemoteServiceLocatorName» implements «model.gwtRemoteS
 
 	«FOR service : model.eAllContents.toIterable.filter(Service)» 
 	public «service.gwtAsyncServiceInterfaceFullQualifiedName» get«service.serviceName»() {
+		
 		final «service.gwtAsyncServiceInterfaceFullQualifiedName» service = («service.gwtAsyncServiceInterfaceFullQualifiedName») com.google.gwt.core.client.GWT.create(«service.gwtServiceInterfaceFullQualifiedName».class);
+		
 		«ServiceDefTarget.name» formEndpoint = («ServiceDefTarget.name») service;
 		formEndpoint.setServiceEntryPoint(getModuleBaseUrl() + "/«service.serviceSpringName»");
+		formEndpoint.setRpcRequestBuilder(io.pelle.mango.client.base.MangoClientBase.getInstance().getRpcRequestBuilder());
+		
 		return service;
 	}
 	«ENDFOR»

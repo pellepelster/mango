@@ -14,6 +14,7 @@ package io.pelle.mango.client.web;
 import io.pelle.mango.client.IMangoGwtRemoteServiceLocator;
 import io.pelle.mango.client.MangoClientConfiguration;
 import io.pelle.mango.client.MangoGwtRemoteServiceLocator;
+import io.pelle.mango.client.base.MangoClientBase;
 import io.pelle.mango.client.base.layout.ILayoutFactory;
 import io.pelle.mango.client.web.module.ModuleFactoryRegistry;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
@@ -25,6 +26,7 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.user.client.rpc.RpcRequestBuilder;
 
 /**
  * TODO pelle insert type comment
@@ -94,12 +96,20 @@ public final class MangoClientWeb implements EntryPoint {
 		MangoClientConfiguration.registerAll();
 	}
 
-	public void setLayoutFactory(ILayoutFactory<?, ?> layoutFactory) {
+	public MangoClientWeb setLayoutFactory(ILayoutFactory<?, ?> layoutFactory) {
 		this.layoutFactory = layoutFactory;
+		return this;
 	}
 
-	public void setMyAdminGWTRemoteServiceLocator(IMangoGwtRemoteServiceLocator myAdminGWTRemoteServiceLocator) {
+	public MangoClientWeb setMyAdminGWTRemoteServiceLocator(IMangoGwtRemoteServiceLocator myAdminGWTRemoteServiceLocator) {
 		this.myAdminGWTRemoteServiceLocator = myAdminGWTRemoteServiceLocator;
+		return this;
+	}
+
+	public MangoClientWeb setRpcRequestBuilder(RpcRequestBuilder rpcRequestBuilder)
+	{
+		MangoClientBase.getInstance().setRpcRequestBuilder(rpcRequestBuilder);
+		return this;
 	}
 
 }

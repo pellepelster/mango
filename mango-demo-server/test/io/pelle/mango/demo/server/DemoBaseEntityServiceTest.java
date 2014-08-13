@@ -52,6 +52,31 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 	}
 
 	@Test
+	public void testFilterStringIgnoreCase() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		baseEntityService.validateAndSave(entity1VO);
+
+		Entity1VO entity2VO = new Entity1VO();
+		entity2VO.setStringDatatype1("AAA");
+		baseEntityService.validateAndSave(entity2VO);
+
+		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.eq("aaa")));
+		assertEquals(1, filterResult.size());
+		assertEquals("aaa", filterResult.get(0).getStringDatatype1());
+		
+		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.eqIgnoreCase("aaa")));
+		assertEquals(2, filterResult.size());
+		assertTrue("aaa".equals(filterResult.get(0).getStringDatatype1()) || "aaa".equals(filterResult.get(1).getStringDatatype1()));
+		assertTrue("AAA".equals(filterResult.get(0).getStringDatatype1()) || "AAA".equals(filterResult.get(1).getStringDatatype1()));
+
+	}
+
+	
+	@Test
 	public void testValidateAndSave() {
 
 		Entity1VO entity1VO = new Entity1VO();

@@ -15,6 +15,7 @@ import io.pelle.mango.client.base.vo.EntityAttributeDescriptor;
 import io.pelle.mango.client.base.vo.EntityDescriptor;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
+import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.server.base.BaseEntity;
 
 import javax.persistence.Column;
@@ -32,7 +33,7 @@ public class DBTest2 extends BaseEntity implements IBaseEntity {
 
 	public static final IEntityDescriptor<DBTest2> DB_TEST2 = new EntityDescriptor<DBTest2>(DBTest2.class);
 
-	public static final String TEST1 = "test1";
+	public static final StringAttributeDescriptor TEST1 = new StringAttributeDescriptor(DB_TEST2, "test1");
 
 	public static final String TESTSTRING = "testString";
 
