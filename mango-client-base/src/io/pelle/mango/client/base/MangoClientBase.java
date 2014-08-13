@@ -3,21 +3,21 @@ package io.pelle.mango.client.base;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.rpc.RpcRequestBuilder;
 import com.google.gwt.user.client.ui.RootPanel;
 
-public class MangoClientBase implements EntryPoint {
+public class MangoClientBase {
 
 	private static MangoClientBase instance;
 
 	private RpcRequestBuilder rpcRequestBuilder = new RpcRequestBuilder();
-	
+
 	public static MangoClientBase getInstance() {
+
 		if (instance == null) {
-			throw new RuntimeException("GwtCommons module not loaded, add GwtCommons to your module definitions xml");
+			instance = new MangoClientBase();
 		}
 
 		return instance;
@@ -92,20 +92,12 @@ public class MangoClientBase implements EntryPoint {
 		return this.averageWidths.get(key);
 	}
 
-	@Override
-	public void onModuleLoad() {
-		instance = this;
-	}
-	
-	public RpcRequestBuilder getRpcRequestBuilder()
-	{
+	public RpcRequestBuilder getRpcRequestBuilder() {
 		return rpcRequestBuilder;
 	}
-	
-	public void setRpcRequestBuilder(RpcRequestBuilder rpcRequestBuilder)
-	{
+
+	public void setRpcRequestBuilder(RpcRequestBuilder rpcRequestBuilder) {
 		this.rpcRequestBuilder = rpcRequestBuilder;
 	}
-
 
 }
