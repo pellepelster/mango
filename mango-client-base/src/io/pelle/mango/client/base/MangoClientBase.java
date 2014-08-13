@@ -6,12 +6,15 @@ import java.util.Map;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.rpc.RpcRequestBuilder;
 import com.google.gwt.user.client.ui.RootPanel;
 
 public class MangoClientBase implements EntryPoint {
 
 	private static MangoClientBase instance;
 
+	private RpcRequestBuilder rpcRequestBuilder = new RpcRequestBuilder();
+	
 	public static MangoClientBase getInstance() {
 		if (instance == null) {
 			throw new RuntimeException("GwtCommons module not loaded, add GwtCommons to your module definitions xml");
@@ -92,6 +95,17 @@ public class MangoClientBase implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		instance = this;
-
 	}
+	
+	public RpcRequestBuilder getRpcRequestBuilder()
+	{
+		return rpcRequestBuilder;
+	}
+	
+	public void setRpcRequestBuilder(RpcRequestBuilder rpcRequestBuilder)
+	{
+		this.rpcRequestBuilder = rpcRequestBuilder;
+	}
+
+
 }
