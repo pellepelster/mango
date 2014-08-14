@@ -42,7 +42,7 @@ class RestServices {
 		@«Autowired.name»
 		private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.variableName»;
 		
-		public «service.restControllerName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.variableName»)
+		public void «service.setterName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.variableName»)
 		{
 			this.«service.variableName» = «service.variableName»;
 		}

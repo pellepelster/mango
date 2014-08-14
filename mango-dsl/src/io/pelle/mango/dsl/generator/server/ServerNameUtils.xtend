@@ -43,6 +43,10 @@ class ServerNameUtils extends NameUtils {
 		return service.name.toFirstLower
 	}
 
+	def setterName(Service service) {
+		return "set" + service.variableName.toFirstUpper
+	}
+
 	def restMapping(Service service) {
 		return service.name.toLowerCase
 	}

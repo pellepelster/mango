@@ -36,7 +36,7 @@ class ServerGenerator implements IGenerator {
 		}
 
 		for (service : resource.allContents.toIterable.filter(Service)) {
-			fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, service.restServiceController)
+			//fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, service.restServiceController)
 		}
 	}
 
