@@ -2,9 +2,13 @@ package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.util.NameUtils
+import io.pelle.mango.dsl.mango.MethodParameter
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.PackageDeclaration
 import io.pelle.mango.dsl.mango.Service
+import io.pelle.mango.dsl.mango.SimpleDatatypeEntityAttribute
+import java.util.List
+import io.pelle.mango.dsl.mango.ServiceMethod
 
 class ServerNameUtils extends NameUtils {
 
@@ -33,6 +37,31 @@ class ServerNameUtils extends NameUtils {
 	
 	def serviceImplName(Service service) {
 		return service.name.toFirstUpper + "Impl";
+	}
+
+	def variableName(Service service) {
+		return service.name.toFirstLower
+	}
+
+	def restMapping(Service service) {
+		return service.name.toLowerCase
+	}
+
+	def restMapping(ServiceMethod serviceMethod) {
+		return serviceMethod.name.toLowerCase
+	}
+
+	// rest controller
+	def restControllerName(Service service) {
+		return service.name.toFirstUpper + "RestController"
+	}
+
+	def restControllerFullQualifiedName(Service service) {
+		return getPackageName(service) + "." + restControllerName(service);
+	}
+
+	def restControllerFullQualifiedFileName(Service service) {
+		return restControllerFullQualifiedName(service).replaceAll("\\.", "/")  + ".java";
 	}
 
 }

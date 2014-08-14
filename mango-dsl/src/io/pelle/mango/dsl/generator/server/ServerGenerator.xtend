@@ -5,8 +5,10 @@ package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.server.service.GWTServices
+import io.pelle.mango.dsl.generator.server.service.RestServices
 import io.pelle.mango.dsl.generator.server.service.SpringServices
 import io.pelle.mango.dsl.mango.Model
+import io.pelle.mango.dsl.mango.Service
 import javax.inject.Inject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
@@ -16,6 +18,9 @@ class ServerGenerator implements IGenerator {
 
 	@Inject
 	extension GWTServices
+
+	@Inject
+	extension RestServices
 
 	@Inject
 	extension SpringServices
@@ -30,6 +35,9 @@ class ServerGenerator implements IGenerator {
 			fsa.generateFile(model.serviceSpringNameApplicationContextFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.springServices)
 		}
 
+		for (service : resource.allContents.toIterable.filter(Service)) {
+			fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, service.restServiceController)
+		}
 	}
 
 }
