@@ -5,7 +5,6 @@ package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.server.service.GWTServices
-import io.pelle.mango.dsl.generator.server.service.RestServices
 import io.pelle.mango.dsl.generator.server.service.SpringServices
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
@@ -18,9 +17,6 @@ class ServerGenerator implements IGenerator {
 
 	@Inject
 	extension GWTServices
-
-	@Inject
-	extension RestServices
 
 	@Inject
 	extension SpringServices
