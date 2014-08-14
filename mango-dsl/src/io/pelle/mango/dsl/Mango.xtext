@@ -63,10 +63,10 @@ Datatype:
 	SimpleDataType | EntityDataType;
 
 SimpleDataType:
-	StringDataType | IntegerDataType | BinaryDataType | EnumerationDataType | BooleanDataType;
+	StringDataType | DecimalDataType | DateDataType | IntegerDataType | BinaryDataType | EnumerationDataType | BooleanDataType;
 
 enum Cardinality: 
-	onetoone = "0..1" | onetomany = "0..n";
+	onetoone = "0..1" | onetomany = "0..n" | manytomany = "n..n";
 
 enum SimpleTypes: 
 	long = "Long" | integer = "Integer" | bigdecimal = "BigDecimal" | string = "String" | boolean = "Boolean" | reference = "Reference";
@@ -81,7 +81,7 @@ EntityAttribute:
 	SimpleDatatypeEntityAttribute | EntityEntityAttribute;
 
 SimpleDatatypeEntityAttribute:
-	MapEntityAttribute | LongEntityAttribute | StringEntityAttribute | BooleanEntityAttribute | IntegerEntityAttribute | BinaryEntityAttribute | EnumerationEntityAttribute;
+	MapEntityAttribute | LongEntityAttribute | DateEntityAttribute | DecimalEntityAttribute | StringEntityAttribute | BooleanEntityAttribute | IntegerEntityAttribute | BinaryEntityAttribute | EnumerationEntityAttribute;
 
 SimpleTypeType:
 	{SimpleTypeType}
@@ -91,9 +91,10 @@ SimpleTypeType:
 // string
 //-----------------------------------------------------------------------------
 StringDataType:
-	'stringdatatype' name=ID '{'
+	'stringdatatype' name=ID ("extends" ref=[ StringDataType | QualifiedName ])? "{"
+		("maxLength" maxLength=INT)?
 	'}';
-	
+
 StringEntityAttribute:
 	'string' (type=[StringDataType|QualifiedName])? (cardinality=Cardinality)? name=ID;
 
@@ -101,7 +102,7 @@ StringEntityAttribute:
 // map
 //-----------------------------------------------------------------------------
 MapDataType:
-	'mapdatatype' name=ID '{'
+	'mapdatatype' name=ID ("extends" ref=[ MapDataType | QualifiedName ])? '{'
 		keyType = SimpleTypes
 		valueType = SimpleTypes
 	'}';
@@ -113,7 +114,7 @@ MapEntityAttribute:
 // boolean
 //-----------------------------------------------------------------------------
 BooleanDataType:
-	'booleandatatype' name=ID '{'
+	'booleandatatype' name=ID ("extends" ref=[ BooleanDataType | QualifiedName ])? '{'
 	'}';
 	
 BooleanEntityAttribute:
@@ -123,17 +124,37 @@ BooleanEntityAttribute:
 // integer
 //-----------------------------------------------------------------------------
 IntegerDataType:
-	'integerdatatype' name=ID '{'
+	'integerdatatype' name=ID ("extends" ref=[ IntegerDataType | QualifiedName ])? '{'
 	'}';
 
 IntegerEntityAttribute:
 	'integer' (type=[IntegerDataType|QualifiedName])? name=ID;
+
+//-----------------------------------------------------------------------------
+// decimal
+//-----------------------------------------------------------------------------
+DateDataType:
+	'datedatatype' name=ID ("extends" ref=[ DateDataType | QualifiedName ])? '{'
+	'}';
+
+DateEntityAttribute:
+	'date' (type=[IntegerDataType|QualifiedName])? name=ID;
+
+//-----------------------------------------------------------------------------
+// decimal
+//-----------------------------------------------------------------------------
+DecimalDataType:
+	'decimaldatatype' name=ID ("extends" ref=[ DecimalDataType | QualifiedName ])? '{'
+	'}';
+
+DecimalEntityAttribute:
+	'decimal' (type=[IntegerDataType|QualifiedName])? name=ID;
 	
 //-----------------------------------------------------------------------------
 // long
 //-----------------------------------------------------------------------------
 LongDataType:
-	'longdatatype' name=ID '{'
+	'longdatatype' name=ID ("extends" ref=[ LongDataType | QualifiedName ])? '{'
 	'}';
 
 LongEntityAttribute:
@@ -143,7 +164,7 @@ LongEntityAttribute:
 // binary
 //-----------------------------------------------------------------------------
 BinaryDataType:
-	'binarydatatype' name=ID '{'
+	'binarydatatype' name=ID ("extends" ref=[ BinaryDataType | QualifiedName ])? '{'
 	'}';
 	
 BinaryEntityAttribute:
@@ -153,7 +174,7 @@ BinaryEntityAttribute:
 // entity
 //-----------------------------------------------------------------------------
 EntityDataType:
-	'entitydatatype' name=ID '{'
+	'entitydatatype' name=ID  ("extends" ref=[ EntityDataType | QualifiedName ])? '{'
 		'entity' entity=[Entity|QualifiedName]
 	'}';
 
@@ -170,7 +191,7 @@ EntityType:
 // enumeration
 //-----------------------------------------------------------------------------
 EnumerationDataType:
-	'enumerationdatatype' name=ID '{'
+	'enumerationdatatype' name=ID ("extends" ref=[ EnumerationDataType | QualifiedName ])? '{'
 		'enumeration' enumeration=[Enumeration|QualifiedName]
 	'}';
 

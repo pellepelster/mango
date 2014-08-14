@@ -3,9 +3,11 @@ project MangoDemo {
 	package io.pelle.^mango.test {
 		
 		stringdatatype StringDatatype1 {
+			maxLength 32
 		}
 
-		stringdatatype StringDatatype2 {
+		stringdatatype StringDatatype2 extends StringDatatype1 {
+			maxLength 64
 		}
 
 		stringdatatype StringDatatype3 {

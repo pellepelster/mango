@@ -31,9 +31,11 @@ class MangoModelProject extends MangoBaseProject {
 				
 		project.configurations {
 			generatedEntities
-			generatedVOs
 			generatedEntitiesSources
+			generatedVOs
 			generatedVOsSources
+			generatedXml
+			generatedXmlSources
 		}
 		
 		project.sourceSets {
@@ -55,6 +57,19 @@ class MangoModelProject extends MangoBaseProject {
 				}
 				resources {
 					srcDirs = [ 'src-gen-entities' ]
+				}
+				
+				compileClasspath += project.sourceSets.main.compileClasspath
+				compileClasspath += project.sourceSets.generatedVOs.output
+			}
+			
+			generatedXml {
+				
+				java {
+					srcDirs = [ 'src-gen-xml' ]
+				}
+				resources {
+					srcDirs = [ 'src-gen-xml' ]
 				}
 				
 				compileClasspath += project.sourceSets.main.compileClasspath
@@ -101,15 +116,30 @@ class MangoModelProject extends MangoBaseProject {
 			from project.sourceSets.generatedVOs.allSource
 		}
 
+		project.task('generatedXmlJar', type: Jar, dependsOn: project.jar) {
+			classifier 'xml-generated'
+			from project.sourceSets.generatedXml.output
+		}
+		
+		project.task('generatedXmlSourceJar', type: Jar, dependsOn: project.jar) {
+			classifier 'xml-generated-sources'
+			from project.sourceSets.generatedXml.allSource
+		}
+
 		project.compileGeneratedEntitiesJava.dependsOn project.compileJava
 		
 		project.compileGeneratedVOsJava.dependsOn project.compileJava
+
+		project.compileGeneratedXmlJava.dependsOn project.compileJava
 		
 		project.artifacts {
 			archives project.generatedEntitiesJar, project.generatedEntitiesSourceJar
 			archives project.generatedVOsJar, project.generatedVOsSourceJar
+			archives project.generatedXmlJar, project.generatedxmlSourceJar
+			
 			generatedEntities project.generatedEntitiesJar, project.generatedEntitiesSourceJar
 			generatedVOs project.generatedVOsJar, project.generatedVOsSourceJar
+			generatedXml project.generatedXmlJar, project.generatedXmlSourceJar
 		 }
 	}
 }

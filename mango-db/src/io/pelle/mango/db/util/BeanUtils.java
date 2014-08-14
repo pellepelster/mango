@@ -33,6 +33,7 @@ public class BeanUtils {
 		Set<Class<? extends IBaseVO>> voAttributeDescriptors = new HashSet<Class<? extends IBaseVO>>();
 
 		for (IAttributeDescriptor<?> attributeDescriptor : getAttributeDescriptors(clazz)) {
+			
 			if (IBaseVO.class.isAssignableFrom(attributeDescriptor.getAttributeType())) {
 				voAttributeDescriptors.add((Class<? extends IBaseVO>) attributeDescriptor.getAttributeType());
 			}

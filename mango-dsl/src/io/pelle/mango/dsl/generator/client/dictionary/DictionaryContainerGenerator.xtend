@@ -4,16 +4,16 @@
 package io.pelle.mango.dsl.generator.client.dictionary
 
 import com.google.inject.Inject
+import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel
-import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.GeneratorConstants
+import io.pelle.mango.dsl.mango.DictionaryContainer
 import io.pelle.mango.dsl.mango.DictionaryContainerContent
 import io.pelle.mango.dsl.mango.DictionaryControl
 import io.pelle.mango.dsl.mango.DictionaryEditableTable
+import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
-import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
 import org.eclipse.xtext.generator.IFileSystemAccess
-import io.pelle.mango.dsl.mango.DictionaryContainer
 
 class DictionaryContainerGenerator {
 
@@ -112,7 +112,7 @@ class DictionaryContainerGenerator {
 					«dictionaryControl.dictionaryControlConstantSetters»
 				«ENDFOR»
 	
-				setVoName(«ModelUtil.getEntity(dictionaryContainer.entityattribute).voFullQualifiedName».class);
+				setVoName(«EntityQuery.getEntity(dictionaryContainer.entityattribute).voFullQualifiedName».class);
 				setAttributePath("«dictionaryContainer.entityattribute.name»");
 			}
 		}

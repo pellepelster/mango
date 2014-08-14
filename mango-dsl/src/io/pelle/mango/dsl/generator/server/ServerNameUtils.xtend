@@ -2,12 +2,9 @@ package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.util.NameUtils
-import io.pelle.mango.dsl.mango.MethodParameter
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.PackageDeclaration
 import io.pelle.mango.dsl.mango.Service
-import io.pelle.mango.dsl.mango.SimpleDatatypeEntityAttribute
-import java.util.List
 import io.pelle.mango.dsl.mango.ServiceMethod
 
 class ServerNameUtils extends NameUtils {

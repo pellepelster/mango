@@ -5,14 +5,17 @@ package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.server.service.GWTServices
-import io.pelle.mango.dsl.generator.server.service.RestServices
 import io.pelle.mango.dsl.generator.server.service.SpringServices
+import io.pelle.mango.dsl.generator.xml.XmlNameUtils
+import io.pelle.mango.dsl.generator.xml.XmlSchema
+import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 import javax.inject.Inject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import io.pelle.mango.dsl.generator.xml.XmlVOMapper
 
 class ServerGenerator implements IGenerator {
 
@@ -20,8 +23,14 @@ class ServerGenerator implements IGenerator {
 	extension GWTServices
 
 	@Inject
-	extension RestServices
+	extension XmlSchema
 
+	@Inject
+	extension XmlVOMapper
+	
+	@Inject
+	extension XmlNameUtils
+	
 	@Inject
 	extension SpringServices
 
@@ -33,11 +42,17 @@ class ServerGenerator implements IGenerator {
 		for (model : resource.allContents.toIterable.filter(Model)) {
 			fsa.generateFile(model.gwtRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.gwtRemoteServicesApplicationContext)
 			fsa.generateFile(model.serviceSpringNameApplicationContextFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.springServices)
+			fsa.generateFile(model.xmlVOMapperFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.xmlVOMapper)
 		}
 
 		for (service : resource.allContents.toIterable.filter(Service)) {
 			//fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, service.restServiceController)
 		}
+		
+		for (entity: resource.allContents.toIterable.filter(Entity)) {
+			fsa.generateFile(entity.xsdFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT, entity.xmlSchema)
+		}
+		
 	}
 
 }

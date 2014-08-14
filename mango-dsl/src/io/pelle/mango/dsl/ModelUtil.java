@@ -3,9 +3,6 @@ package io.pelle.mango.dsl;
 import io.pelle.mango.dsl.mango.DictionaryControl;
 import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.EntityAttribute;
-import io.pelle.mango.dsl.mango.EntityAttributeType;
-import io.pelle.mango.dsl.mango.EntityDataType;
-import io.pelle.mango.dsl.mango.EntityEntityAttribute;
 import io.pelle.mango.dsl.mango.Model;
 import io.pelle.mango.dsl.mango.ModelRoot;
 import io.pelle.mango.dsl.mango.PackageDeclaration;
@@ -32,65 +29,13 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 public class ModelUtil {
+	
 	private static Logger LOG = Logger.getLogger(ModelUtil.class);
 
 	private static final URIConverter uriConverter = new ExtensibleURIConverterImpl();
 
-	// public static Collection<PackageDeclaration> getRootPackages(Model model)
-	// {
-	// return ModelQuery.createQuery(model).getRootPackages().getList();
-	// }
-	//
 	public static PackageDeclaration getSingleRootPackage(Model model) {
 		return ModelQuery.createQuery(model).getRootPackages().getSingleResult();
-	}
-
-	//
-	// public static boolean hasSingleRootPackage(Model model) {
-	// return ModelQuery.createQuery(model).getRootPackages().hasExactlyOne();
-	// }
-	/**
-	 * EntityAttributeType: EntityDataType | Entity;
-	 * 
-	 * EntityEntityAttribute: 'entity' type=[EntityAttributeType|QualifiedName]
-	 * (cardinality=Cardinality)? name=ID;
-	 * 
-	 * EntityType: 'entity' type=[EntityAttributeType|QualifiedName]
-	 * (cardinality=Cardinality)?;
-	 */
-
-	public static Entity getEntity(EntityAttribute entityAttribute) {
-
-		if (EntityEntityAttribute.class.isAssignableFrom(entityAttribute.getClass())) {
-
-		}
-
-		throw new RuntimeException(String.format("EntityAttribute '%s' not supported", entityAttribute.getClass()));
-	}
-
-	public static Entity getEntity(EntityEntityAttribute entityEntityAttribute) {
-		return getEntity(entityEntityAttribute.getType());
-	}
-
-	public static Entity getEntity(EntityAttributeType entityAttributeType) {
-
-		if (EntityDataType.class.isAssignableFrom(entityAttributeType.getClass())) {
-			return getEntity(entityAttributeType);
-		}
-
-		if (Entity.class.isAssignableFrom(entityAttributeType.getClass())) {
-			return getEntity(entityAttributeType);
-		}
-
-		throw new RuntimeException(String.format("EntityAttributeType '%s' not supported", entityAttributeType.getClass()));
-	}
-
-	public static Entity getEntity(EntityDataType entityDataType) {
-		return entityDataType.getEntity();
-	}
-
-	public static Entity getEntity(Entity entity) {
-		return entity;
 	}
 
 	public static Model getModelFromFile(URI uri) {
@@ -174,6 +119,7 @@ public class ModelUtil {
 
 	@SuppressWarnings("unchecked")
 	public static <ControlyType extends DictionaryControl> ArrayList<ControlyType> getControlHierarchy(ControlyType dictionaryControl) {
+		
 		ArrayList<ControlyType> controlHierarchy = new ArrayList<ControlyType>();
 
 		controlHierarchy.add(dictionaryControl);
@@ -231,5 +177,11 @@ public class ModelUtil {
 
 		return current;
 	}
+
+	public static Model getRootModel(EObject eObject) {
+		return (Model) getRoot(eObject);
+	}
+	
+
 
 }

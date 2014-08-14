@@ -20,6 +20,7 @@ import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
 public class ModelQuery {
+	
 	private Model model;
 
 	private ModelQuery(Model model) {

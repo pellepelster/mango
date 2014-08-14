@@ -42,6 +42,7 @@ public abstract class BaseEntityVOMapper implements IEntityVOMapper {
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Class<? extends IBaseEntity> getEntityClass(Class<?> clazz) {
 

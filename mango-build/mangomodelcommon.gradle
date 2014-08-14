@@ -28,9 +28,11 @@ dependencies {
 
 configurations {
 	archives.extendsFrom(generatedEntities)
-	archives.extendsFrom(generatedVOs)
 	archives.extendsFrom(generatedEntitiesSources)
+	archives.extendsFrom(generatedVOs)
 	archives.extendsFrom(generatedVOsSources)
+	archives.extendsFrom(generatedXml)
+	archives.extendsFrom(generatedXmlSources)
 }
 
 sourceSets {
@@ -59,19 +61,33 @@ sourceSets {
 		compileClasspath += project.sourceSets.generatedVOs.output
 	}
 
+	generatedXml {
+		
+		java {
+			srcDirs = [ 'src-gen-xml' ]
+		}
+		resources {
+			srcDirs = [ 'src-gen-xml' ]
+		}
+		
+		compileClasspath += project.sourceSets.main.compileClasspath
+		compileClasspath += project.sourceSets.generatedVOs.output
+	}
+
 	test {
 		
 		java {
-			srcDirs = [ 'test', 'src-gen-entities', 'src-gen-vos' ]
+			srcDirs = [ 'test', 'src-gen-entities', 'src-gen-vos', 'src-gen-xml' ]
 		}
 		resources {
-			srcDirs = [ 'test', 'src-gen-entities', 'src-gen-vos' ]
+			srcDirs = [ 'test', 'src-gen-entities', 'src-gen-vos', 'src-gen-xml' ]
 		}
 		
 		compileClasspath += project.sourceSets.generatedEntities.output
 
 		compileClasspath += project.sourceSets.generatedVOs.output
 		
+		compileClasspath += project.sourceSets.generatedXml.output
 	}
 
 }
@@ -97,13 +113,26 @@ task generatedVOsSourceJar(type: Jar, dependsOn: compileGeneratedVOsJava) {
 	from sourceSets.generatedVOs.allSource
 }
 
+task generatedXmlJar(type: Jar, dependsOn: project.compileGeneratedXmlJava) {
+	classifier 'xml-generated'
+	from sourceSets.generatedXml.output
+}
+
+task generatedXmlSourceJar(type: Jar, dependsOn: compileGeneratedXmlJava) {
+	classifier 'xml-generated-sources'
+	from sourceSets.generatedXml.allSource
+}
+
 compileGeneratedEntitiesJava.dependsOn("xtextGenerate")
 processGeneratedEntitiesResources.dependsOn("xtextGenerate")
 compileGeneratedVOsJava.dependsOn("xtextGenerate")
 processGeneratedVOsResources.dependsOn("xtextGenerate")
+compileGeneratedXmlJava.dependsOn("xtextGenerate")
+processGeneratedXmlResources.dependsOn("xtextGenerate")
 
 artifacts {
 	archives sourceJar, javadocJar
 	generatedEntities generatedEntitiesJar, generatedEntitiesSourceJar
 	generatedVOs generatedVOsJar, generatedVOsSourceJar
+	generatedXml generatedXmlJar, generatedXmlSourceJar
 }

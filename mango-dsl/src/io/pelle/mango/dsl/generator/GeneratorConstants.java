@@ -14,6 +14,12 @@ public class GeneratorConstants {
 
 	public static final String VO_GEN_OUTPUT_DEFAULT_DIR = "./src-gen-vos";
 
+	public static final String XML_GEN_OUTPUT = "XML_GEN_OUTPUT";
+
+	public static final String XML_GEN_OUTPUT_DESCRIPTION = "generated xml";
+
+	public static final String XML_GEN_OUTPUT_DEFAULT_DIR = "./src-gen-xml";
+	
 	public static final String CLIENT_PACKAGE_POSTFIX = "client";
 
 	public static final String SERVER_PACKAGE_POSTFIX = "server";

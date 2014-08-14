@@ -31,9 +31,19 @@ public final class OutputConfigurationProvider implements IOutputConfigurationPr
 		voOutputConfiguration.setSetDerivedProperty(true);
 		voOutputConfiguration.setKeepLocalHistory(true);
 
+		OutputConfiguration xmlOutputConfiguration = new OutputConfiguration(GeneratorConstants.XML_GEN_OUTPUT);
+		xmlOutputConfiguration.setDescription(GeneratorConstants.XML_GEN_OUTPUT_DESCRIPTION);
+		xmlOutputConfiguration.setOutputDirectory(GeneratorConstants.XML_GEN_OUTPUT_DEFAULT_DIR);
+		xmlOutputConfiguration.setOverrideExistingResources(true);
+		xmlOutputConfiguration.setCreateOutputDirectory(true);
+		xmlOutputConfiguration.setCleanUpDerivedResources(true);
+		xmlOutputConfiguration.setSetDerivedProperty(true);
+		xmlOutputConfiguration.setKeepLocalHistory(true);
+
 		Set<OutputConfiguration> outputConfigurations = new HashSet<OutputConfiguration>();
 		outputConfigurations.add(entityOutputConfiguration);
 		outputConfigurations.add(voOutputConfiguration);
+		outputConfigurations.add(xmlOutputConfiguration);
 
 		outputConfigurations.addAll(new org.eclipse.xtext.generator.OutputConfigurationProvider().getOutputConfigurations());
 
