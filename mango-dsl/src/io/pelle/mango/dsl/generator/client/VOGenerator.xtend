@@ -1,7 +1,6 @@
 package io.pelle.mango.dsl.generator.client
 
 import com.google.inject.Inject
-import io.pelle.mango.client.base.db.vos.Length
 import io.pelle.mango.client.base.db.vos.NaturalKey
 import io.pelle.mango.client.base.vo.BaseVO
 import io.pelle.mango.client.base.vo.EntityDescriptor
@@ -14,10 +13,8 @@ import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.Enumeration
-import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
-import io.pelle.mango.dsl.query.StringDatatypeQuery
 import java.util.List
 
 class VOGenerator extends BaseEntityGenerator {
@@ -50,7 +47,7 @@ class VOGenerator extends BaseEntityGenerator {
 			«getterSetter("long", IVOEntity.ID_FIELD_NAME)»
 			
 			«FOR attribute : entity.attributes»
-				«attribute.compileVOAttribute»
+				«attribute.changeTrackingAttributeGetterSetter»
 			«ENDFOR»
 			
 			«entity.genericVOGetter»
@@ -108,10 +105,6 @@ class VOGenerator extends BaseEntityGenerator {
 		«setter(getType(entityAttribute), entityAttribute.name.attributeName)»
 	'''
 
-	def compileVOAttribute(EntityAttribute entityAttribute) '''
-		«changeTrackingAttributeGetterSetter(entityAttribute)»
-	'''
-
 	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
 		«IF attribute.naturalKeyAttribute»@«NaturalKey.name»( order = «EmfModelQuery.createEObjectQuery(attribute).getParentByType(Entity).match.naturalKeyAttributes.indexOf(attribute)»)«ENDIF»
 		«attribute.validationAnnotation»
@@ -155,16 +148,5 @@ class VOGenerator extends BaseEntityGenerator {
 			super.set(name, value);
 		}
 	'''
-
-	// vlidation annotations
-	def validationAnnotation(EntityAttribute entityAttribute) {}
-
-	def validationAnnotation(StringEntityAttribute stringEntityAttribute) {
-		
-		if (StringDatatypeQuery.createQuery(stringEntityAttribute.type).hasMaxLength)
-		{
-			return "@" + Length.name + "( maxLength = " + StringDatatypeQuery.createQuery(stringEntityAttribute.type).maxLength + ")"
-		}
-	}
 
 }

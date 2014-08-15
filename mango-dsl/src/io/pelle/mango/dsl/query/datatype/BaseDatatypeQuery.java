@@ -1,4 +1,4 @@
-package io.pelle.mango.dsl.query;
+package io.pelle.mango.dsl.query.datatype;
 
 import io.pelle.mango.dsl.mango.Datatype;
 
@@ -9,12 +9,12 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com.google.common.base.Optional;
 
-public class DatatypeQuery<T extends Datatype> {
+public class BaseDatatypeQuery<T extends Datatype> {
 
-	private T datatype;
+	private Optional<T> datatype;
 
-	protected DatatypeQuery(T datatype) {
-		this.datatype = datatype;
+	protected BaseDatatypeQuery(T datatype) {
+		this.datatype = Optional.fromNullable(datatype);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -27,39 +27,38 @@ public class DatatypeQuery<T extends Datatype> {
 
 		return null;
 	}
-	
-	protected Optional<Object> getStructuralFeature(EStructuralFeature structuralFeature)
-	{
-		for(T datatype : getDatatypeHierarchy())
-		{
-			if (datatype.eGet(structuralFeature) != null)
-			{
+
+	protected Optional<Object> getStructuralFeature(EStructuralFeature structuralFeature) {
+
+		for (T datatype : getDatatypeHierarchy()) {
+			if (datatype.eGet(structuralFeature) != null) {
 				return Optional.of(datatype.eGet(structuralFeature));
 			}
 		}
-		
+
 		return Optional.absent();
 	}
-	
+
 	protected ArrayList<T> getDatatypeHierarchy() {
-		
+
 		ArrayList<T> datatypeHierarchy = new ArrayList<T>();
 
-		datatypeHierarchy.add(datatype);
+		if (datatype.isPresent()) {
+			datatypeHierarchy.add(datatype.get());
 
-		T refDatatype = (T) getDatatypeExtends(datatype);
+			T refDatatype = (T) getDatatypeExtends(datatype.get());
 
-		while (refDatatype != null) {
-			datatypeHierarchy.add(refDatatype);
+			while (refDatatype != null) {
+				datatypeHierarchy.add(refDatatype);
 
-			refDatatype = (T) getDatatypeExtends(datatype);
+				refDatatype = (T) getDatatypeExtends(datatype.get());
+			}
 		}
 
 		return datatypeHierarchy;
 	}
-	
-	protected T getDatatype()
-	{
+
+	protected Optional<T> getDatatype() {
 		return datatype;
 	}
 }

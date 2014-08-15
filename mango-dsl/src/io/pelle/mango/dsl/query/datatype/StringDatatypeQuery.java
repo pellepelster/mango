@@ -1,11 +1,11 @@
-package io.pelle.mango.dsl.query;
+package io.pelle.mango.dsl.query.datatype;
 
 import io.pelle.mango.dsl.mango.MangoPackage;
 import io.pelle.mango.dsl.mango.StringDataType;
 
 import com.google.common.base.Optional;
 
-public class StringDatatypeQuery extends DatatypeQuery<StringDataType> {
+public class StringDatatypeQuery extends BaseDatatypeQuery<StringDataType> {
 
 	public StringDatatypeQuery(StringDataType stringDataType) {
 		super(stringDataType);

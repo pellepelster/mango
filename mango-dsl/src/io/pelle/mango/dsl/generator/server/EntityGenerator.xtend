@@ -63,14 +63,10 @@ class EntityGenerator extends BaseEntityGenerator {
 			«ENDIF»
 			
 			«FOR attribute : entity.attributes»
-			«attribute.compileEntityAttribute»
+			«attribute.changeTrackingAttributeGetterSetter»
 			«ENDFOR»
 		
 		}
-	'''
-
-	def compileEntityAttribute(EntityAttribute entityAttribute) '''
-		«changeTrackingAttributeGetterSetter(entityAttribute)»
 	'''
 
 	// jpa annotations

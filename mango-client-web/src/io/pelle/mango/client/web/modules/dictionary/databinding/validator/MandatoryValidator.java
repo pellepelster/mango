@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class MandatoryValidator extends BaseValidator {
+
 	private boolean isEmpty(Object value) {
 		return value == null || value.toString().isEmpty();
 	}

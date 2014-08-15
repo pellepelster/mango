@@ -29,11 +29,7 @@ public interface IBaseVO extends Serializable, IVOEntity {
 
 	public static final IAttributeDescriptor<Long> FIELD_ID = new AttributeDescriptor<Long>(ENTITY_DESCRIPTOR, "id", Long.class, Long.class);
 
-	// Object cloneVO();
-
 	Object get(String name);
-
-	// IAttributeDescriptor<?> getAttributeDescriptor(String name);
 
 	/**
 	 * Generic setter to overcome the lack of reflection on the client
