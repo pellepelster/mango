@@ -19,6 +19,7 @@ public class ClassUtils {
 	}
 
 	public static Field[] getDeclaredFields(Class<?> clazz, boolean recursively) {
+
 		List<Field> fields = new LinkedList<Field>();
 		Field[] declaredFields = clazz.getDeclaredFields();
 		Collections.addAll(fields, declaredFields);

@@ -31,4 +31,12 @@ public class ValidatorMessages {
 
 	public static final IMessage MANDATORY_LIST = new Message(IMessage.SEVERITY.ERROR, "MANDATORY_LIST", Messages.getString(VALIDATOR_MANDATORY_LIST_MESSAGE), Messages.getString(VALIDATOR_MANDATORY_LIST_MESSAGE_HUMAN));
 
+	// max length
+	private static final String VALIDATOR_ATTRIBUTE_MAX_LENGTH_MESSAGE = "validator.maxlength.message";
+
+	private static final String VALIDATOR_ATTRIBUTE_MAX_LENGTH_MESSAGE_HUMAN = "validator.maxlength.message.human";
+
+	public static final IMessage STRING_ATTRIBUTE_MAX_LENGTH = new Message(IMessage.SEVERITY.ERROR, "ATTRIBUTE_MAX_LENGTH", Messages.getString(VALIDATOR_ATTRIBUTE_MAX_LENGTH_MESSAGE),
+			Messages.getString(VALIDATOR_ATTRIBUTE_MAX_LENGTH_MESSAGE_HUMAN));
+
 }

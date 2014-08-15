@@ -67,7 +67,7 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.eq("aaa")));
 		assertEquals(1, filterResult.size());
 		assertEquals("aaa", filterResult.get(0).getStringDatatype1());
-		
+
 		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.eqIgnoreCase("aaa")));
 		assertEquals(2, filterResult.size());
 		assertTrue("aaa".equals(filterResult.get(0).getStringDatatype1()) || "aaa".equals(filterResult.get(1).getStringDatatype1()));
@@ -75,7 +75,6 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 
 	}
 
-	
 	@Test
 	public void testValidateAndSave() {
 
@@ -149,6 +148,20 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 
 		Result<Entity1VO> result2 = this.baseEntityService.validateAndSave(entity1VO);
 		assertEquals(0, result2.getValidationMessages().size());
+	}
+
+	@Test
+	public void testValidateAndCreateValidateMaxLength() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+
+		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
+
+		assertEquals(1, result.getValidationMessages().size());
+		assertEquals("Attribute 'stringDatatype1' is longer than 32", result.getValidationMessages().get(0).getMessage());
 	}
 
 	public void setBaseVODAO(IBaseVODAO baseVODAO) {
