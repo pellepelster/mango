@@ -135,7 +135,7 @@ class MangoModelProject extends MangoBaseProject {
 		project.artifacts {
 			archives project.generatedEntitiesJar, project.generatedEntitiesSourceJar
 			archives project.generatedVOsJar, project.generatedVOsSourceJar
-			archives project.generatedXmlJar, project.generatedxmlSourceJar
+			archives project.generatedXmlJar, project.generatedXmlSourceJar
 			
 			generatedEntities project.generatedEntitiesJar, project.generatedEntitiesSourceJar
 			generatedVOs project.generatedVOsJar, project.generatedVOsSourceJar

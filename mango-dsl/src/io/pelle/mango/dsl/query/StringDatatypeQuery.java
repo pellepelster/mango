@@ -16,6 +16,7 @@ public class StringDatatypeQuery extends DatatypeQuery<StringDataType> {
 	}
 
 	public int getMaxLength() {
+
 		Optional<Object> maxLength = getStructuralFeature(MangoPackage.Literals.STRING_DATA_TYPE__MAX_LENGTH);
 
 		if (maxLength.isPresent()) {
