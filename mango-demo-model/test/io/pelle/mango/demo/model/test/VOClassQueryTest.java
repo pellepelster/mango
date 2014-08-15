@@ -36,11 +36,11 @@ public class VOClassQueryTest {
 
 		assertEquals(2, attributesDescriptorAnnotations.size());
 		assertEquals(String.class, attributesDescriptorAnnotations.get(0).getAttributeDescriptor().getAttributeType());
-		assertEquals(32, attributesDescriptorAnnotations.get(0).getAnnotation().maxLength());
+		assertEquals(42, attributesDescriptorAnnotations.get(0).getAnnotation().maxLength());
 
 		assertEquals(List.class, attributesDescriptorAnnotations.get(1).getAttributeDescriptor().getAttributeType());
 		assertEquals(String.class, attributesDescriptorAnnotations.get(1).getAttributeDescriptor().getListAttributeType());
-		assertEquals(32, attributesDescriptorAnnotations.get(1).getAnnotation().maxLength());
+		assertEquals(42, attributesDescriptorAnnotations.get(1).getAnnotation().maxLength());
 	}
 
 }

@@ -156,12 +156,12 @@ public class DemoBaseEntityServiceTest extends BaseTest {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
 		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		entity1VO.setStringDatatype1("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
 		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
 
 		assertEquals(1, result.getValidationMessages().size());
-		assertEquals("Attribute 'stringDatatype1' is longer than 32", result.getValidationMessages().get(0).getMessage());
+		assertEquals("Attribute 'stringDatatype1' is longer than 42", result.getValidationMessages().get(0).getMessage());
 	}
 
 	public void setBaseVODAO(IBaseVODAO baseVODAO) {
