@@ -11,12 +11,12 @@ import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.util.AttributeUtils
-import io.pelle.mango.dsl.generator.util.EntityUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
+import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.dsl.query.StringDatatypeQuery
 import java.util.List
 
@@ -31,9 +31,6 @@ class VOGenerator extends BaseEntityGenerator {
 	@Inject
 	extension ClientTypeUtils
 	
-	@Inject
-	extension EntityUtils
-
 	def compileVO(Entity entity) '''
 		package «getPackageName(entity)»;
 		
@@ -119,7 +116,7 @@ class VOGenerator extends BaseEntityGenerator {
 		«IF attribute.naturalKeyAttribute»@«NaturalKey.name»( order = «EmfModelQuery.createEObjectQuery(attribute).getParentByType(Entity).match.naturalKeyAttributes.indexOf(attribute)»)«ENDIF»
 		«attribute.validationAnnotation»
 		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
-		«IF !attribute.parentEntity.extendedByOtherEntity»
+		«IF !EntityQuery.isExtendedByOtherEntity(attribute.parentEntity)»
 		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
 		«ENDIF»
 		«getter(getType(attribute), attribute.name.attributeName)»

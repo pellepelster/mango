@@ -7,7 +7,6 @@ import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.util.AttributeUtils
-import io.pelle.mango.dsl.generator.util.EntityUtils
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.Cardinality
@@ -15,6 +14,7 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
+import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.server.base.BaseEntity
 
 class EntityGenerator extends BaseEntityGenerator {
@@ -28,9 +28,6 @@ class EntityGenerator extends BaseEntityGenerator {
 	@Inject
 	extension TypeUtils
 
-	@Inject
-	extension EntityUtils
-
 	def compileEntity(Entity entity) '''
 		package «getPackageName(entity)»;
 		
@@ -38,7 +35,7 @@ class EntityGenerator extends BaseEntityGenerator {
 		
 		@Entity
 		@Table(name = "«entity.entityTableName»")
-		«IF entity.isExtendedByOtherEntity»
+		«IF EntityQuery.isExtendedByOtherEntity(entity)»
 		@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.JOINED)
 		@javax.persistence.PrimaryKeyJoinColumn(name="«entity.entityTableIdColumnName»")
 		«ENDIF»
