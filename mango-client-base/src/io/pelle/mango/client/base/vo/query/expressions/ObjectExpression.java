@@ -6,35 +6,31 @@ import io.pelle.mango.client.base.vo.query.IExpression;
 @SuppressWarnings("serial")
 public class ObjectExpression implements IExpression {
 
-        private Object value;
+	private Object value;
 
-        public ObjectExpression() {
-        }
+	public ObjectExpression() {
+	}
 
-        public ObjectExpression(Object value) {
-                this.value = value;
-        }
+	public ObjectExpression(Object value) {
+		this.value = value;
+	}
 
-        public Object getValue() {
-                return value;
-        }
+	public Object getValue() {
+		return value;
+	}
 
-        public void setValue(Object value) {
-                this.value = value;
-        }
+	public void setValue(Object value) {
+		this.value = value;
+	}
 
-        @Override
-        public String toString() {
-                return value.toString();
-        }
+	@Override
+	public String toString() {
+		return value.toString();
+	}
 
-        public void appendToValue(String append) {
-                value += append;
-        }
-
-        @Override
-        public String getJPQL(IAliasProvider aliasProvider) {
-                return "'" + value + "'";
-        }
+	@Override
+	public String getJPQL(IAliasProvider aliasProvider) {
+		return "'" + value + "'";
+	}
 
 }

@@ -19,7 +19,7 @@ public class StringDatatypeQuery extends DatatypeQuery<StringDataType> {
 		Optional<Object> maxLength = getStructuralFeature(MangoPackage.Literals.STRING_DATA_TYPE__MAX_LENGTH);
 
 		if (maxLength.isPresent()) {
-			return (int) maxLength.get();
+			return Integer.parseInt(maxLength.get().toString());
 		} else {
 			throw new RuntimeException("no maxlength found for datatype '" + getDatatype() + "'");
 		}
