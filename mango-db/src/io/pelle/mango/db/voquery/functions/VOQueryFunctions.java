@@ -1,6 +1,6 @@
-package io.pelle.mango.db.vo;
+package io.pelle.mango.db.voquery.functions;
 
-public class VOClassFunctions {
+public class VOQueryFunctions {
 
 	public static <A> AttributeDescriptorAnnotationFunction attributeDescriptorAnnotation(Class<?> voClass, Class<A> annotationClass) {
 		return new AttributeDescriptorAnnotationFunction(voClass, annotationClass);

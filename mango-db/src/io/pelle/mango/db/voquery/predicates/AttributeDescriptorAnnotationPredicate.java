@@ -1,4 +1,6 @@
-package io.pelle.mango.db.vo;
+package io.pelle.mango.db.voquery.predicates;
+
+import io.pelle.mango.db.voquery.AttributeDescriptorAnnotation;
 
 import com.google.common.base.Predicate;
 

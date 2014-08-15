@@ -1,7 +1,9 @@
-package io.pelle.mango.db.vo;
+package io.pelle.mango.db.voquery;
 
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.db.voquery.functions.VOQueryFunctions;
+import io.pelle.mango.db.voquery.predicates.VOQueryPredicates;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,7 +35,7 @@ public class AttributesDescriptorQuery<T> implements Iterable<IAttributeDescript
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <C> AttributesDescriptorQuery<C> byType(Class<C> clazz) {
-		return new AttributesDescriptorQuery(voClass, Collections2.filter(attributeDescriptors, VOClassPredicates.attributeDescriptorAttributeType(clazz)));
+		return new AttributesDescriptorQuery(voClass, Collections2.filter(attributeDescriptors, VOQueryPredicates.attributeDescriptorAttributeType(clazz)));
 	}
 
 	public List<IAttributeDescriptor<T>> getList() {
@@ -42,8 +44,8 @@ public class AttributesDescriptorQuery<T> implements Iterable<IAttributeDescript
 
 	@SuppressWarnings("unchecked")
 	public <A> List<AttributeDescriptorAnnotation<A>> byAnnotation(Class<A> annotationClass) {
-		Collection<AttributeDescriptorAnnotation<?>> result = Collections2.transform(attributeDescriptors, VOClassFunctions.attributeDescriptorAnnotation(voClass, annotationClass));
-		result = Collections2.filter(result, VOClassPredicates.attributeDescriptorAnnotationType(annotationClass));
+		Collection<AttributeDescriptorAnnotation<?>> result = Collections2.transform(attributeDescriptors, VOQueryFunctions.attributeDescriptorAnnotation(voClass, annotationClass));
+		result = Collections2.filter(result, VOQueryPredicates.attributeDescriptorAnnotationType(annotationClass));
 		return new ArrayList(result);
 	}
 

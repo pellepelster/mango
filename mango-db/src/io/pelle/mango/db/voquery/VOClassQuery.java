@@ -1,4 +1,4 @@
-package io.pelle.mango.db.vo;
+package io.pelle.mango.db.voquery;
 
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.db.util.BeanUtils;

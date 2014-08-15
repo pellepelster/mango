@@ -1,4 +1,4 @@
-package io.pelle.mango.db.vo;
+package io.pelle.mango.db.voquery.predicates;
 
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 

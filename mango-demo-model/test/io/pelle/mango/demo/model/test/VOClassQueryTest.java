@@ -2,9 +2,9 @@ package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
 import io.pelle.mango.client.base.db.vos.Length;
-import io.pelle.mango.db.vo.AttributeDescriptorAnnotation;
-import io.pelle.mango.db.vo.AttributesDescriptorQuery;
-import io.pelle.mango.db.vo.VOClassQuery;
+import io.pelle.mango.db.voquery.AttributeDescriptorAnnotation;
+import io.pelle.mango.db.voquery.AttributesDescriptorQuery;
+import io.pelle.mango.db.voquery.VOClassQuery;
 import io.pelle.mango.test.client.Entity1VO;
 
 import java.util.List;
