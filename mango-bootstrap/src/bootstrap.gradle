@@ -93,6 +93,12 @@ task createWrapper(type: Wrapper) {
     scriptFile = file(fullOutputDir + "/gradlew")
 }
 
+task bootstrapProjectTemplate(type: GradleBuild) {
+   buildFile = file(fullOutputDir + "/${projectName.toLowerCase()}-build/build.gradle")
+   tasks = ['eclipse']
+}
+
 extractProjectTemplate.dependsOn(createWrapper)
 extractProjectTemplate.dependsOn(configurations.projectTemplate)
 copyProjectTemplate.dependsOn(extractProjectTemplate)
+bootstrapProjectTemplate.dependsOn(copyProjectTemplate)
