@@ -9,7 +9,7 @@ ModelRoot:
 	
 Model:
 	"project" name=ID "{"
-		elements+=AbstractElement*
+		elements+=PackageDeclaration*
 	"}"; 
 
 PackageDeclaration:
