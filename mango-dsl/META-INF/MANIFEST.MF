@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: io.pelle.mango.dsl
+Bundle-Name: Mango DSL
 Bundle-SymbolicName: mango-dsl;singleton:=true
 Bundle-Version: 0.0.0.qualifier
 Bundle-Vendor: pelle.io
