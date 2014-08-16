@@ -75,10 +75,15 @@ repositories {
 		layout "maven"
 	}
 
-
 	ivy {
 		name "localDevelopmentRepository"
 		url System.properties['user.home'] + "/.gradle/mango_development"
+		layout "maven"
+	}
+
+    ivy {
+		name "mangoCiRepository"
+		url "http://zoidberg.pelle.io/~mango-ci/repository/"
 		layout "maven"
 	}
 
