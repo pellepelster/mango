@@ -14,6 +14,12 @@ buildscript {
 			layout "maven"
 		}
 		
+	    ivy {
+	        name "mangoCiRepository"
+	        url "http://zoidberg.pelle.io/~mango-ci/repository/"
+	        layout "maven"
+		}
+		
 		mavenCentral()
 	}
 
