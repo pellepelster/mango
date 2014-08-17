@@ -116,6 +116,7 @@ echo "executing temporary gradle bootstrap file '${TEMP_GRADLE_FILE}'"
 GRADLE_OUTPUT=$($GRADLE_WRAPPER --build-file ${TEMP_GRADLE_FILE} extractBootstrapGradle -PbootstrapTempDir=$TEMP_DIR)
 
 if [[ $GRADLE_OUTPUT =~ (###(.*)###) ]]; then
+	echo $GRADLE_OUTPUT
 	GRADLE_BOOTSTRAP_FILE=${BASH_REMATCH[2]}
 	echo "temporary bootstrap returned bootstrap gradle file at '${TEMP_DIR}/${GRADLE_BOOTSTRAP_FILE}'"
 else
