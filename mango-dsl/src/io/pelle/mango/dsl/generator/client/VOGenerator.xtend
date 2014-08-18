@@ -16,6 +16,7 @@ import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
+import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -132,6 +133,19 @@ class VOGenerator extends BaseEntityGenerator {
 	'''
 
 	//- genericVOSetter -----------------------------------------------------------
+	def dispatch genericVOSetterValue(EntityAttribute entityAttribute) '''
+		set«entityAttribute.name.toFirstUpper()»((«entityAttribute.type») value);'''
+
+	def dispatch genericVOSetterValue(EnumerationEntityAttribute enumerationEntityAttribute) '''
+		if (value instanceof «String.name»)
+		{
+			set«enumerationEntityAttribute.name.toFirstUpper()»(«enumerationEntityAttribute.enumerationFullQualifiedName».valueOf((«String.name») value));
+		}
+		else
+		{
+			set«enumerationEntityAttribute.name.toFirstUpper()»((«enumerationEntityAttribute.type.type») value);
+		}'''
+
 	def genericVOSetter(Entity entity) '''
 		public void set(java.lang.String name, java.lang.Object value) {
 		
@@ -140,7 +154,7 @@ class VOGenerator extends BaseEntityGenerator {
 			«FOR attribute : entity.attributes»
 			if ("«attribute.name»".equals(name))
 			{
-				set«attribute.name.toFirstUpper()»((«attribute.type») value);
+				«attribute.genericVOSetterValue»
 				return;
 			}
 			«ENDFOR»

@@ -452,14 +452,6 @@ public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.ty
 		}
 	}
 	
-	/*
-	}
-	def parseSimpleTypeFromString(EnumerationType EnumerationType, String parameterName) FOR EnumerationType-» '''
-	«fullQualifiedEntityName(this.type)-».valueOf(«parameterName»)
-'''
- */
- 
-
 	def String parseSimpleTypeFromString(SimpleTypes simpleTypes, String parameterName)
 	{
 		switch simpleTypes {

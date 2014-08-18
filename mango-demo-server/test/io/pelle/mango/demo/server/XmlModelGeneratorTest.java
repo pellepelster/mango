@@ -7,7 +7,7 @@ import io.pelle.mango.test.client.Entity1VO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class XmlModelGeneratorTest extends BaseTest {
+public class XmlModelGeneratorTest extends BaseDemoTest {
 
 	@Autowired
 	private XmlVOMapper xmlVOMapper;

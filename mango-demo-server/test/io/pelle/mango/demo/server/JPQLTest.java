@@ -9,7 +9,7 @@ import io.pelle.mango.test.client.Entity1VO;
 
 import org.junit.Test;
 
-public class JPQLTest extends BaseTest {
+public class JPQLTest extends BaseDemoTest {
 
 
 	@Test

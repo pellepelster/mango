@@ -17,9 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 @TransactionConfiguration(defaultRollback = false)
 @Transactional
 @TestExecutionListeners({ TransactionalTestExecutionListener.class })
-public abstract class BaseTest extends AbstractTransactionalJUnit4SpringContextTests {
+public abstract class BaseDemoTest extends AbstractTransactionalJUnit4SpringContextTests {
 
-	public BaseTest() {
+	public BaseDemoTest() {
 
 		BasicDataSource dataSource = new BasicDataSource();
 

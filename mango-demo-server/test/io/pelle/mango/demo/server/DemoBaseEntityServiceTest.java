@@ -16,7 +16,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class DemoBaseEntityServiceTest extends BaseTest {
+public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;

@@ -7,6 +7,9 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.PackageDeclaration
+import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
+import io.pelle.mango.dsl.mango.EnumerationAttributeType
+import io.pelle.mango.dsl.mango.EnumerationDataType
 
 class ClientNameUtils extends NameUtils {
 	
@@ -40,20 +43,32 @@ class ClientNameUtils extends NameUtils {
 		return voFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
 	}
 	
-		//-------------------------------------------------------------------------
+	//-------------------------------------------------------------------------
 	// enumeration
 	//-------------------------------------------------------------------------
-	def enumerationName(Enumeration enumeration) {
+	def dispatch enumerationName(Enumeration enumeration) {
 		return enumeration.name.toUpperCase;
 	}
 
+	def dispatch enumerationName(EnumerationEntityAttribute enumerationEntityAttribute) {
+		return enumerationEntityAttribute.type.enumerationName;
+	}
+
+	def dispatch enumerationName(EnumerationDataType enumerationDataType) {
+		return enumerationDataType.enumeration.enumerationName;
+	}
+
 	def enumerationFullQualifiedName(Enumeration enumeration) {
-		
 		return getPackageName(enumeration) + "." + enumerationName(enumeration);
 	}
 
 	def enumerationFullQualifiedFileName(Enumeration enumeration) {
 		return enumerationFullQualifiedName(enumeration).replaceAll("\\.", "/")  + ".java";
+	}
+
+	def enumerationFullQualifiedName(EnumerationEntityAttribute enumerationEntityAttribute) {
+		
+		return getPackageName(enumerationEntityAttribute) + "." + enumerationName(enumerationEntityAttribute);
 	}
 
 	
