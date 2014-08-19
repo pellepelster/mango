@@ -1,22 +1,20 @@
 package io.pelle.mango.dsl.generator.client
 
 import com.google.inject.Inject
-import io.pelle.mango.client.base.db.vos.NaturalKey
 import io.pelle.mango.client.base.vo.BaseVO
 import io.pelle.mango.client.base.vo.EntityDescriptor
 import io.pelle.mango.client.base.vo.IEntityDescriptor
 import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
-import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.Enumeration
+import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
-import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -107,8 +105,6 @@ class VOGenerator extends BaseEntityGenerator {
 	'''
 
 	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
-		«IF attribute.naturalKeyAttribute»@«NaturalKey.name»( order = «EmfModelQuery.createEObjectQuery(attribute).getParentByType(Entity).match.naturalKeyAttributes.indexOf(attribute)»)«ENDIF»
-		«attribute.validationAnnotation»
 		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
 		«IF !EntityQuery.isExtendedByOtherEntity(attribute.parentEntity)»
 		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»

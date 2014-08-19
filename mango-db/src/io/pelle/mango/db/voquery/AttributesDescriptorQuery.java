@@ -1,25 +1,28 @@
 package io.pelle.mango.db.voquery;
 
+import io.pelle.mango.client.base.vo.AttributeDescriptor;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.db.voquery.functions.VOQueryFunctions;
-import io.pelle.mango.db.voquery.predicates.VOQueryPredicates;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import com.google.common.collect.Collections2;
 
-public class AttributesDescriptorQuery<T> implements Iterable<IAttributeDescriptor<T>> {
+public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> implements Iterable<T> {
 
 	private Class<? extends IBaseVO> voClass;
 
-	private List<IAttributeDescriptor<T>> attributeDescriptors = new ArrayList<>();
+	private List<T> attributeDescriptors = new ArrayList<>();
 
-	public AttributesDescriptorQuery(Class<? extends IBaseVO> voClass, Collection<IAttributeDescriptor<T>> attributeDescriptors) {
+	public AttributesDescriptorQuery(Class<? extends IBaseVO> voClass, Collection<T> attributeDescriptors) {
 		this.attributeDescriptors = new ArrayList<>(attributeDescriptors);
 		this.voClass = voClass;
 	}
@@ -34,23 +37,33 @@ public class AttributesDescriptorQuery<T> implements Iterable<IAttributeDescript
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public <C> AttributesDescriptorQuery<C> byType(Class<C> clazz) {
-		return new AttributesDescriptorQuery(voClass, Collections2.filter(attributeDescriptors, VOQueryPredicates.attributeDescriptorAttributeType(clazz)));
+	public <C extends IAttributeDescriptor<?>> AttributesDescriptorQuery<C> byType(Class<C> clazz) {
+		return new AttributesDescriptorQuery(voClass, Collections2.filter(attributeDescriptors, Predicates.instanceOf(clazz)));
 	}
 
-	public List<IAttributeDescriptor<T>> getList() {
-		return attributeDescriptors;
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public AttributesDescriptorQuery<T> naturalKeys() {
+		
+		List<T> naturalKeyAttributeDescriptors = new ArrayList(Collections2.filter(attributeDescriptors, new Predicate<T>() {
+			@Override
+			public boolean apply(T atttributeDescriptor) {
+				return atttributeDescriptor.getNaturalKeyOrder() != AttributeDescriptor.NO_NATURAL_KEY;
+			}
+		}));
+		
+		Collections.sort(naturalKeyAttributeDescriptors, new Comparator<T>() {
+			@Override
+			public int compare(T o1, T o2) {
+				return Integer.compare(o1.getNaturalKeyOrder(), o2.getNaturalKeyOrder());
+			}
+		});
+		
+		return new AttributesDescriptorQuery(voClass, naturalKeyAttributeDescriptors);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <A> List<AttributeDescriptorAnnotation<A>> byAnnotation(Class<A> annotationClass) {
-		Collection<AttributeDescriptorAnnotation<?>> result = Collections2.transform(attributeDescriptors, VOQueryFunctions.attributeDescriptorAnnotation(voClass, annotationClass));
-		result = Collections2.filter(result, VOQueryPredicates.attributeDescriptorAnnotationType(annotationClass));
-		return new ArrayList(result);
-	}
-
+	
 	@Override
-	public Iterator<IAttributeDescriptor<T>> iterator() {
+	public Iterator<T> iterator() {
 		return attributeDescriptors.iterator();
 	}
 

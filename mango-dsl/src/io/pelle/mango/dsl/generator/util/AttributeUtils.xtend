@@ -1,6 +1,8 @@
 package io.pelle.mango.dsl.generator.util
 
 import com.google.inject.Inject
+import io.pelle.mango.client.base.vo.AttributeDescriptor
+import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 
@@ -9,8 +11,21 @@ class AttributeUtils {
 	@Inject
 	extension NameUtils
 
+	//-------------------------------------------------------------------------
+	// natural key
+	//-------------------------------------------------------------------------
 	def boolean isNaturalKeyAttribute(EntityAttribute entityAttribute) {
 		return entityAttribute.parentEntity.naturalKeyAttributes.contains(entityAttribute)
+	}
+	
+	def naturalKeyOrder(EntityAttribute entityAttribute) {
+		if (entityAttribute.naturalKeyAttribute) {
+			return EmfModelQuery.createEObjectQuery(entityAttribute).getParentByType(Entity).match.naturalKeyAttributes.
+				indexOf(entityAttribute)
+		} else {
+			AttributeDescriptor.NO_NATURAL_KEY
+		}
+
 	}
 
 	def Entity getParentEntity(EntityAttribute entityAttribute) {

@@ -162,7 +162,7 @@ class TypeUtils {
 	// EntityAttribute
 	//-----------------
 	def compileEntityAttributeDescriptorCommon(EntityAttribute entityAttribute, Entity entity) '''
-	public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«IF entity == null»«entityAttribute.parentEntity.entityConstantName»«ELSE»«entity.entityConstantName»«ENDIF», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)»);
+	public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«IF entity == null»«entityAttribute.parentEntity.entityConstantName»«ELSE»«entity.entityConstantName»«ENDIF», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)», false, «entityAttribute.naturalKeyOrder»);
 	'''	
 
 	def dispatch compileEntityAttributeDescriptor(EntityAttribute entityAttribute, Entity entity) {
@@ -340,8 +340,20 @@ class TypeUtils {
 	}
 
 	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
-	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
-	'''	
+	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.maxLength», «entityAttribute.naturalKeyOrder»);
+	'''
+	
+	def getMaxLength(StringEntityAttribute stringEntityAttribute) 
+	{
+		if (stringEntityAttribute.type != null)
+		{
+			return stringEntityAttribute.type.maxLength
+		}
+		else
+		{
+			return StringAttributeDescriptor.LENGTH_UNLIMITED
+		}
+	}
 
 	//-----------------
 	// BooleanEntityAttribute

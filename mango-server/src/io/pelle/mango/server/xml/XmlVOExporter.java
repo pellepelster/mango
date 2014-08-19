@@ -5,10 +5,11 @@ import io.pelle.mango.client.base.db.vos.UUID;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.db.util.BeanUtils;
-import io.pelle.mango.server.util.NaturalKeyUtils;
+import io.pelle.mango.db.voquery.VOClassQuery;
 
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -27,44 +28,44 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class XmlVOExporter extends BaseXmlVOHandler {
-	
+
 	public interface BinaryFileWriteCallback {
 		void writeBinaryFile(String fileId, byte[] content);
 	}
 
 	private static final String KEY_ATTRIBUTE_NAME = "key";
-	
+
 	private static final String VALUE_ATTRIBUTE_NAME = "value";
-	
+
 	private static final String KEY_VALUE_ELEMENT_NAME = "KeyValue";
-	
+
 	@Autowired
 	private XmlVOMapper voXmlMapper;
-	
+
 	@Autowired
 	private IBaseEntityService baseEntityService;
-	
+
 	private XMLEventFactory eventFactory = XMLEventFactory.newFactory();
-	
+
 	private XMLEvent END = this.eventFactory.createDTD("\n");
-	
+
 	private XMLEvent TAB = this.eventFactory.createDTD("\t");
 
 	public <VOType extends IBaseVO> void exportVOs(OutputStream outputStream, List<VOType> vosToExport, BinaryFileWriteCallback binaryFileCallback) {
 		try {
-			
+
 			int indentation = 0;
-			
+
 			VOType vo = vosToExport.get(0);
-			
+
 			String elementName = this.voXmlMapper.getElementName(vo.getClass());
 			String listElementName = this.voXmlMapper.getListElementName(vo.getClass());
-			
+
 			IAttributeDescriptor<?>[] attributeDescriptors = BeanUtils.getAttributeDescriptors(vo.getClass());
-			
+
 			XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 			XMLEventWriter eventWriter = outputFactory.createXMLEventWriter(outputStream);
-			
+
 			StartDocument startDocument = this.eventFactory.createStartDocument();
 			eventWriter.add(startDocument);
 			eventWriter.add(this.END);
@@ -72,9 +73,9 @@ public class XmlVOExporter extends BaseXmlVOHandler {
 			eventWriter.add(this.eventFactory.createStartElement("", "", listElementName));
 			eventWriter.add(this.END);
 			indentation++;
-			
+
 			for (VOType voToExport : vosToExport) {
-				
+
 				addIndentation(eventWriter, indentation);
 				eventWriter.add(this.eventFactory.createStartElement("", "", elementName));
 				eventWriter.add(this.END);
@@ -157,19 +158,24 @@ public class XmlVOExporter extends BaseXmlVOHandler {
 	}
 
 	private void createReferenceAttributeNode(XMLEventWriter eventWriter, IBaseVO vo, int indentation) throws XMLStreamException {
+
 		String referenceElementName = this.voXmlMapper.getReferenceElementName(vo.getClass());
 		addIndentation(eventWriter, indentation);
 		eventWriter.add(this.eventFactory.createStartElement("", "", referenceElementName));
 		eventWriter.add(this.END);
-		List<IAttributeDescriptor<?>> naturalKeyAttributeDescriptors = NaturalKeyUtils.getNaturalKeys(vo.getClass());
-		if (naturalKeyAttributeDescriptors.isEmpty()) {
+
+		Iterator<? extends IAttributeDescriptor<?>> naturalKeyAttributeDescriptors = VOClassQuery.createQuery(vo.getClass()).attributesDescriptors()
+				.naturalKeys().iterator();
+
+		if (naturalKeyAttributeDescriptors.hasNext()) {
 			createAttributeNode(eventWriter, IBaseVO.FIELD_ID.getAttributeName(), vo.getOid(), indentation + 1);
 		} else {
-			for (IAttributeDescriptor<?> naturalKeyAttributeDescriptor : naturalKeyAttributeDescriptors) {
-				createAttributeNode(eventWriter, naturalKeyAttributeDescriptor.getAttributeName(), vo.get(naturalKeyAttributeDescriptor.getAttributeName()),
-						indentation + 1);
+			while (naturalKeyAttributeDescriptors.hasNext()) {
+				IAttributeDescriptor<?> attributeDescriptor = naturalKeyAttributeDescriptors.next();
+				createAttributeNode(eventWriter, attributeDescriptor.getAttributeName(), vo.get(attributeDescriptor.getAttributeName()), indentation + 1);
 			}
 		}
+
 		addIndentation(eventWriter, indentation);
 		eventWriter.add(this.eventFactory.createEndElement("", "", referenceElementName));
 		eventWriter.add(this.END);

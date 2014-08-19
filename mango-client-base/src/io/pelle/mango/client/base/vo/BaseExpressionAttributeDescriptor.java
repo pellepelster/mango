@@ -6,13 +6,14 @@ public abstract class BaseExpressionAttributeDescriptor<T> extends AttributeDesc
 
 	protected final PathExpression entityFieldExpression;
 
-	public BaseExpressionAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> attributeType, Class<?> attributeListType) {
-		super(entityDescriptor, attributeName, attributeType, attributeListType);
+	public BaseExpressionAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> attributeType, Class<?> attributeListType,
+			int naturalKeyOrder) {
+		super(entityDescriptor, attributeName, attributeType, attributeListType, false, naturalKeyOrder);
 		entityFieldExpression = new PathExpression(entityDescriptor.getVOEntityClass().getName(), attributeName);
 	}
 
-	public BaseExpressionAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> attributeType) {
-		this(entityDescriptor, attributeName, attributeType, attributeType);
+	public BaseExpressionAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> attributeType, int naturalKeyOrder) {
+		this(entityDescriptor, attributeName, attributeType, attributeType, naturalKeyOrder);
 	}
 
 }

@@ -1,13 +1,11 @@
 package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
-import io.pelle.mango.client.base.db.vos.Length;
-import io.pelle.mango.db.voquery.AttributeDescriptorAnnotation;
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
+import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.db.voquery.AttributesDescriptorQuery;
 import io.pelle.mango.db.voquery.VOClassQuery;
 import io.pelle.mango.test.client.Entity1VO;
-
-import java.util.List;
 
 import org.junit.Test;
 
@@ -21,26 +19,25 @@ public class VOClassQueryTest {
 	}
 
 	@Test
-	public void testAttributesDescriptorQueryFilterByType() {
+	public void testAttributesDescriptorQueryByType() {
 
-		AttributesDescriptorQuery<String> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byType(String.class);
+		AttributesDescriptorQuery<StringAttributeDescriptor> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byType(StringAttributeDescriptor.class);
 
-		assertEquals(1, attributesDescriptorQuery.getCount());
-		assertEquals(String.class, attributesDescriptorQuery.getList().get(0).getAttributeType());
+		assertEquals(2, attributesDescriptorQuery.getCount());
+		assertEquals(String.class, attributesDescriptorQuery.iterator().next().getAttributeType());
+		assertEquals(String.class, attributesDescriptorQuery.iterator().next().getAttributeType());
 	}
 
 	@Test
-	public void testAttributesDescriptorByAnnotation() {
+	public void testAttributesDescriptorQueryNaturalKeys() {
 
-		List<AttributeDescriptorAnnotation<Length>> attributesDescriptorAnnotations = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byAnnotation(Length.class);
+		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().naturalKeys();
 
-		assertEquals(2, attributesDescriptorAnnotations.size());
-		assertEquals(String.class, attributesDescriptorAnnotations.get(0).getAttributeDescriptor().getAttributeType());
-		assertEquals(42, attributesDescriptorAnnotations.get(0).getAnnotation().maxLength());
+		assertEquals(1, attributesDescriptorQuery.getCount());
 
-		assertEquals(List.class, attributesDescriptorAnnotations.get(1).getAttributeDescriptor().getAttributeType());
-		assertEquals(String.class, attributesDescriptorAnnotations.get(1).getAttributeDescriptor().getListAttributeType());
-		assertEquals(42, attributesDescriptorAnnotations.get(1).getAnnotation().maxLength());
+		IAttributeDescriptor<?> attributeDescriptor = attributesDescriptorQuery.iterator().next();
+		assertEquals(String.class, attributeDescriptor.getAttributeType());
+		assertEquals("stringDatatype1", attributeDescriptor.getAttributeName());
 	}
 
 }

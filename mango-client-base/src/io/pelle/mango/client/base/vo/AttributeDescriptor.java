@@ -10,11 +10,25 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 
 	private final Class<?> attributeListType;
 
+	private final boolean mandatory;
+
+	private final int naturalKeyOrder;
+
+	public static final int NO_NATURAL_KEY = -1;
+
 	public AttributeDescriptor(IEntityDescriptor<?> parent, String attributeName, Class<?> attributeType) {
-		this(parent, attributeName, attributeType, attributeType);
+		this(parent, attributeName, attributeType, attributeType, false, NO_NATURAL_KEY);
+	}
+
+	public AttributeDescriptor(IEntityDescriptor<?> parent, String attributeName, Class<?> attributeType, boolean mandatory) {
+		this(parent, attributeName, attributeType, attributeType, mandatory, NO_NATURAL_KEY);
 	}
 
 	public AttributeDescriptor(IEntityDescriptor<?> parent, String attributeName, Class<?> attributeType, Class<?> attributeListType) {
+		this(parent, attributeName, attributeType, attributeListType, false, NO_NATURAL_KEY);
+	}
+	
+	public AttributeDescriptor(IEntityDescriptor<?> parent, String attributeName, Class<?> attributeType, Class<?> attributeListType, boolean mandatory, int naturalKeyOrder) {
 		super();
 
 		this.parent = parent;
@@ -28,6 +42,8 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 			this.attributeListType = attributeListType;
 		}
 
+		this.mandatory = mandatory;
+		this.naturalKeyOrder = naturalKeyOrder;
 	}
 
 	/** {@inheritDoc} */
@@ -48,9 +64,22 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 		return attributeListType;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public IEntityDescriptor<?> getParent() {
 		return parent;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public boolean isMandatory() {
+		return mandatory;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public int getNaturalKeyOrder() {
+		return naturalKeyOrder;
 	}
 
 }

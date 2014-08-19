@@ -10,4 +10,8 @@ public interface IAttributeDescriptor<AttributeType> {
 
 	Class<?> getListAttributeType();
 
+	boolean isMandatory();
+	
+	int getNaturalKeyOrder();
+	
 }
