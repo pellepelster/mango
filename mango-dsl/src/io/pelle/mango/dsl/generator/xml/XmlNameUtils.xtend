@@ -102,5 +102,9 @@ class XmlNameUtils {
 		return xsdNamespaceUrl(ModelUtil.getRootModel(entity)) + "/" + entity.name.toLowerCase()
 	}
 	
+
+	def entityImportExportWSDLSoapAction(Entity entity) {
+		return xsdNamespaceUrl(ModelUtil.getRootModel(entity)) + "/Import" + entity.name.toFirstUpper() + ".wsdl"
+	}
 	
 }

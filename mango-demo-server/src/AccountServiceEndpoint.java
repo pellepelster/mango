@@ -6,9 +6,9 @@ import org.w3c.dom.Element;
 
 @Endpoint
 public class AccountServiceEndpoint {
-	
-	private static final String TARGET_NAMESPACE = "http://mangodemo/accountservice";
-	
+
+	private static final String TARGET_NAMESPACE = "http://mangodemo/entity1";
+
 	@PayloadRoot(localPart = "AccountDetailsRequest", namespace = TARGET_NAMESPACE)
 	public @ResponsePayload Element getAccountDetails(@RequestPayload Element element) {
 		return null;

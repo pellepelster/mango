@@ -20,6 +20,7 @@ dependencies {
 
 	compile project(path: ':mango-demo-model', configuration: 'generatedVOs')
 	compile project(path: ':mango-demo-model', configuration: 'generatedEntities')
+	compile project(path: ':mango-demo-model', configuration: 'generatedXml')
 	compile project(path: ':mango-server')
 	
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.5'
@@ -34,6 +35,12 @@ dependencies {
 	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.2.6'
 
 	compile group: "org.hsqldb", name: "hsqldb", version: "2.2.9"
+	
+	// webservices
+	compile group: "org.springframework.ws", name: "spring-xml", version: "2.2.0.RELEASE"
+	compile group: "org.springframework.ws", name: "spring-ws-core", version: "2.2.0.RELEASE"
+	compile group: "wsdl4j", name: "wsdl4j", version: "1.6.3"
+	compile group: "org.apache.ws.xmlschema", name: "xmlschema-core", version: "2.1.0"
 	
 	testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: '1.5.0'
 	testCompile group: 'com.jayway.restassured', name: 'rest-assured', version: '2.3.0'
