@@ -30,49 +30,48 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class XmlVOExportImportService {
-	
+
 	private final static Logger LOG = Logger.getLogger(XmlVOExportImportService.class);
-	
+
 	private static final String XML_FILE_EXTENSION = "xml";
-	
+
 	private static final int XML_DETECT_PEEK_SIZE = 1024;
-	
+
 	private static final String BINARY_FILES_DIR = "binary";
-	
+
 	@Autowired
 	private IBaseEntityService baseEntityService;
-	
+
 	@Autowired
 	private XmlVOExporter xmlVOExporter;
-	
+
 	@Autowired
 	private XmlVOImporter xmlVOImporter;
-	
+
 	@Autowired
 	private XmlVOMapper xmlVOMapper;
-	
+
 	@Autowired
 	private VOMetaDataService metaDataService;
 
 	public <VOType extends IBaseVO> void exportVOs(Class<VOType> voClass, File exportDir) {
-		
+
 		LOG.info(String.format("exporting all '%s' vos", voClass.getName()));
-		
+
 		final File binaryFilesDir = new File(exportDir, BINARY_FILES_DIR);
-		
+
 		List<VOType> vosToExport = this.baseEntityService.filter(SelectQuery.selectFrom(voClass));
-		
+
 		if (!vosToExport.isEmpty()) {
-			
+
 			String xmlExportFileName = String.format("%s.xml", voClass.getName());
 			File xmlExportFile = new File(exportDir, xmlExportFileName);
 			OutputStream outputStream = null;
-			
+
 			try {
-				
+
 				outputStream = new FileOutputStream(xmlExportFile);
 				this.xmlVOExporter.exportVOs(outputStream, vosToExport, new XmlVOExporter.BinaryFileWriteCallback() {
 					@Override
