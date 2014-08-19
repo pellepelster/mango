@@ -68,6 +68,9 @@ class XmlNameUtils {
 		entity.name.toFirstUpper() + "ReferenceList"
 	}
 	
+	//-------------------------------------------------------------------------
+	// xml vo mapper
+	//-------------------------------------------------------------------------
 	def xmlVOMapperName(Model model)  {
 		return model.name.toFirstUpper() + 'XmlVOMapper';		
 	}
@@ -83,4 +86,21 @@ class XmlNameUtils {
 	def xmlVOMapperFullQualifiedFileName(Model model) {
 		return xmlVOMapperFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
 	}
+	
+	//=========================================================================
+	// WSDL
+	//=========================================================================
+	def entityImportExportWSDLName(Entity entity)  {
+		return entity.name.toLowerCase;		
+	}
+	
+	def entityImportExportWSDLFullQualifiedFileName(Entity entity) {
+		return entityImportExportWSDLName(entity).replaceAll("\\.", "/")  + ".wsdl";
+	}
+	
+	def String entityImportExportWSDLNamespace(Entity entity) {
+		return xsdNamespaceUrl(ModelUtil.getRootModel(entity)) + "/" + entity.name.toLowerCase()
+	}
+	
+	
 }

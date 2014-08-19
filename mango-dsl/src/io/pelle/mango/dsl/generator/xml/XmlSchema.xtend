@@ -86,7 +86,7 @@ class XmlSchema {
 		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 		targetNamespace="«entity.xsdNamespace»"
 		«FOR referencedEntity : EntityQuery.createQuery(entity).getReferencedEntities()»
-		xmlns:«entity.xsdQualifier»="«entity.xsdNamespace»"
+		xmlns:«referencedEntity.xsdQualifier»="«referencedEntity.xsdNamespace»"
 		«ENDFOR»
 
 		«IF entity.extends != null»
