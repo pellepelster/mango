@@ -15,7 +15,8 @@ Bundle-ClassPath: .,
  lib/validation-api-1.0.0.GA.jar,
  lib/jsr305-2.0.3.jar,
  lib/commons-beanutils-core-1.8.3.jar,
- lib/commons-logging-1.1.1.jar
+ lib/commons-logging-1.1.1.jar,
+ lib/spring-ws-core-2.2.0.RELEASE.jar
 Bundle-Vendor: pelle.io
 Export-Package: com.google.common.annotations,
  com.google.common.base,
@@ -316,4 +317,5 @@ Export-Package: com.google.common.annotations,
  org.springframework.security.web.servletapi,
  org.springframework.security.web.session,
  org.springframework.security.web.util,
- org.springframework.security.web.util.matcher
+ org.springframework.security.web.util.matcher,
+ org.springframework.ws.server.endpoint.annotation

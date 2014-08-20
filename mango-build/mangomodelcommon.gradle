@@ -19,6 +19,10 @@ configurations {
 	generatedVOs
 	generatedXml
 	
+	compile.extendsFrom(generatedVOs)
+	compile.extendsFrom(generatedXml)
+	compile.extendsFrom(generatedEntities)
+	
 	archives.extendsFrom(generatedEntities)
 	archives.extendsFrom(generatedEntitiesSources)
 	archives.extendsFrom(generatedVOs)
