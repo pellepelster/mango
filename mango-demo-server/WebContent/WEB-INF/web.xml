@@ -22,7 +22,7 @@
             classpath:/MangoDemoBaseApplicationContext-gen.xml,
             classpath:/MangoBaseApplicationContext.xml,
             classpath:/MangoSpringServices-gen.xml
-			</param-value>
+		</param-value>
 	</context-param>
 
 	<listener>
@@ -58,7 +58,7 @@
 			<param-name>transformWsdlLocations</param-name>
 			<param-value>true</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
+		<load-on-startup>2</load-on-startup>
 	</servlet>
 	
 	<servlet-mapping>

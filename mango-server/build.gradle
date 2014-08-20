@@ -18,4 +18,5 @@ dependencies {
 	
 	compile group: 'com.codahale.metrics', name: 'metrics-servlets', version: '3.0.2'
 	
+	compile 'org.codehaus.woodstox:woodstox-core-lgpl:4.4.0'
 }

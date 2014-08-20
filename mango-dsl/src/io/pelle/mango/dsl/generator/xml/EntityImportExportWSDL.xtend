@@ -97,6 +97,8 @@ class EntityImportExportWSDL {
 	def entityImportExportWebserviceEndpoint(Entity entity) '''
 	package «entity.entityImportExportWebserviceEndpointPackage»;
 	
+	import io.pelle.mango.server.base.xml.IXmlVOImporter;	
+	
 	import javax.xml.parsers.DocumentBuilder;
 	import javax.xml.parsers.DocumentBuilderFactory;
 	import javax.xml.parsers.ParserConfigurationException;
@@ -114,36 +116,18 @@ class EntityImportExportWSDL {
 	
 		private static final String TARGET_NAMESPACE = "«entity.entityImportExportWSDLNamespace»";
 	
+		@org.springframework.beans.factory.annotation.Autowired
+		private IXmlVOImporter xmlVOImporter;
+		
 		@PayloadRoot(localPart = "«entity.xsdElementName»", namespace = TARGET_NAMESPACE)
-		public @ResponsePayload Element importEntity(@RequestPayload Element element1) throws ParserConfigurationException {
-			
-			System.out.println(element1.toString());
-	
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = dbf.newDocumentBuilder();
-			Document doc = builder.newDocument();
-	
-			// create the root element node
-			Element element = doc.createElement("root");
-			doc.appendChild(element);
-	
-			// create a comment node given the specified string
-			Comment comment = doc.createComment("This is a comment");
-			doc.insertBefore(comment, element);
-	
-			// add element after the first child of the root element
-			Element itemElement = doc.createElement("item");
-			element.appendChild(itemElement);
-	
-			// add an attribute to the node
-			itemElement.setAttribute("myattr", "attrvalue");
-	
-			// create text for the node
-			itemElement.insertBefore(doc.createTextNode("text"), itemElement.getLastChild());
-	
-			return element1;
+		public @ResponsePayload Element importEntity(@RequestPayload Element element) {
+			xmlVOImporter.importVOs(element);
+			return element;
 		}
-	
+		
+		public void setXmlVOImporter(IXmlVOImporter xmlVOImporter) {
+			this.xmlVOImporter = xmlVOImporter;
+		}
 	}	
 	'''
 	
