@@ -80,7 +80,7 @@ class XmlSchema {
 	</xsd:complexType>
 	'''
 
-	def xmlSchema(Entity entity) '''
+	def xmlSchema(Entity entity, boolean generateImports) '''
 		<xsd:schema
 		xmlns="«entity.xsdNamespace»"
 		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -95,9 +95,11 @@ class XmlSchema {
 		
 		elementFormDefault="unqualified">
 
-		«FOR referencedEntity : EntityQuery.createQuery(entity).getReferencedEntities()»
-		<xsd:import namespace="«referencedEntity.xsdNamespace»" schemaLocation="«referencedEntity.xsdSchemaLocation»"/>
-		«ENDFOR»
+		«IF generateImports»
+			«FOR referencedEntity : EntityQuery.createQuery(entity).getReferencedEntities()»
+			<xsd:import namespace="«referencedEntity.xsdNamespace»" schemaLocation="«referencedEntity.xsdSchemaLocation»"/>
+			«ENDFOR»
+		«ENDIF»
 		
 		«IF entity.extends != null»
 		<xsd:import namespace="«entity.extends.xsdNamespace»" schemaLocation="«entity.extends.xsdSchemaLocation»"/>

@@ -54,7 +54,7 @@ class ServerGenerator implements IGenerator {
 		}
 		
 		for (entity: resource.allContents.toIterable.filter(Entity)) {
-			fsa.generateFile(entity.xsdFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT, entity.xmlSchema)
+			fsa.generateFile(entity.xsdFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT, entity.xmlSchema(true))
 			fsa.generateFile(entity.entityImportExportWSDLFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT, entity.entityImportExportWSDL)
 		}
 		

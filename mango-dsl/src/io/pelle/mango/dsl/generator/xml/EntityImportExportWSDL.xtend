@@ -20,6 +20,7 @@ class EntityImportExportWSDL {
 	   xmlns="http://schemas.xmlsoap.org/wsdl/"
 	   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 	   xmlns:tns="«entity.entityImportExportWSDLNamespace»"
+	   «entity.xmlEntityNamespaces(new ArrayList)»
 	   xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 	 
 		<types>
@@ -58,7 +59,7 @@ class EntityImportExportWSDL {
 			<documentation>WSDL File for HelloService</documentation>
 			<port binding="tns:ImportEntityBinding" name="ImportEntityPortType">
 				<soap:address
-				location="/ImportEntityService">
+				location="/ImportEntityService" />
 			</port>
 		</service>
 		
@@ -66,7 +67,7 @@ class EntityImportExportWSDL {
 	'''
 
 	def xmlSchemas(Entity entity, List<Entity> visitedEntities) '''
-		«entity.xmlSchema»
+		«entity.xmlSchema(false)»
 		<!-- «visitedEntities.add(entity)» -->
 		«FOR referencedEntity : EntityQuery.createQuery(entity).referencedEntities»
 			«IF !visitedEntities.contains(referencedEntity)»
@@ -75,4 +76,15 @@ class EntityImportExportWSDL {
 			«ENDIF»
 		«ENDFOR»
 	'''
+	
+	def xmlEntityNamespaces(Entity entity, List<Entity> visitedEntities) '''
+	   xmlns:«entity.xsdQualifier»="«entity.xsdNamespace»"
+		«IF visitedEntities.add(entity)»«ENDIF»
+		«FOR referencedEntity : EntityQuery.createQuery(entity).referencedEntities»
+			«IF !visitedEntities.contains(referencedEntity)»
+				«xmlEntityNamespaces(referencedEntity, visitedEntities)»
+			«ENDIF»
+		«ENDFOR»
+	'''
+	
 }
