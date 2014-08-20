@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-project activeEnvironment="Default" name="mango-demo-server" resourceRoot="" soapui-version="5.0.0" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Entity1ImportBinding" type="wsdl" bindingName="{http://mangodemo/entity1}Entity1ImportBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/webservices/entity1ImportExportWebService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/webservices/entity1ImportExportWebService.wsdl"><con:part><con:url>http://localhost:9090/webservices/entity1ImportExportWebService.wsdl</con:url><con:content><![CDATA[<definitions name="Entity1ImportExport" targetNamespace="http://mangodemo/entity1" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:entity1="http://mangodemo/entity1" xmlns:entity2="http://mangodemo/entity2" xmlns:entity3="http://mangodemo/entity3" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://mangodemo/entity1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <types>
+    <xsd:schema elementFormDefault="unqualified" targetNamespace="http://mangodemo/entity1" xmlns="http://mangodemo/entity1">
+      <xsd:element name="Entity1List">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity1" type="Entity1Type"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="Entity1Type">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:integer"/>
+          <xsd:element name="stringDatatype1" type="xsd:string"/>
+          <xsd:element name="booleanDatatype1" type="xsd:boolean"/>
+          <xsd:element name="stringDatatype1List" type="xsd:string"/>
+          <xsd:element name="entity2Datatype" type="entity2:Entity2ReferenceType"/>
+          <xsd:element name="enumeration1Datatype">
+            <xsd:complexType>
+              <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+                <xsd:element name="KeyValue">
+                  <xsd:complexType>
+                    <xsd:simpleContent>
+                      <xsd:extension base="xsd:string">
+                        <xsd:attribute name="key" type="xsd:string"/>
+                        <xsd:attribute name="value" type="xsd:string"/>
+                      </xsd:extension>
+                    </xsd:simpleContent>
+                  </xsd:complexType>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Entity1ReferenceList">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity1Reference" type="Entity1ReferenceType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Entity1ReferenceType">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:integer"/>
+          <xsd:element name="stringDatatype1" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema elementFormDefault="unqualified" targetNamespace="http://mangodemo/entity2" xmlns="http://mangodemo/entity2">
+      <xsd:element name="Entity2List">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity2" type="Entity2Type"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="Entity2Type">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:integer"/>
+          <xsd:element name="stringDatatype2" type="xsd:string"/>
+          <xsd:element name="entity3Datatypes" type="entity3:Entity3ReferenceList"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Entity2ReferenceList">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity2Reference" type="Entity2ReferenceType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Entity2ReferenceType">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:integer"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+    <xsd:schema elementFormDefault="unqualified" targetNamespace="http://mangodemo/entity3" xmlns="http://mangodemo/entity3">
+      <xsd:element name="Entity3List">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity3" type="Entity3Type"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="Entity3Type">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:integer"/>
+          <xsd:element name="stringDatatype3" type="xsd:string"/>
+          <xsd:element name="binaryDatatype1" type="xsd:hexBinary"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Entity3ReferenceList">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity3Reference" type="Entity3ReferenceType"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="Entity3ReferenceType">
+        <xsd:sequence>
+          <xsd:element name="id" type="xsd:integer"/>
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </types>
+  <message name="Entity1ImportRequest">
+    <part name="entity" type="entity1:Entity1List"/>
+  </message>
+  <message name="Entity1ImportResponse">
+    <part name="result" type="xsd:string"/>
+  </message>
+  <portType name="Entity1ImportPortType">
+    <operation name="ImportEntity">
+      <input message="tns:Entity1ImportRequest"/>
+      <output message="tns:Entity1ImportResponse"/>
+    </operation>
+  </portType>
+  <binding name="Entity1ImportBinding" type="tns:Entity1ImportPortType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="ImportEntity">
+      <soap:operation soapAction="ImportEntity"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+  <service name="Entity1ImportService">
+    <documentation>WSDL for Entity1 import/export</documentation>
+    <port binding="tns:Entity1ImportBinding" name="Entity1ImportPortType">
+      <soap:address location="webservices/Entity1ImportService"/>
+    </port>
+  </service>
+</definitions>]]></con:content><con:type>http://schemas.xmlsoap.org/wsdl/</con:type></con:part></con:definitionCache><con:endpoints><con:endpoint>webservices/Entity1ImportService</con:endpoint></con:endpoints><con:operation isOneWay="false" action="ImportEntity" name="ImportEntity" bindingOperationName="ImportEntity" type="Request-Response" inputName="" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:9090/webservices/ImportEntity</con:endpoint><con:request><![CDATA[<soapenv:Envelope 
+xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+xmlns:entity1="http://mangodemo/entity1">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <entity1:Etity/>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="ImportEntity"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>

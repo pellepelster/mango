@@ -3,6 +3,13 @@ apply from: '../mango-build/mangocommon.gradle'
 buildscript {
 
 	repositories {
+	
+		ivy {
+			name "localDevelopmentRepository"
+			url System.properties['user.home'] + "/.gradle/mango_development"
+			layout "maven"
+		}
+		
 		mavenCentral()
 	}
 	

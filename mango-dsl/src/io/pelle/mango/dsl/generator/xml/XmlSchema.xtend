@@ -20,6 +20,68 @@ class XmlSchema {
 	@Inject
 	extension XmlNameUtils
 
+	def xmlSchema(Entity entity, boolean generateImports) '''
+	<xsd:schema
+	xmlns="«entity.xmlNamespace»"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="«entity.xmlNamespace»"
+	«entity.xmlEntityNamespaces»
+	«IF entity.extends != null»
+	xmlns:«entity.extends.xmlNamespacePrefix»="«entity.extends.xmlNamespace»"
+	«ENDIF»
+	elementFormDefault="unqualified">
+
+	«IF generateImports»
+		«FOR referencedEntity : EntityQuery.createQuery(entity).getReferencedEntities()»
+		<xsd:import namespace="«referencedEntity.xmlNamespace»" schemaLocation="«referencedEntity.xmlSchemaLocation»"/>
+		«ENDFOR»
+	«ENDIF»
+	
+	«IF entity.extends != null»
+	<xsd:import namespace="«entity.extends.xmlNamespace»" schemaLocation="«entity.extends.xmlSchemaLocation»"/>
+	«ENDIF»
+	
+	<xsd:element name="«entity.xsdElementListName»">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="«entity.xsdElementName»" type="«entity.xsdTypeName»" minOccurs="0" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="«entity.xsdTypeName»">
+		«IF entity.extends != null»
+		<xsd:complexContent>
+		<xsd:extension base="«entity.extends.xmlNamespacePrefix»:«entity.extends.xsdTypeName»">
+		«ENDIF»
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:integer"/>
+			«FOR attribute : entity.attributes»
+				«xsdAttribute(entity, attribute)»
+			«ENDFOR»
+		</xsd:sequence>
+		«IF entity.extends != null»
+		</xsd:extension>
+		</xsd:complexContent>
+		«ENDIF»
+	</xsd:complexType>
+
+	«entity.xsdElementReferenceListWrapper»
+
+	<xsd:complexType name="«entity.xsdTypeReferenceName»">
+		<xsd:sequence>
+			<xsd:element name="id" type="xsd:integer"/>
+			«FOR attribute : entity.attributes»
+				«IF entity.naturalKeyAttributes.contains(attribute)»
+					«xsdAttribute(entity, attribute)»
+				«ENDIF»
+			«ENDFOR»
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:schema>
+	'''
+
+
 	//- xsd types -------------------------------------------------------------
 	def dispatch xsdType (EntityAttribute entityAttribute) {
 		throw new RuntimeException("xsdType (type) '" + entityAttribute.toString() + "' not implemented")
@@ -36,10 +98,6 @@ class XmlSchema {
 	def dispatch xsdType(EntityEntityAttribute entityEntityAttribute) ''''''
 	def dispatch xsdType(EnumerationEntityAttribute enumerationEntityAttribute) ''''''
 
-	/**
- 	«DEFINE xsdType FOR SimpleType-»«IF this.type == SimpleTypes::string-»xsd:string«ENDIF-»«IF this.type == SimpleTypes::long-»xsd:integer«ENDIF-»«IF this.type == SimpleTypes::integer-»xsd:integer«ENDIF-»«IF this.type == SimpleTypes::bigdecimal-»xsd:decimal«ENDIF-»«IF this.type == SimpleTypes::boolean-»xsd:boolean«ENDIF-»«IF this.type == SimpleTypes::reference-»unsupported type«ENDIF-»«ENDDEFINE»
-	*/
-
 	//- xsd attributes ------------------------------------------------------------
 	def dispatch xsdAttribute(Entity entity, EntityAttribute attribute) '''
 	<xsd:element name="«attribute.name»" type="«attribute.xsdType»" />
@@ -47,9 +105,9 @@ class XmlSchema {
 	
 	def dispatch xsdAttribute(Entity entity, EntityEntityAttribute entityEntityAttribute) '''
 	«IF (entityEntityAttribute.cardinality == Cardinality::ONETOMANY || entityEntityAttribute.cardinality == Cardinality::MANYTOMANY)»
-		<xsd:element name="«entityEntityAttribute.name»" type="«IF EntityQuery.getEntity(entityEntityAttribute) != entity»«EntityQuery.getEntity(entityEntityAttribute).xsdQualifier»:«ENDIF»«EntityQuery.getEntity(entityEntityAttribute).xsdElementReferenceListWrapperName»" />
+		<xsd:element name="«entityEntityAttribute.name»" type="«IF EntityQuery.getEntity(entityEntityAttribute) != entity»«EntityQuery.getEntity(entityEntityAttribute).xmlNamespacePrefix»:«ENDIF»«EntityQuery.getEntity(entityEntityAttribute).xsdElementReferenceListWrapperName»" />
 		«ELSE»
-		<xsd:element name="«entityEntityAttribute.name»" type="«IF EntityQuery.getEntity(entityEntityAttribute) != entity»«EntityQuery.getEntity(entityEntityAttribute).xsdQualifier»:«ENDIF»«EntityQuery.getEntity(entityEntityAttribute).xsdTypeReferenceName»" />
+		<xsd:element name="«entityEntityAttribute.name»" type="«IF EntityQuery.getEntity(entityEntityAttribute) != entity»«EntityQuery.getEntity(entityEntityAttribute).xmlNamespacePrefix»:«ENDIF»«EntityQuery.getEntity(entityEntityAttribute).xsdTypeReferenceName»" />
 	«ENDIF»
 	'''
 	
@@ -79,95 +137,4 @@ class XmlSchema {
 			</xsd:sequence>
 	</xsd:complexType>
 	'''
-
-	def xmlSchema(Entity entity, boolean generateImports) '''
-		<xsd:schema
-		xmlns="«entity.xsdNamespace»"
-		xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-		targetNamespace="«entity.xsdNamespace»"
-		«FOR referencedEntity : EntityQuery.createQuery(entity).getReferencedEntities()»
-		xmlns:«referencedEntity.xsdQualifier»="«referencedEntity.xsdNamespace»"
-		«ENDFOR»
-
-		«IF entity.extends != null»
-		xmlns:«entity.extends.xsdQualifier»="«entity.extends.xsdNamespace»"
-		«ENDIF»
-		
-		elementFormDefault="unqualified">
-
-		«IF generateImports»
-			«FOR referencedEntity : EntityQuery.createQuery(entity).getReferencedEntities()»
-			<xsd:import namespace="«referencedEntity.xsdNamespace»" schemaLocation="«referencedEntity.xsdSchemaLocation»"/>
-			«ENDFOR»
-		«ENDIF»
-		
-		«IF entity.extends != null»
-		<xsd:import namespace="«entity.extends.xsdNamespace»" schemaLocation="«entity.extends.xsdSchemaLocation»"/>
-		«ENDIF»
-		
-		<xsd:element name="«entity.xsdElementListName»">
-			<xsd:complexType>
-				<xsd:sequence>
-					<xsd:element name="«entity.xsdElementName»" type="«entity.xsdTypeName»" minOccurs="0" maxOccurs="unbounded" />
-				</xsd:sequence>
-			</xsd:complexType>
-		</xsd:element>
-	
-		<xsd:complexType name="«entity.xsdTypeName»">
-			«IF entity.extends != null»
-			<xsd:complexContent>
-			<xsd:extension base="«entity.extends.xsdQualifier»:«entity.extends.xsdTypeName»">
-			«ENDIF»
-			<xsd:sequence>
-				<xsd:element name="id" type="xsd:integer"/>
-				«FOR attribute : entity.attributes»
-					«xsdAttribute(entity, attribute)»
-				«ENDFOR»
-			</xsd:sequence>
-			«IF entity.extends != null»
-			</xsd:extension>
-			</xsd:complexContent>
-			«ENDIF»
-		</xsd:complexType>
-
-
-	«entity.xsdElementReferenceListWrapper»
-	
-	<xsd:complexType name="«entity.xsdTypeReferenceName»">
-		<xsd:sequence>
-			<xsd:element name="id" type="xsd:integer"/>
-			«FOR attribute : entity.attributes»
-				«IF entity.naturalKeyAttributes.contains(attribute)»
-					«xsdAttribute(entity, attribute)»
-				«ENDIF»
-			«ENDFOR»
-			</xsd:sequence>
-		</xsd:complexType>
-	</xsd:schema>
-'''
-
-/**
-//- extra types ---------------------------------------------------------------
-«DEFINE extraTypes(Entity entity, EntityAttribute attribute) FOR Type-»
-«ENDDEFINE»
-«DEFINE extraTypes(Entity entity, EntityAttribute attribute) FOR EntityReferenceType-»
-«ENDDEFINE»
-«DEFINE xsdEnumeration(String name, List[String] enumerationValues) FOR Object-»
-<xsd:element name="«name»">
-<xsd:simpleType>
-<xsd:restriction base="xsd:string">
-«FOREACH enumerationValues AS enumaration»
-<xsd:enumeration value="«enumaration»" />
-«ENDFOREACH»
-</xsd:restriction>
-</xsd:simpleType>
-</xsd:element>
-«ENDDEFINE»
-* 
-* 
-* 	«FOR attribute : entity.attributes»
-		«EXPAND extraTypes(this, attribute) FOR attribute.type»
-	«ENDFOR»
-
- */
 }

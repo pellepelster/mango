@@ -11,7 +11,6 @@ import io.pelle.mango.db.util.BeanUtils;
 import io.pelle.mango.server.base.xml.XmlElementDescriptor;
 
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,36 +75,55 @@ public class XmlVOImporter extends BaseXmlVOHandler {
 	@Autowired
 	private IBaseEntityService baseEntityService;
 
+	private XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+
 	public void importVOs(InputStream inputStream, BinaryFileReadCallback binaryFileReadCallback) {
+		
 		try {
-			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+			
 			XMLEventReader eventReader = inputFactory.createXMLEventReader(inputStream);
+			
 			while (eventReader.hasNext()) {
+				
 				XMLEvent event = eventReader.nextEvent();
+				
 				if (event.isStartElement()) {
+					
 					StartElement voStartElement = event.asStartElement();
 					XmlElementDescriptor voStartElementDescriptor = this.voXmlMapper.getElementDescriptor(voStartElement.getName().getLocalPart());
+					
 					if (!voStartElementDescriptor.isList() && !voStartElementDescriptor.isReference()) {
+						
 						final IBaseVO vo = (IBaseVO) ConstructorUtils.invokeConstructor(voStartElementDescriptor.getVoClass(), new Object[0]);
+						
 						StartElement voAttributeStartElement = null;
 						IAttributeDescriptor<?> attributeDescriptor = null;
+						
 						// loop value object attributes
 						while (eventReader.hasNext() && !isEndElementFor(event, voStartElement)) {
+							
 							event = eventReader.nextEvent();
+							
 							if (attributeDescriptor != null) {
+								
 								if (isEndElementFor(event, voAttributeStartElement)) {
 									voAttributeStartElement = null;
 									attributeDescriptor = null;
 									continue;
 								}
+								
 								if (IBaseVO.class.isAssignableFrom(attributeDescriptor.getAttributeType())) {
+									
 									resolveVOReference(eventReader, event, (Class<IBaseVO>) attributeDescriptor.getAttributeType(),
-											new VOAttributeSetteCallback(vo, attributeDescriptor.getAttributeName()));
+											new VOAttributeSetteCallback(vo, attributeDescriptor.getAttributeName
+													()));
 								} else if (List.class.isAssignableFrom(attributeDescriptor.getAttributeType())) {
 									if (event.isStartElement()) {
 										StartElement listReferenceStartElement = event.asStartElement();
+										
 										XmlElementDescriptor listReferenceXmlElementDescriptor = this.voXmlMapper
 												.getElementDescriptor(listReferenceStartElement.getName().getLocalPart());
+										
 										resolveVOReference(eventReader, event, (Class<IBaseVO>) attributeDescriptor.getListAttributeType(),
 												new ListAdderCallback((List<IBaseVO>) vo.get(attributeDescriptor.getAttributeName())));
 									}
@@ -130,21 +148,14 @@ public class XmlVOImporter extends BaseXmlVOHandler {
 					}
 				}
 			}
-		} catch (XMLStreamException e) {
-			throw new RuntimeException(e);
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		} catch (InvocationTargetException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		} catch (NoSuchMethodException e) {
+		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	private void resolveVOReference(XMLEventReader eventReader, XMLEvent currentEvent, Class<IBaseVO> voClass, SimpleCallback<IBaseVO> callback)
 			throws XMLStreamException {
+		
 		if (currentEvent.isStartElement()) {
 			StartElement referenceStartElement = currentEvent.asStartElement();
 			XmlElementDescriptor referenceXmlElementDescriptor = this.voXmlMapper.getElementDescriptor(referenceStartElement.getName().getLocalPart());

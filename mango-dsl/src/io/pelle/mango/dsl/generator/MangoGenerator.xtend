@@ -11,6 +11,7 @@ import io.pelle.mango.dsl.mango.Model
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import io.pelle.mango.dsl.generator.xml.XmlGenerator
 
 class MangoGenerator implements IGenerator {
 
@@ -30,12 +31,16 @@ class MangoGenerator implements IGenerator {
 	extension ServerGenerator serverGenerator
 
 	@Inject 
+	extension XmlGenerator xmlGenerator
+
+	@Inject 
 	extension SpringGenerator
 
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 
 		clientGenerator.doGenerate(resource, fsa);
 		serverGenerator.doGenerate(resource, fsa);
+		xmlGenerator.doGenerate(resource, fsa);
 
 		for (entity : resource.allContents.toIterable.filter(Entity)) {
 			fsa.generateFile(entity.entityFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, entity.compileEntity)

@@ -68,7 +68,7 @@
 	
 	<servlet-mapping>
 		<servlet-name>mangodemo-webservices</servlet-name>
-		<url-pattern>/endpoints/*</url-pattern>
+		<url-pattern>/webservices/*</url-pattern>
 	</servlet-mapping>
 	 
 </web-app>

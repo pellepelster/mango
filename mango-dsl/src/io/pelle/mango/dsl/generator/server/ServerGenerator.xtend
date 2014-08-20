@@ -6,11 +6,8 @@ package io.pelle.mango.dsl.generator.server
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.server.service.GWTServices
 import io.pelle.mango.dsl.generator.server.service.SpringServices
-import io.pelle.mango.dsl.generator.xml.EntityImportExportWSDL
 import io.pelle.mango.dsl.generator.xml.XmlNameUtils
-import io.pelle.mango.dsl.generator.xml.XmlSchema
 import io.pelle.mango.dsl.generator.xml.XmlVOMapper
-import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 import javax.inject.Inject
@@ -22,12 +19,6 @@ class ServerGenerator implements IGenerator {
 
 	@Inject
 	extension GWTServices
-
-	@Inject
-	extension XmlSchema
-
-	@Inject
-	extension EntityImportExportWSDL
 
 	@Inject
 	extension XmlVOMapper
@@ -51,11 +42,6 @@ class ServerGenerator implements IGenerator {
 
 		for (service : resource.allContents.toIterable.filter(Service)) {
 			//fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, service.restServiceController)
-		}
-		
-		for (entity: resource.allContents.toIterable.filter(Entity)) {
-			fsa.generateFile(entity.xsdFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT, entity.xmlSchema(true))
-			fsa.generateFile(entity.entityImportExportWSDLFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT, entity.entityImportExportWSDL)
 		}
 		
 	}

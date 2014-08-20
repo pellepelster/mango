@@ -6,28 +6,51 @@ import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.Model
+import io.pelle.mango.dsl.query.EntityQuery
+import java.util.List
+import java.util.ArrayList
 
 class XmlNameUtils {
 	
 	@Inject
 	extension ServerNameUtils
 	
-	def String xsdNamespaceUrl(Model model) {
+	//=========================================================================
+	// namespace/schemas
+	//=========================================================================
+	def String xmlNamespaceUrl(Model model) {
 		return "http://" + model.name.toLowerCase()
 	}
 
-	def String xsdNamespace(Entity entity) {
-		return xsdNamespaceUrl(ModelUtil.getRootModel(entity)) + "/" + entity.name.toLowerCase()
+	def String xmlNamespace(Entity entity) {
+		return xmlNamespaceUrl(ModelUtil.getRootModel(entity)) + "/" + entity.name.toLowerCase()
 	}
-
-	def String xsdQualifier(Entity entity) {
+	
+	def String xmlNamespacePrefix(Entity entity) {
 		return entity.name.toLowerCase()
 	}
 
-	def xsdSchemaLocation(Entity entity) {
+	def xmlSchemaLocation(Entity entity) {
 		xsdFileName(entity);
 	}
 
+	def String xmlEntityNamespaces(Entity entity) {
+		xmlEntityNamespaces(entity, new ArrayList)
+	}
+
+	def String xmlEntityNamespaces(Entity entity, List<Entity> visitedEntities) '''
+		xmlns:«entity.xmlNamespacePrefix»="«entity.xmlNamespace»"
+		«IF visitedEntities.add(entity)»«ENDIF»
+		«FOR referencedEntity : EntityQuery.createQuery(entity).referencedEntities»
+			«IF !visitedEntities.contains(referencedEntity)»
+				«xmlEntityNamespaces(referencedEntity, visitedEntities)»
+			«ENDIF»
+		«ENDFOR»
+	'''
+	
+	//=========================================================================
+	// xsd
+	//=========================================================================
 	def xsdFullQualifiedFileName(Entity entity) {
 		return entity.xsdFileName
 	}
@@ -88,23 +111,64 @@ class XmlNameUtils {
 	}
 	
 	//=========================================================================
-	// WSDL
+	// webservice
 	//=========================================================================
+	
+	//-------------------------------------------------------------------------
+	// wsdl
+	//-------------------------------------------------------------------------
+	
 	def entityImportExportWSDLName(Entity entity)  {
-		return entity.name.toLowerCase;		
+		return entity.name.toLowerCase + "_import_export.wsdl";		
 	}
 	
 	def entityImportExportWSDLFullQualifiedFileName(Entity entity) {
-		return entityImportExportWSDLName(entity).replaceAll("\\.", "/")  + ".wsdl";
+		return entityImportExportWSDLName(entity);
 	}
 	
 	def String entityImportExportWSDLNamespace(Entity entity) {
-		return xsdNamespaceUrl(ModelUtil.getRootModel(entity)) + "/" + entity.name.toLowerCase()
+		return xmlNamespaceUrl(ModelUtil.getRootModel(entity)) + "/" + entity.name.toLowerCase()
 	}
 	
 
 	def entityImportExportWSDLSoapAction(Entity entity) {
-		return xsdNamespaceUrl(ModelUtil.getRootModel(entity)) + "/Import" + entity.name.toFirstUpper() + ".wsdl"
+		return xmlNamespaceUrl(ModelUtil.getRootModel(entity)) + "/Import" + entity.name.toFirstUpper() + ".wsdl"
+	}
+	
+	def entityImportExportWSDLBeanId(Entity entity) {
+		return entity.name.toFirstLower + "WsdlDefinition";
+	}
+
+	//-------------------------------------------------------------------------
+	// endpoint
+	//-------------------------------------------------------------------------
+	def entityImportExportWebserviceEndpointPackage(Entity entity) {
+		entity.packageName
+	}
+
+	def entityImportExportWebserviceEndpointName(Entity entity)  {
+		return entity.name.toFirstUpper() + 'WebserviceEndpoint';		
+	}
+
+	def entityImportExportWebserviceEndpointFullQualifiedName(Entity entity) {
+		return entity.entityImportExportWebserviceEndpointPackage + "." + entity.entityImportExportWebserviceEndpointName;
+	}
+	
+	def entityImportExportWebserviceEndpointFullQualifiedFileName(Entity entity)
+	{
+		return entity.entityImportExportWebserviceEndpointFullQualifiedName.replaceAll("\\.", "/")  + ".java";
+	}
+
+	def entityImportExportWebserviceEndpointBeanId(Entity entity) {
+		return entity.name.toFirstLower + "WebserviceEndpoint";
+	}
+	
+	//-------------------------------------------------------------------------
+	// application context
+	//-------------------------------------------------------------------------
+	def entityImportExportAppliationContextFullQualifiedFileName(Model model)
+	{
+		return model.name.toFirstUpper + "Webservices-gen.xml";
 	}
 	
 }

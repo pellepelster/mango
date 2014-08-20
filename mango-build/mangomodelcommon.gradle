@@ -13,6 +13,21 @@ xtext {
 	}
 }
 
+configurations {
+
+	generatedEntities
+	generatedVOs
+	generatedXml
+	
+	archives.extendsFrom(generatedEntities)
+	archives.extendsFrom(generatedEntitiesSources)
+	archives.extendsFrom(generatedVOs)
+	archives.extendsFrom(generatedVOsSources)
+	archives.extendsFrom(generatedXml)
+	archives.extendsFrom(generatedXmlSources)
+}
+
+
 dependencies {
 	
 	xtextTooling project(':mango-dsl')
@@ -24,15 +39,13 @@ dependencies {
 	project(':mango-dsl')
 	
 	testCompile project(path: ':mango-db', configuration: 'testArtifacts')
-}
+	
+	// webservices
+	generatedEntities group: "org.springframework.ws", name: "spring-xml", version: "2.2.0.RELEASE"
+	generatedEntities group: "org.springframework.ws", name: "spring-ws-core", version: "2.2.0.RELEASE"
+	generatedEntities group: "wsdl4j", name: "wsdl4j", version: "1.6.3"
+	generatedEntities group: "org.apache.ws.xmlschema", name: "xmlschema-core", version: "2.1.0"
 
-configurations {
-	archives.extendsFrom(generatedEntities)
-	archives.extendsFrom(generatedEntitiesSources)
-	archives.extendsFrom(generatedVOs)
-	archives.extendsFrom(generatedVOsSources)
-	archives.extendsFrom(generatedXml)
-	archives.extendsFrom(generatedXmlSources)
 }
 
 sourceSets {
@@ -59,6 +72,7 @@ sourceSets {
 		
 		compileClasspath += project.sourceSets.main.compileClasspath
 		compileClasspath += project.sourceSets.generatedVOs.output
+		compileClasspath += configurations.generatedEntities
 	}
 
 	generatedXml {

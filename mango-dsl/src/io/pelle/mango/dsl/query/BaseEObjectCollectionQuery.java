@@ -22,6 +22,7 @@ public class BaseEObjectCollectionQuery<T extends EObject>
 		this.eObjects = eObjects;
 	}
 
+	@Deprecated
 	public Collection<T> getList()
 	{
 		return this.eObjects;
