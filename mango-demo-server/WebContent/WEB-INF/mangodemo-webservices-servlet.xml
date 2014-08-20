@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+                                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+                                     http://www.springframework.org/schema/web-services  
+                                    http://www.springframework.org/schema/web-services/web-services-2.0.xsd  
+                                     http://www.springframework.org/schema/context  
+                                     http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+	<bean
+		class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter">
+		<property name="messageFactory">
+			<bean class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"></bean>
+		</property>
+	</bean>
+
+	<bean
+		class="org.springframework.ws.transport.http.WsdlDefinitionHandlerAdapter" />
+
+	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<props>
+				<prop key="*.wsdl">entity1ImportExportWebService</prop>
+			</props>
+		</property>
+		<property name="defaultHandler" ref="messageDispatcher" />
+	</bean>
+
+	<bean class="AccountServiceEndpoint" />
+
+	<bean id="messageDispatcher"
+		class="org.springframework.ws.soap.server.SoapMessageDispatcher" />
+
+	<bean id="entity1ImportExportWebService"
+		class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/entity1.wsdl" />
+	</bean>
+
+</beans>  

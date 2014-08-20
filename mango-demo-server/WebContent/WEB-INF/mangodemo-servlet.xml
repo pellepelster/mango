@@ -13,34 +13,4 @@
 
 	<import resource="classpath:/MangoGWTRemoteServices-gen.xml" />
 
-
-	<bean
-		class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter">
-		<property name="messageFactory">
-			<bean class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"></bean>
-		</property>
-	</bean>
-
-	<bean
-		class="org.springframework.ws.transport.http.WsdlDefinitionHandlerAdapter" />
-
-	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="mappings">
-			<props>
-				<prop key="*.wsdl">entity1ImportExportWebService</prop>
-			</props>
-		</property>
-		<property name="defaultHandler" ref="messageDispatcher" />
-	</bean>
-
-	<bean class="AccountServiceEndpoint" />
-
-	<bean id="messageDispatcher"
-		class="org.springframework.ws.soap.server.SoapMessageDispatcher" />
-
-	<bean id="entity1ImportExportWebService"
-		class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
-		<property name="wsdl" value="classpath:/entity1.wsdl" />
-	</bean>
-
 </beans>
