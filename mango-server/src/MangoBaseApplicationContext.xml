@@ -6,9 +6,14 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+	<import resource="classpath:/MangoBaseApplicationContext-gen.xml" />
+	<import resource="classpath:/MangoSpringServices-gen.xml" />
+
 	<bean class="io.pelle.mango.server.validator.NaturalKeyValidator" />
 
 	<bean class="io.pelle.mango.server.validator.LengthValidator" />
+    
+    <bean name="xmlVOImporter" class="io.pelle.mango.server.xml.XmlVOImporter" />
     
     <bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry"/>
     

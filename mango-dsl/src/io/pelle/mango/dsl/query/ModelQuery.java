@@ -147,10 +147,10 @@ public class ModelQuery {
 	}
 
 	public PackageDeclaration getPackageByName(String packageName) {
-		return getPackageByName(this.model, getRootPackages().getList(), packageName, false);
+		return getPackageByName(this.model, getRootPackages().getCollection(), packageName, false);
 	}
 
 	public PackageDeclaration getAndCreatePackageByName(String packageName) {
-		return getPackageByName(this.model, getRootPackages().getList(), packageName, true);
+		return getPackageByName(this.model, getRootPackages().getCollection(), packageName, true);
 	}
 }

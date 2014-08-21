@@ -47,9 +47,9 @@ public class XmlVOExporter extends BaseXmlVOHandler {
 
 	private XMLEventFactory eventFactory = XMLEventFactory.newFactory();
 
-	private XMLEvent END = this.eventFactory.createDTD("\n");
+	private XMLEvent END = this.eventFactory.createCharacters("\n");
 
-	private XMLEvent TAB = this.eventFactory.createDTD("\t");
+	private XMLEvent TAB = this.eventFactory.createCharacters("\t");
 
 	public <VOType extends IBaseVO> void exportVOs(OutputStream outputStream, List<VOType> vosToExport, BinaryFileWriteCallback binaryFileCallback) {
 		try {
@@ -117,8 +117,7 @@ public class XmlVOExporter extends BaseXmlVOHandler {
 								Attribute valueAttribute = this.eventFactory.createAttribute(VALUE_ATTRIBUTE_NAME, mapEntry.getValue().toString());
 								List<Attribute> attributeList = Arrays.asList(keyAttribute, valueAttribute);
 								List<String> namespaceList = Arrays.asList();
-								StartElement startElement = this.eventFactory.createStartElement("", "", KEY_VALUE_ELEMENT_NAME, attributeList.iterator(),
-										namespaceList.iterator());
+								StartElement startElement = this.eventFactory.createStartElement("", "", KEY_VALUE_ELEMENT_NAME, attributeList.iterator(), namespaceList.iterator());
 								eventWriter.add(startElement);
 								eventWriter.add(this.eventFactory.createEndElement("", "", KEY_VALUE_ELEMENT_NAME));
 								eventWriter.add(this.END);
@@ -164,8 +163,7 @@ public class XmlVOExporter extends BaseXmlVOHandler {
 		eventWriter.add(this.eventFactory.createStartElement("", "", referenceElementName));
 		eventWriter.add(this.END);
 
-		Iterator<? extends IAttributeDescriptor<?>> naturalKeyAttributeDescriptors = VOClassQuery.createQuery(vo.getClass()).attributesDescriptors()
-				.naturalKeys().iterator();
+		Iterator<? extends IAttributeDescriptor<?>> naturalKeyAttributeDescriptors = VOClassQuery.createQuery(vo.getClass()).attributesDescriptors().naturalKeys().iterator();
 
 		if (naturalKeyAttributeDescriptors.hasNext()) {
 			createAttributeNode(eventWriter, IBaseVO.FIELD_ID.getAttributeName(), vo.getOid(), indentation + 1);

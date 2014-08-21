@@ -27,6 +27,8 @@
 
     <context:component-scan base-package="io.pelle.mango.db" />
     
+   	<bean class="io.pelle.mango.db.util.EntityVOMapper" factory-method="getInstance" />	
+    
    	<tx:annotation-driven />
     
 </beans>

@@ -73,8 +73,6 @@ class SpringGenerator {
 		
 			<context:annotation-config/>
 		
-			<bean class="io.pelle.mango.db.util.EntityVOMapper" factory-method="getInstance" />	
-		
 		</beans>
 	'''
 

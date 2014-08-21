@@ -23,23 +23,8 @@ public class TypeQuery<T extends EObject> extends BaseEObjectCollectionQuery<T>
 
 	public <K extends EObject> Collection<K> filterByType(Class<K> clazz)
 	{
-		Collection<K> result = Collections2.transform(getList(), FunctionEObjectTypeSelect.getFunction(clazz));
+		Collection<K> result = Collections2.transform(getCollection(), FunctionEObjectTypeSelect.getFunction(clazz));
 		return Collections2.filter(result, Predicates.notNull());
 	}
-
-//	public <K extends EObject> Collection<K> getFeatures(EStructuralFeature eStructuralFeature, Class<K> attributeTypeClass)
-//	{
-//		return transform(eStructuralFeature, attributeTypeClass);
-//	}
-//
-//	public <K extends EObject> Collection<K> getFeatures(EReference eReference, Class<K> attributeTypeClass)
-//	{
-//		return transform(eReference, attributeTypeClass);
-//	}
-//
-//	public <K extends EObject> TypeQuery<K> getFeaturesQuery(EReference eReference, Class<K> attributeTypeClass)
-//	{
-//		return new TypeQuery<K>(transform(eReference, attributeTypeClass));
-//	}
 
 }

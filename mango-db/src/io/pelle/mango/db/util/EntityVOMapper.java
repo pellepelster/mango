@@ -73,7 +73,12 @@ public final class EntityVOMapper implements IEntityVOMapper {
 	}
 
 	public void setEntityVOMappers(List<IEntityVOMapper> entityVOMappers) {
-		this.entityVOMappers = entityVOMappers;
+
+		for (IEntityVOMapper entityVOMapper : entityVOMappers) {
+			if (this != entityVOMapper) {
+				this.entityVOMappers.add(entityVOMapper);
+			}
+		}
 	}
 
 	@Override

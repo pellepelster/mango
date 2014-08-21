@@ -134,6 +134,6 @@ xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
 xmlns:entity1="http://mangodemo/entity1">
    <soapenv:Header/>
    <soapenv:Body>
-      <entity1:Etity/>
+      <entity1:Entity1/>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="ImportEntity"/><con:wsrmConfig version="1.2"/></con:call></con:operation></con:interface><con:properties/><con:wssContainer/><con:oAuth2ProfileContainer/></con:soapui-project>

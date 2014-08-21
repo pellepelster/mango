@@ -6,8 +6,4 @@ public class VOQueryPredicates {
 		return new AttributeDescriptorAttributeTypePredicate(clazz);
 	}
 
-	public static AttributeDescriptorAnnotationPredicate attributeDescriptorAnnotationType(Class<?> annotationClass) {
-		return new AttributeDescriptorAnnotationPredicate(annotationClass);
-	}
-
 }

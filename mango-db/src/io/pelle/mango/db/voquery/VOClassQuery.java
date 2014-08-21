@@ -22,6 +22,5 @@ public class VOClassQuery {
 	public AttributesDescriptorQuery<?> attributesDescriptors() {
 		return AttributesDescriptorQuery.createQuery(voClass, BeanUtils.getAttributeDescriptors(voClass));
 	}
-	
 
 }

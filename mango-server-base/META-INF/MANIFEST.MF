@@ -7,4 +7,7 @@ Bundle-Vendor: pelle.io
 Require-Bundle: mango-base,
  mango-client-base,
  mango-libs
-Export-Package: io.pelle.mango.server.base
+Export-Package: io.pelle.mango.server.base,
+ io.pelle.mango.server.base.query,
+ io.pelle.mango.server.base.util,
+ io.pelle.mango.server.base.xml

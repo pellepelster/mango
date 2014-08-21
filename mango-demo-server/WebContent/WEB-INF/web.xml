@@ -63,11 +63,6 @@
 	
 	<servlet-mapping>
 		<servlet-name>mangodemo-webservices</servlet-name>
-		<url-pattern>*.wsdl</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>mangodemo-webservices</servlet-name>
 		<url-pattern>/webservices/*</url-pattern>
 	</servlet-mapping>
 	 

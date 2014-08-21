@@ -83,9 +83,11 @@ class EntityImportExportWSDL {
 
 		<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"/>
 
-		«FOR entity : ModelQuery.createQuery(model).allEntities.list»
+		«FOR entity : ModelQuery.createQuery(model).allEntities»
 			<!-- «entity» -->
-			<bean id="«entity.entityImportExportWebserviceEndpointBeanId»" class="«entity.entityImportExportWebserviceEndpointFullQualifiedName»" />
+			<bean id="«entity.entityImportExportWebserviceEndpointBeanId»" class="«entity.entityImportExportWebserviceEndpointFullQualifiedName»">
+				<property name="xmlVOImporter" ref="xmlVOImporter" />
+			</bean>
 			
 			<bean id="«entity.entityImportExportWSDLBeanId»" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
 				<property name="wsdl" value="classpath:/«entity.entityImportExportWSDLFullQualifiedFileName»" />
@@ -111,7 +113,7 @@ class EntityImportExportWSDL {
 	import org.w3c.dom.Document;
 	import org.w3c.dom.Element;
 	
-	@Endpoint
+	@org.springframework.ws.server.endpoint.annotation.Endpoint
 	public class «entity.entityImportExportWebserviceEndpointName» {
 	
 		private static final String TARGET_NAMESPACE = "«entity.entityImportExportWSDLNamespace»";

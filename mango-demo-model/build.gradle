@@ -4,5 +4,6 @@ dependencies {
 	
 	compile project(path: ':mango-model', configuration: 'generatedVOs')
 	compile project(path: ':mango-model', configuration: 'generatedEntities')
+	compile project(path: ':mango-server')
 	
 }

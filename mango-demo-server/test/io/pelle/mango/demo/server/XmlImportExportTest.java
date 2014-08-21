@@ -68,7 +68,7 @@ public class XmlImportExportTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testDomImport() throws Exception {
+	public void testDomImportEntity() throws Exception {
 
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = dbf.newDocumentBuilder();
@@ -82,10 +82,6 @@ public class XmlImportExportTest extends BaseDemoTest {
 		stringDatatype1Element.setTextContent("xxx");
 		entity1Element.appendChild(stringDatatype1Element);
 
-		// create text for the node
-		// itemElement.insertBefore(doc.createTextNode("text"),
-		// itemElement.getLastChild());
-
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
 		xmlVOImporter.importVOs(entity1Element, null);
@@ -94,6 +90,42 @@ public class XmlImportExportTest extends BaseDemoTest {
 		Assert.assertEquals(1, entity1VOs.size());
 
 		assertEquals("xxx", entity1VOs.get(0).getStringDatatype1());
+
+	}
+
+	@Test
+	public void testDomImportEntityList() throws Exception {
+
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = dbf.newDocumentBuilder();
+		Document doc = builder.newDocument();
+
+		Element entityElementList = doc.createElement("Entity1List");
+		doc.appendChild(entityElementList);
+
+		// entity 1		
+		Element entity1Element = doc.createElement("Entity1");
+		entityElementList.appendChild(entity1Element);
+		Element stringDatatype1Element = doc.createElement("stringDatatype1");
+		stringDatatype1Element.setTextContent("xxx");
+		entity1Element.appendChild(stringDatatype1Element);
+
+		// entity 2		
+		Element entity2Element = doc.createElement("Entity1");
+		entityElementList.appendChild(entity2Element);
+		Element stringDatatype2Element = doc.createElement("stringDatatype1");
+		stringDatatype2Element.setTextContent("yyy");
+		entity2Element.appendChild(stringDatatype2Element);
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		xmlVOImporter.importVOs(entityElementList, null);
+
+		List<Entity1VO> entity1VOs = this.baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
+		Assert.assertEquals(2, entity1VOs.size());
+
+		assertEquals("xxx", entity1VOs.get(0).getStringDatatype1());
+		assertEquals("yyy", entity1VOs.get(1).getStringDatatype1());
 
 	}
 

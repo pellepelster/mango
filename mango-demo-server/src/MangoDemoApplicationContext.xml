@@ -21,8 +21,7 @@
  	<bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
 	    <property name="attributes">
 	        <map>
-	            <!-- inject the following beans into the servlet
-	   context so the servlets can access them. -->
+	            <!-- inject the following beans into the servlet context so the servlets can access them. -->
 	            <entry key="com.codahale.metrics.servlets.MetricsServlet.registry">
 	                <ref bean="metricRegistry"/>
 	            </entry>
