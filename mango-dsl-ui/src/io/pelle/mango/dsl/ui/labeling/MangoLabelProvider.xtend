@@ -4,16 +4,37 @@
 package io.pelle.mango.dsl.ui.labeling
 
 import com.google.inject.Inject
+import io.pelle.mango.dsl.mango.Datatype
+import io.pelle.mango.dsl.mango.Dictionary
+import io.pelle.mango.dsl.mango.DictionaryAssignmentTable
+import io.pelle.mango.dsl.mango.DictionaryComposite
+import io.pelle.mango.dsl.mango.DictionaryControl
+import io.pelle.mango.dsl.mango.DictionaryEditableTable
+import io.pelle.mango.dsl.mango.DictionaryEditor
+import io.pelle.mango.dsl.mango.DictionaryFilter
+import io.pelle.mango.dsl.mango.DictionaryResult
+import io.pelle.mango.dsl.mango.DictionarySearch
+import io.pelle.mango.dsl.mango.Entity
+import io.pelle.mango.dsl.mango.EntityAttribute
+import io.pelle.mango.dsl.mango.NavigationNode
+import io.pelle.mango.dsl.mango.PackageDeclaration
+import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
+import org.eclipse.xtext.ui.IImageHelper
+import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
+import io.pelle.mango.dsl.query.ControlQuery
 
 /**
  * Provides labels for a EObjects.
  * 
  * see http://www.eclipse.org/Xtext/documentation.html#labelProvider
  */
-class MangoLabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider {
+class MangoLabelProvider extends DefaultEObjectLabelProvider {
 
 	@Inject
-	new(org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider delegate) {
+	IImageHelper imageHelper;
+
+	@Inject
+	new(AdapterFactoryLabelProvider delegate) {
 		super(delegate);
 	}
 
@@ -26,4 +47,85 @@ class MangoLabelProvider extends org.eclipse.xtext.ui.label.DefaultEObjectLabelP
 //	def image(Greeting ele) {
 //		'Greeting.gif'
 //	}
+
+	def image(PackageDeclaration element)
+	{
+		return this.imageHelper.getImage("packageDeclaration.png");
+	}
+
+	def image(Dictionary element)
+	{
+		return this.imageHelper.getImage("dictionary.png");
+	}
+
+	def image(DictionarySearch element)
+	{
+		return this.imageHelper.getImage("dictionarySearch.png");
+	}
+
+	def image(Entity element)
+	{
+		return this.imageHelper.getImage("entity.png");
+	}
+
+	def image(Datatype element)
+	{
+		return this.imageHelper.getImage("datatype.png");
+	}
+
+	def image(DictionaryComposite element)
+	{
+		return this.imageHelper.getImage("composite.png");
+	}
+
+	def image(DictionaryEditableTable element)
+	{
+		return this.imageHelper.getImage("dictionaryEditableTable.png");
+	}
+
+	def image(DictionaryAssignmentTable element)
+	{
+		return this.imageHelper.getImage("dictionaryAssignmentTable.png");
+	}
+
+	def image(EntityAttribute element)
+	{
+		return this.imageHelper.getImage("entityAttribute.png");
+	}
+
+	def image(DictionaryResult element)
+	{
+		return this.imageHelper.getImage("dictionaryResult.png");
+	}
+
+	def image(DictionaryFilter element)
+	{
+		return this.imageHelper.getImage("dictionaryFilter.png");
+	}
+
+	def image(DictionaryControl dictionaryControl)
+	{
+		val ref = ControlQuery.getRef(dictionaryControl);
+
+		if (ref == null)
+		{
+			return this.imageHelper.getImage("dictionaryControl.png");
+		}
+		else
+		{
+			return this.imageHelper.getImage("dictionaryControlRef.png");
+		}
+
+	}
+
+	def image(NavigationNode element)
+	{
+		return this.imageHelper.getImage("navigationNode.png");
+	}
+
+	def image(DictionaryEditor element)
+	{
+		return this.imageHelper.getImage("dictionaryEditor.png");
+	}
+
 }
