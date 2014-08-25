@@ -44,6 +44,8 @@ dependencies {
 	
 }
 
+ant.properties['JETTY_JDBC_URL'] = "jdbc:derby:" + System.getProperty("java.io.tmpdir") + "/mangodemo-db;create=true;" 
+
 jettyEclipse { 
 	jettyConfig = file('test/jetty-env.xml') 
 	httpPort = 9090

@@ -38,15 +38,4 @@ gwt {
 			files(project(':mango-client-gwt').sourceSets.main.allJava.srcDirs)
 }
 
-ext.gwtTestLibDir = new File('lib-gwt-test')
-
-task copyGwtTestLibs(type: Copy) {
-	gwtTestLibDir.mkdirs()
-	into gwtTestLibDir
-	from configurations.gwtTest
-}
-
-test.dependsOn(copyGwtTestLibs)
 test.dependsOn(project(':mango-demo-server').tasks.test)
-
-//superDevTask.dependsOn(JavaPlugin.COMPILE_JAVA_TASK_NAME, JavaPlugin.PROCESS_RESOURCES_TASK_NAME);

@@ -3,13 +3,25 @@
 <!-- <Configure class="org.eclipse.jetty.webapp.WebAppContext">  -->
 <Configure class="org.eclipse.jetty.server.Server">
 
+	<New id="jdbcUrl" class="java.lang.StringBuilder">
+	 	<Call name="append">
+	      <Arg>jdbc:derby:</Arg>
+	    </Call>
+	 	<Call name="append">
+			<Arg><Call class="java.lang.System" name="getProperty"><Arg>java.io.tmpdir</Arg></Call></Arg>
+	    </Call>
+	 	<Call name="append">
+	      <Arg>/mangodemo-db;create=true;</Arg>
+	    </Call>
+ 	</New>
+
 	<New id="jdbc/mangodemo" class="org.eclipse.jetty.plus.jndi.Resource">
 		<Arg></Arg>
 		<Arg>jdbc/mangodemo</Arg>
 		<Arg>
             <New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
                 <Set name="driverClassName">org.apache.derby.jdbc.EmbeddedDriver</Set>
-                <Set name="url">jdbc:derby:build/mangodemo-db;create=true;</Set>
+                <Set name="url"><Ref id="jdbcUrl"><Call name="toString" /></Ref></Set>
                 <Set name="username">mangodemo</Set>
                 <Set name="password">mangodemo</Set>
             </New>
