@@ -1,28 +1,17 @@
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+<!-- <Configure class="org.eclipse.jetty.webapp.WebAppContext">  -->
 <Configure class="org.eclipse.jetty.server.Server">
 
-	<New id="jdbcUrl" class="java.lang.StringBuilder">
-	 	<Call name="append">
-	      <Arg>jdbc:derby:</Arg>
-	    </Call>
-	 	<Call name="append">
-			<Arg><Call class="java.lang.System" name="getProperty"><Arg>java.io.tmpdir</Arg></Call></Arg>
-	    </Call>
-	 	<Call name="append">
-	      <Arg>/projectname;create=true;</Arg>
-	    </Call>
- 	</New>
- 	
 	<New id="jdbc/projectname" class="org.eclipse.jetty.plus.jndi.Resource">
 		<Arg>jdbc/projectname</Arg>
 		<Arg>
-            <New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
-                <Set name="driverClassName">org.apache.derby.jdbc.EmbeddedDriver</Set>
-                <Set name="url"><Ref id="jdbcUrl"><Call name="toString" /></Ref></Set>
-                <Set name="username"></Set>
-                <Set name="password"></Set>
-            </New>
+			<New class="org.apache.derby.jdbc.EmbeddedDataSource">
+				<Set name="DatabaseName">ProjectNameTestDB</Set>
+				<Set name="user"></Set>
+				<Set name="password"></Set>
+				<Set name="createDatabase">create</Set>
+			</New>
 		</Arg>
 	</New>
 
