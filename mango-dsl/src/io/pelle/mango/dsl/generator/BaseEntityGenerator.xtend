@@ -2,19 +2,12 @@ package io.pelle.mango.dsl.generator
 
 import com.google.inject.Inject
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
-import io.pelle.mango.dsl.emf.EmfModelQuery
-import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.Entity
-import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
-import io.pelle.mango.client.base.vo.AttributeDescriptor
 
 class BaseEntityGenerator {
-
-	@Inject
-	extension AttributeUtils
 
 	@Inject
 	extension NameUtils

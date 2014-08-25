@@ -5,11 +5,10 @@ import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Enumeration
+import io.pelle.mango.dsl.mango.EnumerationDataType
+import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.PackageDeclaration
-import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
-import io.pelle.mango.dsl.mango.EnumerationAttributeType
-import io.pelle.mango.dsl.mango.EnumerationDataType
 
 class ClientNameUtils extends NameUtils {
 	
@@ -50,11 +49,11 @@ class ClientNameUtils extends NameUtils {
 		return enumeration.name.toUpperCase;
 	}
 
-	def dispatch enumerationName(EnumerationEntityAttribute enumerationEntityAttribute) {
+	def dispatch String enumerationName(EnumerationEntityAttribute enumerationEntityAttribute) {
 		return enumerationEntityAttribute.type.enumerationName;
 	}
 
-	def dispatch enumerationName(EnumerationDataType enumerationDataType) {
+	def dispatch String enumerationName(EnumerationDataType enumerationDataType) {
 		return enumerationDataType.enumeration.enumerationName;
 	}
 

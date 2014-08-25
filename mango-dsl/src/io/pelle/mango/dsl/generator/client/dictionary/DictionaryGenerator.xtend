@@ -9,7 +9,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.editor.EditorModel
 import io.pelle.mango.client.base.modules.dictionary.model.search.FilterModel
 import io.pelle.mango.client.base.modules.dictionary.model.search.ResultModel
 import io.pelle.mango.client.base.modules.dictionary.model.search.SearchModel
-import io.pelle.mango.dsl.ModelUtil
+import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.mango.Dictionary
 import io.pelle.mango.dsl.mango.DictionaryEditor
@@ -18,7 +18,6 @@ import io.pelle.mango.dsl.mango.DictionaryResult
 import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.Model
 import org.eclipse.xtext.generator.IFileSystemAccess
-import io.pelle.mango.dsl.emf.EmfModelQuery
 
 class DictionaryGenerator {
 
@@ -190,9 +189,6 @@ class DictionaryGenerator {
 		}
 	}
 	'''	
-	def dispatch dictionaryConstant(DictionarySearch dictionarySearch) '''
-	public «dictionarySearch.dictionaryClassFullQualifiedName» «dictionarySearch.dictionaryConstantName» = new «dictionarySearch.dictionaryClassFullQualifiedName»(this);
-	'''
 
 	def dictionaryFilterGenerator(DictionaryFilter dictionaryFilter, IFileSystemAccess fsa)  {
 		fsa.generateFile(dictionaryFilter.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryFilter.dictionaryClass)

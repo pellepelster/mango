@@ -3,7 +3,6 @@ package io.pelle.mango.dsl.generator.client.dictionary
 import com.google.inject.Inject
 import io.pelle.mango.client.base.layout.IModuleUI
 import io.pelle.mango.client.base.modules.navigation.NavigationTreeElement
-import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.mango.Dictionary

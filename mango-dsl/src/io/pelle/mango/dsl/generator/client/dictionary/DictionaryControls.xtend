@@ -25,6 +25,7 @@ import io.pelle.mango.dsl.mango.DictionaryFileControl
 import io.pelle.mango.dsl.mango.DictionaryHierarchicalControl
 import io.pelle.mango.dsl.mango.DictionaryIntegerControl
 import io.pelle.mango.dsl.mango.DictionaryReferenceControl
+import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.DictionaryTextControl
 import io.pelle.mango.dsl.mango.Labels
 
@@ -49,17 +50,10 @@ class DictionaryControls {
 	def dispatch dictionaryConstant(DictionaryControl dictionaryControl) '''
 	public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryControlType»("«ModelUtil.getControlName(dictionaryControl)»", this);
 	'''
-
-/**	
-	def dictionaryControlTypeSetters(DictionaryControl dictionaryControl, Type type) {
-	}
-
-«DEFINE dictionaryControlTypeSetters(DictionaryControl dictionaryControl) FOR DatatypeType»
-	«IF this.type.baseDatatype.labels != null»
-		«EXPAND dictionaryControlLabelSetters(this.type.baseDatatype.labels) FOR dictionaryControl»
-	«ENDIF»
-«ENDDEFINE»
-	 */
+	
+	def dispatch dictionaryConstant(DictionarySearch dictionarySearch) '''
+	public «dictionarySearch.dictionaryClassFullQualifiedName» «dictionarySearch.dictionaryConstantName» = new «dictionarySearch.dictionaryClassFullQualifiedName»(this);
+	'''
 	
 	def dictionaryControlCommonSetters(DictionaryControl dictionaryControl) '''
 		«IF dictionaryControl.baseControl != null»
@@ -110,7 +104,7 @@ class DictionaryControls {
 	«TextControlModel.name»
 	'''
 
-	def dispatch dictionaryControlConstantSetters(DictionaryTextControl dictionaryControl) '''
+	def dispatch String dictionaryControlConstantSetters(DictionaryTextControl dictionaryControl) '''
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»
@@ -190,7 +184,7 @@ class DictionaryControls {
 	}
 	'''
 	
-	def dispatch dictionaryControlConstantSetters(DictionaryReferenceControl dictionaryControl) '''
+	def dispatch String dictionaryControlConstantSetters(DictionaryReferenceControl dictionaryControl) '''
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»
@@ -219,7 +213,7 @@ class DictionaryControls {
 	//-------------------------------------------------------------------------
 	// DictionaryControlGroup
 	//-------------------------------------------------------------------------
-	def dispatch dictionaryControlConstantSetters(DictionaryControlGroup dictionaryControl) '''
+	def dispatch String dictionaryControlConstantSetters(DictionaryControlGroup dictionaryControl) '''
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»
