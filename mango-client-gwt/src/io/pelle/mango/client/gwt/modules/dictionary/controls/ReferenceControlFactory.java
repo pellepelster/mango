@@ -30,82 +30,68 @@ import com.google.gwt.view.client.ListDataProvider;
  * @author pelle
  * 
  */
-public class ReferenceControlFactory<VOType extends IBaseVO> extends BaseControlFactory<IReferenceControlModel, ReferenceControl<VOType>>
-{
+public class ReferenceControlFactory<VOType extends IBaseVO> extends BaseControlFactory<IReferenceControlModel, ReferenceControl<VOType>> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(ReferenceControl<VOType> referenceControl, LAYOUT_TYPE layoutType)
-	{
-		switch (referenceControl.getModel().getControlType())
-		{
-			case DROPDOWN:
-				return new ReferenceDropdownControl(referenceControl);
-			default:
-				return new GwtReferenceTextControl(referenceControl);
+	public Widget createControl(ReferenceControl<VOType> referenceControl, LAYOUT_TYPE layoutType) {
+		switch (referenceControl.getModel().getControlType()) {
+		case DROPDOWN:
+			return new ReferenceDropdownControl<VOType>(referenceControl);
+		default:
+			return new GwtReferenceTextControl<VOType>(referenceControl);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControl)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
 		return baseControl instanceof ReferenceControl;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(final ReferenceControl<VOType> referenceControl, boolean editable,
-			final ListDataProvider<?> listDataProvider, final AbstractCellTable<?> abstractCellTable)
-	{
+	public Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(final ReferenceControl<VOType> referenceControl, boolean editable, final ListDataProvider<?> listDataProvider, final AbstractCellTable<?> abstractCellTable) {
 
 		Column<IBaseTable.ITableRow<IBaseVO>, VOType> column;
 
-		if (editable)
-		{
+		if (editable) {
 			final BaseCellControl<VOType> editTextCell;
 
-			switch (referenceControl.getModel().getControlType())
-			{
-				default:
-					editTextCell = new SuggestCellControl<VOType>(referenceControl.getModel(), new VOSuggestOracle(referenceControl.getModel()));
-					break;
+			switch (referenceControl.getModel().getControlType()) {
+			default:
+				editTextCell = new SuggestCellControl<VOType>(referenceControl.getModel(), new VOSuggestOracle<VOType>(referenceControl.getModel()));
+				break;
 			}
 
-			column = new Column<IBaseTable.ITableRow<IBaseVO>, VOType>(editTextCell)
-			{
+			column = new Column<IBaseTable.ITableRow<IBaseVO>, VOType>(editTextCell) {
 
+				@SuppressWarnings("unchecked")
 				@Override
-				public VOType getValue(IBaseTable.ITableRow<IBaseVO> tableRow)
-				{
+				public VOType getValue(IBaseTable.ITableRow<IBaseVO> tableRow) {
 					return (VOType) tableRow.getElement(referenceControl.getModel()).getValue();
 				}
 			};
 
-			FieldUpdater<IBaseTable.ITableRow<IBaseVO>, VOType> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<IBaseVO>, VOType>()
-			{
+			FieldUpdater<IBaseTable.ITableRow<IBaseVO>, VOType> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<IBaseVO>, VOType>() {
+				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<IBaseVO> tableRow, VOType value)
-				{
+				public void update(int index, IBaseTable.ITableRow<IBaseVO> tableRow, VOType value) {
 					tableRow.getElement(referenceControl.getModel()).setValue(value);
 				}
 			};
 			column.setFieldUpdater(fieldUpdater);
 
-		}
-		else
-		{
-			column = new Column<IBaseTable.ITableRow<IBaseVO>, VOType>(new ReferenceCell<VOType>(referenceControl.getModel()))
-			{
+		} else {
+			column = new Column<IBaseTable.ITableRow<IBaseVO>, VOType>(new ReferenceCell<VOType>(referenceControl.getModel())) {
+				@SuppressWarnings("unchecked")
 				@Override
-				public VOType getValue(IBaseTable.ITableRow<IBaseVO> tableRow)
-				{
+				public VOType getValue(IBaseTable.ITableRow<IBaseVO> tableRow) {
 					return (VOType) tableRow.getElement(referenceControl.getModel()).getValue();
 				}
 			};
 		}
 
 		return column;
-
 	}
 }

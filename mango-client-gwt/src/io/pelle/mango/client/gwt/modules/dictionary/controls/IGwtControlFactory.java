@@ -22,13 +22,12 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
-public interface IGwtControlFactory<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>>
-{
+public interface IGwtControlFactory<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>> {
 
-	Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(ControlType baseControl, boolean editable, ListDataProvider<?> listDataProvider,
-			AbstractCellTable<?> abstractCellTable);
+	Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(ControlType baseControl, boolean editable, ListDataProvider<?> listDataProvider, AbstractCellTable<?> abstractCellTable);
 
 	Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType);
 
 	boolean supports(BaseDictionaryControl<?, ?> baseControl);
+
 }

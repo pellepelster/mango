@@ -11,7 +11,6 @@
  */
 package io.pelle.mango.client.web.test.modules.dictionary;
 
-import io.pelle.mango.client.base.module.ModuleUtils;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
@@ -41,15 +40,12 @@ import io.pelle.mango.client.web.test.modules.dictionary.controls.TextControlTes
  * 
  */
 public abstract class BaseDictionaryModuleTestUI {
-	
-	private IBaseDictionaryModule baseDictionaryModule;
 
-	private final String uiModuleId;
+	private IBaseDictionaryModule baseDictionaryModule;
 
 	public BaseDictionaryModuleTestUI(IBaseDictionaryModule baseDictionaryModule, String uiModuleId) {
 		super();
 		this.baseDictionaryModule = baseDictionaryModule;
-		this.uiModuleId = uiModuleId;
 	}
 
 	public <ElementType extends IBaseControl<Value, ?>, Value extends Object> BaseControlTest<ElementType, Value> getBaseControlTestElement(BaseControlModel<ElementType> baseControlModel) {

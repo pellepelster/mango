@@ -3,7 +3,6 @@ package io.pelle.mango.client.gwt.modules.dictionary.container;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
-import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
@@ -24,7 +23,7 @@ public class VOSelectionPopup<VOType extends IBaseVO> extends BaseVOSelectionPop
 
 	private VOTable<VOType> voTable;
 
-	private static List<BaseDictionaryControl<?, ?>> baseControls;
+	private List<BaseDictionaryControl<?, ?>> baseControls;
 
 	private VOSelectionPopup(Class<VOType> voClass, String message, List<BaseDictionaryControl<?, ?>> baseControls, final SimpleCallback<VOType> voSelectHandler) {
 		super(message, voSelectHandler);
@@ -50,10 +49,6 @@ public class VOSelectionPopup<VOType extends IBaseVO> extends BaseVOSelectionPop
 				// voTable.setContent(DictionaryElementUtil.vos2TableRows(result));
 			}
 		});
-	}
-
-	public static <VOType extends IBaseVO> VOSelectionPopup<VOType> create(Class<VOType> voClass, String message, List<IBaseControlModel> baseControlModels, SimpleCallback<VOType> voSelectHandler) {
-		return new VOSelectionPopup<VOType>(voClass, message, baseControls, voSelectHandler);
 	}
 
 	public static <VOType extends IBaseVO> VOSelectionPopup<VOType> create(AssignmentTable<?> assignmentTable, SimpleCallback<VOType> voSelectHandler) {

@@ -7,4 +7,4 @@ Bundle-Vendor: pelle.io
 Export-Package: io.pelle.mango.base,
  io.pelle.mango.base.jpql
 Require-Bundle: mango-libs
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

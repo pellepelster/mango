@@ -24,7 +24,7 @@ import java.util.Map;
 @org.springframework.stereotype.Component
 public class «model.voMapperName» extends «BaseEntityVOMapper.name» implements «IEntityVOMapper.name» {
 				
-	@SuppressWarnings("serial")
+	@java.lang.SuppressWarnings("serial")
 	private Map<Class<?>, Class<?>> entityVOMapper = new HashMap<Class<?>, Class<?>>() {
 		{
 			«FOR entity : model.eAllContents.toIterable.filter(Entity)»
@@ -44,6 +44,4 @@ public class «model.voMapperName» extends «BaseEntityVOMapper.name» implemen
 
 }
 '''	
-
-
 }

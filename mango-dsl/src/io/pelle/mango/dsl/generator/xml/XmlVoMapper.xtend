@@ -33,7 +33,7 @@ class XmlVOMapper  {
 	public class «model.xmlVOMapperName» implements io.pelle.mango.server.base.xml.IXmlVOMapper
 	{
 		
-		@SuppressWarnings("unchecked")
+		@java.lang.SuppressWarnings("serial")
 		private Map<String, XmlElementDescriptor> elements = new HashMap<String, XmlElementDescriptor>()
 		{
 			private final long serialVersionUID = 1L;

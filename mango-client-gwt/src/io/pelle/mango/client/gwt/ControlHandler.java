@@ -13,6 +13,7 @@ package io.pelle.mango.client.gwt;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.BigDecimalControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.BooleanControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.DateControlFactory;
@@ -47,7 +48,7 @@ public class ControlHandler<ControlModelType extends IBaseControlModel, ControlT
 		controlFactories.add(new DateControlFactory());
 		controlFactories.add(new BooleanControlFactory());
 		controlFactories.add(new EnumerationControlFactory());
-		controlFactories.add(new ReferenceControlFactory());
+		controlFactories.add(new ReferenceControlFactory<IBaseVO>());
 		controlFactories.add(new BigDecimalControlFactory());
 		controlFactories.add(new HierarchicalControlFactory());
 		controlFactories.add(new FileControlFactory());

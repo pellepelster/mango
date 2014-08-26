@@ -47,4 +47,4 @@ Import-Package: org.apache.log4j,
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  lib/gwt-user-2.6.1.jar
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

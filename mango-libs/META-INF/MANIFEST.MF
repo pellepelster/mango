@@ -319,3 +319,4 @@ Export-Package: com.google.common.annotations,
  org.springframework.security.web.util,
  org.springframework.security.web.util.matcher,
  org.springframework.ws.server.endpoint.annotation
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

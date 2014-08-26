@@ -17,6 +17,7 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 
 	private List<BaseContainerElement<?>> children = new ArrayList<BaseContainerElement<?>>();
 
+	@SuppressWarnings("static-access")
 	public BaseContainerElement(ModelType baseContainer, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(baseContainer, parent);
 
