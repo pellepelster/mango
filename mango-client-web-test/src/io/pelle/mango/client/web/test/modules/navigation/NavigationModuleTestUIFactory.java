@@ -31,7 +31,7 @@ public class NavigationModuleTestUIFactory extends BaseModuleUIFactory<Object, N
 	}
 
 	@Override
-	public void getNewInstance(final String moduleUrl, final AsyncCallback<NavigationModuleTestUI> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI> previousModuleUI) {
+	public void getNewInstance(final String moduleUrl, final AsyncCallback<NavigationModuleTestUI> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI<?, ?>> previousModuleUI) {
 		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, ModuleNavigationModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
 			@Override
 			public void onSuccess(IModule result) {

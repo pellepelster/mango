@@ -4,6 +4,7 @@ import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.module.ModuleUtils;
 
 public abstract class BaseModuleUIFactory<ContainerType, ModuleType> implements IModuleUIFactory<ContainerType, ModuleType> {
+
 	private final String[] uiModuleIds;
 
 	public BaseModuleUIFactory(String[] uiModuleIds) {

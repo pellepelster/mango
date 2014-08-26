@@ -15,8 +15,8 @@ import io.pelle.mango.client.base.module.IModule;
 
 import java.util.List;
 
-public interface ITabFolderLayoutContainer extends IModuleUI
-{
+@SuppressWarnings("rawtypes")
+public interface ITabFolderLayoutContainer extends IModuleUI {
 
 	void addAcceptedModules(Class<? extends IModule> moduleClass);
 

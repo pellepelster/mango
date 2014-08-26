@@ -24,40 +24,34 @@ import java.util.Map;
 import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public class DictionaryEditorModuleFactory extends BaseModuleFactory
-{
+public class DictionaryEditorModuleFactory extends BaseModuleFactory {
 
 	@Override
-	public boolean supports(String moduleUrl)
-	{
+	public boolean supports(String moduleUrl) {
 		return ModuleUtils.urlContainsModuleId(moduleUrl, DictionaryEditorModule.MODULE_ID);
 	}
 
-	public static void openEditorForId(String dictionaryName, long voId)
-	{
+	public static void openEditorForId(String dictionaryName, long voId) {
 		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName, voId));
 	}
 
-	public static void openEditorForId(String dictionaryName, long voId, AsyncCallback<IDictionaryEditor<?>> callback)
-	{
+	public static void openEditorForId(String dictionaryName, long voId, AsyncCallback<IDictionaryEditor<?>> callback) {
 		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName, voId));
 	}
 
-	public static void openEditor(String dictionaryName)
-	{
-		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName), null, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>>absent());
+	@SuppressWarnings("rawtypes")
+	public static void openEditor(String dictionaryName) {
+		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName), null, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>> absent());
 	}
 
-	public static void openEditor(String dictionaryName, Map<String, Object> parameters)
-	{
+	public static void openEditor(String dictionaryName, Map<String, Object> parameters) {
 		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryName), parameters);
 	}
 
 	/** {@inheritDoc} */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
-	public void getNewInstance(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters)
-	{
+	public void getNewInstance(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
 		new DictionaryEditorModule(moduleUrl, moduleCallback, parameters);
 	}
 

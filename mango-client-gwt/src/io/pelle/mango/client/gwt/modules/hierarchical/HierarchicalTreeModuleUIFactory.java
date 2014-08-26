@@ -26,12 +26,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 
 public class HierarchicalTreeModuleUIFactory extends BaseModuleUIFactory<Panel, HierarchicalTreeModuleUI> {
+
 	public HierarchicalTreeModuleUIFactory() {
 		super(new String[] { HierarchicalTreeModule.UI_MODULE_ID });
 	}
 
 	@Override
-	public void getNewInstance(final String moduleUrl, final AsyncCallback<HierarchicalTreeModuleUI> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI> previousModuleUI) {
+	public void getNewInstance(final String moduleUrl, final AsyncCallback<HierarchicalTreeModuleUI> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI<?, ?>> previousModuleUI) {
 		ModuleHandler.getInstance().startModule(HierarchicalTreeModule.MODULE_LOCATOR, ModuleUtils.getUrlParameters(moduleUrl), new BaseErrorAsyncCallback<IModule>() {
 			@Override
 			public void onSuccess(IModule result) {

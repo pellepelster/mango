@@ -32,7 +32,7 @@ public class DictionaryEditorModuleTestUIFactory extends BaseModuleUIFactory<Obj
 	}
 
 	@Override
-	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionaryEditorModuleTestUI> moduleCallback, Map<String, Object> parameters, final Optional<IModuleUI> previousModuleUI) {
+	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionaryEditorModuleTestUI> moduleCallback, Map<String, Object> parameters, final Optional<IModuleUI<?, ?>> previousModuleUI) {
 		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, DictionaryEditorModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
 
 			@SuppressWarnings("unchecked")

@@ -19,7 +19,9 @@ import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface IModuleUIFactory<ContainerType, ModuleType> {
+
 	boolean supports(String moduleUrl);
 
-	void getNewInstance(String moduleUrl, AsyncCallback<ModuleType> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI> previousModuleUI);
+	void getNewInstance(String moduleUrl, AsyncCallback<ModuleType> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI<?, ?>> previousModuleUI);
+
 }

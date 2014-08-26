@@ -24,6 +24,7 @@ import java.util.Map;
 import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+@SuppressWarnings("rawtypes")
 public class DictionarySearchModuleTestUIFactory extends BaseModuleUIFactory<Object, DictionarySearchModuleTestUI> {
 
 	public DictionarySearchModuleTestUIFactory() {
@@ -31,9 +32,10 @@ public class DictionarySearchModuleTestUIFactory extends BaseModuleUIFactory<Obj
 	}
 
 	@Override
-	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionarySearchModuleTestUI> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI> previousModuleUI) {
+	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionarySearchModuleTestUI> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI<?, ?>> previousModuleUI) {
 		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, DictionarySearchModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onSuccess(IModule result) {
 				if (supports(moduleUrl, DictionarySearchModule.SEARCH_UI_MODULE_ID)) {

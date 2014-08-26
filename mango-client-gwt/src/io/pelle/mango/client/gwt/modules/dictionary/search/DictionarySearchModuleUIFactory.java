@@ -27,16 +27,17 @@ import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 
-@SuppressWarnings({ "rawtypes", "unchecked"} )
-public class DictionarySearchModuleUIFactory<VOType extends IBaseVO> extends BaseModuleUIFactory<Panel, IGwtModuleUI> {
+public class DictionarySearchModuleUIFactory<VOType extends IBaseVO> extends BaseModuleUIFactory<Panel, IGwtModuleUI<DictionarySearchModule<?>>> {
+
 	public DictionarySearchModuleUIFactory() {
 		super(new String[] { DictionarySearchModule.SEARCH_QUERY_RESULT_UI_MODULE_ID, DictionarySearchModule.SEARCH_QUERY_UI_MODULE_ID, DictionarySearchModule.SEARCH_UI_MODULE_ID });
 	}
 
 	@Override
-	public void getNewInstance(final String moduleUrl, final AsyncCallback<IGwtModuleUI> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI> previousModuleUI) {
+	public void getNewInstance(final String moduleUrl, final AsyncCallback<IGwtModuleUI<DictionarySearchModule<?>>> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI<?, ?>> previousModuleUI) {
 		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, DictionarySearchModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
 
+			@SuppressWarnings({ "rawtypes", "unchecked" })
 			@Override
 			public void onSuccess(IModule result) {
 

@@ -26,14 +26,15 @@ import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 
-public class NavigationModuleUIFactory extends BaseModuleUIFactory<Panel, IGwtModuleUI> {
+public class NavigationModuleUIFactory extends BaseModuleUIFactory<Panel, IGwtModuleUI<ModuleNavigationModule>> {
 
 	public NavigationModuleUIFactory() {
 		super(new String[] { ModuleNavigationModule.NAVIGATION_UI_MODULE_ID, ModuleNavigationModule.NAVIGATION_OVERVIEW_UI_MODULE_ID });
 	}
 
 	@Override
-	public void getNewInstance(final String moduleUrl, final AsyncCallback<IGwtModuleUI> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI> previousModuleUI) {
+	public void getNewInstance(final String moduleUrl, final AsyncCallback<IGwtModuleUI<ModuleNavigationModule>> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI<?, ?>> previousModuleUI) {
+
 		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, ModuleNavigationModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
 
 			@Override

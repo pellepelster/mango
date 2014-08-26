@@ -26,31 +26,23 @@ import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 
-public class DictionaryEditorModuleUIFactory<VOType extends IBaseVO> extends BaseModuleUIFactory<Panel, DictionaryEditorModuleUI<?>>
-{
+public class DictionaryEditorModuleUIFactory<VOType extends IBaseVO> extends BaseModuleUIFactory<Panel, DictionaryEditorModuleUI<?>> {
 
-	public DictionaryEditorModuleUIFactory()
-	{
+	public DictionaryEditorModuleUIFactory() {
 		super(new String[] { DictionaryEditorModule.EDITOR_UI_MODULE_ID });
 	}
 
 	@Override
-	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionaryEditorModuleUI<?>> moduleCallback, Map<String, Object> parameters,
-			final Optional<IModuleUI> previousModuleUI)
-	{
-		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, DictionaryEditorModule.MODULE_LOCATOR), parameters,
-				new BaseErrorAsyncCallback<IModule>()
-				{
+	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionaryEditorModuleUI<?>> moduleCallback, Map<String, Object> parameters, final Optional<IModuleUI<?, ?>> previousModuleUI) {
+		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, DictionaryEditorModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
 
-					@Override
-					public void onSuccess(IModule result)
-					{
-						if (supports(moduleUrl, DictionaryEditorModule.EDITOR_UI_MODULE_ID))
-						{
-							moduleCallback.onSuccess(new DictionaryEditorModuleUI((DictionaryEditorModule) result, (Optional<IModuleUI>) previousModuleUI));
-						}
-					}
-				});
+			@Override
+			public void onSuccess(IModule result) {
+				if (supports(moduleUrl, DictionaryEditorModule.EDITOR_UI_MODULE_ID)) {
+					moduleCallback.onSuccess(new DictionaryEditorModuleUI((DictionaryEditorModule<?>) result, (Optional<IModuleUI<?, ?>>) previousModuleUI));
+				}
+			}
+		});
 	}
 
 }
