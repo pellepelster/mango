@@ -64,6 +64,10 @@ class DictionaryNameUtils extends ClientNameUtils {
 	def dictionaryConstantName(Dictionary dictionary) {
 		dictionary.name.constantName
 	}
+	
+	def dispatch dictionaryConstant(Dictionary dictionary) '''
+	public static final «dictionary.dictionaryClassFullQualifiedName» «dictionary.dictionaryConstantName» = new «dictionary.dictionaryClassFullQualifiedName»();
+	'''
 
 	//-------------------------------------------------------------------------
 	// NavigationNode
@@ -117,6 +121,10 @@ class DictionaryNameUtils extends ClientNameUtils {
 	def dictionaryConstantName(DictionaryEditor dictionaryEditor) {
 		dictionaryEditor.name.constantName
 	}
+	
+	def dispatch dictionaryConstant(DictionaryEditor dictionaryEditor) '''
+	public «dictionaryEditor.dictionaryClassFullQualifiedName» «dictionaryEditor.dictionaryConstantName» = new «dictionaryEditor.dictionaryClassFullQualifiedName»(this);
+	'''
 
 	//-------------------------------------------------------------------------
 	// DictionarySearch
@@ -136,6 +144,10 @@ class DictionaryNameUtils extends ClientNameUtils {
 	def dictionaryConstantName(DictionarySearch dictionarySearch) {
 		dictionarySearch.name.constantName
 	}
+
+	def dispatch dictionaryConstant(DictionarySearch dictionarySearch) '''
+	public «dictionarySearch.dictionaryClassFullQualifiedName» «dictionarySearch.dictionaryConstantName» = new «dictionarySearch.dictionaryClassFullQualifiedName»(this);
+	'''
 	
 	//-------------------------------------------------------------------------
 	// DictionaryFilter
@@ -155,6 +167,10 @@ class DictionaryNameUtils extends ClientNameUtils {
 	def dictionaryConstantName(DictionaryFilter dictionaryFilter) {
 		dictionaryFilter.name.constantName
 	}
+
+	def dispatch dictionaryConstant(DictionaryFilter dictionaryFilter) '''
+	public «dictionaryFilter.dictionaryClassFullQualifiedName» «dictionaryFilter.dictionaryConstantName» = new «dictionaryFilter.dictionaryClassFullQualifiedName»(this);
+	'''
 	
 	//-------------------------------------------------------------------------
 	// DictionaryResult
@@ -175,6 +191,10 @@ class DictionaryNameUtils extends ClientNameUtils {
 		dictionaryResult.name.constantName
 	}
 	
+	def dispatch dictionaryConstant(DictionaryResult dictionaryResult) '''
+	public «dictionaryResult.dictionaryClassFullQualifiedName» «dictionaryResult.dictionaryConstantName» = new «dictionaryResult.dictionaryClassFullQualifiedName»(this);
+	'''
+
 	//-------------------------------------------------------------------------
 	// DictionaryControl
 	//-------------------------------------------------------------------------

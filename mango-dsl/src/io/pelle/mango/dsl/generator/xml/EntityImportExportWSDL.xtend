@@ -101,16 +101,9 @@ class EntityImportExportWSDL {
 	
 	import io.pelle.mango.server.base.xml.IXmlVOImporter;	
 	
-	import javax.xml.parsers.DocumentBuilder;
-	import javax.xml.parsers.DocumentBuilderFactory;
-	import javax.xml.parsers.ParserConfigurationException;
-	
-	import org.springframework.ws.server.endpoint.annotation.Endpoint;
 	import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 	import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 	import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-	import org.w3c.dom.Comment;
-	import org.w3c.dom.Document;
 	import org.w3c.dom.Element;
 	
 	@org.springframework.ws.server.endpoint.annotation.Endpoint

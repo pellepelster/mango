@@ -94,7 +94,6 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected Column<VOType, ?> getColumn(BaseDictionaryControl baseControl) {
 		return (Column<VOType, ?>) ControlHandler.getInstance().createColumn(baseControl, false, dataProvider, this);

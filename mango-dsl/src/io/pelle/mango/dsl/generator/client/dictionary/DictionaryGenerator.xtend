@@ -30,15 +30,6 @@ class DictionaryGenerator {
 	@Inject 
 	extension DictionaryContainerGenerator
 
-	def dispatch dictionaryConstant(DictionaryEditor dictionaryEditor) '''
-	public «dictionaryEditor.dictionaryClassFullQualifiedName» «dictionaryEditor.dictionaryConstantName» = new «dictionaryEditor.dictionaryClassFullQualifiedName»(this);
-	'''
-
-	def dispatch dictionaryConstant(Dictionary dictionary) '''
-	public static final «dictionary.dictionaryClassFullQualifiedName» «dictionary.dictionaryConstantName» = new «dictionary.dictionaryClassFullQualifiedName»();
-	'''
-
-
 	def dictionaryGenerator(Model model, IFileSystemAccess fsa) {
 
 		for (dictionary : model.eAllContents.toIterable.filter(Dictionary)) {
@@ -125,15 +116,6 @@ class DictionaryGenerator {
 	}
 	'''
 
-
-	def dispatch dictionaryConstant(DictionaryResult dictionaryResult) '''
-	public «dictionaryResult.dictionaryClassFullQualifiedName» «dictionaryResult.dictionaryConstantName» = new «dictionaryResult.dictionaryClassFullQualifiedName»(this);
-	'''
-
-	def dispatch dictionaryConstant(DictionaryFilter dictionaryFilter) '''
-	public «dictionaryFilter.dictionaryClassFullQualifiedName» «dictionaryFilter.dictionaryConstantName» = new «dictionaryFilter.dictionaryClassFullQualifiedName»(this);
-	'''
-	
 	def dictionaryClass(Dictionary dictionary) '''
 	
 	package «dictionary.packageName»;
@@ -143,7 +125,7 @@ class DictionaryGenerator {
 
 		// label controls
 		«FOR dictionaryControl : dictionary.labelcontrols»
-			«dictionaryControl.dictionaryConstant»
+			«dictionaryControl.dictionaryControlConstant»
 		«ENDFOR»
 
 		«IF dictionary.dictionaryeditor != null»
@@ -254,7 +236,7 @@ class DictionaryGenerator {
 	public class «dictionaryResult.dictionaryClassName» extends «ResultModel.name» {
 
 		«FOR dictionaryControl : dictionaryResult.resultcolumns»
-			«dictionaryControl.dictionaryConstant »
+			«dictionaryControl.dictionaryControlConstant »
 		«ENDFOR»		
 		
 		public «dictionaryResult.dictionaryClassName»(«BaseModel.name»<?> parent) {
