@@ -33,7 +33,7 @@ class DictionaryContainerGenerator {
 		«ENDFOR»
 	
 		«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
-			«dictionaryControl.dictionaryConstant»
+			«dictionaryControl.dictionaryControlConstant»
 		«ENDFOR»
 	'''
 
@@ -100,7 +100,7 @@ class DictionaryContainerGenerator {
 		public class «dictionaryContainer.dictionaryClassName» extends «EditableTableModel.name» {
 	
 			«FOR dictionaryControl : dictionaryContainer.columncontrols»
-				«dictionaryControl.dictionaryConstant»
+				«dictionaryControl.dictionaryControlConstant»
 			«ENDFOR»
 	
 			public «dictionaryContainer.dictionaryClassName»(«BaseModel.name»<?> parent) {

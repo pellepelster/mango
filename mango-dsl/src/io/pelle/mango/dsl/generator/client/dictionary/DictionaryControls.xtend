@@ -25,7 +25,6 @@ import io.pelle.mango.dsl.mango.DictionaryFileControl
 import io.pelle.mango.dsl.mango.DictionaryHierarchicalControl
 import io.pelle.mango.dsl.mango.DictionaryIntegerControl
 import io.pelle.mango.dsl.mango.DictionaryReferenceControl
-import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.DictionaryTextControl
 import io.pelle.mango.dsl.mango.Labels
 
@@ -45,16 +44,17 @@ class DictionaryControls {
 	def dispatch dictionaryControlType(DictionaryControl dictionaryControl) '''
 	«BaseControlModel.name»<«IBaseControl.name»>
 	'''
-	def dispatch dictionaryControlConstantSetters(DictionaryControl dictionaryControl) ''''''
 
-	def dispatch dictionaryConstant(DictionaryControl dictionaryControl) '''
+	def dispatch dictionaryControlConstant(DictionaryControl dictionaryControl) '''
 	public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryControlType»("«ModelUtil.getControlName(dictionaryControl)»", this);
 	'''
 	
-	def dispatch dictionaryConstant(DictionarySearch dictionarySearch) '''
-	public «dictionarySearch.dictionaryClassFullQualifiedName» «dictionarySearch.dictionaryConstantName» = new «dictionarySearch.dictionaryClassFullQualifiedName»(this);
+	def dispatch dictionaryControlConstant(DictionaryReferenceControl dictionaryControl) '''
+	public «dictionaryControl.dictionaryClassFullQualifiedName» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryClassFullQualifiedName»(this);
 	'''
-	
+
+	def dispatch dictionaryControlConstantSetters(DictionaryControl dictionaryControl) ''''''
+
 	def dictionaryControlCommonSetters(DictionaryControl dictionaryControl) '''
 		«IF dictionaryControl.baseControl != null»
 		
@@ -154,17 +154,13 @@ class DictionaryControls {
 	«ReferenceControlModel»<«ModelUtil.getEntityAttribute(dictionaryControl).type»>
 	'''
 	
-	def  dispatch dictionaryConstant(DictionaryReferenceControl dictionaryControl) '''
-	public «dictionaryControl.dictionaryClassFullQualifiedName» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryClassFullQualifiedName»(this);
-	'''
-
 	def dictionaryControlClass(DictionaryReferenceControl dictionaryControl) '''
 	package «dictionaryControl.packageName»;
 	
 	public class «dictionaryControl.dictionaryClassName» extends «dictionaryControl.dictionaryControlType» {
 
 		«FOR dictionaryLabelControl : dictionaryControl.labelcontrols»
-			«dictionaryLabelControl.dictionaryConstant»
+			«dictionaryLabelControl.dictionaryControlConstant»
 		«ENDFOR»
 
 		public «dictionaryControl.dictionaryClassName»(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {
