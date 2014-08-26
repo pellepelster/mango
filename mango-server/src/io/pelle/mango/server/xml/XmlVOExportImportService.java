@@ -118,6 +118,7 @@ public class XmlVOExportImportService {
 
 	public void importVOs(File importDir) {
 		IOFileFilter xmlFileFilter = FileFilterUtils.suffixFileFilter(XML_FILE_EXTENSION);
+		@SuppressWarnings("unchecked")
 		Collection<File> xmlFiles = FileUtils.listFiles(importDir, xmlFileFilter, null);
 		Map<Class<? extends IBaseVO>, List<File>> filesToImport = new HashMap<Class<? extends IBaseVO>, List<File>>();
 		for (File xmlFile : xmlFiles) {

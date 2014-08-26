@@ -12,6 +12,7 @@
 package io.pelle.mango.client.gwt;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.BigDecimalControlFactory;
@@ -34,10 +35,9 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
-@SuppressWarnings("unchecked")
-public class ControlHandler<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>> implements IGwtControlFactory<ControlModelType, ControlType> {
+public class ControlHandler {
 
-	private static ControlHandler<IBaseControlModel, BaseDictionaryControl<IBaseControlModel, ?>> instance;
+	private static ControlHandler instance;
 
 	private static List<IGwtControlFactory<?, ?>> controlFactories = new ArrayList<IGwtControlFactory<?, ?>>();
 
@@ -48,33 +48,30 @@ public class ControlHandler<ControlModelType extends IBaseControlModel, ControlT
 		controlFactories.add(new DateControlFactory());
 		controlFactories.add(new BooleanControlFactory());
 		controlFactories.add(new EnumerationControlFactory());
-		controlFactories.add(new ReferenceControlFactory<IBaseVO>());
+		controlFactories.add(new ReferenceControlFactory());
 		controlFactories.add(new BigDecimalControlFactory());
 		controlFactories.add(new HierarchicalControlFactory());
 		controlFactories.add(new FileControlFactory());
 	}
 
-	public static ControlHandler<IBaseControlModel, BaseDictionaryControl<IBaseControlModel, ?>> getInstance() {
+	public static ControlHandler getInstance() {
 		if (instance == null) {
-			instance = new ControlHandler<IBaseControlModel, BaseDictionaryControl<IBaseControlModel, ?>>();
+			instance = new ControlHandler();
 		}
 
 		return instance;
 	}
-
-	/** {@inheritDoc} */
-	@Override
-	public Column createColumn(ControlType baseControl, boolean editable, ListDataProvider<?> listDataProvider, AbstractCellTable<?> abstractCellTable) {
+	
+	public <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> Column<IBaseTable.ITableRow<VOType>, ?> createColumn(ControlType baseControl, boolean editable, ListDataProvider<IBaseTable.ITableRow<VOType>> listDataProvider, AbstractCellTable<IBaseTable.ITableRow<VOType>> abstractCellTable) {
 		return getControlFactory(baseControl).createColumn(baseControl, editable, listDataProvider, abstractCellTable);
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType) {
+	public <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType) {
 		return getControlFactory(baseControl).createControl(baseControl, layoutType);
 	}
 
-	private IGwtControlFactory<ControlModelType, ControlType> getControlFactory(BaseDictionaryControl<ControlModelType, ?> baseControl) {
+	@SuppressWarnings("unchecked")
+	private <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> IGwtControlFactory<ControlModelType, ControlType> getControlFactory(BaseDictionaryControl<ControlModelType, ?> baseControl) {
 
 		for (IGwtControlFactory<?, ?> controlFactory : controlFactories) {
 			if (controlFactory.supports(baseControl)) {
@@ -85,10 +82,5 @@ public class ControlHandler<ControlModelType extends IBaseControlModel, ControlT
 		throw new RuntimeException("unsupported control model '" + baseControl.getModel().getClass().getName() + "'");
 	}
 
-	/** {@inheritDoc} */
-	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
-		return true;
-	}
 
 }

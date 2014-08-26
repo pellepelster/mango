@@ -24,7 +24,7 @@ import com.google.gwt.view.client.ListDataProvider;
 
 public interface IGwtControlFactory<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>> {
 
-	Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(ControlType baseControl, boolean editable, ListDataProvider<?> listDataProvider, AbstractCellTable<?> abstractCellTable);
+	<VOType extends IBaseVO> Column<IBaseTable.ITableRow<VOType>, ?> createColumn(ControlType baseControl, boolean editable, ListDataProvider<IBaseTable.ITableRow<VOType>> listDataProvider, AbstractCellTable<IBaseTable.ITableRow<VOType>> abstractCellTable);
 
 	Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType);
 

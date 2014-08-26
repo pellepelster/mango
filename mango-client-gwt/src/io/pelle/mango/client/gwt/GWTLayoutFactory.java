@@ -50,18 +50,12 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 	private class PanelLayoutInfo {
 		
-		private final int size;
-
-		private final boolean supportsMultipleChildren;
-
 		private final Widget widget;
 
 		private List<IModuleUI<Panel, ?>> moduleUIs = new ArrayList<IModuleUI<Panel, ?>>();
 
 		public PanelLayoutInfo(int size, boolean supportsMultipleChildren, Widget widget) {
 			super();
-			this.size = size;
-			this.supportsMultipleChildren = supportsMultipleChildren;
 			this.widget = widget;
 		}
 
@@ -114,10 +108,6 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 			while (childrenIterator.hasNext()) {
 				panel.remove(childrenIterator.next());
 			}
-		}
-
-		public boolean isSupportsMultipleChildren() {
-			return supportsMultipleChildren;
 		}
 
 		public void removeModuleUI(IModuleUI<Panel, ?> moduleUI) {

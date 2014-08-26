@@ -95,15 +95,16 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 			}
 		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_SAVE_BUTTON_DEBUG_ID);
 
-		final Button refreshButton = actionBar.addSingleButton(MangoClientWeb.RESOURCES.editorRefresh(), MangoClientWeb.MESSAGES.editorRefresh(), new ClickHandler() {
-			/** {@inheritDoc} */
-			@Override
-			public void onClick(ClickEvent event) {
-				getModule().getDictionaryEditor().refresh();
-			}
+		final Button refreshButton = actionBar.addSingleButton(MangoClientWeb.RESOURCES.editorRefresh(), MangoClientWeb.MESSAGES.editorRefresh(),
+				new ClickHandler() {
+					/** {@inheritDoc} */
+					@Override
+					public void onClick(ClickEvent event) {
+						getModule().getDictionaryEditor().refresh();
+					}
 
-		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_REFRESH_BUTTON_DEBUG_ID);
-		// refreshButton.setEnabled(false);
+				}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_REFRESH_BUTTON_DEBUG_ID);
+		refreshButton.setEnabled(false);
 
 		for (final IButton button : getModule().getEditorButtons()) {
 			actionBar.addSingleButton(button);
@@ -140,7 +141,9 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	@Override
 	public boolean isInstanceOf(String moduleUrl) {
-		return super.isInstanceOf(moduleUrl) && Objects.equal(getModule().getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
+		return super.isInstanceOf(moduleUrl)
+				&& Objects.equal(getModule().getEditorDictionaryName(),
+						ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
 	}
 
 	/** {@inheritDoc} */

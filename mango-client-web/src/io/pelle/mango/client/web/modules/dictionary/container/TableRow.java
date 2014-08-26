@@ -24,6 +24,7 @@ public class TableRow<VOType extends IBaseVO, ModelType extends IBaseTableModel>
 
 	private final EditorVOWrapper<VOType> voWrapper;
 
+	@SuppressWarnings("static-access")
 	public TableRow(VOType vo, BaseTableElement<VOType, ModelType> parent)
 	{
 		super(parent.getModel(), parent);

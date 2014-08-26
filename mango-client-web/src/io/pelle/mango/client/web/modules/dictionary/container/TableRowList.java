@@ -47,12 +47,13 @@ public class TableRowList<VOType extends IBaseVO, ModelType extends IBaseTableMo
 		return super.remove(index);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean remove(Object element)
 	{
 		if (element instanceof IBaseTable.ITableRow)
 		{
-			IBaseTable.ITableRow tableRow = (IBaseTable.ITableRow) element;
+			IBaseTable.ITableRow<VOType> tableRow = (IBaseTable.ITableRow<VOType>) element;
 			this.wrappedVOList.remove(tableRow.getVO());
 		}
 
@@ -78,6 +79,7 @@ public class TableRowList<VOType extends IBaseVO, ModelType extends IBaseTableMo
 		throw new RuntimeException("not implemented");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean removeAll(Collection<?> elements)
 	{
@@ -86,7 +88,7 @@ public class TableRowList<VOType extends IBaseVO, ModelType extends IBaseTableMo
 		{
 			if (element instanceof IBaseTable.ITableRow)
 			{
-				IBaseTable.ITableRow<VOType> tableRow = (IBaseTable.ITableRow) element;
+				IBaseTable.ITableRow<VOType> tableRow = (IBaseTable.ITableRow<VOType>) element;
 				vosToRemove.add(tableRow.getVO());
 			}
 		}

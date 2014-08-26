@@ -78,7 +78,6 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 
 		boolean enterPressed = KeyUpEvent.getType().getName().equals(type) && keyCode == KeyCodes.KEY_ENTER;
 		boolean startEdit = ClickEvent.getType().getName().equals(type) || enterPressed;
-		boolean eventTargetIsDiv = false;
 		boolean eventTargetIsInput = false;
 
 		if (Element.is(event.getEventTarget()))
@@ -86,7 +85,6 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 			Element target = Element.as(event.getEventTarget());
 			GWT.log("target: " + target.getTagName() + "(" + target.getId() + "), eventType: " + type);
 
-			eventTargetIsDiv = "div".equals(target.getTagName().toLowerCase());
 			eventTargetIsInput = "input".equals(target.getTagName().toLowerCase());
 
 		}

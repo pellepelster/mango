@@ -13,6 +13,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.container;
 
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ControlHandler;
@@ -53,7 +54,7 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 	private final SimpleLayoutPanel simpleLayoutPanel = new SimpleLayoutPanel();
 
 	public GwtAssignmentTable(AssignmentTable<VOType> assignmentTable) {
-		super(assignmentTable);
+		super(assignmentTable, new BaseTableRowKeyProvider<VOType>());
 
 		this.assignmentTable = assignmentTable;
 		setWidth("100%");
@@ -76,14 +77,14 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 		createModelColumns();
 
 		TextHeader textHeader = new TextHeader("");
-		Column<IBaseTable.ITableRow<VOType>, Void> column = new Column<IBaseTable.ITableRow<VOType>, Void>(new ImageActionCell(MangoClientWeb.RESOURCES.delete(), new SimpleCallback<IBaseTable.ITableRow<VOType>>() {
-
-			@Override
-			public void onCallback(IBaseTable.ITableRow<VOType> vo) {
-				dataProvider.getList().remove(vo);
-				// fireValueChanges();
-			}
-		})) {
+		Column<IBaseTable.ITableRow<VOType>, Void> column = new Column<IBaseTable.ITableRow<VOType>, Void>(new ImageActionCell<VOType>(
+				MangoClientWeb.RESOURCES.delete(), new SimpleCallback<IBaseTable.ITableRow<VOType>>() {
+					@Override
+					public void onCallback(IBaseTable.ITableRow<VOType> vo) {
+						dataProvider.getList().remove(vo);
+						// fireValueChanges();
+					}
+				})) {
 			@Override
 			public Void getValue(IBaseTable.ITableRow<VOType> vo) {
 				return null;
@@ -95,8 +96,8 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 	}
 
 	@Override
-	protected Column<VOType, ?> getColumn(BaseDictionaryControl baseControl) {
-		return (Column<VOType, ?>) ControlHandler.getInstance().createColumn(baseControl, false, dataProvider, this);
+	protected Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl) {
+		return (Column<IBaseTable.ITableRow<VOType>, ?>) ControlHandler.getInstance().createColumn(baseControl, false, dataProvider, this);
 	}
 
 	/** {@inheritDoc} */

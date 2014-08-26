@@ -119,6 +119,7 @@ public class DictionarySearchModuleTestUIAsyncHelper<VOType extends IBaseVO> ext
 	public void getResultList(final BaseErrorAsyncCallback<List<ITableRow<VOType>>> resultListAsyncCallback) {
 		this.getAsyncTestItems().add(new AsyncTestItem() {
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public void run(AsyncCallback<Object> asyncCallback) {
 				resultListAsyncCallback.onSuccess(getAsyncTestItemResult().getDictionarySearch().getDictionaryResult().getRows());

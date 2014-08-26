@@ -45,11 +45,11 @@ public class ValidationMessage implements IValidationMessage, Serializable {
 	}
 
 	public ValidationMessage(SEVERITY severity, String code, String message, String humanMessage) {
-		this(severity, code, message, humanMessage, Collections.EMPTY_MAP);
+		this(severity, code, message, humanMessage, Collections.<String,Object>emptyMap());
 	}
 
 	public ValidationMessage(SEVERITY severity, String code, String message) {
-		this(severity, code, message, null, Collections.EMPTY_MAP);
+		this(severity, code, message, null, Collections.<String,Object>emptyMap());
 	}
 
 	public ValidationMessage(SEVERITY severity, String code, String message, String humanMessage, Map<String, Object> context) {

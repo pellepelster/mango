@@ -48,9 +48,10 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 	}
 
 	public void search() {
-		search(DummyAsyncCallback.dummyAsyncCallback());
+		search(DummyAsyncCallback.<List<IBaseTable.ITableRow<VOType>>>dummyAsyncCallback());
 	}
 
+	@SuppressWarnings("unchecked")
 	public void search(final AsyncCallback<List<IBaseTable.ITableRow<VOType>>> asyncCallback) {
 
 		SelectQuery<VOType> selectQuery = (SelectQuery<VOType>) SelectQuery.selectFrom(getModel().getVOClass());

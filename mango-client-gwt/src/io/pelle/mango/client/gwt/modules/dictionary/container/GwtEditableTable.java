@@ -12,6 +12,7 @@
 package io.pelle.mango.client.gwt.modules.dictionary.container;
 
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -113,7 +114,7 @@ public class GwtEditableTable<VOType extends IBaseVO> extends BaseTableDataGrid<
 			@Override
 			public void onClick(ClickEvent event)
 			{
-				editableTable.add(DummyAsyncCallback.dummyAsyncCallback());
+				editableTable.add(DummyAsyncCallback.<List<ITableRow<VOType>>>dummyAsyncCallback());
 			}
 		});
 		verticalPanel.add(addButton);

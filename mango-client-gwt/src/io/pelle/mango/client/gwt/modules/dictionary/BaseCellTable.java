@@ -35,11 +35,9 @@ import com.google.gwt.view.client.SingleSelectionModel;
 
 public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IBaseTable.ITableRow<VOType>>
 {
-	public static BaseTableRowKeyProvider KEYPROVIDER = new BaseTableRowKeyProvider();
-
 	private ListDataProvider<IBaseTable.ITableRow<VOType>> dataProvider = new ListDataProvider<IBaseTable.ITableRow<VOType>>();
 
-	private final SingleSelectionModel<IBaseTable.ITableRow<VOType>> selectionModel = new SingleSelectionModel<IBaseTable.ITableRow<VOType>>(KEYPROVIDER);
+	private SingleSelectionModel<IBaseTable.ITableRow<VOType>> selectionModel;
 
 	private List<BaseDictionaryControl<? extends IBaseControlModel, ?>> baseControls;
 
@@ -51,9 +49,10 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 
 	private BaseTableElement<VOType, ?> baseTableElement;
 	
-	public BaseCellTable(BaseTableElement<VOType, ?> baseTableElement)
+	public BaseCellTable(BaseTableElement<VOType, ?> baseTableElement, BaseTableRowKeyProvider<VOType> keyProvider)
 	{
-		super(KEYPROVIDER);
+		super(keyProvider);
+		selectionModel = new SingleSelectionModel<IBaseTable.ITableRow<VOType>>(keyProvider);
 		dataProvider.addDataDisplay(this);
 		this.baseTableElement = baseTableElement;
 		this.baseControls = baseTableElement.getControls();
@@ -64,7 +63,7 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : baseControls)
 		{
 			TextHeader textHeader = new TextHeader(DictionaryModelUtil.getColumnLabel(baseControl.getModel()));
-			Column column = getColumn(baseControl);
+			Column<IBaseTable.ITableRow<VOType>, ?> column = getColumn(baseControl);
 			setColumnWidth(column, WidthCalculationStrategy.getInstance().getControlColumnWidth(baseControl.getModel()), Unit.PX);
 
 			addColumn(column, textHeader);
@@ -100,6 +99,6 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 		return selectionModel.getSelectedObject();
 	}
 
-	protected abstract Column<VOType, ?> getColumn(BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl);
+	protected abstract Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl);
 
 }

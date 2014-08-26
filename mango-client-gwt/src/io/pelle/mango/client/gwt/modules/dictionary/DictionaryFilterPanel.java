@@ -28,11 +28,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class DictionaryFilterPanel<VOType extends IBaseVO> extends VerticalPanel {
 
-	private final DictionaryFilter<VOType> dictionaryFilter;
-
 	private final ColumnLayoutStrategy layoutStrategy = new ColumnLayoutStrategy(LAYOUT_TYPE.FILTER);
 
-	private Class<VOType> voClass;
 
 	/**
 	 * Constructor for {@link DictionaryFilterPanel}
@@ -41,8 +38,6 @@ public class DictionaryFilterPanel<VOType extends IBaseVO> extends VerticalPanel
 	 *            Model describing the filter
 	 */
 	public DictionaryFilterPanel(DictionaryFilter<VOType> dictionaryFilter, Class<VOType> voClass) {
-		this.dictionaryFilter = dictionaryFilter;
-		this.voClass = voClass;
 		layoutStrategy.createLayout(this, dictionaryFilter.getRootComposite());
 	}
 

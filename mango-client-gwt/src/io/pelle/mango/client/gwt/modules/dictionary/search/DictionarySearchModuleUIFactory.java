@@ -14,7 +14,6 @@ package io.pelle.mango.client.gwt.modules.dictionary.search;
 import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.module.IModule;
 import io.pelle.mango.client.base.module.ModuleUtils;
-import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.IGwtModuleUI;
 import io.pelle.mango.client.web.module.BaseModuleUIFactory;
 import io.pelle.mango.client.web.module.ModuleHandler;
@@ -27,7 +26,7 @@ import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Panel;
 
-public class DictionarySearchModuleUIFactory<VOType extends IBaseVO> extends BaseModuleUIFactory<Panel, IGwtModuleUI<DictionarySearchModule<?>>> {
+public class DictionarySearchModuleUIFactory extends BaseModuleUIFactory<Panel, IGwtModuleUI<DictionarySearchModule<?>>> {
 
 	public DictionarySearchModuleUIFactory() {
 		super(new String[] { DictionarySearchModule.SEARCH_QUERY_RESULT_UI_MODULE_ID, DictionarySearchModule.SEARCH_QUERY_UI_MODULE_ID, DictionarySearchModule.SEARCH_UI_MODULE_ID });

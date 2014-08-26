@@ -13,6 +13,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
@@ -30,16 +31,17 @@ import com.google.gwt.view.client.ListDataProvider;
  * @author pelle
  * 
  */
-public class ReferenceControlFactory<VOType extends IBaseVO> extends BaseControlFactory<IReferenceControlModel, ReferenceControl<VOType>> {
+public class ReferenceControlFactory extends BaseControlFactory<IReferenceControlModel, ReferenceControl<?>> {
 
 	/** {@inheritDoc} */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Widget createControl(ReferenceControl<VOType> referenceControl, LAYOUT_TYPE layoutType) {
+	public Widget createControl(ReferenceControl<?> referenceControl, LAYOUT_TYPE layoutType) {
 		switch (referenceControl.getModel().getControlType()) {
 		case DROPDOWN:
-			return new ReferenceDropdownControl<VOType>(referenceControl);
+			return new ReferenceDropdownControl(referenceControl);
 		default:
-			return new GwtReferenceTextControl<VOType>(referenceControl);
+			return new GwtReferenceTextControl(referenceControl);
 		}
 	}
 
@@ -49,11 +51,13 @@ public class ReferenceControlFactory<VOType extends IBaseVO> extends BaseControl
 		return baseControl instanceof ReferenceControl;
 	}
 
-	/** {@inheritDoc} */
+	
+	
 	@Override
-	public Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(final ReferenceControl<VOType> referenceControl, boolean editable, final ListDataProvider<?> listDataProvider, final AbstractCellTable<?> abstractCellTable) {
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final ReferenceControl<?> referenceControl, boolean editable,
+			ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
 
-		Column<IBaseTable.ITableRow<IBaseVO>, VOType> column;
+		Column<IBaseTable.ITableRow<VOType>, VOType> column;
 
 		if (editable) {
 			final BaseCellControl<VOType> editTextCell;
@@ -64,29 +68,29 @@ public class ReferenceControlFactory<VOType extends IBaseVO> extends BaseControl
 				break;
 			}
 
-			column = new Column<IBaseTable.ITableRow<IBaseVO>, VOType>(editTextCell) {
+			column = new Column<IBaseTable.ITableRow<VOType>, VOType>(editTextCell) {
 
 				@SuppressWarnings("unchecked")
 				@Override
-				public VOType getValue(IBaseTable.ITableRow<IBaseVO> tableRow) {
+				public VOType getValue(IBaseTable.ITableRow<VOType> tableRow) {
 					return (VOType) tableRow.getElement(referenceControl.getModel()).getValue();
 				}
 			};
 
-			FieldUpdater<IBaseTable.ITableRow<IBaseVO>, VOType> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<IBaseVO>, VOType>() {
+			FieldUpdater<IBaseTable.ITableRow<VOType>, VOType> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, VOType>() {
 				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<IBaseVO> tableRow, VOType value) {
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, VOType value) {
 					tableRow.getElement(referenceControl.getModel()).setValue(value);
 				}
 			};
 			column.setFieldUpdater(fieldUpdater);
 
 		} else {
-			column = new Column<IBaseTable.ITableRow<IBaseVO>, VOType>(new ReferenceCell<VOType>(referenceControl.getModel())) {
+			column = new Column<IBaseTable.ITableRow<VOType>, VOType>(new ReferenceCell<VOType>(referenceControl.getModel())) {
 				@SuppressWarnings("unchecked")
 				@Override
-				public VOType getValue(IBaseTable.ITableRow<IBaseVO> tableRow) {
+				public VOType getValue(IBaseTable.ITableRow<VOType> tableRow) {
 					return (VOType) tableRow.getElement(referenceControl.getModel()).getValue();
 				}
 			};
@@ -94,4 +98,5 @@ public class ReferenceControlFactory<VOType extends IBaseVO> extends BaseControl
 
 		return column;
 	}
+
 }

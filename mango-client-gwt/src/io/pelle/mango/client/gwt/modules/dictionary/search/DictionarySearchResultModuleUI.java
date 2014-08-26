@@ -25,11 +25,11 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 	
 	private static final String DICTIONARY_SEARCH_RESULT_PANEL_STYLE = "dictionarySearchResultPanel";
 
-	private static final String DICTIONARY_SEARCH_RESULT_ITEM_PANEL_STYLE = "dictionarySearchResultItemPanel";
-
-	private static final String DICTIONARY_SEARCH_RESULT_ITEM_TITLE_STYLE = "dictionarySearchResultItemTitle";
-
-	private static final String DICTIONARY_SEARCH_RESULT_ITEM_TEXT_STYLE = "dictionarySearchResultItemText";
+//	private static final String DICTIONARY_SEARCH_RESULT_ITEM_PANEL_STYLE = "dictionarySearchResultItemPanel";
+//
+//	private static final String DICTIONARY_SEARCH_RESULT_ITEM_TITLE_STYLE = "dictionarySearchResultItemTitle";
+//
+//	private static final String DICTIONARY_SEARCH_RESULT_ITEM_TEXT_STYLE = "dictionarySearchResultItemText";
 
 	private final VerticalPanel verticalPanel;
 
@@ -69,8 +69,6 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 
 	@Override
 	public void onUpdate() {
-		String queryString = getModule().getSearchText();
-
 		throw new RuntimeException("not implemented");
 		/*
 		 * getModule().search(queryString, new

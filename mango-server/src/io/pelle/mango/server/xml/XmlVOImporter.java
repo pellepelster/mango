@@ -139,7 +139,7 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 								if (event.isStartElement()) {
 									StartElement listReferenceStartElement = event.asStartElement();
 
-									XmlElementDescriptor listReferenceXmlElementDescriptor = this.voXmlMapper.getElementDescriptor(listReferenceStartElement.getName().getLocalPart());
+//									XmlElementDescriptor listReferenceXmlElementDescriptor = this.voXmlMapper.getElementDescriptor(listReferenceStartElement.getName().getLocalPart());
 
 									resolveVOReference(eventReader, event, (Class<IBaseVO>) attributeDescriptor.getListAttributeType(), new ListAdderCallback((List<IBaseVO>) vo.get(attributeDescriptor.getAttributeName())));
 								}

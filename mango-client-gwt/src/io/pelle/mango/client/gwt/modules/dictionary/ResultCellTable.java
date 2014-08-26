@@ -11,9 +11,11 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary;
 
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ControlHandler;
+import io.pelle.mango.client.gwt.modules.dictionary.container.BaseTableRowKeyProvider;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
 
@@ -24,15 +26,15 @@ public class ResultCellTable<VOType extends IBaseVO> extends BaseCellTable<VOTyp
 
 	public ResultCellTable(final DictionaryResult<VOType> dictionaryResult)
 	{
-		super(dictionaryResult);
+		super(dictionaryResult, new BaseTableRowKeyProvider<VOType>());
 		createModelColumns();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Column<VOType, ?> getColumn(BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl)
+	protected Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl)
 	{
-		return (Column<VOType, ?>) ControlHandler.getInstance().createColumn((BaseDictionaryControl<IBaseControlModel, ?>) baseControl, false, null, this);
+		return (Column<IBaseTable.ITableRow<VOType>, ?>) ControlHandler.getInstance().createColumn((BaseDictionaryControl<IBaseControlModel, ?>) baseControl, false, null, this);
 	}
 
 }

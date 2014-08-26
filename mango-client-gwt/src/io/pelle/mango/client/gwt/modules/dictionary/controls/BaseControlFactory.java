@@ -12,10 +12,9 @@
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
-import io.pelle.mango.client.gwt.modules.dictionary.controls.BaseCellControl.ViewData;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 
 import com.google.gwt.cell.client.FieldUpdater;
@@ -32,29 +31,28 @@ public abstract class BaseControlFactory<ControlModelType extends IBaseControlMo
 		IGwtControlFactory<ControlModelType, ControlType>
 {
 
-	@Override
-	public Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(final ControlType baseControl, boolean editable, final ListDataProvider<?> listDataProvider,
-			final AbstractCellTable<?> abstractCellTable)
-	{
 
-		Column<IBaseTable.ITableRow<IBaseVO>, String> column;
+	@Override
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(ControlType baseControl, boolean editable,
+			final ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
+		
+		Column<IBaseTable.ITableRow<VOType>, String> column;
 
 		if (editable)
 		{
 			final EditTextCellWithValidation editTextCell = new EditTextCellWithValidation(baseControl);
 
-			column = new TableRowColumn(baseControl.getModel(), editTextCell);
+			column = new TableRowColumn<VOType>(baseControl.getModel(), editTextCell);
 
-			FieldUpdater<IBaseTable.ITableRow<IBaseVO>, String> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<IBaseVO>, String>()
+			FieldUpdater<IBaseTable.ITableRow<VOType>, String> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, String>()
 			{
-				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<IBaseVO> tableRow, String value)
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, String value)
 				{
 
-					Object key = BaseCellTable.KEYPROVIDER.getKey(tableRow);
-
-					ViewData<String> viewData = (ViewData<String>) editTextCell.getViewData(key);
+//					Object key = BaseCellTable.KEYPROVIDER.getKey(tableRow);
+//
+//					ViewData<String> viewData = (ViewData<String>) editTextCell.getViewData(key);
 
 					// if (validationMessages != null &&
 					// ValidationUtils.hasError(validationMessages))
@@ -80,11 +78,10 @@ public abstract class BaseControlFactory<ControlModelType extends IBaseControlMo
 		}
 		else
 		{
-			column = new TableRowColumn(baseControl.getModel(), new TextCell());
+			column = new TableRowColumn<VOType>(baseControl.getModel(), new TextCell());
 		}
 
 		return column;
-
 	}
 
 }

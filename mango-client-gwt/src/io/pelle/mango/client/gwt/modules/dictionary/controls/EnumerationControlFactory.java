@@ -13,6 +13,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IEnumerationControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
@@ -51,30 +52,28 @@ public class EnumerationControlFactory extends BaseControlFactory<IEnumerationCo
 	}
 
 	@Override
-	public Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(final EnumerationControl enumerationControl, boolean editable,
-			ListDataProvider<?> listDataProvider, AbstractCellTable<?> abstractCellTable)
-	{
-
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final EnumerationControl enumerationControl, boolean editable,
+			ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
 		if (editable)
 		{
 			List<String> enumList = GwtEnumerationControl.getSortedEnumList(enumerationControl.getModel());
 			final SelectionCell selectionCell = new SelectionCell(enumList);
 
-			Column<IBaseTable.ITableRow<IBaseVO>, String> column = new Column<IBaseTable.ITableRow<IBaseVO>, String>(selectionCell)
+			Column<IBaseTable.ITableRow<VOType>, String> column = new Column<IBaseTable.ITableRow<VOType>, String>(selectionCell)
 			{
 
 				@Override
-				public String getValue(IBaseTable.ITableRow<IBaseVO> tableRow)
+				public String getValue(IBaseTable.ITableRow<VOType> tableRow)
 				{
 					return tableRow.getElement(enumerationControl.getModel()).format();
 				}
 			};
 
-			FieldUpdater<IBaseTable.ITableRow<IBaseVO>, String> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<IBaseVO>, String>()
+			FieldUpdater<IBaseTable.ITableRow<VOType>, String> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, String>()
 			{
 				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<IBaseVO> tableRow, String value)
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, String value)
 				{
 					tableRow.getElement(enumerationControl.getModel()).setValue(GwtEnumerationControl.getEnumForText(enumerationControl.getModel(), value));
 				}
@@ -88,5 +87,6 @@ public class EnumerationControlFactory extends BaseControlFactory<IEnumerationCo
 			return super.createColumn(enumerationControl, editable, listDataProvider, abstractCellTable);
 		}
 	}
+
 
 }

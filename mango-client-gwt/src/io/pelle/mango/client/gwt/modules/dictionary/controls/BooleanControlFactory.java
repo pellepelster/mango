@@ -13,6 +13,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBooleanControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
@@ -48,30 +49,30 @@ public class BooleanControlFactory extends BaseControlFactory<IBooleanControlMod
 		return baseControlModel instanceof BooleanControl;
 	}
 
+	
 	@Override
-	public Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(final BooleanControl booleanControl, boolean editable, ListDataProvider<?> listDataProvider,
-			AbstractCellTable<?> abstractCellTable)
-	{
-
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final BooleanControl booleanControl, boolean editable,
+			ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
+		
 		if (editable)
 		{
 			final CheckboxCell checkboxCell = new CheckboxCell();
 
-			Column<IBaseTable.ITableRow<IBaseVO>, Boolean> column = new Column<IBaseTable.ITableRow<IBaseVO>, Boolean>(checkboxCell)
+			Column<IBaseTable.ITableRow<VOType>, Boolean> column = new Column<IBaseTable.ITableRow<VOType>, Boolean>(checkboxCell)
 			{
 
 				@Override
-				public Boolean getValue(IBaseTable.ITableRow<IBaseVO> tableRow)
+				public Boolean getValue(IBaseTable.ITableRow<VOType> tableRow)
 				{
 					return (Boolean) tableRow.getElement(booleanControl.getModel()).getValue();
 				}
 			};
 
-			FieldUpdater<IBaseTable.ITableRow<IBaseVO>, Boolean> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<IBaseVO>, Boolean>()
+			FieldUpdater<IBaseTable.ITableRow<VOType>, Boolean> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, Boolean>()
 			{
 				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<IBaseVO> tableRow, Boolean value)
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, Boolean value)
 				{
 					tableRow.getElement(booleanControl.getModel()).setValue(value);
 				}
@@ -85,5 +86,6 @@ public class BooleanControlFactory extends BaseControlFactory<IBooleanControlMod
 			return super.createColumn(booleanControl, editable, listDataProvider, abstractCellTable);
 		}
 	}
+
 
 }

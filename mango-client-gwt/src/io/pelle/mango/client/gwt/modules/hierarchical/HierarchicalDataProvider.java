@@ -24,7 +24,6 @@ import java.util.Map;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
-import com.google.gwt.view.client.Range;
 
 public class HierarchicalDataProvider extends AsyncDataProvider<DictionaryHierarchicalNodeVO> {
 	private HierarchicalConfigurationVO hierarchicalConfiguration;
@@ -46,9 +45,6 @@ public class HierarchicalDataProvider extends AsyncDataProvider<DictionaryHierar
 
 	@Override
 	protected void onRangeChanged(HasData<DictionaryHierarchicalNodeVO> display) {
-		Range range = display.getVisibleRange();
-		int start = range.getStart();
-		int length = range.getLength();
 
 		Long parentId = null;
 		String parentClassname = null;

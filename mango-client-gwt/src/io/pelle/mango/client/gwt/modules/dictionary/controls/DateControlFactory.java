@@ -13,6 +13,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IDateControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
@@ -51,18 +52,17 @@ public class DateControlFactory extends BaseControlFactory<IDateControlModel, Da
 	}
 
 	@Override
-	public Column<IBaseTable.ITableRow<IBaseVO>, ?> createColumn(final DateControl dateControl, boolean editable, ListDataProvider<?> listDataProvider,
-			AbstractCellTable<?> abstractCellTable)
-	{
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final DateControl dateControl, boolean editable,
+			ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
 		if (editable)
 		{
 			final DatePickerCell datePickerCell = new DatePickerCell();
 
-			Column<IBaseTable.ITableRow<IBaseVO>, Date> column = new Column<IBaseTable.ITableRow<IBaseVO>, Date>(datePickerCell)
+			Column<IBaseTable.ITableRow<VOType>, Date> column = new Column<IBaseTable.ITableRow<VOType>, Date>(datePickerCell)
 			{
 
 				@Override
-				public Date getValue(IBaseTable.ITableRow<IBaseVO> tableRow)
+				public Date getValue(IBaseTable.ITableRow<VOType> tableRow)
 				{
 					Object date = tableRow.getElement(dateControl.getModel()).getValue();
 
@@ -77,11 +77,11 @@ public class DateControlFactory extends BaseControlFactory<IDateControlModel, Da
 				}
 			};
 
-			FieldUpdater<IBaseTable.ITableRow<IBaseVO>, Date> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<IBaseVO>, Date>()
+			FieldUpdater<IBaseTable.ITableRow<VOType>, Date> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, Date>()
 			{
 				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<IBaseVO> tableRow, Date value)
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, Date value)
 				{
 					tableRow.getElement(dateControl.getModel()).setValue(value);
 				}
@@ -95,4 +95,5 @@ public class DateControlFactory extends BaseControlFactory<IDateControlModel, Da
 			return super.createColumn(dateControl, editable, listDataProvider, abstractCellTable);
 		}
 	}
+
 }

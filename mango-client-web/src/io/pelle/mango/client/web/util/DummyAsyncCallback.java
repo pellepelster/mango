@@ -21,7 +21,8 @@ public class DummyAsyncCallback<T> implements AsyncCallback<T>
 	{
 	}
 
-	public static DummyAsyncCallback dummyAsyncCallback()
+	@SuppressWarnings("unchecked")
+	public static <A> DummyAsyncCallback<A> dummyAsyncCallback()
 	{
 		return instance;
 	}
