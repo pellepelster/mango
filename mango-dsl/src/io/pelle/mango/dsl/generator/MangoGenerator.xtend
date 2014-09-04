@@ -43,14 +43,14 @@ class MangoGenerator implements IGenerator {
 		xmlGenerator.doGenerate(resource, fsa);
 
 		for (entity : resource.allContents.toIterable.filter(Entity)) {
-			fsa.generateFile(entity.entityFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, entity.compileEntity)
+			fsa.generateFile(entity.entityFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntity)
 		}
 
 		for (model : resource.allContents.toIterable.filter(Model)) {
-			fsa.generateFile(model.springDBApplicationContextFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.compileSpringDBApplicationContext)
-			fsa.generateFile(model.springPersistenceXMLFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.compilePersistenceXml)
-			fsa.generateFile(model.baseApplicationContextFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.compileBaseApplicationContext)
-			fsa.generateFile(model.voMapperFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.compileVOMapper)
+			fsa.generateFile(model.springDBApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compileSpringDBApplicationContext)
+			fsa.generateFile(model.springPersistenceXMLFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compilePersistenceXml)
+			fsa.generateFile(model.baseApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compileBaseApplicationContext)
+			fsa.generateFile(model.voMapperFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compileVOMapper)
 		}
 		
 	}

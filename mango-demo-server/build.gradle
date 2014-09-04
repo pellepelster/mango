@@ -26,8 +26,8 @@ jmeterRun.configure {
 
 dependencies {
 
-	compile project(path: ':mango-demo-model', configuration: 'generatedVOs')
-	compile project(path: ':mango-demo-model', configuration: 'generatedEntities')
+	compile project(path: ':mango-demo-model', configuration: 'generatedClientGWT')
+	compile project(path: ':mango-demo-model', configuration: 'generatedServer')
 	compile project(path: ':mango-demo-model', configuration: 'generatedXml')
 	compile project(path: ':mango-server')
 	

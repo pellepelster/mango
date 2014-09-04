@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+						http://www.springframework.org/schema/web-services  
+						http://www.springframework.org/schema/web-services/web-services-2.0.xsd  
+						http://www.springframework.org/schema/context  
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"/>
+
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@65ff2e73 (name: DictionaryLabelSearchIndex) -->
+	<bean id="dictionaryLabelSearchIndexWebserviceEndpoint" class="io.pelle.mango.server.DictionaryLabelSearchIndexWebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="dictionaryLabelSearchIndexWsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/dictionarylabelsearchindex_import_export.wsdl" />
+	</bean>
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@3a1e5f00 (name: DictionaryHierarchicalNode) -->
+	<bean id="dictionaryHierarchicalNodeWebserviceEndpoint" class="io.pelle.mango.server.DictionaryHierarchicalNodeWebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="dictionaryHierarchicalNodeWsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/dictionaryhierarchicalnode_import_export.wsdl" />
+	</bean>
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@1695d856 (name: File) -->
+	<bean id="fileWebserviceEndpoint" class="io.pelle.mango.server.FileWebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="fileWsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/file_import_export.wsdl" />
+	</bean>
+</beans>  

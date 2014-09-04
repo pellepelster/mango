@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="src-gen-entities"/>
-	<classpathentry kind="src" path="src-gen-vos"/>
+	<classpathentry kind="src" path="src-gen-client-gwt"/>
+	<classpathentry kind="src" path="src-gen-xml"/>
+	<classpathentry kind="src" path="src-gen-server"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry exported="true" kind="src" path="/mango-db"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/mango-model"/>

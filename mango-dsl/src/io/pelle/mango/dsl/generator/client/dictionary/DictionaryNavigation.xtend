@@ -20,10 +20,10 @@ class DictionaryNavigationGenerator {
 		if  (!model.eAllContents.toIterable.filter(typeof(NavigationNode)).empty) {
 			
 			for(navigationNode : model.eAllContents.toIterable.filter(typeof(NavigationNode))) {
-				fsa.generateFile(navigationNode.navigationNodeClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, navigationNode.dictionaryNavigationNodeClass)
+				fsa.generateFile(navigationNode.navigationNodeClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, navigationNode.dictionaryNavigationNodeClass)
 			}
 			
-			fsa.generateFile(model.navigationNodeClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, model.dictionaryNavigationRootNodeClass)
+			fsa.generateFile(model.navigationNodeClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.dictionaryNavigationRootNodeClass)
 		}
 	}
 

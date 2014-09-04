@@ -36,7 +36,7 @@ class DictionaryGenerator {
 			dictionary.dictionaryGenerator(fsa)
 		}
 
-		fsa.generateFile(model.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, model.dictionaryClass)
+		fsa.generateFile(model.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.dictionaryClass)
 	}
 
 	def dictionaryClass(Model model) '''
@@ -58,11 +58,11 @@ class DictionaryGenerator {
 
 	def dictionaryGenerator(Dictionary dictionary, IFileSystemAccess fsa) {
 
-		fsa.generateFile(dictionary.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionary.dictionaryClass)
+		fsa.generateFile(dictionary.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionary.dictionaryClass)
 		
 		for( dictionaryLabelControl : dictionary.labelcontrols)
 		{
-			fsa.generateFile(dictionaryLabelControl.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryLabelControl.dictionaryControlClass)
+			fsa.generateFile(dictionaryLabelControl.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryLabelControl.dictionaryControlClass)
 		}
 
 		if (dictionary.dictionaryeditor != null)
@@ -78,7 +78,7 @@ class DictionaryGenerator {
 	}
 
 	def dictionaryGenerator(DictionaryEditor dictionaryEditor, IFileSystemAccess fsa) {
-		fsa.generateFile(dictionaryEditor.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryEditor.dictionaryClass)
+		fsa.generateFile(dictionaryEditor.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryEditor.dictionaryClass)
 		dictionaryEditor.containercontents.dictionaryGenerator(fsa)		
 	}
 
@@ -173,19 +173,19 @@ class DictionaryGenerator {
 	'''	
 
 	def dictionaryFilterGenerator(DictionaryFilter dictionaryFilter, IFileSystemAccess fsa)  {
-		fsa.generateFile(dictionaryFilter.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryFilter.dictionaryClass)
+		fsa.generateFile(dictionaryFilter.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryFilter.dictionaryClass)
 		dictionaryFilter.containercontents.dictionaryGenerator(fsa)
 	}
 
 	def dictionaryResultGenerator(DictionaryResult dictionaryResult, IFileSystemAccess fsa)  {
 		
-		fsa.generateFile(dictionaryResult.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryResult.dictionaryClass)
+		fsa.generateFile(dictionaryResult.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryResult.dictionaryClass)
 		
 	}
 	
 	def dictionaryGenerator(DictionarySearch dictionarySearch, IFileSystemAccess fsa)  {
 		
-		fsa.generateFile(dictionarySearch.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionarySearch.dictionaryClass)
+		fsa.generateFile(dictionarySearch.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionarySearch.dictionaryClass)
 		
 		dictionarySearch.dictionaryresult.dictionaryResultGenerator(fsa)
 

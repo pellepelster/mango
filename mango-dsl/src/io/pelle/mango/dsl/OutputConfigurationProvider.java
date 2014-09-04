@@ -13,18 +13,18 @@ public final class OutputConfigurationProvider implements IOutputConfigurationPr
 	@Override
 	public final Set<OutputConfiguration> getOutputConfigurations() {
 
-		OutputConfiguration entityOutputConfiguration = new OutputConfiguration(GeneratorConstants.ENTITIES_GEN_OUTPUT);
-		entityOutputConfiguration.setDescription(GeneratorConstants.ENTITIES_GEN_OUTPUT_DESCRIPTION);
-		entityOutputConfiguration.setOutputDirectory(GeneratorConstants.ENTITIES_GEN_OUTPUT_DEFAULT_DIR);
+		OutputConfiguration entityOutputConfiguration = new OutputConfiguration(GeneratorConstants.SERVER_GEN_OUTPUT);
+		entityOutputConfiguration.setDescription(GeneratorConstants.SERVER_GEN_OUTPUT_DESCRIPTION);
+		entityOutputConfiguration.setOutputDirectory(GeneratorConstants.SERVER_GEN_OUTPUT_DEFAULT_DIR);
 		entityOutputConfiguration.setOverrideExistingResources(true);
 		entityOutputConfiguration.setCreateOutputDirectory(true);
 		entityOutputConfiguration.setCleanUpDerivedResources(true);
 		entityOutputConfiguration.setSetDerivedProperty(true);
 		entityOutputConfiguration.setKeepLocalHistory(true);
 
-		OutputConfiguration voOutputConfiguration = new OutputConfiguration(GeneratorConstants.VO_GEN_OUTPUT);
-		voOutputConfiguration.setDescription(GeneratorConstants.VO_GEN_OUTPUT_DESCRIPTION);
-		voOutputConfiguration.setOutputDirectory(GeneratorConstants.VO_GEN_OUTPUT_DEFAULT_DIR);
+		OutputConfiguration voOutputConfiguration = new OutputConfiguration(GeneratorConstants.CLIENT_GWT_GEN_OUTPUT);
+		voOutputConfiguration.setDescription(GeneratorConstants.CLIENT_GWT_GEN_OUTPUT_DESCRIPTION);
+		voOutputConfiguration.setOutputDirectory(GeneratorConstants.CLIENT_GWT_GEN_OUTPUT_DEFAULT_DIR);
 		voOutputConfiguration.setOverrideExistingResources(true);
 		voOutputConfiguration.setCreateOutputDirectory(true);
 		voOutputConfiguration.setCleanUpDerivedResources(true);

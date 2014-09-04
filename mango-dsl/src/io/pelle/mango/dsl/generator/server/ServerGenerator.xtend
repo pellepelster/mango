@@ -5,6 +5,7 @@ package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.server.service.GWTServices
+import io.pelle.mango.dsl.generator.server.service.RestServices
 import io.pelle.mango.dsl.generator.server.service.SpringServices
 import io.pelle.mango.dsl.generator.xml.XmlNameUtils
 import io.pelle.mango.dsl.generator.xml.XmlVOMapper
@@ -30,18 +31,21 @@ class ServerGenerator implements IGenerator {
 	extension SpringServices
 
 	@Inject
+	extension RestServices
+
+	@Inject
 	extension ServerNameUtils
 
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		
 		for (model : resource.allContents.toIterable.filter(Model)) {
-			fsa.generateFile(model.gwtRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.gwtRemoteServicesApplicationContext)
-			fsa.generateFile(model.serviceSpringNameApplicationContextFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.springServices)
-			fsa.generateFile(model.xmlVOMapperFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, model.xmlVOMapper)
+			fsa.generateFile(model.gwtRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtRemoteServicesApplicationContext)
+			fsa.generateFile(model.serviceSpringNameApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springServices)
+			fsa.generateFile(model.xmlVOMapperFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.xmlVOMapper)
 		}
 
 		for (service : resource.allContents.toIterable.filter(Service)) {
-			//fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.ENTITIES_GEN_OUTPUT, service.restServiceController)
+			fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, service.restServiceController)
 		}
 		
 	}

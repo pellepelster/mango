@@ -29,7 +29,7 @@ class XmlGenerator implements IGenerator {
 
 		for (model : resource.allContents.toIterable.filter(Model)) {
 			fsa.generateFile(model.entityImportExportAppliationContextFullQualifiedFileName,
-				GeneratorConstants.ENTITIES_GEN_OUTPUT, model.entityImportExportAppliationContext)
+				GeneratorConstants.SERVER_GEN_OUTPUT, model.entityImportExportAppliationContext)
 		}
 
 		for (entity : resource.allContents.toIterable.filter(Entity)) {
@@ -39,7 +39,7 @@ class XmlGenerator implements IGenerator {
 				entity.entityImportExportWSDL)
 			
 			fsa.generateFile(entity.entityImportExportWebserviceEndpointFullQualifiedFileName,
-				GeneratorConstants.ENTITIES_GEN_OUTPUT, entity.entityImportExportWebserviceEndpoint)
+				GeneratorConstants.SERVER_GEN_OUTPUT, entity.entityImportExportWebserviceEndpoint)
 		}
 
 	}

@@ -65,7 +65,7 @@ class DictionaryContainerGenerator {
 
 		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
 		
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dictionaryClass(DictionaryContainer dictionaryContainer) '''
@@ -90,7 +90,7 @@ class DictionaryContainerGenerator {
 
 		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
 		
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dictionaryClass(DictionaryEditableTable dictionaryContainer) '''
@@ -122,7 +122,7 @@ class DictionaryContainerGenerator {
 
 		for (dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer))
 		{
-			fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+			fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 		}
 
 		for (dictionaryControl : dictionaryContainerContents.filter(DictionaryControl))

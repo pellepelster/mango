@@ -15,18 +15,18 @@ xtext {
 
 configurations {
 
-	generatedEntities
-	generatedVOs
+	generatedServer
+	generatedClientGWT
 	generatedXml
 	
-	compile.extendsFrom(generatedVOs)
+	compile.extendsFrom(generatedClientGWT)
 	compile.extendsFrom(generatedXml)
-	compile.extendsFrom(generatedEntities)
+	compile.extendsFrom(generatedServer)
 	
-	archives.extendsFrom(generatedEntities)
-	archives.extendsFrom(generatedEntitiesSources)
-	archives.extendsFrom(generatedVOs)
-	archives.extendsFrom(generatedVOsSources)
+	archives.extendsFrom(generatedServer)
+	archives.extendsFrom(generatedServerSources)
+	archives.extendsFrom(generatedClientGWT)
+	archives.extendsFrom(generatedClientGWTSources)
 	archives.extendsFrom(generatedXml)
 	archives.extendsFrom(generatedXmlSources)
 }
@@ -45,38 +45,38 @@ dependencies {
 	testCompile project(path: ':mango-db', configuration: 'testArtifacts')
 	
 	// webservices
-	generatedEntities group: "org.springframework.ws", name: "spring-xml", version: "2.2.0.RELEASE"
-	generatedEntities group: "org.springframework.ws", name: "spring-ws-core", version: "2.2.0.RELEASE"
-	generatedEntities group: "wsdl4j", name: "wsdl4j", version: "1.6.3"
-	generatedEntities group: "org.apache.ws.xmlschema", name: "xmlschema-core", version: "2.1.0"
+	generatedServer group: "org.springframework.ws", name: "spring-xml", version: "2.2.0.RELEASE"
+	generatedServer group: "org.springframework.ws", name: "spring-ws-core", version: "2.2.0.RELEASE"
+	generatedServer group: "wsdl4j", name: "wsdl4j", version: "1.6.3"
+	generatedServer group: "org.apache.ws.xmlschema", name: "xmlschema-core", version: "2.1.0"
 
 }
 
 sourceSets {
 	
-	generatedVOs {
+	generatedClientGWT {
 		java {
-			srcDirs = [ 'src-gen-vos' ]
+			srcDirs = [ 'src-gen-client-gwt' ]
 		}
 		resources {
-			srcDirs = [ 'src-gen-vos' ]
+			srcDirs = [ 'src-gen-client-gwt' ]
 		}
 		
 		compileClasspath += project.sourceSets.main.compileClasspath
 	}
 
-	generatedEntities {
+	generatedServer {
 		
 		java {
-			srcDirs = [ 'src-gen-entities' ]
+			srcDirs = [ 'src-gen-server' ]
 		}
 		resources {
-			srcDirs = [ 'src-gen-entities' ]
+			srcDirs = [ 'src-gen-server' ]
 		}
 		
 		compileClasspath += project.sourceSets.main.compileClasspath
-		compileClasspath += project.sourceSets.generatedVOs.output
-		compileClasspath += configurations.generatedEntities
+		compileClasspath += project.sourceSets.generatedClientGWT.output
+		compileClasspath += configurations.generatedServer
 	}
 
 	generatedXml {
@@ -89,46 +89,46 @@ sourceSets {
 		}
 		
 		compileClasspath += project.sourceSets.main.compileClasspath
-		compileClasspath += project.sourceSets.generatedVOs.output
+		compileClasspath += project.sourceSets.generatedClientGWT.output
 	}
 
 	test {
 		
 		java {
-			srcDirs = [ 'test', 'src-gen-entities', 'src-gen-vos', 'src-gen-xml' ]
+			srcDirs = [ 'test', 'src-gen-server', 'src-gen-client-gwt', 'src-gen-xml' ]
 		}
 		resources {
-			srcDirs = [ 'test', 'src-gen-entities', 'src-gen-vos', 'src-gen-xml' ]
+			srcDirs = [ 'test', 'src-gen-server', 'src-gen-client-gwt', 'src-gen-xml' ]
 		}
 		
-		compileClasspath += project.sourceSets.generatedEntities.output
+		compileClasspath += project.sourceSets.generatedServer.output
 
-		compileClasspath += project.sourceSets.generatedVOs.output
+		compileClasspath += project.sourceSets.generatedClientGWT.output
 		
 		compileClasspath += project.sourceSets.generatedXml.output
 	}
 
 }
 
-task generatedEntitiesJar(type: Jar, dependsOn: compileGeneratedEntitiesJava) {
+task generatedServerJar(type: Jar, dependsOn: compileGeneratedServerJava) {
 	classifier 'entities-generated'
-	from sourceSets.generatedEntities.output
+	from sourceSets.generatedServer.output
 }
 
-task generatedEntitiesSourceJar(type: Jar, dependsOn: compileGeneratedEntitiesJava) {
+task generatedServerSourceJar(type: Jar, dependsOn: compileGeneratedServerJava) {
 	classifier 'entities-generated-sources'
-	from sourceSets.generatedEntities.allSource
+	from sourceSets.generatedServer.allSource
 	exclude('**/persistence.xml')
 }
 
-task generatedVOsJar(type: Jar, dependsOn: project.compileGeneratedVOsJava) {
+task generatedClientGWTJar(type: Jar, dependsOn: project.compileGeneratedClientGWTJava) {
 	classifier 'vos-generated'
-	from sourceSets.generatedVOs.output
+	from sourceSets.generatedClientGWT.output
 }
 
-task generatedVOsSourceJar(type: Jar, dependsOn: compileGeneratedVOsJava) {
+task generatedClientGWTSourceJar(type: Jar, dependsOn: compileGeneratedClientGWTJava) {
 	classifier 'vos-generated-sources'
-	from sourceSets.generatedVOs.allSource
+	from sourceSets.generatedClientGWT.allSource
 }
 
 task generatedXmlJar(type: Jar, dependsOn: project.compileGeneratedXmlJava) {
@@ -141,16 +141,16 @@ task generatedXmlSourceJar(type: Jar, dependsOn: compileGeneratedXmlJava) {
 	from sourceSets.generatedXml.allSource
 }
 
-compileGeneratedEntitiesJava.dependsOn("xtextGenerate")
-processGeneratedEntitiesResources.dependsOn("xtextGenerate")
-compileGeneratedVOsJava.dependsOn("xtextGenerate")
-processGeneratedVOsResources.dependsOn("xtextGenerate")
+compileGeneratedServerJava.dependsOn("xtextGenerate")
+processGeneratedServerResources.dependsOn("xtextGenerate")
+compileGeneratedClientGWTJava.dependsOn("xtextGenerate")
+processGeneratedClientGWTResources.dependsOn("xtextGenerate")
 compileGeneratedXmlJava.dependsOn("xtextGenerate")
 processGeneratedXmlResources.dependsOn("xtextGenerate")
 
 artifacts {
 	archives sourceJar, javadocJar
-	generatedEntities generatedEntitiesJar, generatedEntitiesSourceJar
-	generatedVOs generatedVOsJar, generatedVOsSourceJar
+	generatedServer generatedServerJar, generatedServerSourceJar
+	generatedClientGWT generatedClientGWTJar, generatedClientGWTSourceJar
 	generatedXml generatedXmlJar, generatedXmlSourceJar
 }

@@ -20,7 +20,7 @@ configurations {
 
 dependencies {
 	compile project(path: ':mango-demo-server')
-	compile project(path: ':mango-demo-model', configuration: 'generatedVOs')
+	compile project(path: ':mango-demo-model', configuration: 'generatedClientGWT')
 	compile project(path: ':mango-client-web-test')
 	compile project(path: ':mango-client-gwt')
 

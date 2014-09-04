@@ -49,34 +49,34 @@ class ClientGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 
 		for (model : resource.allContents.toIterable.filter(Model)) {
-			fsa.generateFile(model.gwtRemoteServiceLocatorFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, model.gwtRemoteServiceLocator)
-			fsa.generateFile(model.gwtRemoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, model.gwtRemoteServiceLocatorInterface)
-			fsa.generateFile(model.gwtClientModuleFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, model.gwtClientModule)
-			fsa.generateFile(model.gwtClientconfigurationFullQualifiedNameFileName, GeneratorConstants.VO_GEN_OUTPUT, model.gwtClientConfiguration)
+			fsa.generateFile(model.gwtRemoteServiceLocatorFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocator)
+			fsa.generateFile(model.gwtRemoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocatorInterface)
+			fsa.generateFile(model.gwtClientModuleFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientModule)
+			fsa.generateFile(model.gwtClientconfigurationFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientConfiguration)
 			model.dictionaryGenerator(fsa)
 			model.dictionaryNavigationGenerator(fsa)
 		}
 
 		for (moduleDefinition : resource.allContents.toIterable.filter(ModuleDefinition)) {
-			fsa.generateFile(moduleDefinition.baseModuleDefinitionFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, moduleDefinition.compileBaseModuleDefinition)
+			fsa.generateFile(moduleDefinition.baseModuleDefinitionFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, moduleDefinition.compileBaseModuleDefinition)
 		}
 
 		for (entity : resource.allContents.toIterable.filter(Entity)) {
-			fsa.generateFile(entity.voFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, entity.compileVO)
+			fsa.generateFile(entity.voFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, entity.compileVO)
 		}
 
 		for (valueObject : resource.allContents.toIterable.filter(ValueObject)) {
-			fsa.generateFile(valueObject.voFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, valueObject.compileValueObject)
+			fsa.generateFile(valueObject.voFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, valueObject.compileValueObject)
 		}
 		
 		for (enumeration : resource.allContents.toIterable.filter(Enumeration)) {
-			fsa.generateFile(enumeration.enumerationFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, enumeration.compileEnumeration)
+			fsa.generateFile(enumeration.enumerationFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, enumeration.compileEnumeration)
 		}
 		
 		for (service : resource.allContents.toIterable.filter(Service)) {
-			fsa.generateFile(service.gwtAsyncServiceInterfaceFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, service.gwtAsyncServiceInterface)
-			fsa.generateFile(service.gwtServiceInterfaceFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, service.gwtServiceInterface)
-			fsa.generateFile(service.serviceInterfaceFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, service.serviceInterface)
+			fsa.generateFile(service.gwtAsyncServiceInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.gwtAsyncServiceInterface)
+			fsa.generateFile(service.gwtServiceInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.gwtServiceInterface)
+			fsa.generateFile(service.serviceInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.serviceInterface)
 		}
 		
 	}

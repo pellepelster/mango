@@ -2,8 +2,8 @@ apply from: '../mango-build/mangomodelcommon.gradle'
 
 dependencies {
 	
-	compile project(path: ':mango-model', configuration: 'generatedVOs')
-	compile project(path: ':mango-model', configuration: 'generatedEntities')
+	compile project(path: ':mango-model', configuration: 'generatedClientGWT')
+	compile project(path: ':mango-model', configuration: 'generatedServer')
 	compile project(path: ':mango-server')
 	
 }

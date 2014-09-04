@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+						http://www.springframework.org/schema/web-services  
+						http://www.springframework.org/schema/web-services/web-services-2.0.xsd  
+						http://www.springframework.org/schema/context  
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"/>
+
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@77eb5239 (name: Entity1) -->
+	<bean id="entity1WebserviceEndpoint" class="io.pelle.mango.test.server.Entity1WebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="entity1WsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/entity1_import_export.wsdl" />
+	</bean>
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@7cd40b9d (name: Entity2) -->
+	<bean id="entity2WebserviceEndpoint" class="io.pelle.mango.test.server.Entity2WebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="entity2WsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/entity2_import_export.wsdl" />
+	</bean>
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@53187c84 (name: Entity3) -->
+	<bean id="entity3WebserviceEndpoint" class="io.pelle.mango.test.server.Entity3WebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="entity3WsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/entity3_import_export.wsdl" />
+	</bean>
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@5f4b3e99 (name: Entity4) -->
+	<bean id="entity4WebserviceEndpoint" class="io.pelle.mango.test.server.Entity4WebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="entity4WsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/entity4_import_export.wsdl" />
+	</bean>
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@32737d8a (name: Entity5) -->
+	<bean id="entity5WebserviceEndpoint" class="io.pelle.mango.test.server.Entity5WebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="entity5WsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/entity5_import_export.wsdl" />
+	</bean>
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@53261322 (name: Entity6) -->
+	<bean id="entity6WebserviceEndpoint" class="io.pelle.mango.test.server.Entity6WebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="entity6WsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/entity6_import_export.wsdl" />
+	</bean>
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@1089a358 (name: Entity7) -->
+	<bean id="entity7WebserviceEndpoint" class="io.pelle.mango.test.server.Entity7WebserviceEndpoint">
+		<property name="xmlVOImporter" ref="xmlVOImporter" />
+	</bean>
+	
+	<bean id="entity7WsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:/entity7_import_export.wsdl" />
+	</bean>
+</beans>  

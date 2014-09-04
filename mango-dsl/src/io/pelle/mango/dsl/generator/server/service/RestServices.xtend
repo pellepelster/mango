@@ -18,42 +18,47 @@ class RestServices {
 
 	@Inject
 	extension ServiceUtils
-	
+
 	@Inject
 	extension BaseServices
-	
-	@Inject extension ClientTypeUtils
-	
+
+	@Inject
+	extension ClientTypeUtils
+
 	ClientNameUtils clientNameUtils = new ClientNameUtils
-	
+
 	def restServiceController(Service service) '''
-
-	package «service.packageName»;
-	
-	@org.springframework.web.bind.annotation.RestController
-	@org.springframework.web.bind.annotation.RequestMapping("«service.restMapping»")
-	public class «service.restControllerName»  {
-
-		@org.springframework.beans.factory.annotation.Autowired
-		private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.variableName»;
 		
-		public void «service.setterName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.variableName»)
-		{
-			this.«service.variableName» = «service.variableName»;
-		}
-	
-		«FOR serviceMethod : service.remoteMethods»
+		package «service.packageName»;
 		
-			«IF serviceMethod.methodParameters.size == 1 && !serviceMethod.methodParameters.onlySimpleTypes && (serviceMethod.returnType == null || !serviceMethod.returnType.simpleType)»
-			@org.springframework.web.bind.annotation.RequestMapping(value = "«serviceMethod.restMapping»", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-			public «IF serviceMethod.genericTypeDefinition != null»«serviceMethod.genericTypeDefinition.genericTypeDefinition»	«ENDIF» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»(@org.springframework.web.bind.annotation.RequestBody «serviceMethod.methodParameters.methodParameters») {
-				«IF serviceMethod.hasReturn»return«ENDIF» this.«service.variableName».«serviceMethod.name.toFirstLower»(«serviceMethod.methodParameters.get(0).name.toFirstLower»);
+		@org.springframework.web.bind.annotation.RestController
+		@org.springframework.web.bind.annotation.RequestMapping("«service.restMapping»")
+		public class «service.restControllerName»  {
+		
+			@org.springframework.beans.factory.annotation.Autowired
+			private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.variableName»;
+			
+			public void «service.setterName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.variableName»)
+			{
+				this.«service.variableName» = «service.variableName»;
 			}
-			«ENDIF»
 		
-		«ENDFOR»
-	
-	}
+			«FOR serviceMethod : service.remoteMethods»
+				
+					«IF serviceMethod.methodParameters.size == 1 && !serviceMethod.methodParameters.onlySimpleTypes &&
+			(serviceMethod.returnType == null || !serviceMethod.returnType.simpleType)»
+						@org.springframework.web.bind.annotation.RequestMapping(value = "«serviceMethod.restMapping»", method = org.springframework.web.bind.annotation.RequestMethod.POST)
+						public «IF serviceMethod.genericTypeDefinition != null»«serviceMethod.genericTypeDefinition.genericTypeDefinition»	«ENDIF» «serviceMethod.
+			serviceMethodReturnType» «serviceMethod.name.toFirstLower»(@org.springframework.web.bind.annotation.RequestBody «serviceMethod.
+			methodParameters.methodParameters») {
+							«IF serviceMethod.hasReturn»return«ENDIF» this.«service.variableName».«serviceMethod.name.toFirstLower»(«serviceMethod.
+			methodParameters.get(0).name.toFirstLower»);
+						}
+					«ENDIF»
+				
+			«ENDFOR»
+		
+		}
 	'''
 
 /*    @RequestMapping(value = "checkUserNameExists/{userName}")
@@ -104,5 +109,4 @@ class RestServices {
 
 
     } */
-	
 }
