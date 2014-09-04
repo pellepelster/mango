@@ -17,20 +17,16 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-public class TableRow<VOType extends IBaseVO, ModelType extends IBaseTableModel> extends BaseDictionaryElement<ModelType> implements
-		IBaseTable.ITableRow<VOType>
-{
+public class TableRow<VOType extends IBaseVO, ModelType extends IBaseTableModel> extends BaseDictionaryElement<ModelType> implements IBaseTable.ITableRow<VOType> {
 	private List<BaseDictionaryControl<?, ?>> columns = new ArrayList<BaseDictionaryControl<?, ?>>();
 
 	private final EditorVOWrapper<VOType> voWrapper;
 
 	@SuppressWarnings("static-access")
-	public TableRow(VOType vo, BaseTableElement<VOType, ModelType> parent)
-	{
+	public TableRow(VOType vo, BaseTableElement<VOType, ModelType> parent) {
 		super(parent.getModel(), parent);
 
-		for (IBaseControlModel baseControlModel : parent.getModel().getControls())
-		{
+		for (IBaseControlModel baseControlModel : parent.getModel().getControls()) {
 			this.columns.add(ControlFactory.getInstance().createControl(baseControlModel, this));
 		}
 
@@ -38,28 +34,22 @@ public class TableRow<VOType extends IBaseVO, ModelType extends IBaseTableModel>
 	}
 
 	@Override
-	public EditorVOWrapper<VOType> getVOWrapper()
-	{
+	public EditorVOWrapper<VOType> getVOWrapper() {
 		return this.voWrapper;
 	}
 
 	@Override
-	public VOType getVO()
-	{
+	public VOType getVO() {
 		return this.getVOWrapper().getVO();
 	}
 
-	public List<BaseDictionaryControl<?, ?>> getColumns()
-	{
+	public List<BaseDictionaryControl<?, ?>> getColumns() {
 		return this.columns;
 	}
 
-	// TODO clean up his mess
-
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <ElementType extends IBaseControl> ElementType getElement(BaseModel<ElementType> baseModel)
-	{
+	public <ElementType extends IBaseControl> ElementType getElement(BaseModel<ElementType> baseModel) {
 		List<String> parentModelIds = DictionaryElementUtil.getParentModelIds(getParent().getModel());
 		List<String> controlModelIds = DictionaryElementUtil.getParentModelIds(baseModel);
 
@@ -68,15 +58,14 @@ public class TableRow<VOType extends IBaseVO, ModelType extends IBaseTableModel>
 		return (ElementType) DictionaryElementUtil.getControl(this, controlModelIds);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public <ElementType extends IBaseControl> ElementType getElement(IBaseControlModel baseControlModel)
-	{
+	public <ElementType extends IBaseControl> ElementType getElement(IBaseControlModel baseControlModel) {
 		return (ElementType) DictionaryElementUtil.getControl(this, Lists.newArrayList(baseControlModel.getName()));
 	}
 
 	@Override
-	public List<? extends BaseDictionaryElement<?>> getAllChildren()
-	{
+	public List<? extends BaseDictionaryElement<?>> getAllChildren() {
 		return this.columns;
 	}
 

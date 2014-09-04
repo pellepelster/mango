@@ -18,8 +18,8 @@ package io.pelle.mango.client.base.layout;
  * 
  * @param <WidgetType>
  */
-public interface ILayoutFactory<ContainerType, WidgetType>
-{
+public interface ILayoutFactory<ContainerType, WidgetType> {
+
 	public static final int AUTO_WIDTH = -1;
 
 	void showModuleUI(IModuleUI<ContainerType, ?> moduleUI, String location);
