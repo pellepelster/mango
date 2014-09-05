@@ -31,6 +31,11 @@ class RestServices {
 		
 		package «service.packageName»;
 		
+		import org.springframework.web.bind.annotation.RequestMapping;
+		import org.springframework.web.bind.annotation.RequestMethod;
+		import org.springframework.web.bind.annotation.RequestParam;
+		import org.springframework.web.bind.annotation.RequestBody;
+		
 		@org.springframework.web.bind.annotation.RestController
 		@org.springframework.web.bind.annotation.RequestMapping("«service.restMapping»")
 		public class «service.restControllerName»  {
@@ -44,20 +49,18 @@ class RestServices {
 			}
 		
 			«FOR serviceMethod : service.remoteMethods»
-				
-					«IF serviceMethod.methodParameters.size == 1 && !serviceMethod.methodParameters.onlySimpleTypes &&
-			(serviceMethod.returnType == null || !serviceMethod.returnType.simpleType)»
-						@org.springframework.web.bind.annotation.RequestMapping(value = "«serviceMethod.restMapping»", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-						public «IF serviceMethod.genericTypeDefinition != null»«serviceMethod.genericTypeDefinition.genericTypeDefinition»	«ENDIF» «serviceMethod.
-			serviceMethodReturnType» «serviceMethod.name.toFirstLower»(@org.springframework.web.bind.annotation.RequestBody «serviceMethod.
-			methodParameters.methodParameters») {
-							«IF serviceMethod.hasReturn»return«ENDIF» this.«service.variableName».«serviceMethod.name.toFirstLower»(«serviceMethod.
-			methodParameters.get(0).name.toFirstLower»);
-						}
-					«ENDIF»
-				
+				«IF serviceMethod.methodParameters.size == 1 && !serviceMethod.methodParameters.onlySimpleTypes»
+					@RequestMapping(value = "«serviceMethod.restMapping»", method = RequestMethod.POST)
+					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»(@RequestBody «serviceMethod.methodParameters.methodParameters») {
+						«IF serviceMethod.hasReturn»return«ENDIF» this.«service.variableName».«serviceMethod.name.toFirstLower»(«serviceMethod.methodParameters.get(0).name.toFirstLower»);
+					}
+				«ELSEIF serviceMethod.methodParameters.onlySimpleTypes»
+					@RequestMapping(value = "«serviceMethod.restMapping»/«FOR parameter : serviceMethod.methodParameters SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»")
+					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»(«FOR parameter : serviceMethod.methodParameters SEPARATOR ", "»@RequestParam «parameter.type» «parameter.name.toFirstLower»«ENDFOR») {
+						«IF serviceMethod.hasReturn»return«ENDIF» this.«service.variableName».«serviceMethod.name.toFirstLower»(«FOR parameter : serviceMethod.methodParameters SEPARATOR ","»«parameter.name.toFirstLower»«ENDFOR»);
+					}
+				«ENDIF»
 			«ENDFOR»
-		
 		}
 	'''
 

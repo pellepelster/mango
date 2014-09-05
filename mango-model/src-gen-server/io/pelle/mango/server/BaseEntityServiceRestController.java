@@ -1,6 +1,11 @@
 
 package io.pelle.mango.server;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
+
 @org.springframework.web.bind.annotation.RestController
 @org.springframework.web.bind.annotation.RequestMapping("baseentityservice")
 public class BaseEntityServiceRestController  {
@@ -13,67 +18,61 @@ public class BaseEntityServiceRestController  {
 		this.baseEntityService = baseEntityService;
 	}
 
-	
-	
-	
-		@org.springframework.web.bind.annotation.RequestMapping(value = "create", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-		public <CreateVOType extends io.pelle.mango.client.base.vo.IBaseVO>	 CreateVOType
-		 create(@org.springframework.web.bind.annotation.RequestBody CreateVOType vo
-		) {
-			return this.baseEntityService.create(vo);
-		}
-	
-	
-		@org.springframework.web.bind.annotation.RequestMapping(value = "validate", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-		public <ValidateVOType extends io.pelle.mango.client.base.vo.IBaseVO>	 java.util.List<io.pelle.mango.client.base.messages.IValidationMessage>
-		 validate(@org.springframework.web.bind.annotation.RequestBody ValidateVOType vo
-		) {
-			return this.baseEntityService.validate(vo);
-		}
-	
-	
-		@org.springframework.web.bind.annotation.RequestMapping(value = "validateandsave", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-		public <ValidateAndSaveVOType extends io.pelle.mango.client.base.vo.IBaseVO>	 io.pelle.mango.client.base.db.vos.Result<ValidateAndSaveVOType>
-		 validateAndSave(@org.springframework.web.bind.annotation.RequestBody ValidateAndSaveVOType vo
-		) {
-			return this.baseEntityService.validateAndSave(vo);
-		}
-	
-	
-		@org.springframework.web.bind.annotation.RequestMapping(value = "validateandcreate", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-		public <ValidateAndCreateVOType extends io.pelle.mango.client.base.vo.IBaseVO>	 io.pelle.mango.client.base.db.vos.Result<ValidateAndCreateVOType>
-		 validateAndCreate(@org.springframework.web.bind.annotation.RequestBody ValidateAndCreateVOType vo
-		) {
-			return this.baseEntityService.validateAndCreate(vo);
-		}
-	
-	
-		@org.springframework.web.bind.annotation.RequestMapping(value = "save", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-		public <SaveVOType extends io.pelle.mango.client.base.vo.IBaseVO>	 SaveVOType
-		 save(@org.springframework.web.bind.annotation.RequestBody SaveVOType vo
-		) {
-			return this.baseEntityService.save(vo);
-		}
-	
-	
-		@org.springframework.web.bind.annotation.RequestMapping(value = "filter", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-		public <FilterVOType extends io.pelle.mango.client.base.vo.IBaseVO>	 java.util.List<FilterVOType>
-		 filter(@org.springframework.web.bind.annotation.RequestBody io.pelle.mango.client.base.vo.query.SelectQuery<FilterVOType> selectQuery
-		) {
-			return this.baseEntityService.filter(selectQuery);
-		}
-	
-	
-	
-	
-		@org.springframework.web.bind.annotation.RequestMapping(value = "delete", method = org.springframework.web.bind.annotation.RequestMethod.POST)
-		public <DeleteVOType extends io.pelle.mango.client.base.vo.IBaseVO>	 void
-		 delete(@org.springframework.web.bind.annotation.RequestBody DeleteVOType vo
-		) {
-			 this.baseEntityService.delete(vo);
-		}
-	
-	
-	
-
+	@RequestMapping(value = "getnewvo/{voClassName}/{properties}")
+	public <NewVOType extends io.pelle.mango.client.base.vo.IBaseVO> NewVOType
+	 getNewVO(@RequestParam java.lang.String voClassName, @RequestParam java.util.Map<String, String> properties) {
+		return this.baseEntityService.getNewVO(voClassName,properties);
+	}
+	@RequestMapping(value = "create", method = RequestMethod.POST)
+	public <CreateVOType extends io.pelle.mango.client.base.vo.IBaseVO> CreateVOType
+	 create(@RequestBody CreateVOType vo
+	) {
+		return this.baseEntityService.create(vo);
+	}
+	@RequestMapping(value = "validate", method = RequestMethod.POST)
+	public <ValidateVOType extends io.pelle.mango.client.base.vo.IBaseVO> java.util.List<io.pelle.mango.client.base.messages.IValidationMessage>
+	 validate(@RequestBody ValidateVOType vo
+	) {
+		return this.baseEntityService.validate(vo);
+	}
+	@RequestMapping(value = "validateandsave", method = RequestMethod.POST)
+	public <ValidateAndSaveVOType extends io.pelle.mango.client.base.vo.IBaseVO> io.pelle.mango.client.base.db.vos.Result<ValidateAndSaveVOType>
+	 validateAndSave(@RequestBody ValidateAndSaveVOType vo
+	) {
+		return this.baseEntityService.validateAndSave(vo);
+	}
+	@RequestMapping(value = "validateandcreate", method = RequestMethod.POST)
+	public <ValidateAndCreateVOType extends io.pelle.mango.client.base.vo.IBaseVO> io.pelle.mango.client.base.db.vos.Result<ValidateAndCreateVOType>
+	 validateAndCreate(@RequestBody ValidateAndCreateVOType vo
+	) {
+		return this.baseEntityService.validateAndCreate(vo);
+	}
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	public <SaveVOType extends io.pelle.mango.client.base.vo.IBaseVO> SaveVOType
+	 save(@RequestBody SaveVOType vo
+	) {
+		return this.baseEntityService.save(vo);
+	}
+	@RequestMapping(value = "filter", method = RequestMethod.POST)
+	public <FilterVOType extends io.pelle.mango.client.base.vo.IBaseVO> java.util.List<FilterVOType>
+	 filter(@RequestBody io.pelle.mango.client.base.vo.query.SelectQuery<FilterVOType> selectQuery
+	) {
+		return this.baseEntityService.filter(selectQuery);
+	}
+	@RequestMapping(value = "deleteall/{voClassName}")
+	public  void
+	 deleteAll(@RequestParam java.lang.String voClassName) {
+		 this.baseEntityService.deleteAll(voClassName);
+	}
+	@RequestMapping(value = "delete", method = RequestMethod.POST)
+	public <DeleteVOType extends io.pelle.mango.client.base.vo.IBaseVO> void
+	 delete(@RequestBody DeleteVOType vo
+	) {
+		 this.baseEntityService.delete(vo);
+	}
+	@RequestMapping(value = "read/{id}/{voClassName}")
+	public <ReadVOType extends io.pelle.mango.client.base.vo.IBaseVO> ReadVOType
+	 read(@RequestParam java.lang.Long id, @RequestParam java.lang.String voClassName) {
+		return this.baseEntityService.read(id,voClassName);
+	}
 }

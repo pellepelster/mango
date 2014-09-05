@@ -4,10 +4,12 @@ import io.pelle.mango.test.client.IRestTest;
 
 public class RestTestImpl implements IRestTest {
 
+	private boolean onOff;
+
 	@Override
 	public Boolean methodBoolean(Boolean onOff) {
-		// TODO Auto-generated method stub
-		return null;
+		this.onOff = onOff;
+		return this.onOff;
 	}
 
 }

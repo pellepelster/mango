@@ -1,3 +1,5 @@
 /src-gen-entities
 /src-gen-vos
 /src-gen-xml/
+/src-gen-client-gwt/
+/src-gen-server/

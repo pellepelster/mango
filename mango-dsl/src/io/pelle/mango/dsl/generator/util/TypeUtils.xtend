@@ -41,7 +41,6 @@ import io.pelle.mango.dsl.mango.SimpleTypeType
 import io.pelle.mango.dsl.mango.SimpleTypes
 import io.pelle.mango.dsl.mango.StringDataType
 import io.pelle.mango.dsl.mango.StringEntityAttribute
-import io.pelle.mango.dsl.mango.ValueObjectType
 import io.pelle.mango.server.base.IBaseClientEntity
 import java.util.List
 
@@ -79,11 +78,6 @@ class TypeUtils {
 		}
 	}
 
-	def dispatch String getType(ValueObjectType valueObjectType)
-	{
-		return	valueObjectType.type.voName
-	}
-	
 	//-----------------
 	// SimpleTypes
 	//-----------------

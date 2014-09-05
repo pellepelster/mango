@@ -1,8 +1,8 @@
 package io.pelle.mango.client;
 
 public interface ISystemService {
-	Systeminformation
+	io.pelle.mango.client.Systeminformation
 	 getSystemInformation();
-	LogEntry
+	io.pelle.mango.client.LogEntry
 	 getLog();
 }

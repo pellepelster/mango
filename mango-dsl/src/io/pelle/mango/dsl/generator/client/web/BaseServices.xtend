@@ -8,7 +8,8 @@ import java.util.List
 
 class BaseServices {
 
-	@Inject extension ClientTypeUtils
+	@Inject
+	extension ClientTypeUtils
 
 	def methodParameters(List<MethodParameter> methodParameters) '''
 		«FOR methodParameter : methodParameters SEPARATOR ", "»
@@ -22,7 +23,7 @@ class BaseServices {
 
 	def serviceMethod(ServiceMethod serviceMethod) '''
 		«IF serviceMethod.genericTypeDefinition != null»
-		«serviceMethod.genericTypeDefinition.genericTypeDefinition»
+			«serviceMethod.genericTypeDefinition.genericTypeDefinition»
 		«ENDIF»
 		«serviceMethod.serviceMethodReturnType»
 		 «serviceMethod.name.toFirstLower()»(«serviceMethod.methodParameters.methodParameters»);
