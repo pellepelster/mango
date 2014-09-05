@@ -27,4 +27,14 @@ public class MangoDemoGwtRemoteServiceLocator implements IMangoDemoGwtRemoteServ
 	    }
     } 
 
+	public io.pelle.mango.test.client.IRestTestGWTAsync getRestTest() {
+		
+		final io.pelle.mango.test.client.IRestTestGWTAsync service = (io.pelle.mango.test.client.IRestTestGWTAsync) com.google.gwt.core.client.GWT.create(io.pelle.mango.test.client.IRestTestGWT.class);
+		
+		com.google.gwt.user.client.rpc.ServiceDefTarget formEndpoint = (com.google.gwt.user.client.rpc.ServiceDefTarget) service;
+		formEndpoint.setServiceEntryPoint(getModuleBaseUrl() + "/RestTest");
+		formEndpoint.setRpcRequestBuilder(io.pelle.mango.client.base.MangoClientBase.getInstance().getRpcRequestBuilder());
+		
+		return service;
+	}
 }

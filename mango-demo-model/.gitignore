@@ -2,3 +2,5 @@
 /derby.log
 /src-gen-vos
 /src-gen-xml/
+/src-gen-client-gwt/
+/src-gen-server/

@@ -13,6 +13,7 @@
 		</property>
 		<property name="mappings">
 			<map>
+				<entry key="/rpc/RestTest" value-ref="RestTest" />
 			</map>
 		</property>
 	</bean>

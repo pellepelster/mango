@@ -15,6 +15,10 @@
     
     <bean name="xmlVOImporter" class="io.pelle.mango.server.xml.XmlVOImporter" />
     
+    <bean name="xmlVOExporter" class="io.pelle.mango.server.xml.XmlVOExporter" />
+    
+   	<bean class="io.pelle.mango.server.xml.XmlVOMapper" />
+    
     <bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry"/>
     
     <bean class="io.pelle.mango.server.MangoApplicationContext"/>

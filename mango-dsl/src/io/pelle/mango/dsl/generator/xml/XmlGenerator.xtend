@@ -33,15 +33,13 @@ class XmlGenerator implements IGenerator {
 		}
 
 		for (entity : resource.allContents.toIterable.filter(Entity)) {
-			
+
 			fsa.generateFile(entity.xsdFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT, entity.xmlSchema(true))
 			fsa.generateFile(entity.entityImportExportWSDLFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT,
 				entity.entityImportExportWSDL)
-			
+
 			fsa.generateFile(entity.entityImportExportWebserviceEndpointFullQualifiedFileName,
 				GeneratorConstants.SERVER_GEN_OUTPUT, entity.entityImportExportWebserviceEndpoint)
 		}
-
 	}
-
 }

@@ -2,6 +2,7 @@ package io.pelle.mango.dsl.generator.server
 
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.util.NameUtils
+import io.pelle.mango.dsl.generator.xml.XmlNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 
@@ -9,6 +10,9 @@ class SpringGenerator {
 	
 	@Inject 
 	extension NameUtils
+
+	@Inject 
+	extension XmlNameUtils
 
 	def compileSpringDBApplicationContext(Model model) '''
 		<?xml version="1.0" encoding="UTF-8"?>
@@ -66,12 +70,12 @@ class SpringGenerator {
 			xmlns:context="http://www.springframework.org/schema/context"
 			xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-		
-		    <context:component-scan base-package="io.pelle.mango" />
-		
-			<context:component-scan base-package="«model.modelPackageName»" />
-		
+
 			<context:annotation-config/>
+			
+			<bean class="«model.xmlVOMapperFullQualifiedName»" />
+
+			<bean class="«model.voMapperFullQualifiedName»" />
 		
 		</beans>
 	'''

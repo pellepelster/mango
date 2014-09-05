@@ -9,31 +9,29 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
-public final class XmlVOMapper implements IXmlVOMapper {
-	
+public final class XmlVOMapper {
+
 	private Map<String, XmlElementDescriptor> elements = new HashMap<String, XmlElementDescriptor>();
-	
+
 	private Map<Class<?>, String> referenceListElementName = new HashMap<Class<?>, String>();
-	
+
 	private Map<Class<?>, String> referenceElementName = new HashMap<Class<?>, String>();
-	
+
 	private Map<Class<?>, String> listElementName = new HashMap<Class<?>, String>();
-	
+
 	private Map<Class<?>, String> elementName = new HashMap<Class<?>, String>();
 
 	@Autowired
 	public void setXmlVOMappers(List<IXmlVOMapper> xmlVOMappers) {
 		for (IXmlVOMapper xmlVOMapper : xmlVOMappers) {
-			
+
 			this.elements.putAll(xmlVOMapper.getElements());
-			
+
 			for (Map.Entry<String, XmlElementDescriptor> elementEntry : xmlVOMapper.getElements().entrySet()) {
-				
+
 				XmlElementDescriptor xmlElementDescriptor = elementEntry.getValue();
-				
+
 				if (xmlElementDescriptor.isList() & xmlElementDescriptor.isReference()) {
 					this.referenceListElementName.put(xmlElementDescriptor.getVoClass(), elementEntry.getKey());
 					continue;
@@ -55,13 +53,13 @@ public final class XmlVOMapper implements IXmlVOMapper {
 	}
 
 	public XmlElementDescriptor getElementDescriptor(String elementName) {
-		
+
 		XmlElementDescriptor xmlElementDescriptor = this.elements.get(elementName);
-		
+
 		if (xmlElementDescriptor == null) {
 			throw new RuntimeException(String.format("no XmlElementDescriptor found for '%s'", elementName));
 		}
-		
+
 		return xmlElementDescriptor;
 	}
 
@@ -81,7 +79,6 @@ public final class XmlVOMapper implements IXmlVOMapper {
 		return this.elementName.get(voClass);
 	}
 
-	@Override
 	public Map<String, XmlElementDescriptor> getElements() {
 		return this.elements;
 	}

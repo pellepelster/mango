@@ -13,7 +13,7 @@
 
 	<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"/>
 
-	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@65ff2e73 (name: DictionaryLabelSearchIndex) -->
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@369d2ec8 (name: DictionaryLabelSearchIndex) -->
 	<bean id="dictionaryLabelSearchIndexWebserviceEndpoint" class="io.pelle.mango.server.DictionaryLabelSearchIndexWebserviceEndpoint">
 		<property name="xmlVOImporter" ref="xmlVOImporter" />
 	</bean>
@@ -21,7 +21,7 @@
 	<bean id="dictionaryLabelSearchIndexWsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
 		<property name="wsdl" value="classpath:/dictionarylabelsearchindex_import_export.wsdl" />
 	</bean>
-	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@3a1e5f00 (name: DictionaryHierarchicalNode) -->
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@610c2607 (name: DictionaryHierarchicalNode) -->
 	<bean id="dictionaryHierarchicalNodeWebserviceEndpoint" class="io.pelle.mango.server.DictionaryHierarchicalNodeWebserviceEndpoint">
 		<property name="xmlVOImporter" ref="xmlVOImporter" />
 	</bean>
@@ -29,7 +29,7 @@
 	<bean id="dictionaryHierarchicalNodeWsdlDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
 		<property name="wsdl" value="classpath:/dictionaryhierarchicalnode_import_export.wsdl" />
 	</bean>
-	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@1695d856 (name: File) -->
+	<!-- io.pelle.mango.dsl.mango.impl.EntityImpl@77198eb6 (name: File) -->
 	<bean id="fileWebserviceEndpoint" class="io.pelle.mango.server.FileWebserviceEndpoint">
 		<property name="xmlVOImporter" ref="xmlVOImporter" />
 	</bean>

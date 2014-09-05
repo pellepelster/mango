@@ -2,6 +2,14 @@ project MangoDemo {
 
 	package io.pelle.^mango.test {
 		
+		service RestTest {
+			
+			servicemethod methodBoolean returns simpletype Boolean {
+				boolean onOff
+			}
+			
+		}
+		
 		stringdatatype StringDatatype1 {
 			maxLength 42
 		}
