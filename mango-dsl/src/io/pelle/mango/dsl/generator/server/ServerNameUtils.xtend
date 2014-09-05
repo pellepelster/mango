@@ -19,6 +19,10 @@ class ServerNameUtils extends NameUtils {
 			combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.name.packageName)
 		}
 	}
+
+	def restRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
+		return model.name.toFirstUpper + "RestRemoteServices-gen.xml"
+	}
 	
 	def gwtRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
 		return model.name.toFirstUpper + "GWTRemoteServices-gen.xml"

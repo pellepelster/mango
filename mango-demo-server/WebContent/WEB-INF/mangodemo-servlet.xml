@@ -12,5 +12,6 @@
         	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<import resource="classpath:/MangoGWTRemoteServices-gen.xml" />
+	<import resource="classpath:/MangoDemoRestRemoteServices-gen.xml" />
 
 </beans>

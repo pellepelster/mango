@@ -40,6 +40,7 @@ class ServerGenerator implements IGenerator {
 		
 		for (model : resource.allContents.toIterable.filter(Model)) {
 			fsa.generateFile(model.gwtRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtRemoteServicesApplicationContext)
+			fsa.generateFile(model.restRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.restRemoteServicesApplicationContext)
 			fsa.generateFile(model.serviceSpringNameApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springServices)
 			fsa.generateFile(model.xmlVOMapperFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.xmlVOMapper)
 		}
