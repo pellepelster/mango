@@ -17,8 +17,8 @@ buildscript {
 dependencies {
 
 	compile project(path: ':projectname-model')
-	compile project(path: ':projectname-model', configuration: 'generatedEntities')
-	compile project(path: ':projectname-model', configuration: 'generatedVOs' )
+	compile project(path: ':projectname-model', configuration: 'generatedServer')
+	compile project(path: ':projectname-model', configuration: 'generatedClientGWT' )
 
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.5'
 	compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.5'

@@ -25,7 +25,7 @@ configurations {
 dependencies {
 	compile group: "io.pelle.mango", name: "mango-client-web-test", version: '+'
 	compile group: "io.pelle.mango", name: "mango-client-gwt", version: '+'
-	compile project(path: ':projectname-model', configuration: 'generatedVOs')
+	compile project(path: ':projectname-model', configuration: 'generatedClientGWT')
 }
 
 gwt {
