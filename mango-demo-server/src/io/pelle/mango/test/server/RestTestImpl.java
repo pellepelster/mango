@@ -7,8 +7,8 @@ public class RestTestImpl implements IRestTest {
 	private boolean onOff;
 
 	@Override
-	public Boolean methodBoolean(Boolean onOff) {
-		this.onOff = onOff;
+	public Boolean methodWithBooleanParameter(Boolean onOff) {
+		this.onOff = !onOff;
 		return this.onOff;
 	}
 

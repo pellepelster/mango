@@ -22,7 +22,8 @@
             classpath:/MangoDemoBaseApplicationContext-gen.xml,
             classpath:/MangoDemoSpringServices-gen.xml,
             classpath:/MangoBaseApplicationContext.xml,
-            classpath:/MangoSpringServices-gen.xml
+            classpath:/MangoSpringServices-gen.xml,
+            classpath:/MangoDemoRestRemoteServices-gen.xml
 		</param-value>
 	</context-param>
 

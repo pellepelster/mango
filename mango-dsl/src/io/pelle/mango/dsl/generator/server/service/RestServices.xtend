@@ -10,6 +10,7 @@ import io.pelle.mango.dsl.generator.client.web.BaseServices
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.generator.util.ServiceUtils
 import io.pelle.mango.dsl.mango.Service
+import io.pelle.mango.dsl.mango.ServiceMethod
 
 class RestServices {
 
@@ -35,6 +36,8 @@ class RestServices {
 		import org.springframework.web.bind.annotation.RequestMethod;
 		import org.springframework.web.bind.annotation.RequestParam;
 		import org.springframework.web.bind.annotation.RequestBody;
+		import org.springframework.web.bind.annotation.PathVariable;
+		import org.springframework.web.bind.annotation.ResponseBody;
 		
 		@org.springframework.web.bind.annotation.RestController
 		@org.springframework.web.bind.annotation.RequestMapping("«service.restMapping»")
@@ -47,21 +50,26 @@ class RestServices {
 			{
 				this.«service.variableName» = «service.variableName»;
 			}
-		
+			
 			«FOR serviceMethod : service.remoteMethods»
 				«IF serviceMethod.methodParameters.size == 1 && !serviceMethod.methodParameters.onlySimpleTypes»
 					@RequestMapping(value = "«serviceMethod.restMapping»", method = RequestMethod.POST)
 					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»(@RequestBody «serviceMethod.methodParameters.methodParameters») {
-						«IF serviceMethod.hasReturn»return«ENDIF» this.«service.variableName».«serviceMethod.name.toFirstLower»(«serviceMethod.methodParameters.get(0).name.toFirstLower»);
+						«service.methodReturn(serviceMethod)»
 					}
 				«ELSEIF serviceMethod.methodParameters.onlySimpleTypes»
-					@RequestMapping(value = "«serviceMethod.restMapping»/«FOR parameter : serviceMethod.methodParameters SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»")
-					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»(«FOR parameter : serviceMethod.methodParameters SEPARATOR ", "»@RequestParam «parameter.type» «parameter.name.toFirstLower»«ENDFOR») {
-						«IF serviceMethod.hasReturn»return«ENDIF» this.«service.variableName».«serviceMethod.name.toFirstLower»(«FOR parameter : serviceMethod.methodParameters SEPARATOR ","»«parameter.name.toFirstLower»«ENDFOR»);
+					@RequestMapping(value = "«serviceMethod.restMapping»/«FOR parameter : serviceMethod.methodParameters SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»", produces="application/json")
+					@ResponseBody
+					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»(«FOR parameter : serviceMethod.methodParameters SEPARATOR ", "»@PathVariable «parameter.type» «parameter.name.toFirstLower»«ENDFOR») {
+						«service.methodReturn(serviceMethod)»
 					}
 				«ENDIF»
 			«ENDFOR»
 		}
+	'''
+
+	def methodReturn(Service service, ServiceMethod serviceMethod) '''
+		«IF serviceMethod.hasReturn»return«ENDIF» this.«service.variableName».«serviceMethod.name.toFirstLower»(«FOR parameter : serviceMethod.methodParameters SEPARATOR ","»«parameter.name.toFirstLower»«ENDFOR»);
 	'''
 
 /*    @RequestMapping(value = "checkUserNameExists/{userName}")
