@@ -30,37 +30,37 @@ class MangoModelProject extends MangoBaseProject {
 		}
 				
 		project.configurations {
-			generatedEntities
-			generatedEntitiesSources
-			generatedVOs
-			generatedVOsSources
+			generatedServer
+			generatedServerSources
+			generatedClientGWT
+			generatedClientGWTSources
 			generatedXml
 			generatedXmlSources
 		}
 		
 		project.sourceSets {
 			
-			generatedVOs {
+			generatedClientGWT {
 				java {
-					srcDirs = [ 'src-gen-vos' ]
+					srcDirs = [ 'src-gen-client-gwt' ]
 				}
 				resources {
-					srcDirs = [ 'src-gen-vos' ]
+					srcDirs = [ 'src-gen-client-gwt' ]
 				}
 				
 				compileClasspath += project.sourceSets.main.compileClasspath
 			}
 		
-			generatedEntities {
+			generatedServer {
 				java {
-					srcDirs = [ 'src-gen-entities' ]
+					srcDirs = [ 'src-gen-server' ]
 				}
 				resources {
-					srcDirs = [ 'src-gen-entities' ]
+					srcDirs = [ 'src-gen-server' ]
 				}
 				
 				compileClasspath += project.sourceSets.main.compileClasspath
-				compileClasspath += project.sourceSets.generatedVOs.output
+				compileClasspath += project.sourceSets.generatedClientGWT.output
 			}
 			
 			generatedXml {
@@ -73,7 +73,7 @@ class MangoModelProject extends MangoBaseProject {
 				}
 				
 				compileClasspath += project.sourceSets.main.compileClasspath
-				compileClasspath += project.sourceSets.generatedVOs.output
+				compileClasspath += project.sourceSets.generatedClientGWT.output
 			}
 		
 			test {
@@ -85,35 +85,35 @@ class MangoModelProject extends MangoBaseProject {
 					srcDirs = [ 'test' ]
 				}
 				
-				compileClasspath += project.sourceSets.generatedEntities.output
-				runtimeClasspath += project.sourceSets.generatedEntities.output
+				compileClasspath += project.sourceSets.generatedServer.output
+				runtimeClasspath += project.sourceSets.generatedServer.output
 		
-				compileClasspath += project.sourceSets.generatedVOs.output
-				runtimeClasspath += project.sourceSets.generatedVOs.output
+				compileClasspath += project.sourceSets.generatedClientGWT.output
+				runtimeClasspath += project.sourceSets.generatedClientGWT.output
 		
 			}
 		
 		}
 
-		project.task('generatedEntitiesJar', type: Jar, dependsOn: project.jar) {
+		project.task('generatedServerJar', type: Jar, dependsOn: project.jar) {
 			classifier 'entities-generated'
-			from project.sourceSets.generatedEntities.output
+			from project.sourceSets.generatedServer.output
 		}
 		
-		project.task('generatedEntitiesSourceJar', type: Jar, dependsOn: project.jar) {
+		project.task('generatedServerSourceJar', type: Jar, dependsOn: project.jar) {
 			classifier 'entities-generated-sources'
-			from project.sourceSets.generatedEntities.allSource
+			from project.sourceSets.generatedServer.allSource
 			exclude('**/persistence.xml')
 		}
 		
-		project.task('generatedVOsJar', type: Jar, dependsOn: project.jar) {
+		project.task('generatedClientGWTJar', type: Jar, dependsOn: project.jar) {
 			classifier 'vos-generated'
-			from project.sourceSets.generatedVOs.output
+			from project.sourceSets.generatedClientGWT.output
 		}
 		
-		project.task('generatedVOsSourceJar', type: Jar, dependsOn: project.jar) {
+		project.task('generatedClientGWTSourceJar', type: Jar, dependsOn: project.jar) {
 			classifier 'vos-generated-sources'
-			from project.sourceSets.generatedVOs.allSource
+			from project.sourceSets.generatedClientGWT.allSource
 		}
 
 		project.task('generatedXmlJar', type: Jar, dependsOn: project.jar) {
@@ -126,19 +126,19 @@ class MangoModelProject extends MangoBaseProject {
 			from project.sourceSets.generatedXml.allSource
 		}
 
-		project.compileGeneratedEntitiesJava.dependsOn project.compileJava
+		project.compileGeneratedServerJava.dependsOn project.compileJava
 		
-		project.compileGeneratedVOsJava.dependsOn project.compileJava
+		project.compileGeneratedClientGWTJava.dependsOn project.compileJava
 
 		project.compileGeneratedXmlJava.dependsOn project.compileJava
 		
 		project.artifacts {
-			archives project.generatedEntitiesJar, project.generatedEntitiesSourceJar
-			archives project.generatedVOsJar, project.generatedVOsSourceJar
+			archives project.generatedServerJar, project.generatedServerSourceJar
+			archives project.generatedClientGWTJar, project.generatedClientGWTSourceJar
 			archives project.generatedXmlJar, project.generatedXmlSourceJar
 			
-			generatedEntities project.generatedEntitiesJar, project.generatedEntitiesSourceJar
-			generatedVOs project.generatedVOsJar, project.generatedVOsSourceJar
+			generatedServer project.generatedServerJar, project.generatedServerSourceJar
+			generatedClientGWT project.generatedClientGWTJar, project.generatedClientGWTSourceJar
 			generatedXml project.generatedXmlJar, project.generatedXmlSourceJar
 		 }
 	}

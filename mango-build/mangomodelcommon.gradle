@@ -111,23 +111,23 @@ sourceSets {
 }
 
 task generatedServerJar(type: Jar, dependsOn: compileGeneratedServerJava) {
-	classifier 'entities-generated'
+	classifier 'server-generated'
 	from sourceSets.generatedServer.output
 }
 
 task generatedServerSourceJar(type: Jar, dependsOn: compileGeneratedServerJava) {
-	classifier 'entities-generated-sources'
+	classifier 'server-generated-sources'
 	from sourceSets.generatedServer.allSource
 	exclude('**/persistence.xml')
 }
 
 task generatedClientGWTJar(type: Jar, dependsOn: project.compileGeneratedClientGWTJava) {
-	classifier 'vos-generated'
+	classifier 'client-gwt-generated'
 	from sourceSets.generatedClientGWT.output
 }
 
 task generatedClientGWTSourceJar(type: Jar, dependsOn: compileGeneratedClientGWTJava) {
-	classifier 'vos-generated-sources'
+	classifier 'client-gwt-generated-sources'
 	from sourceSets.generatedClientGWT.allSource
 }
 
