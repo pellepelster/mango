@@ -58,11 +58,18 @@ class RestServices {
 						«service.methodReturn(serviceMethod)»
 					}
 				«ELSEIF serviceMethod.methodParameters.onlySimpleTypes»
-					@RequestMapping(value = "«serviceMethod.restMapping»/«FOR parameter : serviceMethod.methodParameters SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»", produces="application/json")
+					@RequestMapping(value = "«serviceMethod.restMapping»/«FOR parameter : serviceMethod.methodParameters SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»", produces="application/json", method = RequestMethod.GET)
 					@ResponseBody
-					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»(«FOR parameter : serviceMethod.methodParameters SEPARATOR ", "»@PathVariable «parameter.type» «parameter.name.toFirstLower»«ENDFOR») {
+					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»Get(«FOR parameter : serviceMethod.methodParameters SEPARATOR ", "»@PathVariable «parameter.type» «parameter.name.toFirstLower»«ENDFOR») {
 						«service.methodReturn(serviceMethod)»
 					}
+
+					@RequestMapping(value = "«serviceMethod.restMapping»", produces="application/json", method = RequestMethod.POST)
+					@ResponseBody
+					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»Post(«FOR parameter : serviceMethod.methodParameters SEPARATOR ", "»@RequestParam «parameter.type» «parameter.name.toFirstLower»«ENDFOR») {
+						«service.methodReturn(serviceMethod)»
+					}
+
 				«ENDIF»
 			«ENDFOR»
 		}

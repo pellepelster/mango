@@ -26,7 +26,7 @@ public class BaseRestTest {
 		this.baseUrl = baseUrl;
 	}
 
-	public String getUrl(String url, String... arguments) {
+	public String getUrl(String url, Object... arguments) {
 		return MessageFormat.format(getUrl(url), arguments);
 	}
 

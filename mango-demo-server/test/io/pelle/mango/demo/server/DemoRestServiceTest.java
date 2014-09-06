@@ -10,12 +10,23 @@ import com.jayway.restassured.response.Response;
 public class DemoRestServiceTest extends BaseRestTest {
 
 	@Test
-	public void testMethodWithBooleanParameter() {
+	public void testMethodWithBooleanParameterPathVariables() {
 
 		Response response = given().pathParameter("onOff", true).get(getUrl("resttest/methodwithbooleanparameter/{onOff}"));
 		response.then().body(equalTo(Boolean.FALSE.toString()));
 
 		response = given().pathParameter("onOff", false).get(getUrl("resttest/methodwithbooleanparameter/{onOff}"));
+		response.then().body(equalTo(Boolean.TRUE.toString()));
+
+	}
+
+	@Test
+	public void testMethodWithBooleanParameterRequestParameters() {
+
+		Response response = given().param("onOff", true).post(getUrl("resttest/methodwithbooleanparameter"));
+		response.then().body(equalTo(Boolean.FALSE.toString()));
+
+		response = given().param("onOff", false).post(getUrl("resttest/methodwithbooleanparameter"));
 		response.then().body(equalTo(Boolean.TRUE.toString()));
 
 	}
