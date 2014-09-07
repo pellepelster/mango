@@ -39,6 +39,7 @@ class RestServices {
 		import org.springframework.web.bind.annotation.PathVariable;
 		import org.springframework.web.bind.annotation.ResponseBody;
 		
+		@SuppressWarnings("all")
 		@org.springframework.web.bind.annotation.RestController
 		@org.springframework.web.bind.annotation.RequestMapping("«service.restMapping»")
 		public class «service.restControllerName»  {

@@ -77,9 +77,18 @@ class NameUtils {
 		return entity.name.toUpperCase;
 	}
 
+	var String[] SQL_KEYWORDS = newArrayList( "order", "where", "select" )
 
 	def entityTableName(Entity entity) {
-		return entity.name.toLowerCase
+		
+		var entityTableName = entity.name.toLowerCase
+		
+		if (SQL_KEYWORDS.contains(entityTableName))
+		{
+			entityTableName = ModelUtil.getRootModel(entity).name.toLowerCase + '_' + entityTableName
+		}
+		
+		return entityTableName
 	}
 
 	def entityTableIdColumnName(Entity entity) {
