@@ -38,6 +38,7 @@ class RestServices {
 		import org.springframework.web.bind.annotation.RequestBody;
 		import org.springframework.web.bind.annotation.PathVariable;
 		import org.springframework.web.bind.annotation.ResponseBody;
+		import org.springframework.transaction.annotation.Transactional;
 		
 		@SuppressWarnings("all")
 		@org.springframework.web.bind.annotation.RestController
@@ -55,18 +56,21 @@ class RestServices {
 			«FOR serviceMethod : service.remoteMethods»
 				«IF serviceMethod.methodParameters.size == 1 && !serviceMethod.methodParameters.onlySimpleTypes»
 					@RequestMapping(value = "«serviceMethod.restMapping»", method = RequestMethod.POST)
+					@Transactional
 					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»(@RequestBody «serviceMethod.methodParameters.methodParameters») {
 						«service.methodReturn(serviceMethod)»
 					}
 				«ELSEIF serviceMethod.methodParameters.onlySimpleTypes»
 					@RequestMapping(value = "«serviceMethod.restMapping»/«FOR parameter : serviceMethod.methodParameters SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»", produces="application/json", method = RequestMethod.GET)
 					@ResponseBody
+					@Transactional
 					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»Get(«FOR parameter : serviceMethod.methodParameters SEPARATOR ", "»@PathVariable «parameter.type» «parameter.name.toFirstLower»«ENDFOR») {
 						«service.methodReturn(serviceMethod)»
 					}
 
 					@RequestMapping(value = "«serviceMethod.restMapping»", produces="application/json", method = RequestMethod.POST)
 					@ResponseBody
+					@Transactional
 					public «serviceMethod.genericTypeDefinition.genericTypeDefinition» «serviceMethod.serviceMethodReturnType» «serviceMethod.name.toFirstLower»Post(«FOR parameter : serviceMethod.methodParameters SEPARATOR ", "»@RequestParam «parameter.type» «parameter.name.toFirstLower»«ENDFOR») {
 						«service.methodReturn(serviceMethod)»
 					}
