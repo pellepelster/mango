@@ -5,13 +5,18 @@ import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.Entity;
+import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.Join;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
+import io.pelle.mango.db.voquery.VOClassQuery;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import com.google.common.base.Optional;
 
 /**
  * Various DB utilities
@@ -22,15 +27,14 @@ import java.util.Set;
 public final class DBUtil {
 
 	@SuppressWarnings("unchecked")
-	public static Class<? extends IVOEntity> getClassOrDie(String className)
-	{
+	public static Class<? extends IVOEntity> getClassOrDie(String className) {
 		try {
 			return (Class<? extends IVOEntity>) Class.forName(className);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public static Map<Class<?>, Set<String>> getClassLoadAssociations(SelectQuery<?> selectQuery) {
 
 		Map<Class<?>, Set<String>> classLoadAssociations = new HashMap<>();
@@ -127,6 +131,36 @@ public final class DBUtil {
 		}
 
 		return stringBuffer.toString();
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static <T extends IVOEntity> SelectQuery<T> getNaturalKeyQuery(Class<T> voEntityClass, String naturalKey) {
+
+		SelectQuery<T> selectQuery = SelectQuery.selectFrom(voEntityClass);
+
+		Optional<IBooleanExpression> expression = Optional.absent();
+
+		for (IAttributeDescriptor attributeDescriptor : VOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys()) {
+
+			Optional<IBooleanExpression> compareExpression = ExpressionFactory.createStringEqualsExpression(voEntityClass, attributeDescriptor.getAttributeName(), naturalKey);
+
+			if (compareExpression.isPresent()) {
+				if (expression.isPresent()) {
+					expression = Optional.of(expression.get().and(compareExpression.get()));
+				} else {
+					expression = compareExpression;
+				}
+			}
+
+			// TODO support composed natural keys
+			break;
+		}
+
+		if (expression.isPresent()) {
+			selectQuery.where(expression.get());
+		}
+
+		return selectQuery;
 	}
 
 	private DBUtil() {

@@ -37,11 +37,17 @@ public class DBTest1 extends BaseEntity implements IBaseEntity {
 
 	public static final IEntityDescriptor<DBTest1> DBTEST1 = new EntityDescriptor<DBTest1>(DBTest1.class);
 
+	public static final IAttributeDescriptor<String> TESTSTRING = new AttributeDescriptor<String>(DBTEST1, "testString", String.class, String.class, false, 0);
+
 	public enum TEST_ENUM {
 		ENUM1, ENUM2
 	}
 
 	public static io.pelle.mango.client.base.vo.LongAttributeDescriptor ID = new io.pelle.mango.client.base.vo.LongAttributeDescriptor(DBTEST1, "id");
+
+	public static IAttributeDescriptor<?>[] getFieldDescriptors() {
+		return new IAttributeDescriptor[] { TEST2S, TESTSTRING };
+	}
 
 	@Id
 	@Column(name = "test1_id")

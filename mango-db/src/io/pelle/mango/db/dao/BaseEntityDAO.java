@@ -20,6 +20,7 @@ import io.pelle.mango.db.IUser;
 import io.pelle.mango.db.copy.ObjectFieldDescriptor;
 import io.pelle.mango.db.copy.ObjectFieldIterator;
 import io.pelle.mango.db.query.ServerCountQuery;
+import io.pelle.mango.db.util.DBUtil;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.base.IBaseClientEntity;
 import io.pelle.mango.server.base.IBaseInfoEntity;
@@ -323,6 +324,17 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 	@Autowired(required = false)
 	public void setMetricRegistry(MetricRegistry metricRegistry) {
 		createTimer = Optional.fromNullable(metricRegistry.timer(name(BaseEntityDAO.class, "create")));
+	}
+
+	@Override
+	public <T extends IBaseEntity> T getByNaturalKey(Class<T> entityClass, String naturalKey) {
+		List<T> result = filter(DBUtil.getNaturalKeyQuery(entityClass, naturalKey));
+
+		if (result.size() > 1 || result.isEmpty()) {
+			return null;
+		} else {
+			return result.get(0);
+		}
 	}
 
 }

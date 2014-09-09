@@ -116,4 +116,15 @@ public class BaseVODAO extends BaseDAO implements IBaseVODAO {
 		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}
 
+	@Override
+	public <T extends IBaseVO> T getByNaturalKey(Class<T> entityClass, String naturalKey) {
+
+		List<T> result = filter(DBUtil.getNaturalKeyQuery(entityClass, naturalKey));
+
+		if (result.size() > 1 || result.isEmpty()) {
+			return null;
+		} else {
+			return result.get(0);
+		}
+	}
 }

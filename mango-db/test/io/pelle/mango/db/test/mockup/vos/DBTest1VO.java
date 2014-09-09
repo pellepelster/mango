@@ -36,7 +36,7 @@ public class DBTest1VO extends BaseVO {
 
 	public static final IAttributeDescriptor<Integer> TESTINTEGER = new AttributeDescriptor<Integer>(DB_TEST1, "testInteger", Integer.class);
 
-	public static final IAttributeDescriptor<String> TESTSTRING = new AttributeDescriptor<String>(DB_TEST1, "testString", String.class);
+	public static final IAttributeDescriptor<String> TESTSTRING = new AttributeDescriptor<String>(DB_TEST1, "testString", String.class, String.class, false, 0);
 
 	public static final IAttributeDescriptor<TEST_ENUM_VO> TESTENUM = new AttributeDescriptor<TEST_ENUM_VO>(DB_TEST1, "testEnum", TEST_ENUM_VO.class);
 

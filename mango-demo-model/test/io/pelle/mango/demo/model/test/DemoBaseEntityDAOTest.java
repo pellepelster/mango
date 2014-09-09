@@ -1,12 +1,12 @@
 package io.pelle.mango.demo.model.test;
 
+import static io.pelle.mango.client.base.vo.query.CountQuery.countFrom;
+import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static io.pelle.mango.client.base.vo.query.SelectQuery.*;
-import static io.pelle.mango.client.base.vo.query.CountQuery.*;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.test.Entity1;
@@ -56,14 +56,11 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 
 		Entity1 createdEntity1 = baseEntityDAO.create(newEntity1);
 
-		assertEquals(newEntity1.getStringDatatype1(),
-				createdEntity1.getStringDatatype1());
+		assertEquals(newEntity1.getStringDatatype1(), createdEntity1.getStringDatatype1());
 
-		Entity1 readEntity1 = baseEntityDAO.read(createdEntity1.getId(),
-				Entity1.class);
+		Entity1 readEntity1 = baseEntityDAO.read(createdEntity1.getId(), Entity1.class);
 
-		assertEquals(newEntity1.getStringDatatype1(),
-				readEntity1.getStringDatatype1());
+		assertEquals(newEntity1.getStringDatatype1(), readEntity1.getStringDatatype1());
 	}
 
 	@Test
@@ -72,17 +69,14 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		Entity1 newEntity = new Entity1();
 		newEntity.setStringDatatype1("xxx");
 		Entity1 createdEntity = baseEntityDAO.create(newEntity);
-		createdEntity = baseEntityDAO
-				.read(createdEntity.getId(), Entity1.class);
+		createdEntity = baseEntityDAO.read(createdEntity.getId(), Entity1.class);
 
 		createdEntity.setStringDatatype1("yyy");
 		baseEntityDAO.save(createdEntity);
 
-		Entity1 savedVO = baseEntityDAO.read(createdEntity.getId(),
-				Entity1.class);
+		Entity1 savedVO = baseEntityDAO.read(createdEntity.getId(), Entity1.class);
 
-		assertEquals(createdEntity.getStringDatatype1(),
-				savedVO.getStringDatatype1());
+		assertEquals(createdEntity.getStringDatatype1(), savedVO.getStringDatatype1());
 	}
 
 	@Test
@@ -97,8 +91,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		Entity3 createdEntity = baseEntityDAO.create(newEntity);
 		assertArrayEquals(binary1, createdEntity.getBinaryDatatype1());
 
-		Entity3 readEntity = baseEntityDAO.read(createdEntity.getId(),
-				Entity3.class);
+		Entity3 readEntity = baseEntityDAO.read(createdEntity.getId(), Entity3.class);
 		assertArrayEquals(binary1, readEntity.getBinaryDatatype1());
 
 		readEntity.setBinaryDatatype1(binary2);
@@ -116,8 +109,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		newEntity1.setStringDatatype1("xxx");
 		baseEntityDAO.create(newEntity1);
 
-		List<Entity1> entity1s = baseEntityDAO
-				.filter(selectFrom(Entity1.class));
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class));
 		assertEquals(1, entity1s.size());
 		assertNull(entity1s.get(0).getEntity2Datatype());
 	}
@@ -133,12 +125,10 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		newEntity2.setStringDatatype1("yyy");
 		baseEntityDAO.create(newEntity2);
 
-		Optional<Entity1> readEntity = baseEntityDAO
-				.read(selectFrom(Entity1.class));
+		Optional<Entity1> readEntity = baseEntityDAO.read(selectFrom(Entity1.class));
 		assertFalse(readEntity.isPresent());
 
-		readEntity = baseEntityDAO.read(selectFrom(Entity1.class).where(
-				Entity1.STRINGDATATYPE1.eq("xxx")));
+		readEntity = baseEntityDAO.read(selectFrom(Entity1.class).where(Entity1.STRINGDATATYPE1.eq("xxx")));
 		assertTrue(readEntity.isPresent());
 
 		assertEquals("xxx", readEntity.get().getStringDatatype1());
@@ -153,12 +143,10 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		newEntity.setStringDatatype3("yyy");
 		baseEntityDAO.create(newEntity);
 
-		Optional<Entity4> readEntity = baseEntityDAO.read(selectFrom(
-				Entity4.class).where(Entity4.STRINGDATATYPE3.eq("yyy")));
+		Optional<Entity4> readEntity = baseEntityDAO.read(selectFrom(Entity4.class).where(Entity4.STRINGDATATYPE3.eq("yyy")));
 		assertTrue(readEntity.isPresent());
 
-		readEntity = baseEntityDAO.read(selectFrom(Entity4.class).where(
-				Entity4.STRINGDATATYPE4.eq("xxx")));
+		readEntity = baseEntityDAO.read(selectFrom(Entity4.class).where(Entity4.STRINGDATATYPE4.eq("xxx")));
 		assertTrue(readEntity.isPresent());
 
 	}
@@ -170,13 +158,11 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		newEntity.setStringDatatype1("xxx");
 		baseEntityDAO.create(newEntity);
 
-		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class)
-				.where(Entity1.STRINGDATATYPE1.eq("xxx")));
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(Entity1.STRINGDATATYPE1.eq("xxx")));
 		assertEquals(1, entity1s.size());
 		assertEquals("xxx", entity1s.get(0).getStringDatatype1());
 
-		entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(
-				Entity1.STRINGDATATYPE1.eq("yyy")));
+		entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(Entity1.STRINGDATATYPE1.eq("yyy")));
 		assertEquals(0, entity1s.size());
 	}
 
@@ -203,19 +189,15 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 
 		baseEntityDAO.create(newEntity1);
 
-		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class)
-				.where(Entity1.ENTITY2DATATYPE.eq(newEntity21)));
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(Entity1.ENTITY2DATATYPE.eq(newEntity21)));
 		assertEquals(1, entity1s.size());
 		assertEquals("xxx", entity1s.get(0).getStringDatatype1());
-		assertEquals("yyy", entity1s.get(0).getEntity2Datatype()
-				.getStringDatatype2());
+		assertEquals("yyy", entity1s.get(0).getEntity2Datatype().getStringDatatype2());
 
-		entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(
-				Entity1.ENTITY2DATATYPE.eq(newEntity22)));
+		entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(Entity1.ENTITY2DATATYPE.eq(newEntity22)));
 		assertEquals(1, entity1s.size());
 		assertEquals("aaa", entity1s.get(0).getStringDatatype1());
-		assertEquals("bbb", entity1s.get(0).getEntity2Datatype()
-				.getStringDatatype2());
+		assertEquals("bbb", entity1s.get(0).getEntity2Datatype().getStringDatatype2());
 
 	}
 
@@ -234,8 +216,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		newEntity3.setStringDatatype1("xxxxxx");
 		baseEntityDAO.create(newEntity3);
 
-		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class)
-				.where(Entity1.STRINGDATATYPE1.like("xxx")));
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(Entity1.STRINGDATATYPE1.like("xxx")));
 		assertEquals(2, entity1s.size());
 		assertEquals("xxx", entity1s.get(0).getStringDatatype1());
 		assertEquals("xxxxxx", entity1s.get(1).getStringDatatype1());
@@ -256,8 +237,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		newEntity3.setStringDatatype1("xxxxxx");
 		baseEntityDAO.create(newEntity3);
 
-		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class)
-				.where(Entity1.STRINGDATATYPE1.caseInsensitiveLike("xxx")));
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(Entity1.STRINGDATATYPE1.caseInsensitiveLike("xxx")));
 		assertEquals(3, entity1s.size());
 		assertEquals("xxx", entity1s.get(0).getStringDatatype1());
 		assertEquals("XXXXXX", entity1s.get(1).getStringDatatype1());
@@ -273,9 +253,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 			baseEntityDAO.create(newEntity);
 		}
 
-		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class)
-				.where(Entity1.STRINGDATATYPE1.eq("1").or(
-						Entity1.STRINGDATATYPE1.eq("2"))));
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).where(Entity1.STRINGDATATYPE1.eq("1").or(Entity1.STRINGDATATYPE1.eq("2"))));
 		assertEquals(2, entity1s.size());
 	}
 
@@ -291,8 +269,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 
 		baseEntityDAO.create(newEntity1);
 
-		List<Entity1> entity1s = baseEntityDAO
-				.filter(selectFrom(Entity1.class));
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class));
 		assertEquals(1, entity1s.size());
 		assertNotNull(entity1s.get(0).getEntity2Datatype());
 	}
@@ -305,8 +282,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 
 		Entity1 createdEntity = baseEntityDAO.create(newEntity);
 
-		Entity1 readEntity = baseEntityDAO.read(createdEntity.getId(),
-				Entity1.class);
+		Entity1 readEntity = baseEntityDAO.read(createdEntity.getId(), Entity1.class);
 
 		assertEquals("xxx", readEntity.getStringDatatype1List().get(0));
 
@@ -322,8 +298,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 
 		baseEntityDAO.deleteAll(Entity1.class);
 
-		Entity1 readEntity = baseEntityDAO.read(createdEntity.getId(),
-				Entity1.class);
+		Entity1 readEntity = baseEntityDAO.read(createdEntity.getId(), Entity1.class);
 
 		assertNull(readEntity);
 	}
@@ -337,8 +312,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 			baseEntityDAO.create(newEntity);
 		}
 
-		List<Entity1> entity1s = baseEntityDAO.filter(
-				selectFrom(Entity1.class), 0, 5);
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class), 0, 5);
 		assertEquals(5, entity1s.size());
 
 	}
@@ -352,8 +326,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 			baseEntityDAO.create(newEntity);
 		}
 
-		List<Entity1> entity1s = baseEntityDAO
-				.filter(selectFrom(Entity1.class));
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class));
 		assertEquals(10, entity1s.size());
 
 		baseEntityDAO.delete(entity1s.get(0));
@@ -373,10 +346,23 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		}
 
 		assertEquals(10, baseEntityDAO.count(countFrom(Entity1.class)));
-		assertEquals(
-				1,
-				baseEntityDAO.count(countFrom(Entity1.class).where(
-						Entity1.STRINGDATATYPE1.eq("1"))));
+		assertEquals(1, baseEntityDAO.count(countFrom(Entity1.class).where(Entity1.STRINGDATATYPE1.eq("1"))));
+
+	}
+
+	@Test
+	public void testGetByNaturalKey() {
+
+		Entity1 newVO = new Entity1();
+		newVO.setStringDatatype1("xxx");
+		baseEntityDAO.create(newVO);
+
+		newVO = new Entity1();
+		newVO.setStringDatatype1("yyy");
+		baseEntityDAO.create(newVO);
+
+		assertNull(baseEntityDAO.getByNaturalKey(Entity1.class, "aaa"));
+		assertEquals("xxx", baseEntityDAO.getByNaturalKey(Entity1.class, "xxx").getStringDatatype1());
 
 	}
 

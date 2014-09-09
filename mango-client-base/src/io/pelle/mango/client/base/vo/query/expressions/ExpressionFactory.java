@@ -1,6 +1,7 @@
 package io.pelle.mango.client.base.vo.query.expressions;
 
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 
@@ -21,7 +22,7 @@ public class ExpressionFactory {
 
 	}
 
-	public static Optional<IBooleanExpression> createStringEqualsExpression(Class<? extends IBaseVO> clazz, String attributePath, String value) {
+	public static Optional<IBooleanExpression> createStringEqualsExpression(Class<? extends IVOEntity> clazz, String attributePath, String value) {
 
 		IBooleanExpression compareExpression = null;
 

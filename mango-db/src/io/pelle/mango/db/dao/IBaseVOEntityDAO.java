@@ -27,4 +27,7 @@ public interface IBaseVOEntityDAO<VOENTITYTYPE extends IVOEntity> {
 	<T extends VOENTITYTYPE> void delete(T entity);
 
 	<T extends VOENTITYTYPE> long count(CountQuery<T> countQuery);
+
+	<T extends VOENTITYTYPE> T getByNaturalKey(Class<T> entityClass, String naturalKey);
+
 }
