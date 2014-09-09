@@ -361,8 +361,8 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 		newVO.setStringDatatype1("yyy");
 		baseEntityDAO.create(newVO);
 
-		assertNull(baseEntityDAO.getByNaturalKey(Entity1.class, "aaa"));
-		assertEquals("xxx", baseEntityDAO.getByNaturalKey(Entity1.class, "xxx").getStringDatatype1());
+		assertFalse(baseEntityDAO.getByNaturalKey(Entity1.class, "aaa").isPresent());
+		assertEquals("xxx", baseEntityDAO.getByNaturalKey(Entity1.class, "xxx").get().getStringDatatype1());
 
 	}
 

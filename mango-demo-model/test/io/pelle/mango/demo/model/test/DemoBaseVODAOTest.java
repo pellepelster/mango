@@ -2,8 +2,8 @@ package io.pelle.mango.demo.model.test;
 
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.test.client.Entity1VO;
@@ -64,8 +64,8 @@ public class DemoBaseVODAOTest extends BaseDemoModelTest {
 		newVO.setStringDatatype1("yyy");
 		baseVODAO.create(newVO);
 
-		assertNull(baseVODAO.getByNaturalKey(Entity1VO.class, "aaa"));
-		assertEquals("xxx", baseVODAO.getByNaturalKey(Entity1VO.class, "xxx").getStringDatatype1());
+		assertFalse(baseVODAO.getByNaturalKey(Entity1VO.class, "aaa").isPresent());
+		assertEquals("xxx", baseVODAO.getByNaturalKey(Entity1VO.class, "xxx").get().getStringDatatype1());
 
 	}
 

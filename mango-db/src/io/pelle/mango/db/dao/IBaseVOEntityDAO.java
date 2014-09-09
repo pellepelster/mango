@@ -28,6 +28,6 @@ public interface IBaseVOEntityDAO<VOENTITYTYPE extends IVOEntity> {
 
 	<T extends VOENTITYTYPE> long count(CountQuery<T> countQuery);
 
-	<T extends VOENTITYTYPE> T getByNaturalKey(Class<T> entityClass, String naturalKey);
+	<T extends VOENTITYTYPE> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey);
 
 }
