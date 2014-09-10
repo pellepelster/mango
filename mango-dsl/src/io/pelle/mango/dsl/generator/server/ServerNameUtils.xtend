@@ -69,4 +69,17 @@ class ServerNameUtils extends NameUtils {
 		return restControllerFullQualifiedName(service).replaceAll("\\.", "/")  + ".java";
 	}
 
+	// rest controller request vo
+	def restControllerRequestVOName(Service service, ServiceMethod method) {
+		return service.restControllerName + method.name.toFirstUpper + "RequestVO"
+	}
+
+	def restControllerRequestVOFullQualifiedName(Service service, ServiceMethod method) {
+		return service.getPackageName + "." + restControllerRequestVOName(service, method);
+	}
+
+	def restControllerRequestVOFullQualifiedFileName(Service service, ServiceMethod method) {
+		return restControllerRequestVOFullQualifiedName(service, method).replaceAll("\\.", "/")  + ".java";
+	}
+
 }
