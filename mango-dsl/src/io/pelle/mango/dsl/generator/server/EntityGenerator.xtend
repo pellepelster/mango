@@ -9,6 +9,7 @@ import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
+import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
@@ -72,6 +73,11 @@ class EntityGenerator extends BaseEntityGenerator {
 	// jpa annotations
 	def dispatch compileEntityAttributeJpaAnnotations(EntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»")
+	'''
+
+	def dispatch compileEntityAttributeJpaAnnotations(BinaryEntityAttribute entityAttribute) '''
+		@Column(name = "«entityAttribute.entityTableColumnName»", length = 10 * 1024 * 1024)
+		@javax.persistence.Lob
 	'''
 
 	def dispatch compileEntityAttributeJpaAnnotations(StringEntityAttribute entityAttribute) '''

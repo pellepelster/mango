@@ -1,5 +1,6 @@
 package io.pelle.mango.demo.server;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -10,6 +11,7 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.test.client.Entity1VO;
 import io.pelle.mango.test.client.Entity2VO;
+import io.pelle.mango.test.client.Entity3VO;
 
 import java.util.List;
 
@@ -162,6 +164,41 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		assertEquals(1, result.getValidationMessages().size());
 		assertEquals("Attribute 'stringDatatype1' is longer than 42", result.getValidationMessages().get(0).getMessage());
+	}
+
+	@Test
+	public void testEntity3VOBinaryDatatype1() {
+
+		byte[] data = new byte[] { 0xa, 0xb, 0xc };
+
+		baseEntityService.deleteAll(Entity3VO.class.getName());
+
+		Entity3VO entity3VO = new Entity3VO();
+		entity3VO.setBinaryDatatype1(data);
+
+		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3VO);
+		entity3VO = this.baseEntityService.read(result1.getVO().getId(), Entity3VO.class.getName());
+		assertArrayEquals(data, entity3VO.getBinaryDatatype1());
+	}
+
+	@Test
+	public void testEntity3VOBinaryDatatype1Large() {
+
+		int size = 1024 * 1204;
+		byte[] data = new byte[size];
+
+		for (int i = 0; i < size; i++) {
+			data[i] = 0xa;
+		}
+
+		baseEntityService.deleteAll(Entity3VO.class.getName());
+
+		Entity3VO entity3VO = new Entity3VO();
+		entity3VO.setBinaryDatatype1(data);
+
+		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3VO);
+		entity3VO = this.baseEntityService.read(result1.getVO().getId(), Entity3VO.class.getName());
+		assertArrayEquals(data, entity3VO.getBinaryDatatype1());
 	}
 
 	public void setBaseVODAO(IBaseVODAO baseVODAO) {
