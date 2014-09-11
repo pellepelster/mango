@@ -15,6 +15,8 @@ import io.pelle.mango.test.client.Entity2VO;
 import io.pelle.mango.test.client.Entity3VO;
 import io.pelle.mango.test.client.Entity4VO;
 import io.pelle.mango.test.client.Entity5VO;
+import io.pelle.mango.test.client.ValueObject1;
+import io.pelle.mango.test.client.ValueObject2;
 
 import java.util.List;
 
@@ -278,6 +280,12 @@ public class EntityModelGeneratorTest {
 		assertEquals(null, entity1VO.get("enumeration1Datatype"));
 		entity1VO.set("enumeration1Datatype", ENUMERATION1.ENUMERATIONVALUE1);
 		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, entity1VO.get("enumeration1Datatype"));
+	}
+
+	@Test
+	public void testValueObject1ValueObject2() {
+		ValueObject1 valueObject1 = new ValueObject1();
+		valueObject1.setValueObject2(new ValueObject2());
 	}
 
 	@Test

@@ -41,6 +41,7 @@ import io.pelle.mango.dsl.mango.SimpleTypeType
 import io.pelle.mango.dsl.mango.SimpleTypes
 import io.pelle.mango.dsl.mango.StringDataType
 import io.pelle.mango.dsl.mango.StringEntityAttribute
+import io.pelle.mango.dsl.mango.ValueObjectEntityAttribute
 import io.pelle.mango.server.base.IBaseClientEntity
 import java.util.List
 
@@ -266,7 +267,6 @@ class TypeUtils {
 		return clientNameUtils.enumerationFullQualifiedName(enumeration)
 	}
 	
-	
 	//-----------------
 	// BinaryDataType
 	//-----------------
@@ -313,6 +313,19 @@ class TypeUtils {
 	def dispatch String getType(EntityDataType dataType)
 	{
 		return entityFullQualifiedName(dataType.entity)
+	}
+
+	//-----------------
+	// ValueObjectEntityAttribute
+	//-----------------
+	def dispatch String getType(ValueObjectEntityAttribute entityAttribute)
+	{
+		getTypeWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
+	}
+
+	def dispatch String getRawType(ValueObjectEntityAttribute entityAttribute)
+	{
+		entityAttribute.type.type
 	}
 	
 	//-----------------

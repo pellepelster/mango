@@ -78,7 +78,7 @@ CustomEntityAttribute:
 	'custom' type=STRING(cardinality=Cardinality)? name=ID ;
 
 EntityAttribute:
-	SimpleDatatypeEntityAttribute | EntityEntityAttribute;
+	SimpleDatatypeEntityAttribute | EntityEntityAttribute | ValueObjectEntityAttribute;
 
 SimpleDatatypeEntityAttribute:
 	MapEntityAttribute | LongEntityAttribute | DateEntityAttribute | DecimalEntityAttribute | StringEntityAttribute | BooleanEntityAttribute | IntegerEntityAttribute | BinaryEntityAttribute | EnumerationEntityAttribute;
@@ -186,6 +186,13 @@ EntityEntityAttribute:
 
 EntityType:
 	'entity' type=[EntityAttributeType|QualifiedName] (cardinality=Cardinality)?;
+
+//-----------------------------------------------------------------------------
+// entity
+//-----------------------------------------------------------------------------
+
+ValueObjectEntityAttribute:
+	'valueobject' type=[ValueObject|QualifiedName] (cardinality=Cardinality)? name=ID;
 
 //-----------------------------------------------------------------------------
 // enumeration

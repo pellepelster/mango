@@ -89,6 +89,11 @@ project MangoDemo {
 		valueobject ValueObject1 {
 			string string1
 			entity Entity5 entity5
+			valueobject ValueObject2 valueObject2
+		}
+
+		valueobject ValueObject2 {
+			string string2
 		}
 		
 		dictionary Testdictionary1 {

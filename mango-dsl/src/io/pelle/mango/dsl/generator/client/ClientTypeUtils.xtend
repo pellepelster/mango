@@ -31,7 +31,7 @@ class ClientTypeUtils extends TypeUtils {
 	
 	def dispatch String getType(ValueObject valueObject)
 	{
-		return	valueObject.voFullQualifiedName
+		return valueObject.voFullQualifiedName
 	}
 	
 
