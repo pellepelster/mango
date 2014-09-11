@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.test.Entity1;
 import io.pelle.mango.test.Entity2;
@@ -286,6 +287,12 @@ public class EntityModelGeneratorTest {
 	public void testValueObject1ValueObject2() {
 		ValueObject1 valueObject1 = new ValueObject1();
 		valueObject1.setValueObject2(new ValueObject2());
+	}
+
+	@Test
+	public void testValueObject1ValueObject2List() {
+		ValueObject1 valueObject1 = new ValueObject1();
+		assertTrue(valueObject1.getValueObjects2().isEmpty());
 	}
 
 	@Test

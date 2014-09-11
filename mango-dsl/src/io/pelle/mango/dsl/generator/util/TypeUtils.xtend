@@ -43,6 +43,7 @@ import io.pelle.mango.dsl.mango.StringDataType
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObjectEntityAttribute
 import io.pelle.mango.server.base.IBaseClientEntity
+import java.util.ArrayList
 import java.util.List
 
 import static io.pelle.mango.dsl.mango.MangoTypes.*
@@ -471,6 +472,16 @@ public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.ty
 		}
 	}
 	
+	def dispatch String getInitializer(ValueObjectEntityAttribute entityAttribute)
+	{
+		switch entityAttribute.cardinality {
+			case Cardinality.ONETOMANY: 
+				"new " + ArrayList.name +  "<" + entityAttribute.type.type + ">()"
+			default: 
+				null
+		}
+	}
+		
 	def String parseSimpleTypeFromString(SimpleTypes simpleTypes, String parameterName)
 	{
 		switch simpleTypes {

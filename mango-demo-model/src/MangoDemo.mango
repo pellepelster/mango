@@ -90,6 +90,7 @@ project MangoDemo {
 			string string1
 			entity Entity5 entity5
 			valueobject ValueObject2 valueObject2
+			valueobject ValueObject2 0..n valueObjects2
 		}
 
 		valueobject ValueObject2 {
