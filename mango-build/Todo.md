@@ -6,3 +6,5 @@
 * move Commons test code from /test to text project
 * generate context.xml, log4j.properties, servelet.xml, wb.xml
 * Seperate Client SelectQuery from Server SelectQuery (GWT JVM limitations)
+* ChangeTracking for entities
+* natural key based to string

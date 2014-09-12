@@ -50,17 +50,36 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 
 	@Test
 	public void testSimpleCeate() {
-
 		Entity1 newEntity1 = new Entity1();
 		newEntity1.setStringDatatype1("xxx");
-
 		Entity1 createdEntity1 = baseEntityDAO.create(newEntity1);
-
 		assertEquals(newEntity1.getStringDatatype1(), createdEntity1.getStringDatatype1());
-
 		Entity1 readEntity1 = baseEntityDAO.read(createdEntity1.getId(), Entity1.class);
-
 		assertEquals(newEntity1.getStringDatatype1(), readEntity1.getStringDatatype1());
+	}
+
+	@Test
+	public void testListSave() {
+		Entity2 entity2 = new Entity2();
+
+		Entity3 entity31 = new Entity3();
+		entity31.setStringDatatype3("entity31");
+		entity2.getEntity3Datatypes().add(entity31);
+
+		entity31 = baseEntityDAO.save(entity31);
+
+		assertEquals(1, entity2.getEntity3Datatypes().size());
+		assertEquals("entity31", entity2.getEntity3Datatypes().get(0).getStringDatatype3());
+
+		Entity3 entity32 = new Entity3();
+		entity32.setStringDatatype3("entity32");
+		entity2.getEntity3Datatypes().add(entity32);
+
+		entity31 = baseEntityDAO.save(entity31);
+
+		assertEquals(2, entity2.getEntity3Datatypes().size());
+		assertEquals("entity31", entity2.getEntity3Datatypes().get(0).getStringDatatype3());
+		assertEquals("entity32", entity2.getEntity3Datatypes().get(1).getStringDatatype3());
 	}
 
 	@Test
