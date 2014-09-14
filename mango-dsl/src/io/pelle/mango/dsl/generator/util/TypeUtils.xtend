@@ -171,7 +171,7 @@ class TypeUtils {
 	def dispatch String getType(JvmEntityAttribute entityAttribute)
 	{
 		if (entityAttribute.generic != null) {
-			return getTypeWithCardinality(entityAttribute.cardinality, entityAttribute.type.identifier  + "<" + entityAttribute.generic.type + ">")
+			return getTypeWithCardinality(entityAttribute.cardinality, entityAttribute.type.identifier + "<" + entityAttribute.generic.type + ">")
 		}
 		else {
 			return getTypeWithCardinality(entityAttribute.cardinality, entityAttribute.type.identifier)
@@ -180,8 +180,12 @@ class TypeUtils {
 
 	def dispatch String getType(MangoJvmType jvmType)
 	{
-		return getTypeWithCardinality(jvmType.cardinality, jvmType.type.identifier)
-	}
+		if (jvmType.generic != null) {
+			return getTypeWithCardinality(jvmType.cardinality, jvmType.type.identifier + "<" + jvmType.generic.type + ">")
+		}
+		else {
+			return getTypeWithCardinality(jvmType.cardinality, jvmType.type.identifier)
+		}	}
 	
 	//-----------------
 	// GenericType
