@@ -141,45 +141,45 @@ project Mango {
 		
 		service BaseEntityService {
 
-			servicemethod <NewVOType extends mango IBaseVO> getNewVO returns generic NewVOType {
+			servicemethod <NewVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> getNewVO returns generic NewVOType {
 				string voClassName
 				map String String properties
 			}
 
-			servicemethod <CreateVOType extends mango IBaseVO> create returns generic CreateVOType {
+			servicemethod <CreateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> create returns generic CreateVOType {
 				generic CreateVOType vo
 			}
 
-			servicemethod <ValidateVOType extends mango IBaseVO> validate returns customtype "io.pelle.mango.client.base.messages.IValidationMessage" 0..n {
+			servicemethod <ValidateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validate returns customtype "io.pelle.mango.client.base.messages.IValidationMessage" 0..n {
 				generic ValidateVOType vo
 			}
 
 
-			servicemethod <ValidateAndSaveVOType extends mango IBaseVO> validateAndSave returns customtype "io.pelle.mango.client.base.db.vos.Result<ValidateAndSaveVOType>" {
+			servicemethod <ValidateAndSaveVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validateAndSave returns customtype "io.pelle.mango.client.base.db.vos.Result<ValidateAndSaveVOType>" {
 				generic ValidateAndSaveVOType vo
 			}
 
-			servicemethod <ValidateAndCreateVOType extends mango IBaseVO> validateAndCreate returns customtype "io.pelle.mango.client.base.db.vos.Result<ValidateAndCreateVOType>" {
+			servicemethod <ValidateAndCreateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validateAndCreate returns customtype "io.pelle.mango.client.base.db.vos.Result<ValidateAndCreateVOType>" {
 				generic ValidateAndCreateVOType vo
 			}
 		
-			servicemethod <SaveVOType extends mango IBaseVO> save returns generic SaveVOType {
+			servicemethod <SaveVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> save returns generic SaveVOType {
 				generic SaveVOType vo
 			}
 				
-			servicemethod <FilterVOType extends mango IBaseVO> filter returns generic FilterVOType 0..n {
-				mango SelectQuery<generic FilterVOType> selectQuery
+			servicemethod <FilterVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> filter returns generic FilterVOType 0..n {
+				jvmtype io.pelle.mango.client.base.vo.query.SelectQuery<generic FilterVOType> selectQuery
 			}
 
 			servicemethod deleteAll {
 				string voClassName
 			}
 
-			servicemethod <DeleteVOType extends mango IBaseVO> delete {
+			servicemethod <DeleteVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> delete {
 				generic DeleteVOType vo
 			}
 
-			servicemethod <ReadVOType extends mango IBaseVO> read returns generic ReadVOType {
+			servicemethod <ReadVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> read returns generic ReadVOType {
 				long id
 				string voClassName
 			}

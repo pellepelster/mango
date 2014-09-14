@@ -1,14 +1,11 @@
 package io.pelle.mango.dsl.generator.util
 
 import com.google.inject.Inject
-import io.pelle.mango.client.base.db.vos.IHierarchicalVO
 import io.pelle.mango.client.base.vo.AttributeDescriptor
 import io.pelle.mango.client.base.vo.ChangeTrackingArrayList
 import io.pelle.mango.client.base.vo.EntityAttributeDescriptor
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
-import io.pelle.mango.client.base.vo.IBaseVO
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor
-import io.pelle.mango.client.base.vo.query.SelectQuery
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.mango.BinaryDataType
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
@@ -31,22 +28,19 @@ import io.pelle.mango.dsl.mango.GenericType
 import io.pelle.mango.dsl.mango.GenericTypeDefinition
 import io.pelle.mango.dsl.mango.IntegerDataType
 import io.pelle.mango.dsl.mango.IntegerEntityAttribute
+import io.pelle.mango.dsl.mango.JvmEntityAttribute
 import io.pelle.mango.dsl.mango.LongDataType
 import io.pelle.mango.dsl.mango.LongEntityAttribute
-import io.pelle.mango.dsl.mango.MangoEntityAttribute
-import io.pelle.mango.dsl.mango.MangoType
-import io.pelle.mango.dsl.mango.MangoTypes
+import io.pelle.mango.dsl.mango.MangoJvmType
 import io.pelle.mango.dsl.mango.MapEntityAttribute
 import io.pelle.mango.dsl.mango.SimpleTypeType
 import io.pelle.mango.dsl.mango.SimpleTypes
 import io.pelle.mango.dsl.mango.StringDataType
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObjectEntityAttribute
-import io.pelle.mango.server.base.IBaseClientEntity
 import java.util.ArrayList
 import java.util.List
 
-import static io.pelle.mango.dsl.mango.MangoTypes.*
 import static io.pelle.mango.dsl.mango.SimpleTypes.*
 
 class TypeUtils {
@@ -142,19 +136,6 @@ class TypeUtils {
 	}
 	
 	//-----------------
-	// MangoEntityAttribute
-	//-----------------
-	def dispatch String getType(MangoEntityAttribute entityAttribute)
-	{
-		if (entityAttribute.generic != null) {
-			return entityAttribute.type.type  + "<" + entityAttribute.generic.type + ">"
-		}
-		else {
-			return entityAttribute.type.type 
-		}
-	}
-	
-	//-----------------
 	// EntityAttribute
 	//-----------------
 	def compileEntityAttributeDescriptorCommon(EntityAttribute entityAttribute, Entity entity) '''
@@ -201,31 +182,23 @@ class TypeUtils {
 	{
 		getTypeWithCardinality(customType.cardinality, customType.type)
 	}
-	
+
 	//-----------------
-	// MangoTypes
+	// JymType
 	//-----------------
-	def dispatch String getType(MangoTypes mangoTypes)
+	def dispatch String getType(JvmEntityAttribute entityAttribute)
 	{
-		switch mangoTypes {
-			case IBASEVO: {
-				return IBaseVO.name
-			}
-			case IBASECLIENTVO: {
-				return IBaseClientEntity.name
-			}
-			case SELECTQUERY: {
-				return SelectQuery.name
-			}
-			case IHIERARCHICALVO: {
-				return IHierarchicalVO.name
-			}
+		if (entityAttribute.generic != null) {
+			return getTypeWithCardinality(entityAttribute.cardinality, entityAttribute.type.identifier  + "<" + entityAttribute.generic.type + ">")
+		}
+		else {
+			return getTypeWithCardinality(entityAttribute.cardinality, entityAttribute.type.identifier)
 		}
 	}
 
-	def dispatch String getType(MangoType mangoType)
+	def dispatch String getType(MangoJvmType jvmType)
 	{
-		getTypeWithCardinality(mangoType.cardinality, getType(mangoType.type))
+		return getTypeWithCardinality(jvmType.cardinality, jvmType.type.identifier)
 	}
 	
 	//-----------------

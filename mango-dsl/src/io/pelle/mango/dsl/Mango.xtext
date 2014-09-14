@@ -1,6 +1,6 @@
 grammar io.pelle.mango.dsl.Mango with org.eclipse.xtext.common.Terminals
 
-import "http://www.eclipse.org/xtext/common/JavaVMTypes" as types
+import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
 
 generate mango "http://www.pelle.io/mango/dsl/Mango"
 
@@ -42,7 +42,7 @@ EnumerationValue: ID;
 // entity
 //-----------------------------------------------------------------------------
 Entity:
-	'entity' name=ID ('extends' extends=[Entity|QualifiedName])? ('jvmtype' jvmtype=[types::JvmType|QualifiedName])? '{'
+	'entity' name=ID ('extends' extends=[Entity|QualifiedName])? ('jvmtype' jvmtype=[jvmTypes::JvmType|QualifiedName])? '{'
 		("naturalkey {" naturalKeyAttributes+=[EntityAttribute | QualifiedName ] (", " naturalKeyAttributes+=[EntityAttribute | QualifiedName ])* "}")?
 		(attributes+=EntityAttribute)*
 	'}';
@@ -51,7 +51,7 @@ Entity:
 // Value Object
 //-----------------------------------------------------------------------------
 ValueObject:
-	"valueobject" name=ID ('extends' extends=[ValueObject|QualifiedName])? ('jvmtype' jvmtype=[types::JvmType|QualifiedName])? '{'
+	"valueobject" name=ID ('extends' extends=[ValueObject|QualifiedName])? ('jvmtype' jvmtype=[jvmTypes::JvmType|QualifiedName])? '{'
 		(attributes+=EntityAttribute)*
 	"}";
 	
@@ -426,7 +426,7 @@ ModuleDefinitionParameter: "parameter" name=ID "{"
 //- methods -------------------------------------------------------------------
 MethodType: Datatype;
 
-MethodParameter: EntityAttribute | GenericEntityAttribute | MangoEntityAttribute | CustomEntityAttribute;
+MethodParameter: EntityAttribute | GenericEntityAttribute | JvmEntityAttribute | CustomEntityAttribute;
 
 MethodReturnType: CustomType | GenericType | ValueObjectType | EntityType | SimpleTypeType;
 
@@ -449,13 +449,13 @@ Service:
 GenericEntityAttribute:
 	'generic' type=[GenericTypeDefinition|QualifiedName]? name=ID;
 
-MangoEntityAttribute:
-	"mango" type=MangoTypes("<"generic=Generic">")?(cardinality=Cardinality)? name=ID;
+JvmEntityAttribute:
+	"jvmtype" type=[jvmTypes::JvmType|QualifiedName]("<"generic=Generic">")?(cardinality=Cardinality)? name=ID;
 
 GenericType:
 	"generic" genericTypeDefinition=[ GenericTypeDefinition | QualifiedName ](cardinality=Cardinality)?;
 	
-GenericTypeTypes: MangoType;	
+GenericTypeTypes: MangoJvmType;	
 	
 GenericTypeDefinition: "<"name=ID "extends" genericType=GenericTypeTypes">";
 
@@ -463,12 +463,10 @@ GenericWildcardType: "extends" genericType=GenericTypeTypes;
 
 Generic: GenericWildcardType | GenericType;  
 
-//- mango type --------------------------------------------------------------
-MangoType:
-	"mango" type=MangoTypes("<"generic=Generic">")?(cardinality=Cardinality)?;
+//- jvm type --------------------------------------------------------------
+MangoJvmType:
+	"jvmtype" type=[jvmTypes::JvmType|QualifiedName]("<"generic=Generic">")?(cardinality=Cardinality)?;
 
-enum MangoTypes: 
-	selectquery = "SelectQuery" | ibasevo = "IBaseVO" | ihierarchicalvo = "IHierarchicalVO" | ibaseclientvo = "IBaseClientVO";
 
 NavigationNode:
 	"navigationnode" name=ID "{"
