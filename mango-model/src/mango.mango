@@ -53,11 +53,11 @@ project Mango {
 				string id
 			}
 			
-			servicemethod getConfigurationById returns customtype "io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO" {
+			servicemethod getConfigurationById returns jvmtype io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO {
 				string id
 			}
 			
-			servicemethod getConfigurations returns customtype "io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO" 0..n {
+			servicemethod getConfigurations returns jvmtype io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO 0..n {
 			}
 			
 			servicemethod hasChildren returns simpletype Boolean {
@@ -150,16 +150,16 @@ project Mango {
 				generic CreateVOType vo
 			}
 
-			servicemethod <ValidateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validate returns customtype "io.pelle.mango.client.base.messages.IValidationMessage" 0..n {
+			servicemethod <ValidateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validate returns jvmtype io.pelle.mango.client.base.messages.IValidationMessage 0..n {
 				generic ValidateVOType vo
 			}
 
 
-			servicemethod <ValidateAndSaveVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validateAndSave returns customtype "io.pelle.mango.client.base.db.vos.Result<ValidateAndSaveVOType>" {
+			servicemethod <ValidateAndSaveVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validateAndSave returns jvmtype io.pelle.mango.client.base.db.vos.Result<ValidateAndSaveVOType> {
 				generic ValidateAndSaveVOType vo
 			}
 
-			servicemethod <ValidateAndCreateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validateAndCreate returns customtype "io.pelle.mango.client.base.db.vos.Result<ValidateAndCreateVOType>" {
+			servicemethod <ValidateAndCreateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validateAndCreate returns jvmtype io.pelle.mango.client.base.db.vos.Result<ValidateAndCreateVOType> {
 				generic ValidateAndCreateVOType vo
 			}
 		

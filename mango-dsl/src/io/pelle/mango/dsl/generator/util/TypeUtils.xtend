@@ -12,8 +12,6 @@ import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.BooleanDataType
 import io.pelle.mango.dsl.mango.BooleanEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
-import io.pelle.mango.dsl.mango.CustomEntityAttribute
-import io.pelle.mango.dsl.mango.CustomType
 import io.pelle.mango.dsl.mango.Datatype
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
@@ -167,22 +165,6 @@ class TypeUtils {
 		getRawType(entityAttribute) + ".class"
 	}
 	
-	//-----------------
-	// CustomType
-	//-----------------
-	def dispatch String getType(CustomEntityAttribute entityAttribute)
-	{
-		if (entityAttribute.type != null)
-		{
-			getTypeWithCardinality(entityAttribute.cardinality, entityAttribute.type)
-		}
-	}
-
-	def dispatch String getType(CustomType customType)
-	{
-		getTypeWithCardinality(customType.cardinality, customType.type)
-	}
-
 	//-----------------
 	// JymType
 	//-----------------

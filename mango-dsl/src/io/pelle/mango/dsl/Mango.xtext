@@ -71,12 +71,6 @@ enum Cardinality:
 enum SimpleTypes: 
 	long = "Long" | integer = "Integer" | bigdecimal = "BigDecimal" | string = "String" | boolean = "Boolean" | reference = "Reference";
 
-CustomType:
-	"customtype" type=STRING(cardinality=Cardinality)?;
-
-CustomEntityAttribute:
-	'custom' type=STRING(cardinality=Cardinality)? name=ID ;
-
 EntityAttribute:
 	SimpleDatatypeEntityAttribute | EntityEntityAttribute | ValueObjectEntityAttribute;
 
@@ -426,9 +420,9 @@ ModuleDefinitionParameter: "parameter" name=ID "{"
 //- methods -------------------------------------------------------------------
 MethodType: Datatype;
 
-MethodParameter: EntityAttribute | GenericEntityAttribute | JvmEntityAttribute | CustomEntityAttribute;
+MethodParameter: EntityAttribute | GenericEntityAttribute | JvmEntityAttribute;
 
-MethodReturnType: CustomType | GenericType | ValueObjectType | EntityType | SimpleTypeType;
+MethodReturnType: GenericType | ValueObjectType | EntityType | SimpleTypeType | MangoJvmType;
 
 ServiceOptions:
 	{ServiceOptions}
@@ -452,6 +446,7 @@ GenericEntityAttribute:
 JvmEntityAttribute:
 	"jvmtype" type=[jvmTypes::JvmType|QualifiedName]("<"generic=Generic">")?(cardinality=Cardinality)? name=ID;
 
+// TODO clean up this mess
 GenericType:
 	"generic" genericTypeDefinition=[ GenericTypeDefinition | QualifiedName ](cardinality=Cardinality)?;
 	
@@ -465,7 +460,7 @@ Generic: GenericWildcardType | GenericType;
 
 //- jvm type --------------------------------------------------------------
 MangoJvmType:
-	"jvmtype" type=[jvmTypes::JvmType|QualifiedName]("<"generic=Generic">")?(cardinality=Cardinality)?;
+	"jvmtype" type=[jvmTypes::JvmType|QualifiedName]("<"generic=[GenericTypeDefinition]">")?(cardinality=Cardinality)?;
 
 
 NavigationNode:
