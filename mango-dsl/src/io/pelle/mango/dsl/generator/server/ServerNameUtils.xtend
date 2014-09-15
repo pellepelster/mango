@@ -10,6 +10,7 @@ import io.pelle.mango.dsl.mango.ServiceMethod
 class ServerNameUtils extends NameUtils {
 
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
+		
 		if (packageDeclaration.eContainer instanceof Model)
 		{
 			packageDeclaration.name.packageName + "." + GeneratorConstants.SERVER_PACKAGE_POSTFIX
@@ -18,6 +19,7 @@ class ServerNameUtils extends NameUtils {
 		{
 			combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.name.packageName)
 		}
+		
 	}
 
 	def restRemoteServicesApplicationContextFullQualifiedFileName(Model model) {

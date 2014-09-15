@@ -13,6 +13,7 @@ import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ValueObject
 import javax.management.Attribute
 import org.eclipse.emf.ecore.EObject
+import com.google.gwt.user.client.rpc.RemoteService
 
 class NameUtils {
 
@@ -57,6 +58,10 @@ class NameUtils {
 		{
 			return getPackageName(eObject.eContainer)
 		}
+	}
+
+	def dispatch String getPackageName(Service service) {
+		return combinePackageName(getPackageName(service.eContainer), service.name.packageName)
 	}
 
 	// entity
