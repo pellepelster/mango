@@ -18,6 +18,7 @@ import io.pelle.mango.test.client.Entity4VO;
 import io.pelle.mango.test.client.Entity5VO;
 import io.pelle.mango.test.client.ValueObject1;
 import io.pelle.mango.test.client.ValueObject2;
+import io.pelle.mango.test.client.ValueObject3;
 
 import java.util.List;
 
@@ -307,6 +308,16 @@ public class EntityModelGeneratorTest {
 		Entity1VO entity1VO = new Entity1VO();
 		entity1VO.setStringDatatype1("abc");
 		assertEquals("abc", entity1VO.getNaturalKey());
+	}
+
+	@Test
+	public void testValueObject2ExtendsValueObject3CopyConstructor() {
+
+		ValueObject2 valueObject2 = new ValueObject2();
+		valueObject2.setString2("zzz");
+		
+		ValueObject3 valueObject3 = new ValueObject3(valueObject2);
+		assertEquals("zzz", valueObject3.getString2());
 	}
 
 }

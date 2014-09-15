@@ -96,6 +96,10 @@ project MangoDemo {
 		valueobject ValueObject2 {
 			string string2
 		}
+
+		valueobject ValueObject3 extends ValueObject2 {
+			string string3
+		}
 		
 		dictionary Testdictionary1 {
 			

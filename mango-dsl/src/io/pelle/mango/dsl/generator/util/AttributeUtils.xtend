@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.vo.AttributeDescriptor
 import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
+import io.pelle.mango.dsl.mango.ValueObject
 
 class AttributeUtils {
 
@@ -43,6 +44,8 @@ class AttributeUtils {
 		«setter(attributeType, attributeName)»
 	'''
 
+	def attributeName(ValueObject valueObject) '''«valueObject.name.toFirstLower»'''
+
 	def attribute(String attributeType, String attributeName) '''
 		«attribute(attributeType, attributeName, null)»
 	'''
@@ -51,14 +54,22 @@ class AttributeUtils {
 		private «attributeType» «attributeName.attributeName»«IF attributeInitializer != null» = «attributeInitializer»«ENDIF»;
 	'''
 
+	def getterName(String attributeName) '''get«attributeName.toFirstUpper»'''
+
+	def setterName(String attributeName) '''set«attributeName.toFirstUpper»'''
+
+	def getterName(EntityAttribute entityAttribute) '''«entityAttribute.name.getterName»'''
+
+	def setterName(EntityAttribute entityAttribute) '''«entityAttribute.name.setterName»'''
+
 	def getter(String attributeType, String attributeName) '''
-		public «attributeType» get«attributeName.toFirstUpper»() {
+		public «attributeType» «attributeName.getterName»() {
 			return this.«attributeName»;
 		}
 	'''
 
 	def setter(String attributeType, String attributeName) '''
-		public void set«attributeName.toFirstUpper»(«attributeType» «attributeName») {
+		public void «attributeName.setterName»(«attributeType» «attributeName») {
 			this.«attributeName» = «attributeName»;
 		}
 	'''
