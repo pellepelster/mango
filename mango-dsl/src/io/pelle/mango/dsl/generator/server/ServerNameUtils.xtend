@@ -2,6 +2,7 @@ package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.util.NameUtils
+import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.PackageDeclaration
 import io.pelle.mango.dsl.mango.Service
@@ -9,6 +10,21 @@ import io.pelle.mango.dsl.mango.ServiceMethod
 
 class ServerNameUtils extends NameUtils {
 
+	//-------------------------------------------------------------------------
+	// entity
+	//-------------------------------------------------------------------------
+	def entityName(Entity entity) {
+		return entity.name.toFirstUpper;
+	}
+
+	def entityFullQualifiedName(Entity entity) {
+		return getPackageName(entity) + "." + entityName(entity);
+	}
+
+	def entityFullQualifiedFileName(Entity entity) {
+		return entityFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
+	}
+	
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
 		
 		if (packageDeclaration.eContainer instanceof Model)

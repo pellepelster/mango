@@ -3,7 +3,7 @@ package io.pelle.mango.dsl.generator
 import com.google.inject.Inject
 import io.pelle.mango.client.base.vo.IEntityVOMapper
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
-import io.pelle.mango.dsl.generator.util.NameUtils
+import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.server.base.BaseEntityVOMapper
@@ -11,8 +11,8 @@ import io.pelle.mango.server.base.BaseEntityVOMapper
 class VOMapperGenerator {
 
 	@Inject 
-	extension NameUtils 
-
+	extension ServerNameUtils
+	
 	var ClientNameUtils clientNameUtils = new ClientNameUtils
 
 	def compileVOMapper(Model model) '''

@@ -7,6 +7,7 @@ import io.pelle.mango.client.base.vo.EntityAttributeDescriptor
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
+import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.BinaryDataType
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.BooleanDataType
@@ -44,7 +45,7 @@ import static io.pelle.mango.dsl.mango.SimpleTypes.*
 class TypeUtils {
 	
 	@Inject
-	extension NameUtils
+	extension ServerNameUtils
 
 	@Inject
 	extension AttributeUtils

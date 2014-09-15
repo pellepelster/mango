@@ -3,13 +3,6 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
-import io.pelle.mango.test.Entity1;
-import io.pelle.mango.test.Entity2;
-import io.pelle.mango.test.Entity3;
-import io.pelle.mango.test.Entity4;
-import io.pelle.mango.test.Entity5;
-import io.pelle.mango.test.Entity6;
-import io.pelle.mango.test.Entity7;
 import io.pelle.mango.test.client.ENUMERATION1;
 import io.pelle.mango.test.client.Entity1VO;
 import io.pelle.mango.test.client.Entity2VO;
@@ -19,6 +12,13 @@ import io.pelle.mango.test.client.Entity5VO;
 import io.pelle.mango.test.client.ValueObject1;
 import io.pelle.mango.test.client.ValueObject2;
 import io.pelle.mango.test.client.ValueObject3;
+import io.pelle.mango.test.server.Entity1;
+import io.pelle.mango.test.server.Entity2;
+import io.pelle.mango.test.server.Entity3;
+import io.pelle.mango.test.server.Entity4;
+import io.pelle.mango.test.server.Entity5;
+import io.pelle.mango.test.server.Entity6;
+import io.pelle.mango.test.server.Entity7;
 
 import java.util.List;
 
@@ -315,7 +315,7 @@ public class EntityModelGeneratorTest {
 
 		ValueObject2 valueObject2 = new ValueObject2();
 		valueObject2.setString2("zzz");
-		
+
 		ValueObject3 valueObject3 = new ValueObject3(valueObject2);
 		assertEquals("zzz", valueObject3.getString2());
 	}

@@ -1,7 +1,6 @@
 package io.pelle.mango.dsl.generator.server
 
 import com.google.inject.Inject
-import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.generator.xml.XmlNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
@@ -9,7 +8,7 @@ import io.pelle.mango.dsl.mango.Model
 class SpringGenerator {
 	
 	@Inject 
-	extension NameUtils
+	extension ServerNameUtils
 
 	@Inject 
 	extension XmlNameUtils

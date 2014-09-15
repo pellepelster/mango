@@ -7,7 +7,6 @@ import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.util.AttributeUtils
-import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
@@ -24,13 +23,13 @@ class EntityGenerator extends BaseEntityGenerator {
 	extension AttributeUtils
 
 	@Inject
-	extension NameUtils
+	extension ServerNameUtils
 
 	@Inject
 	extension TypeUtils
 
 	def compileEntity(Entity entity) '''
-		package «getPackageName(entity)»;
+		package «entity.packageName»;
 		
 		import javax.persistence.*;
 		

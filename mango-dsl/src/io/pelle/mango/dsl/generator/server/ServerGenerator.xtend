@@ -9,6 +9,7 @@ import io.pelle.mango.dsl.generator.server.service.RestServices
 import io.pelle.mango.dsl.generator.server.service.SpringServices
 import io.pelle.mango.dsl.generator.xml.XmlNameUtils
 import io.pelle.mango.dsl.generator.xml.XmlVOMapper
+import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 import javax.inject.Inject
@@ -18,6 +19,9 @@ import org.eclipse.xtext.generator.IGenerator
 
 class ServerGenerator implements IGenerator {
 
+	@Inject 
+	extension EntityGenerator
+	
 	@Inject
 	extension GWTServices
 
@@ -43,6 +47,10 @@ class ServerGenerator implements IGenerator {
 			fsa.generateFile(model.restRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.restRemoteServicesApplicationContext)
 			fsa.generateFile(model.serviceSpringNameApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springServices)
 			fsa.generateFile(model.xmlVOMapperFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.xmlVOMapper)
+		}
+
+		for (entity : resource.allContents.toIterable.filter(Entity)) {
+			fsa.generateFile(entity.entityFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntity)
 		}
 
 		for (service : resource.allContents.toIterable.filter(Service)) {

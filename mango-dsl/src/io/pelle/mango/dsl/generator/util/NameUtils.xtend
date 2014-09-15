@@ -13,7 +13,6 @@ import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ValueObject
 import javax.management.Attribute
 import org.eclipse.emf.ecore.EObject
-import com.google.gwt.user.client.rpc.RemoteService
 
 class NameUtils {
 
@@ -116,21 +115,6 @@ class NameUtils {
 		var nameUtils = new NameUtils
 		nameUtils.modelPackageName(model).replaceAll("\\.", "/") + "/" + gwtClientGeneratedModuleDefinitionFileName(model);
 	} 
-
-	//-------------------------------------------------------------------------
-	// entity
-	//-------------------------------------------------------------------------
-	def entityName(Entity entity) {
-		return entity.name.toFirstUpper;
-	}
-
-	def entityFullQualifiedName(Entity entity) {
-		return getPackageName(entity) + "." + entityName(entity);
-	}
-
-	def entityFullQualifiedFileName(Entity entity) {
-		return entityFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
-	}
 
 	//-------------------------------------------------------------------------
 	// value object

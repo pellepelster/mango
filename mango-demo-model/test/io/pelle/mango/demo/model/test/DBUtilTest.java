@@ -1,12 +1,12 @@
 package io.pelle.mango.demo.model.test;
 
+import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertThat;
-import static io.pelle.mango.client.base.vo.query.SelectQuery.*;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.util.DBUtil;
-import io.pelle.mango.test.Entity1;
-import io.pelle.mango.test.Entity2;
+import io.pelle.mango.test.server.Entity1;
+import io.pelle.mango.test.server.Entity2;
 
 import java.util.Map;
 import java.util.Set;
