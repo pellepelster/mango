@@ -12,6 +12,7 @@ import io.pelle.mango.test.client.Entity5VO;
 import io.pelle.mango.test.client.ValueObject1;
 import io.pelle.mango.test.client.ValueObject2;
 import io.pelle.mango.test.client.ValueObject3;
+import io.pelle.mango.test.client.ValueObject4;
 import io.pelle.mango.test.server.Entity1;
 import io.pelle.mango.test.server.Entity2;
 import io.pelle.mango.test.server.Entity3;
@@ -311,13 +312,28 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
-	public void testValueObject2ExtendsValueObject3CopyConstructor() {
+	public void testValueObject3ExtendsValueObject2CopyConstructor() {
 
 		ValueObject2 valueObject2 = new ValueObject2();
 		valueObject2.setString2("zzz");
 
 		ValueObject3 valueObject3 = new ValueObject3(valueObject2);
 		assertEquals("zzz", valueObject3.getString2());
+	}
+
+	@Test
+	public void testValueObject4ExtendsValueObject3ExtendsValueObject2CopyConstructor() {
+
+		ValueObject2 valueObject2 = new ValueObject2();
+		valueObject2.setString2("zzz");
+
+		ValueObject3 valueObject3 = new ValueObject3(valueObject2);
+		valueObject3.setString3("xxx");
+
+		ValueObject4 valueObject4 = new ValueObject4(valueObject3);
+
+		assertEquals("zzz", valueObject4.getString2());
+		assertEquals("xxx", valueObject4.getString3());
 	}
 
 }
