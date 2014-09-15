@@ -72,4 +72,9 @@ xtend {
 	encoding = "UTF-8"
 }
 
+task clean.doLast {
+    ant.delete(includeEmptyDirs: 'true', failOnError: 'false') {
+        fileset(dir: "model", includes: "**/*")
+    }
+}
 compileXtend.dependsOn generateXtext

@@ -125,6 +125,15 @@ class MangoModelProject extends MangoBaseProject {
 			classifier 'xml-generated-sources'
 			from project.sourceSets.generatedXml.allSource
 		}
+		
+		
+		project.clean.doLast { 
+		    ant.delete(includeEmptyDirs: 'true', failOnError: 'false') {
+		        fileset(dir: "src-gen-client-gwt", includes: "**/*")
+		        fileset(dir: "src-gen-server", includes: "**/*")
+		        fileset(dir: "src-gen-xml", includes: "**/*")
+		    }
+		}
 
 		project.compileGeneratedServerJava.dependsOn project.compileJava
 		
