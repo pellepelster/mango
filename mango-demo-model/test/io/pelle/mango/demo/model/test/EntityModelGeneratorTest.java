@@ -29,7 +29,7 @@ public class EntityModelGeneratorTest {
 
 	@Test
 	public void testEntity1() {
-		assertEquals("io.pelle.mango.test.Entity1", Entity1.class.getName());
+		assertEquals("io.pelle.mango.test.server.Entity1", Entity1.class.getName());
 	}
 
 	@Test
