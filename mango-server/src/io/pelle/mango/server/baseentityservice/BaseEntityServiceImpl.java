@@ -1,10 +1,10 @@
-package io.pelle.mango.server;
+package io.pelle.mango.server.baseentityservice;
 
-import io.pelle.mango.client.IBaseEntityService;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.util.BeanUtils;
 import io.pelle.mango.server.validator.IValidator;

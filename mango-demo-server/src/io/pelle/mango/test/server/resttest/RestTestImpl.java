@@ -1,6 +1,6 @@
-package io.pelle.mango.test.server;
+package io.pelle.mango.test.server.resttest;
 
-import io.pelle.mango.test.client.IRestTest;
+import io.pelle.mango.test.client.resttest.IRestTest;
 
 public class RestTestImpl implements IRestTest {
 

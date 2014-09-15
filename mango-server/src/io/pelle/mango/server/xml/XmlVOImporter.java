@@ -1,12 +1,12 @@
 package io.pelle.mango.server.xml;
 
-import io.pelle.mango.client.IBaseEntityService;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
+import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.db.util.BeanUtils;
 import io.pelle.mango.server.base.xml.IXmlVOImporter;
 import io.pelle.mango.server.base.xml.XmlElementDescriptor;
@@ -139,7 +139,9 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 								if (event.isStartElement()) {
 									StartElement listReferenceStartElement = event.asStartElement();
 
-//									XmlElementDescriptor listReferenceXmlElementDescriptor = this.voXmlMapper.getElementDescriptor(listReferenceStartElement.getName().getLocalPart());
+									// XmlElementDescriptor
+									// listReferenceXmlElementDescriptor =
+									// this.voXmlMapper.getElementDescriptor(listReferenceStartElement.getName().getLocalPart());
 
 									resolveVOReference(eventReader, event, (Class<IBaseVO>) attributeDescriptor.getListAttributeType(), new ListAdderCallback((List<IBaseVO>) vo.get(attributeDescriptor.getAttributeName())));
 								}

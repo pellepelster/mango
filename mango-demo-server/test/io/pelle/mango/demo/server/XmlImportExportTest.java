@@ -1,8 +1,8 @@
 package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
-import io.pelle.mango.client.IBaseEntityService;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.server.xml.XmlVOExporter;
 import io.pelle.mango.server.xml.XmlVOImporter;
 import io.pelle.mango.test.client.ENUMERATION1;
@@ -103,14 +103,14 @@ public class XmlImportExportTest extends BaseDemoTest {
 		Element entityElementList = doc.createElement("Entity1List");
 		doc.appendChild(entityElementList);
 
-		// entity 1		
+		// entity 1
 		Element entity1Element = doc.createElement("Entity1");
 		entityElementList.appendChild(entity1Element);
 		Element stringDatatype1Element = doc.createElement("stringDatatype1");
 		stringDatatype1Element.setTextContent("xxx");
 		entity1Element.appendChild(stringDatatype1Element);
 
-		// entity 2		
+		// entity 2
 		Element entity2Element = doc.createElement("Entity1");
 		entityElementList.appendChild(entity2Element);
 		Element stringDatatype2Element = doc.createElement("stringDatatype1");

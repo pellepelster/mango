@@ -1,8 +1,8 @@
-package io.pelle.mango.server;
+package io.pelle.mango.server.hierachicalservice;
 
 import io.pelle.mango.client.DictionaryHierarchicalNodeVO;
-import io.pelle.mango.client.IHierachicalService;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
+import io.pelle.mango.client.hierachicalservice.IHierachicalService;
 
 import java.util.List;
 

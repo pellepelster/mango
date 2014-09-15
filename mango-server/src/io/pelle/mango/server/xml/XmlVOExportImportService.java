@@ -1,8 +1,8 @@
 package io.pelle.mango.server.xml;
 
-import io.pelle.mango.client.IBaseEntityService;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.server.vo.VOMetaDataService;
 import io.pelle.mango.server.xml.XmlVOImporter.BinaryFileReadCallback;
 

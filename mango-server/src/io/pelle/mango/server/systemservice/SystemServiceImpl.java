@@ -1,8 +1,8 @@
-package io.pelle.mango.server;
+package io.pelle.mango.server.systemservice;
 
-import io.pelle.mango.client.ISystemService;
 import io.pelle.mango.client.LogEntry;
 import io.pelle.mango.client.Systeminformation;
+import io.pelle.mango.client.systemservice.ISystemService;
 
 public class SystemServiceImpl implements ISystemService {
 
