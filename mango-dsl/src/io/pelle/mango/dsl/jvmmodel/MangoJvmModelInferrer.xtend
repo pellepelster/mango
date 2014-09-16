@@ -1,11 +1,12 @@
 package io.pelle.mango.dsl.jvmmodel
 
 import com.google.inject.Inject
+import io.pelle.mango.dsl.generator.client.ClientNameUtils
+import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.ModelRoot
-import io.pelle.mango.dsl.mango.ServiceMethod
+import io.pelle.mango.dsl.mango.ValueObject
 import org.eclipse.xtext.common.types.JvmDeclaredType
-import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
@@ -25,9 +26,14 @@ class MangoJvmModelInferrer extends AbstractModelInferrer {
 
 	@Inject
 	extension IQualifiedNameProvider
+	
+	@Inject
+	extension ServerNameUtils serverNameUtils
+	@Inject
+	extension ClientNameUtils clientNameUtils
 
 	/**
-     * convenience API to build and initialize JVM types and their members.
+     * convenience API to build and initialize JVM types and t heir members.
      */
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
@@ -54,49 +60,27 @@ class MangoJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	def dispatch void infer(ModelRoot element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		// Here you explain how your model is mapped to Java elements, by writing the actual translation code.
-		// An implementation for the initial hello world example could look like this:
-		//   		acceptor.accept(element.toClass("my.company.greeting.MyGreetings"))
-		//   			.initializeLater([
-		//   				for (greeting : element.greetings) {
-		//   					members += greeting.toMethod("hello" + greeting.name, greeting.newTypeRef(typeof(String))) [
-		//   						body = [
-		//   							append('''return "Hello «greeting.name»";''')
-		//   						]
-		//   					]
-		//   				}
-		//   			])
-	}
-	
-		def dispatch void infer(ServiceMethod element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+	def dispatch void infer(ModelRoot modelRoot, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 
-		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater [
-			documentation = element.documentation
-		]
-		
-	}
-		
-	def dispatch void infer(Entity element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+		for (Entity entity : modelRoot.eAllContents.toIterable.filter(Entity)) {
+			infer(entity, acceptor, isPreIndexingPhase);
+		}
 
-		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater [
-			documentation = element.documentation
-		]
-		
-		acceptor.accept(element.toClass(element.name)).initializeLater [
-			documentation = element.documentation
+		for (ValueObject valueObject : modelRoot.eAllContents.toIterable.filter(ValueObject)) {
+			infer(valueObject, acceptor, isPreIndexingPhase);
+		}
+	}
+
+	def dispatch void infer(ValueObject valueObject, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
+		acceptor.accept(valueObject.toClass(valueObject.fullyQualifiedName)).initializeLater [
+			documentation = valueObject.documentation
 		]
 	}
 
-	def dispatch void infer(JvmType element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-
-		acceptor.accept(element.toClass(element.fullyQualifiedName)).initializeLater [
-			documentation = element.documentation
+	def dispatch void infer(Entity entity, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
+		acceptor.accept(entity.toClass(entity.fullyQualifiedName)).initializeLater [
+			documentation = entity.documentation
 		]
-		
-//		acceptor.accept(element.toClass(element.name)).initializeLater [
-//			documentation = element.documentation
-//		]
 	}
 
 }

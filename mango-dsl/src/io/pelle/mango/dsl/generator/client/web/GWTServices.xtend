@@ -22,9 +22,6 @@ class GWTServices extends BaseServices {
 	@Inject 
 	extension ClientNameUtils
 
-	@Inject 
-	extension ClientTypeUtils
-
 	def gwtRemoteServiceLocator(Model model) '''
 package «model.modelPackageName»;
 
@@ -100,12 +97,11 @@ public interface «model.gwtRemoteServiceLocatorInterfaceName» {
 	'''
 
 	def serviceMethodAsync(ServiceMethod serviceMethod) '''
-		«serviceMethod.genericTypeDefinition.genericTypeDefinition»
-		
-		«IF serviceMethod.methodParameters.size == 0»
+		«serviceMethod.returnType.type.simpleName»
+		«IF serviceMethod.params.size == 0»
 		void «serviceMethod.name.toFirstLower()»(«serviceMethod.asyncCallback»)
 		«ELSE»
-		void «serviceMethod.name.toFirstLower()»(«serviceMethod.methodParameters.methodParameters», «serviceMethod.asyncCallback»)
+		void «serviceMethod.name.toFirstLower()»(«serviceMethod.params.methodParameters», «serviceMethod.asyncCallback»)
 		«ENDIF»
 	'''
 
@@ -136,9 +132,9 @@ public interface «model.gwtRemoteServiceLocatorInterfaceName» {
 				try
 				{
 				«IF serviceMethod.returnType != null»
-					callback.onSuccess(this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR methodParameter : serviceMethod.methodParameters SEPARATOR  ", "»«methodParameter.name.toFirstLower()»«ENDFOR»));
+					callback.onSuccess(this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR parameter : serviceMethod.params SEPARATOR  ", "»«parameter.name»«ENDFOR»));
 				«ELSE»
-					this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR methodParameter : serviceMethod.methodParameters SEPARATOR  ", "»«methodParameter.name.toFirstLower()»«ENDFOR»);
+					this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR parameter : serviceMethod.params SEPARATOR  ", "»«parameter.name»«ENDFOR»);
 					callback.onSuccess(null);
 				«ENDIF»
 				}

@@ -13,6 +13,8 @@ import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ValueObject
 import javax.management.Attribute
 import org.eclipse.emf.ecore.EObject
+import javax.xml.ws.ServiceMode
+import io.pelle.mango.dsl.mango.ServiceMethod
 
 class NameUtils {
 
@@ -142,6 +144,9 @@ class NameUtils {
 		return service.serviceName
 	}
 
+	def methodName(ServiceMethod serviceMethod) {
+		return serviceMethod.name.toFirstLower;
+	}
 	
 
 	//-------------------------------------------------------------------------

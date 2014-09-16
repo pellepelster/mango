@@ -2,18 +2,23 @@ package io.pelle.mango.dsl.generator.client.web
 
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.client.ClientTypeUtils
+import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.mango.MethodParameter
 import io.pelle.mango.dsl.mango.ServiceMethod
 import java.util.List
+import org.eclipse.xtext.common.types.JvmFormalParameter
 
 class BaseServices {
 
 	@Inject
 	extension ClientTypeUtils
 
-	def methodParameters(List<MethodParameter> methodParameters) '''
-		«FOR methodParameter : methodParameters SEPARATOR ", "»
-			«methodParameter.methodParameter»
+	@Inject
+	extension NameUtils;
+
+	def methodParameters(List<JvmFormalParameter> parameters) '''
+		«FOR parameter : parameters SEPARATOR ", "»
+			«parameter.name» «parameter.parameterType.simpleName»
 		«ENDFOR»
 	'''
 
@@ -22,19 +27,7 @@ class BaseServices {
 	}
 
 	def serviceMethod(ServiceMethod serviceMethod) '''
-		«IF serviceMethod.genericTypeDefinition != null»
-			«serviceMethod.genericTypeDefinition.genericTypeDefinition»
-		«ENDIF»
-		«serviceMethod.serviceMethodReturnType»
-		 «serviceMethod.name.toFirstLower()»(«serviceMethod.methodParameters.methodParameters»);
-	'''
-
-	def serviceMethodReturnType(ServiceMethod serviceMethod) '''
-		«IF serviceMethod.returnType == null»
-			void
-		«ELSE»
-			«serviceMethod.returnType.type»
-		«ENDIF»
+		«serviceMethod.returnType.type.simpleName»  «serviceMethod.methodName»(«serviceMethod.params.methodParameters»);
 	'''
 
 }
