@@ -3,7 +3,10 @@
  */
 package io.pelle.mango.dsl;
 
+import io.pelle.mango.dsl.jvmmodel.MangoJvmModelInferrer;
+
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
+import org.eclipse.xtext.xbase.jvmmodel.IJvmModelInferrer;
 
 import com.google.inject.Binder;
 import com.google.inject.Singleton;
@@ -18,6 +21,10 @@ public class MangoRuntimeModule extends io.pelle.mango.dsl.AbstractMangoRuntimeM
 	public void configure(Binder binder) {
 		super.configure(binder);
 		binder.bind(IOutputConfigurationProvider.class).to(OutputConfigurationProvider.class).in(Singleton.class);
+		// binder.bind(IJvmModelInferrer.class).to(MangoJvmModelInferrer.class).in(Singleton.class);
 	}
 
+	public Class<? extends IJvmModelInferrer> bindIJvmModelInferrer() {
+		return MangoJvmModelInferrer.class;
+	}
 }

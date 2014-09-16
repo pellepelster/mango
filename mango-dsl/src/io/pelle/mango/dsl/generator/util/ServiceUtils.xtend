@@ -1,10 +1,9 @@
 package io.pelle.mango.dsl.generator.util
 
 import io.pelle.mango.dsl.mango.MethodParameter
+import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.SimpleDatatypeEntityAttribute
 import java.util.List
-import io.pelle.mango.dsl.mango.MethodReturnType
-import io.pelle.mango.dsl.mango.ServiceMethod
 
 class ServiceUtils {
 
@@ -15,15 +14,6 @@ class ServiceUtils {
 			if (!SimpleDatatypeEntityAttribute.isAssignableFrom(methodParameter.class)) {
 				return false
 			}
-		}
-
-		return true
-	}
-
-	def isSimpleType(MethodReturnType methodReturnType) {
-
-		if (!SimpleDatatypeEntityAttribute.isAssignableFrom(methodReturnType.class)) {
-			return false
 		}
 
 		return true

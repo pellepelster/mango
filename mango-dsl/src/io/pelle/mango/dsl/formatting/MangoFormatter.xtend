@@ -31,9 +31,9 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setLinewrap(0, 1, 2).before(ML_COMMENTRule)
 		c.setLinewrap(0, 1, 1).after(ML_COMMENTRule)
 
-		c.setIndentation(m.packageDeclarationAccess.leftCurlyBracketKeyword_2, m.packageDeclarationAccess.rightCurlyBracketKeyword_4)
-		c.setLinewrap(1, 1, 1).after(m.packageDeclarationAccess.leftCurlyBracketKeyword_2)
-		c.setLinewrap(2, 2, 2).after(m.packageDeclarationAccess.rightCurlyBracketKeyword_4)
+//		c.setIndentation(m.packageDeclarationAccess.leftCurlyBracketKeyword_2, m.packageDeclarationAccess.rightCurlyBracketKeyword_4)
+//		c.setLinewrap(1, 1, 1).after(m.packageDeclarationAccess.leftCurlyBracketKeyword_2)
+//		c.setLinewrap(2, 2, 2).after(m.packageDeclarationAccess.rightCurlyBracketKeyword_4)
 
 		c.setAutoLinewrap(120);
 

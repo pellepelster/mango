@@ -19,7 +19,7 @@ class XmlNameUtils {
 	// namespace/schemas
 	//=========================================================================
 	def String xmlNamespaceUrl(Model model) {
-		return "http://" + model.name.toLowerCase()
+		return "http://" + model.modelName.toLowerCase()
 	}
 
 	def String xmlNamespace(Entity entity) {
@@ -95,7 +95,7 @@ class XmlNameUtils {
 	// xml vo mapper
 	//-------------------------------------------------------------------------
 	def xmlVOMapperName(Model model)  {
-		return model.name.toFirstUpper() + 'XmlVOMapper';		
+		return model.modelName.toFirstUpper() + 'XmlVOMapper';		
 	}
 	
 	def xmlVOMapperPackage(Model model) {
@@ -168,7 +168,7 @@ class XmlNameUtils {
 	//-------------------------------------------------------------------------
 	def entityImportExportAppliationContextFullQualifiedFileName(Model model)
 	{
-		return model.name.toFirstUpper + "Webservices-gen.xml";
+		return model.modelName.toFirstUpper + "Webservices-gen.xml";
 	}
 	
 }

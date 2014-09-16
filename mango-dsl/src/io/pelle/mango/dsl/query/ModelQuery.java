@@ -36,6 +36,10 @@ public class ModelQuery {
 		}
 	}
 
+	public static ModelQuery createQuery(Model model) {
+		return new ModelQuery(model);
+	}
+
 	public PackageQuery getRootPackages() {
 		return new PackageQuery(Collections2.transform(this.model.eContents(), FunctionEObjectTypeSelect.getFunction(PackageDeclaration.class)));
 	}
@@ -58,7 +62,7 @@ public class ModelQuery {
 		}
 
 		for (PackageDeclaration packageDeclaration : packageDeclarations) {
-			String currentPackageName = parentPackageName + delimiter + packageDeclaration.getName();
+			String currentPackageName = parentPackageName + delimiter + packageDeclaration.getPackageName();
 			packageHierarchy.put(currentPackageName, packageDeclaration);
 
 			createPackageHiararchy(getPackages(packageDeclaration.getElements()), currentPackageName, packageHierarchy);
@@ -97,7 +101,7 @@ public class ModelQuery {
 					tempPackageName = tempPackageName.substring(0, tempPackageName.lastIndexOf("."));
 
 					for (PackageDeclaration p : getPackages(parentPackage.getElements())) {
-						if (p.getName().startsWith(tempPackageName)) {
+						if (p.getPackageName().startsWith(tempPackageName)) {
 							packageToSplit = p;
 							existingPackage = tempPackageName;
 							break;
@@ -107,20 +111,20 @@ public class ModelQuery {
 
 				if (packageToSplit == null) {
 					PackageDeclaration newPackage = MangoFactory.eINSTANCE.createPackageDeclaration();
-					newPackage.setName(packageToCreate);
+					newPackage.setPackageName(packageToCreate);
 
 					parentPackage.getElements().add(newPackage);
 
 					return newPackage;
 				} else {
-					String oldPackageName = packageToSplit.getName().substring(0, existingPackage.length());
-					String oldPackageSplitName = packageToSplit.getName().substring(existingPackage.length() + 1);
+					String oldPackageName = packageToSplit.getPackageName().substring(0, existingPackage.length());
+					String oldPackageSplitName = packageToSplit.getPackageName().substring(existingPackage.length() + 1);
 					packageToCreate = packageToCreate.substring(existingPackage.length() + 1);
 
-					packageToSplit.setName(oldPackageName);
+					packageToSplit.setPackageName(oldPackageName);
 
 					PackageDeclaration splitPackage = MangoFactory.eINSTANCE.createPackageDeclaration();
-					splitPackage.setName(oldPackageSplitName);
+					splitPackage.setPackageName(oldPackageSplitName);
 
 					splitPackage.getElements().addAll(packageToSplit.getElements());
 					splitPackage.getElements().clear();
@@ -128,7 +132,7 @@ public class ModelQuery {
 					packageToSplit.getElements().add(splitPackage);
 
 					PackageDeclaration newPackage = MangoFactory.eINSTANCE.createPackageDeclaration();
-					newPackage.setName(packageToCreate);
+					newPackage.setPackageName(packageToCreate);
 					packageToSplit.getElements().add(newPackage);
 
 					return newPackage;
@@ -136,7 +140,7 @@ public class ModelQuery {
 			}
 
 			PackageDeclaration newPackage = MangoFactory.eINSTANCE.createPackageDeclaration();
-			newPackage.setName(packageName);
+			newPackage.setPackageName(packageName);
 			model.getElements().add(newPackage);
 
 			return newPackage;

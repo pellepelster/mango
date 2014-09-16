@@ -52,8 +52,8 @@ public class ModelUtil {
 		}
 
 		if (!resource.getContents().isEmpty()) {
-			if (resource.getContents().get(0) instanceof Model) {
-				return (Model) resource.getContents().get(0);
+			if (resource.getContents().get(0) instanceof ModelRoot) {
+				return (ModelRoot) resource.getContents().get(0);
 			} else if (resource.getContents().get(0) instanceof PackageDeclaration) {
 				return (PackageDeclaration) resource.getContents().get(0);
 			} else {

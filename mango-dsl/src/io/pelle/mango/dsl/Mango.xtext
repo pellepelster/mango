@@ -1,33 +1,23 @@
-grammar io.pelle.mango.dsl.Mango with org.eclipse.xtext.common.Terminals
-
-import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
+grammar io.pelle.mango.dsl.Mango with org.eclipse.xtext.xbase.Xbase
 
 generate mango "http://www.pelle.io/mango/dsl/Mango"
 
 ModelRoot:
-	Model | PackageDeclaration;
-	
+	importSection=XImportSection?
+	modelRoot=Model | PackageDeclaration;
+
 Model:
-	"project" name=ID "{"
+	"project" modelName=ValidID "{"
 		elements+=PackageDeclaration*
 	"}"; 
 
 PackageDeclaration:
-	'package' name=QualifiedName '{'
+	'package' packageName=QualifiedName '{'
 		(elements+=AbstractElement)*
 	'}';
 	
 AbstractElement:
-	PackageDeclaration | ValueObject | Datatype | Entity | Enumeration | Import | ModuleDefinition | Module | Service | Dictionary | NavigationNode;
-
-QualifiedName:
-	ID ('.' ID)*;
-
-Import:
-	'import' importedNamespace=QualifiedNameWithWildcard;
-
-QualifiedNameWithWildcard:
-	QualifiedName '.*'?;
+	PackageDeclaration | ValueObject | Datatype | Entity | Enumeration | ModuleDefinition | Module | Service | Dictionary | NavigationNode;
 
 //-----------------------------------------------------------------------------
 // enumeration
@@ -42,7 +32,7 @@ EnumerationValue: ID;
 // entity
 //-----------------------------------------------------------------------------
 Entity:
-	'entity' name=ID ('extends' extends=[Entity|QualifiedName])? ('jvmtype' jvmtype=[jvmTypes::JvmType|QualifiedName])? '{'
+	'entity' name=ID ('extends' extends=[Entity|QualifiedName])? ('jvmtype' jvmtype=JvmTypeReference)? '{'
 		("naturalkey {" naturalKeyAttributes+=[EntityAttribute | QualifiedName ] (", " naturalKeyAttributes+=[EntityAttribute | QualifiedName ])* "}")?
 		(attributes+=EntityAttribute)*
 	'}';
@@ -51,7 +41,7 @@ Entity:
 // Value Object
 //-----------------------------------------------------------------------------
 ValueObject:
-	"valueobject" name=ID ('extends' extends=[ValueObject|QualifiedName])? ('jvmtype' jvmtype=[jvmTypes::JvmType|QualifiedName])? '{'
+	"valueobject" name=ID ('extends' extends=[ValueObject|QualifiedName])? ('jvmtype' jvmtype=JvmTypeReference)? '{'
 		(attributes+=EntityAttribute)*
 	"}";
 	
@@ -422,14 +412,12 @@ MethodType: Datatype;
 
 MethodParameter: EntityAttribute | GenericEntityAttribute | JvmEntityAttribute;
 
-MethodReturnType: GenericType | ValueObjectType | EntityType | SimpleTypeType | MangoJvmType;
-
 ServiceOptions:
 	{ServiceOptions}
 	(nonpublic?="nonpublic")?;
 		
 ServiceMethod:
-	"servicemethod" (genericTypeDefinition=GenericTypeDefinition)? name=ID ("returns" returnType=MethodReturnType)? "{"
+	"servicemethod" (genericTypeDefinition=GenericTypeDefinition)? name=ID ("returns" returnType=JvmTypeReference)? "{"
 		(methodParameters+=MethodParameter)*
 	"}";
 
@@ -444,7 +432,7 @@ GenericEntityAttribute:
 	'generic' type=[GenericTypeDefinition|QualifiedName]? name=ID;
 
 JvmEntityAttribute:
-	"jvmtype" type=[jvmTypes::JvmType|QualifiedName]("<"generic=Generic">")?(cardinality=Cardinality)? name=ID;
+	"jvmtype" type=JvmTypeReference("<"generic=Generic">")?(cardinality=Cardinality)? name=ID;
 
 // TODO clean up this mess
 GenericType:
@@ -460,7 +448,7 @@ Generic: GenericWildcardType | GenericType;
 
 //- jvm type --------------------------------------------------------------
 MangoJvmType:
-	"jvmtype" type=[jvmTypes::JvmType|QualifiedName]("<"generic=[GenericTypeDefinition]">")?(cardinality=Cardinality)?;
+	"jvmtype" type=JvmTypeReference("<"generic=[GenericTypeDefinition]">")?(cardinality=Cardinality)?;
 
 
 NavigationNode:
