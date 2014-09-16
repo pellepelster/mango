@@ -7,7 +7,6 @@ import com.google.gwt.user.client.rpc.RemoteService
 import com.google.gwt.user.client.rpc.ServiceDefTarget
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
-import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod

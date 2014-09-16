@@ -22,15 +22,10 @@ import io.pelle.mango.dsl.mango.EntityType
 import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.EnumerationDataType
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
-import io.pelle.mango.dsl.mango.GenericEntityAttribute
-import io.pelle.mango.dsl.mango.GenericType
-import io.pelle.mango.dsl.mango.GenericTypeDefinition
 import io.pelle.mango.dsl.mango.IntegerDataType
 import io.pelle.mango.dsl.mango.IntegerEntityAttribute
-import io.pelle.mango.dsl.mango.JvmEntityAttribute
 import io.pelle.mango.dsl.mango.LongDataType
 import io.pelle.mango.dsl.mango.LongEntityAttribute
-import io.pelle.mango.dsl.mango.MangoJvmType
 import io.pelle.mango.dsl.mango.MapEntityAttribute
 import io.pelle.mango.dsl.mango.SimpleTypeType
 import io.pelle.mango.dsl.mango.SimpleTypes
@@ -39,8 +34,6 @@ import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObjectEntityAttribute
 import java.util.ArrayList
 import java.util.List
-
-import static io.pelle.mango.dsl.mango.SimpleTypes.*
 
 class TypeUtils {
 	
@@ -164,46 +157,6 @@ class TypeUtils {
 	def dispatch String getRawTypeClass(EntityAttribute entityAttribute)
 	{
 		getRawType(entityAttribute) + ".class"
-	}
-	
-	//-----------------
-	// JymType
-	//-----------------
-	def dispatch String getType(JvmEntityAttribute entityAttribute)
-	{
-		if (entityAttribute.generic != null) {
-			return getTypeWithCardinality(entityAttribute.cardinality, entityAttribute.type.identifier + "<" + entityAttribute.generic.type + ">")
-		}
-		else {
-			return getTypeWithCardinality(entityAttribute.cardinality, entityAttribute.type.identifier)
-		}
-	}
-
-	def dispatch String getType(MangoJvmType jvmType)
-	{
-		if (jvmType.generic != null) {
-			return getTypeWithCardinality(jvmType.cardinality, jvmType.type.identifier + "<" + jvmType.generic.type + ">")
-		}
-		else {
-			return getTypeWithCardinality(jvmType.cardinality, jvmType.type.identifier)
-		}	}
-	
-	//-----------------
-	// GenericType
-	//-----------------
-	def dispatch String getType(GenericType genericType)
-	{
-		getTypeWithCardinality(genericType.cardinality, genericType.genericTypeDefinition.name)
-	}
-
-	def dispatch String getType(GenericTypeDefinition genericTypeDefinition)
-	{
-		genericTypeDefinition.name
-	}
-
-	def dispatch String getType(GenericEntityAttribute genericEntityAttribute)
-	{
-		genericEntityAttribute.type.type
 	}
 	
 	//-----------------
@@ -463,14 +416,6 @@ public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.ty
 			default: {
 				throw new RuntimeException(String.format("simple type '%s' not implemented", simpleTypes))
 			}
-		}
-	}
-
-
-	def genericTypeDefinition(GenericTypeDefinition genericTypeDefinition) {
-		if (genericTypeDefinition != null)
-		{
-			return "<" + genericTypeDefinition.name + " extends " + genericTypeDefinition.genericType.type + ">"
 		}
 	}
 

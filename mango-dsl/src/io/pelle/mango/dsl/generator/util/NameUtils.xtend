@@ -10,11 +10,10 @@ import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.ModuleDefinition
 import io.pelle.mango.dsl.mango.PackageDeclaration
 import io.pelle.mango.dsl.mango.Service
+import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
 import javax.management.Attribute
 import org.eclipse.emf.ecore.EObject
-import javax.xml.ws.ServiceMode
-import io.pelle.mango.dsl.mango.ServiceMethod
 
 class NameUtils {
 
