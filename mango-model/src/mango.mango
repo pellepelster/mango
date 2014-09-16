@@ -5,7 +5,7 @@ import io.pelle.mango.client.base.vo.IBaseVO
 import io.pelle.mango.client.base.messages.IValidationMessage
 import io.pelle.mango.client.base.db.vos.Result
 import io.pelle.mango.client.base.vo.query.SelectQuery
-
+ 
 project Mango {
 
 	package io.pelle.^mango {

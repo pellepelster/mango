@@ -96,7 +96,7 @@ public interface «model.gwtRemoteServiceLocatorInterfaceName» {
 	'''
 
 	def serviceMethodAsync(ServiceMethod serviceMethod) '''
-		«serviceMethod.returnType.type.simpleName»
+		«serviceMethod.returnType.type.qualifiedName»
 		«IF serviceMethod.params.size == 0»
 		void «serviceMethod.name.toFirstLower()»(«serviceMethod.asyncCallback»)
 		«ELSE»

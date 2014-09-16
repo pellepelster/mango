@@ -160,7 +160,11 @@ public class ModelUtil {
 	}
 
 	public static Model getRootModel(EObject eObject) {
-		return (Model) getRoot(eObject);
-	}
 
+		if (eObject instanceof ModelRoot) {
+			return ((ModelRoot) eObject).getModelRoot();
+		}
+
+		throw new RuntimeException("unexpected type");
+	}
 }

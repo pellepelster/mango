@@ -13,12 +13,12 @@ class BaseServices {
 
 	def methodParameters(List<JvmFormalParameter> parameters) '''
 		«FOR parameter : parameters SEPARATOR ", "»
-			«parameter.name» «parameter.parameterType.simpleName»
+			«parameter.name» «parameter.parameterType.qualifiedName»
 		«ENDFOR»
 	'''
 
 	def serviceMethod(ServiceMethod serviceMethod) '''
-		«serviceMethod.returnType.type.simpleName»  «serviceMethod.methodName»(«serviceMethod.params.methodParameters»);
+		«serviceMethod.returnType.type.qualifiedName»  «serviceMethod.methodName»(«serviceMethod.params.methodParameters»);
 	'''
 
 }

@@ -26,7 +26,7 @@ ext {
 		spring_security: "3.2.4.RELEASE",
 		gwt: "2.6.1",
 		guava: "17.0",
-		xtext: "2.7.2"
+		xtext: "2.7.0"
 	]
 }
 

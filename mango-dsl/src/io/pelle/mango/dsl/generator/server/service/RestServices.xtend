@@ -37,9 +37,9 @@ class RestServices {
 	
 	public class «restControllerRequestVOName(service, method)»  {
 		«FOR parameter : method.params»
-			«attribute(parameter.parameterType.simpleName, parameter.name)»
-			«getter(parameter.parameterType.simpleName, parameter.name)»
-			«setter(parameter.parameterType.simpleName, parameter.name)»
+			«attribute(parameter.parameterType.qualifiedName, parameter.name)»
+			«getter(parameter.parameterType.qualifiedName, parameter.name)»
+			«setter(parameter.parameterType.qualifiedName, parameter.name)»
 		«ENDFOR»
 	}
 	'''
@@ -73,28 +73,28 @@ class RestServices {
 				«IF method.params.size == 1 && !method.params.onlySimpleTypes»
 					@RequestMapping(value = "«method.restMapping»", method = RequestMethod.POST)
 					@Transactional
-					public «method.returnType.simpleName» «method.methodName»(@RequestBody «method.params.methodParameters») {
+					public «method.returnType.qualifiedName» «method.methodName»(@RequestBody «method.params.methodParameters») {
 						«service.methodReturn(method)»
 					}
 				«ELSEIF method.params.onlySimpleTypes»
 					@RequestMapping(value = "«method.restMapping»/«FOR parameter : method.params SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»", produces="application/json", method = RequestMethod.GET)
 					@ResponseBody
 					@Transactional
-					public «method.returnType.simpleName» «method.methodName»Get(«FOR parameter : method.params SEPARATOR ", "»@PathVariable «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
+					public «method.returnType.qualifiedName» «method.methodName»Get(«FOR parameter : method.params SEPARATOR ", "»@PathVariable «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
 						«service.methodReturn(method)»
 					}
 
 					@RequestMapping(value = "«method.restMapping»", produces="application/json", method = RequestMethod.POST)
 					@ResponseBody
 					@Transactional
-					public «method.returnType.simpleName» «method.methodName»Post(«FOR parameter : method.params SEPARATOR ", "»@RequestParam «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
+					public «method.returnType.qualifiedName» «method.methodName»Post(«FOR parameter : method.params SEPARATOR ", "»@RequestParam «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
 						«service.methodReturn(method)»
 					}
 					
 					@RequestMapping(value = "«method.restMapping»", produces="application/json", method = RequestMethod.POST, consumes = "application/json")
 					@ResponseBody
 					@Transactional
-					public «method.returnType.simpleName» «method.methodName»PostRequestBody(@RequestBody «restControllerRequestVOName(service, method)» requestBody) {
+					public «method.returnType.qualifiedName» «method.methodName»PostRequestBody(@RequestBody «restControllerRequestVOName(service, method)» requestBody) {
 						«IF method.hasReturn»return«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»requestBody.get«parameter.name»()«ENDFOR»);
 					}
 				«ENDIF»
