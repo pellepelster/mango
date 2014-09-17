@@ -2,7 +2,7 @@ dependencies {
 	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xtext', version: versions.xtext
 	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xbase', version: versions.xtext
 	compile group: 'org.eclipse.xtend', name: 'org.eclipse.xtend.lib', version: versions.xtext
-	compile files(fileTree(System.properties['user.home'] + "/java/eclipse_pdebuild/plugins").include('*xtext*ui*.jar').include('*emf*ui*.jar').include('org.eclipse.osgi*.jar').include('org.eclipse.ui*.jar').include('org.eclipse.jface*.jar').include('org.eclipse.compare*.jar').include('org.eclipse.core.resources*.jar').include('org.eclipse.core.command*.jar').include('org.eclipse.equinox.registry*.jar').include('org.eclipse.equinox.common*.jar').include('org.eclipse.core.runtime*.jar').include('org.eclipse.emf.edit*.jar').include('org.eclipse.swt*.jar').exclude("*.source_*.jar"))
+	compile files(fileTree(System.properties['user.home'] + "/java/eclipse_pdebuild/plugins").include('*xtext*ui*.jar').include('*emf*ui*.jar').include('org.eclipse.osgi*.jar').include('org.eclipse.ui*.jar').include('org.eclipse.jface*.jar').include('org.eclipse.compare*.jar').include('org.eclipse.core.resources*.jar').include('org.eclipse.core.command*.jar').include('org.eclipse.equinox.registry*.jar').include('org.eclipse.equinox.common*.jar').include('org.eclipse.core.runtime*.jar').include('org.eclipse.emf.edit*.jar').include('org.eclipse.swt*.jar').include('org.eclipse.text*.jar').exclude("*.source_*.jar"))
 	compile project(':mango-dsl')
 }
 

@@ -3,11 +3,7 @@ project MangoDemo {
 	package io.pelle.^mango.test {
 		
 		service RestTest {
-			
-			servicemethod methodWithBooleanParameter returns simpletype Boolean {
-				boolean onOff
-			}
-			
+			servicemethod Boolean methodWithBooleanParameter ( Boolean onOff )
 		}
 		
 		stringdatatype StringDatatype1 {
