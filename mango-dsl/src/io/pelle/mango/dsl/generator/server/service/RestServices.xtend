@@ -82,7 +82,7 @@ class RestServices extends BaseServices {
 					@RequestMapping(value = "«method.restMapping»", produces="application/json", method = RequestMethod.POST, consumes = "application/json")
 					@ResponseBody
 					@Transactional
-					public «method.methodReturn» «method.methodName»PostRequestBody(@RequestBody «restControllerRequestVOName(service, method)» requestBody) {
+					public «method.methodReturn» «method.methodName»PostRequestBody(«IF !method.params.isEmpty»@RequestBody «restControllerRequestVOName(service, method)» requestBody«ENDIF») {
 						«IF !method.returnsVoid»return («method.returnType.jvmType»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»requestBody.«parameter.name.getterName»()«ENDFOR»);
 					}
 			«ENDFOR»
