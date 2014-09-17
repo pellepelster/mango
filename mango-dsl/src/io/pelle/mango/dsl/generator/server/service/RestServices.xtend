@@ -31,9 +31,9 @@ class RestServices extends BaseServices {
 	
 	public class «restControllerRequestVOName(service, method)»«method.methodTypeParameter»  {
 		«FOR parameter : method.params»
-			«attribute(parameter.parameterType.qualifiedName, parameter.name)»
-			«getter(parameter.parameterType.qualifiedName, parameter.name)»
-			«setter(parameter.parameterType.qualifiedName, parameter.name)»
+			«attribute(parameter.parameterType.jvmType, parameter.name)»
+			«getter(parameter.parameterType.jvmType, parameter.name)»
+			«setter(parameter.parameterType.jvmType, parameter.name)»
 		«ENDFOR»
 	}
 	'''

@@ -491,6 +491,12 @@ public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.ty
 		{
 			return clientNameUtils.voFullQualifiedName(valueObject)
 		}
+
+		var enumeration = jvmModelAssociations.getSourceElements(jvmTypeReference.type).findFirst[e | e instanceof Enumeration] as Enumeration
+		if (enumeration != null)
+		{
+			return clientNameUtils.enumerationFullQualifiedName(enumeration)
+		}
 		
 		return jvmTypeReference.qualifiedName
 	}

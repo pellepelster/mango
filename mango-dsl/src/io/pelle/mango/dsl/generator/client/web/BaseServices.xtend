@@ -17,7 +17,7 @@ class BaseServices {
 
 	def methodParameters(List<JvmFormalParameter> parameters) '''
 		«FOR parameter : parameters SEPARATOR ", "»
-			«parameter.parameterType.qualifiedName» «parameter.name»
+			«parameter.parameterType.jvmType» «parameter.name»
 		«ENDFOR»
 	'''
 

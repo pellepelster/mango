@@ -10,6 +10,7 @@ import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
+import io.pelle.mango.dsl.mango.Enumeration
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -62,11 +63,21 @@ class MangoJvmModelInferrer extends AbstractModelInferrer {
 		for (ValueObject valueObject : modelRoot.eAllContents.toIterable.filter(ValueObject)) {
 			infer(valueObject, acceptor, isPreIndexingPhase);
 		}
+
+		for (Enumeration enumeration : modelRoot.eAllContents.toIterable.filter(Enumeration)) {
+			infer(enumeration, acceptor, isPreIndexingPhase);
+		}
 	}
 
 	def dispatch void infer(ValueObject valueObject, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
 		acceptor.accept(valueObject.toClass(valueObject.fullyQualifiedName)).initializeLater [
 			documentation = valueObject.documentation
+		]
+	}
+
+	def dispatch void infer(Enumeration enumeration, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
+		acceptor.accept(enumeration.toClass(enumeration.fullyQualifiedName)).initializeLater [
+			documentation = enumeration.documentation
 		]
 	}
 
