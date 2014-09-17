@@ -9,33 +9,27 @@ import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 import io.pelle.mango.dsl.generator.client.web.BaseServices
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.generator.util.AttributeUtils
-import io.pelle.mango.dsl.generator.util.ServiceUtils
 import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
 
-class RestServices {
+class RestServices extends BaseServices {
 
 	@Inject
 	extension AttributeUtils
 
 	@Inject
-	extension ServerNameUtils server
+	extension ServerNameUtils serverNameUtils
 
 	@Inject
-	extension ServiceUtils
+	extension ClientTypeUtils;
 
 	@Inject
-	extension BaseServices
-
-	@Inject
-	extension ClientTypeUtils
-
-	ClientNameUtils clientNameUtils = new ClientNameUtils
+	ClientNameUtils clientNameUtils
 
 	def restServiceControllerRequetVO(Service service, ServiceMethod method) '''
 	package «service.packageName»;
 	
-	public class «restControllerRequestVOName(service, method)»  {
+	public class «restControllerRequestVOName(service, method)»«method.methodTypeParameter»  {
 		«FOR parameter : method.params»
 			«attribute(parameter.parameterType.qualifiedName, parameter.name)»
 			«getter(parameter.parameterType.qualifiedName, parameter.name)»
@@ -68,42 +62,35 @@ class RestServices {
 			{
 				this.«service.variableName» = «service.variableName»;
 			}
-			
+		
 			«FOR method : service.remoteMethods»
-				«IF method.params.size == 1 && !method.params.onlySimpleTypes»
-					@RequestMapping(value = "«method.restMapping»", method = RequestMethod.POST)
-					@Transactional
-					public «method.returnType.qualifiedName» «method.methodName»(@RequestBody «method.params.methodParameters») {
-						«service.methodReturn(method)»
-					}
-				«ELSEIF method.params.onlySimpleTypes»
-					@RequestMapping(value = "«method.restMapping»/«FOR parameter : method.params SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»", produces="application/json", method = RequestMethod.GET)
-					@ResponseBody
-					@Transactional
-					public «method.typeParameter.qualifiedName» «method.returnType.qualifiedName» «method.methodName»Get(«FOR parameter : method.params SEPARATOR ", "»@PathVariable «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
-						«service.methodReturn(method)»
-					}
-
-					@RequestMapping(value = "«method.restMapping»", produces="application/json", method = RequestMethod.POST)
-					@ResponseBody
-					@Transactional
-					public «method.returnType.qualifiedName» «method.methodName»Post(«FOR parameter : method.params SEPARATOR ", "»@RequestParam «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
-						«service.methodReturn(method)»
-					}
+			
+«««					@RequestMapping(value = "«method.restMapping»/«FOR parameter : method.params SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»", produces="application/json", method = RequestMethod.GET)
+«««					@ResponseBody
+«««					@Transactional
+«««					public «method.methodReturn» «method.methodName»Get(«FOR parameter : method.params SEPARATOR ", "»@PathVariable «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
+«««						«service.methodReturn(method)»
+«««					}
+«««
+«««					@RequestMapping(value = "«method.restMapping»", produces="application/json", method = RequestMethod.POST)
+«««					@ResponseBody
+«««					@Transactional
+«««					public «method.methodReturn» «method.methodName»Post(«FOR parameter : method.params SEPARATOR ", "»@RequestParam «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
+«««						«service.methodReturn(method)»
+«««					}
 					
 					@RequestMapping(value = "«method.restMapping»", produces="application/json", method = RequestMethod.POST, consumes = "application/json")
 					@ResponseBody
 					@Transactional
-					public «method.returnType.qualifiedName» «method.methodName»PostRequestBody(@RequestBody «restControllerRequestVOName(service, method)» requestBody) {
-						«IF method.hasReturn»return«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»requestBody.get«parameter.name»()«ENDFOR»);
+					public «method.methodReturn» «method.methodName»PostRequestBody(@RequestBody «restControllerRequestVOName(service, method)» requestBody) {
+						«IF !method.returnsVoid»return («method.returnType.jvmType»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»requestBody.«parameter.name.getterName»()«ENDFOR»);
 					}
-				«ENDIF»
 			«ENDFOR»
 		}
 	'''
 
 	def methodReturn(Service service, ServiceMethod method) '''
-		«IF method.hasReturn»return«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»«parameter.name»«ENDFOR»);
+		«IF !method.returnsVoid»return«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»«parameter.name»«ENDFOR»);
 	'''
 
 }

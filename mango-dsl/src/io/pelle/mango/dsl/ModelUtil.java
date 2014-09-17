@@ -161,8 +161,10 @@ public class ModelUtil {
 
 	public static Model getRootModel(EObject eObject) {
 
-		if (eObject instanceof ModelRoot) {
-			return ((ModelRoot) eObject).getModelRoot();
+		EObject root = getRoot(eObject);
+		
+		if (root instanceof ModelRoot) {
+			return ((ModelRoot) root).getModelRoot();
 		}
 
 		throw new RuntimeException("unexpected type '" + eObject.toString() + "'");

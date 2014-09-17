@@ -22,7 +22,7 @@ class ClientNameUtils extends NameUtils {
 			combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.packageName.packageName)
 		}
 	}
-	
+
 	override def modelPackageName(Model model) {
 		return ModelUtil.getSingleRootPackage(model).packageName.packageName + "." + GeneratorConstants.CLIENT_PACKAGE_POSTFIX
 	}

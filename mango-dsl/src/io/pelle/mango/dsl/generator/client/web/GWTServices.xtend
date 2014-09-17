@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteService
 import com.google.gwt.user.client.rpc.ServiceDefTarget
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
+import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
@@ -17,6 +18,9 @@ import io.pelle.mango.dsl.mango.ServiceMethod
  * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
  */
 class GWTServices extends BaseServices {
+
+	@Inject
+	extension ClientTypeUtils;
 
 	@Inject 
 	extension ClientNameUtils
@@ -70,11 +74,10 @@ public class «model.gwtRemoteServiceLocatorName» implements «model.gwtRemoteS
 package «model.modelPackageName»;
 
 public interface «model.gwtRemoteServiceLocatorInterfaceName» {
-
 	«FOR service : model.eAllContents.toIterable.filter(Service)» 
 	«service.gwtAsyncServiceInterfaceFullQualifiedName» get«service.serviceName»();
 	«ENDFOR»
-}
+	}
 '''
 
 	def gwtServiceInterface(Service service) '''
@@ -95,21 +98,12 @@ public interface «model.gwtRemoteServiceLocatorInterfaceName» {
 		}
 	'''
 
-	def serviceMethodAsync(ServiceMethod serviceMethod) '''
-		«serviceMethod.returnType.type.qualifiedName»
-		«IF serviceMethod.params.size == 0»
-		void «serviceMethod.name.toFirstLower()»(«serviceMethod.asyncCallback»)
-		«ELSE»
-		void «serviceMethod.name.toFirstLower()»(«serviceMethod.params.methodParameters», «serviceMethod.asyncCallback»)
-		«ENDIF»
+	def serviceMethodAsync(ServiceMethod method) '''
+		«method.methodTypeParameter» void «method.methodName»(«method.params.methodParameters»«IF !method.params.isEmpty»,«ENDIF»«method.asyncCallback»)
 	'''
 
 	def asyncCallback(ServiceMethod serviceMethod) '''
-		«IF serviceMethod.returnType != null»
-		com.google.gwt.user.client.rpc.AsyncCallback<«serviceMethod.returnType.type»> callback
-		«ELSE»
-		 com.google.gwt.user.client.rpc.AsyncCallback<Void> callback
-		«ENDIF»
+		«IF !serviceMethod.returnsVoid»com.google.gwt.user.client.rpc.AsyncCallback<«serviceMethod.returnType.jvmType»> callback«ELSE»com.google.gwt.user.client.rpc.AsyncCallback<Void> callback«ENDIF»
 	'''
 
 	def gwtRemoteServiceAsyncAdapter(Service service) '''

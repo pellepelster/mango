@@ -1,8 +1,6 @@
 package io.pelle.mango.dsl.jvmmodel
 
 import com.google.inject.Inject
-import io.pelle.mango.dsl.generator.client.ClientNameUtils
-import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.ModelRoot
 import io.pelle.mango.dsl.mango.ValueObject
@@ -27,11 +25,6 @@ class MangoJvmModelInferrer extends AbstractModelInferrer {
 	@Inject
 	extension IQualifiedNameProvider
 	
-	@Inject
-	extension ServerNameUtils serverNameUtils
-	@Inject
-	extension ClientNameUtils clientNameUtils
-
 	/**
      * convenience API to build and initialize JVM types and t heir members.
      */

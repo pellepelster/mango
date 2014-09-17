@@ -24,6 +24,7 @@ class ServerNameUtils extends NameUtils {
 	def entityFullQualifiedFileName(Entity entity) {
 		return entityFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
 	}
+
 	
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
 		
