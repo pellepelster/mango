@@ -19,11 +19,11 @@ import io.pelle.mango.dsl.mango.ServiceMethod
  */
 class GWTServices extends BaseServices {
 
-	@Inject 
-	extension ClientNameUtils
+	@Inject
+	extension ClientTypeUtils;
 
 	@Inject 
-	extension ClientTypeUtils
+	extension ClientNameUtils
 
 	def gwtRemoteServiceLocator(Model model) '''
 package «model.modelPackageName»;
@@ -56,30 +56,29 @@ public class «model.gwtRemoteServiceLocatorName» implements «model.gwtRemoteS
     } 
 
 	«FOR service : model.eAllContents.toIterable.filter(Service)» 
-	public «service.gwtAsyncServiceInterfaceFullQualifiedName» get«service.serviceName»() {
-		
-		final «service.gwtAsyncServiceInterfaceFullQualifiedName» service = («service.gwtAsyncServiceInterfaceFullQualifiedName») com.google.gwt.core.client.GWT.create(«service.gwtServiceInterfaceFullQualifiedName».class);
-		
-		«ServiceDefTarget.name» formEndpoint = («ServiceDefTarget.name») service;
-		formEndpoint.setServiceEntryPoint(getModuleBaseUrl() + "/«service.serviceSpringName»");
-		formEndpoint.setRpcRequestBuilder(io.pelle.mango.client.base.MangoClientBase.getInstance().getRpcRequestBuilder());
-		
-		return service;
-	}
-	«ENDFOR»
-}
-'''
+		public «service.gwtAsyncServiceInterfaceFullQualifiedName» get«service.serviceName»() {
+			
+			final «service.gwtAsyncServiceInterfaceFullQualifiedName» service = («service.gwtAsyncServiceInterfaceFullQualifiedName») com.google.gwt.core.client.GWT.create(«service.gwtServiceInterfaceFullQualifiedName».class);
+			
+			«ServiceDefTarget.name» formEndpoint = («ServiceDefTarget.name») service;
+			formEndpoint.setServiceEntryPoint(getModuleBaseUrl() + "/«service.serviceSpringName»");
+			formEndpoint.setRpcRequestBuilder(io.pelle.mango.client.base.MangoClientBase.getInstance().getRpcRequestBuilder());
+			
+			return service;
+		}
+		«ENDFOR»
+		}
+	'''
 
 	def gwtRemoteServiceLocatorInterface(Model model) '''
-package «model.modelPackageName»;
-
-public interface «model.gwtRemoteServiceLocatorInterfaceName» {
-
-	«FOR service : model.eAllContents.toIterable.filter(Service)» 
-	«service.gwtAsyncServiceInterfaceFullQualifiedName» get«service.serviceName»();
-	«ENDFOR»
-}
-'''
+		package «model.modelPackageName»;
+		
+		public interface «model.gwtRemoteServiceLocatorInterfaceName» {
+			«FOR service : model.eAllContents.toIterable.filter(Service)» 
+			«service.gwtAsyncServiceInterfaceFullQualifiedName» get«service.serviceName»();
+			«ENDFOR»
+			}
+	'''
 
 	def gwtServiceInterface(Service service) '''
 		package «service.packageName»;
@@ -99,22 +98,12 @@ public interface «model.gwtRemoteServiceLocatorInterfaceName» {
 		}
 	'''
 
-	def serviceMethodAsync(ServiceMethod serviceMethod) '''
-		«serviceMethod.genericTypeDefinition.genericTypeDefinition»
-		
-		«IF serviceMethod.methodParameters.size == 0»
-		void «serviceMethod.name.toFirstLower()»(«serviceMethod.asyncCallback»)
-		«ELSE»
-		void «serviceMethod.name.toFirstLower()»(«serviceMethod.methodParameters.methodParameters», «serviceMethod.asyncCallback»)
-		«ENDIF»
+	def serviceMethodAsync(ServiceMethod method) '''
+		«method.methodTypeParameter» void «method.methodName»(«method.params.methodParameters»«IF !method.params.isEmpty»,«ENDIF»«method.asyncCallback»)
 	'''
 
 	def asyncCallback(ServiceMethod serviceMethod) '''
-		«IF serviceMethod.returnType != null»
-		com.google.gwt.user.client.rpc.AsyncCallback<«serviceMethod.returnType.type»> callback
-		«ELSE»
-		 com.google.gwt.user.client.rpc.AsyncCallback<Void> callback
-		«ENDIF»
+		«IF !serviceMethod.returnsVoid»com.google.gwt.user.client.rpc.AsyncCallback<«serviceMethod.returnType.jvmType»> callback«ELSE»com.google.gwt.user.client.rpc.AsyncCallback<Void> callback«ENDIF»
 	'''
 
 	def gwtRemoteServiceAsyncAdapter(Service service) '''
@@ -136,9 +125,9 @@ public interface «model.gwtRemoteServiceLocatorInterfaceName» {
 				try
 				{
 				«IF serviceMethod.returnType != null»
-					callback.onSuccess(this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR methodParameter : serviceMethod.methodParameters SEPARATOR  ", "»«methodParameter.name.toFirstLower()»«ENDFOR»));
+					callback.onSuccess(this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR parameter : serviceMethod.params SEPARATOR  ", "»«parameter.name»«ENDFOR»));
 				«ELSE»
-					this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR methodParameter : serviceMethod.methodParameters SEPARATOR  ", "»«methodParameter.name.toFirstLower()»«ENDFOR»);
+					this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR parameter : serviceMethod.params SEPARATOR  ", "»«parameter.name»«ENDFOR»);
 					callback.onSuccess(null);
 				«ENDIF»
 				}

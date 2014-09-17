@@ -3,6 +3,9 @@
  */
 package io.pelle.mango.dsl;
 
+import io.pelle.mango.dsl.generator.MangoGenerator;
+
+import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 
 import com.google.inject.Binder;
@@ -18,6 +21,11 @@ public class MangoRuntimeModule extends io.pelle.mango.dsl.AbstractMangoRuntimeM
 	public void configure(Binder binder) {
 		super.configure(binder);
 		binder.bind(IOutputConfigurationProvider.class).to(OutputConfigurationProvider.class).in(Singleton.class);
+	}
+
+	@Override
+	public Class<? extends IGenerator> bindIGenerator() {
+		return MangoGenerator.class;
 	}
 
 }

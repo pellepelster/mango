@@ -1,3 +1,11 @@
+import java.util.List
+import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO
+import java.util.Map
+import io.pelle.mango.client.base.vo.IBaseVO
+import io.pelle.mango.client.base.messages.IValidationMessage
+import io.pelle.mango.client.base.db.vos.Result
+import io.pelle.mango.client.base.vo.query.SelectQuery
+ 
 project Mango {
 
 	package io.pelle.^mango {
@@ -49,37 +57,23 @@ project Mango {
 				
 		service HierachicalService {
 
-			servicemethod getRootNodes returns entity DictionaryHierarchicalNode 0..n {
-				string id
-			}
+			servicemethod List<DictionaryHierarchicalNode> getRootNodes ( String id )
 			
-			servicemethod getConfigurationById returns jvmtype io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO {
-				string id
-			}
+			servicemethod HierarchicalConfigurationVO getConfigurationById  ( String id )
 			
-			servicemethod getConfigurations returns jvmtype io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO 0..n {
-			}
+			servicemethod List<HierarchicalConfigurationVO> getConfigurations ()
 			
-			servicemethod hasChildren returns simpletype Boolean {
-				string voClassName
-				long voId
-			}
+			servicemethod Boolean hasChildren ( String voClassName, Long voId )
 			
-			servicemethod getChildNodes returns entity DictionaryHierarchicalNode 0..n {
-				string id
-				long voId
-				string voClassName
-			}
+			servicemethod List<DictionaryHierarchicalNode> getChildNodes ( String id, Long voId, String voClassName )
 		
 		}
 			
 		service SystemService {
 
-			servicemethod getSystemInformation returns valueobject Systeminformation {
-			}
+			servicemethod Systeminformation getSystemInformation ()
 	
-			servicemethod getLog returns valueobject LogEntry  {
-			}
+			servicemethod LogEntry getLog ()
 
 		}
 			
@@ -89,7 +83,7 @@ project Mango {
 			moduledefinition ModuleNavigation {
 				parameters {
 					parameter NavigationTreeElementName {
-						type String
+						type string
 					} 
 				}
 			}
@@ -97,10 +91,10 @@ project Mango {
 			moduledefinition ModuleHierarchicalTree {
 				parameters {
 					parameter HierarchicalTreeId {
-						type String
+						type string
 					} 
 					parameter ShowAddNodes {
-						type Boolean
+						type boolean
 					} 
 				}
 			}
@@ -111,11 +105,11 @@ project Mango {
 				parameters {
 				
 					parameter SearchDictionaryName {
-						type String
+						type string
 					}
 					 
 					parameter SearchText {
-						type String
+						type string
 					} 
 				}
 			}
@@ -128,11 +122,11 @@ project Mango {
 				parameters {
 				
 					parameter EditorDictionaryName {
-						type String
+						type string
 					} 
 					
 					parameter Id {
-						type Long
+						type long
 					} 
 					
 				}
@@ -141,48 +135,25 @@ project Mango {
 		
 		service BaseEntityService {
 
-			servicemethod <NewVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> getNewVO returns generic NewVOType {
-				string voClassName
-				map String String properties
-			}
+			servicemethod <NewVOType extends IBaseVO> NewVOType getNewVO ( String voClassName, Map<String,String> properties )
 
-			servicemethod <CreateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> create returns generic CreateVOType {
-				generic CreateVOType vo
-			}
+			servicemethod <CreateVOType extends IBaseVO> CreateVOType create ( CreateVOType vo )
 
-			servicemethod <ValidateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validate returns jvmtype io.pelle.mango.client.base.messages.IValidationMessage 0..n {
-				generic ValidateVOType vo
-			}
+			servicemethod <ValidateVOType extends IBaseVO> List<IValidationMessage> validate ( ValidateVOType vo )
 
+			servicemethod <ValidateAndSaveVOType extends IBaseVO> Result<ValidateAndSaveVOType> validateAndSave ( ValidateAndSaveVOType vo )
 
-			servicemethod <ValidateAndSaveVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validateAndSave returns jvmtype io.pelle.mango.client.base.db.vos.Result<ValidateAndSaveVOType> {
-				generic ValidateAndSaveVOType vo
-			}
-
-			servicemethod <ValidateAndCreateVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> validateAndCreate returns jvmtype io.pelle.mango.client.base.db.vos.Result<ValidateAndCreateVOType> {
-				generic ValidateAndCreateVOType vo
-			}
+			servicemethod <ValidateAndCreateVOType extends IBaseVO> Result<ValidateAndCreateVOType> validateAndCreate ( ValidateAndCreateVOType vo )
 		
-			servicemethod <SaveVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> save returns generic SaveVOType {
-				generic SaveVOType vo
-			}
+			servicemethod <SaveVOType extends IBaseVO> SaveVOType save ( SaveVOType vo )
 				
-			servicemethod <FilterVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> filter returns generic FilterVOType 0..n {
-				jvmtype io.pelle.mango.client.base.vo.query.SelectQuery<generic FilterVOType> selectQuery
-			}
+			servicemethod <FilterVOType extends IBaseVO> List<FilterVOType> filter ( SelectQuery<FilterVOType> selectQuery )
 
-			servicemethod deleteAll {
-				string voClassName
-			}
+			servicemethod void deleteAll ( String voClassName )
 
-			servicemethod <DeleteVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> delete {
-				generic DeleteVOType vo
-			}
+			servicemethod <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
 
-			servicemethod <ReadVOType extends jvmtype io.pelle.mango.client.base.vo.IBaseVO> read returns generic ReadVOType {
-				long id
-				string voClassName
-			}
+			servicemethod <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
 		}
 	}
 }

@@ -15,16 +15,16 @@ class ClientNameUtils extends NameUtils {
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
 		if (packageDeclaration.eContainer instanceof Model)
 		{
-			packageDeclaration.name.packageName + "." + GeneratorConstants.CLIENT_PACKAGE_POSTFIX
+			packageDeclaration.packageName.packageName + "." + GeneratorConstants.CLIENT_PACKAGE_POSTFIX
 		}
 		else
 		{
-			combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.name.packageName)
+			combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.packageName.packageName)
 		}
 	}
-	
+
 	override def modelPackageName(Model model) {
-		return ModelUtil.getSingleRootPackage(model).name.packageName + "." + GeneratorConstants.CLIENT_PACKAGE_POSTFIX
+		return ModelUtil.getSingleRootPackage(model).packageName.packageName + "." + GeneratorConstants.CLIENT_PACKAGE_POSTFIX
 	}
 	
 	//-------------------------------------------------------------------------

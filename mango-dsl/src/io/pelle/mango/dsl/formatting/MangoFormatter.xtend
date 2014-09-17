@@ -5,8 +5,6 @@ package io.pelle.mango.dsl.formatting
 
 import com.google.inject.Inject
 import io.pelle.mango.dsl.services.MangoGrammarAccess
-import java.util.List
-import org.eclipse.xtext.Keyword
 import org.eclipse.xtext.formatting.impl.AbstractDeclarativeFormatter
 import org.eclipse.xtext.formatting.impl.FormattingConfig
 
@@ -31,21 +29,6 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setLinewrap(0, 1, 2).before(ML_COMMENTRule)
 		c.setLinewrap(0, 1, 1).after(ML_COMMENTRule)
 
-		c.setIndentation(m.packageDeclarationAccess.leftCurlyBracketKeyword_2, m.packageDeclarationAccess.rightCurlyBracketKeyword_4)
-		c.setLinewrap(1, 1, 1).after(m.packageDeclarationAccess.leftCurlyBracketKeyword_2)
-		c.setLinewrap(2, 2, 2).after(m.packageDeclarationAccess.rightCurlyBracketKeyword_4)
-
-		c.setAutoLinewrap(120);
-
-		// find common keywords an specify formatting for them
-//		for (pair : m.findKeywordPairs("{", "}")) {
-//			c.setLinewrap(1, 1, 1).after(pair.first)
-//			c.setLinewrap(2, 2, 2).after(pair.second)
-//			c.setIndentation(pair.first, pair.second)
-//			//c.setNoSpace().after(pair.getFirst());
-//			//c.setNoSpace().before(pair.getSecond());
-//		}
-
-	//c.setLinewrap(0, 1, 2).after(m.packageDeclarationAccess. DictionaryElements.cLeftCurlyBracketKeyword_7_1);
+		c.setAutoLinewrap(180);
 	}
 }

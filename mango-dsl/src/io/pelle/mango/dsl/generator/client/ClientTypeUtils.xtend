@@ -10,8 +10,13 @@ import io.pelle.mango.dsl.mango.ValueObjectType
 class ClientTypeUtils extends TypeUtils {
 
 	@Inject
-	extension ClientNameUtils
+	extension ClientNameUtils clientNameUtils
 
+	override String entityVOFullQualifiedName(Entity entity)
+	{
+		clientNameUtils.voFullQualifiedName(entity)
+	}
+	
 	override dispatch String getType(EntityDataType dataType) {
 		return dataType.entity.type
 	}

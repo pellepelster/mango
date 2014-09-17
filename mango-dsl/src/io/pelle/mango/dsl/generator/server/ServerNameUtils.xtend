@@ -24,30 +24,31 @@ class ServerNameUtils extends NameUtils {
 	def entityFullQualifiedFileName(Entity entity) {
 		return entityFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
 	}
+
 	
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
 		
 		if (packageDeclaration.eContainer instanceof Model)
 		{
-			packageDeclaration.name.packageName + "." + GeneratorConstants.SERVER_PACKAGE_POSTFIX
+			packageDeclaration.packageName.packageName + "." + GeneratorConstants.SERVER_PACKAGE_POSTFIX
 		}
 		else
 		{
-			combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.name.packageName)
+			combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.packageName.packageName)
 		}
 		
 	}
 
 	def restRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
-		return model.name.toFirstUpper + "RestRemoteServices-gen.xml"
+		return model.modelName.toFirstUpper + "RestRemoteServices-gen.xml"
 	}
 	
 	def gwtRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
-		return model.name.toFirstUpper + "GWTRemoteServices-gen.xml"
+		return model.modelName.toFirstUpper + "GWTRemoteServices-gen.xml"
 	}
 
 	def serviceSpringNameApplicationContextFullQualifiedFileName(Model model) {
-		return model.name.toFirstUpper + "SpringServices-gen.xml"
+		return model.modelName.toFirstUpper + "SpringServices-gen.xml"
 	}
 	
 	def serviceImplFullQualifiedName(Service service) {

@@ -1,10 +1,10 @@
 dependencies {
 
-	compile 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.6.0'
-	compile 'org.eclipse.xtext:org.eclipse.xtext.xbase:2.6.0'
-	compile 'org.eclipse.xtext:org.eclipse.xtext:2.6.0'
-	compile 'org.eclipse.xtext:org.eclipse.xtext.builder.standalone:2.6.0'
-	compile 'org.eclipse.xtend:org.eclipse.xtend.lib:2.6.+'
+	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xtext', version: versions.xtext
+	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xbase', version: versions.xtext
+	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext', version: versions.xtext
+	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.builder.standalone', version: versions.xtext
+	compile group: 'org.eclipse.xtend', name: 'org.eclipse.xtend.lib', version: versions.xtext
 	compile 'commons-beanutils:commons-beanutils-core:1.8.3'
 	compile project(':mango-client-base')
 	compile project(':mango-server-base')

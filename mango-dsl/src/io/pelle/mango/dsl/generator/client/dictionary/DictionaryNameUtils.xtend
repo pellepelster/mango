@@ -35,7 +35,7 @@ class DictionaryNameUtils extends ClientNameUtils {
 	// Model
 	//-------------------------------------------------------------------------
 	def dictionaryClassName(Model model) {
-		return model.name.toFirstUpper() + "DictionaryModel";
+		return model.modelName.toFirstUpper() + "DictionaryModel";
 	}
 
 	def dictionaryClassFullQualifiedName(Model model) {
@@ -92,7 +92,7 @@ class DictionaryNameUtils extends ClientNameUtils {
 	// Navigation
 	//-------------------------------------------------------------------------
 	def navigationNodeClassName(Model model) {
-		return model.name.toFirstUpper + "NavigationModel";
+		return model.modelName.toFirstUpper + "NavigationModel";
 	}
 
 	def navigationyNodeClassFullQualifiedName(Model model) {

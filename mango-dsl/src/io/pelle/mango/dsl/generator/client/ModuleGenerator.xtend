@@ -27,15 +27,15 @@ public abstract class «moduleDefinition.baseModuleDefinitionName» extends «Ba
 	
 	public static final String «moduleDefinitionParameter.name.toUpperCase()»_PARAMETER_ID = "«moduleDefinitionParameter.name»";
 	
-	public «moduleDefinitionParameter.type» get«moduleDefinitionParameter.name.toFirstUpper()»() {
+	public «moduleDefinitionParameter.type.type» get«moduleDefinitionParameter.name.toFirstUpper()»() {
 
 		if (getParameters().containsKey("«moduleDefinitionParameter.name»"))
 		{
 			Object parameterValue = parameters.get("«moduleDefinitionParameter.name»");
 		
-			if (parameterValue instanceof «moduleDefinitionParameter.type.getType»)
+			if (parameterValue instanceof «moduleDefinitionParameter.type.type»)
 			{
-				return («moduleDefinitionParameter.type.getType») parameterValue;
+				return («moduleDefinitionParameter.type.type») parameterValue;
 			}
 			
 			
@@ -44,7 +44,7 @@ public abstract class «moduleDefinition.baseModuleDefinitionName» extends «Ba
 				return «parseSimpleTypeFromString(moduleDefinitionParameter.type, "parameterValue.toString()")»;
 			}
 			
-			throw new RuntimeException("parameter value type mismatch, expected '«moduleDefinitionParameter.type.getType»' but got '" + parameterValue.getClass().getName() + "'");
+			throw new RuntimeException("parameter value type mismatch, expected '«moduleDefinitionParameter.type.type»' but got '" + parameterValue.getClass().getName() + "'");
 		}
 		else
 		{

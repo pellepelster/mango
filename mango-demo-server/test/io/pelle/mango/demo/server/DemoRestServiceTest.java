@@ -12,6 +12,7 @@ import com.jayway.restassured.response.Response;
 public class DemoRestServiceTest extends BaseRestTest {
 
 	@Test
+	@Ignore
 	public void testMethodWithBooleanParameterPathVariables() {
 
 		Response response = given().pathParameter("onOff", true).get(getUrl("resttest/methodwithbooleanparameter/{onOff}"));

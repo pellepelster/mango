@@ -10,6 +10,7 @@ import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.ModuleDefinition
 import io.pelle.mango.dsl.mango.PackageDeclaration
 import io.pelle.mango.dsl.mango.Service
+import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
 import javax.management.Attribute
 import org.eclipse.emf.ecore.EObject
@@ -45,7 +46,7 @@ class NameUtils {
 	}
 
 	def dispatch String getPackageName(PackageDeclaration packageDeclaration) {
-		return combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.name.packageName)
+		return combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.packageName.packageName)
 	}
 
 	def dispatch String getPackageName(EObject eObject) {
@@ -89,7 +90,7 @@ class NameUtils {
 		
 		if (SQL_KEYWORDS.contains(entityTableName))
 		{
-			entityTableName = ModelUtil.getRootModel(entity).name.toLowerCase + '_' + entityTableName
+			entityTableName = ModelUtil.getRootModel(entity).modelName.toLowerCase + '_' + entityTableName
 		}
 		
 		return entityTableName
@@ -108,7 +109,7 @@ class NameUtils {
 	}
 	
 	def gwtClientGeneratedModuleDefinitionFileName(Model model) {
-		return model.name.toFirstUpper() + "Generated.gwt.xml";	
+		return model.modelName.toFirstUpper() + "Generated.gwt.xml";	
 	}	
 
 	def gwtClientModuleFullQualifiedFileName(Model model) {
@@ -142,13 +143,16 @@ class NameUtils {
 		return service.serviceName
 	}
 
+	def methodName(ServiceMethod serviceMethod) {
+		return serviceMethod.name.toFirstLower;
+	}
 	
 
 	//-------------------------------------------------------------------------
 	// client configuration  
 	//-------------------------------------------------------------------------
 	def gwtClientconfigurationName(Model model) {
-		return model.name.toFirstUpper + "ClientConfiguration";
+		return model.modelName.toFirstUpper + "ClientConfiguration";
 	}
 
 	def gwtClientconfigurationFullQualifiedName(Model model) {
@@ -223,7 +227,7 @@ class NameUtils {
 	// GWT remote service locator 
 	//-------------------------------------------------------------------------
 	def gwtRemoteServiceLocatorName(Model model) {
-		return model.name.toFirstUpper + "GwtRemoteServiceLocator";
+		return model.modelName.toFirstUpper + "GwtRemoteServiceLocator";
 	}
 
 	def gwtRemoteServiceLocatorFullQualifiedName(Model model) {
@@ -238,7 +242,7 @@ class NameUtils {
 	// GWT remote service locator interface 
 	//-------------------------------------------------------------------------
 	def gwtRemoteServiceLocatorInterfaceName(Model model) {
-		return "I" + model.name.toFirstUpper + "GwtRemoteServiceLocator";
+		return "I" + model.modelName.toFirstUpper + "GwtRemoteServiceLocator";
 	}
 
 	def gwtRemoteServiceLocatorInterfaceFullQualifiedName(Model model) {
@@ -265,14 +269,14 @@ class NameUtils {
 	}
 	
 	def modelPackageName(Model model) {
-		return ModelUtil.getSingleRootPackage(model).name.packageName
+		return ModelUtil.getSingleRootPackage(model).packageName.packageName
 	}
 
 	//-----------------------
 	// vo mapper	
 	//-----------------------
 	def voMapperName(Model model) {
-		return model.name.toFirstUpper + "VOMapper";
+		return model.modelName.toFirstUpper + "VOMapper";
 	}
 
 	def voMapperFullQualifiedName(Model model) {
@@ -284,11 +288,11 @@ class NameUtils {
 	}
 
 	def springDBApplicationContextFullQualifiedFileName(Model model) {
-		return model.name.toFirstUpper + "DB-gen.xml"
+		return model.modelName.toFirstUpper + "DB-gen.xml"
 	}
 
 	def baseApplicationContextFullQualifiedFileName(Model model) {
-		return model.name.toFirstUpper + "BaseApplicationContext-gen.xml"
+		return model.modelName.toFirstUpper + "BaseApplicationContext-gen.xml"
 	}
 
 	def springPersistenceXMLFullQualifiedFileName(Model model) {
@@ -296,7 +300,7 @@ class NameUtils {
 	}
 
 	def persistenceUnitName(Model model) {
-		return model.name.toLowerCase
+		return model.modelName.toLowerCase
 	}
 
 	def jndiName(Model model) {

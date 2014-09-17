@@ -52,8 +52,8 @@ public class ModelUtil {
 		}
 
 		if (!resource.getContents().isEmpty()) {
-			if (resource.getContents().get(0) instanceof Model) {
-				return (Model) resource.getContents().get(0);
+			if (resource.getContents().get(0) instanceof ModelRoot) {
+				return (ModelRoot) resource.getContents().get(0);
 			} else if (resource.getContents().get(0) instanceof PackageDeclaration) {
 				return (PackageDeclaration) resource.getContents().get(0);
 			} else {
@@ -160,7 +160,13 @@ public class ModelUtil {
 	}
 
 	public static Model getRootModel(EObject eObject) {
-		return (Model) getRoot(eObject);
-	}
 
+		EObject root = getRoot(eObject);
+		
+		if (root instanceof ModelRoot) {
+			return ((ModelRoot) root).getModelRoot();
+		}
+
+		throw new RuntimeException("unexpected type '" + eObject.toString() + "'");
+	}
 }
