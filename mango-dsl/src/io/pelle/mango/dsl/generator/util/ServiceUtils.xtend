@@ -16,7 +16,7 @@ class ServiceUtils {
 			}
 		}
 
-		return true
+		return false
 	}
 
 	def hasReturn(ServiceMethod serviceMethod) {

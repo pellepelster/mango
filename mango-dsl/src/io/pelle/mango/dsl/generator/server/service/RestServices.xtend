@@ -80,7 +80,7 @@ class RestServices {
 					@RequestMapping(value = "«method.restMapping»/«FOR parameter : method.params SEPARATOR "/"»{«parameter.name.toFirstLower»}«ENDFOR»", produces="application/json", method = RequestMethod.GET)
 					@ResponseBody
 					@Transactional
-					public «method.returnType.qualifiedName» «method.methodName»Get(«FOR parameter : method.params SEPARATOR ", "»@PathVariable «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
+					public «method.typeParameter.qualifiedName» «method.returnType.qualifiedName» «method.methodName»Get(«FOR parameter : method.params SEPARATOR ", "»@PathVariable «parameter.parameterType.simpleName» «parameter.name.toFirstLower»«ENDFOR») {
 						«service.methodReturn(method)»
 					}
 

@@ -165,6 +165,6 @@ public class ModelUtil {
 			return ((ModelRoot) eObject).getModelRoot();
 		}
 
-		throw new RuntimeException("unexpected type");
+		throw new RuntimeException("unexpected type '" + eObject.toString() + "'");
 	}
 }
