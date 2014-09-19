@@ -31,13 +31,10 @@ import io.pelle.mango.dsl.mango.SimpleTypeType
 import io.pelle.mango.dsl.mango.SimpleTypes
 import io.pelle.mango.dsl.mango.StringDataType
 import io.pelle.mango.dsl.mango.StringEntityAttribute
-import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.mango.ValueObjectEntityAttribute
 import java.math.BigDecimal
 import java.util.ArrayList
 import java.util.List
-import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
-import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 
 class TypeUtils {
@@ -46,14 +43,8 @@ class TypeUtils {
 	extension ServerNameUtils serverNameUtils
 
 	@Inject
-	ClientNameUtils clientNameUtils
-	
-	@Inject
 	extension AttributeUtils
 
-	@Inject
-	extension IJvmModelAssociations jvmModelAssociations
-	
 	//-----------------
 	// common
 	//-----------------
@@ -455,73 +446,4 @@ public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.ty
 			}
 		}
 	}
-
-	def String jvmType(List<JvmTypeReference> jvmTypeReferences) '''
-	«FOR jvmTypeReference : jvmTypeReferences SEPARATOR ", "»«jvmTypeReference.jvmType»«ENDFOR»
-	'''
-
-	def String jvmTypeInternal(JvmTypeReference jvmTypeReference) {
-
-		System.out.println("==============================================")
-		System.out.println("jvmTypeReference: " + jvmTypeReference.toString)
-		System.out.println("----------------------------------------------")
-		for (e : jvmModelAssociations.getSourceElements(jvmTypeReference))
-		{
-			System.out.println("source element: " + e.toString)
-		}		
-		System.out.println("----------------------------------------------")
-
-		System.out.println("==============================================")
-		System.out.println("jvmTypeReference.type: " + jvmTypeReference.type.toString)
-		System.out.println("----------------------------------------------")
-		for (e : jvmModelAssociations.getSourceElements(jvmTypeReference.type))
-		{
-			System.out.println("source element: " + e.toString)
-		}		
-		System.out.println("----------------------------------------------")
-				
-		var entity = jvmModelAssociations.getSourceElements(jvmTypeReference.type).findFirst[e | e instanceof Entity] as Entity
-		if (entity != null)
-		{
-			return entity.entityVOFullQualifiedName
-		}
-
-		var valueObject = jvmModelAssociations.getSourceElements(jvmTypeReference.type).findFirst[e | e instanceof ValueObject] as ValueObject
-		if (valueObject != null)
-		{
-			return clientNameUtils.voFullQualifiedName(valueObject)
-		}
-
-		var enumeration = jvmModelAssociations.getSourceElements(jvmTypeReference.type).findFirst[e | e instanceof Enumeration] as Enumeration
-		if (enumeration != null)
-		{
-			return clientNameUtils.enumerationFullQualifiedName(enumeration)
-		}
-		
-		return jvmTypeReference.qualifiedName
-	}
-
-
-	def String jvmType(JvmTypeReference jvmTypeReference) {
-		
-		if (jvmTypeReference instanceof JvmParameterizedTypeReference)
-		{
-			var JvmParameterizedTypeReference parameterizedTypeReference = jvmTypeReference
-			
-			if (!jvmTypeReference.arguments.empty)
-			{
-				return parameterizedTypeReference.type.qualifiedName + '<' + parameterizedTypeReference.arguments.jvmType + '>'
-			}
-			else
-			{
-				return parameterizedTypeReference.jvmTypeInternal
-			}
-		} else {
-			return jvmTypeReference.jvmTypeInternal
-		}
-		
-		
-	}
-	
-
 }

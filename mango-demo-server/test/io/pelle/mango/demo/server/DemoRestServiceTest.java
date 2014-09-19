@@ -2,6 +2,7 @@ package io.pelle.mango.demo.server;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import io.pelle.mango.test.client.ValueObject2;
 import io.pelle.mango.test.server.resttest.RestTestRestControllerMethodWithBooleanParameterRequestVO;
 
 import org.junit.Ignore;
@@ -47,6 +48,15 @@ public class DemoRestServiceTest extends BaseRestTest {
 		vo.setOnOff(false);
 		response = givenJson().body(vo).post(getUrl("resttest/methodwithbooleanparameter"));
 		response.then().body(equalTo(Boolean.TRUE.toString()));
+	}
 
+	@Test
+	public void testMethodWithValueObjectParameter() {
+
+		ValueObject2 vo = new ValueObject2();
+		vo.setString2("ggg");
+
+		Response response = givenJson().body(vo).post(getUrl("resttest/methodwithvalueobjectParameter"));
+		response.then().body("string2", equalTo("ggg"));
 	}
 }

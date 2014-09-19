@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.generator.client.ClientTypeUtils
+import io.pelle.mango.dsl.generator.util.JvmTypeUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
@@ -20,7 +21,7 @@ import io.pelle.mango.dsl.mango.ServiceMethod
 class GWTServices extends BaseServices {
 
 	@Inject
-	extension ClientTypeUtils;
+	extension JvmTypeUtils;
 
 	@Inject 
 	extension ClientNameUtils
