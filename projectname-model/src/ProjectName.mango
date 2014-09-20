@@ -15,11 +15,11 @@ project ProjectName {
 			
 		dictionary Todo {
 
-			entity packagename.Todo
+			entity Todo
 			
 			dictionarycontrols {
 				textcontrol TodoTitle {
-					entityattribute packagename.Todo.title
+					entityattribute Todo.title
 				}
 			}
 	
