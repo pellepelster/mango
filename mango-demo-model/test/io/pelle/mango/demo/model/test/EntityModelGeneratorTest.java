@@ -312,6 +312,13 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
+	public void testValueObject4ConstructorSetter() {
+
+		ValueObject4 valueObject4 = new ValueObject4("sss");
+		assertEquals("sss", valueObject4.getString2());
+	}
+
+	@Test
 	public void testValueObject3ExtendsValueObject2CopyConstructor() {
 
 		ValueObject2 valueObject2 = new ValueObject2();

@@ -74,6 +74,10 @@ class NameUtils {
 		return attribute.toFirstLower
 	}
 
+	def attributeName(EntityAttribute entityAttribute) {
+		return entityAttribute.name.attributeName
+	}
+
 	def attributeConstantName(String attribute) {
 		return attribute.toUpperCase
 	}

@@ -83,6 +83,17 @@ class VOGenerator extends BaseEntityGenerator {
 		«ENDIF»
 	'''
 
+	def compileValueObjectSetterConstructors(ValueObject valueObject) '''
+		«IF !valueObject.attributes.empty»
+		public «valueObject.voName»(«FOR attribute : valueObject.attributes SEPARATOR ", "»«getType(attribute)» «attribute.attributeName»«ENDFOR») {
+
+			«FOR attribute : valueObject.attributes»
+				this.«attribute.setterName»(«attribute.attributeName»);
+			«ENDFOR»
+		}
+		«ENDIF»
+	'''
+
 	def compileValueObject(ValueObject valueObject) '''
 		package «getPackageName(valueObject)»;
 		
@@ -92,6 +103,8 @@ class VOGenerator extends BaseEntityGenerator {
 			}
 			
 			«valueObject.compileValueObjectCloneConstructors»
+
+			«valueObject.compileValueObjectSetterConstructors»
 		
 			«FOR attribute : valueObject.attributes»
 			«attribute.compileValueObjectAttribute»
