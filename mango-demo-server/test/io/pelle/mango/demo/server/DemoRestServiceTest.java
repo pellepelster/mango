@@ -56,7 +56,7 @@ public class DemoRestServiceTest extends BaseRestTest {
 		ValueObject2 vo = new ValueObject2();
 		vo.setString2("ggg");
 
-		Response response = givenJson().body(vo).post(getUrl("resttest/methodwithvalueobjectParameter"));
+		Response response = givenJson().body(vo).post(getUrl("resttest/methodwithvalueobjectparameter"));
 		response.then().body("string2", equalTo("ggg"));
 	}
 }
