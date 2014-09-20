@@ -315,7 +315,7 @@ public class EntityModelGeneratorTest {
 	public void testValueObject4ConstructorSetter() {
 
 		ValueObject4 valueObject4 = new ValueObject4("sss");
-		assertEquals("sss", valueObject4.getString2());
+		assertEquals("sss", valueObject4.getString4());
 	}
 
 	@Test
