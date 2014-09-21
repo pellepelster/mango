@@ -3,8 +3,8 @@ project MangoDemo {
 	package io.pelle.^mango.test {
 		
 		service RestTest {
-			servicemethod Boolean methodWithBooleanParameter ( Boolean onOff )
-			servicemethod ValueObject2 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
+			method Boolean methodWithBooleanParameter ( Boolean onOff )
+			method ValueObject2 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
 		}
 		
 		stringdatatype StringDatatype1 {
