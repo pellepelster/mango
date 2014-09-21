@@ -413,7 +413,7 @@ ServiceOptions:
 	(nonpublic?="nonpublic")?;
 		
 ServiceMethod:
-	'servicemethod' ('<'typeParameter=JvmTypeParameter'>')? returnType = JvmTypeReference name=ValidID '('(params += FullJvmFormalParameter (', ' params += FullJvmFormalParameter)*)?')';
+	'method' ('<'typeParameter=JvmTypeParameter'>')? returnType = JvmTypeReference name=ValidID '('(params += FullJvmFormalParameter (', ' params += FullJvmFormalParameter)*)?')';
 
 Service:
 	"service" name=ID "{"

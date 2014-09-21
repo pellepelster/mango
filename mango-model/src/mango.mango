@@ -57,23 +57,23 @@ project Mango {
 				
 		service HierachicalService {
 
-			servicemethod List<DictionaryHierarchicalNode> getRootNodes ( String id )
+			method List<DictionaryHierarchicalNode> getRootNodes ( String id )
 			
-			servicemethod HierarchicalConfigurationVO getConfigurationById  ( String id )
+			method HierarchicalConfigurationVO getConfigurationById  ( String id )
 			
-			servicemethod List<HierarchicalConfigurationVO> getConfigurations ()
+			method List<HierarchicalConfigurationVO> getConfigurations ()
 			
-			servicemethod Boolean hasChildren ( String voClassName, Long voId )
+			method Boolean hasChildren ( String voClassName, Long voId )
 			
-			servicemethod List<DictionaryHierarchicalNode> getChildNodes ( String id, Long voId, String voClassName )
+			method List<DictionaryHierarchicalNode> getChildNodes ( String id, Long voId, String voClassName )
 		
 		}
 			
 		service SystemService {
 
-			servicemethod Systeminformation getSystemInformation ()
+			method Systeminformation getSystemInformation ()
 	
-			servicemethod LogEntry getLog ()
+			method LogEntry getLog ()
 
 		}
 			
@@ -135,25 +135,25 @@ project Mango {
 		
 		service BaseEntityService {
 
-			servicemethod <NewVOType extends IBaseVO> NewVOType getNewVO ( String voClassName, Map<String,String> properties )
+			method <NewVOType extends IBaseVO> NewVOType getNewVO ( String voClassName, Map<String,String> properties )
 
-			servicemethod <CreateVOType extends IBaseVO> CreateVOType create ( CreateVOType vo )
+			method <CreateVOType extends IBaseVO> CreateVOType create ( CreateVOType vo )
 
-			servicemethod <ValidateVOType extends IBaseVO> List<IValidationMessage> validate ( ValidateVOType vo )
+			method <ValidateVOType extends IBaseVO> List<IValidationMessage> validate ( ValidateVOType vo )
 
-			servicemethod <ValidateAndSaveVOType extends IBaseVO> Result<ValidateAndSaveVOType> validateAndSave ( ValidateAndSaveVOType vo )
+			method <ValidateAndSaveVOType extends IBaseVO> Result<ValidateAndSaveVOType> validateAndSave ( ValidateAndSaveVOType vo )
 
-			servicemethod <ValidateAndCreateVOType extends IBaseVO> Result<ValidateAndCreateVOType> validateAndCreate ( ValidateAndCreateVOType vo )
+			method <ValidateAndCreateVOType extends IBaseVO> Result<ValidateAndCreateVOType> validateAndCreate ( ValidateAndCreateVOType vo )
 		
-			servicemethod <SaveVOType extends IBaseVO> SaveVOType save ( SaveVOType vo )
+			method <SaveVOType extends IBaseVO> SaveVOType save ( SaveVOType vo )
 				
-			servicemethod <FilterVOType extends IBaseVO> List<FilterVOType> filter ( SelectQuery<FilterVOType> selectQuery )
+			method <FilterVOType extends IBaseVO> List<FilterVOType> filter ( SelectQuery<FilterVOType> selectQuery )
 
-			servicemethod void deleteAll ( String voClassName )
+			method void deleteAll ( String voClassName )
 
-			servicemethod <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
+			method <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
 
-			servicemethod <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
+			method <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
 		}
 	}
 }
