@@ -5,7 +5,10 @@ import io.pelle.mango.client.base.vo.IBaseVO
 import io.pelle.mango.client.base.messages.IValidationMessage
 import io.pelle.mango.client.base.db.vos.Result
 import io.pelle.mango.client.base.vo.query.SelectQuery
- 
+import io.pelle.mango.client.DictionaryHierarchicalNodeVO
+import io.pelle.mango.client.Systeminformation
+import io.pelle.mango.client.LogEntry
+
 project Mango {
 
 	package io.pelle.^mango {
@@ -57,7 +60,7 @@ project Mango {
 				
 		service HierachicalService {
 
-			method List<DictionaryHierarchicalNode> getRootNodes ( String id )
+			method List<DictionaryHierarchicalNodeVO> getRootNodes ( String id )
 			
 			method HierarchicalConfigurationVO getConfigurationById  ( String id )
 			
@@ -65,7 +68,7 @@ project Mango {
 			
 			method Boolean hasChildren ( String voClassName, Long voId )
 			
-			method List<DictionaryHierarchicalNode> getChildNodes ( String id, Long voId, String voClassName )
+			method List<DictionaryHierarchicalNodeVO> getChildNodes ( String id, Long voId, String voClassName )
 		
 		}
 			

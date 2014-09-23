@@ -1,0 +1,1 @@
+./gradlew.bat --build-file=mango-build/build.gradle -PskipCompileGwt=true -PskipPdeBuild=true uploadLocalDevelopment

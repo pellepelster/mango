@@ -90,7 +90,7 @@ class ServerNameUtils extends NameUtils {
 
 	// rest controller request vo
 	def restControllerRequestVOName(Service service, ServiceMethod method) {
-		return service.restControllerName + method.name.toFirstUpper + "RequestVO"
+		return service.restControllerName + method.name.toFirstUpper + "Request"
 	}
 
 	def restControllerRequestVOFullQualifiedName(Service service, ServiceMethod method) {

@@ -3,7 +3,7 @@ package io.pelle.mango.demo.server;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import io.pelle.mango.test.client.ValueObject2;
-import io.pelle.mango.test.server.resttest.RestTestRestControllerMethodWithBooleanParameterRequestVO;
+import io.pelle.mango.test.server.resttest.RestTestRestControllerMethodWithBooleanParameterRequest;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,7 +39,7 @@ public class DemoRestServiceTest extends BaseRestTest {
 	@Test
 	public void testMethodWithBooleanParameterRequestVO() {
 
-		RestTestRestControllerMethodWithBooleanParameterRequestVO vo = new RestTestRestControllerMethodWithBooleanParameterRequestVO();
+		RestTestRestControllerMethodWithBooleanParameterRequest vo = new RestTestRestControllerMethodWithBooleanParameterRequest();
 		vo.setOnOff(true);
 
 		Response response = givenJson().body(vo).post(getUrl("resttest/methodwithbooleanparameter"));

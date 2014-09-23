@@ -1,16 +1,17 @@
 package io.pelle.mango.dsl.jvmmodel
 
 import com.google.inject.Inject
+import io.pelle.mango.dsl.generator.client.ClientNameUtils
+import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Entity
+import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.ModelRoot
 import io.pelle.mango.dsl.mango.ValueObject
 import org.eclipse.xtext.common.types.JvmDeclaredType
-import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
-import io.pelle.mango.dsl.mango.Enumeration
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -24,7 +25,10 @@ class MangoJvmModelInferrer extends AbstractModelInferrer {
 	extension JvmTypesBuilder
 
 	@Inject
-	extension IQualifiedNameProvider
+	ClientNameUtils clientNameUtils
+
+	@Inject
+	ServerNameUtils serverNameUtils
 	
 	/**
      * convenience API to build and initialize JVM types and t heir members.
@@ -70,19 +74,22 @@ class MangoJvmModelInferrer extends AbstractModelInferrer {
 	}
 
 	def dispatch void infer(ValueObject valueObject, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
-		acceptor.accept(valueObject.toClass(valueObject.fullyQualifiedName)).initializeLater [
+		acceptor.accept(valueObject.toClass(clientNameUtils.voFullQualifiedName(valueObject))).initializeLater [
 			documentation = valueObject.documentation
 		]
 	}
 
 	def dispatch void infer(Enumeration enumeration, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
-		acceptor.accept(enumeration.toClass(enumeration.fullyQualifiedName)).initializeLater [
+		acceptor.accept(enumeration.toClass(clientNameUtils.enumerationFullQualifiedName(enumeration))).initializeLater [
 			documentation = enumeration.documentation
 		]
 	}
 
 	def dispatch void infer(Entity entity, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
-		acceptor.accept(entity.toClass(entity.fullyQualifiedName)).initializeLater [
+		acceptor.accept(entity.toClass(serverNameUtils.entityFullQualifiedName(entity))).initializeLater [
+			documentation = entity.documentation
+		]
+		acceptor.accept(entity.toClass(clientNameUtils.voFullQualifiedName(entity))).initializeLater [
 			documentation = entity.documentation
 		]
 	}

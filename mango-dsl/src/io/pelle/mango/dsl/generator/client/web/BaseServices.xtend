@@ -1,7 +1,6 @@
 package io.pelle.mango.dsl.generator.client.web
 
 import com.google.inject.Inject
-import io.pelle.mango.dsl.generator.util.JvmTypeUtils
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.mango.ServiceMethod
 import java.util.List
@@ -12,12 +11,9 @@ class BaseServices {
 	@Inject
 	extension NameUtils;
 
-	@Inject
-	extension JvmTypeUtils;
-
 	def methodParameters(List<JvmFormalParameter> parameters) '''
 		«FOR parameter : parameters SEPARATOR ", "»
-			«parameter.parameterType.jvmType» «parameter.name»
+			«parameter.parameterType.qualifiedName» «parameter.name»
 		«ENDFOR»
 	'''
 
@@ -26,7 +22,7 @@ class BaseServices {
 	'''
 
 	def methodReturn(ServiceMethod method) '''
-		«method.methodTypeParameter» «method.returnType.jvmType»
+		«method.methodTypeParameter» «method.returnType.qualifiedName»
 	'''
 
 	def serviceMethod(ServiceMethod method) '''

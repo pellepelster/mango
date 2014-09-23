@@ -20,13 +20,13 @@ class RestServices extends BaseServices {
 	extension AttributeUtils
 
 	@Inject
+	extension JvmTypeUtils
+
+	@Inject
 	extension ServerNameUtils serverNameUtils
 
 	@Inject
 	ClientNameUtils clientNameUtils
-
-	@Inject
-	extension JvmTypeUtils
 
 	def restServiceControllerRequetVO(Service service, ServiceMethod method) '''
 	package «service.packageName»;
@@ -38,9 +38,9 @@ class RestServices extends BaseServices {
 
 	public class «restControllerRequestVOName(service, method)»«method.methodTypeParameter»  {
 		«FOR parameter : method.params»
-			«attribute(parameter.parameterType.jvmType, parameter.name)»
-			«getter(parameter.parameterType.jvmType, parameter.name)»
-			«setter(parameter.parameterType.jvmType, parameter.name)»
+			«attribute(parameter.parameterType.qualifiedName, parameter.name)»
+			«getter(parameter.parameterType.qualifiedName, parameter.name)»
+			«setter(parameter.parameterType.qualifiedName, parameter.name)»
 		«ENDFOR»
 	}
 	'''
@@ -79,13 +79,12 @@ class RestServices extends BaseServices {
 				@ResponseBody
 				@Transactional
 				«IF method.params.size == 1 && method.params.hasOnlyType(typeof(ValueObject))»
-					«var valueObject = method.params.get(0).parameterType.getWrappedTypeType(typeof(ValueObject))»
-					public «method.methodReturn» «method.methodName»PostRequestBody(@RequestBody «clientNameUtils.voFullQualifiedName(valueObject)» requestBody) {
-						«IF !method.returnsVoid»return («method.returnType.jvmType»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(requestBody);
+					public «method.methodReturn» «method.methodName»PostRequestBody(@RequestBody «method.params.get(0).parameterType.qualifiedName» requestBody) {
+						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(requestBody);
 					}
 				«ELSE»
 					public «method.methodReturn» «method.methodName»PostRequestBody(«IF !method.params.isEmpty»@RequestBody «restControllerRequestVOName(service, method)» requestBody«ENDIF») {
-						«IF !method.returnsVoid»return («method.returnType.jvmType»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»requestBody.«parameter.name.getterName»()«ENDFOR»);
+						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»requestBody.«parameter.name.getterName»()«ENDFOR»);
 					}
 				«ENDIF»
 			«ENDFOR»

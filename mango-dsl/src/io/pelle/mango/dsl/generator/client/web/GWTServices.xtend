@@ -7,8 +7,6 @@ import com.google.gwt.user.client.rpc.RemoteService
 import com.google.gwt.user.client.rpc.ServiceDefTarget
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
-import io.pelle.mango.dsl.generator.client.ClientTypeUtils
-import io.pelle.mango.dsl.generator.util.JvmTypeUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
@@ -19,9 +17,6 @@ import io.pelle.mango.dsl.mango.ServiceMethod
  * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
  */
 class GWTServices extends BaseServices {
-
-	@Inject
-	extension JvmTypeUtils;
 
 	@Inject 
 	extension ClientNameUtils
@@ -104,7 +99,7 @@ public class «model.gwtRemoteServiceLocatorName» implements «model.gwtRemoteS
 	'''
 
 	def asyncCallback(ServiceMethod serviceMethod) '''
-		«IF !serviceMethod.returnsVoid»com.google.gwt.user.client.rpc.AsyncCallback<«serviceMethod.returnType.jvmType»> callback«ELSE»com.google.gwt.user.client.rpc.AsyncCallback<Void> callback«ENDIF»
+		«IF !serviceMethod.returnsVoid»com.google.gwt.user.client.rpc.AsyncCallback<«serviceMethod.returnType.qualifiedName»> callback«ELSE»com.google.gwt.user.client.rpc.AsyncCallback<Void> callback«ENDIF»
 	'''
 
 	def gwtRemoteServiceAsyncAdapter(Service service) '''

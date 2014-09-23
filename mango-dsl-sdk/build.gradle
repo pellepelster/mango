@@ -18,6 +18,9 @@ task(pdeBuild) <<
 	buildAll.execute()
 }
 
+
+pdeBuild.onlyIf { !project.hasProperty('skipPdeBuild') }
+
 task zipUpdateSite(dependsOn: pdeBuild, type: Zip) {
 	from buildDir.name + '/updatesite'
 }

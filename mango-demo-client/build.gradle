@@ -39,3 +39,5 @@ gwt {
 }
 
 test.dependsOn(project(':mango-demo-server').tasks.test)
+
+compileGwt.onlyIf { !project.hasProperty('skipCompileGwt') }
