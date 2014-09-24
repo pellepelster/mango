@@ -9,6 +9,7 @@ import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.db.dao.IBaseVODAO;
+import io.pelle.mango.test.client.ENUMERATION1;
 import io.pelle.mango.test.client.Entity1VO;
 import io.pelle.mango.test.client.Entity2VO;
 import io.pelle.mango.test.client.Entity3VO;
@@ -74,6 +75,31 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals(2, filterResult.size());
 		assertTrue("aaa".equals(filterResult.get(0).getStringDatatype1()) || "aaa".equals(filterResult.get(1).getStringDatatype1()));
 		assertTrue("AAA".equals(filterResult.get(0).getStringDatatype1()) || "AAA".equals(filterResult.get(1).getStringDatatype1()));
+
+	}
+
+	@Test
+	public void testFilterByEnumeration() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("zzz");
+		entity1VO.setEnumeration1Datatype(ENUMERATION1.ENUMERATIONVALUE1);
+		baseEntityService.validateAndSave(entity1VO);
+
+		Entity1VO entity2VO = new Entity1VO();
+		entity2VO.setStringDatatype1("uuu");
+		entity2VO.setEnumeration1Datatype(ENUMERATION1.ENUMERATIONVALUE2);
+		baseEntityService.validateAndSave(entity2VO);
+
+		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.ENUMERATION1DATATYPE.eq(ENUMERATION1.ENUMERATIONVALUE1)));
+		assertEquals(1, filterResult.size());
+		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, filterResult.get(0).getEnumeration1Datatype());
+
+		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.ENUMERATION1DATATYPE.neq(ENUMERATION1.ENUMERATIONVALUE1)));
+		assertEquals(1, filterResult.size());
+		assertEquals(ENUMERATION1.ENUMERATIONVALUE2, filterResult.get(0).getEnumeration1Datatype());
 
 	}
 
