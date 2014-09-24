@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import io.pelle.mango.client.base.vo.AttributeDescriptor
 import io.pelle.mango.client.base.vo.ChangeTrackingArrayList
 import io.pelle.mango.client.base.vo.EntityAttributeDescriptor
+import io.pelle.mango.client.base.vo.EnumerationAttributeDescriptor
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
@@ -35,7 +36,6 @@ import io.pelle.mango.dsl.mango.ValueObjectEntityAttribute
 import java.math.BigDecimal
 import java.util.ArrayList
 import java.util.List
-import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociations
 
 class TypeUtils {
 
@@ -208,6 +208,10 @@ class TypeUtils {
 		var ClientNameUtils clientNameUtils = new ClientNameUtils
 		return clientNameUtils.enumerationFullQualifiedName(enumeration)
 	}
+	
+	def dispatch compileEntityAttributeDescriptor(EnumerationEntityAttribute entityAttribute, Entity entity) '''
+	public static «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»> «entityAttribute.name.attributeConstantName» = new «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «entityAttribute.typeClass», «entityAttribute.typeClass», «entityAttribute.naturalKeyOrder»);
+	'''
 	
 	//-----------------
 	// BinaryDataType

@@ -13,6 +13,7 @@ import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
+import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.server.base.BaseEntity
@@ -79,6 +80,11 @@ class EntityGenerator extends BaseEntityGenerator {
 		@javax.persistence.Lob
 	'''
 
+	def dispatch compileEntityAttributeJpaAnnotations(EnumerationEntityAttribute entityAttribute) '''
+		@Column(name = "«entityAttribute.entityTableColumnName»")
+		@javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
+	'''
+ 
 	def dispatch compileEntityAttributeJpaAnnotations(StringEntityAttribute entityAttribute) '''
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
 			@javax.persistence.ElementCollection(fetch=javax.persistence.FetchType.EAGER)
