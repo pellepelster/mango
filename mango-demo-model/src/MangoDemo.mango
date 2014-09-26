@@ -49,6 +49,8 @@ project MangoDemo {
 		entity Entity1 {
 			naturalkey { stringDatatype1 }
 			string StringDatatype1 stringDatatype1
+			string StringDatatype1 stringDatatype2
+			string StringDatatype1 stringDatatype3
 			boolean BooleanDatatype1 booleanDatatype1
 			string StringDatatype1 0..n stringDatatype1List
 			entity Entity2Datatype entity2Datatype
@@ -115,6 +117,14 @@ project MangoDemo {
 					entityattribute Entity1.stringDatatype1
 				}
 
+				textcontrol Textcontrol2 {
+					entityattribute Entity1.stringDatatype2
+				}
+
+				textcontrol Textcontrol3 {
+					entityattribute Entity1.stringDatatype3
+				}
+
 				booleancontrol BooleanControl1 {
 					entityattribute Entity1.booleanDatatype1
 				}
@@ -127,19 +137,25 @@ project MangoDemo {
 					booleancontrol ref BooleanControl1
 					
 					controlgroup ControlGroup1 {
+						options { multiFilterField }
 						textcontrol ref Textcontrol1
-						booleancontrol ref BooleanControl1
+						textcontrol ref Textcontrol2
+						textcontrol ref Textcontrol3
 					}
 				}
 				
 				dictionaryresult DictionaryResult1 {
 					textcontrol ref Textcontrol1
+					textcontrol ref Textcontrol2
+					textcontrol ref Textcontrol3
 					booleancontrol ref BooleanControl1
 				}
 			}
 						
 			dictionaryeditor DictionaryEditor1 {
 				textcontrol ref Textcontrol1
+				textcontrol ref Textcontrol2
+				textcontrol ref Textcontrol3
 				booleancontrol ref BooleanControl1
 			}
 		}

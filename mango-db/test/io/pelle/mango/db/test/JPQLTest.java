@@ -66,6 +66,12 @@ public class JPQLTest extends TestCase {
 	}
 
 	@Test
+	public void testCriteriaMultipleOr() {
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.TESTSTRING.eq("xxx").or(DBTest1.TESTSTRING.eq("yyy"))));
+		assertEquals("SELECT x0 FROM DBTest1 x0 WHERE x0.testString = 'xxx' OR x0.testString = 'yyy'", query.getJPQL(EntityVOMapper.INSTANCE));
+	}
+
+	@Test
 	public void testCriteriaAnd() {
 		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1).and(DBTest1.ID.eq(2))));
 		assertEquals("SELECT x0 FROM DBTest1 x0 WHERE x0.id = 1 AND x0.id = 2", query.getJPQL(EntityVOMapper.INSTANCE));

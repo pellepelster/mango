@@ -13,6 +13,7 @@ package io.pelle.mango.client.base.vo.query;
 
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,7 @@ import java.util.Map;
  * @version $Rev: 797 $, $Date: 2010-12-17 14:39:43 +0100 (Fri, 17 Dec 2010) $
  * 
  */
-public class Join implements IEntity {
+public class Join implements IEntity, Serializable {
 
 	/**
 	 * Join types for a JPQL join

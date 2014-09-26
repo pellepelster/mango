@@ -18,26 +18,17 @@ import io.pelle.mango.client.web.modules.dictionary.controls.HierarchicalControl
 
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * control factory for text controls
- * 
- * @author pelle
- * 
- */
-public class HierarchicalControlFactory extends BaseControlFactory<IHierarchicalControlModel, HierarchicalControl>
-{
+public class HierarchicalControlFactory extends BaseControlFactory<IHierarchicalControlModel, HierarchicalControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(HierarchicalControl hierarchicalControl, LAYOUT_TYPE layoutType)
-	{
+	public Widget createControl(HierarchicalControl hierarchicalControl, LAYOUT_TYPE layoutType) {
 		return new GwtHierarchicalControl(hierarchicalControl);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControl)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
 		return baseControl instanceof HierarchicalControl;
 	}
 

@@ -4,10 +4,12 @@ import io.pelle.mango.client.base.vo.query.IAliasProvider;
 import io.pelle.mango.client.base.vo.query.IExpression;
 import io.pelle.mango.client.base.vo.query.LOGICAL_OPERATOR;
 
+import java.io.Serializable;
+
 import com.google.common.base.Objects;
 
 @SuppressWarnings("serial")
-public class BooleanExpression extends BaseBooleanExpression {
+public class BooleanExpression extends BaseBooleanExpression implements Serializable {
 
 	private IExpression expression1;
 	private LOGICAL_OPERATOR logicalOperator;

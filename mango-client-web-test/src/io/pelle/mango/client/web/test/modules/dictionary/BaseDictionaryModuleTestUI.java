@@ -12,9 +12,11 @@
 package io.pelle.mango.client.web.test.modules.dictionary;
 
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
+import io.pelle.mango.client.base.modules.dictionary.controls.IGroupControl;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.ControlGroupModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.DateControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.EnumerationControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.HierarchicalControlModel;
@@ -26,6 +28,7 @@ import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
 import io.pelle.mango.client.web.test.modules.dictionary.controls.BaseControlTest;
 import io.pelle.mango.client.web.test.modules.dictionary.controls.BigDecimalControlTest;
 import io.pelle.mango.client.web.test.modules.dictionary.controls.BooleanControlTest;
+import io.pelle.mango.client.web.test.modules.dictionary.controls.ControlGroupTest;
 import io.pelle.mango.client.web.test.modules.dictionary.controls.DateControlTest;
 import io.pelle.mango.client.web.test.modules.dictionary.controls.EnumerationControlTest;
 import io.pelle.mango.client.web.test.modules.dictionary.controls.HierarchicalControlTest;
@@ -54,6 +57,10 @@ public abstract class BaseDictionaryModuleTestUI {
 
 	public TextControlTest getTextControlTest(TextControlModel controlModel) {
 		return new TextControlTest(this.baseDictionaryModule.getElement(controlModel));
+	}
+
+	public ControlGroupTest getControlGroupTest(ControlGroupModel controlModel) {
+		return new ControlGroupTest((IGroupControl) this.baseDictionaryModule.getElement(controlModel));
 	}
 
 	public BigDecimalControlTest getBigDecimalControlTest(BigDecimalControlModel controlModel) {

@@ -2,10 +2,12 @@ package io.pelle.mango.client.base.vo.query.expressions;
 
 import io.pelle.mango.client.base.vo.query.IAliasProvider;
 
+import java.io.Serializable;
+
 import com.google.common.base.Objects;
 
 @SuppressWarnings("serial")
-public class LikeExpression extends BaseBooleanExpression {
+public class LikeExpression extends BaseBooleanExpression implements Serializable {
 
 	private PathExpression expression1;
 

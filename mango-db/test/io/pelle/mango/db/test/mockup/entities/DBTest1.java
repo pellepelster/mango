@@ -16,6 +16,7 @@ import io.pelle.mango.client.base.vo.EntityDescriptor;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
+import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.server.base.BaseEntity;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class DBTest1 extends BaseEntity implements IBaseEntity {
 
 	public static final IEntityDescriptor<DBTest1> DBTEST1 = new EntityDescriptor<DBTest1>(DBTest1.class);
 
-	public static final IAttributeDescriptor<String> TESTSTRING = new AttributeDescriptor<String>(DBTEST1, "testString", String.class, String.class, false, 0);
+	public static final StringAttributeDescriptor TESTSTRING = new StringAttributeDescriptor(DBTEST1, "testString");
 
 	public enum TEST_ENUM {
 		ENUM1, ENUM2

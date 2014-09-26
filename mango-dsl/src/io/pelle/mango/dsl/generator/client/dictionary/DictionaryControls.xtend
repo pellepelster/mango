@@ -359,6 +359,10 @@ class DictionaryControls {
 		«dictionaryControl.dictionaryControlCommonSetters»
 	'''
 
+	def isMulti(DictionaryControlGroup dictionaryControlGroup) {
+		return (dictionaryControlGroup.controlGroupOptions != null && dictionaryControlGroup.controlGroupOptions.multiFilterField)
+	}
+
 	def dictionaryControlClass(DictionaryControlGroup dictionaryControlGroup) '''
 	
 		package «dictionaryControlGroup.packageName»;
@@ -370,7 +374,7 @@ class DictionaryControls {
 			«ENDFOR»
 	
 			public «dictionaryControlGroup.dictionaryClassName»(String name, io.pelle.mango.client.base.modules.dictionary.model.IBaseModel parent) {
-				super(name, parent);
+				super(name, parent, «dictionaryControlGroup.isMulti»);
 				
 				«FOR dictionaryControl : dictionaryControlGroup.groupcontrols»
 					this.getControls().add(«dictionaryControl.dictionaryConstantName»);

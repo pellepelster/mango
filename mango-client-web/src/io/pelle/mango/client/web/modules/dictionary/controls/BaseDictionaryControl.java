@@ -6,6 +6,8 @@ import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
+import io.pelle.mango.client.base.vo.query.IBooleanExpression;
+import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.databinding.IValidator;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 
 public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel, ValueType> extends BaseDictionaryElement<ModelType> implements IBaseControl<ValueType, ModelType> {
@@ -161,6 +164,11 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 		for (IControlUpdateListener controlUpdateListener : this.controlUpdateListeners) {
 			controlUpdateListener.onUpdate();
 		}
+	}
+
+	@Override
+	public Optional<IBooleanExpression> getExpression(PathExpression pathExpression) {
+		return Optional.absent();
 	}
 
 	@Override

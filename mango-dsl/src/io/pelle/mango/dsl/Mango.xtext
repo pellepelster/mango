@@ -335,13 +335,13 @@ DictionaryControl:
 
 DictionaryControlGroupOptions:
 	{DictionaryControlGroupOptions}
-	(multiFieldFilter?="multiFieldFilter")?;
+	(multiFilterField?="multiFilterField")?;
 
 DictionaryControlGroup:
 	{DictionaryControlGroup}
 	"controlgroup" (name=ID)? ("ref" ref=[ DictionaryControlGroup | QualifiedName ])?  ("{"
 		baseControl=BaseDictionaryControl
-		("options {" dictionaryControlGroup=DictionaryControlGroupOptions "}")?
+		("options {" controlGroupOptions=DictionaryControlGroupOptions "}")?
 		(groupcontrols+=DictionaryControl)*
 	"}")?;
 

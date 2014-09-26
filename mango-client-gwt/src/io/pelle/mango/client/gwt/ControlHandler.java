@@ -20,6 +20,7 @@ import io.pelle.mango.client.gwt.modules.dictionary.controls.BooleanControlFacto
 import io.pelle.mango.client.gwt.modules.dictionary.controls.DateControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.EnumerationControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.FileControlFactory;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.GroupControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.HierarchicalControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.IGwtControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.IntegerControlFactory;
@@ -47,6 +48,7 @@ public class ControlHandler {
 		controlFactories.add(new IntegerControlFactory());
 		controlFactories.add(new DateControlFactory());
 		controlFactories.add(new BooleanControlFactory());
+		controlFactories.add(new GroupControlFactory());
 		controlFactories.add(new EnumerationControlFactory());
 		controlFactories.add(new ReferenceControlFactory());
 		controlFactories.add(new BigDecimalControlFactory());
@@ -61,8 +63,9 @@ public class ControlHandler {
 
 		return instance;
 	}
-	
-	public <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> Column<IBaseTable.ITableRow<VOType>, ?> createColumn(ControlType baseControl, boolean editable, ListDataProvider<IBaseTable.ITableRow<VOType>> listDataProvider, AbstractCellTable<IBaseTable.ITableRow<VOType>> abstractCellTable) {
+
+	public <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> Column<IBaseTable.ITableRow<VOType>, ?> createColumn(ControlType baseControl, boolean editable,
+			ListDataProvider<IBaseTable.ITableRow<VOType>> listDataProvider, AbstractCellTable<IBaseTable.ITableRow<VOType>> abstractCellTable) {
 		return getControlFactory(baseControl).createColumn(baseControl, editable, listDataProvider, abstractCellTable);
 	}
 
@@ -71,7 +74,8 @@ public class ControlHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	private <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> IGwtControlFactory<ControlModelType, ControlType> getControlFactory(BaseDictionaryControl<ControlModelType, ?> baseControl) {
+	private <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> IGwtControlFactory<ControlModelType, ControlType> getControlFactory(
+			BaseDictionaryControl<ControlModelType, ?> baseControl) {
 
 		for (IGwtControlFactory<?, ?> controlFactory : controlFactories) {
 			if (controlFactory.supports(baseControl)) {
@@ -81,6 +85,5 @@ public class ControlHandler {
 
 		throw new RuntimeException("unsupported control model '" + baseControl.getModel().getClass().getName() + "'");
 	}
-
 
 }

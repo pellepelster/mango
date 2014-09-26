@@ -33,4 +33,8 @@ public class PathExpression implements Serializable, IExpression {
 		return Objects.toStringHelper(this).add("className", className).add("path", path).toString();
 	}
 
+	public String getClassName() {
+		return className;
+	}
+
 }

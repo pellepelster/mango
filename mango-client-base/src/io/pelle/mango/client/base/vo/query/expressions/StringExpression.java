@@ -3,8 +3,10 @@ package io.pelle.mango.client.base.vo.query.expressions;
 import io.pelle.mango.client.base.vo.query.IAliasProvider;
 import io.pelle.mango.client.base.vo.query.IExpression;
 
+import java.io.Serializable;
+
 @SuppressWarnings("serial")
-public class StringExpression implements IExpression {
+public class StringExpression implements IExpression, Serializable {
 
 	private String value;
 

@@ -5,11 +5,13 @@ import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 
+import java.io.Serializable;
+
 import com.google.common.base.Optional;
 
 public class ExpressionFactory {
 
-	public static Optional<IBooleanExpression> createEqualsExpression(Class<? extends IBaseVO> clazz, String attributePath, Object value) {
+	public static Optional<IBooleanExpression> createEqualsExpression(Class<? extends IBaseVO> clazz, String attributePath, Serializable value) {
 
 		IBooleanExpression compareExpression = null;
 

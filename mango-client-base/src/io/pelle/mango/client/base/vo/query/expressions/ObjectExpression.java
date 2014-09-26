@@ -3,15 +3,17 @@ package io.pelle.mango.client.base.vo.query.expressions;
 import io.pelle.mango.client.base.vo.query.IAliasProvider;
 import io.pelle.mango.client.base.vo.query.IExpression;
 
-@SuppressWarnings("serial")
-public class ObjectExpression implements IExpression {
+import java.io.Serializable;
 
-	private Object value;
+@SuppressWarnings("serial")
+public class ObjectExpression implements IExpression, Serializable {
+
+	private Serializable value;
 
 	public ObjectExpression() {
 	}
 
-	public ObjectExpression(Object value) {
+	public ObjectExpression(Serializable value) {
 		this.value = value;
 	}
 
@@ -19,7 +21,7 @@ public class ObjectExpression implements IExpression {
 		return value;
 	}
 
-	public void setValue(Object value) {
+	public void setValue(Serializable value) {
 		this.value = value;
 	}
 

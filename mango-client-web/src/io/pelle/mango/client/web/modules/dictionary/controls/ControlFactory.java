@@ -15,6 +15,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.ITextControl
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 
 public class ControlFactory {
+
 	private static ControlFactory instance;
 
 	public static ControlFactory getInstance() {

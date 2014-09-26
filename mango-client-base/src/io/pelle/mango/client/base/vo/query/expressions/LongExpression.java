@@ -3,10 +3,12 @@ package io.pelle.mango.client.base.vo.query.expressions;
 import io.pelle.mango.client.base.vo.query.IAliasProvider;
 import io.pelle.mango.client.base.vo.query.IExpression;
 
+import java.io.Serializable;
+
 import com.google.common.base.Objects;
 
 @SuppressWarnings("serial")
-public class LongExpression implements IExpression {
+public class LongExpression implements IExpression, Serializable {
 
 	private long value;
 

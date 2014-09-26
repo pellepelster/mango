@@ -12,6 +12,7 @@ import io.pelle.mango.server.base.xml.IXmlVOImporter;
 import io.pelle.mango.server.base.xml.XmlElementDescriptor;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -176,7 +177,7 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 			StartElement referenceStartElement = currentEvent.asStartElement();
 			XmlElementDescriptor referenceXmlElementDescriptor = this.voXmlMapper.getElementDescriptor(referenceStartElement.getName().getLocalPart());
 			if (referenceXmlElementDescriptor.isReference() && !referenceXmlElementDescriptor.isList()) {
-				Map<String, Object> referenceAttibutes = new HashMap<String, Object>();
+				Map<String, Serializable> referenceAttibutes = new HashMap<String, Serializable>();
 				XMLEvent event = currentEvent;
 				while (eventReader.hasNext() && !isEndElementFor(event, referenceStartElement)) {
 					event = eventReader.nextEvent();
@@ -184,7 +185,7 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 						StartElement referenceAttributeStartElement = event.asStartElement();
 						IAttributeDescriptor<?> referenceAttributeDescriptor = BeanUtils.getAttributeDescriptor(voClass, referenceAttributeStartElement.getName().getLocalPart());
 						event = eventReader.nextEvent();
-						Object convertedValue = fromXml(event.asCharacters().getData(), referenceAttributeDescriptor.getAttributeType());
+						Serializable convertedValue = fromXml(event.asCharacters().getData(), referenceAttributeDescriptor.getAttributeType());
 						referenceAttibutes.put(referenceAttributeStartElement.getName().getLocalPart(), convertedValue);
 					}
 				}
@@ -206,13 +207,13 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 		this.voXmlMapper = voXmlMapper;
 	}
 
-	public <T extends IBaseVO> T getWithCriteriaMap(Class<T> voClass, Map<String, Object> criteriaMap) {
+	public <T extends IBaseVO> T getWithCriteriaMap(Class<T> voClass, Map<String, Serializable> criteriaMap) {
 
 		SelectQuery<T> selectQuery = SelectQuery.selectFrom(voClass);
 
 		Optional<IBooleanExpression> expression = Optional.absent();
 
-		for (Map.Entry<String, Object> criteriaEntry : criteriaMap.entrySet()) {
+		for (Map.Entry<String, Serializable> criteriaEntry : criteriaMap.entrySet()) {
 
 			Optional<IBooleanExpression> compareExpression = ExpressionFactory.createEqualsExpression(voClass, criteriaEntry.getKey(), criteriaEntry.getValue());
 

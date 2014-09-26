@@ -11,6 +11,8 @@
  */
 package io.pelle.mango.client.base.modules.dictionary.model.controls;
 
+import java.util.List;
+
 /**
  * Model for a text control
  * 
@@ -19,4 +21,8 @@ package io.pelle.mango.client.base.modules.dictionary.model.controls;
  * 
  */
 public interface IControlGroupModel extends IBaseControlModel {
+
+	boolean isMultiFilterField();
+
+	List<IBaseControlModel> getControls();
 }

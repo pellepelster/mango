@@ -8,12 +8,11 @@ import io.pelle.mango.client.base.modules.dictionary.model.search.IFilterModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
+import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
-import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
 import io.pelle.mango.client.web.modules.dictionary.filter.DictionaryFilter;
 import io.pelle.mango.client.web.modules.dictionary.query.DictionaryCompositeQuery;
 import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
@@ -48,7 +47,7 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 	}
 
 	public void search() {
-		search(DummyAsyncCallback.<List<IBaseTable.ITableRow<VOType>>>dummyAsyncCallback());
+		search(DummyAsyncCallback.<List<IBaseTable.ITableRow<VOType>>> dummyAsyncCallback());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -62,24 +61,19 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 
 		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : baseControls) {
 
-			if (baseControl instanceof TextControl) {
+			PathExpression pathExpression = new PathExpression(getModel().getVOClass().getName(), baseControl.getModel().getAttributePath());
+			Optional<IBooleanExpression> compareExpression = baseControl.getExpression(pathExpression);
 
-				TextControl textControl = (TextControl) baseControl;
-
-				Optional<IBooleanExpression> compareExpression = ExpressionFactory.createStringEqualsExpression(getModel().getVOClass(), baseControl.getModel().getAttributePath(), textControl.getValue());
-
-				if (compareExpression.isPresent()) {
-					if (expression.isPresent()) {
-						expression = Optional.of(expression.get().and(compareExpression.get()));
-					} else {
-						expression = compareExpression;
-					}
+			if (compareExpression.isPresent()) {
+				if (expression.isPresent()) {
+					expression = Optional.of(expression.get().and(compareExpression.get()));
+				} else {
+					expression = compareExpression;
 				}
 			}
 		}
 
-		if (expression.isPresent())
-		{
+		if (expression.isPresent()) {
 			selectQuery.where(expression.get());
 		}
 

@@ -1,5 +1,6 @@
 package io.pelle.mango.server.xml;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -7,7 +8,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 public abstract class BaseXmlVOHandler {
-	
+
 	private final DateTimeFormatter dateFormat = ISODateTimeFormat.date();
 
 	protected String toXML(Object object) {
@@ -18,7 +19,7 @@ public abstract class BaseXmlVOHandler {
 		}
 	}
 
-	protected Object fromXml(String data, Class<?> targetClass) {
+	protected Serializable fromXml(String data, Class<?> targetClass) {
 		if (Date.class.isAssignableFrom(targetClass)) {
 			return this.dateFormat.parseDateTime(data).toDate();
 		} else if (Long.class.isAssignableFrom(targetClass)) {
