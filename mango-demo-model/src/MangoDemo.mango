@@ -125,6 +125,11 @@ project MangoDemo {
 				dictionaryfilter DictionaryFilter1 {
 					textcontrol ref Textcontrol1
 					booleancontrol ref BooleanControl1
+					
+					controlgroup ControlGroup1 {
+						textcontrol ref Textcontrol1
+						booleancontrol ref BooleanControl1
+					}
 				}
 				
 				dictionaryresult DictionaryResult1 {

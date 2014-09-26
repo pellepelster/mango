@@ -78,7 +78,9 @@ class DictionaryControls {
 				«dictionaryControlLabelSetters(dictionaryControl, dictionaryControl.baseControl.labels)»
 			«ENDIF»
 			
+			«IF dictionaryControl.baseControl.entityattribute != null»
 			«dictionaryControl.datatypeLabelSetter(dictionaryControl.baseControl.entityattribute)»
+			«ENDIF»
 			
 		«ENDIF»
 		
@@ -104,7 +106,7 @@ class DictionaryControls {
 			«ENDIF»
 		«ENDIF»
 	'''
-	
+
 	def dictionaryControlClass(DictionaryControl dictionaryControl) ''''''
 
 	def dictionaryControlClass(DictionaryReferenceControl dictionaryControl) '''
@@ -345,6 +347,10 @@ class DictionaryControls {
 	//-------------------------------------------------------------------------
 	// DictionaryControlGroup
 	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryControlGroup dictionaryControl) '''
+	«dictionaryControl.dictionaryClassName»
+	'''
+	
 	def dispatch String dictionaryControlConstantSetters(DictionaryControlGroup dictionaryControl) '''
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
@@ -352,5 +358,31 @@ class DictionaryControls {
 		
 		«dictionaryControl.dictionaryControlCommonSetters»
 	'''
+
+	def dictionaryControlClass(DictionaryControlGroup dictionaryControlGroup) '''
+	
+		package «dictionaryControlGroup.packageName»;
+	
+		public class «dictionaryControlGroup.dictionaryClassName» extends io.pelle.mango.client.base.modules.dictionary.model.controls.ControlGroupModel {
+	
+			«FOR dictionaryControl : dictionaryControlGroup.groupcontrols»
+				«dictionaryControl.dictionaryControlConstant»
+			«ENDFOR»
+	
+			public «dictionaryControlGroup.dictionaryClassName»(String name, io.pelle.mango.client.base.modules.dictionary.model.IBaseModel parent) {
+				super(name, parent);
+				
+				«FOR dictionaryControl : dictionaryControlGroup.groupcontrols»
+					this.getControls().add(«dictionaryControl.dictionaryConstantName»);
+				«ENDFOR»
+				
+				«FOR dictionaryControl : dictionaryControlGroup.groupcontrols»
+					«dictionaryControl.dictionaryControlConstantSetters»
+				«ENDFOR»
+				
+			}
+		}
+	'''
+	
 
 }

@@ -14,6 +14,7 @@ import io.pelle.mango.dsl.mango.DictionaryEditableTable
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
+import io.pelle.mango.dsl.mango.DictionaryControlGroup
 
 class DictionaryContainerGenerator {
 
@@ -32,9 +33,9 @@ class DictionaryContainerGenerator {
 			«dictionaryContainer.dictionaryConstant»
 		«ENDFOR»
 		
-			«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
-				«dictionaryControl.dictionaryControlConstant»
-			«ENDFOR»
+		«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
+			«dictionaryControl.dictionaryControlConstant»
+		«ENDFOR»
 	'''
 
 	def dictionaryContainerContentsConstructor(List<DictionaryContainerContent> dictionaryContainerContents) '''
@@ -71,7 +72,8 @@ class DictionaryContainerGenerator {
 			
 			@«SuppressWarnings.name»("all")
 			public class «dictionaryContainer.dictionaryClassName» extends de.pellepelster.myadmin.client.base.modules.dictionary.model.containers.CompositeModel {
-			«dictionaryContainer.containercontents.dictionaryClass»
+				
+				«dictionaryContainer.containercontents.dictionaryClass»
 		
 				public «dictionaryContainer.dictionaryClassName»(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {
 					super("«dictionaryContainer.name»", parent);
@@ -116,8 +118,8 @@ class DictionaryContainerGenerator {
 			fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 		}
 
-		for (dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)) {
-			//fsa.generateFile(dictionaryControl.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryControl.dictionaryControlClass)
+		for (dictionaryControl : dictionaryContainerContents.filter(DictionaryControlGroup)) {
+			fsa.generateFile(dictionaryControl.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryControl.dictionaryControlClass)
 		}
 	}
 }

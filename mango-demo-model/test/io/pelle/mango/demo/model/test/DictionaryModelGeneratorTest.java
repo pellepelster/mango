@@ -28,4 +28,9 @@ public class DictionaryModelGeneratorTest {
 		assertEquals("Boolean1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1.getLabel());
 	}
 
+	@Test
+	public void testControlGroup() {
+		assertEquals("BooleanControl1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.CONTROL_GROUP1.BOOLEAN_CONTROL1.getName());
+		assertEquals("Textcontrol1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.CONTROL_GROUP1.TEXTCONTROL1.getName());
+	}
 }
