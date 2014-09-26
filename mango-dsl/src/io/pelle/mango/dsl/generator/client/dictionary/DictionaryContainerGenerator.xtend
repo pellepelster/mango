@@ -17,35 +17,35 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 
 class DictionaryContainerGenerator {
 
-	@Inject 
+	@Inject
 	extension DictionaryNameUtils
 
-	@Inject 
+	@Inject
 	extension DictionaryControls
 
 	def dictionaryConstant(DictionaryContainer dictionaryContainer) '''
-	public «dictionaryContainer.dictionaryClassFullQualifiedName» «dictionaryContainer.dictionaryConstantName» = new «dictionaryContainer.dictionaryClassFullQualifiedName»(this);
+		public «dictionaryContainer.dictionaryClassFullQualifiedName» «dictionaryContainer.dictionaryConstantName» = new «dictionaryContainer.dictionaryClassFullQualifiedName»(this);
 	'''
-	
+
 	def dictionaryClass(List<DictionaryContainerContent> dictionaryContainerContents) '''
 		«FOR dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer)»
 			«dictionaryContainer.dictionaryConstant»
 		«ENDFOR»
-	
-		«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
-			«dictionaryControl.dictionaryControlConstant»
-		«ENDFOR»
+		
+			«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
+				«dictionaryControl.dictionaryControlConstant»
+			«ENDFOR»
 	'''
 
 	def dictionaryContainerContentsConstructor(List<DictionaryContainerContent> dictionaryContainerContents) '''
 		«FOR dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer)»
 			this.getChildren().add(«dictionaryContainer.dictionaryConstantName»);
 		«ENDFOR»
-
+		
 		«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
 			this.getControls().add(«dictionaryControl.dictionaryConstantName»);
 		«ENDFOR»
-
+		
 		«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
 			«dictionaryControl.dictionaryControlConstantSetters»
 		«ENDFOR»
@@ -55,80 +55,69 @@ class DictionaryContainerGenerator {
 		«FOR dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer)»
 			public «dictionaryContainer.dictionaryClassFullQualifiedName» «dictionaryContainer.dictionaryConstantName» = rootComposite.«dictionaryContainer.dictionaryConstantName»;
 		«ENDFOR»
-
+		
 		«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
 			public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = rootComposite.«dictionaryControl.dictionaryConstantName»;
 		«ENDFOR»
 	'''
-	
-		def dictionaryGenerator(DictionaryContainer dictionaryContainer, IFileSystemAccess fsa) {
 
+	def dictionaryGenerator(DictionaryContainer dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
-		
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dictionaryClass(DictionaryContainer dictionaryContainer) '''
-		package «dictionaryContainer.packageName»;
-		
-		@«SuppressWarnings.name»("all")
-		public class «dictionaryContainer.dictionaryClassName» extends de.pellepelster.myadmin.client.base.modules.dictionary.model.containers.CompositeModel {
-	
+			package «dictionaryContainer.packageName»;
+			
+			@«SuppressWarnings.name»("all")
+			public class «dictionaryContainer.dictionaryClassName» extends de.pellepelster.myadmin.client.base.modules.dictionary.model.containers.CompositeModel {
 			«dictionaryContainer.containercontents.dictionaryClass»
-	
-			public «dictionaryContainer.dictionaryClassName»(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {
-				
-				super("«dictionaryContainer.name»", parent);
-	
-				«dictionaryContainer.containercontents.dictionaryContainerContentsConstructor»
-				
-			}
-		}
-	'''
-	
-	def dictionaryGenerator(DictionaryEditableTable dictionaryContainer, IFileSystemAccess fsa) {
-
-		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
 		
+				public «dictionaryContainer.dictionaryClassName»(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {
+					super("«dictionaryContainer.name»", parent);
+					«dictionaryContainer.containercontents.dictionaryContainerContentsConstructor»
+				}
+			}
+	'''
+
+	def dictionaryGenerator(DictionaryEditableTable dictionaryContainer, IFileSystemAccess fsa) {
+		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dictionaryClass(DictionaryEditableTable dictionaryContainer) '''
-		package «dictionaryContainer.packageName»;
+			package «dictionaryContainer.packageName»;
+			
+			@«SuppressWarnings.name»("all")
+			public class «dictionaryContainer.dictionaryClassName» extends «EditableTableModel.name» {
 		
-		@«SuppressWarnings.name»("all")
-		public class «dictionaryContainer.dictionaryClassName» extends «EditableTableModel.name» {
-	
-			«FOR dictionaryControl : dictionaryContainer.columncontrols»
-				«dictionaryControl.dictionaryControlConstant»
-			«ENDFOR»
-	
-			public «dictionaryContainer.dictionaryClassName»(«BaseModel.name»<?> parent) {
-				
-				super("«dictionaryContainer.name»", parent);
-	
 				«FOR dictionaryControl : dictionaryContainer.columncontrols»
-					this.getControls().add(«dictionaryControl.dictionaryConstantName»);
-					«dictionaryControl.dictionaryControlConstantSetters»
+					«dictionaryControl.dictionaryControlConstant»
 				«ENDFOR»
-	
-				setVoName(«EntityQuery.getEntity(dictionaryContainer.entityattribute).voFullQualifiedName».class);
-				setAttributePath("«dictionaryContainer.entityattribute.name»");
+		
+				public «dictionaryContainer.dictionaryClassName»(«BaseModel.name»<?> parent) {
+					
+					super("«dictionaryContainer.name»", parent);
+		
+					«FOR dictionaryControl : dictionaryContainer.columncontrols»
+						this.getControls().add(«dictionaryControl.dictionaryConstantName»);
+						«dictionaryControl.dictionaryControlConstantSetters»
+					«ENDFOR»
+		
+					setVoName(«EntityQuery.getEntity(dictionaryContainer.entityattribute).voFullQualifiedName».class);
+					setAttributePath("«dictionaryContainer.entityattribute.name»");
+				}
 			}
-		}
 	'''
-	
+
 	def dictionaryGenerator(List<DictionaryContainerContent> dictionaryContainerContents, IFileSystemAccess fsa) {
 
-		for (dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer))
-		{
+		for (dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer)) {
 			fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 		}
 
-		for (dictionaryControl : dictionaryContainerContents.filter(DictionaryControl))
-		{
+		for (dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)) {
 			//fsa.generateFile(dictionaryControl.dictionaryClassFullQualifiedFileName, GeneratorConstants.VO_GEN_OUTPUT, dictionaryControl.dictionaryControlClass)
 		}
-		
 	}
 }

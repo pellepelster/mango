@@ -337,10 +337,12 @@ public class EntityModelGeneratorTest {
 		ValueObject3 valueObject3 = new ValueObject3(valueObject2);
 		valueObject3.setString3("xxx");
 
-		ValueObject4 valueObject4 = new ValueObject4(valueObject3);
+		ValueObject4 valueObject41 = new ValueObject4(valueObject3);
+		assertEquals("zzz", valueObject41.getString2());
+		assertEquals("xxx", valueObject41.getString3());
 
-		assertEquals("zzz", valueObject4.getString2());
-		assertEquals("xxx", valueObject4.getString3());
+		ValueObject4 valueObject42 = new ValueObject4(valueObject2);
+		assertEquals("zzz", valueObject42.getString2());
 	}
 
 }

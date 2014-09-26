@@ -15,6 +15,11 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlM
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
+import io.pelle.mango.dsl.mango.BaseDataType
+import io.pelle.mango.dsl.mango.BinaryEntityAttribute
+import io.pelle.mango.dsl.mango.BooleanEntityAttribute
+import io.pelle.mango.dsl.mango.DateEntityAttribute
+import io.pelle.mango.dsl.mango.DecimalEntityAttribute
 import io.pelle.mango.dsl.mango.DictionaryBigDecimalControl
 import io.pelle.mango.dsl.mango.DictionaryBooleanControl
 import io.pelle.mango.dsl.mango.DictionaryControl
@@ -26,7 +31,15 @@ import io.pelle.mango.dsl.mango.DictionaryHierarchicalControl
 import io.pelle.mango.dsl.mango.DictionaryIntegerControl
 import io.pelle.mango.dsl.mango.DictionaryReferenceControl
 import io.pelle.mango.dsl.mango.DictionaryTextControl
+import io.pelle.mango.dsl.mango.EntityEntityAttribute
+import io.pelle.mango.dsl.mango.EnumerationAttributeType
+import io.pelle.mango.dsl.mango.EnumerationDataType
+import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
+import io.pelle.mango.dsl.mango.IntegerEntityAttribute
 import io.pelle.mango.dsl.mango.Labels
+import io.pelle.mango.dsl.mango.LongEntityAttribute
+import io.pelle.mango.dsl.mango.MapEntityAttribute
+import io.pelle.mango.dsl.mango.StringEntityAttribute
 
 class DictionaryControls {
 
@@ -39,12 +52,6 @@ class DictionaryControls {
 	@Inject 
 	extension AttributeUtils
 
-	def dictionaryControlClass(DictionaryControl dictionaryControl) ''''''
-
-	def dispatch dictionaryControlType(DictionaryControl dictionaryControl) '''
-	«BaseControlModel.name»<«IBaseControl.name»>
-	'''
-
 	def dispatch dictionaryControlConstant(DictionaryControl dictionaryControl) '''
 	public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryControlType»("«ModelUtil.getControlName(dictionaryControl)»", this);
 	'''
@@ -52,8 +59,6 @@ class DictionaryControls {
 	def dispatch dictionaryControlConstant(DictionaryReferenceControl dictionaryControl) '''
 	public «dictionaryControl.dictionaryClassFullQualifiedName» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryClassFullQualifiedName»(this);
 	'''
-
-	def dispatch dictionaryControlConstantSetters(DictionaryControl dictionaryControl) ''''''
 
 	def dictionaryControlCommonSetters(DictionaryControl dictionaryControl) '''
 		«IF dictionaryControl.baseControl != null»
@@ -71,13 +76,16 @@ class DictionaryControls {
 		
 			«IF dictionaryControl.baseControl.labels != null»
 				«dictionaryControlLabelSetters(dictionaryControl, dictionaryControl.baseControl.labels)»
-				//IF dictionaryControl.baseControl.entityattribute != null
-				//	dictionaryControl.baseControl.entityattribute.dictionaryControlTypeSetters
-				//ENDIF
 			«ENDIF»
+			
+			«dictionaryControl.datatypeLabelSetter(dictionaryControl.baseControl.entityattribute)»
+			
 		«ENDIF»
+		
 	'''	
+	
 	def dictionaryControlLabelSetters(DictionaryControl dictionaryControl, Labels labels) '''
+	
 		«IF labels != null»
 			«IF labels.label != null»
 				«dictionaryControl.dictionaryConstantName».setLabel("«labels.label»");
@@ -96,64 +104,9 @@ class DictionaryControls {
 			«ENDIF»
 		«ENDIF»
 	'''
-
-	//-------------------------------------------------------------------------
-	// DictionaryTextControl
-	//-------------------------------------------------------------------------
-	def dispatch dictionaryControlType(DictionaryTextControl dictionaryControl) '''
-	«TextControlModel.name»
-	'''
-
-	def dispatch String dictionaryControlConstantSetters(DictionaryTextControl dictionaryControl) '''
-		«IF dictionaryControl.ref != null»
-			«dictionaryControl.ref.dictionaryControlConstantSetters»
-		«ENDIF»
-		
-		«dictionaryControl.dictionaryControlCommonSetters»
-	'''
-
-	//-------------------------------------------------------------------------
-	// DictionaryIntegerControl
-	//-------------------------------------------------------------------------
-	def dispatch dictionaryControlType(DictionaryIntegerControl dictionaryControl) '''
-	«IntegerControlModel.name»
-	'''
-
-	//-------------------------------------------------------------------------
-	// DictionaryBigDecimalControl
-	//-------------------------------------------------------------------------
-	def dispatch dictionaryControlType(DictionaryBigDecimalControl dictionaryControl) '''
-	«BigDecimalControlModel.name»
-	'''
-
-	//-------------------------------------------------------------------------
-	// DictionaryBooleanControl
-	//-------------------------------------------------------------------------
-	def dispatch dictionaryControlType(DictionaryBooleanControl dictionaryControl) '''
-	«BooleanControlModel.name»
-	'''
-
-	//-------------------------------------------------------------------------
-	// DictionaryDateControl
-	//-------------------------------------------------------------------------
-	def dispatch dictionaryControlType(DictionaryDateControl dictionaryControl) '''
-	«DateControlModel.name»
-	'''
-
-	//-------------------------------------------------------------------------
-	// DictionaryEnumerationControl
-	//-------------------------------------------------------------------------
-	def dispatch dictionaryControlType(DictionaryEnumerationControl dictionaryControl) '''
-	«EnumerationControlModel.name»
-	'''
-
-	//-------------------------------------------------------------------------
-	// DictionaryReferenceControl
-	//-------------------------------------------------------------------------
-	def dispatch dictionaryControlType(DictionaryReferenceControl dictionaryControl) '''
-	«ReferenceControlModel»<«ModelUtil.getEntityAttribute(dictionaryControl).type»>
-	'''
 	
+	def dictionaryControlClass(DictionaryControl dictionaryControl) ''''''
+
 	def dictionaryControlClass(DictionaryReferenceControl dictionaryControl) '''
 	package «dictionaryControl.packageName»;
 	
@@ -180,6 +133,163 @@ class DictionaryControls {
 	}
 	'''
 	
+	//-------------------------------------------------------------------------
+	// DictionaryBaseControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryControl dictionaryControl) '''
+	«BaseControlModel.name»<«IBaseControl.name»>
+	'''
+	
+	def dispatch dictionaryControlConstantSetters(DictionaryControl dictionaryControl) ''''''
+
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, BaseDataType baseDataType) '''
+		«IF baseDataType != null && baseDataType.label != null» 
+			«dictionaryControl.dictionaryConstantName».setLabel("«baseDataType.label»");
+		«ENDIF»
+	'''
+	
+	//-------------------------------------------------------------------------
+	// DictionaryTextControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryTextControl dictionaryControl) '''
+	«TextControlModel.name»
+	'''
+
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, StringEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	'''
+
+	def dispatch String dictionaryControlConstantSetters(DictionaryTextControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
+	'''
+
+	//-------------------------------------------------------------------------
+	// DictionaryIntegerControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryIntegerControl dictionaryControl) '''
+	«IntegerControlModel.name»
+	'''
+	
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, IntegerEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	'''
+	
+	def dispatch String dictionaryControlConstantSetters(DictionaryIntegerControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
+	'''
+
+	//-------------------------------------------------------------------------
+	// DictionaryLongControl
+	//-------------------------------------------------------------------------
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, LongEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	'''
+	
+	//-------------------------------------------------------------------------
+	// DictionaryLongControl
+	//-------------------------------------------------------------------------
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, MapEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	'''
+	
+	//-------------------------------------------------------------------------
+	// DictionaryBigDecimalControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryBigDecimalControl dictionaryControl) '''
+	«BigDecimalControlModel.name»
+	'''
+
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, DecimalEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	'''
+
+	def dispatch String dictionaryControlConstantSetters(DictionaryBigDecimalControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
+	'''
+
+	//-------------------------------------------------------------------------
+	// DictionaryBooleanControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryBooleanControl dictionaryControl) '''
+	«BooleanControlModel.name»
+	'''
+	
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, BooleanEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	'''
+
+	def dispatch String dictionaryControlConstantSetters(DictionaryBooleanControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
+	'''
+
+	//-------------------------------------------------------------------------
+	// DictionaryDateControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryDateControl dictionaryControl) '''
+	«DateControlModel.name»
+	'''
+
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, DateEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	'''
+
+	def dispatch String dictionaryControlConstantSetters(DictionaryDateControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
+	'''
+
+	//-------------------------------------------------------------------------
+	// DictionaryEnumerationControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryEnumerationControl dictionaryControl) '''
+	«EnumerationControlModel.name»
+	'''
+
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EnumerationEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type)»
+	'''
+
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EnumerationAttributeType enumerationAttributeType) '''
+	'''
+
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EnumerationDataType enumerationDataType) '''
+		«dictionaryControl.datatypeLabelSetter(enumerationDataType.baseDataType)»
+	'''
+
+	def dispatch String dictionaryControlConstantSetters(DictionaryEnumerationControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
+	'''
+
+	//-------------------------------------------------------------------------
+	// DictionaryReferenceControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryReferenceControl dictionaryControl) '''
+	«ReferenceControlModel»<«ModelUtil.getEntityAttribute(dictionaryControl).type»>
+	'''
+
 	def dispatch String dictionaryControlConstantSetters(DictionaryReferenceControl dictionaryControl) '''
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
@@ -192,18 +302,44 @@ class DictionaryControls {
 		«ENDIF»
 	'''
 
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EntityEntityAttribute entityAttribute) '''
+		//return dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)
+	'''
+
+
 	//-------------------------------------------------------------------------
 	// DictionaryHierarchicalControl
 	//-------------------------------------------------------------------------
 	def dispatch dictionaryControlType(DictionaryHierarchicalControl dictionaryControl) '''
 	«HierarchicalControlModel.name»<«IBaseControl.name»>
 	'''
+	
+	def dispatch String dictionaryControlConstantSetters(DictionaryHierarchicalControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
+	'''
+	
 
 	//-------------------------------------------------------------------------
 	// DictionaryFileControl
 	//-------------------------------------------------------------------------
 	def dispatch dictionaryControlType(DictionaryFileControl dictionaryControl) '''
 	«FileControlModel.name»<«IBaseControl.name»>
+	'''
+	
+	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, BinaryEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	'''
+
+	def dispatch String dictionaryControlConstantSetters(DictionaryFileControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
 	'''
 
 	//-------------------------------------------------------------------------

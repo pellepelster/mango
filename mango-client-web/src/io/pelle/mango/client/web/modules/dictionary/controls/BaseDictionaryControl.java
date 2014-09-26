@@ -17,40 +17,32 @@ import java.util.List;
 
 import com.google.common.base.Strings;
 
-public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel, ValueType> extends BaseDictionaryElement<ModelType> implements
-		IBaseControl<ValueType, ModelType>
-{
-	protected class ParseResult
-	{
+public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel, ValueType> extends BaseDictionaryElement<ModelType> implements IBaseControl<ValueType, ModelType> {
+	protected class ParseResult {
 
 		private IValidationMessage validationMessage;
 
 		private ValueType value;
 
-		public ParseResult()
-		{
+		public ParseResult() {
 			super();
 		}
 
-		public ParseResult(ValueType value)
-		{
+		public ParseResult(ValueType value) {
 			super();
 			this.value = value;
 		}
 
-		public ParseResult(IValidationMessage validationMessage)
-		{
+		public ParseResult(IValidationMessage validationMessage) {
 			super();
 			this.validationMessage = validationMessage;
 		}
 
-		public IValidationMessage getValidationMessage()
-		{
+		public IValidationMessage getValidationMessage() {
 			return this.validationMessage;
 		}
 
-		public ValueType getValue()
-		{
+		public ValueType getValue() {
 			return this.value;
 		}
 
@@ -62,103 +54,81 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 
 	private static final MandatoryValidator MANDATORY_VALIDATOR = new MandatoryValidator();
 
-	public BaseDictionaryControl(ModelType baseControlModel, BaseDictionaryElement<? extends IBaseModel> parent)
-	{
+	public BaseDictionaryControl(ModelType baseControlModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(baseControlModel, parent);
 
-		if (baseControlModel.isMandatory())
-		{
+		if (baseControlModel.isMandatory()) {
 			this.validators.add(MANDATORY_VALIDATOR);
 		}
 
 	}
 
-	public String getEditorLabel()
-	{
+	public String getEditorLabel() {
 		String label = DictionaryModelUtil.getEditorLabel(getModel());
 
-		if (getModel().isMandatory())
-		{
+		if (getModel().isMandatory()) {
 			label += MangoClientWeb.MESSAGES.mandatoryMarker();
 		}
 
 		return label;
 	}
 
-	public String getFilterLabel()
-	{
+	public String getFilterLabel() {
 		return DictionaryModelUtil.getFilterLabel(getModel());
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public ValueType getValue()
-	{
+	public ValueType getValue() {
 		return (ValueType) getVOWrapper().get(getModel().getAttributePath());
 	}
 
 	@Override
-	public void setValue(ValueType value)
-	{
+	public void setValue(ValueType value) {
 		setValueInternal(value);
 
 		fireUpdateListeners();
 	}
 
-	private void setValueInternal(ValueType value)
-	{
+	private void setValueInternal(ValueType value) {
 		getRootElement().clearValidationMessages(this);
 
 		validate(value);
 
-		if (getRootElement().getValidationMessages(this).hasErrors())
-		{
+		if (getRootElement().getValidationMessages(this).hasErrors()) {
 			getVOWrapper().set(getModel().getAttributePath(), null);
-		}
-		else
-		{
+		} else {
 			getVOWrapper().set(getModel().getAttributePath(), value);
 		}
 
 	}
 
-	private void validate(ValueType value)
-	{
-		for (IValidator validator : this.validators)
-		{
+	private void validate(ValueType value) {
+		for (IValidator validator : this.validators) {
 			getRootElement().addValidationMessages(this, validator.validate(value, getModel()));
 		}
 	}
 
 	@Override
-	public ModelType getModel()
-	{
+	public ModelType getModel() {
 		return super.getModel();
 	}
 
 	@Override
-	public String format()
-	{
+	public String format() {
 		return getValue() != null ? getValue().toString() : "";
 	}
 
 	@Override
-	public void parseValue(String valueString)
-	{
-		if (Strings.isNullOrEmpty(valueString))
-		{
+	public void parseValue(String valueString) {
+		if (Strings.isNullOrEmpty(valueString)) {
 			setValueInternal(null);
-		}
-		else
-		{
+		} else {
 			ParseResult parseResult = parseValueInternal(valueString);
 
-			if (parseResult.getValidationMessage() == null)
-			{
+			if (parseResult.getValidationMessage() == null) {
 				setValueInternal(parseResult.getValue());
-			}
-			else
-			{
+			} else {
 				setValueInternal(null);
 				getRootElement().getValidationMessages(this).addValidationMessage(parseResult.getValidationMessage());
 			}
@@ -168,40 +138,33 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 	}
 
 	@Override
-	public boolean isMandatory()
-	{
+	public boolean isMandatory() {
 		return getModel().isMandatory();
 	}
 
 	@Override
-	public List<BaseDictionaryElement<?>> getAllChildren()
-	{
+	public List<BaseDictionaryElement<?>> getAllChildren() {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public IValidationMessages getValidationMessages()
-	{
+	public IValidationMessages getValidationMessages() {
 		return getRootElement().getValidationMessages(this);
 	}
 
 	@Override
-	public void addUpdateListener(IControlUpdateListener controlUpdateListener)
-	{
+	public void addUpdateListener(IControlUpdateListener controlUpdateListener) {
 		this.controlUpdateListeners.add(controlUpdateListener);
 	}
 
-	private void fireUpdateListeners()
-	{
-		for (IControlUpdateListener controlUpdateListener : this.controlUpdateListeners)
-		{
+	private void fireUpdateListeners() {
+		for (IControlUpdateListener controlUpdateListener : this.controlUpdateListeners) {
 			controlUpdateListener.onUpdate();
 		}
 	}
 
 	@Override
-	protected void update()
-	{
+	protected void update() {
 		fireUpdateListeners();
 	}
 

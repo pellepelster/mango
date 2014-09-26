@@ -24,6 +24,7 @@ project MangoDemo {
 		}		
 
 		booleandatatype BooleanDatatype1 {
+			label "Boolean1"
 		}
 		
 		entitydatatype Entity2Datatype {
@@ -113,21 +114,28 @@ project MangoDemo {
 				textcontrol Textcontrol1 {
 					entityattribute Entity1.stringDatatype1
 				}
+
+				booleancontrol BooleanControl1 {
+					entityattribute Entity1.booleanDatatype1
+				}
 				
 			}
 
 			dictionarysearch DictionarySearch1 {
 				dictionaryfilter DictionaryFilter1 {
 					textcontrol ref Textcontrol1
+					booleancontrol ref BooleanControl1
 				}
 				
 				dictionaryresult DictionaryResult1 {
 					textcontrol ref Textcontrol1
+					booleancontrol ref BooleanControl1
 				}
 			}
 						
 			dictionaryeditor DictionaryEditor1 {
 				textcontrol ref Textcontrol1
+				booleancontrol ref BooleanControl1
 			}
 		}
 		

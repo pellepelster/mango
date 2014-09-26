@@ -23,4 +23,9 @@ public class DictionaryModelGeneratorTest {
 		assertTrue(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.isMandatory());
 	}
 
+	@Test
+	public void testLabelInheritanceFromDatatype() {
+		assertEquals("Boolean1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1.getLabel());
+	}
+
 }

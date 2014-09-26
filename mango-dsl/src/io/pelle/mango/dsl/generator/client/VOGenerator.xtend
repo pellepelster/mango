@@ -68,9 +68,9 @@ class VOGenerator extends BaseEntityGenerator {
 		}
 	'''
 
-	def compileValueObjectCloneConstructors(ValueObject valueObject) '''
+	def String compileValueObjectCloneConstructors(ValueObject rootValueObject, ValueObject valueObject) '''
 		«IF valueObject.extends != null»
-		public «valueObject.voName»(«valueObject.extends.voFullQualifiedName» «valueObject.extends.attributeName») {
+		public «rootValueObject.voName»(«valueObject.extends.voFullQualifiedName» «valueObject.extends.attributeName») {
 			
 			«IF valueObject.extends.extends != null»
 			super(«valueObject.extends.attributeName»);
@@ -80,6 +80,8 @@ class VOGenerator extends BaseEntityGenerator {
 				this.«attribute.setterName»(«valueObject.extends.attributeName».«attribute.getterName»());
 			«ENDFOR»
 		}
+		
+		«compileValueObjectCloneConstructors(rootValueObject, valueObject.extends)»
 		«ENDIF»
 	'''
 
@@ -102,7 +104,7 @@ class VOGenerator extends BaseEntityGenerator {
 			public «valueObject.voName»() {
 			}
 			
-			«valueObject.compileValueObjectCloneConstructors»
+			«compileValueObjectCloneConstructors(valueObject, valueObject)»
 
 			«valueObject.compileValueObjectSetterConstructors»
 		

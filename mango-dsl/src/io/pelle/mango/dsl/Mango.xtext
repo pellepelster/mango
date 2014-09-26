@@ -71,11 +71,16 @@ SimpleTypeType:
 	{SimpleTypeType}
 	'simpletype' (type=SimpleTypes)? (cardinality=Cardinality)?;
 
+BaseDataType:
+	{BaseDataType}
+	("label" label=STRING)?;
+
 //-----------------------------------------------------------------------------
 // string
 //-----------------------------------------------------------------------------
 StringDataType:
 	'stringdatatype' name=ID ("extends" ref=[ StringDataType | QualifiedName ])? "{"
+		baseDataType=BaseDataType
 		("maxLength" maxLength=INT)?
 	'}';
 
@@ -87,6 +92,7 @@ StringEntityAttribute:
 //-----------------------------------------------------------------------------
 MapDataType:
 	'mapdatatype' name=ID ("extends" ref=[ MapDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 		keyType = SimpleTypes
 		valueType = SimpleTypes
 	'}';
@@ -99,6 +105,7 @@ MapEntityAttribute:
 //-----------------------------------------------------------------------------
 BooleanDataType:
 	'booleandatatype' name=ID ("extends" ref=[ BooleanDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 	'}';
 	
 BooleanEntityAttribute:
@@ -109,6 +116,7 @@ BooleanEntityAttribute:
 //-----------------------------------------------------------------------------
 IntegerDataType:
 	'integerdatatype' name=ID ("extends" ref=[ IntegerDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 	'}';
 
 IntegerEntityAttribute:
@@ -119,6 +127,7 @@ IntegerEntityAttribute:
 //-----------------------------------------------------------------------------
 DateDataType:
 	'datedatatype' name=ID ("extends" ref=[ DateDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 	'}';
 
 DateEntityAttribute:
@@ -129,6 +138,7 @@ DateEntityAttribute:
 //-----------------------------------------------------------------------------
 DecimalDataType:
 	'decimaldatatype' name=ID ("extends" ref=[ DecimalDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 	'}';
 
 DecimalEntityAttribute:
@@ -139,6 +149,7 @@ DecimalEntityAttribute:
 //-----------------------------------------------------------------------------
 LongDataType:
 	'longdatatype' name=ID ("extends" ref=[ LongDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 	'}';
 
 LongEntityAttribute:
@@ -149,6 +160,7 @@ LongEntityAttribute:
 //-----------------------------------------------------------------------------
 BinaryDataType:
 	'binarydatatype' name=ID ("extends" ref=[ BinaryDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 	'}';
 	
 BinaryEntityAttribute:
@@ -159,6 +171,7 @@ BinaryEntityAttribute:
 //-----------------------------------------------------------------------------
 EntityDataType:
 	'entitydatatype' name=ID  ("extends" ref=[ EntityDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 		'entity' entity=[Entity|QualifiedName]
 	'}';
 
@@ -183,6 +196,7 @@ ValueObjectEntityAttribute:
 //-----------------------------------------------------------------------------
 EnumerationDataType:
 	'enumerationdatatype' name=ID ("extends" ref=[ EnumerationDataType | QualifiedName ])? '{'
+		baseDataType=BaseDataType
 		'enumeration' enumeration=[Enumeration|QualifiedName]
 	'}';
 
@@ -317,12 +331,17 @@ BaseDictionaryControl:
 		;
 
 DictionaryControl:
-	DictionaryControlGroup | DictionaryTextControl | DictionaryIntegerControl | DictionaryBigDecimalControl | DictionaryBooleanControl | DictionaryDateControl | DictionaryEnumerationControl | DictionaryFileControl | DictionaryReferenceControl;
+	DictionaryControlGroup | DictionaryTextControl | DictionaryIntegerControl | DictionaryHierarchicalControl | DictionaryBigDecimalControl | DictionaryBooleanControl | DictionaryDateControl | DictionaryEnumerationControl | DictionaryFileControl | DictionaryReferenceControl;
+
+DictionaryControlGroupOptions:
+	{DictionaryControlGroupOptions}
+	(multiFieldFilter?="multiFieldFilter")?;
 
 DictionaryControlGroup:
 	{DictionaryControlGroup}
 	"controlgroup" (name=ID)? ("ref" ref=[ DictionaryControlGroup | QualifiedName ])?  ("{"
 		baseControl=BaseDictionaryControl
+		("options {" dictionaryControlGroup=DictionaryControlGroupOptions "}")?
 		(groupcontrols+=DictionaryControl)*
 	"}")?;
 
