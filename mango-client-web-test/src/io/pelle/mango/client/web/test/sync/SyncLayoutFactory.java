@@ -18,6 +18,7 @@ public class SyncLayoutFactory implements ILayoutFactory {
 
 	public SyncLayoutFactory() {
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionaryEditorModuleSyncTestUIFactory());
+		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionarySearchModuleSyncTestUIFactory());
 	}
 
 	@Override

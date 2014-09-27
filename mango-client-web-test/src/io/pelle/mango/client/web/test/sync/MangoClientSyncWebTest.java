@@ -2,16 +2,17 @@ package io.pelle.mango.client.web.test.sync;
 
 import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.modules.dictionary.model.editor.EditorModel;
+import io.pelle.mango.client.base.modules.dictionary.model.search.SearchModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
+import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.HashMap;
 
 import com.google.common.base.Optional;
-import com.google.common.util.concurrent.SettableFuture;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -27,6 +28,7 @@ public class MangoClientSyncWebTest {
 	}
 
 	public static MangoClientSyncWebTest getInstance() {
+
 		if (instance == null) {
 			instance = new MangoClientSyncWebTest();
 		}
@@ -47,30 +49,15 @@ public class MangoClientSyncWebTest {
 		});
 	}
 
-	public <VOTYPE extends IBaseVO> DictionaryEditorModuleSyncTestUI<VOTYPE> openEditor(final EditorModel<VOTYPE> baseModel) {
-
-		final SettableFuture<IModuleUI> future = SettableFuture.<IModuleUI> create();
-
-		AsyncCallback<IModuleUI> callback = new AsyncCallback<IModuleUI>() {
-
-			@Override
-			public void onFailure(Throwable caught) {
-				future.setException(caught);
-			}
-
-			@Override
-			public void onSuccess(IModuleUI result) {
-				future.set(result);
-			}
-		};
-
-		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getParent().getName()), null, new HashMap<String, Object>(), Optional.of(callback));
-
-		try {
-			return (DictionaryEditorModuleSyncTestUI) future.get();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	public <VOTYPE extends IBaseVO> DictionarySearchModuleSyncTestUI<VOTYPE> openSearch(final SearchModel searchModel) {
+		final AsyncCallbackFuture<IModuleUI> future = AsyncCallbackFuture.create();
+		ModuleHandler.getInstance().startUIModule(DictionarySearchModule.geSearchModuleLocator(searchModel.getParent().getName()), null, new HashMap<String, Object>(), Optional.of(future.getCallback()));
+		return (DictionarySearchModuleSyncTestUI<VOTYPE>) future.get();
 	}
 
+	public <VOTYPE extends IBaseVO> DictionaryEditorModuleSyncTestUI<VOTYPE> openEditor(final EditorModel<VOTYPE> editorModel) {
+		final AsyncCallbackFuture<IModuleUI> future = AsyncCallbackFuture.create();
+		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(editorModel.getParent().getName()), null, new HashMap<String, Object>(), Optional.of(future.getCallback()));
+		return (DictionaryEditorModuleSyncTestUI<VOTYPE>) future.get();
+	}
 }

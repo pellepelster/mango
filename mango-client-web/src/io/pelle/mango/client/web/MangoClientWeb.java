@@ -21,6 +21,7 @@ import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModul
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModuleFactory;
 import io.pelle.mango.client.web.modules.hierarchical.HierarchicalTreeModuleFactory;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModuleFactory;
+import io.pelle.mango.client.web.util.I18NProxy;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -101,6 +102,9 @@ public final class MangoClientWeb implements EntryPoint {
 		if (GWT.isClient()) {
 			MESSAGES = ((MangoMessages) GWT.create(MangoMessages.class));
 			RESOURCES = ((MangoResources) GWT.create(MangoResources.class));
+		} else {
+			MESSAGES = I18NProxy.create(MangoMessages.class);
+			// RESOURCES = I18NProxy.create(MangoResources.class);
 		}
 
 		MangoClientConfiguration.registerAll();
