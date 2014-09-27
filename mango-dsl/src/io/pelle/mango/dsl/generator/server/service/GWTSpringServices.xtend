@@ -8,7 +8,7 @@ import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 
-class GWTServices {
+class GWTSpringServices {
 
 	@Inject
 	extension ServerNameUtils

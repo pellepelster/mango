@@ -142,6 +142,10 @@ class NameUtils {
 	def serviceName(Service service) {
 		return service.name.toFirstUpper;
 	}
+
+	def serviceAttributeName(Service service) {
+		return service.name.toFirstLower;
+	}
 	
 	def serviceSpringName(Service service) {
 		return service.serviceName
@@ -219,6 +223,10 @@ class NameUtils {
 		return service.name.toFirstUpper + "GWTAsyncAdapter";
 	}
 
+	def gwtAsyncAdapterBeanName(Service service) {
+		return service.gwtAsyncAdapterName.toFirstLower
+	}
+
 	def gwtAsyncAdapterFullQualifiedName(Service service) {
 		return getPackageName(service) + "." + gwtAsyncAdapterName(service);
 	}
@@ -241,6 +249,21 @@ class NameUtils {
 	def gwtRemoteServiceLocatorFullQualifiedFileName(Model model) {
 		return gwtRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
 	}
+
+	//-------------------------------------------------------------------------
+	// GWT async adapter remote service locator 
+	//-------------------------------------------------------------------------
+	def gwtAsyncAdapterRemoteServiceLocatorName(Model model) {
+		return model.modelName.toFirstUpper + "GwtAsyncAdapterRemoteServiceLocator";
+	}
+
+	def gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName(Model model) {
+		return model.modelPackageName + "." + gwtAsyncAdapterRemoteServiceLocatorName(model);
+	}
+
+	def gwtAsyncAdapterRemoteServiceLocatorFullQualifiedFileName(Model model) {
+		return gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+	}
 	 
 	//-------------------------------------------------------------------------
 	// GWT remote service locator interface 
@@ -255,6 +278,36 @@ class NameUtils {
 
 	def gwtRemoteServiceLocatorInterfaceFullQualifiedFileName(Model model) {
 		return gwtRemoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+	}
+
+	//-------------------------------------------------------------------------
+	// remote service locator 
+	//-------------------------------------------------------------------------
+	def remoteServiceLocatorName(Model model) {
+		return model.modelName.toFirstUpper + "RemoteServiceLocator";
+	}
+
+	def remoteServiceLocatorFullQualifiedName(Model model) {
+		return model.modelPackageName + "." + remoteServiceLocatorName(model);
+	}
+
+	def remoteServiceLocatorFullQualifiedFileName(Model model) {
+		return remoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+	}
+	 
+	//-------------------------------------------------------------------------
+	// GWT remote service locator interface 
+	//-------------------------------------------------------------------------
+	def remoteServiceLocatorInterfaceName(Model model) {
+		return "I" + model.modelName.toFirstUpper + "RemoteServiceLocator";
+	}
+
+	def remoteServiceLocatorInterfaceFullQualifiedName(Model model) {
+		return model.modelPackageName + "." + remoteServiceLocatorInterfaceName(model);
+	}
+
+	def remoteServiceLocatorInterfaceFullQualifiedFileName(Model model) {
+		return remoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
 	}
 	
 	//-------------------------------------------------------------------------

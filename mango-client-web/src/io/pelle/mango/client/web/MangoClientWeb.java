@@ -23,7 +23,7 @@ import io.pelle.mango.client.web.modules.hierarchical.HierarchicalTreeModuleFact
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModuleFactory;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.RpcRequestBuilder;
@@ -42,7 +42,7 @@ public final class MangoClientWeb implements EntryPoint {
 	/** Shared instance of {@link MangoClientWeb} */
 	private static MangoClientWeb instance;
 
-	public static EventBus EVENT_BUS = GWT.create(SimpleEventBus.class);
+	public static EventBus EVENT_BUS = new SimpleEventBus();
 
 	/**
 	 * Returns the instance
@@ -58,9 +58,14 @@ public final class MangoClientWeb implements EntryPoint {
 		return instance;
 	}
 
-	public final static MangoMessages MESSAGES = ((MangoMessages) GWT.create(MangoMessages.class));;
+	public MangoClientWeb() {
+		super();
+		init();
+	}
 
-	public final static MangoResources RESOURCES = ((MangoResources) GWT.create(MangoResources.class));;
+	public static MangoMessages MESSAGES;
+
+	public static MangoResources RESOURCES;
 
 	private IMangoGwtRemoteServiceLocator myAdminGWTRemoteServiceLocator;
 
@@ -93,6 +98,11 @@ public final class MangoClientWeb implements EntryPoint {
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new ModuleNavigationModuleFactory());
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new HierarchicalTreeModuleFactory());
 
+		if (GWT.isClient()) {
+			MESSAGES = ((MangoMessages) GWT.create(MangoMessages.class));
+			RESOURCES = ((MangoResources) GWT.create(MangoResources.class));
+		}
+
 		MangoClientConfiguration.registerAll();
 	}
 
@@ -106,8 +116,7 @@ public final class MangoClientWeb implements EntryPoint {
 		return this;
 	}
 
-	public MangoClientWeb setRpcRequestBuilder(RpcRequestBuilder rpcRequestBuilder)
-	{
+	public MangoClientWeb setRpcRequestBuilder(RpcRequestBuilder rpcRequestBuilder) {
 		MangoClientBase.getInstance().setRpcRequestBuilder(rpcRequestBuilder);
 		return this;
 	}

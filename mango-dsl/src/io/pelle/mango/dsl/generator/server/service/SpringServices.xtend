@@ -4,14 +4,125 @@
 package io.pelle.mango.dsl.generator.server.service
 
 import com.google.inject.Inject
+import io.pelle.mango.dsl.generator.client.ClientNameUtils
+import io.pelle.mango.dsl.generator.client.web.GWTServices
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 
 class SpringServices {
 
 	@Inject
 	extension ServerNameUtils
+
+	@Inject
+	ClientNameUtils clientNameUtils
+	
+	@Inject
+	extension GWTServices
+	
+	//------------------------------------------------
+	// gwt remote service locator
+	//------------------------------------------------
+	def gwtAsyncAdapterRemoteServiceLocator(Model model) '''
+		package «model.modelPackageName»;
+		
+		public class «model.gwtAsyncAdapterRemoteServiceLocatorName» implements «clientNameUtils.gwtRemoteServiceLocatorInterfaceFullQualifiedName(model)» {
+		
+		    public «model.gwtAsyncAdapterRemoteServiceLocatorName»() {
+		    }
+		
+			«FOR service : model.eAllContents.toIterable.filter(Service)» 
+				@«Autowired.name»
+				@«Qualifier.name»("«service.gwtAsyncAdapterBeanName»")
+				private «service.gwtAsyncAdapterFullQualifiedName» «service.serviceAttributeName»;
+				
+				public «clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service)» get«service.serviceName»() {
+					return «service.serviceAttributeName»;
+				}
+				
+				public void set«service.serviceName»(«service.gwtAsyncAdapterFullQualifiedName» «service.serviceAttributeName») {
+					this.«service.serviceAttributeName» = «service.serviceAttributeName»;
+				}
+				
+			«ENDFOR»
+		}
+	'''
+	
+	
+	def gwtRemoteServiceAsyncAdapter(Service service) '''
+	package «service.packageName»;
+	
+	public class «service.gwtAsyncAdapterName» implements «clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service)» {
+
+		@«Autowired.name»
+		private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.name.toFirstLower()»;
+		
+		«FOR method : service.remoteMethods»
+			public «method.serviceMethodAsync» {
+				try
+				{
+				«IF !method.returnsVoid»
+					callback.onSuccess((«method.returnType.qualifiedName»)this.«service.name.toFirstLower()».«method.name.toFirstLower()»(«FOR parameter : method.params SEPARATOR  ", "»«parameter.name»«ENDFOR»));
+				«ELSE»
+					this.«service.name.toFirstLower()».«method.name.toFirstLower()»(«FOR parameter : method.params SEPARATOR  ", "»«parameter.name»«ENDFOR»);
+					callback.onSuccess(null);
+				«ENDIF»
+				}
+				catch (Exception e)
+				{
+					callback.onFailure(e);
+				}
+			
+			}
+		«ENDFOR»
+	
+		public void set«service.serviceName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.name.toFirstLower()»)
+		{
+			this.«service.name.toFirstLower()» = «service.name.toFirstLower()»;
+		}
+	
+	
+	}
+	'''
+	
+	//------------------------------------------------
+	// remote service locator
+	//------------------------------------------------
+	def remoteServiceLocator(Model model) '''
+		package «model.modelPackageName»;
+		
+		public class «model.remoteServiceLocatorName» implements «model.remoteServiceLocatorInterfaceName» {
+		
+		    private «model.remoteServiceLocatorName»() {
+		    }
+		
+			«FOR service : model.eAllContents.toIterable.filter(Service)» 
+				@«Autowired.name»
+				private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.serviceName»;
+
+				public «clientNameUtils.serviceInterfaceFullQualifiedName(service)» get«service.serviceName»() {
+					return «service.serviceName»;
+				}
+				
+				public void set«service.serviceName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.serviceName») {
+					this.«service.serviceName» = «service.serviceName»;
+				}
+			«ENDFOR»
+		}
+	'''
+
+	def remoteServiceLocatorInterface(Model model) '''
+		package «model.modelPackageName»;
+		
+		public interface «model.remoteServiceLocatorInterfaceName» {
+			«FOR service : model.eAllContents.toIterable.filter(Service)» 
+			«clientNameUtils.serviceInterfaceFullQualifiedName(service)» get«service.serviceName»();
+			«ENDFOR»
+			}
+	'''
 	
 	def springServices(Model model) '''
 	<?xml version="1.0" encoding="UTF-8"?>
@@ -24,7 +135,12 @@ class SpringServices {
 	
 			«FOR service: model.eAllContents.toIterable.filter(Service)»
 			<bean id="«service.serviceSpringName»" class="«service.serviceImplFullQualifiedName»" />
+			<bean id="«service.gwtAsyncAdapterBeanName»" class="«service.gwtAsyncAdapterFullQualifiedName»" />
 			«ENDFOR»
+
+			<bean id="«model.remoteServiceLocatorName.toFirstLower»" class="«model.remoteServiceLocatorFullQualifiedName»" />
+			
+			<bean id="«model.gwtAsyncAdapterRemoteServiceLocatorName.toFirstLower»" class="«model.gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName»" />
 	</beans>
 	'''
 	

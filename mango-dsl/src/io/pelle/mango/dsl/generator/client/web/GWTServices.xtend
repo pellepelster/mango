@@ -21,48 +21,51 @@ class GWTServices extends BaseServices {
 	@Inject 
 	extension ClientNameUtils
 
+	//------------------------------------------------
+	// gwt remote service locator
+	//------------------------------------------------
 	def gwtRemoteServiceLocator(Model model) '''
-package «model.modelPackageName»;
-
-public class «model.gwtRemoteServiceLocatorName» implements «model.gwtRemoteServiceLocatorInterfaceName» {
-
-    private static final «model.gwtRemoteServiceLocatorName» instance = new «model.gwtRemoteServiceLocatorName»();
-
-    private «model.gwtRemoteServiceLocatorName»() {
-    }
-
-    public static «model.gwtRemoteServiceLocatorName» getInstance() {
-        return instance;
-    }
-    
-   	private String remoteBaseUrl = null;
-	
-	public void setRemoteBaseUrl(String remoteBaseUrl) {
-		this.remoteBaseUrl = remoteBaseUrl;
-	}
-    
-    public String getModuleBaseUrl()
-    {
-	    if (remoteBaseUrl != null) {
-			return remoteBaseUrl;
-	    }
-	    else {
-	    	return com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/rpc"; 
-	    }
-    } 
-
-	«FOR service : model.eAllContents.toIterable.filter(Service)» 
-		public «service.gwtAsyncServiceInterfaceFullQualifiedName» get«service.serviceName»() {
+		package «model.modelPackageName»;
+		
+		public class «model.gwtRemoteServiceLocatorName» implements «model.gwtRemoteServiceLocatorInterfaceName» {
+		
+		    private static final «model.gwtRemoteServiceLocatorName» instance = new «model.gwtRemoteServiceLocatorName»();
+		
+		    private «model.gwtRemoteServiceLocatorName»() {
+		    }
+		
+		    public static «model.gwtRemoteServiceLocatorName» getInstance() {
+		        return instance;
+		    }
+		    
+		   	private String remoteBaseUrl = null;
 			
-			final «service.gwtAsyncServiceInterfaceFullQualifiedName» service = («service.gwtAsyncServiceInterfaceFullQualifiedName») com.google.gwt.core.client.GWT.create(«service.gwtServiceInterfaceFullQualifiedName».class);
-			
-			«ServiceDefTarget.name» formEndpoint = («ServiceDefTarget.name») service;
-			formEndpoint.setServiceEntryPoint(getModuleBaseUrl() + "/«service.serviceSpringName»");
-			formEndpoint.setRpcRequestBuilder(io.pelle.mango.client.base.MangoClientBase.getInstance().getRpcRequestBuilder());
-			
-			return service;
-		}
-		«ENDFOR»
+			public void setRemoteBaseUrl(String remoteBaseUrl) {
+				this.remoteBaseUrl = remoteBaseUrl;
+			}
+		    
+		    public String getModuleBaseUrl()
+		    {
+			    if (remoteBaseUrl != null) {
+					return remoteBaseUrl;
+			    }
+			    else {
+			    	return com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/rpc"; 
+			    }
+		    } 
+
+			«FOR service : model.eAllContents.toIterable.filter(Service)» 
+				public «service.gwtAsyncServiceInterfaceFullQualifiedName» get«service.serviceName»() {
+					
+					final «service.gwtAsyncServiceInterfaceFullQualifiedName» service = («service.gwtAsyncServiceInterfaceFullQualifiedName») com.google.gwt.core.client.GWT.create(«service.gwtServiceInterfaceFullQualifiedName».class);
+					
+					«ServiceDefTarget.name» formEndpoint = («ServiceDefTarget.name») service;
+					formEndpoint.setServiceEntryPoint(getModuleBaseUrl() + "/«service.serviceSpringName»");
+					formEndpoint.setRpcRequestBuilder(io.pelle.mango.client.base.MangoClientBase.getInstance().getRpcRequestBuilder());
+					
+					return service;
+				}
+			«ENDFOR»
 		}
 	'''
 
@@ -94,48 +97,9 @@ public class «model.gwtRemoteServiceLocatorName» implements «model.gwtRemoteS
 		}
 	'''
 
-	def serviceMethodAsync(ServiceMethod method) '''
-		«method.methodTypeParameter» void «method.methodName»(«method.params.methodParameters»«IF !method.params.isEmpty»,«ENDIF»«method.asyncCallback»)
-	'''
+	def serviceMethodAsync(ServiceMethod method) '''«method.methodTypeParameter» void «method.methodName»(«method.params.methodParameters»«IF !method.params.isEmpty»,«ENDIF»«method.asyncCallback»)'''
 
-	def asyncCallback(ServiceMethod serviceMethod) '''
-		«IF !serviceMethod.returnsVoid»com.google.gwt.user.client.rpc.AsyncCallback<«serviceMethod.returnType.qualifiedName»> callback«ELSE»com.google.gwt.user.client.rpc.AsyncCallback<Void> callback«ENDIF»
-	'''
-
-	def gwtRemoteServiceAsyncAdapter(Service service) '''
-
-	package «service.packageName»;
-	
-	public class «service.gwtAsyncAdapterName» implements «service.gwtAsyncAdapterFullQualifiedName» {
-
-		private «service.serviceInterfaceName» «service.name.toFirstLower()»;
-		
-		public «service.gwtAsyncAdapterName»(«service.serviceInterfaceName» «service.name.toFirstLower()»)
-		{
-			this.«service.name.toFirstLower()» = «service.name.toFirstLower()»;
-		}
-	
-		«FOR serviceMethod : service.remoteMethods»
-			public «serviceMethod.serviceMethodAsync»
-			{
-				try
-				{
-				«IF serviceMethod.returnType != null»
-					callback.onSuccess(this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR parameter : serviceMethod.params SEPARATOR  ", "»«parameter.name»«ENDFOR»));
-				«ELSE»
-					this.«service.name.toFirstLower()».«serviceMethod.name.toFirstLower()»(«FOR parameter : serviceMethod.params SEPARATOR  ", "»«parameter.name»«ENDFOR»);
-					callback.onSuccess(null);
-				«ENDIF»
-				}
-				catch (Exception e)
-				{
-					callback.onFailure(e);
-				}
-			
-			}
-		«ENDFOR»
-	
-	}
+	def asyncCallback(ServiceMethod serviceMethod) '''«IF !serviceMethod.returnsVoid»com.google.gwt.user.client.rpc.AsyncCallback<«serviceMethod.returnType.qualifiedName»> callback«ELSE»com.google.gwt.user.client.rpc.AsyncCallback<Void> callback«ENDIF»
 	'''
 	
 }

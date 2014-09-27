@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -40,16 +39,16 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  */
 @SuppressWarnings("rawtypes")
 public final class ModuleHandler {
-	
+
 	final static Logger LOG = Logger.getLogger("ModuleHandler");
 
-	public static EventBus MODULE_EVENT_BUS = GWT.create(SimpleEventBus.class);
+	public static EventBus MODULE_EVENT_BUS = new SimpleEventBus();
 
 	private int moduleCounter = 0;
 
 	private static ModuleHandler instance;
-	
-	public static String DEFAULT_LOCATION  = "default";
+
+	public static String DEFAULT_LOCATION = "default";
 
 	private final LinkedHashMap<String, Stack<IModuleUI>> currentModules = new LinkedHashMap<String, Stack<IModuleUI>>();
 
@@ -64,18 +63,14 @@ public final class ModuleHandler {
 	private ModuleHandler() {
 	}
 
-	private String getLocation(String location)
-	{
-		if (location == null || location.trim().isEmpty())
-		{
+	private String getLocation(String location) {
+		if (location == null || location.trim().isEmpty()) {
 			return DEFAULT_LOCATION;
-		}
-		else
-		{
+		} else {
 			return location;
 		}
 	}
-	
+
 	private Stack<IModuleUI> getModuleStack(String location) {
 		if (!this.currentModules.containsKey(location)) {
 			this.currentModules.put(location, new Stack<IModuleUI>());
@@ -85,15 +80,15 @@ public final class ModuleHandler {
 	}
 
 	public void startUIModule(final String moduleUrl, String location) {
-		startUIModule(moduleUrl, location, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>>absent());
+		startUIModule(moduleUrl, location, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>> absent());
 	}
 
 	public void startUIModule(final String moduleUrl) {
-		startUIModule(moduleUrl, null, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>>absent());
+		startUIModule(moduleUrl, null, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>> absent());
 	}
 
 	public void startUIModule(final String moduleUrl, Map<String, Object> parameters) {
-		startUIModule(moduleUrl, null, parameters, Optional.<AsyncCallback<IModuleUI>>absent());
+		startUIModule(moduleUrl, null, parameters, Optional.<AsyncCallback<IModuleUI>> absent());
 	}
 
 	private class MouldeUrlPredicate implements Predicate<IModuleUI> {
@@ -112,9 +107,9 @@ public final class ModuleHandler {
 	};
 
 	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters, final Optional<AsyncCallback<IModuleUI>> callback) {
-		
+
 		final String location = getLocation(location1);
-		
+
 		LOG.info("starting ui module for url '" + moduleUrl + "'");
 
 		Optional<IModuleUI> moduleUI = Iterables.tryFind(getModuleStack(location), new MouldeUrlPredicate(moduleUrl));
@@ -122,12 +117,11 @@ public final class ModuleHandler {
 		if (moduleUI.isPresent()) {
 			LOG.info("ui module for url '" + moduleUrl + "' already started (" + moduleUI.get().toString() + ")");
 			moduleUI.get().updateUrl(moduleUrl);
-			
-			if (callback.isPresent())
-			{
+
+			if (callback.isPresent()) {
 				callback.get().onSuccess(moduleUI.get());
 			}
-				
+
 			MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI.get(), location);
 		} else {
 			if (ModuleUIFactoryRegistry.getInstance().supports(moduleUrl)) {
@@ -138,8 +132,7 @@ public final class ModuleHandler {
 						ModuleHandler.this.getModuleStack(location).add(moduleUI);
 						MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
 
-						if (callback.isPresent())
-						{
+						if (callback.isPresent()) {
 							callback.get().onSuccess(moduleUI);
 						}
 					}
@@ -151,23 +144,17 @@ public final class ModuleHandler {
 	}
 
 	private Optional<IModuleUI> peekCurrentModule(String location) {
-		if (getModuleStack(location).isEmpty())
-		{
+		if (getModuleStack(location).isEmpty()) {
 			return Optional.absent();
-		}
-		else
-		{
+		} else {
 			return Optional.of(getModuleStack(location).peek());
 		}
 	}
-	
+
 	private Optional<IModuleUI> popCurrentModule(String location) {
-		if (getModuleStack(location).isEmpty())
-		{
+		if (getModuleStack(location).isEmpty()) {
 			return Optional.absent();
-		}
-		else
-		{
+		} else {
 			return Optional.of(getModuleStack(location).pop());
 		}
 	}
@@ -186,7 +173,7 @@ public final class ModuleHandler {
 	}
 
 	private String getModuleLocation(IModuleUI moduleUI) {
-		
+
 		for (Map.Entry<String, Stack<IModuleUI>> currentModuleEntry : this.currentModules.entrySet()) {
 			if (currentModuleEntry.getValue().contains(moduleUI)) {
 				return currentModuleEntry.getKey();

@@ -12,6 +12,7 @@ import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public class JunitLayoutFactory implements ILayoutFactory {
+
 	private List<IModuleUI> moduleUIs = new ArrayList<IModuleUI>();
 
 	public interface JunitLayoutFactoryCallback {

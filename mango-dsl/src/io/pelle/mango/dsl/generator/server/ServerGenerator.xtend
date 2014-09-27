@@ -4,7 +4,6 @@
 package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
-import io.pelle.mango.dsl.generator.server.service.GWTServices
 import io.pelle.mango.dsl.generator.server.service.RestServices
 import io.pelle.mango.dsl.generator.server.service.SpringServices
 import io.pelle.mango.dsl.generator.xml.XmlNameUtils
@@ -16,6 +15,7 @@ import javax.inject.Inject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
+import io.pelle.mango.dsl.generator.server.service.GWTSpringServices
 
 class ServerGenerator implements IGenerator {
 
@@ -23,7 +23,7 @@ class ServerGenerator implements IGenerator {
 	extension EntityGenerator
 	
 	@Inject
-	extension GWTServices
+	extension GWTSpringServices
 
 	@Inject
 	extension XmlVOMapper
@@ -43,6 +43,9 @@ class ServerGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		
 		for (model : resource.allContents.toIterable.filter(Model)) {
+			fsa.generateFile(model.gwtAsyncAdapterRemoteServiceLocatorFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtAsyncAdapterRemoteServiceLocator)
+			fsa.generateFile(model.remoteServiceLocatorFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.remoteServiceLocator)
+			fsa.generateFile(model.remoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.remoteServiceLocatorInterface)
 			fsa.generateFile(model.gwtRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtRemoteServicesApplicationContext)
 			fsa.generateFile(model.restRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.restRemoteServicesApplicationContext)
 			fsa.generateFile(model.serviceSpringNameApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springServices)
@@ -55,6 +58,7 @@ class ServerGenerator implements IGenerator {
 
 		for (service : resource.allContents.toIterable.filter(Service)) {
 			fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, service.restServiceController)
+			fsa.generateFile(service.gwtAsyncAdapterFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, service.gwtRemoteServiceAsyncAdapter)
 			
 			for (method : service.remoteMethods) {
 				fsa.generateFile(restControllerRequestVOFullQualifiedFileName(service, method), GeneratorConstants.SERVER_GEN_OUTPUT, restServiceControllerRequetVO(service, method))

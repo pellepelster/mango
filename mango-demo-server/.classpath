@@ -46,5 +46,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/mango-client-base"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/mango-client-core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/mango-client-web"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mango-client-web-test"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
