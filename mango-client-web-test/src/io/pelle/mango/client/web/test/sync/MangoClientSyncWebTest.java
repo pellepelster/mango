@@ -1,7 +1,7 @@
 package io.pelle.mango.client.web.test.sync;
 
 import io.pelle.mango.client.base.layout.IModuleUI;
-import io.pelle.mango.client.base.modules.dictionary.model.BaseModel;
+import io.pelle.mango.client.base.modules.dictionary.model.editor.EditorModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
@@ -47,7 +47,7 @@ public class MangoClientSyncWebTest {
 		});
 	}
 
-	public DictionaryEditorModuleSyncTestUI openEditor(final BaseModel baseModel) {
+	public <VOTYPE extends IBaseVO> DictionaryEditorModuleSyncTestUI<VOTYPE> openEditor(final EditorModel<VOTYPE> baseModel) {
 
 		final SettableFuture<IModuleUI> future = SettableFuture.<IModuleUI> create();
 
@@ -64,7 +64,7 @@ public class MangoClientSyncWebTest {
 			}
 		};
 
-		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getName()), null, new HashMap<String, Object>(), Optional.of(callback));
+		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(baseModel.getParent().getName()), null, new HashMap<String, Object>(), Optional.of(callback));
 
 		try {
 			return (DictionaryEditorModuleSyncTestUI) future.get();

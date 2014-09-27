@@ -17,7 +17,6 @@ import io.pelle.mango.client.web.test.MangoAsyncGwtTestHelper;
 import io.pelle.mango.client.web.test.MangoClientWebTest;
 import io.pelle.mango.client.web.test.modules.dictionary.DictionaryEditorModuleTestUIAsyncHelper;
 import io.pelle.mango.client.web.test.modules.dictionary.DictionarySearchModuleTestUIAsyncHelper;
-import io.pelle.mango.client.web.test.modules.dictionary.controls.ControlGroupTestAsyncHelper;
 import io.pelle.mango.client.web.test.modules.dictionary.controls.TextControlTestAsyncHelper;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.test.client.Entity1VO;
@@ -47,37 +46,6 @@ public class DemoClientDictionary1Test extends MangoAsyncGwtTestHelper<Entity1VO
 		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1, id);
 		TextControlTestAsyncHelper textControl = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
 		textControl.assertValue(text);
-
-		runAsyncTests();
-	}
-
-	@Test
-	public void testEntity1CreateAndSearchMulti() {
-
-		final String text1 = UUID.uuid();
-		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor1 = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
-		TextControlTestAsyncHelper textControl1 = editor1.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
-		textControl1.setValue(text1);
-		editor1.save();
-
-		final String text2 = UUID.uuid();
-		DictionaryEditorModuleTestUIAsyncHelper<Entity1VO> editor2 = openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
-		TextControlTestAsyncHelper textControl2 = editor2.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
-		textControl2.setValue(text2);
-		editor2.save();
-
-		DictionarySearchModuleTestUIAsyncHelper<Entity1VO> search = openSearch(MangoDemoDictionaryModel.TESTDICTIONARY1);
-		ControlGroupTestAsyncHelper groupControl1 = search.getControlGroupTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.CONTROL_GROUP1);
-		groupControl1.setValue(text1);
-		search.execute();
-		search.assertResultCount(1);
-
-		search.getResultList(new BaseErrorAsyncCallback<List<ITableRow<Entity1VO>>>() {
-			@Override
-			public void onSuccess(List<ITableRow<Entity1VO>> result) {
-				testSimpleCreateAndSearchOpenEditor(result.get(0).getVO().getId(), text1);
-			}
-		});
 
 		runAsyncTests();
 	}

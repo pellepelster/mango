@@ -1,10 +1,11 @@
 package io.pelle.mango.demo.server;
 
-import static org.junit.Assert.assertNotNull;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.test.sync.DictionaryEditorModuleSyncTestUI;
 import io.pelle.mango.client.web.test.sync.MangoClientSyncWebTest;
+import io.pelle.mango.client.web.test.sync.controls.TextControlTest;
+import io.pelle.mango.test.client.Entity1VO;
 import io.pelle.mango.test.client.MangoDemoClientConfiguration;
 import io.pelle.mango.test.client.MangoDemoDictionaryModel;
 
@@ -17,13 +18,15 @@ public class DemoDictionaryTest extends BaseDemoTest {
 	private MangoGwtAsyncAdapterRemoteServiceLocator mangoGwtAsyncAdapterRemoteServiceLocator;
 
 	@Test
-	public void testCreateAndSaveNaturalKey() {
+	public void testEditorSave() {
 
 		MangoClientWeb.getInstance().setMyAdminGWTRemoteServiceLocator(mangoGwtAsyncAdapterRemoteServiceLocator);
 		MangoDemoClientConfiguration.registerAll();
-		DictionaryEditorModuleSyncTestUI editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1);
 
-		assertNotNull(editor);
+		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1);
+		TextControlTest textControl1 = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+		textControl1.setValue("aaa");
+		editor.save();
 	}
 
 	public void setMangoGwtAsyncAdapterRemoteServiceLocator(MangoGwtAsyncAdapterRemoteServiceLocator mangoGwtAsyncAdapterRemoteServiceLocator) {
