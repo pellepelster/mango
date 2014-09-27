@@ -3,10 +3,12 @@ package io.pelle.mango.demo.server;
 import static org.junit.Assert.assertEquals;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
 import io.pelle.mango.client.web.MangoClientWeb;
+import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.client.web.test.sync.DictionaryEditorModuleSyncTestUI;
 import io.pelle.mango.client.web.test.sync.DictionarySearchModuleSyncTestUI;
 import io.pelle.mango.client.web.test.sync.MangoClientSyncWebTest;
 import io.pelle.mango.client.web.test.sync.controls.TextControlTest;
+import io.pelle.mango.client.web.util.I18NProxy;
 import io.pelle.mango.test.client.Entity1VO;
 import io.pelle.mango.test.client.MangoDemoClientConfiguration;
 import io.pelle.mango.test.client.MangoDemoDictionaryModel;
@@ -35,6 +37,8 @@ public class DemoClientTest extends BaseDemoTest {
 	@Autowired
 	public void setMangoGwtAsyncAdapterRemoteServiceLocator(MangoGwtAsyncAdapterRemoteServiceLocator mangoGwtAsyncAdapterRemoteServiceLocator) {
 		MangoClientWeb.getInstance().setMyAdminGWTRemoteServiceLocator(mangoGwtAsyncAdapterRemoteServiceLocator);
+		MangoClientWeb.MESSAGES = I18NProxy.create(MangoMessages.class);
+
 		MangoDemoClientConfiguration.registerAll();
 	}
 }

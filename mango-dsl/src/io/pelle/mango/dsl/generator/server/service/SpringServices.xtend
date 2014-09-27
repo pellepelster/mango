@@ -9,8 +9,6 @@ import io.pelle.mango.dsl.generator.client.web.GWTServices
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 
 class SpringServices {
 
@@ -35,8 +33,8 @@ class SpringServices {
 		    }
 		
 			«FOR service : model.eAllContents.toIterable.filter(Service)» 
-				@«Autowired.name»
-				@«Qualifier.name»("«service.gwtAsyncAdapterBeanName»")
+				@org.springframework.beans.factory.annotation.Autowired
+				@org.springframework.beans.factory.annotation.Qualifier("«service.gwtAsyncAdapterBeanName»")
 				private «service.gwtAsyncAdapterFullQualifiedName» «service.serviceAttributeName»;
 				
 				public «clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service)» get«service.serviceName»() {
@@ -57,7 +55,7 @@ class SpringServices {
 	
 	public class «service.gwtAsyncAdapterName» implements «clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service)» {
 
-		@«Autowired.name»
+		@org.springframework.beans.factory.annotation.Autowired
 		private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.name.toFirstLower()»;
 		
 		«FOR method : service.remoteMethods»
@@ -100,7 +98,7 @@ class SpringServices {
 		    }
 		
 			«FOR service : model.eAllContents.toIterable.filter(Service)» 
-				@«Autowired.name»
+				@org.springframework.beans.factory.annotation.Autowired
 				private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.serviceName»;
 
 				public «clientNameUtils.serviceInterfaceFullQualifiedName(service)» get«service.serviceName»() {

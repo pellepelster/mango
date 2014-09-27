@@ -201,7 +201,7 @@ class DictionaryGenerator {
 	package «dictionarySearch.packageName»;
 	
 	@«SuppressWarnings.name»("all")
-	public class «dictionarySearch.dictionaryClassName» extends «SearchModel.name» {
+	public class «dictionarySearch.dictionaryClassName» extends «SearchModel.name»<«EmfModelQuery.createEObjectQuery(dictionarySearch).getParentByType(Dictionary).match.entity.voFullQualifiedName»> {
 		
 		«dictionarySearch.dictionaryresult.dictionaryConstant»
 
