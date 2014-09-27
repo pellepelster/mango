@@ -3,7 +3,8 @@ package io.pelle.mango.client.web.test.sync.controls;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
-import junit.framework.Assert;
+
+import org.junit.Assert;
 
 import com.google.common.base.Joiner;
 import com.google.gwt.core.shared.GWT;

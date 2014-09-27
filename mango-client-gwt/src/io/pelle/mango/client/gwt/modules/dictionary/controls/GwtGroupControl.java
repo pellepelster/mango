@@ -13,14 +13,14 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
-import io.pelle.mango.client.web.modules.dictionary.controls.GroupControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.ControlGroup;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
 import com.google.gwt.user.client.ui.TextBox;
 
 public class GwtGroupControl extends TextBox implements IGwtControl {
 
-	public GwtGroupControl(GroupControl control) {
+	public GwtGroupControl(ControlGroup control) {
 		new ControlHelper(this, control, this, true, false);
 		ensureDebugId(DictionaryModelUtil.getDebugId(control.getModel()));
 

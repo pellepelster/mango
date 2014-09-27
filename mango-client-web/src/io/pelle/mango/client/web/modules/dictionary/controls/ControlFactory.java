@@ -37,7 +37,7 @@ public class ControlFactory {
 		} else if (baseControlModel instanceof IBooleanControlModel) {
 			return new BooleanControl((IBooleanControlModel) baseControlModel, parent);
 		} else if (baseControlModel instanceof IControlGroupModel) {
-			return new GroupControl((IControlGroupModel) baseControlModel, parent);
+			return new ControlGroup((IControlGroupModel) baseControlModel, parent);
 		} else if (baseControlModel instanceof IEnumerationControlModel) {
 			return new EnumerationControl((IEnumerationControlModel) baseControlModel, parent);
 		} else if (baseControlModel instanceof IReferenceControlModel) {

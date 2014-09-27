@@ -1,11 +1,12 @@
 package io.pelle.mango.client.base.modules.dictionary.model.controls;
 
+import io.pelle.mango.client.base.modules.dictionary.controls.IControlGroup;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ControlGroupModel extends BaseControlModel<IControlGroupModel> implements IControlGroupModel {
+public abstract class ControlGroupModel extends BaseControlModel<IControlGroup> implements IControlGroupModel {
 
 	private static final long serialVersionUID = 532719232119633708L;
 

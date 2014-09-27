@@ -1,6 +1,6 @@
 package io.pelle.mango.client.web.modules.dictionary.controls;
 
-import io.pelle.mango.client.base.modules.dictionary.controls.IGroupControl;
+import io.pelle.mango.client.base.modules.dictionary.controls.IControlGroup;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IControlGroupModel;
@@ -13,11 +13,11 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 
-public class GroupControl extends BaseDictionaryControl<IControlGroupModel, String> implements IGroupControl {
+public class ControlGroup extends BaseDictionaryControl<IControlGroupModel, Object[]> implements IControlGroup {
 
 	private List<BaseDictionaryControl<IBaseControlModel, ?>> controls = new ArrayList<BaseDictionaryControl<IBaseControlModel, ?>>();
 
-	public GroupControl(IControlGroupModel controlGroupModel, BaseDictionaryElement<? extends IBaseModel> parent) {
+	public ControlGroup(IControlGroupModel controlGroupModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(controlGroupModel, parent);
 
 		for (IBaseControlModel baseControlModel : controlGroupModel.getControls()) {
@@ -54,6 +54,6 @@ public class GroupControl extends BaseDictionaryControl<IControlGroupModel, Stri
 			}
 		}
 
-		return super.getExpression(pathExpression);
+		return expression;
 	}
 }

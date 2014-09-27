@@ -12,7 +12,7 @@
 package io.pelle.mango.client.web.test.modules.dictionary;
 
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
-import io.pelle.mango.client.base.modules.dictionary.controls.IGroupControl;
+import io.pelle.mango.client.base.modules.dictionary.controls.IControlGroup;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
@@ -60,7 +60,7 @@ public abstract class BaseDictionaryModuleTestUI {
 	}
 
 	public ControlGroupTest getControlGroupTest(ControlGroupModel controlModel) {
-		return new ControlGroupTest((IGroupControl) this.baseDictionaryModule.getElement(controlModel));
+		return new ControlGroupTest((IControlGroup) this.baseDictionaryModule.getElement(controlModel));
 	}
 
 	public BigDecimalControlTest getBigDecimalControlTest(BigDecimalControlModel controlModel) {

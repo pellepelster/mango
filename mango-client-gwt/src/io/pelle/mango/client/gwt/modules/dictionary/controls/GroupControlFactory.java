@@ -16,29 +16,29 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITable
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IControlGroupModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
-import io.pelle.mango.client.web.modules.dictionary.controls.GroupControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.ControlGroup;
 
 import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 
-public class GroupControlFactory extends BaseControlFactory<IControlGroupModel, GroupControl> {
+public class GroupControlFactory extends BaseControlFactory<IControlGroupModel, ControlGroup> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(GroupControl control, LAYOUT_TYPE layoutType) {
+	public Widget createControl(ControlGroup control, LAYOUT_TYPE layoutType) {
 		return new GwtGroupControl(control);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public boolean supports(BaseDictionaryControl<?, ?> baseControlModel) {
-		return baseControlModel instanceof GroupControl;
+		return baseControlModel instanceof ControlGroup;
 	}
 
 	@Override
-	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final GroupControl control, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final ControlGroup control, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
 		return super.createColumn(control, editable, listDataProvider, abstractCellTable);
 	}
 
