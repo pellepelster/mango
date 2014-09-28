@@ -159,6 +159,10 @@ class DictionaryControls {
 
 	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, StringEntityAttribute entityAttribute) '''
 		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+		
+		«IF entityAttribute.type != null && entityAttribute.type.maxLength > 0» 
+			«dictionaryControl.dictionaryConstantName».setMaxLength(«entityAttribute.type.maxLength»);
+		«ENDIF»
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryTextControl dictionaryControl) '''
