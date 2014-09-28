@@ -14,6 +14,11 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testMaxLengthInheritanceFromDatatype() {
+		assertEquals(42, MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getMaxLength());
+	}
+
+	@Test
 	public void testStringDatatype1GetAttributePath() {
 		assertEquals("stringDatatype1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getAttributePath());
 	}
