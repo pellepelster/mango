@@ -15,11 +15,10 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.cell.client.TextCell;
-import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.view.client.ListDataProvider;
 
@@ -27,32 +26,26 @@ import com.google.gwt.view.client.ListDataProvider;
  * @author pelle
  * 
  */
-public abstract class BaseControlFactory<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>> implements
-		IGwtControlFactory<ControlModelType, ControlType>
-{
-
+public abstract class BaseControlFactory<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>> implements IGwtControlFactory<ControlModelType, ControlType> {
 
 	@Override
-	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(ControlType baseControl, boolean editable,
-			final ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
-		
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(ControlType baseControl, boolean editable, final ListDataProvider<ITableRow<VOType>> listDataProvider, IMangoCellTable<VOType> mangoCellTable) {
+
 		Column<IBaseTable.ITableRow<VOType>, String> column;
 
-		if (editable)
-		{
+		if (editable) {
 			final EditTextCellWithValidation editTextCell = new EditTextCellWithValidation(baseControl);
 
 			column = new TableRowColumn<VOType>(baseControl.getModel(), editTextCell);
 
-			FieldUpdater<IBaseTable.ITableRow<VOType>, String> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, String>()
-			{
+			FieldUpdater<IBaseTable.ITableRow<VOType>, String> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, String>() {
 				@Override
-				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, String value)
-				{
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, String value) {
 
-//					Object key = BaseCellTable.KEYPROVIDER.getKey(tableRow);
-//
-//					ViewData<String> viewData = (ViewData<String>) editTextCell.getViewData(key);
+					// Object key = BaseCellTable.KEYPROVIDER.getKey(tableRow);
+					//
+					// ViewData<String> viewData = (ViewData<String>)
+					// editTextCell.getViewData(key);
 
 					// if (validationMessages != null &&
 					// ValidationUtils.hasError(validationMessages))
@@ -75,10 +68,8 @@ public abstract class BaseControlFactory<ControlModelType extends IBaseControlMo
 			};
 			column.setFieldUpdater(fieldUpdater);
 
-		}
-		else
-		{
-			column = new TableRowColumn<VOType>(baseControl.getModel(), new TextCell());
+		} else {
+			column = new TableRowColumn<VOType>(baseControl.getModel(), new HighlightingTextCell(mangoCellTable));
 		}
 
 		return column;

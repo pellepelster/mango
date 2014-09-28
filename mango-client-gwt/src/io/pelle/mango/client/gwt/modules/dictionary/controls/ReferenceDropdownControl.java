@@ -27,21 +27,17 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class ReferenceDropdownControl<VOType extends IBaseVO> extends ListBox implements IGwtControl
-{
+public class ReferenceDropdownControl<VOType extends IBaseVO> extends ListBox implements IGwtControl {
 
-	public ReferenceDropdownControl(final ReferenceControl<VOType> referenceControl)
-	{
+	public ReferenceDropdownControl(final ReferenceControl<VOType> referenceControl) {
 		super(false);
 
 		ensureDebugId(DictionaryModelUtil.getDebugId(referenceControl.getModel()));
 		new ControlHelper(this, referenceControl, this, false);
 
-		addChangeHandler(new ChangeHandler()
-		{
+		addChangeHandler(new ChangeHandler() {
 			@Override
-			public void onChange(ChangeEvent event)
-			{
+			public void onChange(ChangeEvent event) {
 				referenceControl.setValue(null);
 			}
 		});
@@ -49,8 +45,7 @@ public class ReferenceDropdownControl<VOType extends IBaseVO> extends ListBox im
 		ControlUtil.populateListBox(referenceControl.getModel(), this);
 	}
 
-	public static List<String> getSortedEnumList(IEnumerationControlModel enumarationControlModel)
-	{
+	public static List<String> getSortedEnumList(IEnumerationControlModel enumarationControlModel) {
 		List<String> enumList = new ArrayList<String>();
 		enumList.addAll(enumarationControlModel.getEnumeration().values());
 		Collections.sort(enumList);
@@ -58,17 +53,13 @@ public class ReferenceDropdownControl<VOType extends IBaseVO> extends ListBox im
 		return enumList;
 	}
 
-	public static String getEnumForText(IEnumerationControlModel enumarationControlModel, String text)
-	{
-		if (text == null || text.isEmpty())
-		{
+	public static String getEnumForText(IEnumerationControlModel enumarationControlModel, String text) {
+		if (text == null || text.isEmpty()) {
 			return null;
 		}
 
-		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumeration().entrySet())
-		{
-			if (enumEntry.getValue().equals(text))
-			{
+		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumeration().entrySet()) {
+			if (enumEntry.getValue().equals(text)) {
 				return enumEntry.getKey();
 			}
 		}
@@ -77,28 +68,19 @@ public class ReferenceDropdownControl<VOType extends IBaseVO> extends ListBox im
 	}
 
 	@Override
-	public void setContent(Object content)
-	{
-		if (content != null)
-		{
-			if (content instanceof String || content instanceof Enum<?>)
-			{
+	public void setContent(Object content) {
+		if (content != null) {
+			if (content instanceof String || content instanceof Enum<?>) {
 
-				for (int i = 0; i < getItemCount(); i++)
-				{
-					if (getItemText(i).equals(content.toString()))
-					{
+				for (int i = 0; i < getItemCount(); i++) {
+					if (getItemText(i).equals(content.toString())) {
 						setSelectedIndex(i);
 					}
 				}
-			}
-			else
-			{
+			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
-		}
-		else
-		{
+		} else {
 			super.setSelectedIndex(0);
 		}
 	}

@@ -26,44 +26,36 @@ import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 
-public abstract class BaseCellControl<T> extends AbstractEditableCell<T, ViewData<T>>
-{
-	static class ViewData<T>
-	{
+public abstract class BaseCellControl<T> extends AbstractEditableCell<T, ViewData<T>> {
+	static class ViewData<T> {
 		private boolean isEditing;
 
 		private boolean isEditingAgain;
 
 		private IBaseTable.ITableRow<IBaseVO> tableRow;
 
-		public ViewData(IBaseTable.ITableRow<IBaseVO> tableRow)
-		{
+		public ViewData(IBaseTable.ITableRow<IBaseVO> tableRow) {
 			this.tableRow = tableRow;
 		}
 
-		public boolean isEditing()
-		{
+		public boolean isEditing() {
 			return isEditing;
 		}
 
-		public boolean isEditingAgain()
-		{
+		public boolean isEditingAgain() {
 			return isEditingAgain;
 		}
 
-		public void setEditing(boolean isEditing)
-		{
+		public void setEditing(boolean isEditing) {
 			boolean wasEditing = this.isEditing;
 			this.isEditing = isEditing;
 
-			if (!wasEditing && isEditing)
-			{
+			if (!wasEditing && isEditing) {
 				isEditingAgain = true;
 			}
 		}
 
-		public IBaseTable.ITableRow<IBaseVO> getTableRow()
-		{
+		public IBaseTable.ITableRow<IBaseVO> getTableRow() {
 			return tableRow;
 		}
 
@@ -71,54 +63,44 @@ public abstract class BaseCellControl<T> extends AbstractEditableCell<T, ViewDat
 
 	private final IBaseControlModel baseControlModel;
 
-	public BaseCellControl(IBaseControlModel baseControlModel, Set<String> consumedEvents)
-	{
+	public BaseCellControl(IBaseControlModel baseControlModel, Set<String> consumedEvents) {
 		super(consumedEvents);
 
 		this.baseControlModel = baseControlModel;
 	}
 
-	public BaseCellControl(IBaseControlModel baseControlModel, String... consumedEvents)
-	{
+	public BaseCellControl(IBaseControlModel baseControlModel, String... consumedEvents) {
 		super(consumedEvents);
 
 		this.baseControlModel = baseControlModel;
 	}
 
 	@Override
-	public boolean isEditing(Context context, Element parent, T value)
-	{
+	public boolean isEditing(Context context, Element parent, T value) {
 		return getOrInitViewData(context).isEditing();
 	}
 
-	protected InputElement getInputElement(Element parent)
-	{
+	protected InputElement getInputElement(Element parent) {
 		return parent.getFirstChild().<InputElement> cast();
 	}
 
-	protected boolean enterPressed(NativeEvent event)
-	{
+	protected boolean enterPressed(NativeEvent event) {
 		int keyCode = event.getKeyCode();
 		return KeyUpEvent.getType().equals(event.getType()) && keyCode == KeyCodes.KEY_ENTER;
 	}
 
-	protected String format(Context context)
-	{
+	protected String format(Context context) {
 		return getBaseControl(context).format();
 	}
 
-	protected IBaseControl<T, ?> getBaseControl(Context context)
-	{
+	protected IBaseControl<T, ?> getBaseControl(Context context) {
 		return getOrInitViewData(context).getTableRow().getElement(baseControlModel);
 	}
 
-	protected ViewData<T> getOrInitViewData(Context context)
-	{
+	protected ViewData<T> getOrInitViewData(Context context) {
 
-		if (getViewData(context.getKey()) == null)
-		{
-			if (!(context.getKey() instanceof IBaseTable.ITableRow))
-			{
+		if (getViewData(context.getKey()) == null) {
+			if (!(context.getKey() instanceof IBaseTable.ITableRow)) {
 				throw new RuntimeException("IBaseTable.ITableRow expected as context key");
 			}
 
@@ -132,8 +114,7 @@ public abstract class BaseCellControl<T> extends AbstractEditableCell<T, ViewDat
 		return getViewData(context.getKey());
 	}
 
-	protected void clearViewData(Context context)
-	{
+	protected void clearViewData(Context context) {
 		setViewData(context.getKey(), null);
 	}
 

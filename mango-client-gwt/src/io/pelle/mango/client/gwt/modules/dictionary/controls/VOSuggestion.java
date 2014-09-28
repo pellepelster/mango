@@ -14,34 +14,29 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.SuggestCellControl.SuggestCellSuggestion;
 
-public class VOSuggestion<VOType extends IBaseVO> implements SuggestCellSuggestion<VOType>
-{
+public class VOSuggestion<VOType extends IBaseVO> implements SuggestCellSuggestion<VOType> {
 
 	private final String displayString;
 	private final VOType vo;
 
-	public VOSuggestion(String displayString, VOType vo)
-	{
+	public VOSuggestion(String displayString, VOType vo) {
 		super();
 		this.displayString = displayString;
 		this.vo = vo;
 	}
 
 	@Override
-	public String getDisplayString()
-	{
+	public String getDisplayString() {
 		return displayString;
 	}
 
 	@Override
-	public String getReplacementString()
-	{
+	public String getReplacementString() {
 		return displayString;
 	}
 
 	@Override
-	public VOType getValue()
-	{
+	public VOType getValue() {
 		return vo;
 	}
 

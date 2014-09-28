@@ -19,6 +19,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ControlHandler;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseTableDataGrid;
+import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.gwt.widgets.ImageButton;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.container.EditableTable;
@@ -27,7 +28,9 @@ import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryContr
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.client.web.util.DummyAsyncCallback;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -44,16 +47,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @author pelle
  * 
  */
-public class GwtEditableTable<VOType extends IBaseVO> extends BaseTableDataGrid<VOType> implements IContainer<Panel>
-{
+public class GwtEditableTable<VOType extends IBaseVO> extends BaseTableDataGrid<VOType> implements IContainer<Panel>, IMangoCellTable<VOType> {
+
 	private final SimpleLayoutPanel simpleLayoutPanel = new SimpleLayoutPanel();
 
 	private final VerticalPanel verticalPanel = new VerticalPanel();
 
 	private final EditableTable<VOType> editableTable;
 
-	public GwtEditableTable(final EditableTable<VOType> editableTable)
-	{
+	public GwtEditableTable(final EditableTable<VOType> editableTable) {
 		super(editableTable);
 
 		this.editableTable = editableTable;
@@ -73,30 +75,23 @@ public class GwtEditableTable<VOType extends IBaseVO> extends BaseTableDataGrid<
 
 		TextHeader textHeader = new TextHeader("");
 
-		Column<IBaseTable.ITableRow<VOType>, Void> column = new Column<IBaseTable.ITableRow<VOType>, Void>(new ImageActionCell<VOType>(
-				MangoClientWeb.RESOURCES.delete(), new SimpleCallback<IBaseTable.ITableRow<VOType>>()
-				{
-
-					@Override
-					public void onCallback(IBaseTable.ITableRow<VOType> tableRow)
-					{
-						editableTable.delete(tableRow, new BaseErrorAsyncCallback<List<IBaseTable.ITableRow<VOType>>>()
-						{
-
-							@Override
-							public void onSuccess(List<IBaseTable.ITableRow<VOType>> result)
-							{
-								// do nothing
-								;
-							}
-						});
-					}
-				}))
-		{
+		Column<IBaseTable.ITableRow<VOType>, Void> column = new Column<IBaseTable.ITableRow<VOType>, Void>(new ImageActionCell<VOType>(MangoClientWeb.RESOURCES.delete(), new SimpleCallback<IBaseTable.ITableRow<VOType>>() {
 
 			@Override
-			public Void getValue(IBaseTable.ITableRow<VOType> vo)
-			{
+			public void onCallback(IBaseTable.ITableRow<VOType> tableRow) {
+				editableTable.delete(tableRow, new BaseErrorAsyncCallback<List<IBaseTable.ITableRow<VOType>>>() {
+
+					@Override
+					public void onSuccess(List<IBaseTable.ITableRow<VOType>> result) {
+						// do nothing
+						;
+					}
+				});
+			}
+		})) {
+
+			@Override
+			public Void getValue(IBaseTable.ITableRow<VOType> vo) {
 				return null;
 			}
 		};
@@ -105,16 +100,13 @@ public class GwtEditableTable<VOType extends IBaseVO> extends BaseTableDataGrid<
 
 	}
 
-	private void createAddButton()
-	{
+	private void createAddButton() {
 
 		ImageButton addButton = new ImageButton(MangoClientWeb.RESOURCES.add());
-		addButton.addClickHandler(new ClickHandler()
-		{
+		addButton.addClickHandler(new ClickHandler() {
 			@Override
-			public void onClick(ClickEvent event)
-			{
-				editableTable.add(DummyAsyncCallback.<List<ITableRow<VOType>>>dummyAsyncCallback());
+			public void onClick(ClickEvent event) {
+				editableTable.add(DummyAsyncCallback.<List<ITableRow<VOType>>> dummyAsyncCallback());
 			}
 		});
 		verticalPanel.add(addButton);
@@ -122,15 +114,18 @@ public class GwtEditableTable<VOType extends IBaseVO> extends BaseTableDataGrid<
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl baseControl)
-	{
+	protected Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl baseControl) {
 		return (Column<IBaseTable.ITableRow<VOType>, ?>) ControlHandler.getInstance().createColumn(baseControl, true, getDataProvider(), this);
+	}
+
+	@Override
+	public Set<String> getHighlightedTexts() {
+		return Collections.emptySet();
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Panel getContainer()
-	{
+	public Panel getContainer() {
 		return verticalPanel;
 	}
 

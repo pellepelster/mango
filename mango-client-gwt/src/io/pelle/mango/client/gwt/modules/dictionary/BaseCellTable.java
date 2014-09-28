@@ -33,8 +33,8 @@ import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.google.gwt.view.client.SingleSelectionModel;
 
-public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IBaseTable.ITableRow<VOType>>
-{
+public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IBaseTable.ITableRow<VOType>> implements IMangoCellTable<VOType> {
+
 	private ListDataProvider<IBaseTable.ITableRow<VOType>> dataProvider = new ListDataProvider<IBaseTable.ITableRow<VOType>>();
 
 	private SingleSelectionModel<IBaseTable.ITableRow<VOType>> selectionModel;
@@ -48,9 +48,8 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 	public static final int DEFAULT_MAX_RESULTS = 15;
 
 	private BaseTableElement<VOType, ?> baseTableElement;
-	
-	public BaseCellTable(BaseTableElement<VOType, ?> baseTableElement, BaseTableRowKeyProvider<VOType> keyProvider)
-	{
+
+	public BaseCellTable(BaseTableElement<VOType, ?> baseTableElement, BaseTableRowKeyProvider<VOType> keyProvider) {
 		super(keyProvider);
 		selectionModel = new SingleSelectionModel<IBaseTable.ITableRow<VOType>>(keyProvider);
 		dataProvider.addDataDisplay(this);
@@ -58,10 +57,10 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 		this.baseControls = baseTableElement.getControls();
 	}
 
-	protected void createModelColumns()
-	{
-		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : baseControls)
-		{
+	protected void createModelColumns() {
+
+		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : baseControls) {
+
 			TextHeader textHeader = new TextHeader(DictionaryModelUtil.getColumnLabel(baseControl.getModel()));
 			Column<IBaseTable.ITableRow<VOType>, ?> column = getColumn(baseControl);
 			setColumnWidth(column, WidthCalculationStrategy.getInstance().getControlColumnWidth(baseControl.getModel()), Unit.PX);
@@ -70,18 +69,16 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 		}
 
 		setSelectionModel(selectionModel);
-		addDomHandler(new DoubleClickHandler()
-		{
+		addDomHandler(new DoubleClickHandler() {
 			/** {@inheritDoc} */
 			@Override
-			public void onDoubleClick(DoubleClickEvent event)
-			{
+			public void onDoubleClick(DoubleClickEvent event) {
 				baseTableElement.activateSelection();
 			}
 		}, DoubleClickEvent.getType());
 
 		selectionModel.addSelectionChangeHandler(new Handler() {
-			
+
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				baseTableElement.setSelection(selectionModel.getSelectedObject());
@@ -89,13 +86,11 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 		});
 	}
 
-	public void setRows(List<IBaseTable.ITableRow<VOType>> rows)
-	{
+	public void setRows(List<IBaseTable.ITableRow<VOType>> rows) {
 		dataProvider.setList(rows);
 	}
 
-	protected IBaseTable.ITableRow<VOType> getSelection()
-	{
+	protected IBaseTable.ITableRow<VOType> getSelection() {
 		return selectionModel.getSelectedObject();
 	}
 

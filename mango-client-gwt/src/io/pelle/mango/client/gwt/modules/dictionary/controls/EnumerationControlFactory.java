@@ -16,6 +16,7 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IEnumerationControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.EnumerationControl;
 
@@ -23,7 +24,6 @@ import java.util.List;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
-import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -34,59 +34,47 @@ import com.google.gwt.view.client.ListDataProvider;
  * @author pelle
  * 
  */
-public class EnumerationControlFactory extends BaseControlFactory<IEnumerationControlModel, EnumerationControl>
-{
+public class EnumerationControlFactory extends BaseControlFactory<IEnumerationControlModel, EnumerationControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(EnumerationControl enumerationControl, LAYOUT_TYPE layoutType)
-	{
+	public Widget createControl(EnumerationControl enumerationControl, LAYOUT_TYPE layoutType) {
 		return new GwtEnumerationControl(enumerationControl);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControl)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
 		return baseControl instanceof EnumerationControl;
 	}
 
 	@Override
-	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final EnumerationControl enumerationControl, boolean editable,
-			ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
-		if (editable)
-		{
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final EnumerationControl enumerationControl, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider, IMangoCellTable<VOType> mangoCellTable) {
+		if (editable) {
 			List<String> enumList = GwtEnumerationControl.getSortedEnumList(enumerationControl.getModel());
 			final SelectionCell selectionCell = new SelectionCell(enumList);
 
-			Column<IBaseTable.ITableRow<VOType>, String> column = new Column<IBaseTable.ITableRow<VOType>, String>(selectionCell)
-			{
+			Column<IBaseTable.ITableRow<VOType>, String> column = new Column<IBaseTable.ITableRow<VOType>, String>(selectionCell) {
 
 				@Override
-				public String getValue(IBaseTable.ITableRow<VOType> tableRow)
-				{
+				public String getValue(IBaseTable.ITableRow<VOType> tableRow) {
 					return tableRow.getElement(enumerationControl.getModel()).format();
 				}
 			};
 
-			FieldUpdater<IBaseTable.ITableRow<VOType>, String> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, String>()
-			{
+			FieldUpdater<IBaseTable.ITableRow<VOType>, String> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, String>() {
 				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, String value)
-				{
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, String value) {
 					tableRow.getElement(enumerationControl.getModel()).setValue(GwtEnumerationControl.getEnumForText(enumerationControl.getModel(), value));
 				}
 			};
 			column.setFieldUpdater(fieldUpdater);
 
 			return column;
-		}
-		else
-		{
-			return super.createColumn(enumerationControl, editable, listDataProvider, abstractCellTable);
+		} else {
+			return super.createColumn(enumerationControl, editable, listDataProvider, mangoCellTable);
 		}
 	}
-
 
 }

@@ -21,6 +21,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 
 public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel, ValueType> extends BaseDictionaryElement<ModelType> implements IBaseControl<ValueType, ModelType> {
+
 	protected class ParseResult {
 
 		private IValidationMessage validationMessage;
@@ -83,7 +84,7 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 	@SuppressWarnings("unchecked")
 	@Override
 	public ValueType getValue() {
-		return (ValueType) getVOWrapper().get(getModel().getAttributePath());
+		return (ValueType) getVOWrapper().get(getAttributePathInternal());
 	}
 
 	@Override
@@ -93,15 +94,23 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 		fireUpdateListeners();
 	}
 
+	private String getAttributePathInternal() {
+		if (getParent() instanceof ControlGroup) {
+			return getParent().getModel().getName() + "#" + getModel().getAttributePath();
+		} else {
+			return getModel().getAttributePath();
+		}
+	}
+
 	private void setValueInternal(ValueType value) {
 		getRootElement().clearValidationMessages(this);
 
 		validate(value);
 
 		if (getRootElement().getValidationMessages(this).hasErrors()) {
-			getVOWrapper().set(getModel().getAttributePath(), null);
+			getVOWrapper().set(getAttributePathInternal(), null);
 		} else {
-			getVOWrapper().set(getModel().getAttributePath(), value);
+			getVOWrapper().set(getAttributePathInternal(), value);
 		}
 
 	}

@@ -18,27 +18,21 @@ import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public class TextControlFactory extends BaseControlFactory<ITextControlModel, TextControl>
-{
+public class TextControlFactory extends BaseControlFactory<ITextControlModel, TextControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(TextControl textControl, LAYOUT_TYPE layoutType)
-	{
-		if (textControl.getModel().isReadonly())
-		{
+	public Widget createControl(TextControl textControl, LAYOUT_TYPE layoutType) {
+		if (textControl.getModel().isReadonly()) {
 			return new ReadonlyControl(textControl);
-		}
-		else
-		{
+		} else {
 			return new GwtTextControl(textControl);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControl)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
 		return baseControl instanceof TextControl;
 	}
 

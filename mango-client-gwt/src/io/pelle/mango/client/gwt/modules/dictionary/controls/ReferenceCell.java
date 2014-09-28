@@ -19,20 +19,16 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
-public class ReferenceCell<VOType extends IBaseVO> extends AbstractCell<VOType>
-{
+public class ReferenceCell<VOType extends IBaseVO> extends AbstractCell<VOType> {
 	private IReferenceControlModel referenceControlModel;
 
-	public ReferenceCell(IReferenceControlModel referenceControlModel)
-	{
+	public ReferenceCell(IReferenceControlModel referenceControlModel) {
 		this.referenceControlModel = referenceControlModel;
 	}
 
 	@Override
-	public void render(com.google.gwt.cell.client.Cell.Context context, IBaseVO value, SafeHtmlBuilder sb)
-	{
-		if (value != null)
-		{
+	public void render(com.google.gwt.cell.client.Cell.Context context, IBaseVO value, SafeHtmlBuilder sb) {
+		if (value != null) {
 			sb.append(SafeHtmlUtils.fromString(DictionaryUtil.getLabel(referenceControlModel, value)));
 		}
 	}

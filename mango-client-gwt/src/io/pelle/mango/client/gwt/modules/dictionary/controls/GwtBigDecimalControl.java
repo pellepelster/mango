@@ -20,33 +20,24 @@ import java.math.BigDecimal;
 
 import com.google.gwt.user.client.ui.TextBox;
 
-public class GwtBigDecimalControl extends TextBox implements IGwtControl
-{
+public class GwtBigDecimalControl extends TextBox implements IGwtControl {
 	private final BigDecimalControl bigDecimalControl;
 
-	public GwtBigDecimalControl(BigDecimalControl bigDecimalControl)
-	{
+	public GwtBigDecimalControl(BigDecimalControl bigDecimalControl) {
 		this.bigDecimalControl = bigDecimalControl;
 		new ControlHelper(this, bigDecimalControl, this, true);
 		ensureDebugId(DictionaryModelUtil.getDebugId(bigDecimalControl.getModel()));
 	}
 
 	@Override
-	public void setContent(Object content)
-	{
-		if (content != null)
-		{
-			if (content instanceof BigDecimal)
-			{
+	public void setContent(Object content) {
+		if (content != null) {
+			if (content instanceof BigDecimal) {
 				super.setValue(bigDecimalControl.format());
-			}
-			else
-			{
+			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
-		}
-		else
-		{
+		} else {
 			super.setValue(null);
 		}
 	}

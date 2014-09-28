@@ -42,18 +42,15 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.TextBoxBase;
 
 @SuppressWarnings("unused")
-public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
-{
+public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T> {
 
-	private class SuggestCellSuggestBox extends SuggestBox
-	{
+	private class SuggestCellSuggestBox extends SuggestBox {
 		private final int absoluteLeft;
 		private final int absoluteTop;
 		private final int offsetHeight;
 		private final int offsetWidth;
 
-		public SuggestCellSuggestBox(SuggestOracle oracle, TextBoxBase box)
-		{
+		public SuggestCellSuggestBox(SuggestOracle oracle, TextBoxBase box) {
 			super(oracle, box);
 			this.absoluteLeft = box.getAbsoluteLeft();
 			this.absoluteTop = box.getAbsoluteTop();
@@ -62,79 +59,58 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 		}
 
 		@Override
-		public int getAbsoluteLeft()
-		{
-			if (super.getAbsoluteLeft() == 0)
-			{
+		public int getAbsoluteLeft() {
+			if (super.getAbsoluteLeft() == 0) {
 				return absoluteLeft;
-			}
-			else
-			{
+			} else {
 				return super.getAbsoluteLeft();
 			}
 		}
 
 		@Override
-		public int getAbsoluteTop()
-		{
-			if (super.getAbsoluteTop() == 0)
-			{
+		public int getAbsoluteTop() {
+			if (super.getAbsoluteTop() == 0) {
 				return absoluteTop;
-			}
-			else
-			{
+			} else {
 				return super.getAbsoluteTop();
 			}
 		}
 
 		@Override
-		public int getOffsetHeight()
-		{
-			if (super.getOffsetHeight() == 0)
-			{
+		public int getOffsetHeight() {
+			if (super.getOffsetHeight() == 0) {
 				return offsetHeight;
-			}
-			else
-			{
+			} else {
 				return super.getOffsetHeight();
 			}
 		}
 
 		@Override
-		public int getOffsetWidth()
-		{
-			if (super.getOffsetWidth() == 0)
-			{
+		public int getOffsetWidth() {
+			if (super.getOffsetWidth() == 0) {
 				return offsetWidth;
-			}
-			else
-			{
+			} else {
 				return super.getOffsetWidth();
 			}
 		}
 
 		@Override
-		public void onAttach()
-		{
+		public void onAttach() {
 			super.onAttach();
 		}
 	}
 
-	public interface SuggestCellSuggestion<T> extends Suggestion
-	{
+	public interface SuggestCellSuggestion<T> extends Suggestion {
 		public T getValue();
 	}
 
-	public class SuggestTextBox extends TextBox
-	{
-		public SuggestTextBox(Element element)
-		{
+	public class SuggestTextBox extends TextBox {
+		public SuggestTextBox(Element element) {
 			super(element);
 		}
 	}
 
-	interface Template extends SafeHtmlTemplates
-	{
+	interface Template extends SafeHtmlTemplates {
 		@Template("<input type=\"text\" value=\"{0}\" tabindex=\"-1\"></input>")
 		SafeHtml input(String value);
 	}
@@ -149,33 +125,27 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 
 	private IReferenceControlModel referenceControlModel;
 
-	public SuggestCellControl(IReferenceControlModel referenceControlModel, SafeHtmlRenderer<String> renderer, SuggestOracle suggestOracle)
-	{
-		super(referenceControlModel, ClickEvent.getType().getName(), KeyUpEvent.getType().getName(), KeyDownEvent.getType().getName(), BlurEvent.getType()
-				.getName());
+	public SuggestCellControl(IReferenceControlModel referenceControlModel, SafeHtmlRenderer<String> renderer, SuggestOracle suggestOracle) {
+		super(referenceControlModel, ClickEvent.getType().getName(), KeyUpEvent.getType().getName(), KeyDownEvent.getType().getName(), BlurEvent.getType().getName());
 
 		this.referenceControlModel = referenceControlModel;
 		this.suggestOracle = suggestOracle;
 		this.renderer = renderer;
 
-		if (template == null)
-		{
+		if (template == null) {
 			template = GWT.create(Template.class);
 		}
 
-		if (renderer == null)
-		{
+		if (renderer == null) {
 			throw new IllegalArgumentException("renderer == null");
 		}
 	}
 
-	public SuggestCellControl(IReferenceControlModel referenceControlModel, SuggestOracle suggestOracle)
-	{
+	public SuggestCellControl(IReferenceControlModel referenceControlModel, SuggestOracle suggestOracle) {
 		this(referenceControlModel, ControlHtmlRenderer.getInstance(), suggestOracle);
 	}
 
-	private void cancel(Context context, Element parent)
-	{
+	private void cancel(Context context, Element parent) {
 		ViewData<T> viewData = getOrInitViewData(context);
 		viewData.setEditing(false);
 
@@ -189,10 +159,8 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 													else if ($doc.selection) $doc.selection.clear(); 
 													}-*/;
 
-	private void clearSuggestBox()
-	{
-		if (suggestBox == null)
-		{
+	private void clearSuggestBox() {
+		if (suggestBox == null) {
 			throw new RuntimeException("no suggestbox instance");
 		}
 		suggestBox.hideSuggestionList();
@@ -200,8 +168,7 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 		suggestBox = null;
 	}
 
-	private void commit(Context context, Element parent)
-	{
+	private void commit(Context context, Element parent) {
 		ViewData<T> viewData = getOrInitViewData(context);
 		viewData.setEditing(false);
 
@@ -210,10 +177,8 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 		setValue(context, parent, getBaseControl(context).getValue());
 	}
 
-	protected void createSuggestBox(final Context context, final Element parent, T value, final ValueUpdater<T> valueUpdater)
-	{
-		if (suggestBox != null)
-		{
+	protected void createSuggestBox(final Context context, final Element parent, T value, final ValueUpdater<T> valueUpdater) {
+		if (suggestBox != null) {
 			throw new RuntimeException("SuggestCell already active");
 		}
 
@@ -222,13 +187,10 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 		InputElement input = getInputElement(parent);
 		final TextBox textBox = new SuggestTextBox(input);
 		suggestBox = new SuggestCellSuggestBox(suggestOracle, textBox);
-		suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>()
-		{
+		suggestBox.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 			@Override
-			public void onSelection(SelectionEvent<Suggestion> event)
-			{
-				if (event.getSelectedItem() instanceof SuggestCellSuggestion)
-				{
+			public void onSelection(SelectionEvent<Suggestion> event) {
+				if (event.getSelectedItem() instanceof SuggestCellSuggestion) {
 					SuggestCellSuggestion<T> suggestCellSuggestions = (SuggestCellSuggestion<T>) event.getSelectedItem();
 					getBaseControl(context).setValue(suggestCellSuggestions.getValue());
 					commit(context, parent);
@@ -242,13 +204,10 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 
 	}
 
-	private void setFocus(final Element parent)
-	{
-		Scheduler.get().scheduleDeferred(new ScheduledCommand()
-		{
+	private void setFocus(final Element parent) {
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
-			public void execute()
-			{
+			public void execute() {
 				InputElement input = getInputElement(parent);
 				input.focus();
 				input.select();
@@ -256,49 +215,35 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 		});
 	}
 
-	private void editEvent(Context context, Element parent, T value, ViewData<T> viewData, NativeEvent event, ValueUpdater<T> valueUpdater)
-	{
+	private void editEvent(Context context, Element parent, T value, ViewData<T> viewData, NativeEvent event, ValueUpdater<T> valueUpdater) {
 		String type = event.getType();
 		boolean keyUp = KeyUpEvent.getType().getName().equals(type);
 		boolean keyDown = KeyDownEvent.getType().getName().equals(type);
 		int keyCode = event.getKeyCode();
 
-		if (keyUp || keyDown)
-		{
-			if (keyUp && keyCode == KeyCodes.KEY_ESCAPE)
-			{
-				if (viewData.isEditingAgain())
-				{
+		if (keyUp || keyDown) {
+			if (keyUp && keyCode == KeyCodes.KEY_ESCAPE) {
+				if (viewData.isEditingAgain()) {
 					viewData.setEditing(false);
 				}
 
 				cancel(context, parent);
-			}
-			else if (keyCode == KeyCodes.KEY_ENTER)
-			{
-				if (!suggestBox.isSuggestionListShowing())
-				{
-					if (suggestBox.getText() == null || suggestBox.getText().isEmpty())
-					{
+			} else if (keyCode == KeyCodes.KEY_ENTER) {
+				if (!suggestBox.isSuggestionListShowing()) {
+					if (suggestBox.getText() == null || suggestBox.getText().isEmpty()) {
 						getBaseControl(context).setValue(null);
 					}
 
 					commit(context, parent);
 				}
-			}
-			else
-			{
+			} else {
 				fireEventToSuggesBox(event);
 			}
-		}
-		else if (BlurEvent.getType().getName().equals(type))
-		{
+		} else if (BlurEvent.getType().getName().equals(type)) {
 			EventTarget eventTarget = event.getEventTarget();
-			if (Element.is(eventTarget))
-			{
+			if (Element.is(eventTarget)) {
 				Element target = Element.as(eventTarget);
-				if ("input".equals(target.getTagName().toLowerCase()) && !suggestBox.isSuggestionListShowing())
-				{
+				if ("input".equals(target.getTagName().toLowerCase()) && !suggestBox.isSuggestionListShowing()) {
 
 					commit(context, parent);
 				}
@@ -307,38 +252,29 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 
 	}
 
-	private void fireEventToSuggesBox(NativeEvent event)
-	{
-		if (suggestBox != null)
-		{
+	private void fireEventToSuggesBox(NativeEvent event) {
+		if (suggestBox != null) {
 			DomEvent.fireNativeEvent(event, suggestBox.getTextBox());
 		}
 	}
 
-	private boolean hasSuggestBox()
-	{
+	private boolean hasSuggestBox() {
 		return suggestBox != null;
 	}
 
 	@Override
-	public void onBrowserEvent(final Context context, final Element parent, final T value, final NativeEvent event, final ValueUpdater<T> valueUpdater)
-	{
+	public void onBrowserEvent(final Context context, final Element parent, final T value, final NativeEvent event, final ValueUpdater<T> valueUpdater) {
 		final ViewData<T> viewData = getOrInitViewData(context);
 
-		if (viewData.isEditing())
-		{
-			if (!hasSuggestBox())
-			{
+		if (viewData.isEditing()) {
+			if (!hasSuggestBox()) {
 				createSuggestBox(context, parent, value, valueUpdater);
 			}
 
 			editEvent(context, parent, value, viewData, event, valueUpdater);
 
-		}
-		else
-		{
-			if (ClickEvent.getType().getName().equals(event.getType()) || enterPressed(event))
-			{
+		} else {
+			if (ClickEvent.getType().getName().equals(event.getType()) || enterPressed(event)) {
 				viewData.setEditing(true);
 				setValue(context, parent, value);
 				createSuggestBox(context, parent, value, valueUpdater);
@@ -347,32 +283,25 @@ public class SuggestCellControl<T extends IBaseVO> extends BaseCellControl<T>
 	}
 
 	@Override
-	public void render(Context context, T value, SafeHtmlBuilder sb)
-	{
+	public void render(Context context, T value, SafeHtmlBuilder sb) {
 		GWT.log("render");
 
 		ViewData<T> viewData = getOrInitViewData(context);
 
-		if (hasSuggestBox())
-		{
+		if (hasSuggestBox()) {
 			clearSuggestBox();
 		}
 
-		if (viewData.isEditing())
-		{
+		if (viewData.isEditing()) {
 			sb.append(template.input(getBaseControl(context).format()));
-		}
-		else
-		{
+		} else {
 			sb.append(renderer.render(getBaseControl(context).format()));
 		}
 	}
 
 	@Override
-	public boolean resetFocus(Context context, Element parent, T value)
-	{
-		if (isEditing(context, parent, value))
-		{
+	public boolean resetFocus(Context context, Element parent, T value) {
+		if (isEditing(context, parent, value)) {
 			getInputElement(parent).focus();
 			return true;
 		}

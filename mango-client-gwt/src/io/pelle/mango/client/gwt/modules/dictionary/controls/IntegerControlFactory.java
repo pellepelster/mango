@@ -24,20 +24,17 @@ import com.google.gwt.user.client.ui.Widget;
  * @author pelle
  * 
  */
-public class IntegerControlFactory extends BaseControlFactory<IIntegerControlModel, IntegerControl>
-{
+public class IntegerControlFactory extends BaseControlFactory<IIntegerControlModel, IntegerControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(IntegerControl integerControl, LAYOUT_TYPE layoutType)
-	{
+	public Widget createControl(IntegerControl integerControl, LAYOUT_TYPE layoutType) {
 		return new GwtIntegerControl(integerControl);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControl)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
 		return baseControl instanceof IntegerControl;
 	}
 

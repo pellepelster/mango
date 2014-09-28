@@ -26,7 +26,7 @@ public class TextControl extends BaseDictionaryControl<ITextControlModel, String
 	@Override
 	public Optional<IBooleanExpression> getExpression(PathExpression pathExpression) {
 		if (getValue() != null && !getValue().trim().isEmpty()) {
-			return Optional.<IBooleanExpression> of(new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new StringExpression(getValue())));
+			return Optional.<IBooleanExpression> of(new CompareExpression(pathExpression, ComparisonOperator.LIKE_NO_CASE, new StringExpression(getValue() + "%")));
 		} else {
 			return super.getExpression(pathExpression);
 		}

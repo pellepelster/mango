@@ -18,34 +18,25 @@ import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
 import com.google.gwt.user.client.ui.CheckBox;
 
-public class GwtBooleanControl extends CheckBox implements IGwtControl
-{
+public class GwtBooleanControl extends CheckBox implements IGwtControl {
 
-	public GwtBooleanControl(BooleanControl booleanControl)
-	{
+	public GwtBooleanControl(BooleanControl booleanControl) {
 		new ControlHelper(this, booleanControl, this, true, false);
 		ensureDebugId(DictionaryModelUtil.getDebugId(booleanControl.getModel()));
 
 	}
 
 	@Override
-	public void setContent(Object content)
-	{
-		if (content != null)
-		{
+	public void setContent(Object content) {
+		if (content != null) {
 
-			if (content instanceof Boolean)
-			{
+			if (content instanceof Boolean) {
 				super.setValue((Boolean) content);
-			}
-			else
-			{
+			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
 
-		}
-		else
-		{
+		} else {
 			super.setValue(null);
 		}
 	}

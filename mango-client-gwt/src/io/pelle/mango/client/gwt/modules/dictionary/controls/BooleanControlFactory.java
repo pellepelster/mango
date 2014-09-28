@@ -16,12 +16,12 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBooleanControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.BooleanControl;
 
 import com.google.gwt.cell.client.CheckboxCell;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -32,60 +32,47 @@ import com.google.gwt.view.client.ListDataProvider;
  * @author pelle
  * 
  */
-public class BooleanControlFactory extends BaseControlFactory<IBooleanControlModel, BooleanControl>
-{
+public class BooleanControlFactory extends BaseControlFactory<IBooleanControlModel, BooleanControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(BooleanControl booleanControl, LAYOUT_TYPE layoutType)
-	{
+	public Widget createControl(BooleanControl booleanControl, LAYOUT_TYPE layoutType) {
 		return new GwtBooleanControl(booleanControl);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControlModel)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControlModel) {
 		return baseControlModel instanceof BooleanControl;
 	}
 
-	
 	@Override
-	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final BooleanControl booleanControl, boolean editable,
-			ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
-		
-		if (editable)
-		{
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final BooleanControl booleanControl, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider, IMangoCellTable<VOType> mangoCellTable) {
+
+		if (editable) {
 			final CheckboxCell checkboxCell = new CheckboxCell();
 
-			Column<IBaseTable.ITableRow<VOType>, Boolean> column = new Column<IBaseTable.ITableRow<VOType>, Boolean>(checkboxCell)
-			{
+			Column<IBaseTable.ITableRow<VOType>, Boolean> column = new Column<IBaseTable.ITableRow<VOType>, Boolean>(checkboxCell) {
 
 				@Override
-				public Boolean getValue(IBaseTable.ITableRow<VOType> tableRow)
-				{
+				public Boolean getValue(IBaseTable.ITableRow<VOType> tableRow) {
 					return (Boolean) tableRow.getElement(booleanControl.getModel()).getValue();
 				}
 			};
 
-			FieldUpdater<IBaseTable.ITableRow<VOType>, Boolean> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, Boolean>()
-			{
+			FieldUpdater<IBaseTable.ITableRow<VOType>, Boolean> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, Boolean>() {
 				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, Boolean value)
-				{
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, Boolean value) {
 					tableRow.getElement(booleanControl.getModel()).setValue(value);
 				}
 			};
 			column.setFieldUpdater(fieldUpdater);
 
 			return column;
-		}
-		else
-		{
-			return super.createColumn(booleanControl, editable, listDataProvider, abstractCellTable);
+		} else {
+			return super.createColumn(booleanControl, editable, listDataProvider, mangoCellTable);
 		}
 	}
-
 
 }

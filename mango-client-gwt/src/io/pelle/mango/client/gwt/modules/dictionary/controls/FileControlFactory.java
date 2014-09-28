@@ -18,20 +18,17 @@ import io.pelle.mango.client.web.modules.dictionary.controls.FileControl;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public class FileControlFactory extends BaseControlFactory<IFileControlModel, FileControl>
-{
+public class FileControlFactory extends BaseControlFactory<IFileControlModel, FileControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(FileControl fileControl, LAYOUT_TYPE layoutType)
-	{
+	public Widget createControl(FileControl fileControl, LAYOUT_TYPE layoutType) {
 		return new GwtFileControl(fileControl);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControl)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
 		return baseControl instanceof FileControl;
 	}
 

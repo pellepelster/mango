@@ -16,11 +16,11 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.ReferenceControl;
 
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -51,11 +51,8 @@ public class ReferenceControlFactory extends BaseControlFactory<IReferenceContro
 		return baseControl instanceof ReferenceControl;
 	}
 
-	
-	
 	@Override
-	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final ReferenceControl<?> referenceControl, boolean editable,
-			ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final ReferenceControl<?> referenceControl, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider, IMangoCellTable<VOType> mangoCellTable) {
 
 		Column<IBaseTable.ITableRow<VOType>, VOType> column;
 

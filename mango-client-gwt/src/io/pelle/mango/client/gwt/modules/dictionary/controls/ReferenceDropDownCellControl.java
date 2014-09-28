@@ -34,18 +34,14 @@ import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.text.shared.SimpleSafeHtmlRenderer;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellControl<T>
-{
-	public class ListBoxInternal extends ListBox
-	{
-		public ListBoxInternal(Element element)
-		{
+public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellControl<T> {
+	public class ListBoxInternal extends ListBox {
+		public ListBoxInternal(Element element) {
 			super(element);
 		}
 	}
 
-	interface Template extends SafeHtmlTemplates
-	{
+	interface Template extends SafeHtmlTemplates {
 		@Template("<select tabindex=\"-1\">")
 		SafeHtml inputStart();
 
@@ -65,32 +61,26 @@ public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellCon
 
 	private IReferenceControlModel referenceControlModel;
 
-	public ReferenceDropDownCellControl(IReferenceControlModel referenceControlModel, SafeHtmlRenderer<String> renderer)
-	{
-		super(referenceControlModel, ClickEvent.getType().getName(), KeyUpEvent.getType().getName(), KeyDownEvent.getType().getName(), BlurEvent.getType()
-				.getName());
+	public ReferenceDropDownCellControl(IReferenceControlModel referenceControlModel, SafeHtmlRenderer<String> renderer) {
+		super(referenceControlModel, ClickEvent.getType().getName(), KeyUpEvent.getType().getName(), KeyDownEvent.getType().getName(), BlurEvent.getType().getName());
 
 		this.referenceControlModel = referenceControlModel;
 		this.renderer = renderer;
 
-		if (template == null)
-		{
+		if (template == null) {
 			template = GWT.create(Template.class);
 		}
 
-		if (renderer == null)
-		{
+		if (renderer == null) {
 			throw new IllegalArgumentException("renderer == null");
 		}
 	}
 
-	public ReferenceDropDownCellControl(IReferenceControlModel referenceControlModel)
-	{
+	public ReferenceDropDownCellControl(IReferenceControlModel referenceControlModel) {
 		this(referenceControlModel, SimpleSafeHtmlRenderer.getInstance());
 	}
 
-	private void cancel(Context context, Element parent)
-	{
+	private void cancel(Context context, Element parent) {
 		ViewData<T> viewData = getOrInitViewData(context);
 		viewData.setEditing(false);
 
@@ -103,10 +93,8 @@ public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellCon
 	// else if ($doc.selection) $doc.selection.clear();
 	// }-*/;
 
-	private void clearListBox()
-	{
-		if (listBox == null)
-		{
+	private void clearListBox() {
+		if (listBox == null) {
 			throw new RuntimeException("no listbox instance");
 		}
 
@@ -114,8 +102,7 @@ public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellCon
 		listBox = null;
 	}
 
-	private void commit(Context context, Element parent)
-	{
+	private void commit(Context context, Element parent) {
 		ViewData<T> viewData = getOrInitViewData(context);
 		viewData.setEditing(false);
 
@@ -124,10 +111,8 @@ public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellCon
 		setValue(context, parent, getBaseControl(context).getValue());
 	}
 
-	protected void createListBox(final Context context, final Element parent, T value, final ValueUpdater<T> valueUpdater)
-	{
-		if (listBox != null)
-		{
+	protected void createListBox(final Context context, final Element parent, T value, final ValueUpdater<T> valueUpdater) {
+		if (listBox != null) {
 			throw new RuntimeException("listbox already active");
 		}
 
@@ -156,41 +141,29 @@ public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellCon
 
 	}
 
-	private void editEvent(Context context, Element parent, T value, ViewData<T> viewData, NativeEvent event, ValueUpdater<T> valueUpdater)
-	{
+	private void editEvent(Context context, Element parent, T value, ViewData<T> viewData, NativeEvent event, ValueUpdater<T> valueUpdater) {
 		String type = event.getType();
 		boolean keyUp = KeyUpEvent.getType().getName().equals(type);
 		boolean keyDown = KeyDownEvent.getType().getName().equals(type);
 		int keyCode = event.getKeyCode();
 
-		if (keyUp || keyDown)
-		{
-			if (keyUp && keyCode == KeyCodes.KEY_ESCAPE)
-			{
-				if (viewData.isEditingAgain())
-				{
+		if (keyUp || keyDown) {
+			if (keyUp && keyCode == KeyCodes.KEY_ESCAPE) {
+				if (viewData.isEditingAgain()) {
 					viewData.setEditing(false);
 				}
 
 				cancel(context, parent);
-			}
-			else if (keyCode == KeyCodes.KEY_ENTER)
-			{
+			} else if (keyCode == KeyCodes.KEY_ENTER) {
 				commit(context, parent);
-			}
-			else
-			{
+			} else {
 				fireEventToSuggesBox(event);
 			}
-		}
-		else if (BlurEvent.getType().getName().equals(type))
-		{
+		} else if (BlurEvent.getType().getName().equals(type)) {
 			EventTarget eventTarget = event.getEventTarget();
-			if (Element.is(eventTarget))
-			{
+			if (Element.is(eventTarget)) {
 				Element target = Element.as(eventTarget);
-				if ("select".equals(target.getTagName().toLowerCase()))
-				{
+				if ("select".equals(target.getTagName().toLowerCase())) {
 					commit(context, parent);
 				}
 			}
@@ -198,38 +171,29 @@ public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellCon
 
 	}
 
-	private void fireEventToSuggesBox(NativeEvent event)
-	{
-		if (listBox != null)
-		{
+	private void fireEventToSuggesBox(NativeEvent event) {
+		if (listBox != null) {
 			DomEvent.fireNativeEvent(event, listBox);
 		}
 	}
 
-	private boolean hasListBox()
-	{
+	private boolean hasListBox() {
 		return listBox != null;
 	}
 
 	@Override
-	public void onBrowserEvent(final Context context, final Element parent, final T value, final NativeEvent event, final ValueUpdater<T> valueUpdater)
-	{
+	public void onBrowserEvent(final Context context, final Element parent, final T value, final NativeEvent event, final ValueUpdater<T> valueUpdater) {
 		final ViewData<T> viewData = getOrInitViewData(context);
 
-		if (viewData.isEditing())
-		{
-			if (!hasListBox())
-			{
+		if (viewData.isEditing()) {
+			if (!hasListBox()) {
 				createListBox(context, parent, value, valueUpdater);
 			}
 
 			editEvent(context, parent, value, viewData, event, valueUpdater);
 
-		}
-		else
-		{
-			if (ClickEvent.getType().getName().equals(event.getType()) || enterPressed(event))
-			{
+		} else {
+			if (ClickEvent.getType().getName().equals(event.getType()) || enterPressed(event)) {
 				viewData.setEditing(true);
 				setValue(context, parent, value);
 				createListBox(context, parent, value, valueUpdater);
@@ -238,32 +202,25 @@ public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellCon
 	}
 
 	@Override
-	public void render(Context context, T value, SafeHtmlBuilder sb)
-	{
+	public void render(Context context, T value, SafeHtmlBuilder sb) {
 		ViewData<T> viewData = getOrInitViewData(context);
 
-		if (hasListBox())
-		{
+		if (hasListBox()) {
 			clearListBox();
 		}
 
-		if (viewData.isEditing())
-		{
+		if (viewData.isEditing()) {
 			sb.append(template.inputStart());
 			sb.append(template.selected(format(context)));
 			sb.append(template.inputEnd());
-		}
-		else
-		{
+		} else {
 			sb.append(renderer.render(format(context)));
 		}
 	}
 
 	@Override
-	public boolean resetFocus(Context context, Element parent, T value)
-	{
-		if (isEditing(context, parent, value))
-		{
+	public boolean resetFocus(Context context, Element parent, T value) {
+		if (isEditing(context, parent, value)) {
 			getInputElement(parent).focus();
 			return true;
 		}

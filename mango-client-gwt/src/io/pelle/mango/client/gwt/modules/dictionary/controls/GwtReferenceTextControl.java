@@ -24,15 +24,13 @@ import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 
-public class GwtReferenceTextControl<VOType extends IBaseVO> extends SuggestBox implements IGwtControl
-{
+public class GwtReferenceTextControl<VOType extends IBaseVO> extends SuggestBox implements IGwtControl {
 
 	private VOType vo;
 
 	private final ReferenceControl<VOType> referenceControl;
 
-	public GwtReferenceTextControl(final ReferenceControl<VOType> referenceControl)
-	{
+	public GwtReferenceTextControl(final ReferenceControl<VOType> referenceControl) {
 		super(new VOSuggestOracle<VOType>(referenceControl.getModel()));
 
 		ensureDebugId(DictionaryModelUtil.getDebugId(referenceControl.getModel()));
@@ -40,13 +38,10 @@ public class GwtReferenceTextControl<VOType extends IBaseVO> extends SuggestBox 
 		this.referenceControl = referenceControl;
 		new ControlHelper(this, referenceControl, this, false);
 
-		addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>()
-		{
+		addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 			@Override
-			public void onSelection(SelectionEvent<Suggestion> selectionEvent)
-			{
-				if (selectionEvent.getSelectedItem() instanceof VOSuggestion)
-				{
+			public void onSelection(SelectionEvent<Suggestion> selectionEvent) {
+				if (selectionEvent.getSelectedItem() instanceof VOSuggestion) {
 					VOSuggestion<VOType> voSuggestion = (VOSuggestion<VOType>) selectionEvent.getSelectedItem();
 					vo = voSuggestion.getValue();
 					referenceControl.setValue(vo);
@@ -58,22 +53,15 @@ public class GwtReferenceTextControl<VOType extends IBaseVO> extends SuggestBox 
 	}
 
 	@Override
-	public void setContent(Object content)
-	{
-		if (content != null)
-		{
-			if (content instanceof IBaseVO)
-			{
+	public void setContent(Object content) {
+		if (content != null) {
+			if (content instanceof IBaseVO) {
 				vo = (VOType) content;
 				setText(DictionaryUtil.getLabel(referenceControl.getModel(), vo));
-			}
-			else
-			{
+			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
-		}
-		else
-		{
+		} else {
 			vo = null;
 			setText("");
 		}

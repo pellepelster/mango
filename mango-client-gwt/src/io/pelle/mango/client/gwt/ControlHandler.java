@@ -15,6 +15,7 @@ import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.BigDecimalControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.BooleanControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.DateControlFactory;
@@ -31,7 +32,6 @@ import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryContr
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -65,8 +65,8 @@ public class ControlHandler {
 	}
 
 	public <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> Column<IBaseTable.ITableRow<VOType>, ?> createColumn(ControlType baseControl, boolean editable,
-			ListDataProvider<IBaseTable.ITableRow<VOType>> listDataProvider, AbstractCellTable<IBaseTable.ITableRow<VOType>> abstractCellTable) {
-		return getControlFactory(baseControl).createColumn(baseControl, editable, listDataProvider, abstractCellTable);
+			ListDataProvider<IBaseTable.ITableRow<VOType>> listDataProvider, IMangoCellTable<VOType> mangoCellTable) {
+		return getControlFactory(baseControl).createColumn(baseControl, editable, listDataProvider, mangoCellTable);
 	}
 
 	public <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType) {

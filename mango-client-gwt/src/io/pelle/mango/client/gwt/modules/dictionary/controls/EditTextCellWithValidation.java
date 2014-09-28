@@ -36,11 +36,9 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.text.shared.SimpleSafeHtmlRenderer;
 
-public class EditTextCellWithValidation<T> extends BaseCellControl<T>
-{
+public class EditTextCellWithValidation<T> extends BaseCellControl<T> {
 
-	interface Template extends SafeHtmlTemplates
-	{
+	interface Template extends SafeHtmlTemplates {
 		@Template("<input style=\"{1}\" type=\"text\" value=\"{0}\" tabindex=\"-1\"></input>")
 		SafeHtml input(String value, SafeStyles styles);
 
@@ -54,13 +52,10 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 
 	private final SafeHtmlRenderer<String> renderer;
 
-	public EditTextCellWithValidation(BaseDictionaryControl<IBaseControlModel, Object> baseControl)
-	{
-		super(baseControl.getModel(), ClickEvent.getType().getName(), KeyUpEvent.getType().getName(), KeyDownEvent.getType().getName(), FocusEvent.getType()
-				.getName(), BlurEvent.getType().getName());
+	public EditTextCellWithValidation(BaseDictionaryControl<IBaseControlModel, Object> baseControl) {
+		super(baseControl.getModel(), ClickEvent.getType().getName(), KeyUpEvent.getType().getName(), KeyDownEvent.getType().getName(), FocusEvent.getType().getName(), BlurEvent.getType().getName());
 
-		if (template == null)
-		{
+		if (template == null) {
 			template = GWT.create(Template.class);
 		}
 
@@ -69,8 +64,7 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 	}
 
 	@Override
-	public void onBrowserEvent(Context context, Element parent, T value, NativeEvent event, ValueUpdater<T> valueUpdater)
-	{
+	public void onBrowserEvent(Context context, Element parent, T value, NativeEvent event, ValueUpdater<T> valueUpdater) {
 		GWT.log("onBrowserEvent: value: " + value.toString());
 
 		String type = event.getType();
@@ -80,8 +74,7 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 		boolean startEdit = ClickEvent.getType().getName().equals(type) || enterPressed;
 		boolean eventTargetIsInput = false;
 
-		if (Element.is(event.getEventTarget()))
-		{
+		if (Element.is(event.getEventTarget())) {
 			Element target = Element.as(event.getEventTarget());
 			GWT.log("target: " + target.getTagName() + "(" + target.getId() + "), eventType: " + type);
 
@@ -89,29 +82,19 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 
 		}
 
-		if (BlurEvent.getType().getName().equals(type))
-		{
-			if (eventTargetIsInput)
-			{
+		if (BlurEvent.getType().getName().equals(type)) {
+			if (eventTargetIsInput) {
 				commit(context, parent, valueUpdater);
 			}
 
-		}
-		else if (FocusEvent.getType().getName().equals(type))
-		{
+		} else if (FocusEvent.getType().getName().equals(type)) {
 			getInputElement(parent).focus();
-		}
-		else
-		{
-			if (isEditing(context, parent, value))
-			{
+		} else {
+			if (isEditing(context, parent, value)) {
 				editEvent(context, parent, value, event, valueUpdater);
 
-			}
-			else
-			{
-				if (startEdit)
-				{
+			} else {
+				if (startEdit) {
 					startEdit(context, parent, value);
 				}
 			}
@@ -120,41 +103,33 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 	}
 
 	@Override
-	public void render(Context context, T value, SafeHtmlBuilder sb)
-	{
+	public void render(Context context, T value, SafeHtmlBuilder sb) {
 		ViewData<T> viewData = getOrInitViewData(context);
 
 		SafeStylesBuilder styles = new SafeStylesBuilder();
 
-		if (getBaseControl(context).getValidationMessages().hasErrors())
-		{
+		if (getBaseControl(context).getValidationMessages().hasErrors()) {
 			styles.appendTrustedString(GwtStyles.CELL_ERROR_STYLE);
 		}
 
-		if (viewData.isEditing())
-		{
+		if (viewData.isEditing()) {
 			sb.append(template.input(getBaseControl(context).format(), styles.toSafeStyles()));
-		}
-		else
-		{
+		} else {
 			styles.appendTrustedString(GwtStyles.CELL_ERROR_DISPLAY_PADDING);
 			sb.append(template.display(renderer.render(getBaseControl(context).format()).asString(), styles.toSafeStyles()));
 		}
 	}
 
 	@Override
-	public boolean resetFocus(Context context, Element parent, T value)
-	{
-		if (isEditing(context, parent, value))
-		{
+	public boolean resetFocus(Context context, Element parent, T value) {
+		if (isEditing(context, parent, value)) {
 			getInputElement(parent).focus();
 			return true;
 		}
 		return false;
 	}
 
-	protected void startEdit(Context context, Element parent, T value)
-	{
+	protected void startEdit(Context context, Element parent, T value) {
 		ViewData<T> viewData = getOrInitViewData(context);
 		viewData.setEditing(true);
 
@@ -163,16 +138,14 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 		focus(parent);
 	}
 
-	private void focus(Element parent)
-	{
+	private void focus(Element parent) {
 		InputElement input = getInputElement(parent);
 
 		input.focus();
 		input.select();
 	}
 
-	private void cancel(Context context, Element parent, T value)
-	{
+	private void cancel(Context context, Element parent, T value) {
 		clearInput(getInputElement(parent));
 		setValue(context, parent, value);
 	}
@@ -184,8 +157,7 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 													$doc.selection.clear();
 													}-*/;
 
-	private void commit(Context context, Element parent, ValueUpdater<T> valueUpdater)
-	{
+	private void commit(Context context, Element parent, ValueUpdater<T> valueUpdater) {
 		ViewData<T> viewData = getOrInitViewData(context);
 		viewData.setEditing(false);
 
@@ -197,45 +169,34 @@ public class EditTextCellWithValidation<T> extends BaseCellControl<T>
 		setValue(context, parent, getBaseControl(context).getValue());
 	}
 
-	private void editEvent(Context context, Element parent, T value, NativeEvent event, ValueUpdater<T> valueUpdater)
-	{
+	private void editEvent(Context context, Element parent, T value, NativeEvent event, ValueUpdater<T> valueUpdater) {
 		ViewData<T> viewData = getOrInitViewData(context);
 		String type = event.getType();
 
 		boolean keyUp = KeyUpEvent.getType().getName().equals(type);
 		boolean keyDown = KeyDownEvent.getType().getName().equals(type);
 
-		if (keyUp || keyDown)
-		{
+		if (keyUp || keyDown) {
 			int keyCode = event.getKeyCode();
 
-			if (keyUp && keyCode == KeyCodes.KEY_ENTER)
-			{
+			if (keyUp && keyCode == KeyCodes.KEY_ENTER) {
 				commit(context, parent, valueUpdater);
-			}
-			else if (keyUp && keyCode == KeyCodes.KEY_ESCAPE)
-			{
-				if (viewData.isEditingAgain())
-				{
+			} else if (keyUp && keyCode == KeyCodes.KEY_ESCAPE) {
+				if (viewData.isEditingAgain()) {
 					viewData.setEditing(false);
-				}
-				else
-				{
+				} else {
 					clearViewData(context);
 				}
 
 				cancel(context, parent, value);
-			}
-			else
-			{
+			} else {
 				// Update the text in the view data on each key.
 				updateViewData(context, parent, viewData, true);
 			}
 		}
 	}
 
-	private void updateViewData(Context context, Element parent, ViewData<T> viewData, boolean isEditing)
-	{
+	private void updateViewData(Context context, Element parent, ViewData<T> viewData, boolean isEditing) {
 		viewData.setEditing(isEditing);
 
 	}

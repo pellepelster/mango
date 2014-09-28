@@ -26,7 +26,9 @@ import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryContr
 import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrategy;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -77,14 +79,13 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 		createModelColumns();
 
 		TextHeader textHeader = new TextHeader("");
-		Column<IBaseTable.ITableRow<VOType>, Void> column = new Column<IBaseTable.ITableRow<VOType>, Void>(new ImageActionCell<VOType>(
-				MangoClientWeb.RESOURCES.delete(), new SimpleCallback<IBaseTable.ITableRow<VOType>>() {
-					@Override
-					public void onCallback(IBaseTable.ITableRow<VOType> vo) {
-						dataProvider.getList().remove(vo);
-						// fireValueChanges();
-					}
-				})) {
+		Column<IBaseTable.ITableRow<VOType>, Void> column = new Column<IBaseTable.ITableRow<VOType>, Void>(new ImageActionCell<VOType>(MangoClientWeb.RESOURCES.delete(), new SimpleCallback<IBaseTable.ITableRow<VOType>>() {
+			@Override
+			public void onCallback(IBaseTable.ITableRow<VOType> vo) {
+				dataProvider.getList().remove(vo);
+				// fireValueChanges();
+			}
+		})) {
 			@Override
 			public Void getValue(IBaseTable.ITableRow<VOType> vo) {
 				return null;
@@ -137,4 +138,8 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 		buttonPanel.add(addButton);
 	}
 
+	@Override
+	public Set<String> getHighlightedTexts() {
+		return Collections.emptySet();
+	}
 }

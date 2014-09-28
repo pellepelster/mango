@@ -19,22 +19,29 @@ import io.pelle.mango.client.gwt.modules.dictionary.container.BaseTableRowKeyPro
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
 
+import java.util.Set;
+
 import com.google.gwt.user.cellview.client.Column;
 
-public class ResultCellTable<VOType extends IBaseVO> extends BaseCellTable<VOType>
-{
+public class ResultCellTable<VOType extends IBaseVO> extends BaseCellTable<VOType> {
 
-	public ResultCellTable(final DictionaryResult<VOType> dictionaryResult)
-	{
+	private DictionaryResult<VOType> dictionaryResult;
+
+	public ResultCellTable(final DictionaryResult<VOType> dictionaryResult) {
 		super(dictionaryResult, new BaseTableRowKeyProvider<VOType>());
+		this.dictionaryResult = dictionaryResult;
 		createModelColumns();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl)
-	{
+	protected Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl) {
 		return (Column<IBaseTable.ITableRow<VOType>, ?>) ControlHandler.getInstance().createColumn((BaseDictionaryControl<IBaseControlModel, ?>) baseControl, false, null, this);
+	}
+
+	@Override
+	public Set<String> getHighlightedTexts() {
+		return dictionaryResult.getHighlightTexts();
 	}
 
 }

@@ -18,11 +18,9 @@ import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
 
 import com.google.gwt.user.client.ui.TextBox;
 
-public class GwtTextControl extends TextBox implements IGwtControl
-{
+public class GwtTextControl extends TextBox implements IGwtControl {
 
-	public GwtTextControl(TextControl textControl)
-	{
+	public GwtTextControl(TextControl textControl) {
 		super();
 		new ControlHelper(this, textControl, this, true);
 
@@ -30,21 +28,14 @@ public class GwtTextControl extends TextBox implements IGwtControl
 		setMaxLength(textControl.getModel().getMaxLength());
 	}
 
-	public void setContent(Object content)
-	{
-		if (content != null)
-		{
-			if (content instanceof String)
-			{
+	public void setContent(Object content) {
+		if (content != null) {
+			if (content instanceof String) {
 				super.setValue((String) content);
-			}
-			else
-			{
+			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
-		}
-		else
-		{
+		} else {
 			super.setValue("");
 		}
 	}

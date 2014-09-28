@@ -24,20 +24,17 @@ import com.google.gwt.user.client.ui.Widget;
  * @author pelle
  * 
  */
-public class BigDecimalControlFactory extends BaseControlFactory<IBigDecimalControlModel, BigDecimalControl>
-{
+public class BigDecimalControlFactory extends BaseControlFactory<IBigDecimalControlModel, BigDecimalControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(BigDecimalControl bigDecimalControl, LAYOUT_TYPE layoutType)
-	{
+	public Widget createControl(BigDecimalControl bigDecimalControl, LAYOUT_TYPE layoutType) {
 		return new GwtBigDecimalControl(bigDecimalControl);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(BaseDictionaryControl<?, ?> baseControlModel)
-	{
+	public boolean supports(BaseDictionaryControl<?, ?> baseControlModel) {
 		return baseControlModel instanceof BigDecimalControl;
 	}
 

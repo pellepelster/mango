@@ -21,7 +21,7 @@ import com.google.gwt.user.client.ui.TextBox;
 public class GwtGroupControl extends TextBox implements IGwtControl {
 
 	public GwtGroupControl(ControlGroup control) {
-		new ControlHelper(this, control, this, true, false);
+		new ControlHelper(this, control, this, true);
 		ensureDebugId(DictionaryModelUtil.getDebugId(control.getModel()));
 
 	}

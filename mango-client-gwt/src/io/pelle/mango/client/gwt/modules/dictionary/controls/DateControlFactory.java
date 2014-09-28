@@ -16,6 +16,7 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IDateControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.DateControl;
 
@@ -23,7 +24,6 @@ import java.util.Date;
 
 import com.google.gwt.cell.client.DatePickerCell;
 import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -34,65 +34,51 @@ import com.google.gwt.view.client.ListDataProvider;
  * @author pelle
  * 
  */
-public class DateControlFactory extends BaseControlFactory<IDateControlModel, DateControl>
-{
+public class DateControlFactory extends BaseControlFactory<IDateControlModel, DateControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(DateControl dateControl, LAYOUT_TYPE layoutType)
-	{
+	public Widget createControl(DateControl dateControl, LAYOUT_TYPE layoutType) {
 		return new GwtDateControl(dateControl);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean supports(@SuppressWarnings("rawtypes") BaseDictionaryControl baseControl)
-	{
+	public boolean supports(@SuppressWarnings("rawtypes") BaseDictionaryControl baseControl) {
 		return baseControl instanceof DateControl;
 	}
 
 	@Override
-	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final DateControl dateControl, boolean editable,
-			ListDataProvider<ITableRow<VOType>> listDataProvider, AbstractCellTable<ITableRow<VOType>> abstractCellTable) {
-		if (editable)
-		{
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final DateControl dateControl, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider, IMangoCellTable<VOType> mangoCellTable) {
+		if (editable) {
 			final DatePickerCell datePickerCell = new DatePickerCell();
 
-			Column<IBaseTable.ITableRow<VOType>, Date> column = new Column<IBaseTable.ITableRow<VOType>, Date>(datePickerCell)
-			{
+			Column<IBaseTable.ITableRow<VOType>, Date> column = new Column<IBaseTable.ITableRow<VOType>, Date>(datePickerCell) {
 
 				@Override
-				public Date getValue(IBaseTable.ITableRow<VOType> tableRow)
-				{
+				public Date getValue(IBaseTable.ITableRow<VOType> tableRow) {
 					Object date = tableRow.getElement(dateControl.getModel()).getValue();
 
-					if (date == null)
-					{
+					if (date == null) {
 						return new Date();
-					}
-					else
-					{
+					} else {
 						return (Date) tableRow.getElement(dateControl.getModel()).getValue();
 					}
 				}
 			};
 
-			FieldUpdater<IBaseTable.ITableRow<VOType>, Date> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, Date>()
-			{
+			FieldUpdater<IBaseTable.ITableRow<VOType>, Date> fieldUpdater = new FieldUpdater<IBaseTable.ITableRow<VOType>, Date>() {
 				@SuppressWarnings("unchecked")
 				@Override
-				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, Date value)
-				{
+				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, Date value) {
 					tableRow.getElement(dateControl.getModel()).setValue(value);
 				}
 			};
 			column.setFieldUpdater(fieldUpdater);
 
 			return column;
-		}
-		else
-		{
-			return super.createColumn(dateControl, editable, listDataProvider, abstractCellTable);
+		} else {
+			return super.createColumn(dateControl, editable, listDataProvider, mangoCellTable);
 		}
 	}
 

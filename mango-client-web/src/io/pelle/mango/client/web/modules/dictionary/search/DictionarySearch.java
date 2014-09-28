@@ -13,6 +13,7 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.ControlGroup;
 import io.pelle.mango.client.web.modules.dictionary.filter.DictionaryFilter;
 import io.pelle.mango.client.web.modules.dictionary.query.DictionaryCompositeQuery;
 import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
@@ -24,6 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElement<IDictionaryModel> {
@@ -52,6 +54,34 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 
 	@SuppressWarnings("unchecked")
 	public void search(final AsyncCallback<List<IBaseTable.ITableRow<VOType>>> asyncCallback) {
+
+		dictionaryResult.getHighlightTexts().clear();
+
+		for (DictionaryFilter<VOType> dictionaryFilter : dictionaryFilters) {
+
+			for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseDictionaryControl : dictionaryFilter.getRootComposite().getControls()) {
+
+				if (baseDictionaryControl instanceof ControlGroup) {
+
+					ControlGroup controlGroup = (ControlGroup) baseDictionaryControl;
+
+					for (BaseDictionaryControl<? extends IBaseControlModel, ?> groupControl : controlGroup.getControls()) {
+						String stringValue = groupControl.format();
+
+						if (!Strings.isNullOrEmpty(stringValue)) {
+							dictionaryResult.getHighlightTexts().add(stringValue);
+						}
+					}
+
+				} else {
+					String stringValue = baseDictionaryControl.format();
+
+					if (!Strings.isNullOrEmpty(stringValue)) {
+						dictionaryResult.getHighlightTexts().add(stringValue);
+					}
+				}
+			}
+		}
 
 		SelectQuery<VOType> selectQuery = (SelectQuery<VOType>) SelectQuery.selectFrom(getModel().getVOClass());
 

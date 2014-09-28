@@ -26,13 +26,11 @@ public class ControlGroup extends BaseDictionaryControl<IControlGroupModel, Obje
 	}
 
 	@Override
-	protected ParseResult parseValueInternal(String valueString) {
-
+	public void parseValue(String valueString) {
 		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : controls) {
 			baseControl.parseValue(valueString);
 		}
-
-		return new ParseResult();
+		super.parseValue(valueString);
 	}
 
 	@Override
@@ -56,4 +54,14 @@ public class ControlGroup extends BaseDictionaryControl<IControlGroupModel, Obje
 
 		return expression;
 	}
+
+	@Override
+	protected BaseDictionaryControl<IControlGroupModel, Object[]>.ParseResult parseValueInternal(String valueString) {
+		return new ParseResult(new String[] { valueString });
+	}
+
+	public List<BaseDictionaryControl<IBaseControlModel, ?>> getControls() {
+		return controls;
+	}
+
 }

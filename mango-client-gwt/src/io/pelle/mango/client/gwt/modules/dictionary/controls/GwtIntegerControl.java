@@ -18,33 +18,24 @@ import io.pelle.mango.client.web.modules.dictionary.controls.IntegerControl;
 
 import com.google.gwt.user.client.ui.TextBox;
 
-public class GwtIntegerControl extends TextBox implements IGwtControl
-{
+public class GwtIntegerControl extends TextBox implements IGwtControl {
 
-	public GwtIntegerControl(IntegerControl integerControl)
-	{
+	public GwtIntegerControl(IntegerControl integerControl) {
 		new ControlHelper(this, integerControl, this, true);
 		ensureDebugId(DictionaryModelUtil.getDebugId(integerControl.getModel()));
 	}
 
 	@Override
-	public void setContent(Object content)
-	{
-		if (content != null)
-		{
+	public void setContent(Object content) {
+		if (content != null) {
 
-			if (content instanceof Integer)
-			{
+			if (content instanceof Integer) {
 				super.setValue(content.toString());
-			}
-			else
-			{
+			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
 
-		}
-		else
-		{
+		} else {
 			super.setValue(null);
 		}
 	}

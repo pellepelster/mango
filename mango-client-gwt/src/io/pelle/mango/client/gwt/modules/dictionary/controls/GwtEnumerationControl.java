@@ -26,13 +26,11 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class GwtEnumerationControl extends ListBox implements IGwtControl
-{
+public class GwtEnumerationControl extends ListBox implements IGwtControl {
 
 	private final EnumerationControl enumarationControl;
 
-	public GwtEnumerationControl(final EnumerationControl enumarationControl)
-	{
+	public GwtEnumerationControl(final EnumerationControl enumarationControl) {
 		super(false);
 
 		this.enumarationControl = enumarationControl;
@@ -40,12 +38,10 @@ public class GwtEnumerationControl extends ListBox implements IGwtControl
 		ensureDebugId(DictionaryModelUtil.getDebugId(enumarationControl.getModel()));
 		new ControlHelper(this, enumarationControl, this, false);
 
-		addChangeHandler(new ChangeHandler()
-		{
+		addChangeHandler(new ChangeHandler() {
 
 			@Override
-			public void onChange(ChangeEvent event)
-			{
+			public void onChange(ChangeEvent event) {
 				enumarationControl.setValue(getEnumForSelection());
 			}
 		});
@@ -53,15 +49,13 @@ public class GwtEnumerationControl extends ListBox implements IGwtControl
 		List<String> enumList = getSortedEnumList(enumarationControl.getModel());
 
 		addItem("");
-		for (String enumValue : enumList)
-		{
+		for (String enumValue : enumList) {
 			addItem(enumValue);
 		}
 
 	}
 
-	public static List<String> getSortedEnumList(IEnumerationControlModel enumarationControlModel)
-	{
+	public static List<String> getSortedEnumList(IEnumerationControlModel enumarationControlModel) {
 		List<String> enumList = new ArrayList<String>();
 		enumList.addAll(enumarationControlModel.getEnumeration().values());
 		Collections.sort(enumList);
@@ -69,17 +63,13 @@ public class GwtEnumerationControl extends ListBox implements IGwtControl
 		return enumList;
 	}
 
-	public static String getEnumForText(IEnumerationControlModel enumarationControlModel, String text)
-	{
-		if (text == null || text.isEmpty())
-		{
+	public static String getEnumForText(IEnumerationControlModel enumarationControlModel, String text) {
+		if (text == null || text.isEmpty()) {
 			return null;
 		}
 
-		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumeration().entrySet())
-		{
-			if (enumEntry.getValue().equals(text))
-			{
+		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumeration().entrySet()) {
+			if (enumEntry.getValue().equals(text)) {
 				return enumEntry.getKey();
 			}
 		}
@@ -87,38 +77,28 @@ public class GwtEnumerationControl extends ListBox implements IGwtControl
 		throw new RuntimeException("no enum found for text '" + text + "'");
 	}
 
-	private String getEnumForSelection()
-	{
+	private String getEnumForSelection() {
 		String text = getValue(getSelectedIndex());
 
 		return getEnumForText(enumarationControl.getModel(), text);
 	}
 
 	@Override
-	public void setContent(Object content)
-	{
-		if (content != null)
-		{
+	public void setContent(Object content) {
+		if (content != null) {
 
-			if (content instanceof String || content instanceof Enum<?>)
-			{
+			if (content instanceof String || content instanceof Enum<?>) {
 
-				for (int i = 0; i < getItemCount(); i++)
-				{
-					if (getItemText(i).equals(content.toString()))
-					{
+				for (int i = 0; i < getItemCount(); i++) {
+					if (getItemText(i).equals(content.toString())) {
 						setSelectedIndex(i);
 					}
 				}
 
-			}
-			else
-			{
+			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
-		}
-		else
-		{
+		} else {
 			super.setSelectedIndex(0);
 		}
 	}
