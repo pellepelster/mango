@@ -14,7 +14,6 @@ import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
-import java.util.Date
 import java.util.List
 
 class VOGenerator extends BaseEntityGenerator {
@@ -160,6 +159,13 @@ class VOGenerator extends BaseEntityGenerator {
 				return this.«attribute.name»;
 			}
 			«ENDFOR»
+
+			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
+				if ("«infoVOEntityAttribute.key.attributeName»".equals(name))
+				{
+					return this.«infoVOEntityAttribute.key.attributeName»;
+				}
+			«ENDFOR»
 		
 			return super.get(name);
 		}
@@ -190,6 +196,14 @@ class VOGenerator extends BaseEntityGenerator {
 				«attribute.genericVOSetterValue»
 				return;
 			}
+			«ENDFOR»
+		
+			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
+				if ("«infoVOEntityAttribute.key.attributeName»".equals(name))
+				{
+					«infoVOEntityAttribute.key.setterName»(«infoVOEntityAttribute.key.attributeName»);
+					return;
+				}
 			«ENDFOR»
 		
 			super.set(name, value);

@@ -80,11 +80,16 @@ public class XmlVOExporter extends BaseXmlVOHandler {
 				eventWriter.add(this.eventFactory.createStartElement("", "", elementName));
 				eventWriter.add(this.END);
 				indentation++;
+
 				for (IAttributeDescriptor<?> attributeDescriptor : attributeDescriptors) {
+
 					String attributeName = attributeDescriptor.getAttributeName();
 					Object attributeValue = voToExport.get(attributeName);
+
 					if (attributeValue != null) {
+
 						Class<?> attributeClass = attributeDescriptor.getAttributeType();
+
 						if (IBaseVO.class.isAssignableFrom(attributeClass)) {
 							createAttributeStartElement(eventWriter, attributeName, indentation, true);
 							createReferenceAttributeNode(eventWriter, (IBaseVO) attributeValue, indentation);
