@@ -12,11 +12,25 @@ import io.pelle.mango.dsl.mango.PackageDeclaration
 import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
-import javax.management.Attribute
+import java.util.Date
+import java.util.Map
 import org.eclipse.emf.ecore.EObject
 
 class NameUtils {
 
+	def infoVOEntityAttributes() {
+		
+		var Map<String, Class<?>> infoVOEntityAttributes = newHashMap
+		
+		infoVOEntityAttributes.put("createDate", typeof(Date))
+		infoVOEntityAttributes.put("updateDate", typeof(Date))
+
+		infoVOEntityAttributes.put("createUser", typeof(String))
+		infoVOEntityAttributes.put("updateUser", typeof(String))
+
+		return infoVOEntityAttributes
+	}
+	
 	def String combinePackageName(String packageName1,String packageName2) {
 
 		if (packageName1 != null && !packageName1.empty)
@@ -65,11 +79,6 @@ class NameUtils {
 	}
 
 	// entity
-	def attributeName(Attribute attribute) {
-		return attributeName(attribute.name)
-	}
-
-	// entity
 	def attributeName(String attribute) {
 		return attribute.toFirstLower
 	}
@@ -84,6 +93,10 @@ class NameUtils {
 
 	def entityConstantName(Entity entity) {
 		return entity.name.toUpperCase;
+	}
+
+	def attributeDescriptorConstantName(String name) {
+		return name.toUpperCase;
 	}
 
 	var String[] SQL_KEYWORDS = newArrayList( "order", "where", "select" )
@@ -105,7 +118,15 @@ class NameUtils {
 	}
 
 	def entityTableColumnName(EntityAttribute entityAttribute) {
-		return GeneratorUtil.getParentEntity(entityAttribute).name.toLowerCase + "_" + entityAttribute.name.toLowerCase
+		return GeneratorUtil.getParentEntity(entityAttribute).entityTableName + "_" + entityAttribute.name.entityTableColumnName
+	}
+
+	def String entityTableColumnName(Entity entity, String attributeName) {
+		return entity.entityTableName + "_" + attributeName.entityTableColumnName
+	}
+
+	def entityTableColumnName(String attribute) {
+		return attribute.toLowerCase
 	}
 
 	def entityTableIdSequenceName(Entity entity) {

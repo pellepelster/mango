@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
 public abstract class BaseEntity implements IBaseEntity {
+
 	private ChangeTracker changeTracker = new ChangeTracker();
 
 	private long oid;
@@ -32,4 +33,5 @@ public abstract class BaseEntity implements IBaseEntity {
 	public ChangeTracker getChangeTracker() {
 		return changeTracker;
 	}
+
 }

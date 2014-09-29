@@ -14,6 +14,7 @@ import io.pelle.mango.test.client.Entity1VO;
 import io.pelle.mango.test.client.Entity2VO;
 import io.pelle.mango.test.client.Entity3VO;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -35,6 +36,25 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	public void testGetNewVO() {
 		assertNotNull(baseEntityService.getNewVO(Entity1VO.class.getName(), null));
 		assertTrue(baseEntityService.getNewVO(Entity2VO.class.getName(), null) instanceof Entity2VO);
+	}
+
+	@Test
+	public void testCreateInfoVOEntity() {
+
+		Date start = new Date();
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+
+		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
+		assertEquals(0, result1.getValidationMessages().size());
+		Date end = new Date();
+
+		assertEquals("<unknown>", result1.getVO().getCreateUser());
+		assertEquals("<unknown>", result1.getVO().getUpdateUser());
+		assertTrue(result1.getVO().getCreateDate().after(start) && result1.getVO().getCreateDate().before(end));
+		assertTrue(result1.getVO().getUpdateDate().after(start) && result1.getVO().getUpdateDate().before(end));
 	}
 
 	@Test
@@ -225,6 +245,20 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3VO);
 		entity3VO = this.baseEntityService.read(result1.getVO().getId(), Entity3VO.class.getName());
 		assertArrayEquals(data, entity3VO.getBinaryDatatype1());
+	}
+
+	@Test
+	public void testValidateAndCreate1() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+
+		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
+
+		assertEquals("aaa", result.getVO().getStringDatatype1());
+		assertEquals(0, result.getValidationMessages().size());
 	}
 
 	public void setBaseVODAO(IBaseVODAO baseVODAO) {

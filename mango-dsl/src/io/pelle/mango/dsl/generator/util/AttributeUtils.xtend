@@ -6,11 +6,15 @@ import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
+import java.util.Date
 
 class AttributeUtils {
 
 	@Inject
 	extension NameUtils
+
+	@Inject
+	extension TypeUtils
 
 	//-------------------------------------------------------------------------
 	// natural key
@@ -46,6 +50,10 @@ class AttributeUtils {
 
 	def attributeName(ValueObject valueObject) '''«valueObject.name.toFirstLower»'''
 
+	def attribute(Class<?> type, String attributeName) '''
+		«attribute(type.name, attributeName, null)»
+	'''
+
 	def attribute(String attributeType, String attributeName) '''
 		«attribute(attributeType, attributeName, null)»
 	'''
@@ -60,7 +68,9 @@ class AttributeUtils {
 
 	def getterName(EntityAttribute entityAttribute) '''«entityAttribute.name.getterName»'''
 
-	def setterName(EntityAttribute entityAttribute) '''«entityAttribute.name.setterName»'''
+	def getter(Class<?> attributeType, String attributeName) {
+		getter(attributeType.name, attributeName);		
+	}
 
 	def getter(String attributeType, String attributeName) '''
 		public «attributeType» «attributeName.getterName»() {
@@ -68,11 +78,21 @@ class AttributeUtils {
 		}
 	'''
 
+	def setterName(EntityAttribute entityAttribute) '''«entityAttribute.name.setterName»'''
+
+	def setter(Class<?> attributeType, String attributeName) {
+		setter(attributeType.name, attributeName);		
+	}
+
 	def setter(String attributeType, String attributeName) '''
 		public void «attributeName.setterName»(«attributeType» «attributeName») {
 			this.«attributeName» = «attributeName»;
 		}
 	'''
+
+	def changeTrackingSetter(Class<?> attributeType, String attributeName) {
+		changeTrackingSetter(attributeType.name, attributeName)
+	}
 
 	def changeTrackingSetter(String attributeType, String attributeName) '''
 		public void set«attributeName.toFirstUpper»(«attributeType» «attributeName») {
@@ -80,5 +100,19 @@ class AttributeUtils {
 			this.«attributeName» = «attributeName»;
 		}
 	'''
+	
+	def changeTrackingAttributeGetterSetterJpa(Class<?> attributeType, String attributeName, Entity entity) '''
+		«compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
+		@Column(name = "«entity.entityTableColumnName(attributeName)»")
+		«attribute(attributeType, attributeName)»
+		«getter(attributeType, attributeName)»
+		«changeTrackingSetter(attributeType, attributeName)»
+	'''
 
+	def changeTrackingAttributeGetterSetter(Class<?> attributeType, String attributeName, Entity entity) '''
+		«compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
+		«attribute(attributeType, attributeName)»
+		«getter(attributeType, attributeName)»
+		«changeTrackingSetter(attributeType, attributeName)»
+	'''
 }

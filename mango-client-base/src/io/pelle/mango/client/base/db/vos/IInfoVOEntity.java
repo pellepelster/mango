@@ -1,6 +1,4 @@
-package io.pelle.mango.server.base;
-
-import io.pelle.mango.client.base.vo.IBaseEntity;
+package io.pelle.mango.client.base.db.vos;
 
 import java.util.Date;
 
@@ -11,7 +9,7 @@ import java.util.Date;
  * @version $Rev: 1030 $, $Date: 2011-04-27 17:34:07 +0200 (Wed, 27 Apr 2011) $
  * 
  */
-public interface IBaseInfoEntity extends IBaseEntity {
+public interface IInfoVOEntity {
 	/**
 	 * The date of entity creation
 	 * 

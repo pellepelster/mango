@@ -13,6 +13,7 @@ package io.pelle.mango.db.dao;
 
 import static com.codahale.metrics.MetricRegistry.name;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
+import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
@@ -23,7 +24,6 @@ import io.pelle.mango.db.query.ServerCountQuery;
 import io.pelle.mango.db.util.DBUtil;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.base.IBaseClientEntity;
-import io.pelle.mango.server.base.IBaseInfoEntity;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
@@ -69,6 +69,7 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 		try {
 
 			if (entity instanceof IBaseClientEntity) {
+
 				populateClients(((IBaseClientEntity) entity), new ArrayList<IBaseClientEntity>());
 
 				LOG.debug(String.format("creating entity '%s' for client '%s'", entity.getClass().getName(), getCurrentUser().getClient()));
@@ -76,12 +77,16 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 				LOG.debug(String.format("creating entity '%s'", entity.getClass().getName()));
 			}
 
-			if (entity instanceof IBaseInfoEntity) {
-				IBaseInfoEntity infoEntity = (IBaseInfoEntity) entity;
+			if (entity instanceof IInfoVOEntity) {
+
+				IInfoVOEntity infoEntity = (IInfoVOEntity) entity;
 
 				if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
 					infoEntity.setUpdateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 					infoEntity.setCreateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+				} else {
+					infoEntity.setUpdateUser(UNKNOWN_USERNAME);
+					infoEntity.setCreateUser(UNKNOWN_USERNAME);
 				}
 
 				Date now = new Date();
@@ -141,6 +146,7 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 		// }
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T extends IBaseEntity> List<T> getAll(Class<T> entityClass) {
 		return (List<T>) getResultList(selectFrom(entityClass), entityManager);
 	}
@@ -226,14 +232,19 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 			// getCurrentUser().getClient()));
 		}
 
-		if (entity instanceof IBaseInfoEntity) {
-			IBaseInfoEntity infoEntity = (IBaseInfoEntity) entity;
+		if (entity instanceof IInfoVOEntity) {
 
-			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if (principal != null) {
-				infoEntity.setUpdateUser(principal.toString());
-			} else {
-				infoEntity.setUpdateUser(this.UNKNOWN_USERNAME);
+			IInfoVOEntity infoEntity = (IInfoVOEntity) entity;
+
+			if (SecurityContextHolder.getContext().getAuthentication() != null) {
+
+				Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+				if (principal != null) {
+					infoEntity.setUpdateUser(principal.toString());
+				} else {
+					infoEntity.setUpdateUser(this.UNKNOWN_USERNAME);
+				}
 			}
 
 			infoEntity.setUpdateDate(new Date());

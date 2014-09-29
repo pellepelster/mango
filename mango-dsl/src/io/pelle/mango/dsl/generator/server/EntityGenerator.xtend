@@ -17,6 +17,7 @@ import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.server.base.BaseEntity
+import java.util.Date
 
 class EntityGenerator extends BaseEntityGenerator {
 
@@ -43,8 +44,8 @@ class EntityGenerator extends BaseEntityGenerator {
 		«IF entity.extends != null»
 		«ELSE»
 		«ENDIF»
-		public class «entityName(entity)» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.
-				jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» {
+		@SuppressWarnings("all")
+		public class «entityName(entity)» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
 		
 				public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
 		
@@ -66,7 +67,10 @@ class EntityGenerator extends BaseEntityGenerator {
 			«FOR attribute : entity.attributes»
 			«attribute.changeTrackingAttributeGetterSetter»
 			«ENDFOR»
-		
+			
+			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
+				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»
+			«ENDFOR»
 		}
 	'''
 
@@ -105,9 +109,7 @@ class EntityGenerator extends BaseEntityGenerator {
 		«attribute.compileEntityAttributeJpaAnnotations»
 		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
 		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
-		
 		«getter(getType(attribute), attribute.name.attributeName)»
-		
 		«changeTrackingSetter(getType(attribute), attribute.name.attributeName)»
 	'''
 

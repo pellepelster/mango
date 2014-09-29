@@ -28,9 +28,8 @@ class BaseEntityGenerator {
 		public static «IAttributeDescriptor.name»<?>[] getAttributeDescriptors() {
 			
 			return new «IAttributeDescriptor.name»[]{
-				
+
 				«IF !EntityQuery.isExtendedByOtherEntity(entity)»
-					
 						«FOR attribute : entity.attributes SEPARATOR ", "»
 							«attribute.name.attributeConstantName»
 						«ENDFOR»
@@ -40,6 +39,10 @@ class BaseEntityGenerator {
 								«attribute.name.attributeConstantName»
 							«ENDFOR»
 						«ENDIF»
+						«IF !entity.attributes.empty && entity.extends != null»,«ENDIF»
+						«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet SEPARATOR ", "»
+							«infoVOEntityAttribute.key.attributeDescriptorConstantName»
+						«ENDFOR»
 				«ENDIF»
 			};
 		}

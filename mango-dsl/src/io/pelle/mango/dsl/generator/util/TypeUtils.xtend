@@ -68,6 +68,10 @@ class TypeUtils {
 		}
 	}
 
+	def compileEntityAttributeDescriptor(Class<?> attributeType, String attributeName, Entity parentEntity) '''
+	public static «AttributeDescriptor.name»<«attributeType.name»> «attributeName.attributeDescriptorConstantName» = new «AttributeDescriptor.name»<«attributeType.name»>(«parentEntity.entityConstantName», "«attributeName»", «attributeType.name».class);
+	'''
+
 	//-----------------
 	// SimpleTypes
 	//-----------------

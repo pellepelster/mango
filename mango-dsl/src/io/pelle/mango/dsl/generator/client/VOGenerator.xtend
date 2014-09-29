@@ -14,6 +14,7 @@ import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
+import java.util.Date
 import java.util.List
 
 class VOGenerator extends BaseEntityGenerator {
@@ -30,8 +31,8 @@ class VOGenerator extends BaseEntityGenerator {
 	def compileVO(Entity entity) '''
 		package «getPackageName(entity)»;
 		
-		@SuppressWarnings("serial")
-		public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).name»«ENDIF» {
+		@SuppressWarnings("all")
+		public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
 		
 			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
 
@@ -65,6 +66,10 @@ class VOGenerator extends BaseEntityGenerator {
 				}
 				
 			«ENDIF»
+			
+			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
+				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»
+			«ENDFOR»
 		}
 	'''
 
