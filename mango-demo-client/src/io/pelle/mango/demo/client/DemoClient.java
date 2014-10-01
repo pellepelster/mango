@@ -12,16 +12,19 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
 
 public class DemoClient implements EntryPoint {
-	
+
 	private static final DemoResources RESOURCES = GWT.create(DemoResources.class);
 
 	/** {@inheritDoc} */
 	@Override
 	public void onModuleLoad() {
-		
-		MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
-		
-		init();
+		try {
+			MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
+
+			init();
+		} catch (Exception e) {
+			GWT.log(e.getMessage(), e);
+		}
 
 		// MyAdmin.getInstance().startModule(HierarchicalTreeModule.MODULE_ID,
 		// Direction.WEST.toString(),

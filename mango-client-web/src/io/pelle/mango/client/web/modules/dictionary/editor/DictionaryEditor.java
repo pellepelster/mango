@@ -1,5 +1,6 @@
 package io.pelle.mango.client.web.modules.dictionary.editor;
 
+import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.modules.dictionary.editor.IDictionaryEditor;
@@ -121,6 +122,14 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().filter(selectQuery, filterCallback);
 
+	}
+
+	public Optional<IInfoVOEntity> getMetaInformation() {
+		if (voWrapper.getVO() instanceof IInfoVOEntity) {
+			return Optional.of((IInfoVOEntity) voWrapper.getVO());
+		} else {
+			return Optional.absent();
+		}
 	}
 
 	private class SaveCallback extends BaseAsyncCallback<Result<VOType>, Result<VOType>> {

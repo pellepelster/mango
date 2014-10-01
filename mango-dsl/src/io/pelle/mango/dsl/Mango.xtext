@@ -335,7 +335,7 @@ DictionaryControl:
 
 DictionaryControlGroupOptions:
 	{DictionaryControlGroupOptions}
-	(multiFilterField?="multiFilterField")?;
+	("multiFilterField" multiFilterField?=XBooleanLiteral)?;
 
 DictionaryControlGroup:
 	{DictionaryControlGroup}

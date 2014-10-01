@@ -137,7 +137,7 @@ project MangoDemo {
 					booleancontrol ref BooleanControl1
 					
 					controlgroup ControlGroup1 {
-						options { multiFilterField }
+						options { multiFilterField true }
 						textcontrol ref Textcontrol1
 						textcontrol ref Textcontrol2
 						textcontrol ref Textcontrol3

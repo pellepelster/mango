@@ -343,8 +343,8 @@ body {
     color: #888888;
 }
 .gwt-PopupPanel {
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 3px solid rgb(200, 200, 200);
+    background: none repeat scroll 0 0 #F7F7F9;
+    border: 1px solid rgb(200, 200, 200);
     padding: 3px;
     z-index: 99;
 }
@@ -1205,8 +1205,12 @@ h6,.h6{
 	margin-left:5px
 }
 
+.btn-group>.btn{
+	margin-right:0
+}
+
 .btn-group>.btn:not(:first-child):not(:last-child):not(.dropdown-toggle){
-	border-radius:0
+	border-radius:0;
 }
 
 .btn-group>.btn:first-child{

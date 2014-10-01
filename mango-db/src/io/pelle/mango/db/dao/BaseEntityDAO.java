@@ -54,8 +54,6 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	private final String UNKNOWN_USERNAME = "<unknown>";
-
 	private Optional<Timer> createTimer = Optional.absent();
 
 	public <T extends IBaseEntity> T create(T entity) {
@@ -84,9 +82,6 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 				if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
 					infoEntity.setUpdateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
 					infoEntity.setCreateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-				} else {
-					infoEntity.setUpdateUser(UNKNOWN_USERNAME);
-					infoEntity.setCreateUser(UNKNOWN_USERNAME);
 				}
 
 				Date now = new Date();
@@ -242,8 +237,6 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 
 				if (principal != null) {
 					infoEntity.setUpdateUser(principal.toString());
-				} else {
-					infoEntity.setUpdateUser(this.UNKNOWN_USERNAME);
 				}
 			}
 

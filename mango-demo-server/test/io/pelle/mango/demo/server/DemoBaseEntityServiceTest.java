@@ -3,6 +3,7 @@ package io.pelle.mango.demo.server;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
@@ -51,8 +52,8 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals(0, result1.getValidationMessages().size());
 		Date end = new Date();
 
-		assertEquals("<unknown>", result1.getVO().getCreateUser());
-		assertEquals("<unknown>", result1.getVO().getUpdateUser());
+		assertNull(result1.getVO().getCreateUser());
+		assertNull(result1.getVO().getUpdateUser());
 		assertTrue(result1.getVO().getCreateDate().after(start) && result1.getVO().getCreateDate().before(end));
 		assertTrue(result1.getVO().getUpdateDate().after(start) && result1.getVO().getUpdateDate().before(end));
 	}

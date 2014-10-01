@@ -33,15 +33,13 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
  * @author pelle
  * 
  */
-public class ActionBar extends HorizontalPanel
-{
+public class ActionBar extends HorizontalPanel {
 
 	private final FlowPanel buttonToolbar = new FlowPanel();
 
 	private final Map<String, FlowPanel> buttonBars = new HashMap<String, FlowPanel>();
 
-	public ActionBar()
-	{
+	public ActionBar() {
 		setWidth("100%");
 		setHorizontalAlignment(HasAlignment.ALIGN_LEFT);
 		// addStyleName(GwtStyles.SEPARATOR_BORDER_BOTTOM);
@@ -52,10 +50,8 @@ public class ActionBar extends HorizontalPanel
 		add(buttonToolbar);
 	}
 
-	private Button addButton(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId)
-	{
-		if (!buttonBars.containsKey(buttonGroupName))
-		{
+	private Button addButton(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
+		if (!buttonBars.containsKey(buttonGroupName)) {
 			FlowPanel buttonGroup = new FlowPanel();
 			buttonGroup.addStyleName(GwtStyles.BUTTON_GROUP);
 			buttonBars.put(buttonGroupName, buttonGroup);
@@ -70,8 +66,7 @@ public class ActionBar extends HorizontalPanel
 		button.setTitle(title);
 		buttonBars.get(buttonGroupName).add(button);
 
-		if (clickHandler != null)
-		{
+		if (clickHandler != null) {
 			button.addClickHandler(clickHandler);
 		}
 		button.ensureDebugId(debugId);
@@ -79,26 +74,25 @@ public class ActionBar extends HorizontalPanel
 		return button;
 	}
 
-	public Button addToButtonGroup(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId)
-	{
+	public Button addToButtonGroup(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
 		return addButton(buttonGroupName, imageResource, title, clickHandler, debugId);
 	}
 
-	public Button addSingleButton(ImageResource imageResource, String title, ClickHandler clickHandler, String debugId)
-	{
+	public Button addToButtonGroup(String buttonGroupName, ImageResource imageResource, String title, String debugId) {
+		return addButton(buttonGroupName, imageResource, title, null, debugId);
+	}
+
+	public Button addSingleButton(ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
 		return addButton(UUID.uuid(), imageResource, title, clickHandler, debugId);
 	}
 
-	public Button addSingleButton(final IButton button)
-	{
+	public Button addSingleButton(final IButton button) {
 		final Button uiButton = addButton(UUID.uuid(), button.getImage(), button.getTitle(), button, button.getDebugId());
 
-		button.addUpdatehandler(new IButtonUpdateHandler()
-		{
+		button.addUpdatehandler(new IButtonUpdateHandler() {
 
 			@Override
-			public void onUpdate()
-			{
+			public void onUpdate() {
 				uiButton.setEnabled(button.isEnabled());
 			}
 		});
@@ -106,8 +100,7 @@ public class ActionBar extends HorizontalPanel
 		return uiButton;
 	}
 
-	public Button addSingleButton(ImageResource imageResource, String title, String debugId)
-	{
+	public Button addSingleButton(ImageResource imageResource, String title, String debugId) {
 		return addButton(UUID.uuid(), imageResource, title, null, debugId);
 	}
 

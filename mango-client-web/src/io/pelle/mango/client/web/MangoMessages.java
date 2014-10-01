@@ -120,4 +120,21 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("Search")
 	String dictionarySearch();
 
+	@DefaultMessage("Info")
+	String dictionaryInfo();
+
+	@DefaultMessage("Created")
+	String dictionaryInfoCreateDate();
+
+	@DefaultMessage("User")
+	String dictionaryInfoCreateUser();
+
+	@DefaultMessage("Updated")
+	String dictionaryInfoUpdateDate();
+
+	@DefaultMessage("User")
+	String dictionaryInfoUpdateUser();
+
+	@DefaultMessage("undefined")
+	String undefined();
 }

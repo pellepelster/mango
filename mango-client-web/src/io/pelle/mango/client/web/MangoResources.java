@@ -14,8 +14,7 @@ package io.pelle.mango.client.web;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.ImageResource;
 
-public interface MangoResources extends ClientBundle
-{
+public interface MangoResources extends ClientBundle {
 	@Source("delete.png")
 	ImageResource delete();
 
@@ -39,6 +38,9 @@ public interface MangoResources extends ClientBundle
 
 	@Source("dictionaryEdit.png")
 	ImageResource dictionaryEdit();
+
+	@Source("dictionaryInfo.png")
+	ImageResource dictionaryInfo();
 
 	@Source("searchSearch.png")
 	ImageResource searchSearch();

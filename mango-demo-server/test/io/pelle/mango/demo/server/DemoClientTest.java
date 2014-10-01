@@ -1,6 +1,8 @@
 package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
 import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
@@ -22,6 +24,20 @@ public class DemoClientTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
+
+	@Test
+	public void testEditorMetaInformation() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1);
+		TextControlTest textControl1 = editor.getTextControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+		textControl1.setValue("abc");
+		assertTrue(editor.getModule().getDictionaryEditor().getMetaInformation().isPresent());
+		editor.save();
+		assertNull(editor.getModule().getDictionaryEditor().getMetaInformation().get().getCreateUser());
+
+	}
 
 	@Test
 	public void testEditorSaveAndSearch() {
