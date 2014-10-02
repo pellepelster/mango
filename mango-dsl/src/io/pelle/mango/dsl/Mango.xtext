@@ -334,14 +334,23 @@ DictionaryControl:
 	DictionaryControlGroup | DictionaryTextControl | DictionaryIntegerControl | DictionaryHierarchicalControl | DictionaryBigDecimalControl | DictionaryBooleanControl | DictionaryDateControl | DictionaryEnumerationControl | DictionaryFileControl | DictionaryReferenceControl;
 
 DictionaryControlGroupOptions:
-	{DictionaryControlGroupOptions}
+	DictionaryControlGroupOptionMultiFilterField;
+	
+DictionaryControlGroupOptionMultiFilterField:
+	{DictionaryControlGroupOptionMultiFilterField}
 	("multiFilterField" multiFilterField?=XBooleanLiteral)?;
+
+DictionaryControlGroupOptionsContainer:
+	{DictionaryControlGroupOptionsContainer}
+		"groupoptions" "{" 
+			options+=DictionaryControlGroupOptions
+		"}";
 
 DictionaryControlGroup:
 	{DictionaryControlGroup}
-	"controlgroup" (name=ID)? ("ref" ref=[ DictionaryControlGroup | QualifiedName ])?  ("{"
+	"controlgroup" (name=ID)? ("ref" ref=[ DictionaryControlGroup | QualifiedName ])? ("{"
+		(controlGroupOptions=DictionaryControlGroupOptionsContainer)?
 		baseControl=BaseDictionaryControl
-		("options {" controlGroupOptions=DictionaryControlGroupOptions "}")?
 		(groupcontrols+=DictionaryControl)*
 	"}")?;
 
@@ -435,8 +444,9 @@ ServiceMethod:
 	'method' ('<'typeParameter=JvmTypeParameter'>')? returnType = JvmTypeReference name=ValidID '('(params += FullJvmFormalParameter (', ' params += FullJvmFormalParameter)*)?')';
 
 Service:
+	{Service}
 	"service" name=ID "{"
-		("options {" remoteServiceOptions=ServiceOptions "}")?
+		("options1 {" remoteServiceOptions=ServiceOptions "}")?
 		(remoteMethods+=ServiceMethod)*
 	"}";
 	

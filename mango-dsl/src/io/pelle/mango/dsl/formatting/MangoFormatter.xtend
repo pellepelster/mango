@@ -61,7 +61,7 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.entityAttributeRule);
 
 		// service
-		defaultBlockFormat(c, m.serviceRule, m.serviceAccess.leftCurlyBracketKeyword_2, m.serviceAccess.rightCurlyBracketKeyword_5)
+		defaultBlockFormat(c, m.serviceRule, m.serviceAccess.leftCurlyBracketKeyword_3, m.serviceAccess.rightCurlyBracketKeyword_6)
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.serviceMethodRule);
 
 		// value object
@@ -75,9 +75,11 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setIndentationDecrement.before(m.dictionaryAccess.rightCurlyBracketKeyword_7_3);
 
 		// dictionary control group
-		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.dictionaryControlGroupOptionsRule);
-		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.dictionaryControlGroupOptionsRule);
+		//c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.dictionaryControlGroupOptionsRule);
+		//c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.dictionaryControlGroupOptionsRule);
 		defaultBlockFormat(c, m.dictionaryControlGroupRule, m.dictionaryControlGroupAccess.leftCurlyBracketKeyword_4_0, m.dictionaryControlGroupAccess.rightCurlyBracketKeyword_4_4)
+		defaultBlockFormat(c, m.dictionaryControlGroupOptionsContainerRule, m.dictionaryControlGroupOptionsContainerAccess.leftCurlyBracketKeyword_2, m.dictionaryControlGroupOptionsContainerAccess.rightCurlyBracketKeyword_4)
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.dictionaryControlGroupOptionsRule);
 
 		// dictionary editor
 		defaultBlockFormat(c, m.dictionaryEditorRule, m.dictionaryEditorAccess.leftCurlyBracketKeyword_2, m.dictionaryEditorAccess.rightCurlyBracketKeyword_5)
