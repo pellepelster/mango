@@ -75,7 +75,7 @@ public abstract class BaseDictionaryModuleTestUI {
 		return new DateControlTest(this.baseDictionaryModule.getElement(controlModel));
 	}
 
-	public EnumerationControlTest getEnumerationControlTest(EnumerationControlModel controlModel) {
+	public EnumerationControlTest getEnumerationControlTest(EnumerationControlModel<?> controlModel) {
 		return new EnumerationControlTest(this.baseDictionaryModule.getElement(controlModel));
 	}
 

@@ -61,10 +61,10 @@ public final class WidthCalculationStrategy {
 		boolean uppercase = false;
 
 		if (baseControlModel instanceof IEnumerationControlModel) {
-			IEnumerationControlModel enumerationControlModel = (IEnumerationControlModel) baseControlModel;
+			IEnumerationControlModel<?> enumerationControlModel = (IEnumerationControlModel) baseControlModel;
 
 			String allEnumValues = "";
-			for (String enumValue : enumerationControlModel.getEnumeration().values()) {
+			for (String enumValue : enumerationControlModel.getEnumerationMap().values()) {
 				allEnumValues += enumValue;
 			}
 

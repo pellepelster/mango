@@ -55,6 +55,8 @@ class ClientGenerator implements IGenerator {
 			fsa.generateFile(model.gwtClientconfigurationFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientConfiguration)
 			model.dictionaryGenerator(fsa)
 			model.dictionaryNavigationGenerator(fsa)
+			fsa.generateFile(model.enumerationValueParserFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.compileEnumerationValueParser)
+			
 		}
 
 		for (moduleDefinition : resource.allContents.toIterable.filter(ModuleDefinition)) {

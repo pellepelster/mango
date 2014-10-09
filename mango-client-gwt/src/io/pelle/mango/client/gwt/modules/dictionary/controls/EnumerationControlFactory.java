@@ -34,11 +34,11 @@ import com.google.gwt.view.client.ListDataProvider;
  * @author pelle
  * 
  */
-public class EnumerationControlFactory extends BaseControlFactory<IEnumerationControlModel, EnumerationControl> {
+public class EnumerationControlFactory<ENUM_TYPE> extends BaseControlFactory<IEnumerationControlModel<ENUM_TYPE>, EnumerationControl<ENUM_TYPE>> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(EnumerationControl enumerationControl, LAYOUT_TYPE layoutType) {
+	public Widget createControl(EnumerationControl<ENUM_TYPE> enumerationControl, LAYOUT_TYPE layoutType) {
 		return new GwtEnumerationControl(enumerationControl);
 	}
 
@@ -49,7 +49,8 @@ public class EnumerationControlFactory extends BaseControlFactory<IEnumerationCo
 	}
 
 	@Override
-	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final EnumerationControl enumerationControl, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider, IMangoCellTable<VOType> mangoCellTable) {
+	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final EnumerationControl<ENUM_TYPE> enumerationControl, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider,
+			IMangoCellTable<VOType> mangoCellTable) {
 		if (editable) {
 			List<String> enumList = GwtEnumerationControl.getSortedEnumList(enumerationControl.getModel());
 			final SelectionCell selectionCell = new SelectionCell(enumList);

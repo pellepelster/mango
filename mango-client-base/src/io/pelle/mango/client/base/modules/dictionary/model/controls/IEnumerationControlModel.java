@@ -20,9 +20,10 @@ import java.util.Map;
  * @version $Rev$, $Date$
  * 
  */
-public interface IEnumerationControlModel extends IBaseControlModel
-{
+public interface IEnumerationControlModel<ENUM_TYPE> extends IBaseControlModel {
 
-	Map<String, String> getEnumeration();
+	Map<String, String> getEnumerationMap();
+
+	String getEnumerationName();
 
 }

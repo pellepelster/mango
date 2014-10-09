@@ -1,23 +1,27 @@
 package io.pelle.mango.client.web.test.sync.controls;
 
 import io.pelle.mango.client.base.messages.IValidationMessage;
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
 
 import org.junit.Assert;
 
 import com.google.common.base.Joiner;
-import com.google.gwt.core.shared.GWT;
 
 public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, ValueType> implements IControlUpdateListener {
+
 	private ValueType value;
 
 	private ElementType baseControl;
+
+	private IValidationMessages validationMessages;
 
 	public BaseControlTest(ElementType baseControl) {
 		this.baseControl = baseControl;
 
 		baseControl.addUpdateListener(this);
+		onUpdate();
 	}
 
 	public void assertValue(ValueType expectedValue) {
@@ -54,20 +58,24 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 
 	public void assertHasErrorWithText(String text) {
 
-		for (IValidationMessage validationMessage : baseControl.getValidationMessages()) {
+		for (IValidationMessage validationMessage : validationMessages) {
 			if (validationMessage.getHumanMessage().equals(text)) {
 				return;
 			}
 		}
 
 		String message = "message containing '" + text + "' not found (messages: " + Joiner.on(", ").join(baseControl.getValidationMessages()) + ")";
-		GWT.log(message);
 		Assert.fail(message);
+	}
+
+	protected ElementType getControl() {
+		return baseControl;
 	}
 
 	@Override
 	public void onUpdate() {
 		this.value = this.baseControl.getValue();
+		this.validationMessages = baseControl.getValidationMessages();
 	}
 
 }

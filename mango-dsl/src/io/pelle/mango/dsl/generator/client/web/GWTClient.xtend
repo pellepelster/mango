@@ -45,11 +45,18 @@ class GWTClient extends BaseServices {
 			public static void registerAll()
 			{
 				registerDictionaries();
+				registerEnumerationValueParser();
 				
 				«IF !model.eAllContents.filter(NavigationNode).isEmpty»
 					registerNavigation();
 				«ENDIF»
 			}
+
+			public static void registerEnumerationValueParser()
+			{
+				«DictionaryModelProvider.name».registerEnumerationConverter(new «model.enumerationValueParserFullQualifiedName»());
+			}
+
 
 			public static void registerDictionaries()
 			{

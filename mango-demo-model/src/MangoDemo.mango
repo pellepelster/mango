@@ -2,49 +2,32 @@ import io.pelle.mango.test.client.ValueObject2
 
 project MangoDemo {
 
-	package io.pelle.^mango.test {
-		
+	package io.pelle.mango.test {
+
 		service RestTest {
 			method Boolean methodWithBooleanParameter ( Boolean onOff )
 			method ValueObject2 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
 		}
-		
-		stringdatatype StringDatatype1 {
-			maxLength 42
-		}
 
-		stringdatatype StringDatatype2 extends StringDatatype1 {
-			maxLength 32
-		}
+		stringdatatype StringDatatype1 { maxLength 42 }
 
-		stringdatatype StringDatatype3 {
-		}
+		stringdatatype StringDatatype2 extends StringDatatype1 { maxLength 32 }
 
-		stringdatatype StringDatatype4 {
-		}		
+		stringdatatype StringDatatype3 { }
 
-		booleandatatype BooleanDatatype1 {
-			label "Boolean1"
-		}
-		
-		entitydatatype Entity2Datatype {
-			entity Entity2
-		}
+		stringdatatype StringDatatype4 { }
 
-		binarydatatype BinaryDatatype1 {
-		}
+		booleandatatype BooleanDatatype1 { label "Boolean1" }
 
-		entitydatatype Entity3Datatype {
-			entity Entity3
-		}
+		entitydatatype Entity2Datatype { entity Entity2 }
 
-		enumeration Enumeration1 {
-			EnumerationValue1, EnumerationValue2 
-		} 
+		binarydatatype BinaryDatatype1 { }
 
-		enumerationdatatype Enumeration1Datatype {
-			enumeration Enumeration1
-		} 
+		entitydatatype Entity3Datatype { entity Entity3 }
+
+		enumeration Enumeration1 { EnumerationValue1 ,  EnumerationValue2 }
+
+		enumerationdatatype Enumeration1Datatype { enumeration Enumeration1 }
 
 		entity Entity1 {
 			naturalkey { stringDatatype1 }
@@ -79,7 +62,7 @@ project MangoDemo {
 			boolean boolean1
 			enumeration Enumeration1 enumeration1
 		}
-		
+
 		entity Entity6 {
 			string string1
 		}
@@ -106,62 +89,91 @@ project MangoDemo {
 		valueobject ValueObject4 extends ValueObject3 {
 			string string4
 		}
-		
-		dictionary Testdictionary1 {
+
+		dictionary Dictionary1 {
 			
 			entity Entity1
-			
+
 			dictionarycontrols {
-				
-				textcontrol Textcontrol1 {
-					entityattribute Entity1.stringDatatype1
+				textcontrol Text1 { entityattribute Entity1.stringDatatype1 }
+			}
+
+			dictionarysearch Search1 {
+
+				dictionaryfilter Filter1 {
+					textcontrol ref Text1
 				}
 
-				textcontrol Textcontrol2 {
-					entityattribute Entity1.stringDatatype2
+				dictionaryresult Result1 {
+					textcontrol ref Text1
 				}
+			}
 
-				textcontrol Textcontrol3 {
-					entityattribute Entity1.stringDatatype3
-				}
+			dictionaryeditor Editor1 {
+				textcontrol ref Text1 { label "XXX" }
+			}
+		}
 
-				booleancontrol BooleanControl1 {
-					entityattribute Entity1.booleanDatatype1
-				}
-				
+		dictionary Testdictionary1 {
+
+			entity Entity1
+
+			dictionarycontrols {
+
+				textcontrol Textcontrol1 { entityattribute Entity1.stringDatatype1 }
+
+				textcontrol Textcontrol2 { entityattribute Entity1.stringDatatype2 }
+
+				textcontrol Textcontrol3 { entityattribute Entity1.stringDatatype3 }
+
+				booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
+
+				enumerationcontrol Enumerationcontrol1 { entityattribute Entity1.enumeration1Datatype }
+
 			}
 
 			dictionarysearch DictionarySearch1 {
+
 				dictionaryfilter DictionaryFilter1 {
+
 					textcontrol ref Textcontrol1
 					booleancontrol ref BooleanControl1
-					
+					enumerationcontrol ref Enumerationcontrol1
+
 					controlgroup ControlGroup1 {
-						groupoptions { multiFilterField true }
+
+						groupoptions {
+							multiFilterField true
+						}
 						textcontrol ref Textcontrol1
 						textcontrol ref Textcontrol2
 						textcontrol ref Textcontrol3
 					}
 				}
-				
+
 				dictionaryresult DictionaryResult1 {
 					textcontrol ref Textcontrol1
 					textcontrol ref Textcontrol2
 					textcontrol ref Textcontrol3
 					booleancontrol ref BooleanControl1
+					enumerationcontrol ref Enumerationcontrol1
 				}
 			}
-						
+
 			dictionaryeditor DictionaryEditor1 {
 				textcontrol ref Textcontrol1
 				textcontrol ref Textcontrol2
 				textcontrol ref Textcontrol3
 				booleancontrol ref BooleanControl1
+				enumerationcontrol ref Enumerationcontrol1
 			}
 		}
-		
+
 		navigationnode Navigation {
 			navigationnode Dictionary1 {
+				dictionarySearch Dictionary1.Search1
+			}
+			navigationnode Testdictionary1 {
 				dictionarySearch Testdictionary1.DictionarySearch1
 			}
 		}

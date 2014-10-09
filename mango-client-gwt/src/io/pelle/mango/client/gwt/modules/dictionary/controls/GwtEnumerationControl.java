@@ -28,9 +28,9 @@ import com.google.gwt.user.client.ui.ListBox;
 
 public class GwtEnumerationControl extends ListBox implements IGwtControl {
 
-	private final EnumerationControl enumarationControl;
+	private final EnumerationControl<?> enumarationControl;
 
-	public GwtEnumerationControl(final EnumerationControl enumarationControl) {
+	public GwtEnumerationControl(final EnumerationControl<?> enumarationControl) {
 		super(false);
 
 		this.enumarationControl = enumarationControl;
@@ -42,7 +42,7 @@ public class GwtEnumerationControl extends ListBox implements IGwtControl {
 
 			@Override
 			public void onChange(ChangeEvent event) {
-				enumarationControl.setValue(getEnumForSelection());
+				enumarationControl.parseValue(getEnumForSelection());
 			}
 		});
 
@@ -55,20 +55,21 @@ public class GwtEnumerationControl extends ListBox implements IGwtControl {
 
 	}
 
-	public static List<String> getSortedEnumList(IEnumerationControlModel enumarationControlModel) {
+	public static List<String> getSortedEnumList(IEnumerationControlModel<?> enumarationControlModel) {
 		List<String> enumList = new ArrayList<String>();
-		enumList.addAll(enumarationControlModel.getEnumeration().values());
+		enumList.addAll(enumarationControlModel.getEnumerationMap().values());
 		Collections.sort(enumList);
 
 		return enumList;
 	}
 
-	public static String getEnumForText(IEnumerationControlModel enumarationControlModel, String text) {
+	public static String getEnumForText(IEnumerationControlModel<?> enumarationControlModel, String text) {
+
 		if (text == null || text.isEmpty()) {
 			return null;
 		}
 
-		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumeration().entrySet()) {
+		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumerationMap().entrySet()) {
 			if (enumEntry.getValue().equals(text)) {
 				return enumEntry.getKey();
 			}

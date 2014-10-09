@@ -130,10 +130,8 @@ class DictionaryControls {
 				«ENDFOR»
 		
 				«FOR dictionaryLabelControl : dictionaryControl.labelcontrols»
-			this.getLabelControls().add(«dictionaryLabelControl.dictionaryConstantName»);
+				this.getLabelControls().add(«dictionaryLabelControl.dictionaryConstantName»);
 				«ENDFOR»
-		
-				
 			}
 		}
 	'''
@@ -270,7 +268,8 @@ class DictionaryControls {
 	// DictionaryEnumerationControl
 	//-------------------------------------------------------------------------
 	def dispatch dictionaryControlType(DictionaryEnumerationControl dictionaryControl) '''
-		«EnumerationControlModel.name»
+		«EnumerationControlModel.name»<«ModelUtil.getEntityAttribute(dictionaryControl).type»>
+		
 	'''
 
 	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EnumerationEntityAttribute entityAttribute) '''
@@ -288,6 +287,7 @@ class DictionaryControls {
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»
+		«dictionaryControl.dictionaryConstantName».setEnumerationName(«ModelUtil.getEntityAttribute(dictionaryControl).type».class.getName());
 		
 		«dictionaryControl.dictionaryControlCommonSetters»
 	'''

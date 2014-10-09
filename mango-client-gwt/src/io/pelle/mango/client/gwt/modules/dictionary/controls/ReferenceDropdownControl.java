@@ -45,20 +45,20 @@ public class ReferenceDropdownControl<VOType extends IBaseVO> extends ListBox im
 		ControlUtil.populateListBox(referenceControl.getModel(), this);
 	}
 
-	public static List<String> getSortedEnumList(IEnumerationControlModel enumarationControlModel) {
+	public static List<String> getSortedEnumList(IEnumerationControlModel<?> enumarationControlModel) {
 		List<String> enumList = new ArrayList<String>();
-		enumList.addAll(enumarationControlModel.getEnumeration().values());
+		enumList.addAll(enumarationControlModel.getEnumerationMap().values());
 		Collections.sort(enumList);
 
 		return enumList;
 	}
 
-	public static String getEnumForText(IEnumerationControlModel enumarationControlModel, String text) {
+	public static String getEnumForText(IEnumerationControlModel<?> enumarationControlModel, String text) {
 		if (text == null || text.isEmpty()) {
 			return null;
 		}
 
-		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumeration().entrySet()) {
+		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumerationMap().entrySet()) {
 			if (enumEntry.getValue().equals(text)) {
 				return enumEntry.getKey();
 			}

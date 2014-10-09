@@ -66,9 +66,22 @@ class ClientNameUtils extends NameUtils {
 	}
 
 	def enumerationFullQualifiedName(EnumerationEntityAttribute enumerationEntityAttribute) {
-		
 		return getPackageName(enumerationEntityAttribute) + "." + enumerationName(enumerationEntityAttribute);
 	}
 
+	//-------------------------------------------------------------------------
+	// enumeration value parser
+	//-------------------------------------------------------------------------
+	def enumerationValueParserName(Model model) {
+		return model.modelName.toFirstUpper + "EnumerationValueParser";
+	}
+
+	def enumerationValueParserFullQualifiedName(Model model) {
+		return model.modelPackageName + "." + model.enumerationValueParserName;
+	}
+
+	def enumerationValueParserFullQualifiedFileName(Model model) {
+		return model.enumerationValueParserFullQualifiedName.replaceAll("\\.", "/")  + ".java";
+	}
 	
 }

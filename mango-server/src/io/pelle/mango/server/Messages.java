@@ -15,45 +15,28 @@ import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class Messages
-{
+public class Messages {
 
 	private static final String BUNDLE_NAME = "io.pelle.mango.server.messages"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
-	public static final String NAVIGATION_TITLE_ADD = "navigation.title.add";
-
-	public static final String NAVIGATION_TITLE_SEARCH = "navigation.title.search";
-
-	public static final String FILE_NOT_FOUND = "file.notfound";
-
-	public static String getString(String key)
-	{
-		try
-		{
+	public static String getString(String key) {
+		try {
 			return RESOURCE_BUNDLE.getString(key);
-		}
-		catch (MissingResourceException e)
-		{
+		} catch (MissingResourceException e) {
 			return '!' + key + '!';
 		}
 	}
 
-	public static String getString(String key, Object... arguments)
-	{
-		try
-		{
+	public static String getString(String key, Object... arguments) {
+		try {
 			String message = RESOURCE_BUNDLE.getString(key);
 
 			return MessageFormat.format(message, arguments);
-		}
-		catch (MissingResourceException e)
-		{
+		} catch (MissingResourceException e) {
 			return '!' + key + '!';
-		}
-		catch (IllegalArgumentException e)
-		{
+		} catch (IllegalArgumentException e) {
 			return '!' + e.getMessage() + '!';
 		}
 	}
