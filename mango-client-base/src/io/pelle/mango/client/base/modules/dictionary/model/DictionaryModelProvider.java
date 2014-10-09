@@ -80,11 +80,11 @@ public class DictionaryModelProvider {
 		return null;
 	}
 
-	public static String[] getEnumerationValues(String enumerationName) {
+	public static Map<String, String> getEnumerationValues(String enumerationName) {
 
 		for (IEnumerationConverter enumerationConverter : enumerationConverters) {
 
-			String[] result = enumerationConverter.getEnumValues(enumerationName);
+			Map<String, String> result = enumerationConverter.getEnumValues(enumerationName);
 
 			if (result != null) {
 				return result;

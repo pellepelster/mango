@@ -40,7 +40,7 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 		this.baseControl.setValue(value);
 	}
 
-	public void parse(String valueString) {
+	public void parseValue(String valueString) {
 		this.baseControl.parseValue(valueString);
 	}
 

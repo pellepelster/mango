@@ -10,13 +10,10 @@ import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
-import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
-import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
-import io.pelle.mango.client.base.modules.dictionary.model.IEnumerationConverter
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -121,48 +118,6 @@ class VOGenerator extends BaseEntityGenerator {
 		}
 	'''
 
-	def compileEnumeration(Enumeration enumeration) '''
-		package «getPackageName(enumeration)»;
-		
-		public enum «enumeration.enumerationName» {
-		
-			«FOR enumerationValue : enumeration.enumerationValues SEPARATOR ", "»
-			«enumerationValue.toUpperCase»
-			«ENDFOR»
-		
-		}
-	'''
-
-	def compileEnumerationValueParser(Model model) '''
-		package «model.modelPackageName»;
-		
-		public class «model.enumerationValueParserName» implements «IEnumerationConverter.name» {
-		
-			@Override
-			public Object parseEnum(String enumerationName, String enumerationValue) {
-
-			«FOR enumeration : model.eAllContents.toIterable.filter(Enumeration)»
-				if ("«enumeration.enumerationFullQualifiedName»".equals(enumerationName)) {
-					return «enumeration.enumerationFullQualifiedName».valueOf(enumerationValue);
-				}
-			«ENDFOR»
-			
-				return null;
-			}
-
-			@Override
-			public String[] getEnumValues(String enumerationName) {
-
-			«FOR enumeration : model.eAllContents.toIterable.filter(Enumeration)»
-				if ("«enumeration.enumerationFullQualifiedName»".equals(enumerationName)) {
-					return new String[] { «FOR enumValue : enumeration.enumerationValues SEPARATOR ", "»«enumeration.enumerationFullQualifiedName».«enumValue.toUpperCase».toString()«ENDFOR» };
-				}
-			«ENDFOR»
-			
-				return null;
-			}
-		}
-	'''
 
 	def compileValueObjectConstructor(List<EntityAttribute> attributes) {
 	}

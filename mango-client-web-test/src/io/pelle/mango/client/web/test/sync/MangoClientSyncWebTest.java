@@ -1,6 +1,7 @@
 package io.pelle.mango.client.web.test.sync;
 
 import io.pelle.mango.client.base.layout.IModuleUI;
+import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.editor.EditorModel;
 import io.pelle.mango.client.base.modules.dictionary.model.search.SearchModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -60,4 +61,11 @@ public class MangoClientSyncWebTest {
 		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(editorModel.getParent().getName()), null, new HashMap<String, Object>(), Optional.of(future.getCallback()));
 		return (DictionaryEditorModuleSyncTestUI<VOTYPE>) future.get();
 	}
+
+	public <VOTYPE extends IBaseVO> DictionaryEditorModuleSyncTestUI<VOTYPE> openEditor(final IDictionaryModel dictionaryModel, long id) {
+		final AsyncCallbackFuture<IModuleUI> future = AsyncCallbackFuture.create();
+		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(dictionaryModel.getName(), id), null, new HashMap<String, Object>(), Optional.of(future.getCallback()));
+		return (DictionaryEditorModuleSyncTestUI<VOTYPE>) future.get();
+	}
+
 }

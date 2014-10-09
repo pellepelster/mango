@@ -20,7 +20,7 @@ import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.EnumerationControl;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
@@ -52,8 +52,8 @@ public class EnumerationControlFactory<ENUM_TYPE> extends BaseControlFactory<IEn
 	public <VOType extends IBaseVO> Column<ITableRow<VOType>, ?> createColumn(final EnumerationControl<ENUM_TYPE> enumerationControl, boolean editable, ListDataProvider<ITableRow<VOType>> listDataProvider,
 			IMangoCellTable<VOType> mangoCellTable) {
 		if (editable) {
-			List<String> enumList = GwtEnumerationControl.getSortedEnumList(enumerationControl.getModel());
-			final SelectionCell selectionCell = new SelectionCell(enumList);
+
+			final SelectionCell selectionCell = new SelectionCell(new ArrayList(enumerationControl.getEnumerationMap().values()));
 
 			Column<IBaseTable.ITableRow<VOType>, String> column = new Column<IBaseTable.ITableRow<VOType>, String>(selectionCell) {
 
@@ -67,7 +67,7 @@ public class EnumerationControlFactory<ENUM_TYPE> extends BaseControlFactory<IEn
 				@SuppressWarnings("unchecked")
 				@Override
 				public void update(int index, IBaseTable.ITableRow<VOType> tableRow, String value) {
-					tableRow.getElement(enumerationControl.getModel()).setValue(GwtEnumerationControl.getEnumForText(enumerationControl.getModel(), value));
+					tableRow.getElement(enumerationControl.getModel()).setValue(GwtEnumerationControl.getEnumForText(enumerationControl, value));
 				}
 			};
 			column.setFieldUpdater(fieldUpdater);

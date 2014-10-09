@@ -26,7 +26,7 @@ Enumeration: "enumeration" name=ID "{"
 	enumerationValues+=EnumerationValue (", " enumerationValues+=EnumerationValue)*
 "}";
 
-EnumerationValue: ID;
+EnumerationValue: name=ID ("=>" value=STRING)?;
 
 //-----------------------------------------------------------------------------
 // entity

@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.BooleanControl;
@@ -18,18 +19,22 @@ import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
 import com.google.gwt.user.client.ui.CheckBox;
 
-public class GwtBooleanControl extends CheckBox implements IGwtControl {
+public class GwtBooleanControl extends CheckBox implements IGwtControl, IControlUpdateListener {
 
-	public GwtBooleanControl(BooleanControl booleanControl) {
-		new ControlHelper(this, booleanControl, this, true, false);
-		ensureDebugId(DictionaryModelUtil.getDebugId(booleanControl.getModel()));
+	private BooleanControl control;
 
+	public GwtBooleanControl(BooleanControl control) {
+		this.control = control;
+		new ControlHelper(this, control, this, true, false);
+		ensureDebugId(DictionaryModelUtil.getDebugId(control.getModel()));
+
+		control.addUpdateListener(this);
+		onUpdate();
 	}
 
 	@Override
 	public void setContent(Object content) {
 		if (content != null) {
-
 			if (content instanceof Boolean) {
 				super.setValue((Boolean) content);
 			} else {
@@ -39,5 +44,10 @@ public class GwtBooleanControl extends CheckBox implements IGwtControl {
 		} else {
 			super.setValue(null);
 		}
+	}
+
+	@Override
+	public void onUpdate() {
+		setValue(control.getValue());
 	}
 }

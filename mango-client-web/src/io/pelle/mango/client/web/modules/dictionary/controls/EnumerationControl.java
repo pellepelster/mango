@@ -24,23 +24,28 @@ public class EnumerationControl<ENUM_TYPE> extends BaseDictionaryControl<IEnumer
 	public EnumerationControl(IEnumerationControlModel<ENUM_TYPE> controlModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(controlModel, parent);
 
-		for (String enumerationValue : DictionaryModelProvider.getEnumerationValues(controlModel.getEnumerationName())) {
-			enumerationMap.put(enumerationValue, enumerationValue);
+		for (Map.Entry<String, String> enumerationEntry : DictionaryModelProvider.getEnumerationValues(controlModel.getEnumerationName()).entrySet()) {
+			enumerationMap.put(enumerationEntry.getKey(), enumerationEntry.getValue());
 		}
 	}
 
 	@Override
 	public String format() {
-		if (getValue() == null) {
+
+		ENUM_TYPE value = getValue();
+
+		if (value == null || !enumerationMap.containsKey(value.toString())) {
 			return "";
 		} else {
-			return getValue().toString();
+			return enumerationMap.get(value.toString());
 		}
 	}
 
 	@Override
 	protected ParseResult parseValueInternal(String valueString) {
+
 		Object enumeration = DictionaryModelProvider.getEnumerationValue(getModel().getEnumerationName(), valueString);
+
 		return new ParseResult((ENUM_TYPE) enumeration);
 		// return new ParseResult(new ValidationMessage(IMessage.SEVERITY.ERROR,
 		// EnumerationControl.class.getName(),

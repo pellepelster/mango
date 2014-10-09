@@ -25,7 +25,7 @@ project MangoDemo {
 
 		entitydatatype Entity3Datatype { entity Entity3 }
 
-		enumeration Enumeration1 { EnumerationValue1 ,  EnumerationValue2 }
+		enumeration Enumeration1 { EnumerationValue1,  EnumerationValue2 => "Value2" }
 
 		enumerationdatatype Enumeration1Datatype { enumeration Enumeration1 }
 

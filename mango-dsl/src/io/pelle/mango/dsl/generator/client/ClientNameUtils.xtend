@@ -9,6 +9,7 @@ import io.pelle.mango.dsl.mango.EnumerationDataType
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.PackageDeclaration
+import io.pelle.mango.dsl.mango.EnumerationValue
 
 class ClientNameUtils extends NameUtils {
 	
@@ -45,6 +46,10 @@ class ClientNameUtils extends NameUtils {
 	//-------------------------------------------------------------------------
 	// enumeration
 	//-------------------------------------------------------------------------
+	def enumerationValueName(EnumerationValue enumerationValue) {
+		return enumerationValue.name.toUpperCase;
+	}
+
 	def dispatch enumerationName(Enumeration enumeration) {
 		return enumeration.name.toUpperCase;
 	}

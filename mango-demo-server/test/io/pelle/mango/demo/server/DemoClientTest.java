@@ -21,6 +21,7 @@ import io.pelle.mango.test.client.MangoDemoClientConfiguration;
 import io.pelle.mango.test.client.MangoDemoDictionaryModel;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -74,7 +75,7 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testEditorTextConrolSaveAndSearch() {
+	public void testEditorTextControlSaveAndSearch() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -129,15 +130,23 @@ public class DemoClientTest extends BaseDemoTest {
 		EnumerationTestControl<ENUMERATION1> enumerationControl = editor.getControl(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.ENUMERATIONCONTROL1);
 
 		assertEquals(2, enumerationControl.getEnumerationMap().size());
-		Iterator<String> iterator = enumerationControl.getEnumerationMap().keySet().iterator();
-		assertEquals(ENUMERATION1.ENUMERATIONVALUE1.toString(), iterator.next());
-		assertEquals(ENUMERATION1.ENUMERATIONVALUE2.toString(), iterator.next());
-		enumerationControl.setValue(ENUMERATION1.ENUMERATIONVALUE1);
+
+		Iterator<Map.Entry<String, String>> iterator = enumerationControl.getEnumerationMap().entrySet().iterator();
+
+		Map.Entry<String, String> entry1 = iterator.next();
+		Map.Entry<String, String> entry2 = iterator.next();
+
+		assertEquals("ENUMERATIONVALUE1", entry1.getKey().toString());
+		assertEquals("ENUMERATIONVALUE1", entry1.getValue());
+		assertEquals("ENUMERATIONVALUE2", entry2.getKey());
+		assertEquals("Value2", entry2.getValue());
+
+		enumerationControl.parseValue("ENUMERATIONVALUE1");
 		editor.save();
 
 		editor = createTestDictionaryEditor1();
 		enumerationControl = editor.getControl(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.ENUMERATIONCONTROL1);
-		enumerationControl.setValue(ENUMERATION1.ENUMERATIONVALUE2);
+		enumerationControl.parseValue("ENUMERATIONVALUE2");
 		editor.save();
 
 		DictionarySearchModuleSyncTestUI<Entity1VO> search = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1);
@@ -145,10 +154,14 @@ public class DemoClientTest extends BaseDemoTest {
 		search.assertSearchResults(2);
 
 		enumerationControl = search.getControl(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.ENUMERATIONCONTROL1);
-		enumerationControl.setValue(ENUMERATION1.ENUMERATIONVALUE1);
+		enumerationControl.parseValue("ENUMERATIONVALUE2");
 		search.execute();
 		search.assertSearchResults(1);
-		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, search.getResultRow(0).getVO().getEnumeration1Datatype());
+		assertEquals("ENUMERATIONVALUE2", search.getResultRow(0).getVO().getEnumeration1Datatype().toString());
+
+		editor = search.openEditor(0);
+		enumerationControl = editor.getControl(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.ENUMERATIONCONTROL1);
+		assertEquals("ENUMERATIONVALUE2", enumerationControl.getValue().toString());
 	}
 
 	@Test
@@ -193,7 +206,7 @@ public class DemoClientTest extends BaseDemoTest {
 		search.assertSearchResults(3);
 
 		ControlGroupTest filterGroupControlTest = search.getGroupControlTest(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.CONTROL_GROUP1);
-		filterGroupControlTest.parse("abc");
+		filterGroupControlTest.parseValue("abc");
 
 		search.execute();
 
@@ -202,7 +215,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		search.assertSearchResults(2);
 
-		filterGroupControlTest.parse("");
+		filterGroupControlTest.parseValue("");
 		search.execute();
 		search.assertSearchResults(3);
 

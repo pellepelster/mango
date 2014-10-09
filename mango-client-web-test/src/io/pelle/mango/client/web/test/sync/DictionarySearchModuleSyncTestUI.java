@@ -79,4 +79,9 @@ public class DictionarySearchModuleSyncTestUI<VOType extends IBaseVO> extends Ba
 	public ITableRow<VOType> getResultRow(int row) {
 		return this.module.getDictionarySearch().getDictionaryResult().getRows().get(row);
 	}
+
+	public DictionaryEditorModuleSyncTestUI<VOType> openEditor(int row) {
+		long id = getResultRow(row).getVO().getId();
+		return MangoClientSyncWebTest.getInstance().openEditor(module.getDictionaryModel(), id);
+	}
 }

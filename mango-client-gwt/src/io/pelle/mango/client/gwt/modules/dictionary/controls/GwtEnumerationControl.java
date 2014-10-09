@@ -11,97 +11,88 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.controls.IEnumerationControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
-import io.pelle.mango.client.base.modules.dictionary.model.controls.IEnumerationControlModel;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.EnumerationControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class GwtEnumerationControl extends ListBox implements IGwtControl {
+public class GwtEnumerationControl extends ListBox implements IGwtControl, IControlUpdateListener {
 
-	private final EnumerationControl<?> enumarationControl;
+	private final EnumerationControl<?> control;
 
 	public GwtEnumerationControl(final EnumerationControl<?> enumarationControl) {
 		super(false);
 
-		this.enumarationControl = enumarationControl;
-
+		this.control = enumarationControl;
+		enumarationControl.addUpdateListener(this);
 		ensureDebugId(DictionaryModelUtil.getDebugId(enumarationControl.getModel()));
+
 		new ControlHelper(this, enumarationControl, this, false);
 
 		addChangeHandler(new ChangeHandler() {
-
 			@Override
 			public void onChange(ChangeEvent event) {
 				enumarationControl.parseValue(getEnumForSelection());
 			}
 		});
 
-		List<String> enumList = getSortedEnumList(enumarationControl.getModel());
-
-		addItem("");
-		for (String enumValue : enumList) {
-			addItem(enumValue);
+		clear();
+		addItem("", "");
+		for (Map.Entry<String, String> enumEntry : enumarationControl.getEnumerationMap().entrySet()) {
+			addItem(enumEntry.getValue(), enumEntry.getKey());
 		}
 
+		onUpdate();
 	}
 
-	public static List<String> getSortedEnumList(IEnumerationControlModel<?> enumarationControlModel) {
-		List<String> enumList = new ArrayList<String>();
-		enumList.addAll(enumarationControlModel.getEnumerationMap().values());
-		Collections.sort(enumList);
+	public static String getEnumForText(IEnumerationControl<?> enumarationControl, String enumText) {
 
-		return enumList;
-	}
-
-	public static String getEnumForText(IEnumerationControlModel<?> enumarationControlModel, String text) {
-
-		if (text == null || text.isEmpty()) {
+		if (enumText == null || enumText.isEmpty()) {
 			return null;
 		}
 
-		for (Map.Entry<String, String> enumEntry : enumarationControlModel.getEnumerationMap().entrySet()) {
-			if (enumEntry.getValue().equals(text)) {
+		for (Map.Entry<String, String> enumEntry : enumarationControl.getEnumerationMap().entrySet()) {
+			if (enumEntry.getValue().equals(enumText)) {
 				return enumEntry.getKey();
 			}
 		}
 
-		throw new RuntimeException("no enum found for text '" + text + "'");
+		throw new RuntimeException("no enum found for text '" + enumText + "'");
 	}
 
 	private String getEnumForSelection() {
-		String text = getValue(getSelectedIndex());
-
-		return getEnumForText(enumarationControl.getModel(), text);
+		String enumValue = getValue(getSelectedIndex());
+		return enumValue;
 	}
 
 	@Override
 	public void setContent(Object content) {
 		if (content != null) {
-
 			if (content instanceof String || content instanceof Enum<?>) {
-
 				for (int i = 0; i < getItemCount(); i++) {
-					if (getItemText(i).equals(content.toString())) {
+					if (getValue(i).equals(content.toString())) {
 						setSelectedIndex(i);
 					}
 				}
-
 			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
 		} else {
 			super.setSelectedIndex(0);
 		}
+	}
+
+	@Override
+	public void onUpdate() {
+		setContent(control.getValue());
 	}
 
 }
