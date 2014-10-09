@@ -12,23 +12,21 @@
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
-import io.pelle.mango.client.base.modules.dictionary.controls.IEnumerationControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
-import io.pelle.mango.client.web.modules.dictionary.controls.EnumerationControl;
+import io.pelle.mango.client.web.MangoClientWeb;
+import io.pelle.mango.client.web.modules.dictionary.controls.BooleanControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
-
-import java.util.Map;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class GwtEnumerationControl extends ListBox implements IGwtControl, IControlUpdateListener {
+public class GwtBooleanFilterControl extends ListBox implements IGwtControl, IControlUpdateListener {
 
-	private final EnumerationControl<?> control;
+	private final BooleanControl control;
 
-	public GwtEnumerationControl(final EnumerationControl<?> control) {
+	public GwtBooleanFilterControl(final BooleanControl control) {
 		super(false);
 
 		this.control = control;
@@ -40,53 +38,41 @@ public class GwtEnumerationControl extends ListBox implements IGwtControl, ICont
 		addChangeHandler(new ChangeHandler() {
 			@Override
 			public void onChange(ChangeEvent event) {
-				control.parseValue(getEnumForSelection());
+
+				if (getSelectedIndex() == 0) {
+					control.setValue(null);
+				} else if (getSelectedIndex() == 1) {
+					control.setValue(true);
+				} else if (getSelectedIndex() == 2) {
+					control.setValue(false);
+				}
 			}
 		});
 
 		clear();
 		addItem("", "");
-		for (Map.Entry<String, String> enumEntry : control.getEnumerationMap().entrySet()) {
-			addItem(enumEntry.getValue(), enumEntry.getKey());
-		}
+		addItem(MangoClientWeb.MESSAGES.trueText(), Boolean.TRUE.toString());
+		addItem(MangoClientWeb.MESSAGES.falseText(), Boolean.FALSE.toString());
 
 		onUpdate();
-	}
-
-	public static String getEnumForText(IEnumerationControl<?> enumarationControl, String enumText) {
-
-		if (enumText == null || enumText.isEmpty()) {
-			return null;
-		}
-
-		for (Map.Entry<String, String> enumEntry : enumarationControl.getEnumerationMap().entrySet()) {
-			if (enumEntry.getValue().equals(enumText)) {
-				return enumEntry.getKey();
-			}
-		}
-
-		throw new RuntimeException("no enum found for text '" + enumText + "'");
-	}
-
-	private String getEnumForSelection() {
-		String enumValue = getValue(getSelectedIndex());
-		return enumValue;
 	}
 
 	@Override
 	public void setContent(Object content) {
 		if (content != null) {
-			if (content instanceof String || content instanceof Enum<?>) {
-				for (int i = 0; i < getItemCount(); i++) {
-					if (getValue(i).equals(content.toString())) {
-						setSelectedIndex(i);
-					}
+			if (content instanceof String) {
+				setContent(Boolean.parseBoolean(content.toString()));
+			} else if (content instanceof Boolean) {
+				if ((Boolean) content) {
+					setSelectedIndex(1);
+				} else {
+					setSelectedIndex(2);
 				}
 			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
 		} else {
-			super.setSelectedIndex(0);
+			setSelectedIndex(0);
 		}
 	}
 

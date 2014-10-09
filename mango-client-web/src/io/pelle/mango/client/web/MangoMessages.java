@@ -137,4 +137,11 @@ public interface MangoMessages extends Messages {
 
 	@DefaultMessage("undefined")
 	String undefined();
+
+	@DefaultMessage("true")
+	String trueText();
+
+	@DefaultMessage("false")
+	String falseText();
+
 }

@@ -17,16 +17,26 @@ import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.BooleanControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.CheckBox;
 
 public class GwtBooleanControl extends CheckBox implements IGwtControl, IControlUpdateListener {
 
 	private BooleanControl control;
 
-	public GwtBooleanControl(BooleanControl control) {
+	public GwtBooleanControl(final BooleanControl control) {
 		this.control = control;
 		new ControlHelper(this, control, this, true, false);
 		ensureDebugId(DictionaryModelUtil.getDebugId(control.getModel()));
+
+		addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+				control.setValue(event.getValue());
+			}
+		});
 
 		control.addUpdateListener(this);
 		onUpdate();

@@ -37,7 +37,12 @@ public class BooleanControlFactory extends BaseControlFactory<IBooleanControlMod
 	/** {@inheritDoc} */
 	@Override
 	public Widget createControl(BooleanControl booleanControl, LAYOUT_TYPE layoutType) {
-		return new GwtBooleanControl(booleanControl);
+		switch (layoutType) {
+		case FILTER:
+			return new GwtBooleanFilterControl(booleanControl);
+		default:
+			return new GwtBooleanControl(booleanControl);
+		}
 	}
 
 	/** {@inheritDoc} */

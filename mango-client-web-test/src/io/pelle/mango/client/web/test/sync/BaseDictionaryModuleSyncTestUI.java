@@ -11,10 +11,12 @@
  */
 package io.pelle.mango.client.web.test.sync;
 
+import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ControlGroupModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.EnumerationControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel;
 import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
+import io.pelle.mango.client.web.test.sync.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.sync.controls.ControlGroupTest;
 import io.pelle.mango.client.web.test.sync.controls.EnumerationTestControl;
 import io.pelle.mango.client.web.test.sync.controls.TextTestControl;
@@ -30,6 +32,10 @@ public abstract class BaseDictionaryModuleSyncTestUI {
 
 	public TextTestControl getControl(TextControlModel controlModel) {
 		return new TextTestControl(this.baseDictionaryModule.getElement(controlModel));
+	}
+
+	public BooleanTestControl getControl(BooleanControlModel controlModel) {
+		return new BooleanTestControl(this.baseDictionaryModule.getElement(controlModel));
 	}
 
 	public <ENUM_TYPE> EnumerationTestControl<ENUM_TYPE> getControl(EnumerationControlModel<ENUM_TYPE> controlModel) {
