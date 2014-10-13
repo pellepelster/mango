@@ -19,7 +19,6 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityDataType
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
-import io.pelle.mango.dsl.mango.EntityType
 import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.EnumerationDataType
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
@@ -143,12 +142,6 @@ class TypeUtils {
 		entity.entityVOFullQualifiedName
 	}
 
-	def dispatch String getType(EntityType entityType)
-	{
-		getTypeWithCardinality(entityType.cardinality, entityType.type.type)
-		
-	}
-	
 	def dispatch String getTypeClass(Entity entity)
 	{
 		getType(entity) + ".class"

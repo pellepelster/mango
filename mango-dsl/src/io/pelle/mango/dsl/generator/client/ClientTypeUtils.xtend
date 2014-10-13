@@ -17,10 +17,6 @@ class ClientTypeUtils extends TypeUtils {
 		clientNameUtils.voFullQualifiedName(entity)
 	}
 	
-	override dispatch String getType(EntityDataType dataType) {
-		return dataType.entity.type
-	}
-
 	override dispatch String getType(Entity entity) {
 		entity.voFullQualifiedName
 	}

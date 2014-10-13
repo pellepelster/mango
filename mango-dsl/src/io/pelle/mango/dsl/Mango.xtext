@@ -181,9 +181,6 @@ EntityAttributeType:
 EntityEntityAttribute:
 	'entity' type=[EntityAttributeType|QualifiedName] (cardinality=Cardinality)? name=ID;
 
-EntityType:
-	'entity' type=[EntityAttributeType|QualifiedName] (cardinality=Cardinality)?;
-
 //-----------------------------------------------------------------------------
 // entity
 //-----------------------------------------------------------------------------

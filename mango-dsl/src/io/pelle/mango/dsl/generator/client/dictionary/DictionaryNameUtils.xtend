@@ -16,11 +16,6 @@ import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.NavigationNode
 
-/**
- * Generates code from your model files on save.
- * 
- * see http://www.eclipse.org/Xtext/documentation.html#TutorialCodeGeneration
- */
 class DictionaryNameUtils extends ClientNameUtils {
 
 	def camelCaseToUnderScore(String camelCase) {
