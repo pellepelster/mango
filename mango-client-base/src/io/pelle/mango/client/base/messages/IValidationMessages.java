@@ -2,8 +2,7 @@ package io.pelle.mango.client.base.messages;
 
 import java.util.Map;
 
-public interface IValidationMessages extends Iterable<IValidationMessage>
-{
+public interface IValidationMessages extends Iterable<IValidationMessage> {
 	boolean hasErrors();
 
 	int count();

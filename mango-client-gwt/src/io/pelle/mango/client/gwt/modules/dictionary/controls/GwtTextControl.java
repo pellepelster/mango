@@ -20,12 +20,32 @@ import com.google.gwt.user.client.ui.TextBox;
 
 public class GwtTextControl extends TextBox implements IGwtControl {
 
+	// private InlineHTML span;
+
+	// private TextBox textBox;
+
+	// private FlowPanel panel;
+
 	public GwtTextControl(TextControl textControl) {
 		super();
-		new ControlHelper(this, textControl, this, true);
 
+		// panel = new FlowPanel();
+		// panel.getElement().addClassName("has-feedback");
+		// panel.getElement().addClassName("form-group");
+
+		// textBox = new TextBox();
+		new ControlHelper(this, textControl, this, true);
 		ensureDebugId(DictionaryModelUtil.getDebugId(textControl.getModel()));
 		setMaxLength(textControl.getModel().getMaxLength());
+		// panel.add(textBox);
+
+		// span = new InlineHTML();
+		// span.getElement().addClassName("glyphicon");
+		// span.getElement().addClassName("glyphicon-remove");
+		// span.getElement().addClassName("form-control-feedback");
+		// panel.add(span);
+
+		// initWidget(panel);
 	}
 
 	public void setContent(Object content) {

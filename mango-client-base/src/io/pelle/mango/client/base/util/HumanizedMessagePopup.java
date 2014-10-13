@@ -9,6 +9,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 public class HumanizedMessagePopup extends PopupPanel {
+
 	public enum HIDE_BEHAVIOR {
 		ON_CLICK, ON_CLICK_FADE, SHOW_AND_FADE, FADE_AFTER_MOUSE_MOVE
 	}

@@ -76,7 +76,7 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testEditorTextControlSaveAndSearch() {
+	public void testTextControlSaveAndSearch() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -111,6 +111,22 @@ public class DemoClientTest extends BaseDemoTest {
 		search.execute();
 		search.assertSearchResults(1);
 		assertEquals("abc", search.getResultRow(0).getVO().getStringDatatype1());
+	}
+
+	@Test
+	public void testTextControlNaturalKey() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
+		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
+		editor.save();
+		control.assertHasErrors();
+
+		control.setValue("abc");
+		control.assertHasNoErrors();
+		editor.save();
+
 	}
 
 	private DictionaryEditorModuleSyncTestUI<Entity1VO> createTestDictionaryEditor1() {

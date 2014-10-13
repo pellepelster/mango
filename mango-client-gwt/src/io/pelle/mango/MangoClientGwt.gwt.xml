@@ -7,7 +7,9 @@
 	<inherits name="com.google.gwt.user.Debug"/>
  	<inherits name="gwtupload.GWTUpload"/>
  
- 	<stylesheet src="myadmin-standard.css"/>
+	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
+	
+ 	<stylesheet src="css/mango-standard.css"/>
  
 	<source path="client.gwt" />
 	<public path="client/gwt/public" />

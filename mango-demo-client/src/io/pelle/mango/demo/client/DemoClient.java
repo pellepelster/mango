@@ -26,11 +26,6 @@ public class DemoClient implements EntryPoint {
 			GWT.log(e.getMessage(), e);
 		}
 
-		// MyAdmin.getInstance().startModule(HierarchicalTreeModule.MODULE_ID,
-		// Direction.WEST.toString(),
-		// HierarchicalTreeModule.getParameterMap(TestClientHierarchicalConfiguration.ID,
-		// false));
-
 		ModuleHandler.getInstance().startUIModule(ModuleNavigationModule.NAVIGATION_UI_MODULE_LOCATOR, Direction.WEST.toString());
 
 	}
