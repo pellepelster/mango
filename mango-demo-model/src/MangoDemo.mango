@@ -25,7 +25,7 @@ project MangoDemo {
 
 		entitydatatype Entity3Datatype { entity Entity3 }
 
-		enumeration Enumeration1 { EnumerationValue1,  EnumerationValue2 => "Value2" }
+		enumeration Enumeration1 { EnumerationValue1 ,  EnumerationValue2 => "Value2" }
 
 		enumerationdatatype Enumeration1Datatype { enumeration Enumeration1 }
 
@@ -90,68 +90,112 @@ project MangoDemo {
 			string string4
 		}
 
-		dictionary Dictionary1 {
-			
-			entity Entity1
+		package demo {
 
-			dictionarycontrols {
-				textcontrol Text1 { entityattribute Entity1.stringDatatype1 }
-			}
+			dictionary DemoDictionary1 {
 
-			dictionarysearch Search1 {
+				entity Entity1
 
-				dictionaryfilter Filter1 {
-					textcontrol ref Text1
+				dictionarycontrols {
+
+					textcontrol TextControl1 { entityattribute Entity1.stringDatatype1 }
+
+					textcontrol TextControl2 { entityattribute Entity1.stringDatatype2 }
+
+					textcontrol TextControl3 { entityattribute Entity1.stringDatatype3 }
+
+					booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
+
+					enumerationcontrol EnumerationControl1 { entityattribute Entity1.enumeration1Datatype }
 				}
 
-				dictionaryresult Result1 {
-					textcontrol ref Text1
-				}
-			}
+				dictionarysearch DemoSearch1 {
 
-			dictionaryeditor Editor1 {
-				textcontrol ref Text1 { label "XXX" }
-			}
-		}
+					dictionaryfilter DemoFilter1 {
 
-		dictionary Testdictionary1 {
+						controlgroup ControlGroup1 {
 
-			entity Entity1
-
-			dictionarycontrols {
-
-				textcontrol Textcontrol1 { entityattribute Entity1.stringDatatype1 }
-
-				textcontrol Textcontrol2 { entityattribute Entity1.stringDatatype2 }
-
-				textcontrol Textcontrol3 { entityattribute Entity1.stringDatatype3 }
-
-				booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
-
-				enumerationcontrol Enumerationcontrol1 { entityattribute Entity1.enumeration1Datatype }
-
-			}
-
-			dictionarysearch DictionarySearch1 {
-
-				dictionaryfilter DictionaryFilter1 {
-
-					textcontrol ref Textcontrol1
-					booleancontrol ref BooleanControl1
-					enumerationcontrol ref Enumerationcontrol1
-
-					controlgroup ControlGroup1 {
-
-						groupoptions {
-							multiFilterField true
+							groupoptions {
+								multiFilterField true
+							}
+							textcontrol ref TextControl1
+							textcontrol ref TextControl2
+							textcontrol ref TextControl3
 						}
-						textcontrol ref Textcontrol1
-						textcontrol ref Textcontrol2
-						textcontrol ref Textcontrol3
+
+						booleancontrol ref BooleanControl1
+						enumerationcontrol ref EnumerationControl1
+
+					}
+
+					dictionaryresult DemoResult1 {
+						textcontrol ref TextControl1
+						textcontrol ref TextControl2
+						textcontrol ref TextControl3
+						booleancontrol ref BooleanControl1
+						enumerationcontrol ref EnumerationControl1
 					}
 				}
 
-				dictionaryresult DictionaryResult1 {
+				dictionaryeditor DemoEditor1 {
+					textcontrol ref TextControl1
+					textcontrol ref TextControl2
+					textcontrol ref TextControl3
+					booleancontrol ref BooleanControl1
+					enumerationcontrol ref EnumerationControl1
+				}
+			}
+		}
+
+		package junit {
+
+			dictionary TestDictionary1 {
+
+				entity Entity1
+
+				dictionarycontrols {
+
+					textcontrol Textcontrol1 { entityattribute Entity1.stringDatatype1 }
+
+					textcontrol Textcontrol2 { entityattribute Entity1.stringDatatype2 }
+
+					textcontrol Textcontrol3 { entityattribute Entity1.stringDatatype3 }
+
+					booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
+
+					enumerationcontrol Enumerationcontrol1 { entityattribute Entity1.enumeration1Datatype }
+
+				}
+
+				dictionarysearch DictionarySearch1 {
+
+					dictionaryfilter DictionaryFilter1 {
+
+						textcontrol ref Textcontrol1
+						booleancontrol ref BooleanControl1
+						enumerationcontrol ref Enumerationcontrol1
+
+						controlgroup ControlGroup1 {
+
+							groupoptions {
+								multiFilterField true
+							}
+							textcontrol ref Textcontrol1
+							textcontrol ref Textcontrol2
+							textcontrol ref Textcontrol3
+						}
+					}
+
+					dictionaryresult DictionaryResult1 {
+						textcontrol ref Textcontrol1
+						textcontrol ref Textcontrol2
+						textcontrol ref Textcontrol3
+						booleancontrol ref BooleanControl1
+						enumerationcontrol ref Enumerationcontrol1
+					}
+				}
+
+				dictionaryeditor DictionaryEditor1 {
 					textcontrol ref Textcontrol1
 					textcontrol ref Textcontrol2
 					textcontrol ref Textcontrol3
@@ -159,22 +203,14 @@ project MangoDemo {
 					enumerationcontrol ref Enumerationcontrol1
 				}
 			}
-
-			dictionaryeditor DictionaryEditor1 {
-				textcontrol ref Textcontrol1
-				textcontrol ref Textcontrol2
-				textcontrol ref Textcontrol3
-				booleancontrol ref BooleanControl1
-				enumerationcontrol ref Enumerationcontrol1
-			}
 		}
 
 		navigationnode Navigation {
-			navigationnode Dictionary1 {
-				dictionarySearch Dictionary1.Search1
+			navigationnode DemoDictionary1 {
+				dictionarySearch DemoDictionary1.DemoSearch1
 			}
-			navigationnode Testdictionary1 {
-				dictionarySearch Testdictionary1.DictionarySearch1
+			navigationnode TestDictionary1 {
+				dictionarySearch TestDictionary1.DictionarySearch1
 			}
 		}
 	}

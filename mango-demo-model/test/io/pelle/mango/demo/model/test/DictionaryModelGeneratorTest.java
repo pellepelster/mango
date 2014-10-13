@@ -16,7 +16,7 @@ public class DictionaryModelGeneratorTest {
 
 	@Test
 	public void testDictionaryName() {
-		assertEquals("Testdictionary1", MangoDemoDictionaryModel.TESTDICTIONARY1.getName());
+		assertEquals("Testdictionary1", MangoDemoDictionaryModel.TEST_DICTIONARY1.getName());
 	}
 
 	@BeforeClass
@@ -26,27 +26,27 @@ public class DictionaryModelGeneratorTest {
 
 	@Test
 	public void testMaxLengthInheritanceFromDatatype() {
-		assertEquals(42, MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getMaxLength());
+		assertEquals(42, MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getMaxLength());
 	}
 
 	@Test
 	public void testStringDatatype1GetAttributePath() {
-		assertEquals("stringDatatype1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getAttributePath());
+		assertEquals("stringDatatype1", MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getAttributePath());
 	}
 
 	@Test
 	public void testNauralKeyIsMandatory() {
-		assertTrue(MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.isMandatory());
+		assertTrue(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.isMandatory());
 	}
 
 	@Test
 	public void testLabelInheritanceFromDatatype() {
-		assertEquals("Boolean1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1.getLabel());
+		assertEquals("Boolean1", MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1.getLabel());
 	}
 
 	@Test
 	public void testControlGroup() {
-		assertEquals("Textcontrol1", MangoDemoDictionaryModel.TESTDICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.CONTROL_GROUP1.TEXTCONTROL1.getName());
+		assertEquals("Textcontrol1", MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.CONTROL_GROUP1.TEXTCONTROL1.getName());
 	}
 
 	@Test
