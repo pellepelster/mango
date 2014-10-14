@@ -1,13 +1,16 @@
 package io.pelle.mango.client.web.test.sync.controls;
 
 import io.pelle.mango.client.base.messages.IValidationMessage;
-import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Assert;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 
 public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, ValueType> implements IControlUpdateListener {
 
@@ -15,7 +18,9 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 
 	private ElementType baseControl;
 
-	private IValidationMessages validationMessages;
+	private boolean hasErrors;
+
+	private List<IValidationMessage> validationMessages = new ArrayList<IValidationMessage>();
 
 	public BaseControlTest(ElementType baseControl) {
 		this.baseControl = baseControl;
@@ -49,11 +54,11 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 	}
 
 	public void assertHasErrors() {
-		Assert.assertTrue(this.baseControl.getValidationMessages().hasErrors());
+		Assert.assertTrue(hasErrors);
 	}
 
 	public void assertHasNoErrors() {
-		Assert.assertFalse(this.baseControl.getValidationMessages().hasErrors());
+		Assert.assertFalse(hasErrors);
 	}
 
 	public void assertHasErrorWithText(String text) {
@@ -75,7 +80,8 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 	@Override
 	public void onUpdate() {
 		this.value = this.baseControl.getValue();
-		this.validationMessages = baseControl.getValidationMessages();
+		this.hasErrors = baseControl.getValidationMessages().hasErrors();
+		this.validationMessages.clear();
+		this.validationMessages.addAll(Lists.newArrayList(baseControl.getValidationMessages()));
 	}
-
 }

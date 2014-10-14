@@ -10,6 +10,10 @@
         myadmin
  **********************/
 
+.top-spacer {
+	margin-top: 1.5em;
+}
+
 .docklayoutpanel-center {
 	margin: 1em;
 }

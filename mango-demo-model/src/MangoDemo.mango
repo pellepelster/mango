@@ -209,9 +209,6 @@ project MangoDemo {
 			navigationnode DemoDictionary1 {
 				dictionarySearch DemoDictionary1.DemoSearch1
 			}
-			navigationnode TestDictionary1 {
-				dictionarySearch TestDictionary1.DictionarySearch1
-			}
 		}
 	}
 }

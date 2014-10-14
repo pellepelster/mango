@@ -17,8 +17,7 @@ package io.pelle.mango.client.gwt;
  * @author pelle
  * 
  */
-public interface GwtStyles
-{
+public interface GwtStyles {
 	String CELL_ERROR_STYLE = "border: 1px solid red;";
 
 	String CELL_ERROR_DISPLAY_PADDING = "padding: 3px;";
@@ -60,5 +59,7 @@ public interface GwtStyles
 	String BUTTON = "btn";
 
 	String FORM_CONTROL = "form-control";
+
+	String TOP_SPACER = "top-spacer";
 
 }

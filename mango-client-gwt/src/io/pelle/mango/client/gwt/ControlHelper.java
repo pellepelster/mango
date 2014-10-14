@@ -28,8 +28,7 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ControlHelper implements IControlUpdateListener
-{
+public class ControlHelper implements IControlUpdateListener {
 	private BaseDictionaryControl<?, ?> baseControl;
 
 	private final UIObject uiObject;
@@ -38,21 +37,16 @@ public class ControlHelper implements IControlUpdateListener
 
 	private boolean isUpdating = false;
 
-	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl,
-			boolean addValueChangeListener)
-	{
+	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener) {
 		this(uiObject, baseControl, gwtControl, addValueChangeListener, true);
 	}
 
-	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl,
-			boolean addValueChangeListener, boolean addDefaultStyle)
-	{
+	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener, boolean addDefaultStyle) {
 		this.uiObject = uiObject;
 		this.baseControl = baseControl;
 		this.gwtControl = gwtControl;
 
-		if (addDefaultStyle)
-		{
+		if (addDefaultStyle) {
 			uiObject.addStyleName(GwtStyles.FORM_CONTROL);
 		}
 
@@ -62,21 +56,16 @@ public class ControlHelper implements IControlUpdateListener
 
 		baseControl.addUpdateListener(this);
 
-		if (uiObject instanceof HasValue<?>)
-		{
+		if (uiObject instanceof HasValue<?>) {
 			final HasValue<ValueType> hasValueWidget = (HasValue<ValueType>) uiObject;
 
-			if (addValueChangeListener)
-			{
-				if (uiObject instanceof FocusWidget)
-				{
+			if (addValueChangeListener) {
+				if (uiObject instanceof FocusWidget) {
 					FocusWidget focusWidget = (FocusWidget) uiObject;
 
-					focusWidget.addKeyUpHandler(new KeyUpHandler()
-					{
+					focusWidget.addKeyUpHandler(new KeyUpHandler() {
 						@Override
-						public void onKeyUp(KeyUpEvent event)
-						{
+						public void onKeyUp(KeyUpEvent event) {
 							setParseValue(hasValueWidget.getValue());
 						}
 					});
@@ -85,18 +74,13 @@ public class ControlHelper implements IControlUpdateListener
 		}
 	}
 
-	private void setParseValue(Object value)
-	{
-		if (!isUpdating)
-		{
+	private void setParseValue(Object value) {
+		if (!isUpdating) {
 			isUpdating = true;
 
-			if (value != null)
-			{
+			if (value != null) {
 				baseControl.parseValue(value.toString());
-			}
-			else
-			{
+			} else {
 				baseControl.setValue(null);
 			}
 
@@ -105,28 +89,21 @@ public class ControlHelper implements IControlUpdateListener
 	}
 
 	@Override
-	public void onUpdate()
-	{
-		if (!isUpdating)
-		{
+	public void onUpdate() {
+		if (!isUpdating) {
 			isUpdating = true;
-
 			gwtControl.setContent(baseControl.getValue());
-
-			if (baseControl.getValidationMessages().hasErrors())
-			{
-				uiObject.addStyleName(GwtStyles.CONTROL_ERROR_STYLE);
-				Map<String, Object> context = CollectionUtils.getMap(IBaseControlModel.EDITOR_LABEL_MESSAGE_KEY,
-						DictionaryModelUtil.getEditorLabel(baseControl.getModel()));
-				uiObject.setTitle(baseControl.getValidationMessages().getValidationMessageString(context));
-			}
-			else
-			{
-				uiObject.removeStyleName(GwtStyles.CONTROL_ERROR_STYLE);
-				uiObject.setTitle("");
-			}
-
 			isUpdating = false;
 		}
+
+		if (baseControl.getValidationMessages().hasErrors()) {
+			uiObject.addStyleName(GwtStyles.CONTROL_ERROR_STYLE);
+			Map<String, Object> context = CollectionUtils.getMap(IBaseControlModel.EDITOR_LABEL_MESSAGE_KEY, DictionaryModelUtil.getEditorLabel(baseControl.getModel()));
+			uiObject.setTitle(baseControl.getValidationMessages().getValidationMessageString(context));
+		} else {
+			uiObject.removeStyleName(GwtStyles.CONTROL_ERROR_STYLE);
+			uiObject.setTitle("");
+		}
+
 	}
 }
