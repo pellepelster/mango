@@ -9,6 +9,10 @@ project MangoDemo {
 			method ValueObject2 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
 		}
 
+		service DemoDataGenerator {
+			method void generate ( )
+		}
+		
 		stringdatatype StringDatatype1 { maxLength 42 }
 
 		stringdatatype StringDatatype2 extends StringDatatype1 { maxLength 32 }

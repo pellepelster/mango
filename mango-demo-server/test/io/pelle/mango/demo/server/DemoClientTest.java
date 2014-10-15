@@ -37,6 +37,7 @@ public class DemoClientTest extends BaseDemoTest {
 	@Test
 	public void testDemoDictionary2TextControl2() {
 
+		baseEntityService.deleteAll(Entity1VO.class.getName());
 		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleSyncTestUI<Entity2VO> editor2 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2);
@@ -120,6 +121,7 @@ public class DemoClientTest extends BaseDemoTest {
 	public void testDictionary1EditorMetaInformation() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
 		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
@@ -134,6 +136,7 @@ public class DemoClientTest extends BaseDemoTest {
 	public void testDictionary1TextControl1SaveAndSearch() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
 		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
@@ -172,6 +175,7 @@ public class DemoClientTest extends BaseDemoTest {
 	public void testDictionary1TextControl1NaturalKey() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
 		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
@@ -197,6 +201,7 @@ public class DemoClientTest extends BaseDemoTest {
 	public void testDictionary1BooleanControl1SaveAndSearch() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = createTestDictionaryEditor1();
 		BooleanTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
@@ -226,6 +231,7 @@ public class DemoClientTest extends BaseDemoTest {
 	public void testDictionary1EnumerationControl1SaveAndSearch() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = createTestDictionaryEditor1();
 		EnumerationTestControl<ENUMERATION1> control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.ENUMERATIONCONTROL1);
@@ -269,6 +275,7 @@ public class DemoClientTest extends BaseDemoTest {
 	public void testDictionary1ControlGroup1MultiFilter() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
 		TextTestControl control1 = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
