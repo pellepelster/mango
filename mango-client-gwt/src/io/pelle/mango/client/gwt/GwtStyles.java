@@ -26,7 +26,11 @@ public interface GwtStyles {
 
 	String MODULE = "module";
 
+	String CONTROL_HAS_FEEDBACK_STYLE = "has-feedback";
+
 	String CONTROL_ERROR_STYLE = "form-control-error";
+
+	String CONTROL_FEEDBACK_HELP_STYLE = "form-control-feedback-help";
 
 	String TITLE = "title";
 
@@ -42,7 +46,7 @@ public interface GwtStyles {
 
 	String H6_CLASS = "h6";
 
-	double DISABLED_OPACITY = 0.2d;
+	double DISABLED_OPACITY = 0.3d;
 
 	double ENABLED_OPACITY = 1.0d;
 
@@ -62,4 +66,7 @@ public interface GwtStyles {
 
 	String TOP_SPACER = "top-spacer";
 
+	int FADE_IN_DURATION = 150;
+
+	int FADE_OUT_DURATION = FADE_IN_DURATION;
 }

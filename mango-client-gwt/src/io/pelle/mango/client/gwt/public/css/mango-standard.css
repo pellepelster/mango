@@ -396,6 +396,18 @@ h6,.h6{
 	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 6px #CE8483;
 }
 
+.form-control-feedback-help {
+	position: absolute;
+    font-size: 150%;
+    font-weight: bold;
+	position: block;    
+    z-index: 2;
+    top: 5px;
+	right: -10px;
+    width: 15px;
+    height: 15px;
+}
+
 .form-control-feedback {
    /** top: 25px; */
     right: 0px;

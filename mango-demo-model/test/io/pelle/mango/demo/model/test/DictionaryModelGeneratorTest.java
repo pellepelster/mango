@@ -16,7 +16,7 @@ public class DictionaryModelGeneratorTest {
 
 	@Test
 	public void testDictionaryName() {
-		assertEquals("Testdictionary1", MangoDemoDictionaryModel.TEST_DICTIONARY1.getName());
+		assertEquals("TestDictionary1", MangoDemoDictionaryModel.TEST_DICTIONARY1.getName());
 	}
 
 	@BeforeClass

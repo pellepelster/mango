@@ -23,19 +23,25 @@ dependencies {
 	compile project(path: ':mango-demo-model', configuration: 'generatedClientGWT')
 	compile project(path: ':mango-client-web-test')
 	compile project(path: ':mango-client-gwt')
-
 	gwtTest group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
-	
 }
 
 gwt {
     gwtVersion = versions.gwt
     modules 'io.pelle.mango.demo.DemoClient'
- 	
+	logLevel = 'ERROR'
 	src += files(project(':mango-client-base').sourceSets.main.allJava.srcDirs) + 
 			files(project(':mango-client-core').sourceSets.main.allJava.srcDirs) + 
 			files(project(':mango-client-web').sourceSets.main.allJava.srcDirs) +
 			files(project(':mango-client-gwt').sourceSets.main.allJava.srcDirs)
+}
+
+ext.gwtTestLibDir = new File('lib-gwt-test')
+
+task copyGwtTestLibs(type: Copy) {
+	gwtTestLibDir.mkdirs()
+	into gwtTestLibDir
+	from configurations.gwtTest
 }
 
 test.dependsOn(project(':mango-demo-server').tasks.test)

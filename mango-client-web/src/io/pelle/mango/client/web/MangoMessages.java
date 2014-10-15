@@ -144,4 +144,6 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("false")
 	String falseText();
 
+	@DefaultMessage("?")
+	String helpShort();
 }
