@@ -22,7 +22,7 @@ public class FadeAnimation extends Animation {
 	public static void adaptMouseOver(Widget widget, Element fadeElement) {
 
 		final FadeAnimation fadeAnimation = new FadeAnimation(fadeElement);
-		widget.addHandler(new MouseOverHandler() {
+		widget.addDomHandler(new MouseOverHandler() {
 
 			@Override
 			public void onMouseOver(MouseOverEvent event) {
@@ -30,7 +30,7 @@ public class FadeAnimation extends Animation {
 			}
 		}, MouseOverEvent.getType());
 
-		widget.addHandler(new MouseOutHandler() {
+		widget.addDomHandler(new MouseOutHandler() {
 
 			@Override
 			public void onMouseOut(MouseOutEvent event) {

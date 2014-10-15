@@ -5,6 +5,7 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 import io.pelle.mango.test.client.MangoDemoClientConfiguration;
+import io.pelle.mango.test.client.MangoDemoDictionaryModel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -12,8 +13,6 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
 
 public class DemoClient implements EntryPoint {
-
-	private static final DemoResources RESOURCES = GWT.create(DemoResources.class);
 
 	/** {@inheritDoc} */
 	@Override
@@ -33,30 +32,12 @@ public class DemoClient implements EntryPoint {
 	public void init() {
 		MangoDemoClientConfiguration.registerAll();
 
-		// MangoDemoNavigationTree.ROOT.MASTERDATA.ADRESS.setImageResource(RESOURCES.address());
+		String source = MangoDslGenerator.create().block("stringdatatype", "StringDatatype1 ", "maxLength", "42")
+				.block("entity", " Entity1", "string", "StringDatatype1 stringDatatype1").abbr()
+				.block("textcontrol", "TextControl1", "entityattribute", "Entity1.stringDatatype1").abbr().toString();
 
-		// HierarchicalHookRegistry.getInstance().addActivationHook(TestClientHierarchicalConfiguration.ID,
-		// new BaseActivationHook()
-		// {
-		// @Override
-		// public void onActivate(DictionaryHierarchicalNodeVO
-		// hierarchicalNodeVO)
-		// {
-		// if (hierarchicalNodeVO.getVoId() != null)
-		// {
-		// ModuleHandler.getInstance().startModule(TestModule1.MODULE_ID,
-		// TestModule1.getParameterMap(hierarchicalNodeVO.getDictionaryName(),
-		// hierarchicalNodeVO.getVoId()));
-		// }
-		// else
-		// {
-		// super.onActivate(hierarchicalNodeVO);
-		// }
-		// }
-		// });
-		// ModuleFactoryRegistry.getInstance().addModuleFactory(TestModule1.MODULE_ID,
-		// new TestModule1Factory());
-		// ModuleUIFactoryRegistry.getInstance().addModuleFactory(TestModule1.class,
-		// new TestModule1UIFactory());
+		String help = source;
+
+		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1.setHelpText(help);
 	}
 }

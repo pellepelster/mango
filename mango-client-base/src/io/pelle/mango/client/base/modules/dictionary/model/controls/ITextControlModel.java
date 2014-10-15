@@ -43,5 +43,6 @@ public interface ITextControlModel extends IBaseControlModel
 	 * @return
 	 */
 	int getMinLength();
+	
 
 }

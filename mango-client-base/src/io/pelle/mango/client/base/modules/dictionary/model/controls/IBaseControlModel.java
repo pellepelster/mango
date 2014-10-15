@@ -74,4 +74,7 @@ public interface IBaseControlModel extends IBaseModel, IContentAwareModel {
 	boolean isMandatory();
 
 	boolean isReadonly();
+	
+	String getHelpText();
+
 }

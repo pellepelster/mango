@@ -25,6 +25,8 @@ public abstract class BaseControlModel<ControlElementType> extends BaseModel<Con
 
 	private String attributePath;
 
+	private String helpText;
+
 	public BaseControlModel(String name, IBaseModel parent) {
 		super(name, parent);
 	}
@@ -109,4 +111,13 @@ public abstract class BaseControlModel<ControlElementType> extends BaseModel<Con
 	public void setLabel(String label) {
 		this.label = label;
 	}
+	
+	public void setHelpText(String helpText) {
+		this.helpText = helpText;
+	}
+	
+	public String getHelpText() {
+		return helpText;
+	}
+	
 }

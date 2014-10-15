@@ -19,10 +19,10 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
@@ -34,7 +34,7 @@ public class GwtTextControl extends Composite implements IGwtControl {
 
 	private SimplePanel parent;
 
-	private Label helpSpan;
+	private Label helpLabel;
 
 	private PopupPanel helpPopup;
 
@@ -47,37 +47,40 @@ public class GwtTextControl extends Composite implements IGwtControl {
 		parent.addStyleName(GwtStyles.CONTROL_HAS_FEEDBACK_STYLE);
 
 		textBox = new TextBox();
+		parent.getElement().appendChild(textBox.getElement());
+
 		new ControlHelper(textBox, textControl, this, true);
 		textBox.ensureDebugId(DictionaryModelUtil.getDebugId(textControl.getModel()));
 		textBox.setMaxLength(textControl.getModel().getMaxLength());
 
-		parent.getElement().appendChild(textBox.getElement());
+		if (textControl.getModel().getHelpText() != null) {
 
-		helpSpan = new Label(MangoClientWeb.MESSAGES.helpShort());
-		helpSpan.addStyleName(GwtStyles.CONTROL_FEEDBACK_HELP_STYLE);
-		helpSpan.getElement().getStyle().setOpacity(GwtStyles.DISABLED_OPACITY);
+			helpLabel = new Label(MangoClientWeb.MESSAGES.helpShort());
+			parent.getElement().appendChild(helpLabel.getElement());
 
-		parent.getElement().appendChild(helpSpan.getElement());
+			helpLabel.addStyleName(GwtStyles.CONTROL_FEEDBACK_HELP_STYLE);
+			helpLabel.getElement().getStyle().setOpacity(GwtStyles.DISABLED_OPACITY);
+
+			helpPopup = new PopupPanel(true);
+			helpPopup.add(new HTML(SafeHtmlUtils.fromTrustedString(textControl.getModel().getHelpText())));
+
+			parent.addDomHandler(new ClickHandler() {
+				@Override
+				public void onClick(ClickEvent event) {
+					Element targetElement = event.getNativeEvent().getEventTarget().cast();
+
+					if (targetElement == helpLabel.getElement()) {
+						helpPopup.showRelativeTo(helpLabel);
+					}
+				}
+			}, ClickEvent.getType());
+
+			FadeAnimation.adaptMouseOver(parent, helpLabel.getElement());
+
+		}
 
 		initWidget(parent);
 
-		helpPopup = new PopupPanel(true);
-		helpPopup.setTitle("fds");
-		helpPopup.add(new HTML(SafeHtmlUtils.fromString("dsfdsfds")));
-
-		parent.sinkEvents(Event.ONMOUSEOUT);
-		parent.sinkEvents(Event.ONMOUSEOVER);
-
-		Event.sinkEvents(helpSpan.getElement(), Event.ONCLICK);
-
-		helpSpan.addHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				helpPopup.showRelativeTo(helpSpan);
-			}
-		}, ClickEvent.getType());
-
-		FadeAnimation.adaptMouseOver(parent, helpSpan.getElement());
 	}
 
 	public void setContent(Object content) {

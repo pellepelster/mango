@@ -401,8 +401,7 @@ h6,.h6{
     font-size: 150%;
     font-weight: bold;
 	position: block;    
-    z-index: 2;
-    top: 5px;
+    top: 0px;
 	right: -10px;
     width: 15px;
     height: 15px;
@@ -523,4 +522,7 @@ h6,.h6{
     border: 0px;
 }
 
- 
+.gwt-PopupPanel {
+	border: 1px solid rgb(204, 204, 204);
+    background-color: rgb(255, 255, 255);
+}
