@@ -6,7 +6,6 @@ import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
-import java.util.Date
 
 class AttributeUtils {
 

@@ -92,6 +92,33 @@ project MangoDemo {
 
 		package demo {
 
+			dictionary DemoDictionary2 {
+				entity Entity2
+
+				dictionarycontrols {
+					textcontrol TextControl2 { entityattribute Entity2.stringDatatype2 }
+				}
+				
+				labelcontrols {
+					textcontrol ref TextControl2
+				}
+
+				dictionarysearch DemoSearch2 {
+
+					dictionaryfilter DemoFilter2 {
+						textcontrol ref TextControl2
+					}
+
+					dictionaryresult DemoResult2 {
+						textcontrol ref TextControl2
+					}
+				}
+
+				dictionaryeditor DemoEditor2 {
+					textcontrol ref TextControl2
+				}
+			}
+
 			dictionary DemoDictionary1 {
 
 				entity Entity1
@@ -99,11 +126,9 @@ project MangoDemo {
 				dictionarycontrols {
 
 					textcontrol TextControl1 { entityattribute Entity1.stringDatatype1 }
-
 					textcontrol TextControl2 { entityattribute Entity1.stringDatatype2 }
-
 					textcontrol TextControl3 { entityattribute Entity1.stringDatatype3 }
-
+					referencecontrol ReferenceControl1 { entityattribute Entity1.entity2Datatype dictionary DemoDictionary2 }
 					booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
 
 					enumerationcontrol EnumerationControl1 { entityattribute Entity1.enumeration1Datatype }
@@ -125,6 +150,7 @@ project MangoDemo {
 
 						booleancontrol ref BooleanControl1
 						enumerationcontrol ref EnumerationControl1
+						referencecontrol ref ReferenceControl1
 
 					}
 
@@ -132,6 +158,7 @@ project MangoDemo {
 						textcontrol ref TextControl1
 						textcontrol ref TextControl2
 						textcontrol ref TextControl3
+						referencecontrol ref ReferenceControl1
 						booleancontrol ref BooleanControl1
 						enumerationcontrol ref EnumerationControl1
 					}
@@ -141,6 +168,7 @@ project MangoDemo {
 					textcontrol ref TextControl1
 					textcontrol ref TextControl2
 					textcontrol ref TextControl3
+					referencecontrol ref ReferenceControl1
 					booleancontrol ref BooleanControl1
 					enumerationcontrol ref EnumerationControl1
 				}
@@ -208,6 +236,9 @@ project MangoDemo {
 		navigationnode Navigation {
 			navigationnode DemoDictionary1 {
 				dictionarySearch DemoDictionary1.DemoSearch1
+			}
+			navigationnode DemoDictionary2 {
+				dictionarySearch DemoDictionary2.DemoSearch2
 			}
 		}
 	}

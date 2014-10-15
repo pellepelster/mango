@@ -52,8 +52,6 @@ public class ControlHelper implements IControlUpdateListener {
 
 		uiObject.setWidth(WidthCalculationStrategy.getInstance().getControlWidthCss(baseControl.getModel()));
 
-		onUpdate();
-
 		baseControl.addUpdateListener(this);
 
 		if (uiObject instanceof HasValue<?>) {
@@ -72,6 +70,25 @@ public class ControlHelper implements IControlUpdateListener {
 				}
 			}
 		}
+
+		// uiObject.addDomHandler(new MouseOverHandler() {
+		//
+		// @Override
+		// public void onMouseOver(MouseOverEvent event) {
+		// baseControl.beginEdit();
+		// }
+		// }, MouseOverEvent.getType());
+		//
+		// uiObject.addDomHandler(new MouseOutHandler() {
+		//
+		// @Override
+		// public void onMouseOut(MouseOutEvent event) {
+		// baseControl.endEdit();
+		// }
+		// }, MouseOutEvent.getType());
+
+		onUpdate();
+
 	}
 
 	private void setParseValue(Object value) {

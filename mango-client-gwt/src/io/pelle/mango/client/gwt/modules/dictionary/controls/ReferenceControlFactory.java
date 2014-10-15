@@ -61,7 +61,7 @@ public class ReferenceControlFactory extends BaseControlFactory<IReferenceContro
 
 			switch (referenceControl.getModel().getControlType()) {
 			default:
-				editTextCell = new SuggestCellControl<VOType>(referenceControl.getModel(), new VOSuggestOracle<VOType>(referenceControl.getModel()));
+				editTextCell = new SuggestCellControl<VOType>(referenceControl.getModel(), new MangoSuggestOracle(referenceControl));
 				break;
 			}
 

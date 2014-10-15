@@ -34,4 +34,8 @@ public class DictionaryResult<VOType extends IBaseVO> extends BaseTableElement<V
 	public Set<String> getHighlightTexts() {
 		return highlightTexts;
 	}
+
+	public int getMaxResults() {
+		return getModel().getMaxResults();
+	}
 }

@@ -446,6 +446,10 @@ h6,.h6{
     font-size: 18px;
 }
 
+.gwt-StackLayoutPanel .gwt-StackLayoutPanelHeader {
+	border: 0px;
+}
+
 /**********************
     dictionary search
  **********************/
@@ -497,7 +501,6 @@ h6,.h6{
 /**********************
     humanized messages
  **********************/
-
 .gwt-StackLayoutPanel .gwt-StackLayoutPanelHeader {
     
     display: inline-block;
@@ -526,3 +529,46 @@ h6,.h6{
 	border: 1px solid rgb(204, 204, 204);
     background-color: rgb(255, 255, 255);
 }
+
+/**********************
+   reference control
+ **********************/
+.gwt-SuggestBoxPopup .suggestPopupMiddleLeft {
+	background: none;
+	border-left: 1px solid rgb(204, 204, 204);
+}
+
+.gwt-SuggestBoxPopup .suggestPopupMiddleRight {
+	background: none;
+	border-right: 1px solid rgb(204, 204, 204);
+}
+
+.gwt-SuggestBoxPopup .suggestPopupTopLeft {
+	background: none;
+	border-bottom: 1px solid rgb(204, 204, 204);
+} 
+
+.gwt-SuggestBoxPopup .suggestPopupTopCenter {
+	background: none;
+	border-bottom: 1px solid rgb(204, 204, 204);
+} 
+
+.gwt-SuggestBoxPopup .suggestPopupTopRight {
+	background: none;
+	border-bottom: 1px solid rgb(204, 204, 204);
+} 
+
+.gwt-SuggestBoxPopup .suggestPopupBottomLeft {
+	background: none;
+	border-top: 1px solid rgb(204, 204, 204);
+} 
+
+.gwt-SuggestBoxPopup .suggestPopupBottomCenter {
+	background: none;
+	border-top: 1px solid rgb(204, 204, 204);
+} 
+
+.gwt-SuggestBoxPopup .suggestPopupBottomRight {
+	background: none;
+	border-top: 1px solid rgb(204, 204, 204);
+} 

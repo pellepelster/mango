@@ -40,14 +40,14 @@ public class GwtTextControl extends Composite implements IGwtControl {
 
 	private TextBox textBox;
 
-	public GwtTextControl(TextControl textControl) {
+	public GwtTextControl(final TextControl textControl) {
 		super();
 
 		parent = new SimplePanel();
 		parent.addStyleName(GwtStyles.CONTROL_HAS_FEEDBACK_STYLE);
 
 		textBox = new TextBox();
-		parent.getElement().appendChild(textBox.getElement());
+		parent.add(textBox);
 
 		new ControlHelper(textBox, textControl, this, true);
 		textBox.ensureDebugId(DictionaryModelUtil.getDebugId(textControl.getModel()));
@@ -63,7 +63,6 @@ public class GwtTextControl extends Composite implements IGwtControl {
 
 			helpPopup = new PopupPanel(true);
 			helpPopup.add(new HTML(SafeHtmlUtils.fromTrustedString(textControl.getModel().getHelpText())));
-
 			parent.addDomHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {

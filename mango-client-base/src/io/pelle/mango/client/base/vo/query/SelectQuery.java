@@ -7,6 +7,10 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T>> implements Serializable {
 
+	private int maxResults = MAX_RESULTS_DEFAULT;
+
+	public static int MAX_RESULTS_DEFAULT = 50;
+
 	public SelectQuery() {
 		super();
 	}
@@ -31,6 +35,15 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 	@Override
 	protected SelectQuery<T> getQuery() {
 		return this;
+	}
+
+	public SelectQuery<T> setMaxResults(int maxResults) {
+		this.maxResults = maxResults;
+		return this;
+	}
+
+	public int getMaxResults() {
+		return maxResults;
 	}
 
 }

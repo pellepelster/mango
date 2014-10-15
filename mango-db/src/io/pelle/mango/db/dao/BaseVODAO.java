@@ -52,11 +52,6 @@ public class BaseVODAO extends BaseDAO implements IBaseVODAO {
 	}
 
 	@Override
-	public <T extends IBaseVO> List<T> filter(SelectQuery<T> selectQuery) {
-		return filter(selectQuery, 0, Integer.MAX_VALUE);
-	}
-
-	@Override
 	public <T extends IBaseVO> void deleteAll(Class<T> voClass) {
 		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(voClass);
 		baseEntityDAO.deleteAll(entityClass);
@@ -97,7 +92,7 @@ public class BaseVODAO extends BaseDAO implements IBaseVODAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends IBaseVO> List<T> filter(SelectQuery<T> selectQuery, int firstResult, int maxResults) {
+	public <T extends IBaseVO> List<T> filter(SelectQuery<T> selectQuery) {
 		List<IBaseEntity> entityResult = (List<IBaseEntity>) getResultList(selectQuery, entityManager);
 
 		final Map<Class<?>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(selectQuery);

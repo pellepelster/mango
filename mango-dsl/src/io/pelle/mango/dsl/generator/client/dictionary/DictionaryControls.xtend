@@ -13,8 +13,8 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.IntegerContr
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel
 import io.pelle.mango.dsl.ModelUtil
+import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 import io.pelle.mango.dsl.generator.util.AttributeUtils
-import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.BaseDataType
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.BooleanEntityAttribute
@@ -49,18 +49,15 @@ class DictionaryControls {
 	extension DictionaryNameUtils
 
 	@Inject
-	extension TypeUtils
+	extension ClientTypeUtils
 
 	@Inject
 	extension AttributeUtils
-
-	def dispatch dictionaryControlConstant(DictionaryControl dictionaryControl) '''
+	
+	
+	def dictionaryControlConstant(DictionaryControl dictionaryControl) '''
 		public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryControlType»("«ModelUtil.
 			getControlName(dictionaryControl)»", this);
-	'''
-
-	def dispatch dictionaryControlConstant(DictionaryReferenceControl dictionaryControl) '''
-		public «dictionaryControl.dictionaryClassFullQualifiedName» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryClassFullQualifiedName»(this);
 	'''
 
 	def dictionaryControlCommonSetters(DictionaryControl dictionaryControl) '''
@@ -296,7 +293,7 @@ class DictionaryControls {
 	// DictionaryReferenceControl
 	//-------------------------------------------------------------------------
 	def dispatch dictionaryControlType(DictionaryReferenceControl dictionaryControl) '''
-		«ReferenceControlModel»<«ModelUtil.getEntityAttribute(dictionaryControl).type»>
+		«ReferenceControlModel.name»<«ModelUtil.getEntityAttribute(dictionaryControl).type»>
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryReferenceControl dictionaryControl) '''

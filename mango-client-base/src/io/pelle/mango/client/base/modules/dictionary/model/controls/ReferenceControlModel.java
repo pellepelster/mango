@@ -7,8 +7,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReferenceControlModel<VOType extends IBaseVO> extends BaseControlModel<IReferenceControl<VOType>> implements IReferenceControlModel
-{
+public class ReferenceControlModel<VOType extends IBaseVO> extends BaseControlModel<IReferenceControl<VOType>> implements IReferenceControlModel {
 
 	private static final long serialVersionUID = -9089131170958607211L;
 
@@ -18,37 +17,41 @@ public class ReferenceControlModel<VOType extends IBaseVO> extends BaseControlMo
 
 	private CONTROL_TYPE controlType = CONTROL_TYPE.TEXT;
 
-	public void setDictionaryName(String dictionaryName)
-	{
+	private int suggestionsLimit = DEFAULT_SUGGESTIONS_LIMIT;
+
+	public void setDictionaryName(String dictionaryName) {
 		this.dictionaryName = dictionaryName;
 	}
 
-	public ReferenceControlModel(String name, IBaseModel parent)
-	{
+	public ReferenceControlModel(String name, IBaseModel parent) {
 		super(name, parent);
 	}
 
 	@Override
-	public String getDictionaryName()
-	{
+	public String getDictionaryName() {
 		return this.dictionaryName;
 	}
 
 	@Override
-	public List<IBaseControlModel> getLabelControls()
-	{
+	public List<IBaseControlModel> getLabelControls() {
 		return this.labelControls;
 	}
 
 	@Override
-	public CONTROL_TYPE getControlType()
-	{
+	public CONTROL_TYPE getControlType() {
 		return this.controlType;
 	}
 
-	public void setControlType(CONTROL_TYPE controlType)
-	{
+	public void setControlType(CONTROL_TYPE controlType) {
 		this.controlType = controlType;
 	}
 
+	@Override
+	public int getSuggestionsLimit() {
+		return suggestionsLimit;
+	}
+
+	public void setSuggestionsLimit(int suggestionsLimit) {
+		this.suggestionsLimit = suggestionsLimit;
+	}
 }

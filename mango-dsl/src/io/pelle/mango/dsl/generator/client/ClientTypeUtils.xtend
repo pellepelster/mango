@@ -3,7 +3,6 @@ package io.pelle.mango.dsl.generator.client
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.Entity
-import io.pelle.mango.dsl.mango.EntityDataType
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.mango.ValueObjectType
 

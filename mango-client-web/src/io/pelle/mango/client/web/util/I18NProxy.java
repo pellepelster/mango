@@ -16,6 +16,7 @@ public class I18NProxy {
 			}
 		};
 
+		@SuppressWarnings("unchecked")
 		I proxy = (I) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[] { interfaceClass }, handler);
 
 		return proxy;

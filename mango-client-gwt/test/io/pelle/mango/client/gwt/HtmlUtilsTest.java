@@ -25,6 +25,10 @@ public class HtmlUtilsTest {
 		assertEquals("<strong>aa</strong>bb", sb.toSafeHtml().asString());
 
 		sb = new SafeHtmlBuilder();
+		HtmlUtils.strong("aa", "aabbaa", sb);
+		assertEquals("<strong>aa</strong>bbaa", sb.toSafeHtml().asString());
+
+		sb = new SafeHtmlBuilder();
 		HtmlUtils.strong("aa", "bbaa", sb);
 		assertEquals("bb<strong>aa</strong>", sb.toSafeHtml().asString());
 
@@ -35,6 +39,10 @@ public class HtmlUtilsTest {
 		sb = new SafeHtmlBuilder();
 		HtmlUtils.strong("aa", null, sb);
 		assertEquals("", sb.toSafeHtml().asString());
+
+		sb = new SafeHtmlBuilder();
+		HtmlUtils.strong("aa", "Aabb", sb);
+		assertEquals("<strong>Aa</strong>bb", sb.toSafeHtml().asString());
 
 	}
 }

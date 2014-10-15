@@ -20,7 +20,7 @@ public class HtmlUtils {
 		int lastIndex = 0;
 		while (currentFromIndex > -1 && lastIndex < strongText.length()) {
 
-			currentFromIndex = text.indexOf(strongText, currentFromIndex);
+			currentFromIndex = text.toLowerCase().indexOf(strongText.toLowerCase(), currentFromIndex);
 
 			if (currentFromIndex > -1) {
 				sb.appendEscaped(text.substring(lastIndex, currentFromIndex));
@@ -28,7 +28,7 @@ public class HtmlUtils {
 
 			if (currentFromIndex > -1) {
 				sb.append(SafeHtmlUtils.fromTrustedString("<strong>"));
-				sb.appendEscaped(strongText);
+				sb.appendEscaped(text.substring(currentFromIndex, currentFromIndex + strongText.length()));
 				sb.append(SafeHtmlUtils.fromTrustedString("</strong>"));
 
 				lastIndex = currentFromIndex + strongText.length();

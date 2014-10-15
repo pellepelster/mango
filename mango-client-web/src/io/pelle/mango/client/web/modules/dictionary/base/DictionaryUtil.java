@@ -18,15 +18,22 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IHierarchicalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.ITextControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.query.IBooleanExpression;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.controls.ControlContentPresenter;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
+import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.List;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * Utilities for dictionary model handling
@@ -36,6 +43,7 @@ import com.google.gwt.core.client.GWT;
  * 
  */
 public final class DictionaryUtil {
+
 	public static String getDictionaryAdd(IDictionaryModel dictionaryModel) {
 		String title = DictionaryModelUtil.getEditorLabel(dictionaryModel);
 
@@ -75,9 +83,7 @@ public final class DictionaryUtil {
 
 	public static String getLabel(IReferenceControlModel referenceControlModel, IBaseVO vo) {
 		IDictionaryModel dictionaryModel = DictionaryModelProvider.getDictionary(referenceControlModel.getDictionaryName());
-
 		List<IBaseControlModel> labelControlModels = DictionaryModelUtil.getLabelControlsWithFallback(referenceControlModel, dictionaryModel);
-
 		return DictionaryUtil.getLabel(labelControlModels, vo);
 	}
 
@@ -107,8 +113,16 @@ public final class DictionaryUtil {
 
 	}
 
-	public static String getSearchLabel(IDictionaryModel dictionaryModel, int resultCount) {
-		return getSearchLabel(dictionaryModel) + " (" + MangoClientWeb.MESSAGES.searchResults(resultCount) + ")";
+	public static String getSearchLabel(IDictionaryModel dictionaryModel, int resultCount, boolean moreResultsAvailable) {
+
+		String countText = null;
+		if (moreResultsAvailable) {
+			countText = MangoClientWeb.MESSAGES.searchResultsMoreAvailable(resultCount);
+		} else {
+			countText = MangoClientWeb.MESSAGES.searchResults(resultCount);
+		}
+
+		return getSearchLabel(dictionaryModel) + " (" + countText + ")";
 	}
 
 	public static String getSearchLabel(IDictionaryModel dictionaryModel) {
@@ -117,6 +131,49 @@ public final class DictionaryUtil {
 
 	private DictionaryUtil() {
 		super();
+	}
+
+	public static <VOTYPE extends IBaseVO> void getEntitiesByDictionaryLabel(IReferenceControlModel controlModel, String text, final AsyncCallback<List<VOTYPE>> resultCallback) {
+		IDictionaryModel dictionaryModel = DictionaryModelProvider.getDictionary(controlModel.getDictionaryName());
+		getEntitiesByDictionaryLabel(dictionaryModel, text, controlModel.getSuggestionsLimit(), resultCallback);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <VOTYPE extends IBaseVO> void getEntitiesByDictionaryLabel(IDictionaryModel dictionaryModel, String text, int limit, final AsyncCallback<List<VOTYPE>> resultCallback) {
+
+		SelectQuery<VOTYPE> selectQuery = (SelectQuery<VOTYPE>) SelectQuery.selectFrom(dictionaryModel.getVOClass());
+
+		Optional<IBooleanExpression> expression = Optional.absent();
+
+		for (IBaseControlModel baseControlModel : dictionaryModel.getLabelControls()) {
+
+			Optional<IBooleanExpression> compareExpression = Optional.absent();
+
+			if (baseControlModel instanceof ITextControlModel) {
+				compareExpression = ExpressionFactory.createStringStartsWithExpression(dictionaryModel.getVOClass(), baseControlModel.getAttributePath(), text);
+			}
+
+			if (compareExpression.isPresent()) {
+				if (expression.isPresent()) {
+					expression = Optional.of(expression.get().or(compareExpression.get()));
+				} else {
+					expression = compareExpression;
+				}
+			}
+		}
+
+		if (expression.isPresent()) {
+			selectQuery.where(expression.get());
+		}
+
+		selectQuery.setMaxResults(limit + 1);
+
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().filter(selectQuery, new BaseErrorAsyncCallback<List<VOTYPE>>(resultCallback) {
+			@Override
+			public void onSuccess(List<VOTYPE> result) {
+				resultCallback.onSuccess(result);
+			}
+		});
 	}
 
 }

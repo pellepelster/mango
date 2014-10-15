@@ -316,11 +316,6 @@ public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
 	}
 
 	@Override
-	public <T extends IBaseEntity> List<T> filter(SelectQuery<T> selectQuery, int firstResult, int maxResults) {
-		return getResultList(selectQuery, entityManager, firstResult, maxResults);
-	}
-
-	@Override
 	public <T extends IBaseEntity> long count(CountQuery<T> countQuery) {
 		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}

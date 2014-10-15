@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
-import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
@@ -14,10 +13,12 @@ import io.pelle.mango.client.web.test.sync.MangoClientSyncWebTest;
 import io.pelle.mango.client.web.test.sync.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.sync.controls.ControlGroupTest;
 import io.pelle.mango.client.web.test.sync.controls.EnumerationTestControl;
+import io.pelle.mango.client.web.test.sync.controls.ReferenceTestControl;
 import io.pelle.mango.client.web.test.sync.controls.TextTestControl;
 import io.pelle.mango.client.web.util.I18NProxy;
 import io.pelle.mango.test.client.ENUMERATION1;
 import io.pelle.mango.test.client.Entity1VO;
+import io.pelle.mango.test.client.Entity2VO;
 import io.pelle.mango.test.client.MangoDemoClientConfiguration;
 import io.pelle.mango.test.client.MangoDemoDictionaryModel;
 
@@ -28,15 +29,95 @@ import java.util.UUID;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
 public class DemoClientTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
 
 	@Test
-	public void testEditorMetaInformation() {
+	public void testDemoDictionary2TextControl2() {
+
+		baseEntityService.deleteAll(Entity2VO.class.getName());
+
+		DictionaryEditorModuleSyncTestUI<Entity2VO> editor2 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2);
+		TextTestControl textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);
+		textControl2.setValue("abc");
+		editor2.save();
+
+		DictionarySearchModuleSyncTestUI<Entity2VO> search2 = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_SEARCH2);
+		search2.execute();
+		search2.assertSearchResults(1);
+		editor2 = search2.openEditor(0);
+		textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);
+		textControl2.assertValue("abc");
+	}
+
+	@Test
+	public void testDemoDictionary1ReferenceControl1reateSearchAndUpdate() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
+
+		DictionaryEditorModuleSyncTestUI<Entity2VO> editor2 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2);
+		TextTestControl textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);
+		textControl2.setValue("abc");
+		editor2.save();
+
+		editor2 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2);
+		textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);
+		textControl2.setValue("def");
+		editor2.save();
+
+		editor2 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2);
+		textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);
+		textControl2.setValue("xxx");
+		editor2.save();
+
+		editor2 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2);
+		textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);
+		textControl2.setValue("xyz");
+		editor2.save();
+
+		// dictionary1 (ghi)
+		DictionaryEditorModuleSyncTestUI<Entity1VO> editor1 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		TextTestControl textControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
+		textControl1.setValue("ghi");
+
+		ReferenceTestControl<Entity2VO> referenceControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.REFERENCE_CONTROL1);
+
+		referenceControl1.parseValue("x");
+		referenceControl1.assertHasSuggestions(2);
+
+		referenceControl1.parseValue("ab");
+		referenceControl1.endEdit();
+		referenceControl1.assertValueString("abc");
+		editor1.save();
+
+		// dictionary1 (jkl)
+		editor1 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		textControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
+		textControl1.setValue("jkl");
+
+		referenceControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.REFERENCE_CONTROL1);
+		referenceControl1.parseValue("def");
+		referenceControl1.endEdit();
+		referenceControl1.assertValueString("def");
+		editor1.save();
+
+		// search dictionary1
+		DictionarySearchModuleSyncTestUI<Entity1VO> search1 = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1);
+		referenceControl1 = search1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.REFERENCE_CONTROL1);
+		referenceControl1.parseValue("abc");
+		referenceControl1.endEdit();
+		search1.execute();
+		search1.assertSearchResults(1);
+		// assertEquals("abc",
+		// search.getResultRow(0).getVO().getStringDatatype1());
+
+	}
+
+	@Test
+	public void testDictionary1EditorMetaInformation() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -49,34 +130,8 @@ public class DemoClientTest extends BaseDemoTest {
 
 	}
 
-	public void blog() {
-
-		DictionaryEditorModuleSyncTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
-		TextTestControl textControl1 = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
-		textControl1.setValue("abc");
-		editor.save();
-
-		DictionarySearchModuleSyncTestUI<Entity1VO> search = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1);
-		search.execute();
-		search.assertSearchResults(1);
-
-		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.addEditorHook(new BaseEditorHook<Entity1VO>() {
-
-			@Override
-			public void onSave(AsyncCallback<Boolean> asyncCallback, Entity1VO vo) {
-
-				if (vo.getStringDatatype1().equals("xxx")) {
-					asyncCallback.onSuccess(false);
-				} else {
-					asyncCallback.onSuccess(false);
-				}
-			}
-		});
-
-	}
-
 	@Test
-	public void testTextControlSaveAndSearch() {
+	public void testDictionary1TextControl1SaveAndSearch() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -114,7 +169,7 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testTextControlNaturalKey() {
+	public void testDictionary1TextControl1NaturalKey() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -139,7 +194,7 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testEditorBooleanControlSaveAndSearch() {
+	public void testDictionary1BooleanControl1SaveAndSearch() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -168,7 +223,7 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testEditorEnumerationControlSaveAndSearch() {
+	public void testDictionary1EnumerationControl1SaveAndSearch() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -211,7 +266,7 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testControlGroupMultiFilter() {
+	public void testDictionary1ControlGroup1MultiFilter() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 

@@ -331,7 +331,7 @@ public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
 			baseEntityDAO.create(newEntity);
 		}
 
-		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class), 0, 5);
+		List<Entity1> entity1s = baseEntityDAO.filter(selectFrom(Entity1.class).setMaxResults(5));
 		assertEquals(5, entity1s.size());
 
 	}

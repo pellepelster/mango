@@ -37,6 +37,19 @@ public class ExpressionFactory {
 
 	}
 
+	public static Optional<IBooleanExpression> createStringStartsWithExpression(Class<? extends IVOEntity> clazz, String attributePath, String value) {
+
+		IBooleanExpression compareExpression = null;
+
+		if (value != null && !value.trim().isEmpty()) {
+			PathExpression pathExpression = new PathExpression(clazz.getName(), attributePath);
+			compareExpression = new CompareExpression(pathExpression, ComparisonOperator.LIKE_NO_CASE, new StringExpression(value + "%"));
+		}
+
+		return Optional.fromNullable(compareExpression);
+
+	}
+
 	public static IBooleanExpression createLongExpression(Class<? extends IBaseVO> clazz, String attributePath, long value) {
 
 		IBooleanExpression compareExpression = null;

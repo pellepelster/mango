@@ -20,12 +20,15 @@ import io.pelle.mango.client.base.modules.dictionary.controls.IBaseLookupControl
  * @version $Rev$, $Date$
  * 
  */
-public interface IReferenceControlModel extends IBaseLookupControlModel
-{
-	enum CONTROL_TYPE
-	{
+public interface IReferenceControlModel extends IBaseLookupControlModel {
+
+	public static int DEFAULT_SUGGESTIONS_LIMIT = 20;
+
+	enum CONTROL_TYPE {
 		TEXT, DROPDOWN
 	}
 
 	CONTROL_TYPE getControlType();
+
+	int getSuggestionsLimit();
 }

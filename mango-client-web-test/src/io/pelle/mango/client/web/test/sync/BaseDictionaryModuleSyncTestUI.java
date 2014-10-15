@@ -14,11 +14,14 @@ package io.pelle.mango.client.web.test.sync;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ControlGroupModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.EnumerationControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel;
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
 import io.pelle.mango.client.web.test.sync.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.sync.controls.ControlGroupTest;
 import io.pelle.mango.client.web.test.sync.controls.EnumerationTestControl;
+import io.pelle.mango.client.web.test.sync.controls.ReferenceTestControl;
 import io.pelle.mango.client.web.test.sync.controls.TextTestControl;
 
 public abstract class BaseDictionaryModuleSyncTestUI {
@@ -32,6 +35,11 @@ public abstract class BaseDictionaryModuleSyncTestUI {
 
 	public TextTestControl getControl(TextControlModel controlModel) {
 		return new TextTestControl(this.baseDictionaryModule.getElement(controlModel));
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public <VOType extends IBaseVO> ReferenceTestControl<VOType> getControl(ReferenceControlModel<VOType> controlModel) {
+		return new ReferenceTestControl(this.baseDictionaryModule.getElement(controlModel));
 	}
 
 	public BooleanTestControl getControl(BooleanControlModel controlModel) {

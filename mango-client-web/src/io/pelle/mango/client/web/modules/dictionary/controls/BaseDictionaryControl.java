@@ -133,16 +133,20 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 
 	@Override
 	public void parseValue(String valueString) {
+		
 		if (Strings.isNullOrEmpty(valueString)) {
 			setValueInternal(null);
 		} else {
+			
 			ParseResult parseResult = parseValueInternal(valueString);
 
-			if (parseResult.getValidationMessage() == null) {
-				setValueInternal(parseResult.getValue());
-			} else {
-				setValueInternal(null);
-				getRootElement().getValidationMessages(this).addValidationMessage(parseResult.getValidationMessage());
+			if (parseResult != null) {
+				if (parseResult.getValidationMessage() == null) {
+					setValueInternal(parseResult.getValue());
+				} else {
+					setValueInternal(null);
+					getRootElement().getValidationMessages(this).addValidationMessage(parseResult.getValidationMessage());
+				}
 			}
 		}
 
@@ -183,6 +187,14 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 	@Override
 	protected void update() {
 		fireUpdateListeners();
+	}
+
+	@Override
+	public void beginEdit() {
+	}
+
+	@Override
+	public void endEdit() {
 	}
 
 	protected abstract ParseResult parseValueInternal(String valueString);

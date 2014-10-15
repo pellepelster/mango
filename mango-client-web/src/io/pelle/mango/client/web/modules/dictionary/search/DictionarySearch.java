@@ -38,6 +38,8 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 
 	private List<ISearchUpdateListener> updateListeners = new ArrayList<ISearchUpdateListener>();
 
+	private boolean moreResultsAvailable = false;
+
 	public DictionarySearch(IDictionaryModel dictionaryModel) {
 		super(dictionaryModel, null);
 
@@ -107,10 +109,21 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 			selectQuery.where(expression.get());
 		}
 
+		selectQuery.setMaxResults(dictionaryResult.getMaxResults() + 1);
+
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().filter(selectQuery, new BaseErrorAsyncCallback<List<VOType>>() {
 
 			@Override
 			public void onSuccess(List<VOType> result) {
+
+				if (result.size() > 2 && result.size() > dictionaryResult.getMaxResults()) {
+					result = result.subList(0, result.size() - 1);
+					moreResultsAvailable = true;
+				} else {
+					moreResultsAvailable = false;
+
+				}
+
 				DictionarySearch.this.dictionaryResult.setRows(result);
 				asyncCallback.onSuccess(DictionarySearch.this.dictionaryResult.getRows());
 				fireUpdateListeners();
@@ -149,7 +162,7 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 	}
 
 	public String getTitle() {
-		return DictionaryUtil.getSearchLabel(getModel(), getDictionaryResult().getRows().size());
+		return DictionaryUtil.getSearchLabel(getModel(), getDictionaryResult().getRows().size(), moreResultsAvailable);
 	}
 
 	private void fireUpdateListeners() {

@@ -22,6 +22,8 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 
 	private List<IValidationMessage> validationMessages = new ArrayList<IValidationMessage>();
 
+	private String valueString;
+
 	public BaseControlTest(ElementType baseControl) {
 		this.baseControl = baseControl;
 
@@ -46,7 +48,17 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 	}
 
 	public void parseValue(String valueString) {
+		beginEdit();
 		this.baseControl.parseValue(valueString);
+		endEdit();
+	}
+
+	public void beginEdit() {
+		this.baseControl.beginEdit();
+	}
+
+	public void endEdit() {
+		this.baseControl.endEdit();
 	}
 
 	public void assertMandatory() {
@@ -61,6 +73,10 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 		Assert.assertFalse(hasErrors);
 	}
 
+	public void assertValueString(String valueString) {
+		Assert.assertEquals(valueString, this.valueString);
+	}
+	
 	public void assertHasErrorWithText(String text) {
 
 		for (IValidationMessage validationMessage : validationMessages) {
@@ -83,5 +99,6 @@ public class BaseControlTest<ElementType extends IBaseControl<ValueType, ?>, Val
 		this.hasErrors = baseControl.getValidationMessages().hasErrors();
 		this.validationMessages.clear();
 		this.validationMessages.addAll(Lists.newArrayList(baseControl.getValidationMessages()));
+		this.valueString = baseControl.format();
 	}
 }

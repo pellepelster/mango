@@ -14,37 +14,33 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ControlHelper;
-import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.ReferenceControl;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 
-public class GwtReferenceTextControl<VOType extends IBaseVO> extends SuggestBox implements IGwtControl {
+public class GwtReferenceTextControl<VOTYPE extends IBaseVO> extends SuggestBox implements IGwtControl {
 
-	private VOType vo;
+	private ReferenceControl<VOTYPE> referenceControl;
 
-	private final ReferenceControl<VOType> referenceControl;
-
-	public GwtReferenceTextControl(final ReferenceControl<VOType> referenceControl) {
-		super(new VOSuggestOracle<VOType>(referenceControl.getModel()));
+	public GwtReferenceTextControl(final ReferenceControl<VOTYPE> referenceControl) {
+		super(new MangoSuggestOracle<VOTYPE>(referenceControl));
+		this.referenceControl = referenceControl;
 
 		ensureDebugId(DictionaryModelUtil.getDebugId(referenceControl.getModel()));
 		setLimit(5);
-		this.referenceControl = referenceControl;
 		new ControlHelper(this, referenceControl, this, false);
 
-		addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
+		addSelectionHandler(new SelectionHandler<Suggestion>() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void onSelection(SelectionEvent<Suggestion> selectionEvent) {
-				if (selectionEvent.getSelectedItem() instanceof VOSuggestion) {
-					VOSuggestion<VOType> voSuggestion = (VOSuggestion<VOType>) selectionEvent.getSelectedItem();
-					vo = voSuggestion.getValue();
-					referenceControl.setValue(vo);
+				if (selectionEvent.getSelectedItem() instanceof SuggestionWrapper) {
+					SuggestionWrapper<VOTYPE> suggestionWrapper = (SuggestionWrapper<VOTYPE>) selectionEvent.getSelectedItem();
+					referenceControl.setValue(suggestionWrapper.getValue());
 				}
 
 			}
@@ -54,17 +50,7 @@ public class GwtReferenceTextControl<VOType extends IBaseVO> extends SuggestBox 
 
 	@Override
 	public void setContent(Object content) {
-		if (content != null) {
-			if (content instanceof IBaseVO) {
-				vo = (VOType) content;
-				setText(DictionaryUtil.getLabel(referenceControl.getModel(), vo));
-			} else {
-				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
-			}
-		} else {
-			vo = null;
-			setText("");
-		}
+		setText(referenceControl.format());
 	}
 
 }

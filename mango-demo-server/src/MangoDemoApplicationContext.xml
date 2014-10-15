@@ -16,4 +16,6 @@
 	        </map>
 	    </property>
 	</bean>
+	
+	<bean class="io.pelle.mango.test.server.data.DemoDataGenerator" />
 </beans>

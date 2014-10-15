@@ -13,7 +13,7 @@ public class BaseDAO {
 
 	@SuppressWarnings("unchecked")
 	public List<IBaseEntity> getResultList(SelectQuery<?> selectQuery, EntityManager entityManager) {
-		return getResultList(selectQuery, entityManager, 0, Integer.MAX_VALUE);
+		return getResultList(selectQuery, entityManager, 0, selectQuery.getMaxResults());
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -87,6 +87,9 @@ public interface MangoMessages extends Messages {
 	@AlternateMessage({ "=1", "{0} result" })
 	String searchResults(@PluralCount int resoultCount);
 
+	@DefaultMessage("{0} results, more available")
+	String searchResultsMoreAvailable(int resoultCount);
+
 	@DefaultMessage("Search")
 	String searchSearch();
 

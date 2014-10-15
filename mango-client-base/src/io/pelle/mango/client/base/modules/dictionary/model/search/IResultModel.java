@@ -23,10 +23,9 @@ import java.util.List;
  * @version $Rev$, $Date$
  * 
  */
-public interface IResultModel extends IBaseTableModel
-{
+public interface IResultModel extends IBaseTableModel {
 
-	final static int DEFAULT_MAX_RESULTS = 100;
+	final static int DEFAULT_MAX_RESULTS = 25;
 
 	/**
 	 * Control models representing the columns

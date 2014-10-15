@@ -30,6 +30,7 @@ public class ResultCellTable<VOType extends IBaseVO> extends BaseCellTable<VOTyp
 	public ResultCellTable(final DictionaryResult<VOType> dictionaryResult) {
 		super(dictionaryResult, new BaseTableRowKeyProvider<VOType>());
 		this.dictionaryResult = dictionaryResult;
+		setPageSize(dictionaryResult.getMaxResults());
 		createModelColumns();
 	}
 

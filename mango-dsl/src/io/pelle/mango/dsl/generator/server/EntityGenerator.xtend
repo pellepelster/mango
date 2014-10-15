@@ -17,7 +17,6 @@ import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.server.base.BaseEntity
-import java.util.Date
 
 class EntityGenerator extends BaseEntityGenerator {
 

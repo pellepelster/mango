@@ -109,7 +109,7 @@ class DictionaryGenerator {
 			«dictionaryEditor.containercontents.dictionaryClass»
 		
 				public RootComposite(«BaseModel.name»<?> parent) {
-			super("«ICompositeModel.ROOT_COMPOSITE_NAME»", parent);
+					super("«ICompositeModel.ROOT_COMPOSITE_NAME»", parent);
 		
 					«dictionaryEditor.containercontents.dictionaryContainerContentsConstructor»
 				}

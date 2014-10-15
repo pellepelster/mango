@@ -30,4 +30,8 @@ public interface IBaseControl<ValueType, ModelType extends IBaseModel> extends I
 
 	Optional<IBooleanExpression> getExpression(PathExpression pathExpression);
 
+	void beginEdit();
+	
+	void endEdit();
+
 }

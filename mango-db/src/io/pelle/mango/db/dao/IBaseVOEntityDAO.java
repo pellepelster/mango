@@ -18,8 +18,6 @@ public interface IBaseVOEntityDAO<VOENTITYTYPE extends IVOEntity> {
 
 	<T extends VOENTITYTYPE> List<T> filter(SelectQuery<T> selectQuery);
 
-	<T extends VOENTITYTYPE> List<T> filter(SelectQuery<T> selectQuery, int firstResult, int maxResults);
-
 	<T extends VOENTITYTYPE> Optional<T> read(SelectQuery<T> selectQuery);
 
 	<T extends VOENTITYTYPE> void deleteAll(Class<T> entityClass);
