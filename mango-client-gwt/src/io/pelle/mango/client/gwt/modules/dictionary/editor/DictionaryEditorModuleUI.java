@@ -157,6 +157,12 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 	}
 
 	@Override
+	public boolean contributesToBreadCrumbs()
+	{
+		return true;
+	}
+	
+	@Override
 	public boolean isInstanceOf(String moduleUrl) {
 		return super.isInstanceOf(moduleUrl) && Objects.equal(getModule().getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
 	}

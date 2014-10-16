@@ -112,6 +112,13 @@ public class DemoClientTest extends BaseDemoTest {
 		referenceControl1.endEdit();
 		search1.execute();
 		search1.assertSearchResults(1);
+		
+		// remove reference
+		referenceControl1.parseValue("");
+		referenceControl1.endEdit();
+		search1.execute();
+		search1.assertSearchResults(2);
+
 		// assertEquals("abc",
 		// search.getResultRow(0).getVO().getStringDatatype1());
 

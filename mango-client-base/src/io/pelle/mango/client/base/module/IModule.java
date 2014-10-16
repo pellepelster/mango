@@ -37,4 +37,6 @@ public interface IModule
 	String getTitle();
 
 	void updateUrl(String moduleUrl);
+
+	void onClose();
 }

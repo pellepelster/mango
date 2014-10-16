@@ -535,11 +535,13 @@ h6,.h6{
  **********************/
 .gwt-SuggestBoxPopup .suggestPopupMiddleLeft {
 	background: none;
+	background-color: #fff;
 	border-left: 1px solid rgb(204, 204, 204);
 }
 
 .gwt-SuggestBoxPopup .suggestPopupMiddleRight {
 	background: none;
+	background-color: #fff;
 	border-right: 1px solid rgb(204, 204, 204);
 }
 

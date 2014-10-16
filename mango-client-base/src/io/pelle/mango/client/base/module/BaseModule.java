@@ -26,6 +26,10 @@ public abstract class BaseModule implements IModule
 		return this.moduleCallback;
 	}
 
+	@Override
+	public void onClose() {
+	}
+
 	public BaseModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters)
 	{
 		this.moduleUrl = moduleUrl;

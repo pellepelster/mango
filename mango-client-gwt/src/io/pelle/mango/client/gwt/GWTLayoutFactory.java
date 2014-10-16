@@ -237,6 +237,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 	@Override
 	public void closeModuleUI(IModuleUI<Panel, ?> moduleUI) {
+		
 		LOG.info("closing module ui '" + moduleUI + "'");
 
 		Direction direction = getDirection(moduleUI);

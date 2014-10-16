@@ -33,39 +33,14 @@ public interface IModuleUI<ContainerType, ModuleType extends IModule>
 
 	int getOrder();
 
-	/**
-	 * Try to close the module, returns false if closing fails
-	 * 
-	 * @return
-	 */
 	boolean close();
 
-	/**
-	 * True if module ui supports breadcrumbs navigation
-	 * 
-	 * @return
-	 */
 	boolean contributesToBreadCrumbs();
 
-	/**
-	 * The actual UI library specific widget
-	 * 
-	 * @return
-	 */
 	ContainerType getContainer();
 
-	/**
-	 * The module belonging to this ui
-	 * 
-	 * @return
-	 */
 	ModuleType getModule();
 
-	/**
-	 * Modules title
-	 * 
-	 * @return
-	 */
 	String getTitle();
 
 	boolean isInstanceOf(String moduleUrl);

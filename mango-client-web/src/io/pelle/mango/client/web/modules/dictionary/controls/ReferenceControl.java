@@ -39,6 +39,11 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 	@Override
 	public void parseValue(String valueString) {
 		this.valueString = valueString;
+
+		if (valueString == null || valueString.trim().isEmpty()) {
+			setValue(null);
+		}
+
 	}
 
 	@Override
@@ -66,15 +71,19 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 	@Override
 	public void endEdit() {
 
-		DictionaryUtil.getEntitiesByDictionaryLabel(getModel(), valueString, new BaseErrorAsyncCallback<List<VOTYPE>>() {
+		if (valueString != null && !valueString.trim().isEmpty()) {
+			DictionaryUtil.getEntitiesByDictionaryLabel(getModel(), valueString, new BaseErrorAsyncCallback<List<VOTYPE>>() {
 
-			@Override
-			public void onSuccess(List<VOTYPE> result) {
-				if (result.size() == 1) {
-					setValue(result.get(0));
+				@Override
+				public void onSuccess(List<VOTYPE> result) {
+					if (result.size() == 1) {
+						setValue(result.get(0));
+					}
 				}
-			}
-		});
+			});
+		} else {
+			setValue(null);
+		}
 	}
 
 	@Override

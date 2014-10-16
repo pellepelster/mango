@@ -33,6 +33,7 @@ public class DictionaryEditorModuleUIFactory extends BaseModuleUIFactory<Panel, 
 
 	@Override
 	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionaryEditorModuleUI<?>> moduleCallback, Map<String, Object> parameters, final Optional<IModuleUI<?, ?>> previousModuleUI) {
+		
 		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, DictionaryEditorModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
 
 			@SuppressWarnings({ "rawtypes", "unchecked" })

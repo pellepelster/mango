@@ -52,6 +52,8 @@ public final class ModuleHandler {
 
 	private final LinkedHashMap<String, Stack<IModuleUI>> currentModules = new LinkedHashMap<String, Stack<IModuleUI>>();
 
+	private final LinkedHashMap<IModule, Stack<IModuleUI>> modules2ModuleUI = new LinkedHashMap<IModule, Stack<IModuleUI>>();
+
 	public static ModuleHandler getInstance() {
 		if (instance == null) {
 			instance = new ModuleHandler();
@@ -106,7 +108,9 @@ public final class ModuleHandler {
 
 	};
 
-	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters, final Optional<AsyncCallback<IModuleUI>> callback) {
+	@SuppressWarnings("unchecked")
+	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters,
+			final Optional<AsyncCallback<IModuleUI>> callback) {
 
 		final String location = getLocation(location1);
 
@@ -115,32 +119,52 @@ public final class ModuleHandler {
 		Optional<IModuleUI> moduleUI = Iterables.tryFind(getModuleStack(location), new MouldeUrlPredicate(moduleUrl));
 
 		if (moduleUI.isPresent()) {
+
 			LOG.info("ui module for url '" + moduleUrl + "' already started (" + moduleUI.get().toString() + ")");
+
 			moduleUI.get().updateUrl(moduleUrl);
 
 			if (callback.isPresent()) {
 				callback.get().onSuccess(moduleUI.get());
 			}
 
-			MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI.get(), location);
+			closeCurrentAndShow(moduleUI.get(), location);
+
 		} else {
+
 			if (ModuleUIFactoryRegistry.getInstance().supports(moduleUrl)) {
-				ModuleUIFactoryRegistry.getInstance().getModuleFactory(moduleUrl).getNewInstance(moduleUrl, new BaseAsyncCallback<IModuleUI, IModuleUI>(callback) {
 
-					@Override
-					public void onSuccess(IModuleUI moduleUI) {
-						ModuleHandler.this.getModuleStack(location).add(moduleUI);
-						MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
+				ModuleUIFactoryRegistry.getInstance().getModuleFactory(moduleUrl)
+						.getNewInstance(moduleUrl, new BaseAsyncCallback<IModuleUI, IModuleUI>(callback) {
 
-						if (callback.isPresent()) {
-							callback.get().onSuccess(moduleUI);
-						}
-					}
-				}, parameters, peekCurrentModule(location));
+							@Override
+							public void onSuccess(IModuleUI moduleUI) {
+
+								if (moduleUI.contributesToBreadCrumbs()) {
+									stashCurrentAndShow(moduleUI, location);
+								}
+								else
+								{
+									closeCurrentAndShow(moduleUI, location);
+								}
+								
+								onModuleUIAdd(moduleUI, location);
+
+								if (callback.isPresent()) {
+									callback.get().onSuccess(moduleUI);
+								}
+							}
+
+						}, parameters, peekCurrentModule(location));
 			} else {
 				throw new RuntimeException("unsupported module url '" + moduleUrl + "'");
 			}
 		}
+	}
+
+	private void onModuleUIAdd(IModuleUI moduleUI, final String location) {
+		modules2ModuleUI.get(moduleUI.getModule()).push(moduleUI);
+		ModuleHandler.this.getModuleStack(location).add(moduleUI);
 	}
 
 	private Optional<IModuleUI> peekCurrentModule(String location) {
@@ -160,20 +184,33 @@ public final class ModuleHandler {
 	}
 
 	public void startModule(final String moduleUrl, Map<String, Object> parameters, final AsyncCallback<IModule> moduleCallback) {
+
 		LOG.info("starting module for url '" + moduleUrl + "'");
 
 		if (ModuleFactoryRegistry.getInstance().supports(moduleUrl)) {
 			this.moduleCounter++;
 			parameters.put(BaseModule.MODULE_COUNTER_PARAMETER_ID, this.moduleCounter);
 
-			ModuleFactoryRegistry.getInstance().getModuleFactory(moduleUrl).getNewInstance(moduleUrl, moduleCallback, parameters);
+			ModuleFactoryRegistry.getInstance().getModuleFactory(moduleUrl).getNewInstance(moduleUrl, new AsyncCallback<IModule>() {
+
+				@Override
+				public void onSuccess(IModule result) {
+					modules2ModuleUI.put(result, new Stack<IModuleUI>());
+					moduleCallback.onSuccess(result);
+				}
+
+				@Override
+				public void onFailure(Throwable caught) {
+					moduleCallback.onFailure(caught);
+
+				}
+			}, parameters);
 		} else {
 			moduleCallback.onFailure(new RuntimeException("unsupported module url '" + moduleUrl + "'"));
 		}
 	}
 
 	private String getModuleLocation(IModuleUI moduleUI) {
-
 		for (Map.Entry<String, Stack<IModuleUI>> currentModuleEntry : this.currentModules.entrySet()) {
 			if (currentModuleEntry.getValue().contains(moduleUI)) {
 				return currentModuleEntry.getKey();
@@ -181,18 +218,58 @@ public final class ModuleHandler {
 
 		}
 
-		throw new RuntimeException("module ui '" + moduleUI + "' not found");
+		throw new RuntimeException("module ui '" + moduleUI.toString() + "' not found");
 	}
 
-	public void closeCurrentAndShow(IModuleUI moduleUI) {
-		LOG.info("closing module ui '" + moduleUI.toString() + "'");
+	private void onModuleUIClose(IModuleUI moduleUI) {
 
-		String location = getModuleLocation(moduleUI);
+		Stack<IModuleUI> moduleUIs = modules2ModuleUI.get(moduleUI.getModule());
+
+		moduleUIs.remove(moduleUI);
+
+		if (moduleUIs.isEmpty()) {
+			moduleUI.getModule().onClose();
+		}
+
+		for (Map.Entry<String, Stack<IModuleUI>> currentModuleEntry : this.currentModules.entrySet()) {
+			currentModuleEntry.getValue().remove(moduleUI);
+		}
+
+	}
+
+	public void closeCurrentAndShow(IModuleUI moduleUI, String location) {
 
 		Optional<IModuleUI> currentModuleUI = popCurrentModule(location);
 
 		if (currentModuleUI.isPresent()) {
 			MangoClientWeb.getInstance().getLayoutFactory().closeModuleUI(currentModuleUI.get());
+			onModuleUIClose(moduleUI);
+		}
+
+		MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
+	}
+
+	public void stashCurrentAndShow(IModuleUI moduleUI, String location) {
+
+		Optional<IModuleUI> currentModuleUI = peekCurrentModule(location);
+
+		if (currentModuleUI.isPresent()) {
+			MangoClientWeb.getInstance().getLayoutFactory().closeModuleUI(currentModuleUI.get());
+		}
+
+		MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
+	}
+
+	public void closeCurrentAndShow(IModuleUI moduleUI) {
+
+		LOG.info("closing module ui '" + moduleUI.toString() + "'");
+
+		String location = getModuleLocation(moduleUI);
+		Optional<IModuleUI> currentModuleUI = popCurrentModule(location);
+
+		if (currentModuleUI.isPresent()) {
+			MangoClientWeb.getInstance().getLayoutFactory().closeModuleUI(currentModuleUI.get());
+			onModuleUIClose(currentModuleUI.get());
 		}
 
 		MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
