@@ -6,7 +6,7 @@ public class MangoDslGenerator {
 
 	private int indent = 0;
 
-	private boolean newLineStart = false;
+	private int newLineStart = 0;
 
 	public static MangoDslGenerator create() {
 		return new MangoDslGenerator();
@@ -17,15 +17,17 @@ public class MangoDslGenerator {
 
 	private MangoDslGenerator sWithIndention(String string) {
 
-		if (newLineStart) {
+		if (newLineStart >= 0) {
 
-			sb.append("<br/>");
+			for (int i = 0; i < newLineStart; i++) {
+				sb.append("<br/>");
+			}
 
 			for (int i = 0; i < indent; i++) {
 				sb.append("&nbsp;&nbsp;&nbsp;&nbsp;");
 			}
 
-			newLineStart = false;
+			newLineStart = 0;
 		}
 
 		sb.append(string);
@@ -46,7 +48,7 @@ public class MangoDslGenerator {
 	}
 
 	public MangoDslGenerator br() {
-		newLineStart = true;
+		newLineStart++;
 		return this;
 	}
 
@@ -63,7 +65,7 @@ public class MangoDslGenerator {
 	}
 
 	public MangoDslGenerator block(String keyword, String name, String featureKeyword, String feature) {
-		
+		br();
 		keyword(keyword);
 		s(name);
 		s("{");
@@ -73,19 +75,40 @@ public class MangoDslGenerator {
 		decrementIndent();
 		s("}");
 		br();
-		
+
 		return this;
 	}
-	
+
+	public MangoDslGenerator block(String keyword, String name, String featureKeyword1, String feature1, String featureKeyword2, String feature2) {
+		br();
+		keyword(keyword);
+		s(name);
+		s("{");
+		incrementIndent();
+		keyword(featureKeyword1);
+		s(feature1);
+		br();
+		keyword(featureKeyword2);
+		s(feature2);
+		decrementIndent();
+		s("}");
+		br();
+
+		return this;
+	}
+
 	@Override
 	public String toString() {
 		return sb.toString();
 	}
 
 	public MangoDslGenerator abbr() {
-		br();
 		coloredString("[...]", "#999");
-		br();
+		return this;
+	}
+
+	public MangoDslGenerator b(String string) {
+		s("<strong>" + string + "</strong");
 		return this;
 	}
 

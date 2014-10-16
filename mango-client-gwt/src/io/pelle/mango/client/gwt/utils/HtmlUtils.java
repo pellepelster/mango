@@ -33,7 +33,6 @@ public class HtmlUtils {
 
 				lastIndex = currentFromIndex + strongText.length();
 			}
-
 		}
 
 		if (lastIndex < text.length()) {

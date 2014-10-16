@@ -24,19 +24,20 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 
-public class GwtReferenceTextControl<VOTYPE extends IBaseVO> extends SuggestBox implements IGwtControl {
+public class GwtReferenceTextControl<VOTYPE extends IBaseVO> extends BaseControlWithHelp<SuggestBox> implements IGwtControl {
 
 	private ReferenceControl<VOTYPE> referenceControl;
 
 	public GwtReferenceTextControl(final ReferenceControl<VOTYPE> referenceControl) {
-		super(new MangoSuggestOracle<VOTYPE>(referenceControl));
+		super(new SuggestBox(new MangoSuggestOracle<VOTYPE>(referenceControl)), referenceControl.getModel());
+
 		this.referenceControl = referenceControl;
 
 		ensureDebugId(DictionaryModelUtil.getDebugId(referenceControl.getModel()));
-		setLimit(5);
-		new ControlHelper(this, referenceControl, this, false);
+		getWidget().setLimit(5);
+		new ControlHelper(getWidget(), referenceControl, this, false);
 
-		addSelectionHandler(new SelectionHandler<Suggestion>() {
+		getWidget().addSelectionHandler(new SelectionHandler<Suggestion>() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public void onSelection(SelectionEvent<Suggestion> selectionEvent) {
@@ -47,13 +48,12 @@ public class GwtReferenceTextControl<VOTYPE extends IBaseVO> extends SuggestBox 
 
 			}
 		});
-		
 
-		this.getValueBox().addKeyUpHandler(new KeyUpHandler() {
+		getWidget().getValueBox().addKeyUpHandler(new KeyUpHandler() {
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
-				
-				String value = getValueBox().getValue();
+
+				String value = getWidget().getValueBox().getValue();
 				if (value.trim().isEmpty()) {
 					referenceControl.parseValue("");
 				}
@@ -64,7 +64,7 @@ public class GwtReferenceTextControl<VOTYPE extends IBaseVO> extends SuggestBox 
 
 	@Override
 	public void setContent(Object content) {
-		setText(referenceControl.format());
+		getWidget().setText(referenceControl.format());
 	}
 
 }
