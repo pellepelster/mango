@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.web.test;
 
+import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ControlGroupModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.EnumerationControlModel;
@@ -21,6 +22,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
+import io.pelle.mango.client.web.test.controls.DecimalTestControl;
 import io.pelle.mango.client.web.test.controls.EnumerationTestControl;
 import io.pelle.mango.client.web.test.controls.IntegerTestControl;
 import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
@@ -51,6 +53,10 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 
 	public IntegerTestControl getControl(IntegerControlModel controlModel) {
 		return new IntegerTestControl(this.baseDictionaryModule.getElement(controlModel));
+	}
+
+	public DecimalTestControl getControl(BigDecimalControlModel controlModel) {
+		return new DecimalTestControl(this.baseDictionaryModule.getElement(controlModel));
 	}
 
 	public <ENUM_TYPE> EnumerationTestControl<ENUM_TYPE> getControl(EnumerationControlModel<ENUM_TYPE> controlModel) {
