@@ -1,0 +1,30 @@
+From ba01f01a3202f442821d4d1fd9bf8b876b29d83a Mon Sep 17 00:00:00 2001
+From: pelle <pelle@pelle.io>
+Date: Thu, 16 Oct 2014 13:27:48 +0200
+Subject: [PATCH 3/3] reference control css glitch
+
+---
+ .../src/io/pelle/mango/client/gwt/public/css/mango-standard.css         | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/mango-client-gwt/src/io/pelle/mango/client/gwt/public/css/mango-standard.css b/mango-client-gwt/src/io/pelle/mango/client/gwt/public/css/mango-standard.css
+index 83897e7..7c94194 100644
+--- a/mango-client-gwt/src/io/pelle/mango/client/gwt/public/css/mango-standard.css
++++ b/mango-client-gwt/src/io/pelle/mango/client/gwt/public/css/mango-standard.css
+@@ -535,11 +535,13 @@ h6,.h6{
+  **********************/
+ .gwt-SuggestBoxPopup .suggestPopupMiddleLeft {
+ 	background: none;
++	background-color: #fff;
+ 	border-left: 1px solid rgb(204, 204, 204);
+ }
+ 
+ .gwt-SuggestBoxPopup .suggestPopupMiddleRight {
+ 	background: none;
++	background-color: #fff;
+ 	border-right: 1px solid rgb(204, 204, 204);
+ }
+ 
+-- 
+1.9.2.msysgit.0
+

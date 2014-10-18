@@ -1,0 +1,1851 @@
+From 08847d2efe47fc6f4465f4d593250efb8c6be996 Mon Sep 17 00:00:00 2001
+From: pelle <pelle@pelle.io>
+Date: Thu, 16 Oct 2014 13:19:07 +0200
+Subject: [PATCH 2/3] reference control deref.
+
+---
+ gradlew.bat                                        | 180 ++++----
+ .../pelle/mango/client/base/layout/IModuleUI.java  | 125 ++---
+ .../pelle/mango/client/base/module/BaseModule.java |   4 +
+ .../io/pelle/mango/client/base/module/IModule.java |  82 ++--
+ .../pelle/mango/client/gwt/GWTLayoutFactory.java   | 505 +++++++++++----------
+ .../controls/GwtReferenceTextControl.java          |  14 +
+ .../editor/DictionaryEditorModuleUI.java           | 356 ++++++++-------
+ .../editor/DictionaryEditorModuleUIFactory.java    |   1 +
+ .../mango/client/web/module/ModuleHandler.java     | 477 +++++++++++--------
+ .../dictionary/controls/ReferenceControl.java      |   5 +
+ 10 files changed, 917 insertions(+), 832 deletions(-)
+
+diff --git a/gradlew.bat b/gradlew.bat
+index aec9973..d636286 100755
+--- a/gradlew.bat
++++ b/gradlew.bat
+@@ -1,90 +1,90 @@
+-@if "%DEBUG%" == "" @echo off
+-@rem ##########################################################################
+-@rem
+-@rem  Gradle startup script for Windows
+-@rem
+-@rem ##########################################################################
+-
+-@rem Set local scope for the variables with windows NT shell
+-if "%OS%"=="Windows_NT" setlocal
+-
+-@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
+-set DEFAULT_JVM_OPTS=
+-
+-set DIRNAME=%~dp0
+-if "%DIRNAME%" == "" set DIRNAME=.
+-set APP_BASE_NAME=%~n0
+-set APP_HOME=%DIRNAME%
+-
+-@rem Find java.exe
+-if defined JAVA_HOME goto findJavaFromJavaHome
+-
+-set JAVA_EXE=java.exe
+-%JAVA_EXE% -version >NUL 2>&1
+-if "%ERRORLEVEL%" == "0" goto init
+-
+-echo.
+-echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
+-echo.
+-echo Please set the JAVA_HOME variable in your environment to match the
+-echo location of your Java installation.
+-
+-goto fail
+-
+-:findJavaFromJavaHome
+-set JAVA_HOME=%JAVA_HOME:"=%
+-set JAVA_EXE=%JAVA_HOME%/bin/java.exe
+-
+-if exist "%JAVA_EXE%" goto init
+-
+-echo.
+-echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
+-echo.
+-echo Please set the JAVA_HOME variable in your environment to match the
+-echo location of your Java installation.
+-
+-goto fail
+-
+-:init
+-@rem Get command-line arguments, handling Windowz variants
+-
+-if not "%OS%" == "Windows_NT" goto win9xME_args
+-if "%@eval[2+2]" == "4" goto 4NT_args
+-
+-:win9xME_args
+-@rem Slurp the command line arguments.
+-set CMD_LINE_ARGS=
+-set _SKIP=2
+-
+-:win9xME_args_slurp
+-if "x%~1" == "x" goto execute
+-
+-set CMD_LINE_ARGS=%*
+-goto execute
+-
+-:4NT_args
+-@rem Get arguments from the 4NT Shell from JP Software
+-set CMD_LINE_ARGS=%$
+-
+-:execute
+-@rem Setup the command line
+-
+-set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
+-
+-@rem Execute Gradle
+-"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %CMD_LINE_ARGS%
+-
+-:end
+-@rem End local scope for the variables with windows NT shell
+-if "%ERRORLEVEL%"=="0" goto mainEnd
+-
+-:fail
+-rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
+-rem the _cmd.exe /c_ return code!
+-if  not "" == "%GRADLE_EXIT_CONSOLE%" exit 1
+-exit /b 1
+-
+-:mainEnd
+-if "%OS%"=="Windows_NT" endlocal
+-
+-:omega
++@if "%DEBUG%" == "" @echo off
++@rem ##########################################################################
++@rem
++@rem  Gradle startup script for Windows
++@rem
++@rem ##########################################################################
++
++@rem Set local scope for the variables with windows NT shell
++if "%OS%"=="Windows_NT" setlocal
++
++@rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
++set DEFAULT_JVM_OPTS=-XX:MaxPermSize=512m -Djava.net.preferIPv4Stack=true -Xmx2048M
++
++set DIRNAME=%~dp0
++if "%DIRNAME%" == "" set DIRNAME=.
++set APP_BASE_NAME=%~n0
++set APP_HOME=%DIRNAME%
++
++@rem Find java.exe
++if defined JAVA_HOME goto findJavaFromJavaHome
++
++set JAVA_EXE=java.exe
++%JAVA_EXE% -version >NUL 2>&1
++if "%ERRORLEVEL%" == "0" goto init
++
++echo.
++echo ERROR: JAVA_HOME is not set and no 'java' command could be found in your PATH.
++echo.
++echo Please set the JAVA_HOME variable in your environment to match the
++echo location of your Java installation.
++
++goto fail
++
++:findJavaFromJavaHome
++set JAVA_HOME=%JAVA_HOME:"=%
++set JAVA_EXE=%JAVA_HOME%/bin/java.exe
++
++if exist "%JAVA_EXE%" goto init
++
++echo.
++echo ERROR: JAVA_HOME is set to an invalid directory: %JAVA_HOME%
++echo.
++echo Please set the JAVA_HOME variable in your environment to match the
++echo location of your Java installation.
++
++goto fail
++
++:init
++@rem Get command-line arguments, handling Windowz variants
++
++if not "%OS%" == "Windows_NT" goto win9xME_args
++if "%@eval[2+2]" == "4" goto 4NT_args
++
++:win9xME_args
++@rem Slurp the command line arguments.
++set CMD_LINE_ARGS=
++set _SKIP=2
++
++:win9xME_args_slurp
++if "x%~1" == "x" goto execute
++
++set CMD_LINE_ARGS=%*
++goto execute
++
++:4NT_args
++@rem Get arguments from the 4NT Shell from JP Software
++set CMD_LINE_ARGS=%$
++
++:execute
++@rem Setup the command line
++
++set CLASSPATH=%APP_HOME%\gradle\wrapper\gradle-wrapper.jar
++
++@rem Execute Gradle
++"%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %GRADLE_OPTS% "-Dorg.gradle.appname=%APP_BASE_NAME%" -classpath "%CLASSPATH%" org.gradle.wrapper.GradleWrapperMain %CMD_LINE_ARGS%
++
++:end
++@rem End local scope for the variables with windows NT shell
++if "%ERRORLEVEL%"=="0" goto mainEnd
++
++:fail
++rem Set variable GRADLE_EXIT_CONSOLE if you need the _script_ return code instead of
++rem the _cmd.exe /c_ return code!
++if  not "" == "%GRADLE_EXIT_CONSOLE%" exit 1
++exit /b 1
++
++:mainEnd
++if "%OS%"=="Windows_NT" endlocal
++
++:omega
+diff --git a/mango-client-base/src/io/pelle/mango/client/base/layout/IModuleUI.java b/mango-client-base/src/io/pelle/mango/client/base/layout/IModuleUI.java
+index 4cfd2f1..f6cb8ac 100644
+--- a/mango-client-base/src/io/pelle/mango/client/base/layout/IModuleUI.java
++++ b/mango-client-base/src/io/pelle/mango/client/base/layout/IModuleUI.java
+@@ -1,75 +1,50 @@
+-/**
+- * Copyright (c) 2013 Christian Pelster.
+- * 
+- * All rights reserved. This program and the accompanying materials
+- * are made available under the terms of the Eclipse Public License v1.0
+- * which accompanies this distribution, and is available at
+- * http://www.eclipse.org/legal/epl-v10.html
+- * 
+- * Contributors:
+- *     Christian Pelster - initial API and implementation
+- */
+-package io.pelle.mango.client.base.layout;
+-
+-import io.pelle.mango.client.base.module.IModule;
+-
+-/**
+- * Represents the UI for a module instance
+- * 
+- * @author pelle
+- * 
+- * @param <WidgetType>
+- */
+-public interface IModuleUI<ContainerType, ModuleType extends IModule>
+-{
+-	static final String UI_MODULE_ID_PARAMETER_NAME = "moduleUIName";
+-
+-	enum CONTAINER_LAYOUT
+-	{
+-		HORIZONTAL, VERTICAL
+-	}
+-
+-	int MARGIN = 15;
+-
+-	int getOrder();
+-
+-	/**
+-	 * Try to close the module, returns false if closing fails
+-	 * 
+-	 * @return
+-	 */
+-	boolean close();
+-
+-	/**
+-	 * True if module ui supports breadcrumbs navigation
+-	 * 
+-	 * @return
+-	 */
+-	boolean contributesToBreadCrumbs();
+-
+-	/**
+-	 * The actual UI library specific widget
+-	 * 
+-	 * @return
+-	 */
+-	ContainerType getContainer();
+-
+-	/**
+-	 * The module belonging to this ui
+-	 * 
+-	 * @return
+-	 */
+-	ModuleType getModule();
+-
+-	/**
+-	 * Modules title
+-	 * 
+-	 * @return
+-	 */
+-	String getTitle();
+-
+-	boolean isInstanceOf(String moduleUrl);
+-
+-	void updateUrl(String moduleUrl);
+-
+-}
++/**
++ * Copyright (c) 2013 Christian Pelster.
++ * 
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ * 
++ * Contributors:
++ *     Christian Pelster - initial API and implementation
++ */
++package io.pelle.mango.client.base.layout;
++
++import io.pelle.mango.client.base.module.IModule;
++
++/**
++ * Represents the UI for a module instance
++ * 
++ * @author pelle
++ * 
++ * @param <WidgetType>
++ */
++public interface IModuleUI<ContainerType, ModuleType extends IModule>
++{
++	static final String UI_MODULE_ID_PARAMETER_NAME = "moduleUIName";
++
++	enum CONTAINER_LAYOUT
++	{
++		HORIZONTAL, VERTICAL
++	}
++
++	int MARGIN = 15;
++
++	int getOrder();
++
++	boolean close();
++
++	boolean contributesToBreadCrumbs();
++
++	ContainerType getContainer();
++
++	ModuleType getModule();
++
++	String getTitle();
++
++	boolean isInstanceOf(String moduleUrl);
++
++	void updateUrl(String moduleUrl);
++
++}
+diff --git a/mango-client-base/src/io/pelle/mango/client/base/module/BaseModule.java b/mango-client-base/src/io/pelle/mango/client/base/module/BaseModule.java
+index 61ccf94..7cd1d00 100644
+--- a/mango-client-base/src/io/pelle/mango/client/base/module/BaseModule.java
++++ b/mango-client-base/src/io/pelle/mango/client/base/module/BaseModule.java
+@@ -26,6 +26,10 @@ public abstract class BaseModule implements IModule
+ 		return this.moduleCallback;
+ 	}
+ 
++	@Override
++	public void onClose() {
++	}
++
+ 	public BaseModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters)
+ 	{
+ 		this.moduleUrl = moduleUrl;
+diff --git a/mango-client-base/src/io/pelle/mango/client/base/module/IModule.java b/mango-client-base/src/io/pelle/mango/client/base/module/IModule.java
+index 0f25c87..678c2d8 100644
+--- a/mango-client-base/src/io/pelle/mango/client/base/module/IModule.java
++++ b/mango-client-base/src/io/pelle/mango/client/base/module/IModule.java
+@@ -1,40 +1,42 @@
+-/**
+- * Copyright (c) 2013 Christian Pelster.
+- * 
+- * All rights reserved. This program and the accompanying materials
+- * are made available under the terms of the Eclipse Public License v1.0
+- * which accompanies this distribution, and is available at
+- * http://www.eclipse.org/legal/epl-v10.html
+- * 
+- * Contributors:
+- *     Christian Pelster - initial API and implementation
+- */
+-package io.pelle.mango.client.base.module;
+-
+-
+-/**
+- * MyAdmin module interface
+- * 
+- * @author pelle
+- * @version $Rev$, $Date$
+- * 
+- */
+-public interface IModule
+-{
+-	public interface IModuleUpdateListener
+-	{
+-		void onUpdate();
+-	}
+-
+-	static final String MODULE_ID_PARAMETER_NAME = "moduleId";
+-
+-	String getModuleUrl();
+-
+-	boolean isInstanceOf(String moduleUrl);
+-
+-	int getOrder();
+-
+-	String getTitle();
+-
+-	void updateUrl(String moduleUrl);
+-}
++/**
++ * Copyright (c) 2013 Christian Pelster.
++ * 
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ * 
++ * Contributors:
++ *     Christian Pelster - initial API and implementation
++ */
++package io.pelle.mango.client.base.module;
++
++
++/**
++ * MyAdmin module interface
++ * 
++ * @author pelle
++ * @version $Rev$, $Date$
++ * 
++ */
++public interface IModule
++{
++	public interface IModuleUpdateListener
++	{
++		void onUpdate();
++	}
++
++	static final String MODULE_ID_PARAMETER_NAME = "moduleId";
++
++	String getModuleUrl();
++
++	boolean isInstanceOf(String moduleUrl);
++
++	int getOrder();
++
++	String getTitle();
++
++	void updateUrl(String moduleUrl);
++
++	void onClose();
++}
+diff --git a/mango-client-gwt/src/io/pelle/mango/client/gwt/GWTLayoutFactory.java b/mango-client-gwt/src/io/pelle/mango/client/gwt/GWTLayoutFactory.java
+index 31dc8d1..399645b 100644
+--- a/mango-client-gwt/src/io/pelle/mango/client/gwt/GWTLayoutFactory.java
++++ b/mango-client-gwt/src/io/pelle/mango/client/gwt/GWTLayoutFactory.java
+@@ -1,252 +1,253 @@
+-/**
+- * Copyright (c) 2013 Christian Pelster.
+- * 
+- * All rights reserved. This program and the accompanying materials
+- * are made available under the terms of the Eclipse Public License v1.0
+- * which accompanies this distribution, and is available at
+- * http://www.eclipse.org/legal/epl-v10.html
+- * 
+- * Contributors:
+- *     Christian Pelster - initial API and implementation
+- */
+-package io.pelle.mango.client.gwt;
+-
+-import io.pelle.mango.client.base.layout.ILayoutFactory;
+-import io.pelle.mango.client.base.layout.IModuleUI;
+-import io.pelle.mango.client.gwt.modules.dictionary.editor.DictionaryEditorModuleUIFactory;
+-import io.pelle.mango.client.gwt.modules.dictionary.search.DictionarySearchModuleUIFactory;
+-import io.pelle.mango.client.gwt.modules.hierarchical.HierarchicalTreeModuleUIFactory;
+-import io.pelle.mango.client.gwt.modules.navigation.NavigationModuleUIFactory;
+-import io.pelle.mango.client.web.MangoClientWeb;
+-import io.pelle.mango.client.web.module.ModuleUIFactoryRegistry;
+-
+-import java.util.ArrayList;
+-import java.util.Collections;
+-import java.util.Comparator;
+-import java.util.HashMap;
+-import java.util.Iterator;
+-import java.util.List;
+-import java.util.Map;
+-import java.util.logging.Logger;
+-
+-import com.google.gwt.dom.client.Style.Unit;
+-import com.google.gwt.user.client.ui.DockLayoutPanel;
+-import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
+-import com.google.gwt.user.client.ui.HTML;
+-import com.google.gwt.user.client.ui.HorizontalPanel;
+-import com.google.gwt.user.client.ui.Panel;
+-import com.google.gwt.user.client.ui.RootLayoutPanel;
+-import com.google.gwt.user.client.ui.StackLayoutPanel;
+-import com.google.gwt.user.client.ui.Widget;
+-
+-/**
+- * {@link ILayoutFactory} implementation for GWT
+- * 
+- * @author pelle
+- * 
+- */
+-public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
+-	final static Logger LOG = Logger.getLogger("GWTLayoutFactory");
+-
+-	private class PanelLayoutInfo {
+-		
+-		private final Widget widget;
+-
+-		private List<IModuleUI<Panel, ?>> moduleUIs = new ArrayList<IModuleUI<Panel, ?>>();
+-
+-		public PanelLayoutInfo(int size, boolean supportsMultipleChildren, Widget widget) {
+-			super();
+-			this.widget = widget;
+-		}
+-
+-		public boolean conainsModuleUI(IModuleUI<Panel, ?> moduleUI) {
+-			return moduleUIs.contains(moduleUI);
+-		}
+-
+-		public void addModuleUI(IModuleUI<Panel, ?> moduleUI) {
+-			if (widget instanceof StackLayoutPanel) {
+-				StackLayoutPanel stackLayoutPanel = (StackLayoutPanel) widget;
+-				Panel panel = moduleUI.getContainer();
+-				panel.setWidth("100%");
+-
+-				HTML html = new HTML(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()));
+-				html.setStylePrimaryName(GwtStyles.H3_CLASS);
+-
+-				int beforeIndex = 0;
+-
+-				List<IModuleUI<Panel, ?>> moduleUIs = stackLayoutPanelMappings.get(stackLayoutPanel);
+-				moduleUIs.add(moduleUI);
+-				Collections.sort(moduleUIs, new Comparator<IModuleUI<Panel, ?>>() {
+-
+-					@Override
+-					public int compare(IModuleUI<Panel, ?> moduleUI1, IModuleUI<Panel, ?> moduleUI2) {
+-						Integer order1 = moduleUI1.getOrder();
+-						Integer order2 = moduleUI2.getOrder();
+-						return order1.compareTo(order2);
+-					}
+-				});
+-				beforeIndex = moduleUIs.indexOf(moduleUI);
+-
+-				stackLayoutPanel.insert(panel, html, 3, beforeIndex);
+-				stackLayoutPanel.showWidget(0);
+-
+-			} else if (widget instanceof Panel) {
+-				Panel panel = (Panel) widget;
+-				removeAllChildren(panel);
+-				panel.add(moduleUI.getContainer());
+-			} else {
+-				throw new RuntimeException("unsupported panel type");
+-			}
+-
+-			moduleUIs.add(moduleUI);
+-
+-		}
+-
+-		private void removeAllChildren(Panel panel) {
+-			Iterator<Widget> childrenIterator = panel.iterator();
+-
+-			while (childrenIterator.hasNext()) {
+-				panel.remove(childrenIterator.next());
+-			}
+-		}
+-
+-		public void removeModuleUI(IModuleUI<Panel, ?> moduleUI) {
+-			if (widget instanceof StackLayoutPanel) {
+-				StackLayoutPanel stackLayoutPanel = (StackLayoutPanel) widget;
+-				stackLayoutPanel.remove(moduleUI.getContainer());
+-			} else if (widget instanceof Panel) {
+-				Panel panel = (Panel) widget;
+-				panel.remove(moduleUI.getContainer());
+-			} else {
+-				throw new RuntimeException("unsupported panel type");
+-			}
+-		}
+-	}
+-
+-	private final Map<Direction, PanelLayoutInfo> panels = new HashMap<DockLayoutPanel.Direction, PanelLayoutInfo>();
+-
+-	private final DockLayoutPanel rootPanel;
+-
+-	/**
+-	 * Constructor for {@link GWTLayoutFactory}
+-	 * 
+-	 * @param unit
+-	 */
+-	public GWTLayoutFactory(Unit unit) {
+-		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new NavigationModuleUIFactory());
+-		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionarySearchModuleUIFactory());
+-		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionaryEditorModuleUIFactory());
+-		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new HierarchicalTreeModuleUIFactory());
+-
+-		rootPanel = new DockLayoutPanel(Unit.PCT);
+-		rootPanel.setWidth("100%");
+-		rootPanel.setHeight("100%");
+-
+-		initializePanelLayout(Direction.WEST, 15, true);
+-		initializePanelLayout(Direction.CENTER, 85, false);
+-
+-		RootLayoutPanel.get().add(rootPanel);
+-	}
+-
+-	private Map<StackLayoutPanel, List<IModuleUI<Panel, ?>>> stackLayoutPanelMappings = new HashMap<StackLayoutPanel, List<IModuleUI<Panel, ?>>>();
+-
+-	private Direction getDirection(String location) {
+-		try {
+-			return Direction.valueOf(location);
+-		} catch (Exception e) {
+-			return Direction.CENTER;
+-		}
+-	}
+-
+-	private void initializePanelLayout(Direction direction, int size, boolean supportsMultipleChildren) {
+-		Widget panel = null;
+-
+-		if (supportsMultipleChildren) {
+-			StackLayoutPanel stackLayoutPanel = new StackLayoutPanel(Unit.EM);
+-			stackLayoutPanelMappings.put(stackLayoutPanel, new ArrayList<IModuleUI<Panel, ?>>());
+-			stackLayoutPanel.setHeight("100%");
+-			panel = stackLayoutPanel;
+-		} else {
+-			panel = new HorizontalPanel();
+-		}
+-
+-		panel.setHeight("100%");
+-		panel.setWidth("100%");
+-
+-		panel.setStyleName("docklayoutpanel-" + direction.toString().toLowerCase(), true);
+-
+-		panels.put(direction, new PanelLayoutInfo(size, supportsMultipleChildren, panel));
+-
+-		switch (direction) {
+-		case CENTER:
+-			rootPanel.add(panel);
+-			break;
+-		case EAST:
+-			rootPanel.addEast(panel, size);
+-			break;
+-		case NORTH:
+-			rootPanel.addNorth(panel, size);
+-			break;
+-		case SOUTH:
+-			rootPanel.addSouth(panel, size);
+-			break;
+-		case WEST:
+-			rootPanel.addWest(panel, size);
+-			break;
+-		case LINE_END:
+-			rootPanel.addLineEnd(panel, size);
+-			break;
+-		case LINE_START:
+-			rootPanel.addLineStart(panel, size);
+-			break;
+-		default:
+-			throw new RuntimeException("unsupported direction '" + direction.toString() + "'");
+-		}
+-	}
+-
+-	private void showModuleUIInternal(IModuleUI<Panel, ?> moduleUI, DockLayoutPanel.Direction direction) {
+-		if (panels.containsKey(direction)) {
+-			PanelLayoutInfo panelLayoutInfo = panels.get(direction);
+-			panelLayoutInfo.addModuleUI(moduleUI);
+-		} else {
+-			throw new RuntimeException("no panel layout info found for direction '" + direction + "'");
+-		}
+-
+-	}
+-
+-	/** {@inheritDoc} */
+-	@Override
+-	public void showModuleUI(IModuleUI<Panel, ?> moduleUI, String location) {
+-		LOG.info("showing module ui '" + moduleUI + "' for location '" + location + "'");
+-
+-		DockLayoutPanel.Direction direction = getDirection(location);
+-
+-		showModuleUIInternal(moduleUI, direction);
+-	}
+-
+-	private Direction getDirection(IModuleUI<Panel, ?> moduleUI) {
+-		for (Map.Entry<Direction, PanelLayoutInfo> panelEntry : panels.entrySet()) {
+-			if (panelEntry.getValue().conainsModuleUI(moduleUI)) {
+-				return panelEntry.getKey();
+-			}
+-		}
+-
+-		throw new RuntimeException("no direction found for module ui '" + moduleUI + "'");
+-
+-	}
+-
+-	@Override
+-	public void closeModuleUI(IModuleUI<Panel, ?> moduleUI) {
+-		LOG.info("closing module ui '" + moduleUI + "'");
+-
+-		Direction direction = getDirection(moduleUI);
+-
+-		if (panels.containsKey(direction)) {
+-			PanelLayoutInfo panelLayoutInfo = panels.get(direction);
+-			panelLayoutInfo.removeModuleUI(moduleUI);
+-		} else {
+-			throw new RuntimeException("no panel layout info found for direction '" + direction + "'");
+-		}
+-	}
+-
+-}
++/**
++ * Copyright (c) 2013 Christian Pelster.
++ * 
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ * 
++ * Contributors:
++ *     Christian Pelster - initial API and implementation
++ */
++package io.pelle.mango.client.gwt;
++
++import io.pelle.mango.client.base.layout.ILayoutFactory;
++import io.pelle.mango.client.base.layout.IModuleUI;
++import io.pelle.mango.client.gwt.modules.dictionary.editor.DictionaryEditorModuleUIFactory;
++import io.pelle.mango.client.gwt.modules.dictionary.search.DictionarySearchModuleUIFactory;
++import io.pelle.mango.client.gwt.modules.hierarchical.HierarchicalTreeModuleUIFactory;
++import io.pelle.mango.client.gwt.modules.navigation.NavigationModuleUIFactory;
++import io.pelle.mango.client.web.MangoClientWeb;
++import io.pelle.mango.client.web.module.ModuleUIFactoryRegistry;
++
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.Comparator;
++import java.util.HashMap;
++import java.util.Iterator;
++import java.util.List;
++import java.util.Map;
++import java.util.logging.Logger;
++
++import com.google.gwt.dom.client.Style.Unit;
++import com.google.gwt.user.client.ui.DockLayoutPanel;
++import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
++import com.google.gwt.user.client.ui.HTML;
++import com.google.gwt.user.client.ui.HorizontalPanel;
++import com.google.gwt.user.client.ui.Panel;
++import com.google.gwt.user.client.ui.RootLayoutPanel;
++import com.google.gwt.user.client.ui.StackLayoutPanel;
++import com.google.gwt.user.client.ui.Widget;
++
++/**
++ * {@link ILayoutFactory} implementation for GWT
++ * 
++ * @author pelle
++ * 
++ */
++public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
++	final static Logger LOG = Logger.getLogger("GWTLayoutFactory");
++
++	private class PanelLayoutInfo {
++		
++		private final Widget widget;
++
++		private List<IModuleUI<Panel, ?>> moduleUIs = new ArrayList<IModuleUI<Panel, ?>>();
++
++		public PanelLayoutInfo(int size, boolean supportsMultipleChildren, Widget widget) {
++			super();
++			this.widget = widget;
++		}
++
++		public boolean conainsModuleUI(IModuleUI<Panel, ?> moduleUI) {
++			return moduleUIs.contains(moduleUI);
++		}
++
++		public void addModuleUI(IModuleUI<Panel, ?> moduleUI) {
++			if (widget instanceof StackLayoutPanel) {
++				StackLayoutPanel stackLayoutPanel = (StackLayoutPanel) widget;
++				Panel panel = moduleUI.getContainer();
++				panel.setWidth("100%");
++
++				HTML html = new HTML(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()));
++				html.setStylePrimaryName(GwtStyles.H3_CLASS);
++
++				int beforeIndex = 0;
++
++				List<IModuleUI<Panel, ?>> moduleUIs = stackLayoutPanelMappings.get(stackLayoutPanel);
++				moduleUIs.add(moduleUI);
++				Collections.sort(moduleUIs, new Comparator<IModuleUI<Panel, ?>>() {
++
++					@Override
++					public int compare(IModuleUI<Panel, ?> moduleUI1, IModuleUI<Panel, ?> moduleUI2) {
++						Integer order1 = moduleUI1.getOrder();
++						Integer order2 = moduleUI2.getOrder();
++						return order1.compareTo(order2);
++					}
++				});
++				beforeIndex = moduleUIs.indexOf(moduleUI);
++
++				stackLayoutPanel.insert(panel, html, 3, beforeIndex);
++				stackLayoutPanel.showWidget(0);
++
++			} else if (widget instanceof Panel) {
++				Panel panel = (Panel) widget;
++				removeAllChildren(panel);
++				panel.add(moduleUI.getContainer());
++			} else {
++				throw new RuntimeException("unsupported panel type");
++			}
++
++			moduleUIs.add(moduleUI);
++
++		}
++
++		private void removeAllChildren(Panel panel) {
++			Iterator<Widget> childrenIterator = panel.iterator();
++
++			while (childrenIterator.hasNext()) {
++				panel.remove(childrenIterator.next());
++			}
++		}
++
++		public void removeModuleUI(IModuleUI<Panel, ?> moduleUI) {
++			if (widget instanceof StackLayoutPanel) {
++				StackLayoutPanel stackLayoutPanel = (StackLayoutPanel) widget;
++				stackLayoutPanel.remove(moduleUI.getContainer());
++			} else if (widget instanceof Panel) {
++				Panel panel = (Panel) widget;
++				panel.remove(moduleUI.getContainer());
++			} else {
++				throw new RuntimeException("unsupported panel type");
++			}
++		}
++	}
++
++	private final Map<Direction, PanelLayoutInfo> panels = new HashMap<DockLayoutPanel.Direction, PanelLayoutInfo>();
++
++	private final DockLayoutPanel rootPanel;
++
++	/**
++	 * Constructor for {@link GWTLayoutFactory}
++	 * 
++	 * @param unit
++	 */
++	public GWTLayoutFactory(Unit unit) {
++		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new NavigationModuleUIFactory());
++		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionarySearchModuleUIFactory());
++		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionaryEditorModuleUIFactory());
++		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new HierarchicalTreeModuleUIFactory());
++
++		rootPanel = new DockLayoutPanel(Unit.PCT);
++		rootPanel.setWidth("100%");
++		rootPanel.setHeight("100%");
++
++		initializePanelLayout(Direction.WEST, 15, true);
++		initializePanelLayout(Direction.CENTER, 85, false);
++
++		RootLayoutPanel.get().add(rootPanel);
++	}
++
++	private Map<StackLayoutPanel, List<IModuleUI<Panel, ?>>> stackLayoutPanelMappings = new HashMap<StackLayoutPanel, List<IModuleUI<Panel, ?>>>();
++
++	private Direction getDirection(String location) {
++		try {
++			return Direction.valueOf(location);
++		} catch (Exception e) {
++			return Direction.CENTER;
++		}
++	}
++
++	private void initializePanelLayout(Direction direction, int size, boolean supportsMultipleChildren) {
++		Widget panel = null;
++
++		if (supportsMultipleChildren) {
++			StackLayoutPanel stackLayoutPanel = new StackLayoutPanel(Unit.EM);
++			stackLayoutPanelMappings.put(stackLayoutPanel, new ArrayList<IModuleUI<Panel, ?>>());
++			stackLayoutPanel.setHeight("100%");
++			panel = stackLayoutPanel;
++		} else {
++			panel = new HorizontalPanel();
++		}
++
++		panel.setHeight("100%");
++		panel.setWidth("100%");
++
++		panel.setStyleName("docklayoutpanel-" + direction.toString().toLowerCase(), true);
++
++		panels.put(direction, new PanelLayoutInfo(size, supportsMultipleChildren, panel));
++
++		switch (direction) {
++		case CENTER:
++			rootPanel.add(panel);
++			break;
++		case EAST:
++			rootPanel.addEast(panel, size);
++			break;
++		case NORTH:
++			rootPanel.addNorth(panel, size);
++			break;
++		case SOUTH:
++			rootPanel.addSouth(panel, size);
++			break;
++		case WEST:
++			rootPanel.addWest(panel, size);
++			break;
++		case LINE_END:
++			rootPanel.addLineEnd(panel, size);
++			break;
++		case LINE_START:
++			rootPanel.addLineStart(panel, size);
++			break;
++		default:
++			throw new RuntimeException("unsupported direction '" + direction.toString() + "'");
++		}
++	}
++
++	private void showModuleUIInternal(IModuleUI<Panel, ?> moduleUI, DockLayoutPanel.Direction direction) {
++		if (panels.containsKey(direction)) {
++			PanelLayoutInfo panelLayoutInfo = panels.get(direction);
++			panelLayoutInfo.addModuleUI(moduleUI);
++		} else {
++			throw new RuntimeException("no panel layout info found for direction '" + direction + "'");
++		}
++
++	}
++
++	/** {@inheritDoc} */
++	@Override
++	public void showModuleUI(IModuleUI<Panel, ?> moduleUI, String location) {
++		LOG.info("showing module ui '" + moduleUI + "' for location '" + location + "'");
++
++		DockLayoutPanel.Direction direction = getDirection(location);
++
++		showModuleUIInternal(moduleUI, direction);
++	}
++
++	private Direction getDirection(IModuleUI<Panel, ?> moduleUI) {
++		for (Map.Entry<Direction, PanelLayoutInfo> panelEntry : panels.entrySet()) {
++			if (panelEntry.getValue().conainsModuleUI(moduleUI)) {
++				return panelEntry.getKey();
++			}
++		}
++
++		throw new RuntimeException("no direction found for module ui '" + moduleUI + "'");
++
++	}
++
++	@Override
++	public void closeModuleUI(IModuleUI<Panel, ?> moduleUI) {
++		
++		LOG.info("closing module ui '" + moduleUI + "'");
++
++		Direction direction = getDirection(moduleUI);
++
++		if (panels.containsKey(direction)) {
++			PanelLayoutInfo panelLayoutInfo = panels.get(direction);
++			panelLayoutInfo.removeModuleUI(moduleUI);
++		} else {
++			throw new RuntimeException("no panel layout info found for direction '" + direction + "'");
++		}
++	}
++
++}
+diff --git a/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/controls/GwtReferenceTextControl.java b/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/controls/GwtReferenceTextControl.java
+index 34c7a99..ac33a5d 100644
+--- a/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/controls/GwtReferenceTextControl.java
++++ b/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/controls/GwtReferenceTextControl.java
+@@ -17,6 +17,8 @@ import io.pelle.mango.client.gwt.ControlHelper;
+ import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+ import io.pelle.mango.client.web.modules.dictionary.controls.ReferenceControl;
+ 
++import com.google.gwt.event.dom.client.KeyUpEvent;
++import com.google.gwt.event.dom.client.KeyUpHandler;
+ import com.google.gwt.event.logical.shared.SelectionEvent;
+ import com.google.gwt.event.logical.shared.SelectionHandler;
+ import com.google.gwt.user.client.ui.SuggestBox;
+@@ -45,6 +47,18 @@ public class GwtReferenceTextControl<VOTYPE extends IBaseVO> extends SuggestBox
+ 
+ 			}
+ 		});
++		
++
++		this.getValueBox().addKeyUpHandler(new KeyUpHandler() {
++			@Override
++			public void onKeyUp(KeyUpEvent event) {
++				
++				String value = getValueBox().getValue();
++				if (value.trim().isEmpty()) {
++					referenceControl.parseValue("");
++				}
++			}
++		});
+ 
+ 	}
+ 
+diff --git a/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/editor/DictionaryEditorModuleUI.java b/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/editor/DictionaryEditorModuleUI.java
+index cdf4ac8..5f72399 100644
+--- a/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/editor/DictionaryEditorModuleUI.java
++++ b/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/editor/DictionaryEditorModuleUI.java
+@@ -1,175 +1,181 @@
+-/**
+- * Copyright (c) 2013 Christian Pelster.
+- * 
+- * All rights reserved. This program and the accompanying materials
+- * are made available under the terms of the Eclipse Public License v1.0
+- * which accompanies this distribution, and is available at
+- * http://www.eclipse.org/legal/epl-v10.html
+- * 
+- * Contributors:
+- *     Christian Pelster - initial API and implementation
+- */
+-package io.pelle.mango.client.gwt.modules.dictionary.editor;
+-
+-import io.pelle.mango.client.base.layout.IModuleUI;
+-import io.pelle.mango.client.base.module.ModuleUtils;
+-import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
+-import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
+-import io.pelle.mango.client.base.util.HumanizedMessagePopup;
+-import io.pelle.mango.client.base.util.HumanizedMessagePopup.MESSAGE_TYPE;
+-import io.pelle.mango.client.base.vo.IBaseVO;
+-import io.pelle.mango.client.gwt.GwtStyles;
+-import io.pelle.mango.client.gwt.modules.dictionary.ActionBar;
+-import io.pelle.mango.client.gwt.modules.dictionary.BaseDictionaryModuleUI;
+-import io.pelle.mango.client.gwt.modules.dictionary.DictionaryEditorPanel;
+-import io.pelle.mango.client.web.MangoClientWeb;
+-import io.pelle.mango.client.web.module.ModuleHandler;
+-import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
+-
+-import com.google.common.base.Objects;
+-import com.google.common.base.Optional;
+-import com.google.gwt.event.dom.client.ClickEvent;
+-import com.google.gwt.event.dom.client.ClickHandler;
+-import com.google.gwt.user.client.Window;
+-import com.google.gwt.user.client.ui.Button;
+-import com.google.gwt.user.client.ui.HTML;
+-import com.google.gwt.user.client.ui.Panel;
+-import com.google.gwt.user.client.ui.VerticalPanel;
+-
+-/**
+- * UI for the navigation module
+- * 
+- * @author pelle
+- * 
+- */
+-public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionaryEditorModule<VOType>> implements IEditorUpdateListener {
+-
+-	private final VerticalPanel verticalPanel;
+-
+-	private static final String DICTIONARY_SAVE_BUTTON_DEBUG_ID = "DictionarySaveButton";
+-
+-	private static final String DICTIONARY_BACK_BUTTON_DEBUG_ID = "DictionaryBackButton";
+-
+-	private static final String DICTIONARY_REFRESH_BUTTON_DEBUG_ID = "DictionaryRefreshButton";
+-
+-	private static final String DICTIONARY_INFO_BUTTON_DEBUG_ID = "DictionaryInfoButton";
+-
+-	private final HTML editorTitle;
+-
+-	@SuppressWarnings("rawtypes")
+-	public DictionaryEditorModuleUI(DictionaryEditorModule<VOType> editorModule, final Optional<IModuleUI> previousModuleUI) {
+-		super(editorModule, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
+-
+-		verticalPanel = new VerticalPanel();
+-
+-		verticalPanel.addStyleName(GwtStyles.DEBUG_BORDER);
+-		verticalPanel.setWidth("100%");
+-
+-		// - action panel ------------------------------------------------------
+-		ActionBar actionBar = new ActionBar();
+-		verticalPanel.add(actionBar);
+-
+-		// - title -------------------------------------------------------------
+-		editorTitle = new HTML(editorModule.getTitle());
+-		editorTitle.addStyleName(GwtStyles.TITLE);
+-		verticalPanel.add(editorTitle);
+-
+-		DictionaryEditorPanel<VOType> dictionaryEditorPanel = new DictionaryEditorPanel<VOType>(getModule());
+-		verticalPanel.add(dictionaryEditorPanel);
+-
+-		if (previousModuleUI.isPresent()) {
+-
+-			actionBar.addSingleButton(MangoClientWeb.RESOURCES.back(), MangoClientWeb.MESSAGES.editorBack(), new ClickHandler() {
+-				/** {@inheritDoc} */
+-				@Override
+-				public void onClick(ClickEvent event) {
+-					ModuleHandler.getInstance().closeCurrentAndShow(previousModuleUI.get());
+-				}
+-			}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_BACK_BUTTON_DEBUG_ID);
+-
+-		}
+-
+-		actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorSave(), MangoClientWeb.MESSAGES.editorSave(), new ClickHandler() {
+-			/** {@inheritDoc} */
+-			@Override
+-			public void onClick(ClickEvent event) {
+-				save();
+-			}
+-		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_SAVE_BUTTON_DEBUG_ID);
+-
+-		final Button refreshButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorRefresh(), MangoClientWeb.MESSAGES.editorRefresh(), new ClickHandler() {
+-			/** {@inheritDoc} */
+-			@Override
+-			public void onClick(ClickEvent event) {
+-				getModule().getDictionaryEditor().refresh();
+-			}
+-
+-		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_REFRESH_BUTTON_DEBUG_ID);
+-		refreshButton.setEnabled(false);
+-
+-		if (getModule().getDictionaryEditor().getMetaInformation().isPresent()) {
+-			// info popup panel
+-			final MetaInformationPopupPanel infoPopupPanel = new MetaInformationPopupPanel(getModule().getDictionaryEditor());
+-			infoPopupPanel.setAutoHideEnabled(true);
+-
+-			final Button infoButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(), MangoClientWeb.MESSAGES.dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-"
+-					+ getModule().getDictionaryModel().getName() + "-" + DICTIONARY_INFO_BUTTON_DEBUG_ID);
+-			infoButton.addClickHandler(new ClickHandler() {
+-				/** {@inheritDoc} */
+-				@Override
+-				public void onClick(ClickEvent event) {
+-					infoPopupPanel.showRelativeTo(infoButton);
+-				}
+-			});
+-		}
+-
+-		for (final IButton button : getModule().getEditorButtons()) {
+-			actionBar.addSingleButton(button);
+-
+-		}
+-
+-		getModule().addUpdateListener(this);
+-	}
+-
+-	@Override
+-	public void onUpdate() {
+-		// refreshButton.setEnabled(!baseVO.isNew());
+-		editorTitle.setText(getModule().getTitle());
+-	}
+-
+-	private void save() {
+-		if (getModule().getDictionaryEditor().getValidationMessages().hasErrors()) {
+-			HumanizedMessagePopup.showMessageAndFadeAfterMouseMove(MangoClientWeb.MESSAGES.editorContainsErrors(), MESSAGE_TYPE.ERROR);
+-		} else {
+-			getModule().getDictionaryEditor().save();
+-		}
+-	}
+-
+-	/** {@inheritDoc} */
+-	@Override
+-	public boolean close() {
+-
+-		if (getModule().getDictionaryEditor().isDirty()) {
+-			return Window.confirm(MangoClientWeb.MESSAGES.editorClose());
+-		} else {
+-			return true;
+-		}
+-	}
+-
+-	@Override
+-	public boolean isInstanceOf(String moduleUrl) {
+-		return super.isInstanceOf(moduleUrl) && Objects.equal(getModule().getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
+-	}
+-
+-	/** {@inheritDoc} */
+-	@Override
+-	public Panel getContainer() {
+-		return verticalPanel;
+-	}
+-
+-	@Override
+-	public String getTitle() {
+-		return getModule().getTitle();
+-	}
+-
+-}
++/**
++ * Copyright (c) 2013 Christian Pelster.
++ * 
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ * 
++ * Contributors:
++ *     Christian Pelster - initial API and implementation
++ */
++package io.pelle.mango.client.gwt.modules.dictionary.editor;
++
++import io.pelle.mango.client.base.layout.IModuleUI;
++import io.pelle.mango.client.base.module.ModuleUtils;
++import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
++import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
++import io.pelle.mango.client.base.util.HumanizedMessagePopup;
++import io.pelle.mango.client.base.util.HumanizedMessagePopup.MESSAGE_TYPE;
++import io.pelle.mango.client.base.vo.IBaseVO;
++import io.pelle.mango.client.gwt.GwtStyles;
++import io.pelle.mango.client.gwt.modules.dictionary.ActionBar;
++import io.pelle.mango.client.gwt.modules.dictionary.BaseDictionaryModuleUI;
++import io.pelle.mango.client.gwt.modules.dictionary.DictionaryEditorPanel;
++import io.pelle.mango.client.web.MangoClientWeb;
++import io.pelle.mango.client.web.module.ModuleHandler;
++import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
++
++import com.google.common.base.Objects;
++import com.google.common.base.Optional;
++import com.google.gwt.event.dom.client.ClickEvent;
++import com.google.gwt.event.dom.client.ClickHandler;
++import com.google.gwt.user.client.Window;
++import com.google.gwt.user.client.ui.Button;
++import com.google.gwt.user.client.ui.HTML;
++import com.google.gwt.user.client.ui.Panel;
++import com.google.gwt.user.client.ui.VerticalPanel;
++
++/**
++ * UI for the navigation module
++ * 
++ * @author pelle
++ * 
++ */
++public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionaryEditorModule<VOType>> implements IEditorUpdateListener {
++
++	private final VerticalPanel verticalPanel;
++
++	private static final String DICTIONARY_SAVE_BUTTON_DEBUG_ID = "DictionarySaveButton";
++
++	private static final String DICTIONARY_BACK_BUTTON_DEBUG_ID = "DictionaryBackButton";
++
++	private static final String DICTIONARY_REFRESH_BUTTON_DEBUG_ID = "DictionaryRefreshButton";
++
++	private static final String DICTIONARY_INFO_BUTTON_DEBUG_ID = "DictionaryInfoButton";
++
++	private final HTML editorTitle;
++
++	@SuppressWarnings("rawtypes")
++	public DictionaryEditorModuleUI(DictionaryEditorModule<VOType> editorModule, final Optional<IModuleUI> previousModuleUI) {
++		super(editorModule, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
++
++		verticalPanel = new VerticalPanel();
++
++		verticalPanel.addStyleName(GwtStyles.DEBUG_BORDER);
++		verticalPanel.setWidth("100%");
++
++		// - action panel ------------------------------------------------------
++		ActionBar actionBar = new ActionBar();
++		verticalPanel.add(actionBar);
++
++		// - title -------------------------------------------------------------
++		editorTitle = new HTML(editorModule.getTitle());
++		editorTitle.addStyleName(GwtStyles.TITLE);
++		verticalPanel.add(editorTitle);
++
++		DictionaryEditorPanel<VOType> dictionaryEditorPanel = new DictionaryEditorPanel<VOType>(getModule());
++		verticalPanel.add(dictionaryEditorPanel);
++
++		if (previousModuleUI.isPresent()) {
++
++			actionBar.addSingleButton(MangoClientWeb.RESOURCES.back(), MangoClientWeb.MESSAGES.editorBack(), new ClickHandler() {
++				/** {@inheritDoc} */
++				@Override
++				public void onClick(ClickEvent event) {
++					ModuleHandler.getInstance().closeCurrentAndShow(previousModuleUI.get());
++				}
++			}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_BACK_BUTTON_DEBUG_ID);
++
++		}
++
++		actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorSave(), MangoClientWeb.MESSAGES.editorSave(), new ClickHandler() {
++			/** {@inheritDoc} */
++			@Override
++			public void onClick(ClickEvent event) {
++				save();
++			}
++		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_SAVE_BUTTON_DEBUG_ID);
++
++		final Button refreshButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorRefresh(), MangoClientWeb.MESSAGES.editorRefresh(), new ClickHandler() {
++			/** {@inheritDoc} */
++			@Override
++			public void onClick(ClickEvent event) {
++				getModule().getDictionaryEditor().refresh();
++			}
++
++		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_REFRESH_BUTTON_DEBUG_ID);
++		refreshButton.setEnabled(false);
++
++		if (getModule().getDictionaryEditor().getMetaInformation().isPresent()) {
++			// info popup panel
++			final MetaInformationPopupPanel infoPopupPanel = new MetaInformationPopupPanel(getModule().getDictionaryEditor());
++			infoPopupPanel.setAutoHideEnabled(true);
++
++			final Button infoButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(), MangoClientWeb.MESSAGES.dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-"
++					+ getModule().getDictionaryModel().getName() + "-" + DICTIONARY_INFO_BUTTON_DEBUG_ID);
++			infoButton.addClickHandler(new ClickHandler() {
++				/** {@inheritDoc} */
++				@Override
++				public void onClick(ClickEvent event) {
++					infoPopupPanel.showRelativeTo(infoButton);
++				}
++			});
++		}
++
++		for (final IButton button : getModule().getEditorButtons()) {
++			actionBar.addSingleButton(button);
++
++		}
++
++		getModule().addUpdateListener(this);
++	}
++
++	@Override
++	public void onUpdate() {
++		// refreshButton.setEnabled(!baseVO.isNew());
++		editorTitle.setText(getModule().getTitle());
++	}
++
++	private void save() {
++		if (getModule().getDictionaryEditor().getValidationMessages().hasErrors()) {
++			HumanizedMessagePopup.showMessageAndFadeAfterMouseMove(MangoClientWeb.MESSAGES.editorContainsErrors(), MESSAGE_TYPE.ERROR);
++		} else {
++			getModule().getDictionaryEditor().save();
++		}
++	}
++
++	/** {@inheritDoc} */
++	@Override
++	public boolean close() {
++
++		if (getModule().getDictionaryEditor().isDirty()) {
++			return Window.confirm(MangoClientWeb.MESSAGES.editorClose());
++		} else {
++			return true;
++		}
++	}
++
++	@Override
++	public boolean contributesToBreadCrumbs()
++	{
++		return true;
++	}
++	
++	@Override
++	public boolean isInstanceOf(String moduleUrl) {
++		return super.isInstanceOf(moduleUrl) && Objects.equal(getModule().getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
++	}
++
++	/** {@inheritDoc} */
++	@Override
++	public Panel getContainer() {
++		return verticalPanel;
++	}
++
++	@Override
++	public String getTitle() {
++		return getModule().getTitle();
++	}
++
++}
+diff --git a/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/editor/DictionaryEditorModuleUIFactory.java b/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/editor/DictionaryEditorModuleUIFactory.java
+index 096a868..bc12067 100644
+--- a/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/editor/DictionaryEditorModuleUIFactory.java
++++ b/mango-client-gwt/src/io/pelle/mango/client/gwt/modules/dictionary/editor/DictionaryEditorModuleUIFactory.java
+@@ -33,6 +33,7 @@ public class DictionaryEditorModuleUIFactory extends BaseModuleUIFactory<Panel,
+ 
+ 	@Override
+ 	public void getNewInstance(final String moduleUrl, final AsyncCallback<DictionaryEditorModuleUI<?>> moduleCallback, Map<String, Object> parameters, final Optional<IModuleUI<?, ?>> previousModuleUI) {
++		
+ 		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, DictionaryEditorModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
+ 
+ 			@SuppressWarnings({ "rawtypes", "unchecked" })
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/module/ModuleHandler.java b/mango-client-web/src/io/pelle/mango/client/web/module/ModuleHandler.java
+index c597b1b..f902134 100644
+--- a/mango-client-web/src/io/pelle/mango/client/web/module/ModuleHandler.java
++++ b/mango-client-web/src/io/pelle/mango/client/web/module/ModuleHandler.java
+@@ -1,200 +1,277 @@
+-/**
+- * Copyright (c) 2013 Christian Pelster.
+- * 
+- * All rights reserved. This program and the accompanying materials
+- * are made available under the terms of the Eclipse Public License v1.0
+- * which accompanies this distribution, and is available at
+- * http://www.eclipse.org/legal/epl-v10.html
+- * 
+- * Contributors:
+- *     Christian Pelster - initial API and implementation
+- */
+-package io.pelle.mango.client.web.module;
+-
+-import io.pelle.mango.client.base.layout.IModuleUI;
+-import io.pelle.mango.client.base.module.BaseModule;
+-import io.pelle.mango.client.base.module.IModule;
+-import io.pelle.mango.client.web.MangoClientWeb;
+-import io.pelle.mango.client.web.util.BaseAsyncCallback;
+-
+-import java.util.HashMap;
+-import java.util.LinkedHashMap;
+-import java.util.Map;
+-import java.util.Stack;
+-import java.util.logging.Logger;
+-
+-import com.google.common.base.Optional;
+-import com.google.common.base.Predicate;
+-import com.google.common.collect.Iterables;
+-import com.google.gwt.event.shared.EventBus;
+-import com.google.gwt.event.shared.SimpleEventBus;
+-import com.google.gwt.user.client.rpc.AsyncCallback;
+-
+-/**
+- * Handler for module loading
+- * 
+- * @author pelle
+- * @version $Rev$, $Date$
+- * 
+- */
+-@SuppressWarnings("rawtypes")
+-public final class ModuleHandler {
+-
+-	final static Logger LOG = Logger.getLogger("ModuleHandler");
+-
+-	public static EventBus MODULE_EVENT_BUS = new SimpleEventBus();
+-
+-	private int moduleCounter = 0;
+-
+-	private static ModuleHandler instance;
+-
+-	public static String DEFAULT_LOCATION = "default";
+-
+-	private final LinkedHashMap<String, Stack<IModuleUI>> currentModules = new LinkedHashMap<String, Stack<IModuleUI>>();
+-
+-	public static ModuleHandler getInstance() {
+-		if (instance == null) {
+-			instance = new ModuleHandler();
+-		}
+-
+-		return instance;
+-	}
+-
+-	private ModuleHandler() {
+-	}
+-
+-	private String getLocation(String location) {
+-		if (location == null || location.trim().isEmpty()) {
+-			return DEFAULT_LOCATION;
+-		} else {
+-			return location;
+-		}
+-	}
+-
+-	private Stack<IModuleUI> getModuleStack(String location) {
+-		if (!this.currentModules.containsKey(location)) {
+-			this.currentModules.put(location, new Stack<IModuleUI>());
+-		}
+-
+-		return this.currentModules.get(location);
+-	}
+-
+-	public void startUIModule(final String moduleUrl, String location) {
+-		startUIModule(moduleUrl, location, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>> absent());
+-	}
+-
+-	public void startUIModule(final String moduleUrl) {
+-		startUIModule(moduleUrl, null, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>> absent());
+-	}
+-
+-	public void startUIModule(final String moduleUrl, Map<String, Object> parameters) {
+-		startUIModule(moduleUrl, null, parameters, Optional.<AsyncCallback<IModuleUI>> absent());
+-	}
+-
+-	private class MouldeUrlPredicate implements Predicate<IModuleUI> {
+-		private String moduleUrl;
+-
+-		public MouldeUrlPredicate(String moduleUrl) {
+-			super();
+-			this.moduleUrl = moduleUrl;
+-		}
+-
+-		@Override
+-		public boolean apply(IModuleUI input) {
+-			return input.isInstanceOf(this.moduleUrl);
+-		}
+-
+-	};
+-
+-	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters, final Optional<AsyncCallback<IModuleUI>> callback) {
+-
+-		final String location = getLocation(location1);
+-
+-		LOG.info("starting ui module for url '" + moduleUrl + "'");
+-
+-		Optional<IModuleUI> moduleUI = Iterables.tryFind(getModuleStack(location), new MouldeUrlPredicate(moduleUrl));
+-
+-		if (moduleUI.isPresent()) {
+-			LOG.info("ui module for url '" + moduleUrl + "' already started (" + moduleUI.get().toString() + ")");
+-			moduleUI.get().updateUrl(moduleUrl);
+-
+-			if (callback.isPresent()) {
+-				callback.get().onSuccess(moduleUI.get());
+-			}
+-
+-			MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI.get(), location);
+-		} else {
+-			if (ModuleUIFactoryRegistry.getInstance().supports(moduleUrl)) {
+-				ModuleUIFactoryRegistry.getInstance().getModuleFactory(moduleUrl).getNewInstance(moduleUrl, new BaseAsyncCallback<IModuleUI, IModuleUI>(callback) {
+-
+-					@Override
+-					public void onSuccess(IModuleUI moduleUI) {
+-						ModuleHandler.this.getModuleStack(location).add(moduleUI);
+-						MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
+-
+-						if (callback.isPresent()) {
+-							callback.get().onSuccess(moduleUI);
+-						}
+-					}
+-				}, parameters, peekCurrentModule(location));
+-			} else {
+-				throw new RuntimeException("unsupported module url '" + moduleUrl + "'");
+-			}
+-		}
+-	}
+-
+-	private Optional<IModuleUI> peekCurrentModule(String location) {
+-		if (getModuleStack(location).isEmpty()) {
+-			return Optional.absent();
+-		} else {
+-			return Optional.of(getModuleStack(location).peek());
+-		}
+-	}
+-
+-	private Optional<IModuleUI> popCurrentModule(String location) {
+-		if (getModuleStack(location).isEmpty()) {
+-			return Optional.absent();
+-		} else {
+-			return Optional.of(getModuleStack(location).pop());
+-		}
+-	}
+-
+-	public void startModule(final String moduleUrl, Map<String, Object> parameters, final AsyncCallback<IModule> moduleCallback) {
+-		LOG.info("starting module for url '" + moduleUrl + "'");
+-
+-		if (ModuleFactoryRegistry.getInstance().supports(moduleUrl)) {
+-			this.moduleCounter++;
+-			parameters.put(BaseModule.MODULE_COUNTER_PARAMETER_ID, this.moduleCounter);
+-
+-			ModuleFactoryRegistry.getInstance().getModuleFactory(moduleUrl).getNewInstance(moduleUrl, moduleCallback, parameters);
+-		} else {
+-			moduleCallback.onFailure(new RuntimeException("unsupported module url '" + moduleUrl + "'"));
+-		}
+-	}
+-
+-	private String getModuleLocation(IModuleUI moduleUI) {
+-
+-		for (Map.Entry<String, Stack<IModuleUI>> currentModuleEntry : this.currentModules.entrySet()) {
+-			if (currentModuleEntry.getValue().contains(moduleUI)) {
+-				return currentModuleEntry.getKey();
+-			}
+-
+-		}
+-
+-		throw new RuntimeException("module ui '" + moduleUI + "' not found");
+-	}
+-
+-	public void closeCurrentAndShow(IModuleUI moduleUI) {
+-		LOG.info("closing module ui '" + moduleUI.toString() + "'");
+-
+-		String location = getModuleLocation(moduleUI);
+-
+-		Optional<IModuleUI> currentModuleUI = popCurrentModule(location);
+-
+-		if (currentModuleUI.isPresent()) {
+-			MangoClientWeb.getInstance().getLayoutFactory().closeModuleUI(currentModuleUI.get());
+-		}
+-
+-		MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
+-	}
+-}
++/**
++ * Copyright (c) 2013 Christian Pelster.
++ * 
++ * All rights reserved. This program and the accompanying materials
++ * are made available under the terms of the Eclipse Public License v1.0
++ * which accompanies this distribution, and is available at
++ * http://www.eclipse.org/legal/epl-v10.html
++ * 
++ * Contributors:
++ *     Christian Pelster - initial API and implementation
++ */
++package io.pelle.mango.client.web.module;
++
++import io.pelle.mango.client.base.layout.IModuleUI;
++import io.pelle.mango.client.base.module.BaseModule;
++import io.pelle.mango.client.base.module.IModule;
++import io.pelle.mango.client.web.MangoClientWeb;
++import io.pelle.mango.client.web.util.BaseAsyncCallback;
++
++import java.util.HashMap;
++import java.util.LinkedHashMap;
++import java.util.Map;
++import java.util.Stack;
++import java.util.logging.Logger;
++
++import com.google.common.base.Optional;
++import com.google.common.base.Predicate;
++import com.google.common.collect.Iterables;
++import com.google.gwt.event.shared.EventBus;
++import com.google.gwt.event.shared.SimpleEventBus;
++import com.google.gwt.user.client.rpc.AsyncCallback;
++
++/**
++ * Handler for module loading
++ * 
++ * @author pelle
++ * @version $Rev$, $Date$
++ * 
++ */
++@SuppressWarnings("rawtypes")
++public final class ModuleHandler {
++
++	final static Logger LOG = Logger.getLogger("ModuleHandler");
++
++	public static EventBus MODULE_EVENT_BUS = new SimpleEventBus();
++
++	private int moduleCounter = 0;
++
++	private static ModuleHandler instance;
++
++	public static String DEFAULT_LOCATION = "default";
++
++	private final LinkedHashMap<String, Stack<IModuleUI>> currentModules = new LinkedHashMap<String, Stack<IModuleUI>>();
++
++	private final LinkedHashMap<IModule, Stack<IModuleUI>> modules2ModuleUI = new LinkedHashMap<IModule, Stack<IModuleUI>>();
++
++	public static ModuleHandler getInstance() {
++		if (instance == null) {
++			instance = new ModuleHandler();
++		}
++
++		return instance;
++	}
++
++	private ModuleHandler() {
++	}
++
++	private String getLocation(String location) {
++		if (location == null || location.trim().isEmpty()) {
++			return DEFAULT_LOCATION;
++		} else {
++			return location;
++		}
++	}
++
++	private Stack<IModuleUI> getModuleStack(String location) {
++		if (!this.currentModules.containsKey(location)) {
++			this.currentModules.put(location, new Stack<IModuleUI>());
++		}
++
++		return this.currentModules.get(location);
++	}
++
++	public void startUIModule(final String moduleUrl, String location) {
++		startUIModule(moduleUrl, location, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>> absent());
++	}
++
++	public void startUIModule(final String moduleUrl) {
++		startUIModule(moduleUrl, null, new HashMap<String, Object>(), Optional.<AsyncCallback<IModuleUI>> absent());
++	}
++
++	public void startUIModule(final String moduleUrl, Map<String, Object> parameters) {
++		startUIModule(moduleUrl, null, parameters, Optional.<AsyncCallback<IModuleUI>> absent());
++	}
++
++	private class MouldeUrlPredicate implements Predicate<IModuleUI> {
++		private String moduleUrl;
++
++		public MouldeUrlPredicate(String moduleUrl) {
++			super();
++			this.moduleUrl = moduleUrl;
++		}
++
++		@Override
++		public boolean apply(IModuleUI input) {
++			return input.isInstanceOf(this.moduleUrl);
++		}
++
++	};
++
++	@SuppressWarnings("unchecked")
++	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters,
++			final Optional<AsyncCallback<IModuleUI>> callback) {
++
++		final String location = getLocation(location1);
++
++		LOG.info("starting ui module for url '" + moduleUrl + "'");
++
++		Optional<IModuleUI> moduleUI = Iterables.tryFind(getModuleStack(location), new MouldeUrlPredicate(moduleUrl));
++
++		if (moduleUI.isPresent()) {
++
++			LOG.info("ui module for url '" + moduleUrl + "' already started (" + moduleUI.get().toString() + ")");
++
++			moduleUI.get().updateUrl(moduleUrl);
++
++			if (callback.isPresent()) {
++				callback.get().onSuccess(moduleUI.get());
++			}
++
++			closeCurrentAndShow(moduleUI.get(), location);
++
++		} else {
++
++			if (ModuleUIFactoryRegistry.getInstance().supports(moduleUrl)) {
++
++				ModuleUIFactoryRegistry.getInstance().getModuleFactory(moduleUrl)
++						.getNewInstance(moduleUrl, new BaseAsyncCallback<IModuleUI, IModuleUI>(callback) {
++
++							@Override
++							public void onSuccess(IModuleUI moduleUI) {
++
++								if (moduleUI.contributesToBreadCrumbs()) {
++									stashCurrentAndShow(moduleUI, location);
++								}
++								else
++								{
++									closeCurrentAndShow(moduleUI, location);
++								}
++								
++								onModuleUIAdd(moduleUI, location);
++
++								if (callback.isPresent()) {
++									callback.get().onSuccess(moduleUI);
++								}
++							}
++
++						}, parameters, peekCurrentModule(location));
++			} else {
++				throw new RuntimeException("unsupported module url '" + moduleUrl + "'");
++			}
++		}
++	}
++
++	private void onModuleUIAdd(IModuleUI moduleUI, final String location) {
++		modules2ModuleUI.get(moduleUI.getModule()).push(moduleUI);
++		ModuleHandler.this.getModuleStack(location).add(moduleUI);
++	}
++
++	private Optional<IModuleUI> peekCurrentModule(String location) {
++		if (getModuleStack(location).isEmpty()) {
++			return Optional.absent();
++		} else {
++			return Optional.of(getModuleStack(location).peek());
++		}
++	}
++
++	private Optional<IModuleUI> popCurrentModule(String location) {
++		if (getModuleStack(location).isEmpty()) {
++			return Optional.absent();
++		} else {
++			return Optional.of(getModuleStack(location).pop());
++		}
++	}
++
++	public void startModule(final String moduleUrl, Map<String, Object> parameters, final AsyncCallback<IModule> moduleCallback) {
++
++		LOG.info("starting module for url '" + moduleUrl + "'");
++
++		if (ModuleFactoryRegistry.getInstance().supports(moduleUrl)) {
++			this.moduleCounter++;
++			parameters.put(BaseModule.MODULE_COUNTER_PARAMETER_ID, this.moduleCounter);
++
++			ModuleFactoryRegistry.getInstance().getModuleFactory(moduleUrl).getNewInstance(moduleUrl, new AsyncCallback<IModule>() {
++
++				@Override
++				public void onSuccess(IModule result) {
++					modules2ModuleUI.put(result, new Stack<IModuleUI>());
++					moduleCallback.onSuccess(result);
++				}
++
++				@Override
++				public void onFailure(Throwable caught) {
++					moduleCallback.onFailure(caught);
++
++				}
++			}, parameters);
++		} else {
++			moduleCallback.onFailure(new RuntimeException("unsupported module url '" + moduleUrl + "'"));
++		}
++	}
++
++	private String getModuleLocation(IModuleUI moduleUI) {
++		for (Map.Entry<String, Stack<IModuleUI>> currentModuleEntry : this.currentModules.entrySet()) {
++			if (currentModuleEntry.getValue().contains(moduleUI)) {
++				return currentModuleEntry.getKey();
++			}
++
++		}
++
++		throw new RuntimeException("module ui '" + moduleUI.toString() + "' not found");
++	}
++
++	private void onModuleUIClose(IModuleUI moduleUI) {
++
++		Stack<IModuleUI> moduleUIs = modules2ModuleUI.get(moduleUI.getModule());
++
++		moduleUIs.remove(moduleUI);
++
++		if (moduleUIs.isEmpty()) {
++			moduleUI.getModule().onClose();
++		}
++
++		for (Map.Entry<String, Stack<IModuleUI>> currentModuleEntry : this.currentModules.entrySet()) {
++			currentModuleEntry.getValue().remove(moduleUI);
++		}
++
++	}
++
++	public void closeCurrentAndShow(IModuleUI moduleUI, String location) {
++
++		Optional<IModuleUI> currentModuleUI = popCurrentModule(location);
++
++		if (currentModuleUI.isPresent()) {
++			MangoClientWeb.getInstance().getLayoutFactory().closeModuleUI(currentModuleUI.get());
++			onModuleUIClose(moduleUI);
++		}
++
++		MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
++	}
++
++	public void stashCurrentAndShow(IModuleUI moduleUI, String location) {
++
++		Optional<IModuleUI> currentModuleUI = peekCurrentModule(location);
++
++		if (currentModuleUI.isPresent()) {
++			MangoClientWeb.getInstance().getLayoutFactory().closeModuleUI(currentModuleUI.get());
++		}
++
++		MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
++	}
++
++	public void closeCurrentAndShow(IModuleUI moduleUI) {
++
++		LOG.info("closing module ui '" + moduleUI.toString() + "'");
++
++		String location = getModuleLocation(moduleUI);
++		Optional<IModuleUI> currentModuleUI = popCurrentModule(location);
++
++		if (currentModuleUI.isPresent()) {
++			MangoClientWeb.getInstance().getLayoutFactory().closeModuleUI(currentModuleUI.get());
++			onModuleUIClose(currentModuleUI.get());
++		}
++
++		MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI, location);
++	}
++}
+diff --git a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/controls/ReferenceControl.java b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/controls/ReferenceControl.java
+index a43f547..9de3a76 100644
+--- a/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/controls/ReferenceControl.java
++++ b/mango-client-web/src/io/pelle/mango/client/web/modules/dictionary/controls/ReferenceControl.java
+@@ -39,6 +39,11 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
+ 	@Override
+ 	public void parseValue(String valueString) {
+ 		this.valueString = valueString;
++
++		if (valueString == null || valueString.trim().isEmpty()) {
++			setValue(null);
++		}
++
+ 	}
+ 
+ 	@Override
+-- 
+1.9.2.msysgit.0
+

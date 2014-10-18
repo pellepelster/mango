@@ -131,7 +131,7 @@ DateDataType:
 	'}';
 
 DateEntityAttribute:
-	'date' (type=[IntegerDataType|QualifiedName])? name=ID;
+	'date' (type=[DateDataType|QualifiedName])? name=ID;
 
 //-----------------------------------------------------------------------------
 // decimal
@@ -142,7 +142,7 @@ DecimalDataType:
 	'}';
 
 DecimalEntityAttribute:
-	'decimal' (type=[IntegerDataType|QualifiedName])? name=ID;
+	'decimal' (type=[DecimalDataType|QualifiedName])? name=ID;
 	
 //-----------------------------------------------------------------------------
 // long

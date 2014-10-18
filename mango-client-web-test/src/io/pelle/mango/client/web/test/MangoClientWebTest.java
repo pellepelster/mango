@@ -16,11 +16,8 @@ public class MangoClientWebTest {
 
 	private static MangoClientWebTest instance;
 
-	private JunitLayoutFactory junitLayoutFactory;
 
 	private MangoClientWebTest() {
-		this.junitLayoutFactory = new JunitLayoutFactory();
-		MangoClientWeb.getInstance().setLayoutFactory(this.junitLayoutFactory);
 	}
 
 	public static MangoClientWebTest getInstance() {

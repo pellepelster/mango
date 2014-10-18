@@ -15,6 +15,10 @@ import io.pelle.mango.dsl.mango.BooleanDataType
 import io.pelle.mango.dsl.mango.BooleanEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.Datatype
+import io.pelle.mango.dsl.mango.DateDataType
+import io.pelle.mango.dsl.mango.DateEntityAttribute
+import io.pelle.mango.dsl.mango.DecimalDataType
+import io.pelle.mango.dsl.mango.DecimalEntityAttribute
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityDataType
@@ -34,6 +38,7 @@ import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObjectEntityAttribute
 import java.math.BigDecimal
 import java.util.ArrayList
+import java.util.Date
 import java.util.List
 
 class TypeUtils {
@@ -152,9 +157,6 @@ class TypeUtils {
 		getType(entity)
 	}
 	
-	//-----------------
-	// EntityAttribute
-	//-----------------
 	def compileEntityAttributeDescriptorCommon(EntityAttribute entityAttribute, Entity entity) '''
 	public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«IF entity == null»«entityAttribute.parentEntity.entityConstantName»«ELSE»«entity.entityConstantName»«ENDIF», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)», false, «entityAttribute.naturalKeyOrder»);
 	'''	
@@ -211,45 +213,107 @@ class TypeUtils {
 	'''
 	
 	//-----------------
-	// BinaryDataType
+	// binary
 	//-----------------
 	def dispatch String getType(BinaryDataType dataType)
 	{
 		return "byte[]"
 	}
 
+	def dispatch String getType(BinaryEntityAttribute entityAttribute)
+	{
+		return "byte[]"
+	}
+	
 	//-----------------
-	// BooleanDataType
+	// boolean
 	//-----------------
 	def dispatch String getType(BooleanDataType dataType)
 	{
 		return typeof(Boolean).name
 	}
+	
+	def dispatch String getType(BooleanEntityAttribute entityAttribute)
+	{
+		return typeof(Boolean).name
+	}
+	
+	//-----------------
+	// decimal
+	//-----------------
+	def dispatch String getType(DecimalDataType dataType)
+	{
+		return typeof(BigDecimal).name
+	}
+	
+	def dispatch String getType(DecimalEntityAttribute entityAttribute)
+	{
+		return BigDecimal.name
+	}
+	
 
 	//-----------------
-	// StringDataType
+	// date
+	//-----------------
+	def dispatch String getType(DateDataType dataType)
+	{
+		return typeof(Date).name
+	}
+
+	def dispatch String getType(DateEntityAttribute entityAttribute)
+	{
+		return Date.name
+	}
+
+	//-----------------
+	// string
 	//-----------------
 	def dispatch String getType(StringDataType dataType)
 	{
 		return typeof(String).name
 	}
+	
+	def dispatch String getType(StringEntityAttribute entityAttribute)
+	{
+		getTypeWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
+	}
+
+	def dispatch String getTypeClass(StringEntityAttribute entityAttribute)
+	{
+		getTypeClassWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
+	}
+
+	def dispatch String getRawType(StringEntityAttribute entityAttribute)
+	{
+		String.name
+	}
 
 	//-----------------
-	// IntegerDataType
+	// integer
 	//-----------------
 	def dispatch String getType(IntegerDataType dataType)
 	{
 		return typeof(Integer).name
 	}
+	
+	def dispatch String getType(IntegerEntityAttribute entityAttribute)
+	{
+		return Integer.name
+	}
 
 	//-----------------
-	// LongDataType
+	// long
 	//-----------------
 	def dispatch String getType(LongDataType dataType)
 	{
 		return typeof(Long).name
 	}
 
+	def dispatch String getType(LongEntityAttribute entityAttribute)
+	{
+		return Long.name
+	}
+	
 	//-----------------
 	// EntityDataType
 	//-----------------
@@ -272,22 +336,7 @@ class TypeUtils {
 	}
 	
 	//-----------------
-	// StringEntityAttribute
-	//-----------------
-	def dispatch String getType(StringEntityAttribute entityAttribute)
-	{
-		getTypeWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
-	}
 
-	def dispatch String getTypeClass(StringEntityAttribute entityAttribute)
-	{
-		getTypeClassWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
-	}
-
-	def dispatch String getRawType(StringEntityAttribute entityAttribute)
-	{
-		String.name
-	}
 
 	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
 	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.maxLength», «entityAttribute.naturalKeyOrder»);
@@ -305,38 +354,6 @@ class TypeUtils {
 		}
 	}
 
-	//-----------------
-	// BooleanEntityAttribute
-	//-----------------
-	def dispatch String getType(BooleanEntityAttribute entityAttribute)
-	{
-		return typeof(Boolean).name
-	}
-	
-	//-----------------
-	// IntegerEntityAttribute
-	//-----------------
-	def dispatch String getType(IntegerEntityAttribute entityAttribute)
-	{
-		return Integer.name
-	}
-
-	//-----------------
-	// BinaryEntityAttribute
-	//-----------------
-	def dispatch String getType(BinaryEntityAttribute entityAttribute)
-	{
-		return "byte[]"
-	}
-	
-	//-----------------
-	// LongEntityAttribute
-	//-----------------
-	def dispatch String getType(LongEntityAttribute entityAttribute)
-	{
-		return Long.name
-	}
-	
 	//-----------------
 	// EntityEntityAttribute
 	//-----------------
@@ -369,7 +386,7 @@ public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.ty
 '''	
 
 	//-----------------
-	// EnumerationEntityAttribute
+	// enumeration
 	//-----------------
 	def dispatch String getType(EnumerationEntityAttribute entityAttribute)
 	{

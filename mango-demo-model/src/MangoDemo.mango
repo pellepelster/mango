@@ -32,6 +32,14 @@ project MangoDemo {
 		enumeration Enumeration1 { EnumerationValue1 ,  EnumerationValue2 => "Value2" }
 
 		enumerationdatatype Enumeration1Datatype { enumeration Enumeration1 }
+		
+		datedatatype DateDatatype1 { }
+
+		datedatatype DateDatatype2 { }
+		
+		decimaldatatype DecimalDatatype1 { }
+		
+		integerdatatype IntegerDatatype1 { } 
 
 		entity Entity1 {
 			naturalkey { stringDatatype1 }
@@ -42,6 +50,10 @@ project MangoDemo {
 			string StringDatatype1 0..n stringDatatype1List
 			entity Entity2Datatype entity2Datatype
 			enumeration Enumeration1Datatype enumeration1Datatype
+			integer IntegerDatatype1 integerDatatype1
+			decimal DecimalDatatype1 decimalDatatype1
+			date DateDatatype1 dateDatype1
+			date DateDatatype2 dateDatype2
 		}
 
 		entity Entity2 {
@@ -134,7 +146,9 @@ project MangoDemo {
 					textcontrol TextControl3 { entityattribute Entity1.stringDatatype3 }
 					referencecontrol ReferenceControl1 { entityattribute Entity1.entity2Datatype dictionary DemoDictionary2 }
 					booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
-
+					integercontrol IntegerControl1 { entityattribute Entity1.integerDatatype1 }
+					bigdecimalcontrol DecimalControl1 { entityattribute Entity1.decimalDatatype1 }
+					datecontrol DateControl1 { entityattribute Entity1.dateDatype1 } 
 					enumerationcontrol EnumerationControl1 { entityattribute Entity1.enumeration1Datatype }
 				}
 
@@ -155,7 +169,9 @@ project MangoDemo {
 						booleancontrol ref BooleanControl1
 						enumerationcontrol ref EnumerationControl1
 						referencecontrol ref ReferenceControl1
-
+						integercontrol ref IntegerControl1
+						bigdecimalcontrol ref DecimalControl1
+						datecontrol ref DateControl1
 					}
 
 					dictionaryresult DemoResult1 {
@@ -165,6 +181,9 @@ project MangoDemo {
 						referencecontrol ref ReferenceControl1
 						booleancontrol ref BooleanControl1
 						enumerationcontrol ref EnumerationControl1
+						integercontrol ref IntegerControl1
+						bigdecimalcontrol ref DecimalControl1
+						datecontrol ref DateControl1
 					}
 				}
 
@@ -175,6 +194,9 @@ project MangoDemo {
 					referencecontrol ref ReferenceControl1
 					booleancontrol ref BooleanControl1
 					enumerationcontrol ref EnumerationControl1
+					integercontrol ref IntegerControl1
+					bigdecimalcontrol ref DecimalControl1
+					datecontrol ref DateControl1
 				}
 			}
 		}
