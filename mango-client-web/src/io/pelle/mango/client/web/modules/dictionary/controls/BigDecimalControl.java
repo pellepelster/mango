@@ -31,7 +31,7 @@ public class BigDecimalControl extends BaseDictionaryControl<IBigDecimalControlM
 			if (GWT.isClient()) {
 				return NumberFormat.getDecimalFormat().format(getValue());
 			} else {
-				return java.text.NumberFormat.getInstance().format(getValue());
+				return getValue().toString();
 			}
 		} else {
 			return super.format();
