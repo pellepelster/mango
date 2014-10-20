@@ -566,3 +566,10 @@ h6,.h6{
 	background: none;
 	border-top: 1px solid rgb(204, 204, 204);
 } 
+
+/**********************
+     date control
+ **********************/
+.datePickerDay, .datePickerWeekdayLabel, .datePickerWeekendLabel {
+	font-size: 100%;
+}
