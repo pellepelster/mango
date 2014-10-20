@@ -22,6 +22,8 @@ public class DateControl extends BaseDictionaryControl<IDateControlModel, Date> 
 
 	private String valueString;
 
+	private boolean setValueCalled = false;
+
 	public DateControl(IDateControlModel dateControlModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(dateControlModel, parent);
 	}
@@ -36,8 +38,15 @@ public class DateControl extends BaseDictionaryControl<IDateControlModel, Date> 
 	}
 
 	@Override
+	public void setValue(Date value) {
+		setValueCalled = true;
+		super.setValue(value);
+	}
+
+	@Override
 	public void parseValue(String valueString) {
 		this.valueString = valueString;
+		setValueCalled = false;
 		setValueInternal(null);
 	}
 
@@ -48,6 +57,10 @@ public class DateControl extends BaseDictionaryControl<IDateControlModel, Date> 
 
 	@Override
 	public void endEdit() {
+
+		if (setValueCalled) {
+			return;
+		}
 
 		if (valueString != null && !valueString.trim().isEmpty()) {
 
