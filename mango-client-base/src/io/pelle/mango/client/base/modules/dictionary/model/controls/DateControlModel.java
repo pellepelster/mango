@@ -7,7 +7,7 @@ public class DateControlModel extends BaseControlModel<IDateControl> implements 
 {
 	private static final long serialVersionUID = 3316617779660627072L;
 
-	private String formatPattern;
+	private DATE_FORMAT dateFormat;
 
 	public DateControlModel(String name, IBaseModel parent)
 	{
@@ -15,13 +15,17 @@ public class DateControlModel extends BaseControlModel<IDateControl> implements 
 	}
 
 	@Override
-	public String getFormatPattern()
+	public DATE_FORMAT getDateFormat()
 	{
-		return this.formatPattern;
+		if (dateFormat == null) {
+			dateFormat = IDateControlModel.DATE_FORMAT.SHORT;
+		}
+		
+		return this.dateFormat;
 	}
 
-	public void setFormatPattern(String formatPattern)
+	public void setDateFormat(DATE_FORMAT dateFormat)
 	{
-		this.formatPattern = formatPattern;
+		this.dateFormat = dateFormat;
 	}
 }

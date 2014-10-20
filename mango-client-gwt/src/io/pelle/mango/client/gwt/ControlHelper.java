@@ -21,6 +21,8 @@ import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrat
 
 import java.util.Map;
 
+import com.google.gwt.event.dom.client.BlurEvent;
+import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.FocusWidget;
@@ -69,23 +71,15 @@ public class ControlHelper implements IControlUpdateListener {
 					});
 				}
 			}
-		}
 
-		// uiObject.addDomHandler(new MouseOverHandler() {
-		//
-		// @Override
-		// public void onMouseOver(MouseOverEvent event) {
-		// baseControl.beginEdit();
-		// }
-		// }, MouseOverEvent.getType());
-		//
-		// uiObject.addDomHandler(new MouseOutHandler() {
-		//
-		// @Override
-		// public void onMouseOut(MouseOutEvent event) {
-		// baseControl.endEdit();
-		// }
-		// }, MouseOutEvent.getType());
+			uiObject.addDomHandler(new BlurHandler() {
+
+				@Override
+				public void onBlur(BlurEvent event) {
+					baseControl.endEdit();
+				}
+			}, BlurEvent.getType());
+		}
 
 		onUpdate();
 

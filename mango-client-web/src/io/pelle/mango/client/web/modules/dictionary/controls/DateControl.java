@@ -1,11 +1,11 @@
 package io.pelle.mango.client.web.modules.dictionary.controls;
 
-import io.pelle.mango.client.base.MangoClientBase;
 import io.pelle.mango.client.base.messages.IMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.modules.dictionary.controls.IDateControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IDateControlModel;
+import io.pelle.mango.client.base.util.GwtUtils;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
@@ -20,6 +20,8 @@ import com.google.common.base.Optional;
 
 public class DateControl extends BaseDictionaryControl<IDateControlModel, Date> implements IDateControl {
 
+	private String valueString;
+
 	public DateControl(IDateControlModel dateControlModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(dateControlModel, parent);
 	}
@@ -27,19 +29,37 @@ public class DateControl extends BaseDictionaryControl<IDateControlModel, Date> 
 	@Override
 	public String format() {
 		if (getValue() != null && getValue() instanceof Date) {
-
-			return MangoClientBase.getInstance().getValueConverter().formatDate(getValue(), IDateControlModel.DATE_FORMAT.MEDIUM);
+			return GwtUtils.formatDate(getValue(), getModel().getDateFormat());
 		} else {
 			return super.format();
 		}
 	}
 
 	@Override
-	protected ParseResult parseValueInternal(String valueString) {
-		try {
-			return new ParseResult(MangoClientBase.getInstance().getValueConverter().parseDate(valueString));
-		} catch (Exception e) {
-			return new ParseResult(new ValidationMessage(IMessage.SEVERITY.ERROR, DateControl.class.getName(), MangoClientWeb.MESSAGES.dateParseError(valueString)));
+	public void parseValue(String valueString) {
+		this.valueString = valueString;
+		setValueInternal(null);
+	}
+
+	@Override
+	protected BaseDictionaryControl<IDateControlModel, Date>.ParseResult parseValueInternal(String valueString) {
+		throw new RuntimeException("not implemented");
+	}
+
+	@Override
+	public void endEdit() {
+
+		if (valueString != null && !valueString.trim().isEmpty()) {
+
+			Date parsedDate = GwtUtils.parseDate(valueString, getModel().getDateFormat());
+
+			if (parsedDate != null) {
+				setValue(parsedDate);
+			} else {
+				addValidationMessage(new ValidationMessage(IMessage.SEVERITY.ERROR, DateControl.class.getName(), MangoClientWeb.MESSAGES.dateParseError(valueString)));
+			}
+		} else {
+			setValue(null);
 		}
 	}
 

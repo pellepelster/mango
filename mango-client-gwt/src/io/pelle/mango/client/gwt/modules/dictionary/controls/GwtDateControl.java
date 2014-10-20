@@ -12,6 +12,7 @@
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
+import io.pelle.mango.client.base.util.GwtUtils;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.DateControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
@@ -32,14 +33,10 @@ public class GwtDateControl extends DateBox implements IGwtControl {
 		this.dateControl = dateControl;
 		ensureDebugId(DictionaryModelUtil.getDebugId(dateControl.getModel()));
 
-		String format = this.dateControl.getModel().getFormatPattern();
-
-		if (format == null) {
-			format = DateTimeFormat.getFormat(com.google.gwt.i18n.shared.DateTimeFormat.PredefinedFormat.DATE_MEDIUM).getPattern();
-		}
-
+		String format = GwtUtils.getFormat(this.dateControl.getModel().getDateFormat()).getPattern();
 		setFormat(new DefaultFormat(DateTimeFormat.getFormat(format)));
-		new ControlHelper(this, dateControl, this, false);
+
+		new ControlHelper(this.getTextBox(), dateControl, this, true);
 
 		addValueChangeHandler(new ValueChangeHandler<Date>() {
 			@Override
@@ -47,6 +44,7 @@ public class GwtDateControl extends DateBox implements IGwtControl {
 				dateControl.setValue(event.getValue());
 			}
 		});
+
 	}
 
 	/** {@inheritDoc} */
@@ -58,15 +56,14 @@ public class GwtDateControl extends DateBox implements IGwtControl {
 	@Override
 	public void setContent(Object content) {
 		if (content != null) {
-
 			if (content instanceof Date) {
 				super.setValue((Date) content);
 			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
-
 		} else {
-			super.setValue(null);
+			// ignore null dates from unparsable inputs
+			// super.setValue(null);
 		}
 	}
 

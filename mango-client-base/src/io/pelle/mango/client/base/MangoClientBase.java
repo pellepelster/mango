@@ -12,8 +12,6 @@ public class MangoClientBase {
 
 	private static MangoClientBase instance;
 
-	private IValueConverter valueConverter = new MangoValueConverter();
-
 	private RpcRequestBuilder rpcRequestBuilder = new RpcRequestBuilder();
 
 	public static MangoClientBase getInstance() {
@@ -100,14 +98,6 @@ public class MangoClientBase {
 
 	public void setRpcRequestBuilder(RpcRequestBuilder rpcRequestBuilder) {
 		this.rpcRequestBuilder = rpcRequestBuilder;
-	}
-
-	public void setValueConverter(IValueConverter valueConverter) {
-		this.valueConverter = valueConverter;
-	}
-
-	public IValueConverter getValueConverter() {
-		return valueConverter;
 	}
 
 }

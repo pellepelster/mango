@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
-import io.pelle.mango.client.base.MangoClientBase;
 import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
@@ -509,7 +508,6 @@ public class DemoClientTest extends BaseDemoTest {
 	@Autowired
 	public void setMangoGwtAsyncAdapterRemoteServiceLocator(MangoGwtAsyncAdapterRemoteServiceLocator mangoGwtAsyncAdapterRemoteServiceLocator) {
 		MangoClientWeb.getInstance().setMyAdminGWTRemoteServiceLocator(mangoGwtAsyncAdapterRemoteServiceLocator);
-		MangoClientBase.getInstance().setValueConverter(new JunitValueConverter());
 		MangoClientWeb.MESSAGES = I18NProxy.create(MangoMessages.class);
 		MangoDemoClientConfiguration.registerAll();
 	}

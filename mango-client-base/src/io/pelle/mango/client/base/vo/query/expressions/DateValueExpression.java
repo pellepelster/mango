@@ -1,7 +1,7 @@
 package io.pelle.mango.client.base.vo.query.expressions;
 
-import io.pelle.mango.client.base.MangoClientBase;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IDateControlModel;
+import io.pelle.mango.client.base.util.GwtUtils;
 import io.pelle.mango.client.base.vo.query.IAliasProvider;
 import io.pelle.mango.client.base.vo.query.IExpression;
 
@@ -24,7 +24,7 @@ public class DateValueExpression implements IExpression, Serializable {
 
 	@Override
 	public String getJPQL(IAliasProvider aliasProvider) {
-		return "'" + MangoClientBase.getInstance().getValueConverter().formatDate(value, IDateControlModel.DATE_FORMAT.MONTH_DAY_YEAR) + "'";
+		return "'" + GwtUtils.formatDate(value, IDateControlModel.DATE_FORMAT.YEAR_MONTH_DAY) + "'";
 	}
 
 	@Override
