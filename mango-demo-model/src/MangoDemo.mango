@@ -259,13 +259,11 @@ project MangoDemo {
 			}
 		}
 
-		navigationnode Navigation {
-			navigationnode DemoDictionary1 {
-				dictionarySearch DemoDictionary1.DemoSearch1
-			}
-			navigationnode DemoDictionary2 {
-				dictionarySearch DemoDictionary2.DemoSearch2
-			}
+		navigationnode DemoDictionary1 {
+			dictionarySearch DemoDictionary1.DemoSearch1
+		}
+		navigationnode DemoDictionary2 {
+			dictionarySearch DemoDictionary2.DemoSearch2
 		}
 	}
 }
