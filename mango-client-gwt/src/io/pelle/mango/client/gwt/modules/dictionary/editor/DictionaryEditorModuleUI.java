@@ -133,7 +133,6 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	@Override
 	public void onUpdate() {
-		// refreshButton.setEnabled(!baseVO.isNew());
 		editorTitle.setText(getModule().getTitle());
 	}
 

@@ -37,7 +37,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IEditorModel> implements IDictionaryEditor<VOType> {
 
-	private final EditorVOWrapper<VOType> voWrapper = new EditorVOWrapper<VOType>();
+	private final EditorVOWrapper<VOType> voWrapper;
 
 	private List<IEditorUpdateListener> updateListeners = new ArrayList<IEditorUpdateListener>();
 
@@ -50,6 +50,14 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 		this.context = context;
 		this.dictionaryModel = dictionaryModel;
+		this.voWrapper = new EditorVOWrapper<VOType>();
+		voWrapper.setDirtyCallback(new IDirtyCallback() {
+			
+			@Override
+			public void onDirtyChange() {
+				fireUpdateListeners();
+			}
+		});
 	}
 
 	@Override

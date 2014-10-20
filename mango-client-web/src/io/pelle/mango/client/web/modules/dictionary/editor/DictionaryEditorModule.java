@@ -40,7 +40,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
  * @author pelle
  * 
  */
-public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictionaryEditorModule implements IBaseDictionaryModule {
+public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictionaryEditorModule implements IBaseDictionaryModule, IEditorUpdateListener {
 
 	public final static String MODULE_LOCATOR = ModuleUtils.getBaseModuleUrl(MODULE_ID);
 
@@ -83,7 +83,8 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
 
 		DictionaryEditorModule.this.dictionaryModel = DictionaryModelProvider.getDictionary(dictionaryName);
 		DictionaryEditorModule.this.dictionaryEditor = new DictionaryEditor<VOType>(this.dictionaryModel, getParameters());
-
+		dictionaryEditor.addUpdateListener(this);
+		
 		AsyncCallback<Void> asyncCallback = new BaseErrorAsyncCallback<Void>() {
 			@Override
 			public void onSuccess(Void result) {
@@ -134,6 +135,15 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
 	@Override
 	public String getModuleUrl() {
 		return getModuleUrlForDictionary(getEditorDictionaryName(), dictionaryEditor.getVO().getOid());
+	}
+
+	public boolean isDirty() {
+		return dictionaryEditor.isDirty();
+	}
+
+	@Override
+	public void onUpdate() {
+		fireUpdateListeners();
 	}
 
 	

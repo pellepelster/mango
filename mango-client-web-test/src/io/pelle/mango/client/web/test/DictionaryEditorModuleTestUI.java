@@ -11,6 +11,8 @@
  */
 package io.pelle.mango.client.web.test;
 
+import org.junit.Assert;
+
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
@@ -30,10 +32,14 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 	private DictionaryEditorModule<VOType> module;
 
+	private boolean dirty = false;
+	private String title;;
+	
 	public DictionaryEditorModuleTestUI(DictionaryEditorModule<VOType> module) {
 		super(module, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
 		this.module = module;
 		module.addUpdateListener(this);
+		onUpdate();
 	}
 
 	@Override
@@ -56,9 +62,8 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 		return this.module;
 	}
 
-	@Override
-	public String getTitle() {
-		return this.module.getTitle();
+	public void assertTitle(String expectedTitle) {
+		Assert.assertEquals(expectedTitle, title);
 	}
 
 	public void save() {
@@ -72,11 +77,26 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 	@Override
 	public void onUpdate() {
+		this.dirty = module.isDirty();
+		this.title = module.getTitle();
 	}
 
 	@Override
 	public int getOrder() {
 		return this.module.getOrder();
+	}
+
+	public void assertNotDirty() {
+		Assert.assertFalse(dirty);
+	}
+
+	public void assertDirty() {
+		Assert.assertTrue(dirty);
+	}
+
+	@Override
+	public String getTitle() {
+		return title;
 	}
 
 }

@@ -12,6 +12,7 @@
 package io.pelle.mango.client.web.modules.dictionary.editor;
 
 import io.pelle.mango.client.base.VOBeanUtil;
+import io.pelle.mango.client.base.db.vos.ISimpleVO;
 import io.pelle.mango.client.base.modules.dictionary.IVOWrapper;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
@@ -21,6 +22,8 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 
 	private VOType vo;
 
+	private IDirtyCallback dirtyCallback;
+	
 	public EditorVOWrapper()
 	{
 	}
@@ -49,6 +52,10 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 	public void markDirty()
 	{
 		this.dirty = true;
+		
+		if (dirtyCallback != null) {
+			dirtyCallback.onDirtyChange();
+		}
 	}
 
 	public boolean isDirty()
@@ -80,5 +87,9 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 	public VOType getContent()
 	{
 		return this.vo;
+	}
+	
+	public void setDirtyCallback(IDirtyCallback dirtyCallback) {
+		this.dirtyCallback = dirtyCallback;
 	}
 }

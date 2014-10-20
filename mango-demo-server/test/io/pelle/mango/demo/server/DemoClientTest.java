@@ -299,6 +299,24 @@ public class DemoClientTest extends BaseDemoTest {
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.INTEGER_CONTROL1);
 		assertEquals("2", control.getValue());
 	}
+	
+	@Test
+	public void testDictionary1DirtyHandling() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+
+		editor.assertNotDirty();
+		
+		TextTestControl textControl1 = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
+		textControl1.enterValue(UUID.randomUUID().toString());
+		editor.assertDirty();
+		
+		editor.save();
+		editor.assertNotDirty();
+	}
 
 	@Test
 	public void testDictionary1DateControl1() {
