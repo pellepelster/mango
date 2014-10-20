@@ -405,6 +405,7 @@ h6,.h6{
 	right: -10px;
     width: 15px;
     height: 15px;
+	cursor:pointer;    
 }
 
 .form-control-feedback {
