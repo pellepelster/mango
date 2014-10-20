@@ -14,6 +14,7 @@ package io.pelle.mango.client.web.test;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ControlGroupModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.DateControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.EnumerationControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IntegerControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel;
@@ -22,6 +23,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
+import io.pelle.mango.client.web.test.controls.DateTestControl;
 import io.pelle.mango.client.web.test.controls.DecimalTestControl;
 import io.pelle.mango.client.web.test.controls.EnumerationTestControl;
 import io.pelle.mango.client.web.test.controls.IntegerTestControl;
@@ -49,6 +51,10 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 
 	public BooleanTestControl getControl(BooleanControlModel controlModel) {
 		return new BooleanTestControl(this.baseDictionaryModule.getElement(controlModel));
+	}
+
+	public DateTestControl getControl(DateControlModel controlModel) {
+		return new DateTestControl(this.baseDictionaryModule.getElement(controlModel));
 	}
 
 	public IntegerTestControl getControl(IntegerControlModel controlModel) {

@@ -76,7 +76,10 @@ public abstract class BaseDictionaryElement<ModelType extends IBaseModel> implem
 		update();
 	}
 
-	protected void update() {
+	public void update() {
+		for (BaseDictionaryElement<?> baseDictionaryElement : getAllChildren()) {
+			baseDictionaryElement.update();
+		}
 	}
 
 	public abstract List<? extends BaseDictionaryElement<?>> getAllChildren();

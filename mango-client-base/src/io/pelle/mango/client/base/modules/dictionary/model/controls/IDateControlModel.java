@@ -18,7 +18,11 @@ package io.pelle.mango.client.base.modules.dictionary.model.controls;
  * @version $Rev$, $Date$
  * 
  */
-public interface IDateControlModel extends IBaseControlModel
-{
+public interface IDateControlModel extends IBaseControlModel {
+
+	enum DATE_FORMAT {
+		MEDIUM, MONTH_DAY_YEAR
+	}
+
 	String getFormatPattern();
 }

@@ -98,7 +98,7 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void update() {
+	public void update() {
 
 		if (getModel().getAttributePath() != null) {
 

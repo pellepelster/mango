@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
+import io.pelle.mango.client.base.MangoClientBase;
 import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
@@ -12,6 +13,7 @@ import io.pelle.mango.client.web.test.DictionarySearchModuleTestUI;
 import io.pelle.mango.client.web.test.MangoClientSyncWebTest;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
+import io.pelle.mango.client.web.test.controls.DateTestControl;
 import io.pelle.mango.client.web.test.controls.DecimalTestControl;
 import io.pelle.mango.client.web.test.controls.EnumerationTestControl;
 import io.pelle.mango.client.web.test.controls.IntegerTestControl;
@@ -91,6 +93,9 @@ public class DemoClientTest extends BaseDemoTest {
 		referenceControl1.enterValue("x");
 		referenceControl1.assertHasSuggestions(2);
 
+		referenceControl1.enterValue("1234");
+		referenceControl1.leaveControl();
+		referenceControl1.assertHasErrorWithText("'1234' could not be found");
 		referenceControl1.enterValue("ab");
 		editor1.save();
 		referenceControl1.assertValueString("abc");
@@ -296,6 +301,48 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testDictionary1DateControl1() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
+
+		// create 1
+		DictionaryEditorModuleTestUI<Entity1VO> editor = createDemoDictionary1Editor1();
+		DateTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
+		control.enterValue("a");
+		control.assertHasErrorWithText("'a' is not a valid date");
+		control.enterValue("2014-8-28");
+		editor.save();
+
+		// create 2
+		editor = createDemoDictionary1Editor1();
+		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
+		control.enterValue("2015-9-29");
+		editor.save();
+
+		// search all
+		DictionarySearchModuleTestUI<Entity1VO> search = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1);
+		search.execute();
+		search.assertSearchResults(2);
+
+		// search 1
+		control = search.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.DATE_CONTROL1);
+		control.enterValue("2014-8-28");
+		search.execute();
+		search.assertSearchResults(1);
+
+		// search 2
+		control = search.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.DATE_CONTROL1);
+		control.enterValue("2015-9-29");
+		search.execute();
+		search.assertSearchResults(1);
+
+		editor = search.openEditor(0);
+		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
+		assertEquals("2015-09-29", control.getValue());
+	}
+
+	@Test
 	public void testDictionary1BooleanControl1() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
@@ -444,6 +491,7 @@ public class DemoClientTest extends BaseDemoTest {
 	@Autowired
 	public void setMangoGwtAsyncAdapterRemoteServiceLocator(MangoGwtAsyncAdapterRemoteServiceLocator mangoGwtAsyncAdapterRemoteServiceLocator) {
 		MangoClientWeb.getInstance().setMyAdminGWTRemoteServiceLocator(mangoGwtAsyncAdapterRemoteServiceLocator);
+		MangoClientBase.getInstance().setValueConverter(new JunitValueConverter());
 		MangoClientWeb.MESSAGES = I18NProxy.create(MangoMessages.class);
 		MangoDemoClientConfiguration.registerAll();
 	}

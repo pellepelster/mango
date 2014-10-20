@@ -90,7 +90,6 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 	@Override
 	public void setValue(ValueType value) {
 		setValueInternal(value);
-
 		fireUpdateListeners();
 	}
 
@@ -102,7 +101,7 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 		}
 	}
 
-	private void setValueInternal(ValueType value) {
+	protected void setValueInternal(ValueType value) {
 		getRootElement().clearValidationMessages(this);
 
 		validate(value);
@@ -133,11 +132,11 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 
 	@Override
 	public void parseValue(String valueString) {
-		
+
 		if (Strings.isNullOrEmpty(valueString)) {
 			setValueInternal(null);
 		} else {
-			
+
 			ParseResult parseResult = parseValueInternal(valueString);
 
 			if (parseResult != null) {
@@ -163,6 +162,11 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 		return Collections.emptyList();
 	}
 
+	public void addValidationMessage(IValidationMessage validationMessage) {
+		getRootElement().getValidationMessages(this).addValidationMessage(validationMessage);
+		fireUpdateListeners();
+	}
+
 	@Override
 	public IValidationMessages getValidationMessages() {
 		return getRootElement().getValidationMessages(this);
@@ -173,7 +177,7 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 		this.controlUpdateListeners.add(controlUpdateListener);
 	}
 
-	private void fireUpdateListeners() {
+	protected void fireUpdateListeners() {
 		for (IControlUpdateListener controlUpdateListener : this.controlUpdateListeners) {
 			controlUpdateListener.onUpdate();
 		}
@@ -185,7 +189,7 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 	}
 
 	@Override
-	protected void update() {
+	public void update() {
 		fireUpdateListeners();
 	}
 

@@ -4,7 +4,6 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.IDateControl
 
 import java.util.Date;
 
-public interface IDateControl extends IBaseControl<Date, IDateControlModel>
-{
+public interface IDateControl extends IBaseControl<Date, IDateControlModel> {
 
 }

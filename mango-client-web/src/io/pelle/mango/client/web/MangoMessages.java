@@ -70,6 +70,9 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("''{0}'' is not a valid integer")
 	String integerParseError(String value);
 
+	@DefaultMessage("''{0}'' could not be found")
+	String referenceParseError(String value);
+
 	@Key(MANDATORY_MESSAGE_KEY)
 	@DefaultMessage("Input is needed for ''{0}''")
 	String mandatoryMessage(@Optional String fieldLabel);

@@ -21,7 +21,7 @@ public class ReferenceTestControl<VOType extends IBaseVO> extends BaseTestContro
 
 	public void enterValue(String valueString) {
 		FocusManager.getInstance().setCurrentWidget(this);
-		
+
 		getBaseControl().parseValue(valueString, new BaseErrorAsyncCallback<List<Suggestion<VOType>>>() {
 
 			@Override
@@ -34,5 +34,9 @@ public class ReferenceTestControl<VOType extends IBaseVO> extends BaseTestContro
 
 	public void assertHasSuggestions(int count) {
 		Assert.assertEquals(count, suggestions.size());
+	}
+
+	public void leaveControl() {
+		FocusManager.getInstance().leaveWidget(this);
 	}
 }

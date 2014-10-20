@@ -1,5 +1,7 @@
 package io.pelle.mango.client.web.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.messages.IMessage;
+import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.modules.dictionary.controls.IReferenceControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
@@ -9,6 +11,7 @@ import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
 import io.pelle.mango.client.base.vo.query.expressions.LongExpression;
 import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
+import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
@@ -39,11 +42,7 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 	@Override
 	public void parseValue(String valueString) {
 		this.valueString = valueString;
-
-		if (valueString == null || valueString.trim().isEmpty()) {
-			setValue(null);
-		}
-
+		setValueInternal(null);
 	}
 
 	@Override
@@ -78,6 +77,8 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 				public void onSuccess(List<VOTYPE> result) {
 					if (result.size() == 1) {
 						setValue(result.get(0));
+					} else if (result.size() == 0) {
+						addValidationMessage(new ValidationMessage(IMessage.SEVERITY.ERROR, ReferenceControl.class.getName(), MangoClientWeb.MESSAGES.referenceParseError(valueString)));
 					}
 				}
 			});

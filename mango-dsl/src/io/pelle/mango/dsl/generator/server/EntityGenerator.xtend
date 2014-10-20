@@ -10,6 +10,7 @@ import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
+import io.pelle.mango.dsl.mango.DateEntityAttribute
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
@@ -86,6 +87,11 @@ class EntityGenerator extends BaseEntityGenerator {
 	def dispatch compileEntityAttributeJpaAnnotations(EnumerationEntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»")
 		@javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
+	'''
+
+	def dispatch compileEntityAttributeJpaAnnotations(DateEntityAttribute entityAttribute) '''
+		@Column(name = "«entityAttribute.entityTableColumnName»")
+		@javax.persistence.Temporal(javax.persistence.TemporalType.DATE)
 	'''
  
 	def dispatch compileEntityAttributeJpaAnnotations(StringEntityAttribute entityAttribute) '''

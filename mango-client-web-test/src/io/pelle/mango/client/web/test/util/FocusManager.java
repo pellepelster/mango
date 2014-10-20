@@ -1,6 +1,5 @@
 package io.pelle.mango.client.web.test.util;
 
-
 public class FocusManager {
 
 	private FocusableTestWidget currentWidget;
@@ -26,11 +25,19 @@ public class FocusManager {
 		}
 
 		this.currentWidget = nextWidget;
-		
+
 		if (this.currentWidget != null) {
 			nextWidget.onFocusEnter();
 		}
-		
+
+	}
+
+	public void leaveWidget(FocusableTestWidget widgetToleave) {
+
+		if (this.currentWidget == widgetToleave) {
+			this.currentWidget.onFocusLeave();
+		}
+
 	}
 
 	public void leaveCurrentWidget() {

@@ -18,6 +18,8 @@ import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
 import java.util.Date;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -38,6 +40,13 @@ public class GwtDateControl extends DateBox implements IGwtControl {
 
 		setFormat(new DefaultFormat(DateTimeFormat.getFormat(format)));
 		new ControlHelper(this, dateControl, this, false);
+
+		addValueChangeHandler(new ValueChangeHandler<Date>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				dateControl.setValue(event.getValue());
+			}
+		});
 	}
 
 	/** {@inheritDoc} */

@@ -148,6 +148,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 				DictionaryEditor.this.addValidationMessages(result.getValidationMessages());
 			}
 
+			DictionaryEditor.this.update();
+
 			callParentCallbacks(result);
 		}
 	};

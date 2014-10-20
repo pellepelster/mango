@@ -6,8 +6,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.IBaseRootModel;
 
 import java.util.List;
 
-public interface IBaseRootElement<ModelType extends IBaseRootModel> extends IBaseDictionaryElement<ModelType>
-{
+public interface IBaseRootElement<ModelType extends IBaseRootModel> extends IBaseDictionaryElement<ModelType> {
 
 	IValidationMessages getValidationMessages(IBaseDictionaryElement<?> baseDictionaryElement);
 
