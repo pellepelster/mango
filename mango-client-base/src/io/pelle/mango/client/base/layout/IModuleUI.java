@@ -20,12 +20,10 @@ import io.pelle.mango.client.base.module.IModule;
  * 
  * @param <WidgetType>
  */
-public interface IModuleUI<ContainerType, ModuleType extends IModule>
-{
+public interface IModuleUI<ContainerType, ModuleType extends IModule> {
 	static final String UI_MODULE_ID_PARAMETER_NAME = "moduleUIName";
 
-	enum CONTAINER_LAYOUT
-	{
+	enum CONTAINER_LAYOUT {
 		HORIZONTAL, VERTICAL
 	}
 

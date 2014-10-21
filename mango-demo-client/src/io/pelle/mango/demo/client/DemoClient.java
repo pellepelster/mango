@@ -6,6 +6,7 @@ import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 import io.pelle.mango.test.client.MangoDemoClientConfiguration;
 import io.pelle.mango.test.client.MangoDemoDictionaryModel;
+import io.pelle.mango.test.client.MangoDemoNavigationModel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -32,6 +33,8 @@ public class DemoClient implements EntryPoint {
 
 	public void init() {
 		MangoDemoClientConfiguration.registerAll();
+
+		MangoDemoNavigationModel.ROOT.setHelpText("xxx");
 
 		String string1 = "";
 		string1 += "<strong>Model defining this control</strong><br/>";

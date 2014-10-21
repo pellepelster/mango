@@ -65,10 +65,18 @@ public class ModuleNavigationModule extends BaseModuleNavigationModule {
 			if (t != null) {
 				return t;
 			}
-
 		}
 
 		return null;
+	}
+
+	@Override
+	public String getHelpText() {
+		if (NavigationTreeProvider.getRootNavigationElements().size() > 0) {
+			return NavigationTreeProvider.getRootNavigationElements().get(0).getHelpText();
+		} else {
+			return super.getHelpText();
+		}
 	}
 
 	@Override

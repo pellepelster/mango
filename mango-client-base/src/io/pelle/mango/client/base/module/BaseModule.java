@@ -7,8 +7,7 @@ import java.util.Map;
 import com.google.common.base.Splitter;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public abstract class BaseModule implements IModule
-{
+public abstract class BaseModule implements IModule {
 	private final List<IModuleUpdateListener> updateListeners = new ArrayList<IModuleUpdateListener>();
 
 	private final AsyncCallback<IModule> moduleCallback;
@@ -21,8 +20,7 @@ public abstract class BaseModule implements IModule
 
 	private String moduleUrl;
 
-	protected AsyncCallback<IModule> getModuleCallback()
-	{
+	protected AsyncCallback<IModule> getModuleCallback() {
 		return this.moduleCallback;
 	}
 
@@ -30,8 +28,7 @@ public abstract class BaseModule implements IModule
 	public void onClose() {
 	}
 
-	public BaseModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters)
-	{
+	public BaseModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
 		this.moduleUrl = moduleUrl;
 		this.moduleCallback = moduleCallback;
 		this.parameters = parameters;
@@ -39,101 +36,81 @@ public abstract class BaseModule implements IModule
 		parseUrl(moduleUrl);
 	}
 
-	public void addUpdateListener(IModuleUpdateListener updateListener)
-	{
+	public void addUpdateListener(IModuleUpdateListener updateListener) {
 		this.updateListeners.add(updateListener);
 	}
 
-	private void parseUrl(String moduleUrl)
-	{
+	private void parseUrl(String moduleUrl) {
 		Map<String, String> urlSegments = Splitter.on("&").withKeyValueSeparator("=").split(moduleUrl);
 		this.parameters.putAll(urlSegments);
 	}
 
-	public Map<String, Object> getParameters()
-	{
+	public Map<String, Object> getParameters() {
 		return this.parameters;
 	}
 
-	public boolean hasParameter(String parameterName)
-	{
+	public boolean hasParameter(String parameterName) {
 		return this.parameters.containsKey(parameterName);
 	}
 
-	public Object getParameter(String parameterName)
-	{
+	public Object getParameter(String parameterName) {
 		return this.parameters.get(parameterName);
 	}
 
-	public String getStringParameter(String parameterName, String defaultString)
-	{
-		if (hasParameter(parameterName))
-		{
+	public String getStringParameter(String parameterName, String defaultString) {
+		if (hasParameter(parameterName)) {
 			return this.parameters.get(parameterName).toString();
-		}
-		else
-		{
+		} else {
 			return defaultString;
 		}
 	}
 
-	public String getStringParameter(String parameterName)
-	{
-		if (hasParameter(parameterName))
-		{
+	public String getStringParameter(String parameterName) {
+		if (hasParameter(parameterName)) {
 			return this.parameters.get(parameterName).toString();
-		}
-		else
-		{
+		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public String getTitle()
-	{
-		if (hasParameter(MODULE_TITLE_PARAMETER_ID))
-		{
+	public String getTitle() {
+		if (hasParameter(MODULE_TITLE_PARAMETER_ID)) {
 			return this.parameters.get(MODULE_TITLE_PARAMETER_ID).toString();
-		}
-		else
-		{
+		} else {
 			return getModuleUrl();
 		}
 	}
 
 	@Override
-	public int getOrder()
-	{
-		if (hasParameter(MODULE_COUNTER_PARAMETER_ID))
-		{
+	public int getOrder() {
+		if (hasParameter(MODULE_COUNTER_PARAMETER_ID)) {
 			return Integer.parseInt(this.parameters.get(MODULE_COUNTER_PARAMETER_ID).toString());
-		}
-		else
-		{
+		} else {
 			throw new RuntimeException("module parameter '" + MODULE_COUNTER_PARAMETER_ID + "' not found");
 		}
 
 	}
 
 	@Override
-	public void updateUrl(String moduleUrl)
-	{
+	public void updateUrl(String moduleUrl) {
 		parseUrl(moduleUrl);
 		fireUpdateListeners();
 	}
 
-	protected void fireUpdateListeners()
-	{
-		for (IModuleUpdateListener updateListener : this.updateListeners)
-		{
+	protected void fireUpdateListeners() {
+		for (IModuleUpdateListener updateListener : this.updateListeners) {
 			updateListener.onUpdate();
 		}
 	}
 
 	@Override
-	public String getModuleUrl()
-	{
+	public String getHelpText() {
+		return null;
+	}
+
+	@Override
+	public String getModuleUrl() {
 		return this.moduleUrl;
 	}
 

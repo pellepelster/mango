@@ -11,14 +11,14 @@
  */
 package io.pelle.mango.client.web.test;
 
-import org.junit.Assert;
-
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
 import io.pelle.mango.client.web.test.util.FocusManager;
+
+import org.junit.Assert;
 
 import com.google.common.base.Optional;
 
@@ -34,7 +34,7 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 	private boolean dirty = false;
 	private String title;;
-	
+
 	public DictionaryEditorModuleTestUI(DictionaryEditorModule<VOType> module) {
 		super(module, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
 		this.module = module;
@@ -67,7 +67,7 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 	}
 
 	public void save() {
-		
+
 		FocusManager.getInstance().setCurrentWidget(this);
 
 		AsyncCallbackFuture<Result<VOType>> future = AsyncCallbackFuture.create();

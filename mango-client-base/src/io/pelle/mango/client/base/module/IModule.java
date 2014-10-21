@@ -11,7 +11,6 @@
  */
 package io.pelle.mango.client.base.module;
 
-
 /**
  * MyAdmin module interface
  * 
@@ -19,10 +18,8 @@ package io.pelle.mango.client.base.module;
  * @version $Rev$, $Date$
  * 
  */
-public interface IModule
-{
-	public interface IModuleUpdateListener
-	{
+public interface IModule {
+	public interface IModuleUpdateListener {
 		void onUpdate();
 	}
 
@@ -39,4 +36,6 @@ public interface IModule
 	void updateUrl(String moduleUrl);
 
 	void onClose();
+
+	String getHelpText();
 }

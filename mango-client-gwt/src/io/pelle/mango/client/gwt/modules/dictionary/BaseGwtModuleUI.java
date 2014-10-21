@@ -23,11 +23,9 @@ import com.google.gwt.user.client.ui.Panel;
  * @author pelle
  * 
  */
-public abstract class BaseGwtModuleUI<ModuleType extends IModule> extends BaseModuleUI<Panel, ModuleType> implements IGwtModuleUI<ModuleType>
-{
+public abstract class BaseGwtModuleUI<ModuleType extends IModule> extends BaseModuleUI<Panel, ModuleType> implements IGwtModuleUI<ModuleType> {
 
-	public BaseGwtModuleUI(ModuleType module, String uiModuleId)
-	{
+	public BaseGwtModuleUI(ModuleType module, String uiModuleId) {
 		super(module, uiModuleId);
 	}
 

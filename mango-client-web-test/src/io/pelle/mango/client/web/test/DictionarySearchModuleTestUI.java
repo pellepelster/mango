@@ -85,4 +85,5 @@ public class DictionarySearchModuleTestUI<VOType extends IBaseVO> extends BaseDi
 		long id = getResultRow(row).getVO().getId();
 		return MangoClientSyncWebTest.getInstance().openEditor(module.getDictionaryModel(), id);
 	}
+
 }

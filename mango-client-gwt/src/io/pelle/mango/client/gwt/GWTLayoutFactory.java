@@ -17,6 +17,7 @@ import io.pelle.mango.client.gwt.modules.dictionary.editor.DictionaryEditorModul
 import io.pelle.mango.client.gwt.modules.dictionary.search.DictionarySearchModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.hierarchical.HierarchicalTreeModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.navigation.NavigationModuleUIFactory;
+import io.pelle.mango.client.gwt.utils.HtmlWithHelp;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleUIFactoryRegistry;
 
@@ -36,6 +37,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -49,7 +51,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 	final static Logger LOG = Logger.getLogger("GWTLayoutFactory");
 
 	private class PanelLayoutInfo {
-		
+
 		private final Widget widget;
 
 		private List<IModuleUI<Panel, ?>> moduleUIs = new ArrayList<IModuleUI<Panel, ?>>();
@@ -65,11 +67,12 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 		public void addModuleUI(IModuleUI<Panel, ?> moduleUI) {
 			if (widget instanceof StackLayoutPanel) {
+
 				StackLayoutPanel stackLayoutPanel = (StackLayoutPanel) widget;
 				Panel panel = moduleUI.getContainer();
 				panel.setWidth("100%");
 
-				HTML html = new HTML(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()));
+				HTML html = new HtmlWithHelp(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()), moduleUI.getModule().getHelpText());
 				html.setStylePrimaryName(GwtStyles.H3_CLASS);
 
 				int beforeIndex = 0;
@@ -87,7 +90,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 				});
 				beforeIndex = moduleUIs.indexOf(moduleUI);
 
-				stackLayoutPanel.insert(panel, html, 3, beforeIndex);
+				stackLayoutPanel.insert(panel, new SimplePanel(html), 3, beforeIndex);
 				stackLayoutPanel.showWidget(0);
 
 			} else if (widget instanceof Panel) {
@@ -237,7 +240,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 	@Override
 	public void closeModuleUI(IModuleUI<Panel, ?> moduleUI) {
-		
+
 		LOG.info("closing module ui '" + moduleUI + "'");
 
 		Direction direction = getDirection(moduleUI);
