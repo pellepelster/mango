@@ -1,8 +1,8 @@
 package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
+import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.server.xml.XmlVOMapper;
-import io.pelle.mango.test.client.Entity1VO;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

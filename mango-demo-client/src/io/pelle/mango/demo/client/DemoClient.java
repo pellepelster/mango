@@ -4,9 +4,6 @@ import io.pelle.mango.client.gwt.GWTLayoutFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
-import io.pelle.mango.test.client.MangoDemoClientConfiguration;
-import io.pelle.mango.test.client.MangoDemoDictionaryModel;
-import io.pelle.mango.test.client.MangoDemoNavigationModel;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -32,6 +29,7 @@ public class DemoClient implements EntryPoint {
 	}
 
 	public void init() {
+
 		MangoDemoClientConfiguration.registerAll();
 
 		MangoDemoNavigationModel.ROOT.setHelpText("xxx");
@@ -86,6 +84,74 @@ public class DemoClient implements EntryPoint {
 		string2 += "</pre>";
 
 		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.REFERENCE_CONTROL1.setHelpText(replaceKeywords(string2));
+
+		createNavigationHelpText();
+		createCountrySearchHelpText();
+
+	}
+
+	private void createNavigationHelpText() {
+		String helpText = "";
+		helpText += "<strong>Model defining navigation tree for the showcase</strong><br/>";
+		helpText += "The title text is taken from the navigation nodes name. Each navigation node can link to a dictionarySearch to open the corresponding search or an dictionaryEditor for the same functionality on an editor.<br/>";
+		helpText += "<pre>";
+		helpText += "navigationnode Showcase {\n";
+		helpText += "  navigationnode Country {\n";
+		helpText += "    dictionarySearch Country.CountrySearch\n";
+		helpText += "  }\n";
+		helpText += "  navigationnode Currency {\n";
+		helpText += "    dictionarySearch Currency.CurrencySearch\n";
+		helpText += "  }\n";
+		helpText += "  navigationnode Customer {\n";
+		helpText += "    dictionarySearch Customer.CustomerSearch\n";
+		helpText += "  }\n";
+		helpText += "}\n";
+		helpText += "</pre>";
+		MangoDemoNavigationModel.ROOT.setHelpText(replaceKeywords(helpText));
+	}
+
+	private void createCountrySearchHelpText() {
+		String helpText = "";
+		helpText += "<strong>Model defining the country search</strong><br/>";
+		helpText += "All control used in the model are defined once in the dictionarycontrols section of the dictionary and then referenced from the filter/result. Each control referes to an <em>entityAttribute</em> that corresponds the the entity for the whole dictionary. See individual help texts for each control for more information on the specific control models.<br/>";
+		helpText += "<pre>";
+		helpText += "dictionary Country {\n";
+		helpText += "  entity Country\n";
+		helpText += "    dictionarycontrols {\n";
+		helpText += "      textcontrol CountryIsoCode2 {\n";
+		helpText += "        entityattribute countryIsoCode2\n";
+		helpText += "      }\n";
+		helpText += "      textcontrol CountryIsoCode3 {\n";
+		helpText += "        entityattribute countryIsoCode3\n";
+		helpText += "      }\n";
+		helpText += "      textcontrol CountryName {\n";
+		helpText += "        entityattribute countryName\n";
+		helpText += "      }\n";
+		helpText += "      referencecontrol CountryCurrency {\n";
+		helpText += "        entityattribute countryCurrency\n";
+		helpText += "        dictionary Currency\n";
+		helpText += "    }\n";
+		helpText += "  }\n";
+		helpText += "  dictionarysearch CountrySearch {\n";
+		helpText += "    label \"Countries\"\n";
+		helpText += "    dictionaryfilter CountryFilter {\n";
+		helpText += "      textcontrol ref CountryIsoCode2\n";
+		helpText += "      textcontrol ref CountryIsoCode3\n";
+		helpText += "      textcontrol ref CountryName\n";
+		helpText += "      referencecontrol ref CountryCurrency\n";
+		helpText += "    }\n";
+		helpText += "    dictionaryresult CountryResult {\n";
+		helpText += "      textcontrol ref CountryIsoCode2\n";
+		helpText += "      textcontrol ref CountryIsoCode3\n";
+		helpText += "      textcontrol ref CountryName\n";
+		helpText += "      referencecontrol ref CountryCurrency\n";
+		helpText += "    }\n";
+		helpText += "  }\n";
+		helpText += "  [...]\n";
+		helpText += "}\n";
+		helpText += "</pre>";
+
+		MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH.setHelpText(replaceKeywords(helpText));
 	}
 
 	private String replaceKeywords(String string) {
@@ -95,6 +161,9 @@ public class DemoClient implements EntryPoint {
 		result = keyword(result, "textcontrol");
 		result = keyword(result, "maxLength");
 		result = keyword(result, "entityattribute");
+		result = keyword(result, "navigationnode");
+		result = keyword(result, "dictionarySearch");
+		result = keyword(result, "dictionaryEditor");
 		result = keyword(result, "entity");
 		result = keyword(result, "stringdatatype");
 		result = keyword(result, "string");
@@ -103,6 +172,12 @@ public class DemoClient implements EntryPoint {
 		result = keyword(result, "dictionary");
 		result = keyword(result, "entitydatatype");
 		result = keyword(result, "labelcontrols");
+		result = keyword(result, "dictionarycontrols");
+		result = keyword(result, "dictionarysearch");
+		result = keyword(result, "label");
+		result = keyword(result, "dictionaryfilter");
+		result = keyword(result, "dictionaryresult");
+		result = keyword(result, "ref");
 
 		result = coloredItalicString(result, "\\[\\.\\.\\.\\]", "#999");
 

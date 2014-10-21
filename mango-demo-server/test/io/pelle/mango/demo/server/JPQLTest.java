@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.db.util.EntityVOMapper;
-import io.pelle.mango.test.client.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity1VO;
 
 import org.junit.Test;
 

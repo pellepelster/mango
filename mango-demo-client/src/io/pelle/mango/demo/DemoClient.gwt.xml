@@ -3,7 +3,7 @@
 <module rename-to="DemoClient">
 
 	<inherits name='io.pelle.mango.MangoClientGwt' />
-	<inherits name='io.pelle.mango.test.MangoDemoGenerated' />
+	<inherits name='io.pelle.mango.demo.MangoDemoGenerated' />
 
 	<add-linker name="xsiframe" />
 	<set-configuration-property name="devModeRedirectEnabled"

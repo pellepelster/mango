@@ -10,10 +10,10 @@ import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.baseentityservice.IBaseEntityService;
 import io.pelle.mango.db.dao.IBaseVODAO;
-import io.pelle.mango.test.client.ENUMERATION1;
-import io.pelle.mango.test.client.Entity1VO;
-import io.pelle.mango.test.client.Entity2VO;
-import io.pelle.mango.test.client.Entity3VO;
+import io.pelle.mango.demo.client.test.ENUMERATION1;
+import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity2VO;
+import io.pelle.mango.demo.client.test.Entity3VO;
 
 import java.util.Date;
 import java.util.List;
@@ -159,7 +159,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
 		assertEquals(1, result1.getValidationMessages().size());
 
-		assertEquals("Natural key attribute 'stringDatatype1' can not be empty for entity 'io.pelle.mango.test.client.Entity1VO'", result1.getValidationMessages().get(0).getMessage());
+		assertEquals("Natural key attribute 'stringDatatype1' can not be empty for entity 'io.pelle.mango.demo.client.test.Entity1VO'", result1.getValidationMessages().get(0).getMessage());
 		assertEquals("stringDatatype1", result1.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
 	}
 

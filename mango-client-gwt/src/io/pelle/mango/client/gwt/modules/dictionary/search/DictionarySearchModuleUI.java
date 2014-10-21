@@ -18,6 +18,7 @@ import io.pelle.mango.client.gwt.modules.dictionary.ActionBar;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseDictionaryModuleUI;
 import io.pelle.mango.client.gwt.modules.dictionary.DictionaryFilterPanel;
 import io.pelle.mango.client.gwt.modules.dictionary.DictionaryResultPanel;
+import io.pelle.mango.client.gwt.utils.HtmlWithHelp;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
@@ -26,7 +27,6 @@ import io.pelle.mango.client.web.modules.dictionary.search.ISearchUpdateListener
 import com.google.common.base.Objects;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -44,7 +44,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	private final VerticalPanel verticalPanel;
 
-	private final HTML searchTitle;
+	private final HtmlWithHelp searchTitle;
 
 	/**
 	 * @param module
@@ -62,7 +62,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 		verticalPanel.add(actionBar);
 
 		// - title -------------------------------------------------------------
-		searchTitle = new HTML(module.getTitle());
+		searchTitle = new HtmlWithHelp(module.getTitle(), module.getHelpText());
 		searchTitle.addStyleName(GwtStyles.TITLE);
 		verticalPanel.add(searchTitle);
 

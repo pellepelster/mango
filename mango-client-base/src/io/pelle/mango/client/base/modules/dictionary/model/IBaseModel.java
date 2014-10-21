@@ -13,10 +13,11 @@ package io.pelle.mango.client.base.modules.dictionary.model;
 
 import java.io.Serializable;
 
-public interface IBaseModel extends Serializable
-{
+public interface IBaseModel extends Serializable {
 	String getName();
 
 	IBaseModel getParent();
+
+	String getHelpText();
 
 }

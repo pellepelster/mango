@@ -3,23 +3,23 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
-import io.pelle.mango.test.client.ENUMERATION1;
-import io.pelle.mango.test.client.Entity1VO;
-import io.pelle.mango.test.client.Entity2VO;
-import io.pelle.mango.test.client.Entity3VO;
-import io.pelle.mango.test.client.Entity4VO;
-import io.pelle.mango.test.client.Entity5VO;
-import io.pelle.mango.test.client.ValueObject1;
-import io.pelle.mango.test.client.ValueObject2;
-import io.pelle.mango.test.client.ValueObject3;
-import io.pelle.mango.test.client.ValueObject4;
-import io.pelle.mango.test.server.Entity1;
-import io.pelle.mango.test.server.Entity2;
-import io.pelle.mango.test.server.Entity3;
-import io.pelle.mango.test.server.Entity4;
-import io.pelle.mango.test.server.Entity5;
-import io.pelle.mango.test.server.Entity6;
-import io.pelle.mango.test.server.Entity7;
+import io.pelle.mango.demo.client.test.ENUMERATION1;
+import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity2VO;
+import io.pelle.mango.demo.client.test.Entity3VO;
+import io.pelle.mango.demo.client.test.Entity4VO;
+import io.pelle.mango.demo.client.test.Entity5VO;
+import io.pelle.mango.demo.client.test.ValueObject1;
+import io.pelle.mango.demo.client.test.ValueObject2;
+import io.pelle.mango.demo.client.test.ValueObject3;
+import io.pelle.mango.demo.client.test.ValueObject4;
+import io.pelle.mango.demo.server.test.Entity1;
+import io.pelle.mango.demo.server.test.Entity2;
+import io.pelle.mango.demo.server.test.Entity3;
+import io.pelle.mango.demo.server.test.Entity4;
+import io.pelle.mango.demo.server.test.Entity5;
+import io.pelle.mango.demo.server.test.Entity6;
+import io.pelle.mango.demo.server.test.Entity7;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class EntityModelGeneratorTest {
 
 	@Test
 	public void testEntity1() {
-		assertEquals("io.pelle.mango.test.server.Entity1", Entity1.class.getName());
+		assertEquals("io.pelle.mango.demo.server.test.Entity1", Entity1.class.getName());
 	}
 
 	@Test
@@ -40,12 +40,12 @@ public class EntityModelGeneratorTest {
 
 	@Test
 	public void testEntity1VO() {
-		assertEquals("io.pelle.mango.test.client.Entity1VO", Entity1VO.class.getName());
+		assertEquals("io.pelle.mango.demo.client.test.Entity1VO", Entity1VO.class.getName());
 	}
 
 	@Test
 	public void testENUMERATION1() {
-		assertEquals("io.pelle.mango.test.client.ENUMERATION1", ENUMERATION1.class.getName());
+		assertEquals("io.pelle.mango.demo.client.test.ENUMERATION1", ENUMERATION1.class.getName());
 	}
 
 	// -------------------------------------------------------------------------

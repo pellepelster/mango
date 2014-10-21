@@ -400,10 +400,17 @@ h6,.h6{
 	position: absolute;
     font-size: 150%;
     font-weight: bold;
-	position: block;    
     top: 0px;
 	right: -10px;
     width: 15px;
+    height: 15px;
+	cursor:pointer;    
+}
+
+.feedback-help-inline {
+	position: absolute;
+    font-size: 80%;
+    font-weight: bold;
     height: 15px;
 	cursor:pointer;    
 }
@@ -573,4 +580,12 @@ h6,.h6{
  **********************/
 .datePickerDay, .datePickerWeekdayLabel, .datePickerWeekendLabel {
 	font-size: 100%;
+}
+
+/**********************
+     help popup
+ **********************/
+.help-popup {
+	width: 400px;
+	overflow: auto;
 }

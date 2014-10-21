@@ -19,11 +19,11 @@ import io.pelle.mango.client.web.test.controls.IntegerTestControl;
 import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
 import io.pelle.mango.client.web.util.I18NProxy;
-import io.pelle.mango.test.client.ENUMERATION1;
-import io.pelle.mango.test.client.Entity1VO;
-import io.pelle.mango.test.client.Entity2VO;
-import io.pelle.mango.test.client.MangoDemoClientConfiguration;
-import io.pelle.mango.test.client.MangoDemoDictionaryModel;
+import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
+import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
+import io.pelle.mango.demo.client.test.ENUMERATION1;
+import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity2VO;
 
 import java.util.Iterator;
 import java.util.Map;

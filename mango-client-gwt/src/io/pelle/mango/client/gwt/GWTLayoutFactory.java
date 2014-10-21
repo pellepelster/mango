@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -72,8 +71,9 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 				Panel panel = moduleUI.getContainer();
 				panel.setWidth("100%");
 
-				HTML html = new HtmlWithHelp(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()), moduleUI.getModule().getHelpText());
-				html.setStylePrimaryName(GwtStyles.H3_CLASS);
+				Widget title = new HtmlWithHelp(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()), moduleUI.getModule().getHelpText());
+				title.getElement().getStyle().setProperty("transform", "translateY(40%");
+				title.setStylePrimaryName(GwtStyles.H4_CLASS);
 
 				int beforeIndex = 0;
 
@@ -90,7 +90,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 				});
 				beforeIndex = moduleUIs.indexOf(moduleUI);
 
-				stackLayoutPanel.insert(panel, new SimplePanel(html), 3, beforeIndex);
+				stackLayoutPanel.insert(panel, new SimplePanel(title), 3, beforeIndex);
 				stackLayoutPanel.showWidget(0);
 
 			} else if (widget instanceof Panel) {

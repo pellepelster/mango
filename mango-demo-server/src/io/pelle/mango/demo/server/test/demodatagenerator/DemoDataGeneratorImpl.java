@@ -1,9 +1,9 @@
-package io.pelle.mango.test.server.demodatagenerator;
+package io.pelle.mango.demo.server.test.demodatagenerator;
 
 import io.pelle.mango.client.baseentityservice.IBaseEntityService;
-import io.pelle.mango.test.client.Entity1VO;
-import io.pelle.mango.test.client.Entity2VO;
-import io.pelle.mango.test.client.demodatagenerator.IDemoDataGenerator;
+import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity2VO;
+import io.pelle.mango.demo.client.test.demodatagenerator.IDemoDataGenerator;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -32,10 +32,15 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String line;
 
+			int i = 0;
 			while ((line = br.readLine()) != null) {
-				Entity2VO entity2 = new Entity2VO();
-				entity2.setStringDatatype2(line);
-				result.add(baseEntityService.create(entity2));
+				i++;
+
+				if (i % 5 == 0) {
+					Entity2VO entity2 = new Entity2VO();
+					entity2.setStringDatatype2(line);
+					result.add(baseEntityService.create(entity2));
+				}
 			}
 
 			br.close();

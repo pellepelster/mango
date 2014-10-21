@@ -344,7 +344,7 @@ class TypeUtils {
 	
 	def getMaxLength(StringEntityAttribute stringEntityAttribute) 
 	{
-		if (stringEntityAttribute.type != null)
+		if (stringEntityAttribute.type != null && stringEntityAttribute.type.maxLength > 0)
 		{
 			return stringEntityAttribute.type.maxLength
 		}

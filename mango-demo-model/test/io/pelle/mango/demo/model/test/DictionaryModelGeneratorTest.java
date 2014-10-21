@@ -3,9 +3,9 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
-import io.pelle.mango.test.client.ENUMERATION1;
-import io.pelle.mango.test.client.MangoDemoClientConfiguration;
-import io.pelle.mango.test.client.MangoDemoDictionaryModel;
+import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
+import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
+import io.pelle.mango.demo.client.test.ENUMERATION1;
 
 import java.util.Map;
 

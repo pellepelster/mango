@@ -8,3 +8,4 @@
 * Seperate Client SelectQuery from Server SelectQuery (GWT JVM limitations)
 * ChangeTracking for entities
 * natural key based to string
+* title for navigation nodes

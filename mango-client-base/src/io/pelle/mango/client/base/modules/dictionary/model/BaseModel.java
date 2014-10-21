@@ -11,16 +11,16 @@
  */
 package io.pelle.mango.client.base.modules.dictionary.model;
 
-public abstract class BaseModel<ElementType> implements IBaseModel
-{
+public abstract class BaseModel<ElementType> implements IBaseModel {
 	private static final long serialVersionUID = -564541020450388681L;
 
 	private String name;
 
 	private IBaseModel parent;
 
-	public BaseModel(String name, IBaseModel parent)
-	{
+	private String helpText;
+
+	public BaseModel(String name, IBaseModel parent) {
 		super();
 		this.name = name;
 		this.parent = parent;
@@ -28,20 +28,17 @@ public abstract class BaseModel<ElementType> implements IBaseModel
 
 	/** {@inheritDoc} */
 	@Override
-	public IBaseModel getParent()
-	{
+	public IBaseModel getParent() {
 		return this.parent;
 	}
 
 	@Override
-	public String getName()
-	{
+	public String getName() {
 		return this.name;
 	}
 
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
@@ -50,8 +47,7 @@ public abstract class BaseModel<ElementType> implements IBaseModel
 	}
 
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -60,21 +56,25 @@ public abstract class BaseModel<ElementType> implements IBaseModel
 			return false;
 		@SuppressWarnings("rawtypes")
 		BaseModel other = (BaseModel) obj;
-		if (this.name == null)
-		{
+		if (this.name == null) {
 			if (other.name != null)
 				return false;
-		}
-		else if (!this.name.equals(other.name))
+		} else if (!this.name.equals(other.name))
 			return false;
-		if (this.parent == null)
-		{
+		if (this.parent == null) {
 			if (other.parent != null)
 				return false;
-		}
-		else if (!this.parent.equals(other.parent))
+		} else if (!this.parent.equals(other.parent))
 			return false;
 		return true;
 	}
 
+	public void setHelpText(String helpText) {
+		this.helpText = helpText;
+	}
+
+	@Override
+	public String getHelpText() {
+		return helpText;
+	}
 }

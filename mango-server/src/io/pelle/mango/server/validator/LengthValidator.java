@@ -33,18 +33,19 @@ public class LengthValidator implements IValidator {
 
 		for (StringAttributeDescriptor attributeDescriptor : VOClassQuery.createQuery(vo).attributesDescriptors().byType(StringAttributeDescriptor.class)) {
 
-			Object value = vo.get(attributeDescriptor.getAttributeName());
+			if (attributeDescriptor.getMaxLength() > StringAttributeDescriptor.LENGTH_UNLIMITED) {
+				Object value = vo.get(attributeDescriptor.getAttributeName());
 
-			if (value != null && value instanceof String) {
-				String valueString = (String) value;
+				if (value != null && value instanceof String) {
+					String valueString = (String) value;
 
-				if (valueString.length() > attributeDescriptor.getMaxLength()) {
-					result.add(new ValidationMessage(ValidatorMessages.STRING_ATTRIBUTE_MAX_LENGTH, CollectionUtils.getMap(
-							IValidationMessage.ATTRIBUTE_CONTEXT_KEY, attributeDescriptor.getAttributeName(), MAX_LENGTH_CONTEXT_KEY,
-							attributeDescriptor.getMaxLength())));
+					if (valueString.length() > attributeDescriptor.getMaxLength()) {
+						result.add(new ValidationMessage(ValidatorMessages.STRING_ATTRIBUTE_MAX_LENGTH, CollectionUtils.getMap(
+								IValidationMessage.ATTRIBUTE_CONTEXT_KEY, attributeDescriptor.getAttributeName(), MAX_LENGTH_CONTEXT_KEY,
+								attributeDescriptor.getMaxLength())));
+					}
 				}
 			}
-
 		}
 
 		return result;

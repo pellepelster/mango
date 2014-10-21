@@ -9,11 +9,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.test.server.Entity1;
-import io.pelle.mango.test.server.Entity2;
-import io.pelle.mango.test.server.Entity3;
-import io.pelle.mango.test.server.Entity4;
-import io.pelle.mango.test.server.Entity5;
+import io.pelle.mango.demo.server.test.Entity1;
+import io.pelle.mango.demo.server.test.Entity2;
+import io.pelle.mango.demo.server.test.Entity3;
+import io.pelle.mango.demo.server.test.Entity4;
+import io.pelle.mango.demo.server.test.Entity5;
 
 import java.util.List;
 

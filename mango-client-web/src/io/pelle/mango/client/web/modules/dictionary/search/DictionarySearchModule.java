@@ -124,4 +124,9 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 		return this.dictionaryModel.get();
 	}
 
+	@Override
+	public String getHelpText() {
+		return getDictionaryModel().getSearchModel().getHelpText();
+	}
+
 }

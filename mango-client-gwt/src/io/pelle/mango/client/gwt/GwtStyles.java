@@ -32,6 +32,10 @@ public interface GwtStyles {
 
 	String CONTROL_FEEDBACK_HELP_STYLE = "form-control-feedback-help";
 
+	String FEEDBACK_HELP_INLINE_STYLE = "feedback-help-inline";
+
+	String HELP_POPUP_STYLE = "help-popup";
+
 	String TITLE = "title";
 
 	String H1_CLASS = "h1";
@@ -69,4 +73,5 @@ public interface GwtStyles {
 	int FADE_IN_DURATION = 150;
 
 	int FADE_OUT_DURATION = FADE_IN_DURATION;
+
 }

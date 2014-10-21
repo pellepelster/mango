@@ -1,180 +1,369 @@
-import io.pelle.mango.test.client.ValueObject2
+
+
+import io.pelle.mango.demo.client.test.ValueObject2
 
 project MangoDemo {
 
-	package io.pelle.mango.test {
+	package io.pelle.mango.demo {
 
-		service RestTest {
-			method Boolean methodWithBooleanParameter ( Boolean onOff )
-			method ValueObject2 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
-		}
+		package showcase {
 
-		service DemoDataGenerator {
-			method void generate ( )
-		}
-		
-		stringdatatype StringDatatype1 { maxLength 42 }
+			//--------------------------------
+			// customer
+			//--------------------------------
+			stringdatatype CustomerFirstName { label "First Name" }
+			stringdatatype CustomerLastName { label "Last Name" }
+			entitydatatype CustomerCountry { label "Country" entity Country }
+			integerdatatype CustomerDiscount { label "Discount (%)" }
+			datedatatype CustomerDateOfBirth { label "Date Of Birth" }
+			
+			enumeration CustomerTitle { MR => "Mr." , MRS => "Mrs"  }
+			enumerationdatatype CustomerTitle { label "Title" enumeration CustomerTitle }
 
-		stringdatatype StringDatatype2 extends StringDatatype1 { maxLength 32 }
+			entity Customer {
+				enumeration CustomerTitle title
+				string CustomerFirstName firstName
+				string CustomerLastName lastName
+				entity CustomerCountry country
+				integer CustomerDiscount discount
+				date CustomerDateOfBirth dateOfBirth
+			}
 
-		stringdatatype StringDatatype3 { }
-
-		stringdatatype StringDatatype4 { }
-
-		booleandatatype BooleanDatatype1 { label "Boolean1" }
-
-		entitydatatype Entity2Datatype { entity Entity2 }
-
-		binarydatatype BinaryDatatype1 { }
-
-		entitydatatype Entity3Datatype { entity Entity3 }
-
-		enumeration Enumeration1 { EnumerationValue1 ,  EnumerationValue2 => "Value2" }
-
-		enumerationdatatype Enumeration1Datatype { enumeration Enumeration1 }
-		
-		datedatatype DateDatatype1 { }
-
-		datedatatype DateDatatype2 { }
-		
-		decimaldatatype DecimalDatatype1 { }
-		
-		integerdatatype IntegerDatatype1 { } 
-
-		entity Entity1 {
-			naturalkey { stringDatatype1 }
-			string StringDatatype1 stringDatatype1
-			string StringDatatype1 stringDatatype2
-			string StringDatatype1 stringDatatype3
-			boolean BooleanDatatype1 booleanDatatype1
-			string StringDatatype1 0..n stringDatatype1List
-			entity Entity2Datatype entity2Datatype
-			enumeration Enumeration1Datatype enumeration1Datatype
-			integer IntegerDatatype1 integerDatatype1
-			decimal DecimalDatatype1 decimalDatatype1
-			date DateDatatype1 dateDatype1
-			date DateDatatype2 dateDatype2
-		}
-
-		entity Entity2 {
-			string StringDatatype2 stringDatatype2
-			entity Entity3Datatype 0..n entity3Datatypes
-		}
-
-		entity Entity3 {
-			string StringDatatype3 stringDatatype3
-			binary BinaryDatatype1 binaryDatatype1
-		}
-
-		entity Entity4 extends Entity3 {
-			string StringDatatype4 stringDatatype4
-		}
-
-		entity Entity5 {
-			entity Entity4 entity4
-			entity Entity4 0..n entity4s
-			string string1
-			binary binary1
-			boolean boolean1
-			enumeration Enumeration1 enumeration1
-		}
-
-		entity Entity6 {
-			string string1
-		}
-
-		entity Entity7 extends Entity6 {
-			string string2
-		}
-
-		valueobject ValueObject1 {
-			string string1
-			entity Entity5 entity5
-			valueobject ValueObject2 valueObject2
-			valueobject ValueObject2 0..n valueObjects2
-		}
-
-		valueobject ValueObject2 {
-			string string2
-		}
-
-		valueobject ValueObject3 extends ValueObject2 {
-			string string3
-		}
-
-		valueobject ValueObject4 extends ValueObject3 {
-			string string4
-		}
-
-		package demo {
-
-			dictionary DemoDictionary2 {
-				entity Entity2
+			dictionary Customer {
+			
+				entity Customer
 
 				dictionarycontrols {
-					textcontrol TextControl2 { entityattribute Entity2.stringDatatype2 }
+					enumerationcontrol CustomerTitle { entityattribute title }
+					textcontrol CustomerFirstName { entityattribute firstName }
+					textcontrol CustomerLastName { entityattribute lastName }
+					referencecontrol CustomerCountry { entityattribute country dictionary Country }
+					integercontrol CustomerDiscount { entityattribute discount }
+					datecontrol CustomerDateOfBirth { entityattribute dateOfBirth }
 				}
+
+				labelcontrols { textcontrol ref CustomerLastName textcontrol ref CustomerFirstName }
 				
-				labelcontrols {
-					textcontrol ref TextControl2
-				}
 
-				dictionarysearch DemoSearch2 {
+				dictionarysearch CustomerSearch {
 
-					dictionaryfilter DemoFilter2 {
-						textcontrol ref TextControl2
+					label "Customers"
+
+					dictionaryfilter CustomerFilter {
+						controlgroup CustomerNames {
+							groupoptions { multiFilterField true }
+							textcontrol ref CustomerFirstName
+							textcontrol ref CustomerLastName
+						}
+						referencecontrol ref CustomerCountry
+						integercontrol ref CustomerDiscount
+						datecontrol ref CustomerDateOfBirth
 					}
 
-					dictionaryresult DemoResult2 {
-						textcontrol ref TextControl2
+					dictionaryresult CustomerResult {
+						enumerationcontrol ref CustomerTitle
+						textcontrol ref CustomerFirstName
+						textcontrol ref CustomerLastName
+						referencecontrol ref CustomerCountry
+						integercontrol ref CustomerDiscount
+						datecontrol ref CustomerDateOfBirth
 					}
 				}
 
-				dictionaryeditor DemoEditor2 {
-					textcontrol ref TextControl2
+				dictionaryeditor CustomerEditor {
+					enumerationcontrol ref CustomerTitle
+					textcontrol ref CustomerFirstName
+					textcontrol ref CustomerLastName
+					referencecontrol ref CustomerCountry
+					integercontrol ref CustomerDiscount
+					datecontrol ref CustomerDateOfBirth
 				}
 			}
 
-			dictionary DemoDictionary1 {
+			//---------------------------------------------
+			// country datatypes
+			//---------------------------------------------
+			stringdatatype IsoName { label "Name" }
+			stringdatatype IsoCode2 { label "ISO-2" }
+			stringdatatype IsoCode3 { label "ISO-3" }
+			entitydatatype CountryCurrency { label "Currency" entity Currency }
 
-				entity Entity1
+			//---------------------------------------------
+			// country entity
+			//---------------------------------------------
+			entity Country {
+				naturalkey { countryIsoCode2 }
+
+				string IsoCode2 countryIsoCode2
+				string IsoCode3 countryIsoCode3
+				string IsoName countryName
+				entity CountryCurrency countryCurrency
+			}
+
+			//---------------------------------------------
+			// country dictionary
+			//---------------------------------------------
+			dictionary Country {
+			
+				entity Country
 
 				dictionarycontrols {
-
-					textcontrol TextControl1 { entityattribute Entity1.stringDatatype1 }
-					textcontrol TextControl2 { entityattribute Entity1.stringDatatype2 }
-					textcontrol TextControl3 { entityattribute Entity1.stringDatatype3 }
-					referencecontrol ReferenceControl1 { entityattribute Entity1.entity2Datatype dictionary DemoDictionary2 }
-					booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
-					integercontrol IntegerControl1 { entityattribute Entity1.integerDatatype1 }
-					bigdecimalcontrol DecimalControl1 { entityattribute Entity1.decimalDatatype1 }
-					datecontrol DateControl1 { entityattribute Entity1.dateDatype1 } 
-					enumerationcontrol EnumerationControl1 { entityattribute Entity1.enumeration1Datatype }
+					textcontrol CountryIsoCode2 { entityattribute countryIsoCode2 }
+					textcontrol CountryIsoCode3 { entityattribute countryIsoCode3 }
+					textcontrol CountryName { entityattribute countryName }
+					referencecontrol CountryCurrency { entityattribute countryCurrency dictionary Currency }
 				}
 
-				dictionarysearch DemoSearch1 {
+				dictionarysearch CountrySearch {
 
-					dictionaryfilter DemoFilter1 {
+					label "Countries"
+					
+					dictionaryfilter CountryFilter {
+						textcontrol ref CountryIsoCode2
+						textcontrol ref CountryIsoCode3
+						textcontrol ref CountryName
+						referencecontrol ref CountryCurrency
+					}
 
-						controlgroup ControlGroup1 {
+					dictionaryresult CountryResult {
+						textcontrol ref CountryIsoCode2
+						textcontrol ref CountryIsoCode3
+						textcontrol ref CountryName
+						referencecontrol ref CountryCurrency
+					}
+				}
 
-							groupoptions {
-								multiFilterField true
+				dictionaryeditor CountryEditor {
+					textcontrol ref CountryIsoCode2
+					textcontrol ref CountryIsoCode3
+					textcontrol ref CountryName
+					referencecontrol ref CountryCurrency
+				}
+			}
+
+			//--------------------------------
+			// currency
+			//--------------------------------
+			entity Currency {
+				naturalkey { currencyIsoCode }
+
+				string IsoCode3 currencyIsoCode
+				string IsoName currencyName
+			}
+
+			dictionary Currency {
+				entity Currency
+
+				dictionarycontrols {
+					textcontrol CurrencyIsoCode { entityattribute currencyIsoCode }
+					textcontrol CurrencyName { entityattribute currencyName }
+				}
+
+				dictionarysearch CurrencySearch {
+					
+					label "Currencies"
+
+					dictionaryfilter CurrencyFilter {
+						textcontrol ref CurrencyName
+						textcontrol ref CurrencyIsoCode
+					}
+
+					dictionaryresult CurrencyResult {
+						textcontrol ref CurrencyName
+						textcontrol ref CurrencyIsoCode
+					}
+				}
+
+				dictionaryeditor CurrencyEditor {
+					textcontrol ref CurrencyName
+					textcontrol ref CurrencyIsoCode
+				}
+			}
+
+			navigationnode Showcase {
+				navigationnode Currency {
+					dictionarySearch Currency.CurrencySearch
+				}
+				navigationnode Country {
+					dictionarySearch Country.CountrySearch
+				}
+				navigationnode Customer {
+					dictionarySearch Customer.CustomerSearch
+				}
+			}
+		}
+
+		package test {
+
+			service RestTest {
+				method Boolean methodWithBooleanParameter ( Boolean onOff )
+				method ValueObject2 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
+			}
+
+			service DemoDataGenerator {
+				method void generate ( )
+			}
+
+			stringdatatype StringDatatype1 { maxLength 42 }
+			stringdatatype StringDatatype2 extends StringDatatype1 { maxLength 32 }
+			stringdatatype StringDatatype3 { }
+			stringdatatype StringDatatype4 { }
+			booleandatatype BooleanDatatype1 { label "Boolean1" }
+			entitydatatype Entity2Datatype { entity Entity2 }
+			binarydatatype BinaryDatatype1 { }
+			entitydatatype Entity3Datatype { entity Entity3 }
+			enumeration Enumeration1 { EnumerationValue1 ,  EnumerationValue2 => "Value2" }
+			enumerationdatatype Enumeration1Datatype { enumeration Enumeration1 }
+			datedatatype DateDatatype1 { }
+			datedatatype DateDatatype2 { }
+			decimaldatatype DecimalDatatype1 { }
+			integerdatatype IntegerDatatype1 { }
+
+			entity Entity1 {
+				naturalkey { stringDatatype1 }
+				string StringDatatype1 stringDatatype1
+				string StringDatatype1 stringDatatype2
+				string StringDatatype1 stringDatatype3
+				boolean BooleanDatatype1 booleanDatatype1
+				string StringDatatype1 0..n stringDatatype1List
+				entity Entity2Datatype entity2Datatype
+				enumeration Enumeration1Datatype enumeration1Datatype
+				integer IntegerDatatype1 integerDatatype1
+				decimal DecimalDatatype1 decimalDatatype1
+				date DateDatatype1 dateDatype1
+				date DateDatatype2 dateDatype2
+			}
+
+			entity Entity2 {
+				string StringDatatype2 stringDatatype2
+				entity Entity3Datatype 0..n entity3Datatypes
+			}
+
+			entity Entity3 {
+				string StringDatatype3 stringDatatype3
+				binary BinaryDatatype1 binaryDatatype1
+			}
+
+			entity Entity4 extends Entity3 {
+				string StringDatatype4 stringDatatype4
+			}
+
+			entity Entity5 {
+				entity Entity4 entity4
+				entity Entity4 0..n entity4s
+				string string1
+				binary binary1
+				boolean boolean1
+				enumeration Enumeration1 enumeration1
+			}
+
+			entity Entity6 {
+				string string1
+			}
+
+			entity Entity7 extends Entity6 {
+				string string2
+			}
+
+			valueobject ValueObject1 {
+				string string1
+				entity Entity5 entity5
+				valueobject ValueObject2 valueObject2
+				valueobject ValueObject2 0..n valueObjects2
+			}
+
+			valueobject ValueObject2 {
+				string string2
+			}
+
+			valueobject ValueObject3 extends ValueObject2 {
+				string string3
+			}
+
+			valueobject ValueObject4 extends ValueObject3 {
+				string string4
+			}
+
+			package demo {
+
+				dictionary DemoDictionary2 {
+					entity Entity2
+
+					dictionarycontrols {
+						textcontrol TextControl2 { entityattribute Entity2.stringDatatype2 }
+					} labelcontrols {
+					textcontrol ref TextControl2
+					}
+
+					dictionarysearch DemoSearch2 {
+
+						dictionaryfilter DemoFilter2 {
+							textcontrol ref TextControl2
+						}
+
+						dictionaryresult DemoResult2 {
+							textcontrol ref TextControl2
+						}
+					}
+
+					dictionaryeditor DemoEditor2 {
+						textcontrol ref TextControl2
+					}
+				}
+
+				dictionary DemoDictionary1 {
+
+					entity Entity1
+
+					dictionarycontrols {
+
+						textcontrol TextControl1 { entityattribute Entity1.stringDatatype1 }
+						textcontrol TextControl2 { entityattribute Entity1.stringDatatype2 }
+						textcontrol TextControl3 { entityattribute Entity1.stringDatatype3 }
+						referencecontrol ReferenceControl1 { entityattribute Entity1.entity2Datatype dictionary DemoDictionary2 }
+						booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
+						integercontrol IntegerControl1 { entityattribute Entity1.integerDatatype1 }
+						bigdecimalcontrol DecimalControl1 { entityattribute Entity1.decimalDatatype1 }
+						datecontrol DateControl1 { entityattribute Entity1.dateDatype1 }
+						enumerationcontrol EnumerationControl1 { entityattribute Entity1.enumeration1Datatype }
+					}
+
+					dictionarysearch DemoSearch1 {
+
+						dictionaryfilter DemoFilter1 {
+
+							controlgroup ControlGroup1 {
+
+								groupoptions {
+									multiFilterField true
+								}
+								textcontrol ref TextControl1
+								textcontrol ref TextControl2
+								textcontrol ref TextControl3
 							}
+
+							booleancontrol ref BooleanControl1
+							enumerationcontrol ref EnumerationControl1
+							referencecontrol ref ReferenceControl1
+							integercontrol ref IntegerControl1
+							bigdecimalcontrol ref DecimalControl1
+							datecontrol ref DateControl1
+						}
+
+						dictionaryresult DemoResult1 {
 							textcontrol ref TextControl1
 							textcontrol ref TextControl2
 							textcontrol ref TextControl3
+							referencecontrol ref ReferenceControl1
+							booleancontrol ref BooleanControl1
+							enumerationcontrol ref EnumerationControl1
+							integercontrol ref IntegerControl1
+							bigdecimalcontrol ref DecimalControl1
+							datecontrol ref DateControl1
 						}
-
-						booleancontrol ref BooleanControl1
-						enumerationcontrol ref EnumerationControl1
-						referencecontrol ref ReferenceControl1
-						integercontrol ref IntegerControl1
-						bigdecimalcontrol ref DecimalControl1
-						datecontrol ref DateControl1
 					}
 
-					dictionaryresult DemoResult1 {
+					dictionaryeditor DemoEditor1 {
 						textcontrol ref TextControl1
 						textcontrol ref TextControl2
 						textcontrol ref TextControl3
@@ -186,61 +375,57 @@ project MangoDemo {
 						datecontrol ref DateControl1
 					}
 				}
-
-				dictionaryeditor DemoEditor1 {
-					textcontrol ref TextControl1
-					textcontrol ref TextControl2
-					textcontrol ref TextControl3
-					referencecontrol ref ReferenceControl1
-					booleancontrol ref BooleanControl1
-					enumerationcontrol ref EnumerationControl1
-					integercontrol ref IntegerControl1
-					bigdecimalcontrol ref DecimalControl1
-					datecontrol ref DateControl1
-				}
 			}
-		}
 
-		package junit {
+			package junit {
 
-			dictionary TestDictionary1 {
+				dictionary TestDictionary1 {
 
-				entity Entity1
+					entity Entity1
 
-				dictionarycontrols {
+					dictionarycontrols {
 
-					textcontrol Textcontrol1 { entityattribute Entity1.stringDatatype1 }
+						textcontrol Textcontrol1 { entityattribute Entity1.stringDatatype1 }
 
-					textcontrol Textcontrol2 { entityattribute Entity1.stringDatatype2 }
+						textcontrol Textcontrol2 { entityattribute Entity1.stringDatatype2 }
 
-					textcontrol Textcontrol3 { entityattribute Entity1.stringDatatype3 }
+						textcontrol Textcontrol3 { entityattribute Entity1.stringDatatype3 }
 
-					booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
+						booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
 
-					enumerationcontrol Enumerationcontrol1 { entityattribute Entity1.enumeration1Datatype }
+						enumerationcontrol Enumerationcontrol1 { entityattribute Entity1.enumeration1Datatype }
 
-				}
+					}
 
-				dictionarysearch DictionarySearch1 {
+					dictionarysearch DictionarySearch1 {
 
-					dictionaryfilter DictionaryFilter1 {
+						dictionaryfilter DictionaryFilter1 {
 
-						textcontrol ref Textcontrol1
-						booleancontrol ref BooleanControl1
-						enumerationcontrol ref Enumerationcontrol1
+							textcontrol ref Textcontrol1
+							booleancontrol ref BooleanControl1
+							enumerationcontrol ref Enumerationcontrol1
 
-						controlgroup ControlGroup1 {
+							controlgroup ControlGroup1 {
 
-							groupoptions {
-								multiFilterField true
+								groupoptions {
+									multiFilterField true
+								}
+								textcontrol ref Textcontrol1
+								textcontrol ref Textcontrol2
+								textcontrol ref Textcontrol3
 							}
+						}
+
+						dictionaryresult DictionaryResult1 {
 							textcontrol ref Textcontrol1
 							textcontrol ref Textcontrol2
 							textcontrol ref Textcontrol3
+							booleancontrol ref BooleanControl1
+							enumerationcontrol ref Enumerationcontrol1
 						}
 					}
 
-					dictionaryresult DictionaryResult1 {
+					dictionaryeditor DictionaryEditor1 {
 						textcontrol ref Textcontrol1
 						textcontrol ref Textcontrol2
 						textcontrol ref Textcontrol3
@@ -248,22 +433,16 @@ project MangoDemo {
 						enumerationcontrol ref Enumerationcontrol1
 					}
 				}
+			}
 
-				dictionaryeditor DictionaryEditor1 {
-					textcontrol ref Textcontrol1
-					textcontrol ref Textcontrol2
-					textcontrol ref Textcontrol3
-					booleancontrol ref BooleanControl1
-					enumerationcontrol ref Enumerationcontrol1
+			navigationnode Test {
+				navigationnode DemoDictionary1 {
+					dictionarySearch DemoDictionary1.DemoSearch1
+				}
+				navigationnode DemoDictionary2 {
+					dictionarySearch DemoDictionary2.DemoSearch2
 				}
 			}
-		}
-
-		navigationnode DemoDictionary1 {
-			dictionarySearch DemoDictionary1.DemoSearch1
-		}
-		navigationnode DemoDictionary2 {
-			dictionarySearch DemoDictionary2.DemoSearch2
 		}
 	}
 }

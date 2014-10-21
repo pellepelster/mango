@@ -6,10 +6,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.db.dao.IBaseVODAO;
-import io.pelle.mango.test.client.Entity1VO;
-import io.pelle.mango.test.client.Entity2VO;
-import io.pelle.mango.test.client.Entity3VO;
-import io.pelle.mango.test.client.Entity4VO;
+import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity2VO;
+import io.pelle.mango.demo.client.test.Entity3VO;
+import io.pelle.mango.demo.client.test.Entity4VO;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
-import io.pelle.mango.test.client.Entity5VO;
-import io.pelle.mango.test.client.ValueObject1;
+import io.pelle.mango.demo.client.test.Entity5VO;
+import io.pelle.mango.demo.client.test.ValueObject1;
 
 import org.junit.Test;
 
