@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.server.test.demodatagenerator;
 
 import io.pelle.mango.client.baseentityservice.IBaseEntityService;
+import io.pelle.mango.demo.client.showcase.CUSTOMERTITLE;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.showcase.CurrencyVO;
 import io.pelle.mango.demo.client.showcase.CustomerVO;
@@ -58,9 +59,21 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 		return result;
 	}
 
-	private int randInt(int min, int max) {
+	private int randomInteger(int min, int max) {
 		int randomNum = rand.nextInt((max - min) + 1) + min;
 		return randomNum;
+	}
+
+	private boolean randomBoolean() {
+		return randomInteger(0, 1) == 1;
+	}
+
+	private CUSTOMERTITLE randomTitle() {
+		if (randomBoolean()) {
+			return CUSTOMERTITLE.MRS;
+		} else {
+			return CUSTOMERTITLE.MR;
+		}
 	}
 
 	private void initDemoDictionary1Data(List<Entity2VO> entity2s) {
@@ -68,7 +81,7 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 		for (int i = 0; i < 200; i++) {
 			Entity1VO entity1 = new Entity1VO();
 			entity1.setStringDatatype1(UUID.randomUUID().toString().substring(0, 8));
-			entity1.setEntity2Datatype(entity2s.get(randInt(0, entity2s.size() - 1)));
+			entity1.setEntity2Datatype(entity2s.get(randomInteger(0, entity2s.size() - 1)));
 			baseEntityService.create(entity1);
 		}
 
@@ -151,6 +164,7 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 
 	private void createCustomers(List<CountryVO> countries) {
 
+		SimpleDateFormat format = new SimpleDateFormat("MM-dd-yy");
 		try {
 			InputStream in = this.getClass().getClassLoader().getResourceAsStream("names.csv");
 
@@ -162,8 +176,8 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 				// firstname;lastname;birthdate;email;city;email;iban
 				String[] columns = line.split(";");
 
-				CountryVO countryVO = countries.get(randInt(0, countries.size() - 1));
-				createCustomer(columns[0], columns[1], SimpleDateFormat.getInstance().parse(columns[2]), countryVO);
+				CountryVO countryVO = countries.get(randomInteger(0, countries.size() - 1));
+				createCustomer(columns[0], columns[1], format.parse(columns[2]), countryVO);
 			}
 
 			br.close();
@@ -179,6 +193,8 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 		customer.setLastName(lastName);
 		customer.setDateOfBirth(dateOfBirth);
 		customer.setCountry(countryVO);
+		customer.setSendBirthdayCards(randomBoolean());
+		customer.setTitle(randomTitle());
 		return baseEntityService.create(customer);
 	}
 
