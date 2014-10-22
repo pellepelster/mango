@@ -22,6 +22,7 @@ import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.ActionBar;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseDictionaryModuleUI;
 import io.pelle.mango.client.gwt.modules.dictionary.DictionaryEditorPanel;
+import io.pelle.mango.client.gwt.utils.HtmlWithHelp;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
@@ -32,7 +33,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -54,7 +54,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	private static final String DICTIONARY_INFO_BUTTON_DEBUG_ID = "DictionaryInfoButton";
 
-	private final HTML editorTitle;
+	private final HtmlWithHelp editorTitle;
 
 	@SuppressWarnings("rawtypes")
 	public DictionaryEditorModuleUI(DictionaryEditorModule<VOType> editorModule, final Optional<IModuleUI> previousModuleUI) {
@@ -70,7 +70,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 		verticalPanel.add(actionBar);
 
 		// - title -------------------------------------------------------------
-		editorTitle = new HTML(editorModule.getTitle());
+		editorTitle = new HtmlWithHelp(editorModule.getTitle(), editorModule.getHelpText());
 		editorTitle.addStyleName(GwtStyles.TITLE);
 		verticalPanel.add(editorTitle);
 
@@ -156,11 +156,10 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 	}
 
 	@Override
-	public boolean contributesToBreadCrumbs()
-	{
+	public boolean contributesToBreadCrumbs() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isInstanceOf(String moduleUrl) {
 		return super.isInstanceOf(moduleUrl) && Objects.equal(getModule().getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));

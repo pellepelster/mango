@@ -6,26 +6,65 @@ import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.shared.GWT;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.PopupPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class DemoClient implements EntryPoint {
 
 	/** {@inheritDoc} */
 	@Override
 	public void onModuleLoad() {
-		try {
-			MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
-
-			init();
-		} catch (Exception e) {
-			GWT.log(e.getMessage(), e);
-		}
-
+		MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
+		init();
 		ModuleHandler.getInstance().startUIModule(ModuleNavigationModule.NAVIGATION_UI_MODULE_LOCATOR, Direction.WEST.toString());
 
+		String greetingText = "";
+		greetingText += "<h2>Mango Showcase</h2><br/>";
+		greetingText += "<span style=\"font-size:150%;\">This example Mango application showcases some key features that make up the generic CRUD UI part of Mango.<br/>";
+		greetingText += "Click on question marks after the country search/editor title to see how the model corresponds to the UI.</span>";
+		greetingText += "<h2>Country Search</h2><br/>";
+		greetingText += "<img src=\"images/country_search.png\"/>";
+		greetingText += "<h2>Country Editor</h2><br/>";
+		greetingText += "<span style=\"font-size:150%;\">To open an empty editor click on the create button (+) in the Country Search toolbar</span>";
+		greetingText += "<img src=\"images/country_editor.png\"/>";
+
+		final PopupPanel greeting = new PopupPanel();
+
+		VerticalPanel vPanel = new VerticalPanel();
+		vPanel.setSpacing(25);
+
+		HTML content = new HTML(SafeHtmlUtils.fromTrustedString(greetingText));
+		content.getElement().getStyle().setOverflowY(Overflow.SCROLL);
+		content.setWidth("600px");
+		content.setHeight("500px");
+
+		vPanel.add(content);
+
+		Button closeButton = new Button("Got it!");
+		closeButton.getElement().getStyle().setBackgroundColor("#FF6666");
+		closeButton.addClickHandler(new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				greeting.hide();
+			}
+		});
+
+		vPanel.add(closeButton);
+		greeting.setWidget(vPanel);
+		greeting.setGlassEnabled(true);
+		greeting.center();
+		greeting.setAutoHideEnabled(true);
+		greeting.show();
 	}
 
 	public void init() {
@@ -87,6 +126,7 @@ public class DemoClient implements EntryPoint {
 
 		createNavigationHelpText();
 		createCountrySearchHelpText();
+		createCountryEditorHelpText();
 
 	}
 
@@ -110,11 +150,78 @@ public class DemoClient implements EntryPoint {
 		MangoDemoNavigationModel.ROOT.setHelpText(replaceKeywords(helpText));
 	}
 
+	private void createCountryEditorHelpText() {
+
+		String helpText = "";
+		helpText += "<strong>Model defining the country editor</strong><br/>";
+		helpText += "Again all controls are reused from the central defintion in dictionarycontrols. Note the label for the <strong>IsoCode3</strong> control model which is overriden in the editor model.<br/>";
+		helpText += "<pre style=\"overflow: auto; height: 200px;\">";
+		helpText += "stringdatatype IsoName {\n  label \"Name\"\n}\n";
+		helpText += "stringdatatype IsoCode2 {\n  label \"ISO-Code (2)\"\n  maxLength 2\n  minLength 2\n}\n";
+		helpText += "stringdatatype IsoCode3 {\n  label \"ISO-Code (3)\"\n  maxLength 3\n  minLength 3\n}\n";
+		helpText += "entitydatatype CountryCurrency {\n  label \"Currency\"\n  entity Currency }\n";
+		helpText += "\n";
+		helpText += "entity Country {\n";
+		helpText += "  naturalkey { countryIsoCode2 }\n";
+		helpText += "  string IsoCode2 countryIsoCode2\n";
+		helpText += "  string IsoCode3 countryIsoCode3\n";
+		helpText += "  string IsoName countryName\n";
+		helpText += "  entity CountryCurrency countryCurrency\n";
+		helpText += "}";
+		helpText += "\n";
+		helpText += "dictionary Country {\n";
+		helpText += "  entity Country\n";
+		helpText += "    dictionarycontrols {\n";
+		helpText += "      textcontrol CountryIsoCode2 {\n";
+		helpText += "        entityattribute countryIsoCode2\n";
+		helpText += "      }\n";
+		helpText += "      textcontrol CountryIsoCode3 {\n";
+		helpText += "        entityattribute countryIsoCode3\n";
+		helpText += "      }\n";
+		helpText += "      textcontrol CountryName {\n";
+		helpText += "        entityattribute countryName\n";
+		helpText += "      }\n";
+		helpText += "      referencecontrol CountryCurrency {\n";
+		helpText += "        entityattribute countryCurrency\n";
+		helpText += "        dictionary Currency\n";
+		helpText += "    }\n";
+		helpText += "  }\n";
+		helpText += "  [...]\n";
+		helpText += "  dictionaryeditor CountryEditor {\n";
+		helpText += "    layout { columns 2 }\n";
+		helpText += "    textcontrol ref CountryIsoCode2\n";
+		helpText += "    textcontrol ref CountryIsoCode3 {\n        label \"Alpha 3\"\n      }\n";
+		helpText += "    textcontrol ref CountryName\n";
+		helpText += "    referencecontrol ref CountryCurrency\n";
+		helpText += "  }\n";
+		helpText += "}\n";
+		helpText += "</pre>";
+
+		MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.setHelpText(replaceKeywords(helpText));
+	}
+
 	private void createCountrySearchHelpText() {
+
 		String helpText = "";
 		helpText += "<strong>Model defining the country search</strong><br/>";
-		helpText += "All control used in the model are defined once in the dictionarycontrols section of the dictionary and then referenced from the filter/result. Each control referes to an <em>entityAttribute</em> that corresponds the the entity for the whole dictionary. See individual help texts for each control for more information on the specific control models.<br/>";
-		helpText += "<pre>";
+		helpText += "All controls used in the model are defined once in the dictionarycontrols section of the dictionary and then referenced from the filter/result model. "
+				+ "Each control referes to an entityAttribute from the entity that is set in the root dictionary model. The control labels are inherited from the datatypes "
+				+ "that are used for each entityAttribute. All model attributes like label/maxlength/... can be overridden at any point in the inheritance hierarchy (see "
+				+ "the label for the <strong>IsoCode3</strong> control model for example.<br/>";
+		helpText += "<pre style=\"overflow: auto; height: 200px;\">";
+		helpText += "stringdatatype IsoName {\n  label \"Name\"\n}\n";
+		helpText += "stringdatatype IsoCode2 {\n  label \"ISO-Code (2)\"\n  maxLength 2\n  minLength 2\n}\n";
+		helpText += "stringdatatype IsoCode3 {\n  label \"ISO-Code (3)\"\n  maxLength 3\n  minLength 3\n}\n";
+		helpText += "entitydatatype CountryCurrency {\n  label \"Currency\"\n  entity Currency }\n";
+		helpText += "\n";
+		helpText += "entity Country {\n";
+		helpText += "  naturalkey { countryIsoCode2 }\n";
+		helpText += "  string IsoCode2 countryIsoCode2\n";
+		helpText += "  string IsoCode3 countryIsoCode3\n";
+		helpText += "  string IsoName countryName\n";
+		helpText += "  entity CountryCurrency countryCurrency\n";
+		helpText += "}";
+		helpText += "\n";
 		helpText += "dictionary Country {\n";
 		helpText += "  entity Country\n";
 		helpText += "    dictionarycontrols {\n";
@@ -135,8 +242,9 @@ public class DemoClient implements EntryPoint {
 		helpText += "  dictionarysearch CountrySearch {\n";
 		helpText += "    label \"Countries\"\n";
 		helpText += "    dictionaryfilter CountryFilter {\n";
+		helpText += "      layout { columns 2 }\n";
 		helpText += "      textcontrol ref CountryIsoCode2\n";
-		helpText += "      textcontrol ref CountryIsoCode3\n";
+		helpText += "      textcontrol ref CountryIsoCode3 {\n        label \"ISO-3166 (Alpha 3)\"\n      }\n";
 		helpText += "      textcontrol ref CountryName\n";
 		helpText += "      referencecontrol ref CountryCurrency\n";
 		helpText += "    }\n";
@@ -172,6 +280,8 @@ public class DemoClient implements EntryPoint {
 		result = keyword(result, "dictionary");
 		result = keyword(result, "entitydatatype");
 		result = keyword(result, "labelcontrols");
+		result = keyword(result, "layout");
+		result = keyword(result, "minLength");
 		result = keyword(result, "dictionarycontrols");
 		result = keyword(result, "dictionarysearch");
 		result = keyword(result, "label");

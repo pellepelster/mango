@@ -112,7 +112,7 @@ project MangoDemo {
 
 				dictionarycontrols {
 					textcontrol CountryIsoCode2 { entityattribute countryIsoCode2 }
-					textcontrol CountryIsoCode3 { entityattribute countryIsoCode3 }
+					textcontrol CountryIsoCode3 {  entityattribute countryIsoCode3 }
 					textcontrol CountryName { entityattribute countryName }
 					referencecontrol CountryCurrency { entityattribute countryCurrency dictionary Currency }
 				}
@@ -124,7 +124,7 @@ project MangoDemo {
 					dictionaryfilter CountryFilter {
 						layout { columns 2 }
 						textcontrol ref CountryIsoCode2
-						textcontrol ref CountryIsoCode3
+						textcontrol ref CountryIsoCode3 { label "ISO-3166 (Alpha 3)" }
 						textcontrol ref CountryName
 						referencecontrol ref CountryCurrency
 					}
@@ -141,7 +141,7 @@ project MangoDemo {
 					layout { columns 2 }
 					
 					textcontrol ref CountryIsoCode2
-					textcontrol ref CountryIsoCode3
+					textcontrol ref CountryIsoCode3 { label "Alpha 3" }
 					textcontrol ref CountryName
 					referencecontrol ref CountryCurrency
 				}
@@ -390,17 +390,11 @@ project MangoDemo {
 					entity Entity1
 
 					dictionarycontrols {
-
 						textcontrol Textcontrol1 { entityattribute Entity1.stringDatatype1 }
-
 						textcontrol Textcontrol2 { entityattribute Entity1.stringDatatype2 }
-
 						textcontrol Textcontrol3 { entityattribute Entity1.stringDatatype3 }
-
 						booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
-
 						enumerationcontrol Enumerationcontrol1 { entityattribute Entity1.enumeration1Datatype }
-
 					}
 
 					dictionarysearch DictionarySearch1 {
