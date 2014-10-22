@@ -235,11 +235,15 @@ DictionarySearch:
 DictionaryEditor:
 	"dictionaryeditor" name=ID "{"
 		("label" label=STRING)?
+		(layoutdata=ColumnLayoutData)?
+		(layout=ColumnLayout)?
 		(containercontents+=DictionaryContainerContent)*
 	"}";
 
 DictionaryFilter:
 	"dictionaryfilter" name=ID "{"
+		(layoutdata=ColumnLayoutData)?
+		(layout=ColumnLayout)?
 		(containercontents+=DictionaryContainerContent)*
 	"}";
 

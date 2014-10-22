@@ -22,56 +22,59 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ColumnLayoutStrategy
-{
+public class ColumnLayoutStrategy {
 	private final LAYOUT_TYPE layoutType;
 
-	public ColumnLayoutStrategy(LAYOUT_TYPE layoutType)
-	{
+	public ColumnLayoutStrategy(LAYOUT_TYPE layoutType) {
 		this.layoutType = layoutType;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void createLayout(Panel parent, BaseContainerElement<?> baseContainer)
-	{
+	public void createLayout(Panel parent, BaseContainerElement<?> baseContainer) {
 
-		if (!baseContainer.getControls().isEmpty())
-		{
+		if (!baseContainer.getControls().isEmpty()) {
+			int colummCount = baseContainer.getColummCount();
+
 			FlexTable flexTable = new FlexTable();
 			flexTable.setCellSpacing(5);
 			parent.add(flexTable);
 
-			int row = 0;
-			for (BaseDictionaryControl baseControl : baseContainer.getControls())
-			{
+			int currentRow = 0;
+			int currentColumn = 0;
+			for (BaseDictionaryControl baseControl : baseContainer.getControls()) {
 				Widget control = ControlHandler.getInstance().createControl(baseControl, layoutType);
 
-				switch (layoutType)
-				{
-					case EDITOR:
-						flexTable.setHTML(row, 0, DictionaryModelUtil.getEditorLabel(baseControl.getModel()));
-						break;
-					case FILTER:
-						flexTable.setHTML(row, 0, DictionaryModelUtil.getFilterLabel(baseControl.getModel()));
-						break;
+				switch (layoutType) {
+				case EDITOR:
+					flexTable.setHTML(currentRow, currentColumn * 2, DictionaryModelUtil.getEditorLabel(baseControl.getModel()));
+					break;
+				case FILTER:
+					flexTable.setHTML(currentRow, currentColumn * 2, DictionaryModelUtil.getFilterLabel(baseControl.getModel()));
+					break;
 				}
-				flexTable.setWidget(row, 1, control);
+				flexTable.setWidget(currentRow, currentColumn * 2 + 1, control);
 
-				row++;
+				if (currentColumn >= colummCount - 1) {
+					currentColumn = 0;
+					currentRow++;
+				} else {
+					currentColumn++;
+					if (currentColumn > 0) {
+						flexTable.getFlexCellFormatter().setStyleName(currentRow, currentColumn * 2, GwtStyles.COLUMN_LAYOUT_HORIZONTAL_SPACING);
+					}
+				}
+
 			}
 		}
 
-		if (!baseContainer.getChildren().isEmpty())
-		{
+		if (!baseContainer.getChildren().isEmpty()) {
 
-			for (BaseContainerElement<?> lBaseContainer : baseContainer.getChildren())
-			{
+			for (BaseContainerElement<?> lBaseContainer : baseContainer.getChildren()) {
 
 				IContainer<Panel> container = ContainerFactory.createContainer(lBaseContainer);
 				parent.add(container.getContainer());
 
-				if (container.getContainer() instanceof Panel && !(lBaseContainer instanceof BaseTableElement))
-				{
+				if (container.getContainer() instanceof Panel && !(lBaseContainer instanceof BaseTableElement)) {
 					createLayout(container.getContainer(), lBaseContainer);
 				}
 			}

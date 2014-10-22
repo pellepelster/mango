@@ -106,11 +106,10 @@ class DictionaryGenerator {
 		
 			private class RootComposite extends «CompositeModel.name» {
 		
-			«dictionaryEditor.containercontents.dictionaryClass»
+				«dictionaryEditor.containercontents.dictionaryClass»
 		
 				public RootComposite(«BaseModel.name»<?> parent) {
 					super("«ICompositeModel.ROOT_COMPOSITE_NAME»", parent);
-		
 					«dictionaryEditor.containercontents.dictionaryContainerContentsConstructor»
 				}
 			}
@@ -125,6 +124,8 @@ class DictionaryGenerator {
 				«ENDIF»
 				
 				setCompositeModel(rootComposite);
+				
+				«layoutSetter(dictionaryEditor.layout, dictionaryEditor.layoutdata, "rootComposite.")»
 			}
 			«dictionaryEditor.containercontents.dictionaryContainerContentsConstants»
 		}
@@ -268,21 +269,21 @@ class DictionaryGenerator {
 		
 			private class RootComposite extends «CompositeModel.name» {
 		
-			«dictionaryFilter.containercontents.dictionaryClass»
+				«dictionaryFilter.containercontents.dictionaryClass»
 		
 				public RootComposite(«BaseModel.name»<?> parent) {
-			super("«ICompositeModel.ROOT_COMPOSITE_NAME»", parent);
-			
-			«dictionaryFilter.containercontents.dictionaryContainerContentsConstructor»
+					super("«ICompositeModel.ROOT_COMPOSITE_NAME»", parent);
+					«dictionaryFilter.containercontents.dictionaryContainerContentsConstructor»
 				}
 			}
 			
 			private RootComposite rootComposite = new RootComposite(this);
 		
-			public «dictionaryFilter.dictionaryClassName»(«BaseModel.name»<?> parent) {
-			super("«dictionaryFilter.name»", parent);
-			
-			setCompositeModel(rootComposite);
+				public «dictionaryFilter.dictionaryClassName»(«BaseModel.name»<?> parent) {
+				super("«dictionaryFilter.name»", parent);
+				
+				setCompositeModel(rootComposite);
+				«layoutSetter(dictionaryFilter.layout, dictionaryFilter.layoutdata, "rootComposite.")»
 			}
 			
 			«dictionaryFilter.containercontents.dictionaryContainerContentsConstants»

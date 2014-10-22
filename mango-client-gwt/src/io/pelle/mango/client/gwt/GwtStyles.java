@@ -18,6 +18,7 @@ package io.pelle.mango.client.gwt;
  * 
  */
 public interface GwtStyles {
+	
 	String CELL_ERROR_STYLE = "border: 1px solid red;";
 
 	String CELL_ERROR_DISPLAY_PADDING = "padding: 3px;";
@@ -33,6 +34,8 @@ public interface GwtStyles {
 	String CONTROL_FEEDBACK_HELP_STYLE = "form-control-feedback-help";
 
 	String FEEDBACK_HELP_INLINE_STYLE = "feedback-help-inline";
+
+	String COLUMN_LAYOUT_HORIZONTAL_SPACING = "column-layout-horizontal-spacing";
 
 	String HELP_POPUP_STYLE = "help-popup";
 

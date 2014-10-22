@@ -13,6 +13,8 @@ import java.util.List;
 import com.google.common.base.Objects;
 
 public abstract class BaseContainerElement<ModelType extends IBaseContainerModel> extends BaseDictionaryElement<ModelType> {
+	private static final int DEFAULT_COLUMN_COUNT = 1;
+
 	private List<BaseDictionaryControl<?, ?>> controls = new ArrayList<BaseDictionaryControl<?, ?>>();
 
 	private List<BaseContainerElement<?>> children = new ArrayList<BaseContainerElement<?>>();
@@ -51,6 +53,15 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 		return allChildren;
 	}
 
+	public int getColummCount() {
+		if (getModel().getLayout() != null && getModel().getLayout().getColumns() > 0) {
+			return getModel().getLayout().getColumns();
+		} else {
+			return DEFAULT_COLUMN_COUNT;
+		}
+		
+
+	}
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("name", getModel().getName()).toString();

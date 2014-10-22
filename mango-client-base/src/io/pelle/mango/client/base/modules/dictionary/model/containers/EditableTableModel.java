@@ -2,6 +2,8 @@ package io.pelle.mango.client.base.modules.dictionary.model.containers;
 
 import io.pelle.mango.client.base.modules.dictionary.container.IEditableTable;
 import io.pelle.mango.client.base.modules.dictionary.model.BaseTableModel;
+import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayout;
+import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayoutData;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
@@ -39,6 +41,16 @@ public class EditableTableModel<VOType extends IBaseVO> extends BaseTableModel<I
 	public void setVoName(String voName)
 	{
 		this.voName = voName;
+	}
+
+	@Override
+	public ColumnLayoutData getLayoutData() {
+		throw new RuntimeException("not implemented");
+	}
+
+	@Override
+	public ColumnLayout getLayout() {
+		throw new RuntimeException("not implemented");
 	}
 
 }

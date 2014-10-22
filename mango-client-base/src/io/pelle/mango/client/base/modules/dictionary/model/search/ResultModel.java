@@ -1,6 +1,8 @@
 package io.pelle.mango.client.base.modules.dictionary.model.search;
 
 import io.pelle.mango.client.base.modules.dictionary.model.BaseTableModel;
+import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayout;
+import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayoutData;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 
@@ -35,5 +37,16 @@ public class ResultModel extends BaseTableModel<Object> implements IResultModel
 	{
 		return null;
 	}
+	
+	@Override
+	public ColumnLayoutData getLayoutData() {
+		throw new RuntimeException("not implemented");
+	}
+
+	@Override
+	public ColumnLayout getLayout() {
+		throw new RuntimeException("not implemented");
+	}
+
 
 }

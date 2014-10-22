@@ -122,6 +122,7 @@ project MangoDemo {
 					label "Countries"
 					
 					dictionaryfilter CountryFilter {
+						layout { columns 2 }
 						textcontrol ref CountryIsoCode2
 						textcontrol ref CountryIsoCode3
 						textcontrol ref CountryName
@@ -137,6 +138,8 @@ project MangoDemo {
 				}
 
 				dictionaryeditor CountryEditor {
+					layout { columns 2 }
+					
 					textcontrol ref CountryIsoCode2
 					textcontrol ref CountryIsoCode3
 					textcontrol ref CountryName

@@ -7,14 +7,16 @@ import com.google.inject.Inject
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel
 import io.pelle.mango.dsl.generator.GeneratorConstants
+import io.pelle.mango.dsl.mango.ColumnLayout
+import io.pelle.mango.dsl.mango.ColumnLayoutData
 import io.pelle.mango.dsl.mango.DictionaryContainer
 import io.pelle.mango.dsl.mango.DictionaryContainerContent
 import io.pelle.mango.dsl.mango.DictionaryControl
+import io.pelle.mango.dsl.mango.DictionaryControlGroup
 import io.pelle.mango.dsl.mango.DictionaryEditableTable
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
-import io.pelle.mango.dsl.mango.DictionaryControlGroup
 
 class DictionaryContainerGenerator {
 
@@ -50,6 +52,7 @@ class DictionaryContainerGenerator {
 		«FOR dictionaryControl : dictionaryContainerContents.filter(DictionaryControl)»
 			«dictionaryControl.dictionaryControlConstantSetters»
 		«ENDFOR»
+		
 	'''
 
 	def dictionaryContainerContentsConstants(List<DictionaryContainerContent> dictionaryContainerContents) '''
@@ -67,6 +70,21 @@ class DictionaryContainerGenerator {
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
+	def layoutSetter(ColumnLayout columnLayout, ColumnLayoutData columnLayoutData) {
+		layoutSetter(columnLayout, columnLayoutData, "")
+	}
+
+	def layoutSetter(ColumnLayout columnLayout, ColumnLayoutData columnLayoutData, String setterPrefix) '''
+	
+		«IF columnLayoutData != null»
+			«setterPrefix»setLayoutData(new io.pelle.mango.client.base.modules.dictionary.model.ColumnLayoutData(«columnLayoutData.columnspan»));
+		«ENDIF»
+
+		«IF columnLayout != null»
+			«setterPrefix»setLayout(new io.pelle.mango.client.base.modules.dictionary.model.ColumnLayout(«columnLayout.columns»));
+		«ENDIF»
+	'''
+
 	def dictionaryClass(DictionaryContainer dictionaryContainer) '''
 			package «dictionaryContainer.packageName»;
 			
@@ -78,6 +96,8 @@ class DictionaryContainerGenerator {
 				public «dictionaryContainer.dictionaryClassName»(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {
 					super("«dictionaryContainer.name»", parent);
 					«dictionaryContainer.containercontents.dictionaryContainerContentsConstructor»
+					
+					«layoutSetter(dictionaryContainer.layout, dictionaryContainer.layoutdata)»
 				}
 			}
 	'''

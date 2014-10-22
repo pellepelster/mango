@@ -589,3 +589,11 @@ h6,.h6{
 	width: 400px;
 	overflow: auto;
 }
+
+/**********************
+     column layout
+ **********************/
+.column-layout-horizontal-spacing {
+	padding-left: 3em;
+}
+ 

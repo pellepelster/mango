@@ -11,6 +11,8 @@
  */
 package io.pelle.mango.client.base.modules.dictionary.model.containers;
 
+import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayout;
+import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayoutData;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 
@@ -31,5 +33,10 @@ public interface IBaseContainerModel extends IBaseModel
 	 * @return
 	 */
 	List<IBaseControlModel> getControls();
+
+	
+	ColumnLayoutData getLayoutData();
+	
+	ColumnLayout getLayout();
 
 }

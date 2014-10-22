@@ -25,6 +25,16 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testLayoutColumnsFilter() {
+		assertEquals(2, MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH.COUNTRY_FILTER.getCompositeModel().getLayout().getColumns());
+	}
+
+	@Test
+	public void testLayoutColumnsEditor() {
+		assertEquals(2, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.getCompositeModel().getLayout().getColumns());
+	}
+
+	@Test
 	public void testMaxLengthInheritanceFromDatatype() {
 		assertEquals(42, MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getMaxLength());
 	}

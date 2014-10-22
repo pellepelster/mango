@@ -82,10 +82,10 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.dictionaryControlGroupOptionsRule);
 
 		// dictionary editor
-		defaultBlockFormat(c, m.dictionaryEditorRule, m.dictionaryEditorAccess.leftCurlyBracketKeyword_2, m.dictionaryEditorAccess.rightCurlyBracketKeyword_5)
+		defaultBlockFormat(c, m.dictionaryEditorRule, m.dictionaryEditorAccess.leftCurlyBracketKeyword_2, m.dictionaryEditorAccess.rightCurlyBracketKeyword_7)
 
 		// dictionary filter
-		defaultBlockFormat(c, m.dictionaryFilterRule, m.dictionaryFilterAccess.leftCurlyBracketKeyword_2, m.dictionaryFilterAccess.rightCurlyBracketKeyword_4)
+		defaultBlockFormat(c, m.dictionaryFilterRule, m.dictionaryFilterAccess.leftCurlyBracketKeyword_2, m.dictionaryFilterAccess.rightCurlyBracketKeyword_6)
 
 		// dictionary result
 		defaultBlockFormat(c, m.dictionaryResultRule, m.dictionaryResultAccess.leftCurlyBracketKeyword_2, m.dictionaryResultAccess.rightCurlyBracketKeyword_4)
