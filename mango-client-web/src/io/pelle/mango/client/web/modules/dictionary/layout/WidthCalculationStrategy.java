@@ -23,7 +23,7 @@ public final class WidthCalculationStrategy {
 
 	public final static int CONTROL_COLUMN_OFFSET_DEFAULT = 0;
 
-	public final static float CONTROL_FACTOR_DEFAULT = 1.0f;
+	public final static float CONTROL_FACTOR_DEFAULT = 1.1f;
 
 	public final static int CONTROL_OFFSET_DEFAULT = 0;
 
@@ -80,13 +80,7 @@ public final class WidthCalculationStrategy {
 	}
 
 	private float getControlWidthInternal(IBaseControlModel baseControlModel) {
-		int widthHint = IBaseControlModel.DEFAULT_WIDTH_HINT;
-
-		if (baseControlModel.getWidthHint() == null) {
-			return widthHint = baseControlModel.getWidthHint();
-		}
-
-		return getWidth(widthHint, isUppercase(baseControlModel));
+		return getWidth(baseControlModel.getWidthHint(), isUppercase(baseControlModel));
 	}
 
 	private int getControlWidth(IBaseControlModel baseControlModel) {

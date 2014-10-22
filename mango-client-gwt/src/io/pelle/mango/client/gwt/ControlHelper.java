@@ -44,6 +44,7 @@ public class ControlHelper implements IControlUpdateListener {
 	}
 
 	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener, boolean addDefaultStyle) {
+
 		this.uiObject = uiObject;
 		this.baseControl = baseControl;
 		this.gwtControl = gwtControl;

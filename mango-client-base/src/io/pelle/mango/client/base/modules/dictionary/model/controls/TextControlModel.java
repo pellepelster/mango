@@ -3,8 +3,7 @@ package io.pelle.mango.client.base.modules.dictionary.model.controls;
 import io.pelle.mango.client.base.modules.dictionary.controls.ITextControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 
-public class TextControlModel extends BaseControlModel<ITextControl> implements ITextControlModel
-{
+public class TextControlModel extends BaseControlModel<ITextControl> implements ITextControlModel {
 
 	private static final long serialVersionUID = -6029017257538622486L;
 
@@ -12,36 +11,35 @@ public class TextControlModel extends BaseControlModel<ITextControl> implements 
 
 	private int minLength = MIN_LENGTH_DEFAULT;
 
-	public TextControlModel(String name, IBaseModel parent)
-	{
+	public TextControlModel(String name, IBaseModel parent) {
 		super(name, parent);
 	}
 
 	@Override
-	public String getFormatRegularExpression()
-	{
+	public String getFormatRegularExpression() {
 		return null;
 	}
 
 	@Override
-	public int getMaxLength()
-	{
+	public int getWidthHint() {
+		return getMaxLength();
+	}
+
+	@Override
+	public int getMaxLength() {
 		return this.maxLength;
 	}
 
 	@Override
-	public int getMinLength()
-	{
+	public int getMinLength() {
 		return this.minLength;
 	}
 
-	public void setMaxLength(int maxLength)
-	{
+	public void setMaxLength(int maxLength) {
 		this.maxLength = maxLength;
 	}
 
-	public void setMinLength(int minLength)
-	{
+	public void setMinLength(int minLength) {
 		this.minLength = minLength;
 	}
 

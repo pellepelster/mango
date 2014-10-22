@@ -64,7 +64,7 @@ public interface IBaseControlModel extends IBaseModel, IContentAwareModel {
 	 * 
 	 * @return
 	 */
-	Integer getWidthHint();
+	int getWidthHint();
 
 	/**
 	 * Control content is required
@@ -74,7 +74,7 @@ public interface IBaseControlModel extends IBaseModel, IContentAwareModel {
 	boolean isMandatory();
 
 	boolean isReadonly();
-	
+
 	String getHelpText();
 
 }
