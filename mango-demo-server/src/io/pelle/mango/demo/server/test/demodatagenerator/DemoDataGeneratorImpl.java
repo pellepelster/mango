@@ -168,6 +168,8 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 		try {
 			InputStream in = this.getClass().getClassLoader().getResourceAsStream("names.csv");
 
+			SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yy");
+
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String line;
 
@@ -178,6 +180,7 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 
 				CountryVO countryVO = countries.get(randomInteger(0, countries.size() - 1));
 				createCustomer(columns[0], columns[1], format.parse(columns[2]), countryVO);
+				createCustomer(columns[0], columns[1], formatter.parse(columns[2]), countryVO);
 			}
 
 			br.close();
