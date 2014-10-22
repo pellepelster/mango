@@ -163,6 +163,12 @@ public class DemoClientTest extends BaseDemoTest {
 
 		TextTestControl filterTextControl1 = search.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.TEXTCONTROL1);
 		filterTextControl1.enterValue("abc");
+
+		// filter should not show errors
+		filterTextControl1.enterValue("");
+		filterTextControl1.assertHasNoErrors();
+
+		filterTextControl1.enterValue("abc");
 		search.execute();
 		search.assertSearchResults(1);
 		assertEquals("abc", search.getResultRow(0).getVO().getStringDatatype1());
@@ -298,7 +304,7 @@ public class DemoClientTest extends BaseDemoTest {
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.INTEGER_CONTROL1);
 		assertEquals("2", control.getValue());
 	}
-	
+
 	@Test
 	public void testDictionary1DirtyHandling() {
 
@@ -308,11 +314,11 @@ public class DemoClientTest extends BaseDemoTest {
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 
 		editor.assertNotDirty();
-		
+
 		TextTestControl textControl1 = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
 		textControl1.enterValue(UUID.randomUUID().toString());
 		editor.assertDirty();
-		
+
 		editor.save();
 		editor.assertNotDirty();
 	}

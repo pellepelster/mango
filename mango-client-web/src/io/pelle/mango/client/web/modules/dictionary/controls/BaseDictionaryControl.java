@@ -2,6 +2,7 @@ package io.pelle.mango.client.web.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.IValidationMessages;
+import io.pelle.mango.client.base.modules.dictionary.IBaseDictionaryElement;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
@@ -12,6 +13,7 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.databinding.IValidator;
 import io.pelle.mango.client.web.modules.dictionary.databinding.validator.MandatoryValidator;
+import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearch;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,13 +60,29 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 
 	private static final MandatoryValidator MANDATORY_VALIDATOR = new MandatoryValidator();
 
+	private boolean hasSearchAsRoot() {
+
+		IBaseDictionaryElement<?> current = getParent();
+		while (current != null) {
+
+			if (current instanceof DictionarySearch<?>) {
+				return true;
+			}
+
+			current = current.getParent();
+		}
+
+		return false;
+	}
+
 	public BaseDictionaryControl(ModelType baseControlModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(baseControlModel, parent);
 
-		if (baseControlModel.isMandatory()) {
-			this.validators.add(MANDATORY_VALIDATOR);
+		if (!hasSearchAsRoot()) {
+			if (baseControlModel.isMandatory()) {
+				this.validators.add(MANDATORY_VALIDATOR);
+			}
 		}
-
 	}
 
 	public String getEditorLabel() {
