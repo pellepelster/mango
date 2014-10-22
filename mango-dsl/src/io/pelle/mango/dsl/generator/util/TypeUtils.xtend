@@ -339,7 +339,7 @@ class TypeUtils {
 
 
 	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
-	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.maxLength», «entityAttribute.naturalKeyOrder»);
+	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.minLength», «entityAttribute.maxLength», «entityAttribute.naturalKeyOrder»);
 	'''
 	
 	def getMaxLength(StringEntityAttribute stringEntityAttribute) 
@@ -350,7 +350,19 @@ class TypeUtils {
 		}
 		else
 		{
-			return StringAttributeDescriptor.LENGTH_UNLIMITED
+			return StringAttributeDescriptor.NO_LENGTH_LIMIT
+		}
+	}
+
+	def getMinLength(StringEntityAttribute stringEntityAttribute) 
+	{
+		if (stringEntityAttribute.type != null && stringEntityAttribute.type.minLength > 0)
+		{
+			return stringEntityAttribute.type.minLength
+		}
+		else
+		{
+			return StringAttributeDescriptor.NO_LENGTH_LIMIT
 		}
 	}
 

@@ -10,23 +10,26 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 
 	private final int maxLength;
 
-	public static final int LENGTH_UNLIMITED = -1;
+	private final int minLength;
+
+	public static final int NO_LENGTH_LIMIT = -1;
 	
 	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName) {
-		this(entityDescriptor, attributeName, LENGTH_UNLIMITED);
+		this(entityDescriptor, attributeName, NO_LENGTH_LIMIT);
 	}
 	
 	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> collectionType) {
-		this(entityDescriptor, attributeName, collectionType, LENGTH_UNLIMITED, NO_NATURAL_KEY);
+		this(entityDescriptor, attributeName, collectionType, NO_LENGTH_LIMIT, NO_LENGTH_LIMIT, NO_NATURAL_KEY);
 	}
 
-	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> collectionType, int maxLength, int naturalKeyOrder) {
+	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> collectionType, int minLength, int maxLength, int naturalKeyOrder) {
 		super(entityDescriptor, attributeName, collectionType, String.class, naturalKeyOrder);
+		this.minLength = minLength;
 		this.maxLength = maxLength;
 	}
 
 	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, int maxLength) {
-		this(entityDescriptor, attributeName, String.class, maxLength, NO_NATURAL_KEY);
+		this(entityDescriptor, attributeName, String.class, NO_LENGTH_LIMIT, maxLength, NO_NATURAL_KEY);
 	}
 
 	public IBooleanExpression eq(String value) {
@@ -49,4 +52,7 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 		return maxLength;
 	}
 
+	public int getMinLength() {
+		return minLength;
+	}
 }

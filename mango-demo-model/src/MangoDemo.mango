@@ -87,8 +87,8 @@ project MangoDemo {
 			// country datatypes
 			//---------------------------------------------
 			stringdatatype IsoName { label "Name" }
-			stringdatatype IsoCode2 { label "ISO-Code (2)" }
-			stringdatatype IsoCode3 { label "ISO-Code (3)" }
+			stringdatatype IsoCode2 { label "ISO-Code (2)" maxLength 2 minLength 2 }
+			stringdatatype IsoCode3 { label "ISO-Code (3)" maxLength 3 minLength 3 }
 			entitydatatype CountryCurrency { label "Currency" entity Currency }
 
 			//---------------------------------------------
@@ -150,16 +150,16 @@ project MangoDemo {
 			entity Currency {
 				naturalkey { currencyIsoCode }
 
-				string IsoCode3 currencyIsoCode
 				string IsoName currencyName
+				string IsoCode3 currencyIsoCode
 			}
 
 			dictionary Currency {
 				entity Currency
 
 				dictionarycontrols {
-					textcontrol CurrencyIsoCode { entityattribute currencyIsoCode }
 					textcontrol CurrencyName { entityattribute currencyName }
+					textcontrol CurrencyIsoCode { entityattribute currencyIsoCode }
 				}
 
 				dictionarysearch CurrencySearch {
@@ -207,7 +207,7 @@ project MangoDemo {
 				method void generate ( )
 			}
 
-			stringdatatype StringDatatype1 { maxLength 42 }
+			stringdatatype StringDatatype1 { maxLength 42 minLength 2 }
 			stringdatatype StringDatatype2 extends StringDatatype1 { maxLength 32 }
 			stringdatatype StringDatatype3 { }
 			stringdatatype StringDatatype4 { }

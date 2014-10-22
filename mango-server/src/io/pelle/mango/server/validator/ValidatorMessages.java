@@ -39,4 +39,12 @@ public class ValidatorMessages {
 	public static final IMessage STRING_ATTRIBUTE_MAX_LENGTH = new Message(IMessage.SEVERITY.ERROR, "ATTRIBUTE_MAX_LENGTH", Messages.getString(VALIDATOR_ATTRIBUTE_MAX_LENGTH_MESSAGE),
 			Messages.getString(VALIDATOR_ATTRIBUTE_MAX_LENGTH_MESSAGE_HUMAN));
 
+	// min length
+	private static final String VALIDATOR_ATTRIBUTE_MIN_LENGTH_MESSAGE = "validator.minlength.message";
+
+	private static final String VALIDATOR_ATTRIBUTE_MIN_LENGTH_MESSAGE_HUMAN = "validator.minlength.message.human";
+
+	public static final IMessage STRING_ATTRIBUTE_MIN_LENGTH = new Message(IMessage.SEVERITY.ERROR, "ATTRIBUTE_MIN_LENGTH", Messages.getString(VALIDATOR_ATTRIBUTE_MIN_LENGTH_MESSAGE),
+			Messages.getString(VALIDATOR_ATTRIBUTE_MIN_LENGTH_MESSAGE_HUMAN));
+
 }

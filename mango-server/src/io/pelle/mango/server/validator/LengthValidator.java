@@ -14,6 +14,8 @@ public class LengthValidator implements IValidator {
 
 	private static final String MAX_LENGTH_CONTEXT_KEY = "maxLength";
 
+	private static final String MIN_LENGTH_CONTEXT_KEY = "minLength";
+
 	/** {@inheritDoc} */
 	@Override
 	public boolean canValidate(Object o) {
@@ -33,11 +35,12 @@ public class LengthValidator implements IValidator {
 
 		for (StringAttributeDescriptor attributeDescriptor : VOClassQuery.createQuery(vo).attributesDescriptors().byType(StringAttributeDescriptor.class)) {
 
-			if (attributeDescriptor.getMaxLength() > StringAttributeDescriptor.LENGTH_UNLIMITED) {
-				Object value = vo.get(attributeDescriptor.getAttributeName());
+			Object value = vo.get(attributeDescriptor.getAttributeName());
 
-				if (value != null && value instanceof String) {
-					String valueString = (String) value;
+			if (value != null && value instanceof String) {
+
+				String valueString = (String) value;
+				if (attributeDescriptor.getMaxLength() > StringAttributeDescriptor.NO_LENGTH_LIMIT) {
 
 					if (valueString.length() > attributeDescriptor.getMaxLength()) {
 						result.add(new ValidationMessage(ValidatorMessages.STRING_ATTRIBUTE_MAX_LENGTH, CollectionUtils.getMap(
@@ -45,7 +48,17 @@ public class LengthValidator implements IValidator {
 								attributeDescriptor.getMaxLength())));
 					}
 				}
+
+				if (attributeDescriptor.getMinLength() > StringAttributeDescriptor.NO_LENGTH_LIMIT) {
+
+					if (valueString.length() < attributeDescriptor.getMinLength()) {
+						result.add(new ValidationMessage(ValidatorMessages.STRING_ATTRIBUTE_MIN_LENGTH, CollectionUtils.getMap(
+								IValidationMessage.ATTRIBUTE_CONTEXT_KEY, attributeDescriptor.getAttributeName(), MIN_LENGTH_CONTEXT_KEY,
+								attributeDescriptor.getMinLength())));
+					}
+				}
 			}
+
 		}
 
 		return result;

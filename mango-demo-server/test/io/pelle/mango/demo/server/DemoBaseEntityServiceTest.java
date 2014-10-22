@@ -214,6 +214,20 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testValidateAndCreateValidateMinLength() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("a");
+
+		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
+
+		assertEquals(1, result.getValidationMessages().size());
+		assertEquals("Attribute 'stringDatatype1' is shorter than 2", result.getValidationMessages().get(0).getMessage());
+	}
+
+	@Test
 	public void testEntity3VOBinaryDatatype1() {
 
 		byte[] data = new byte[] { 0xa, 0xb, 0xc };

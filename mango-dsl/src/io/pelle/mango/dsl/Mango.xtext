@@ -82,6 +82,7 @@ StringDataType:
 	'stringdatatype' name=ID ("extends" ref=[ StringDataType | QualifiedName ])? "{"
 		baseDataType=BaseDataType
 		("maxLength" maxLength=INT)?
+		("minLength" minLength=INT)?
 	'}';
 
 StringEntityAttribute:
