@@ -33,6 +33,7 @@ import io.pelle.mango.dsl.mango.DictionaryHierarchicalControl
 import io.pelle.mango.dsl.mango.DictionaryIntegerControl
 import io.pelle.mango.dsl.mango.DictionaryReferenceControl
 import io.pelle.mango.dsl.mango.DictionaryTextControl
+import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationAttributeType
 import io.pelle.mango.dsl.mango.EnumerationDataType
@@ -42,6 +43,7 @@ import io.pelle.mango.dsl.mango.Labels
 import io.pelle.mango.dsl.mango.LongEntityAttribute
 import io.pelle.mango.dsl.mango.MapEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
+import io.pelle.mango.dsl.mango.EntityDataType
 
 class DictionaryControls {
 
@@ -308,8 +310,12 @@ class DictionaryControls {
 			«ENDIF»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EntityEntityAttribute entityAttribute) '''
-		//return dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)
+	def dispatch String datatypeLabelSetter(DictionaryReferenceControl dictionaryControl, EntityDataType entityDataType) '''
+		«dictionaryControl.datatypeLabelSetter(entityDataType.baseDataType)»
+	'''
+
+	def dispatch String datatypeLabelSetter(DictionaryReferenceControl dictionaryControl, EntityEntityAttribute entityEntityAttribute) '''
+		«dictionaryControl.datatypeLabelSetter(entityEntityAttribute.type)»
 	'''
 
 	//-------------------------------------------------------------------------
