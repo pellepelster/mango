@@ -23,7 +23,7 @@ public final class WidthCalculationStrategy {
 
 	public final static int CONTROL_COLUMN_OFFSET_DEFAULT = 0;
 
-	public final static float CONTROL_FACTOR_DEFAULT = 1.1f;
+	public final static float CONTROL_FACTOR_DEFAULT = 1.2f;
 
 	public final static int CONTROL_OFFSET_DEFAULT = 0;
 

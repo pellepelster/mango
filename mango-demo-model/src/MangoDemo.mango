@@ -117,8 +117,9 @@ project MangoDemo {
 			//---------------------------------------------
 			// country datatypes
 			//---------------------------------------------
-			stringdatatype IsoName {
+			stringdatatype CountryName {
 				label "Name"
+				maxLength 64
 			}
 			stringdatatype IsoCode2 {
 				label "ISO-Code (2)"
@@ -145,7 +146,7 @@ project MangoDemo {
 
 				string IsoCode2 countryIsoCode2
 				string IsoCode3 countryIsoCode3
-				string IsoName countryName
+				string CountryName countryName
 				entity CountryCurrency countryCurrency
 				decimal CountryExchangeRate countryExchangeRate
 			}
@@ -166,6 +167,7 @@ project MangoDemo {
 					}
 					textcontrol CountryName {
 						entityattribute countryName
+						width 32
 					}
 					referencecontrol CountryCurrency {
 						entityattribute countryCurrency
@@ -218,7 +220,7 @@ project MangoDemo {
 			entity Currency {
 				naturalkey { currencyIsoCode }
 
-				string IsoName currencyName
+				string CountryName currencyName
 				string IsoCode3 currencyIsoCode
 			}
 

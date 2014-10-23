@@ -65,6 +65,7 @@ class DictionaryControls {
 		
 		«IF dictionaryControl.baseControl != null»
 		
+		«dictionaryControl.dictionaryConstantName».setWidth(«dictionaryControl.baseControl.width»);
 		«dictionaryControl.dictionaryConstantName».setReadonly(«dictionaryControl.baseControl.readonly»);
 		«dictionaryControl.dictionaryConstantName».setMandatory(«dictionaryControl.baseControl.mandatory»);
 		«IF dictionaryControl.baseControl.entityattribute != null»

@@ -169,7 +169,7 @@ public class DemoClient implements EntryPoint {
 		helpText += "<strong>Model defining the country editor</strong><br/>";
 		helpText += "Again all controls are reused from the central defintion in dictionarycontrols. Note the label for the <strong>IsoCode3</strong> control model which is overriden in the editor model.<br/>";
 		helpText += "<pre style=\"overflow: auto; height: 200px;\">";
-		helpText += "stringdatatype IsoName {\n  label \"Name\"\n}\n";
+		helpText += "stringdatatype CountryName {\n  label \"Name\"\n  maxLength 64\n}\n";
 		helpText += "stringdatatype IsoCode2 {\n  label \"ISO-Code (2)\"\n  maxLength 2\n  minLength 2\n}\n";
 		helpText += "stringdatatype IsoCode3 {\n  label \"ISO-Code (3)\"\n  maxLength 3\n  minLength 3\n}\n";
 		helpText += "entitydatatype CountryCurrency {\n  label \"Currency\"\n  entity Currency }\n";
@@ -178,7 +178,7 @@ public class DemoClient implements EntryPoint {
 		helpText += "  naturalkey { countryIsoCode2 }\n";
 		helpText += "  string IsoCode2 countryIsoCode2\n";
 		helpText += "  string IsoCode3 countryIsoCode3\n";
-		helpText += "  string IsoName countryName\n";
+		helpText += "  string CountryName countryName\n";
 		helpText += "  entity CountryCurrency countryCurrency\n";
 		helpText += "}";
 		helpText += "\n";
@@ -193,6 +193,7 @@ public class DemoClient implements EntryPoint {
 		helpText += "      }\n";
 		helpText += "      textcontrol CountryName {\n";
 		helpText += "        entityattribute countryName\n";
+		helpText += "        width 32\n";
 		helpText += "      }\n";
 		helpText += "      referencecontrol CountryCurrency {\n";
 		helpText += "        entityattribute countryCurrency\n";
@@ -228,7 +229,7 @@ public class DemoClient implements EntryPoint {
 				+ "that are used for each entityAttribute. All model attributes like label/maxlength/... can be overridden at any point in the inheritance hierarchy (see "
 				+ "the label for the <strong>IsoCode3</strong> control model for example.<br/>";
 		helpText += "<pre style=\"overflow: auto; height: 200px;\">";
-		helpText += "stringdatatype IsoName {\n  label \"Name\"\n}\n";
+		helpText += "stringdatatype CountryName {\n  label \"Name\"\n}\n";
 		helpText += "stringdatatype IsoCode2 {\n  label \"ISO-Code (2)\"\n  maxLength 2\n  minLength 2\n}\n";
 		helpText += "stringdatatype IsoCode3 {\n  label \"ISO-Code (3)\"\n  maxLength 3\n  minLength 3\n}\n";
 		helpText += "entitydatatype CountryCurrency {\n  label \"Currency\"\n  entity Currency }\n";
@@ -237,7 +238,7 @@ public class DemoClient implements EntryPoint {
 		helpText += "  naturalkey { countryIsoCode2 }\n";
 		helpText += "  string IsoCode2 countryIsoCode2\n";
 		helpText += "  string IsoCode3 countryIsoCode3\n";
-		helpText += "  string IsoName countryName\n";
+		helpText += "  string CountryName countryName\n";
 		helpText += "  entity CountryCurrency countryCurrency\n";
 		helpText += "}";
 		helpText += "\n";

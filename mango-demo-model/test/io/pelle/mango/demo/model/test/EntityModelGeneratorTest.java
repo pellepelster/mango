@@ -45,6 +45,11 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
+	public void testCountryNameWidth() {
+		assertEquals(32, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME.getWidth());
+	}
+
+	@Test
 	public void testEntity1VO() {
 		assertEquals("io.pelle.mango.demo.client.test.Entity1VO", Entity1VO.class.getName());
 	}

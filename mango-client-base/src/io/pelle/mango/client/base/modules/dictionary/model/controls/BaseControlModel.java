@@ -25,6 +25,8 @@ public abstract class BaseControlModel<ControlElementType> extends BaseModel<Con
 
 	private String attributePath;
 
+	public int width;
+
 	public BaseControlModel(String name, IBaseModel parent) {
 		super(name, parent);
 	}
@@ -108,6 +110,14 @@ public abstract class BaseControlModel<ControlElementType> extends BaseModel<Con
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
 }

@@ -22,7 +22,11 @@ public class TextControlModel extends BaseControlModel<ITextControl> implements 
 
 	@Override
 	public int getWidthHint() {
-		return getMaxLength();
+		if (getWidth() > 0) {
+			return getWidth();
+		} else {
+			return getMaxLength();
+		}
 	}
 
 	@Override
