@@ -3,6 +3,14 @@
  */
 package io.pelle.mango.dsl.scoping
 
+import io.pelle.mango.dsl.mango.BaseDictionaryControl
+import io.pelle.mango.dsl.mango.Entity
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.scoping.IScope
+import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
+import io.pelle.mango.dsl.query.BaseControlQuery
+
 /**
  * This class contains custom scoping description.
  * 
@@ -10,6 +18,10 @@ package io.pelle.mango.dsl.scoping
  * on how and when to use it 
  *
  */
-class MangoScopeProvider extends org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider {
+class MangoScopeProvider extends AbstractDeclarativeScopeProvider {
+
+	def IScope scope_BaseDictionaryControl_entityattribute(BaseDictionaryControl baseDictionaryControl, EReference ref) {
+		Scopes::scopeFor((BaseControlQuery.createQuery(baseDictionaryControl).parentDictionary.object.entity as Entity).attributes)
+	}
 
 }

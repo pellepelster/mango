@@ -18,9 +18,9 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 
 	private int MAX_WRAPS = 2;
 
-	private int MIN_KEYWORD_WRAPS = 2;
+	private int MIN_KEYWORD_WRAPS = 1;
 
-	private int DEFAULT_KEYWORD_WRAPS = 2;
+	private int DEFAULT_KEYWORD_WRAPS = 1;
 
 	private int MAX_KEYWORD_WRAPS = 2;
 
@@ -66,6 +66,36 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 
 		// value object
 		defaultBlockFormat(c, m.valueObjectRule, m.valueObjectAccess.leftCurlyBracketKeyword_4, m.valueObjectAccess.rightCurlyBracketKeyword_6)
+
+		// controls
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.baseDictionaryControlAccess.entityattributeKeyword_0_0);
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.labelsAccess.columnLabelKeyword_3_0);
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.labelsAccess.editorLabelKeyword_4_0);
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.labelsAccess.filterLabelKeyword_2_0);
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.labelsAccess.editorLabelKeyword_4_0);
+
+		defaultBlockFormat(c, m.dictionaryTextControlRule, m.dictionaryTextControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryTextControlAccess.rightCurlyBracketKeyword_4_2)
+			
+		defaultBlockFormat(c, m.dictionaryIntegerControlRule, m.dictionaryIntegerControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryIntegerControlAccess.rightCurlyBracketKeyword_4_2)
+		defaultBlockFormat(c, m.dictionaryBigDecimalControlRule, m.dictionaryBigDecimalControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryBigDecimalControlAccess.rightCurlyBracketKeyword_4_2)
+		defaultBlockFormat(c, m.dictionaryDateControlRule, m.dictionaryDateControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryDateControlAccess.rightCurlyBracketKeyword_4_2)
+		defaultBlockFormat(c, m.dictionaryReferenceControlRule, m.dictionaryReferenceControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryReferenceControlAccess.rightCurlyBracketKeyword_4_6)
+		defaultBlockFormat(c, m.dictionaryBooleanControlRule, m.dictionaryBooleanControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryBooleanControlAccess.rightCurlyBracketKeyword_4_2)
+		defaultBlockFormat(c, m.dictionaryEnumerationControlRule, m.dictionaryEnumerationControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryEnumerationControlAccess.rightCurlyBracketKeyword_4_2)
+
+		// datatypes
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.baseDataTypeAccess.labelKeyword_1_0);
+
+		defaultBlockFormat(c, m.stringDataTypeRule, m.stringDataTypeAccess.leftCurlyBracketKeyword_3, m.stringDataTypeAccess.rightCurlyBracketKeyword_7)
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.stringDataTypeAccess.minLengthKeyword_6_0);
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.stringDataTypeAccess.maxLengthKeyword_5_0);
+		
+		defaultBlockFormat(c, m.integerDataTypeRule, m.integerDataTypeAccess.leftCurlyBracketKeyword_3, m.integerDataTypeAccess.rightCurlyBracketKeyword_5)
+		defaultBlockFormat(c, m.decimalDataTypeRule, m.decimalDataTypeAccess.leftCurlyBracketKeyword_3, m.decimalDataTypeAccess.rightCurlyBracketKeyword_5)
+		defaultBlockFormat(c, m.dateDataTypeRule, m.dateDataTypeAccess.leftCurlyBracketKeyword_3, m.dateDataTypeAccess.rightCurlyBracketKeyword_5)
+		defaultBlockFormat(c, m.entityDataTypeRule, m.entityDataTypeAccess.leftCurlyBracketKeyword_3, m.entityDataTypeAccess.rightCurlyBracketKeyword_7)
+		defaultBlockFormat(c, m.booleanDataTypeRule, m.booleanDataTypeAccess.leftCurlyBracketKeyword_3, m.booleanDataTypeAccess.rightCurlyBracketKeyword_5)
+		defaultBlockFormat(c, m.enumerationDataTypeRule, m.enumerationDataTypeAccess.leftCurlyBracketKeyword_3, m.enumerationDataTypeAccess.rightCurlyBracketKeyword_7)
 
 		// dictionary
 		defaultBlockFormat(c, m.dictionaryRule, m.dictionaryAccess.leftCurlyBracketKeyword_2, m.dictionaryAccess.rightCurlyBracketKeyword_11)

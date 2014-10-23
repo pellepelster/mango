@@ -148,6 +148,22 @@ public class ModelUtil {
 		return entityHierarchy;
 	}
 
+	public static <T> T getParentWithType(EObject eObject, Class<T> parentClass) {
+
+		EObject current = eObject;
+
+		while (current.eContainer() != null) {
+
+			if (parentClass.isAssignableFrom(current.getClass())) {
+				return (T) current;
+			}
+
+			current = current.eContainer();
+		}
+
+		return null;
+	}
+	
 	public static EObject getRoot(EObject eObject) {
 
 		EObject current = eObject;

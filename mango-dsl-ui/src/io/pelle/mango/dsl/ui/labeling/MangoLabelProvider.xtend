@@ -21,7 +21,7 @@ import io.pelle.mango.dsl.mango.PackageDeclaration
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.xtext.ui.IImageHelper
 import org.eclipse.xtext.ui.label.DefaultEObjectLabelProvider
-import io.pelle.mango.dsl.query.ControlQuery
+import io.pelle.mango.dsl.query.BaseControlQuery
 
 /**
  * Provides labels for a EObjects.
@@ -105,7 +105,7 @@ class MangoLabelProvider extends DefaultEObjectLabelProvider {
 
 	def image(DictionaryControl dictionaryControl)
 	{
-		val ref = ControlQuery.getRef(dictionaryControl);
+		val ref = BaseControlQuery.getRef(dictionaryControl);
 
 		if (ref == null)
 		{
