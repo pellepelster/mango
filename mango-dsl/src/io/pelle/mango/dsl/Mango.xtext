@@ -329,7 +329,7 @@ BaseDictionaryControl:
 		labels=Labels
 		(mandatory?="mandatory")?
 		("width" width=INT)?
-		(readonly?="readonly")?
+		("readonly" readonly?=XBooleanLiteral)?
 		;
 
 DictionaryControl:

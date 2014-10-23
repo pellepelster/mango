@@ -18,7 +18,7 @@ package io.pelle.mango.client.gwt;
  * 
  */
 public interface GwtStyles {
-	
+
 	String CELL_ERROR_STYLE = "border: 1px solid red;";
 
 	String CELL_ERROR_DISPLAY_PADDING = "padding: 3px;";
@@ -30,6 +30,8 @@ public interface GwtStyles {
 	String CONTROL_HAS_FEEDBACK_STYLE = "has-feedback";
 
 	String CONTROL_ERROR_STYLE = "form-control-error";
+
+	String CONTROL_DISABLED_STYLE = "form-control-disabled";
 
 	String CONTROL_FEEDBACK_HELP_STYLE = "form-control-feedback-help";
 

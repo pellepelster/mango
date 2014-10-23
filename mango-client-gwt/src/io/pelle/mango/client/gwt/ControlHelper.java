@@ -43,26 +43,31 @@ public class ControlHelper implements IControlUpdateListener {
 		this(uiObject, baseControl, gwtControl, addValueChangeListener, true);
 	}
 
-	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener, boolean addDefaultStyle) {
+	public <ValueType> ControlHelper(final Widget widget, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener, boolean addDefaultStyle) {
 
-		this.uiObject = uiObject;
+		this.uiObject = widget;
 		this.baseControl = baseControl;
 		this.gwtControl = gwtControl;
 
 		if (addDefaultStyle) {
-			uiObject.addStyleName(GwtStyles.FORM_CONTROL);
+			widget.addStyleName(GwtStyles.FORM_CONTROL);
 		}
 
-		uiObject.setWidth(WidthCalculationStrategy.getInstance().getControlWidthCss(baseControl.getModel()));
+		if (baseControl.isReadonly()) {
+			widget.getElement().setPropertyBoolean("disabled", baseControl.isReadonly());
+			widget.addStyleName(GwtStyles.CONTROL_DISABLED_STYLE);
+		}
+
+		widget.setWidth(WidthCalculationStrategy.getInstance().getControlWidthCss(baseControl.getModel()));
 
 		baseControl.addUpdateListener(this);
 
-		if (uiObject instanceof HasValue<?>) {
-			final HasValue<ValueType> hasValueWidget = (HasValue<ValueType>) uiObject;
+		if (widget instanceof HasValue<?>) {
+			final HasValue<ValueType> hasValueWidget = (HasValue<ValueType>) widget;
 
 			if (addValueChangeListener) {
-				if (uiObject instanceof FocusWidget) {
-					FocusWidget focusWidget = (FocusWidget) uiObject;
+				if (widget instanceof FocusWidget) {
+					FocusWidget focusWidget = (FocusWidget) widget;
 
 					focusWidget.addKeyUpHandler(new KeyUpHandler() {
 						@Override
@@ -73,7 +78,7 @@ public class ControlHelper implements IControlUpdateListener {
 				}
 			}
 
-			uiObject.addDomHandler(new BlurHandler() {
+			widget.addDomHandler(new BlurHandler() {
 
 				@Override
 				public void onBlur(BlurEvent event) {

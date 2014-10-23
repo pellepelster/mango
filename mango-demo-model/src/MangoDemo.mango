@@ -6,18 +6,32 @@ project MangoDemo {
 
 		package showcase {
 
-			//--------------------------------
-			// customer
-			//--------------------------------
-			stringdatatype CustomerFirstName { label "First Name" }
-			stringdatatype CustomerLastName { label "Last Name" }
-			entitydatatype CustomerCountry { label "Country" entity Country }
-			integerdatatype CustomerDiscount { label "Discount (%)" }
-			datedatatype CustomerDateOfBirth { label "Date Of Birth" }
-			booleandatatype CustomerSendBirthdayCards { label "Send birthday cards" }
-			
-			enumeration CustomerTitle { MR => "Mr." , MRS => "Mrs"  }
-			enumerationdatatype CustomerTitle { label "Title" enumeration CustomerTitle }
+		//--------------------------------
+		// customer
+		//--------------------------------
+			stringdatatype CustomerFirstName {
+				label "First Name"
+			}
+			stringdatatype CustomerLastName {
+				label "Last Name"
+			}
+			entitydatatype CustomerCountry {
+				label "Country" entity Country
+			}
+			integerdatatype CustomerDiscount {
+				label "Discount (%)"
+			}
+			datedatatype CustomerDateOfBirth {
+				label "Date Of Birth"
+			}
+			booleandatatype CustomerSendBirthdayCards {
+				label "Send birthday cards"
+			}
+
+			enumeration CustomerTitle { MR => "Mr." ,  MRS => "Mrs" }
+			enumerationdatatype CustomerTitle {
+				label "Title" enumeration CustomerTitle
+			}
 
 			entity Customer {
 				enumeration CustomerTitle title
@@ -30,21 +44,36 @@ project MangoDemo {
 			}
 
 			dictionary Customer {
-			
+
 				entity Customer
 
 				dictionarycontrols {
-					enumerationcontrol CustomerTitle { entityattribute title }
-					textcontrol CustomerFirstName { entityattribute firstName }
-					textcontrol CustomerLastName { entityattribute lastName }
-					referencecontrol CustomerCountry { entityattribute country dictionary Country }
-					integercontrol CustomerDiscount { entityattribute discount }
-					datecontrol CustomerDateOfBirth { entityattribute dateOfBirth }
-					booleancontrol CustomerSendBirthdayCards { entityattribute sendBirthdayCards }
+					enumerationcontrol CustomerTitle {
+						entityattribute title
+					}
+					textcontrol CustomerFirstName {
+						entityattribute firstName
+					}
+					textcontrol CustomerLastName {
+						entityattribute lastName
+					}
+					referencecontrol CustomerCountry {
+						entityattribute country
+						dictionary Country
+					}
+					integercontrol CustomerDiscount {
+						entityattribute discount
+					}
+					datecontrol CustomerDateOfBirth {
+						entityattribute dateOfBirth
+					}
+					booleancontrol CustomerSendBirthdayCards {
+						entityattribute sendBirthdayCards
+					}
+				} labelcontrols {
+				textcontrol ref CustomerLastName
+				textcontrol ref CustomerFirstName
 				}
-
-				labelcontrols { textcontrol ref CustomerLastName textcontrol ref CustomerFirstName }
-				
 
 				dictionarysearch CustomerSearch {
 
@@ -52,13 +81,15 @@ project MangoDemo {
 
 					dictionaryfilter CustomerFilter {
 						controlgroup CustomerNames {
-							groupoptions { multiFilterField true }
+							groupoptions {
+								multiFilterField true
+							}
 							textcontrol ref CustomerFirstName
 							textcontrol ref CustomerLastName
 						}
 						referencecontrol ref CustomerCountry
 						datecontrol ref CustomerDateOfBirth
-						booleancontrol ref CustomerSendBirthdayCards 
+						booleancontrol ref CustomerSendBirthdayCards
 					}
 
 					dictionaryresult CustomerResult {
@@ -68,7 +99,7 @@ project MangoDemo {
 						referencecontrol ref CustomerCountry
 						integercontrol ref CustomerDiscount
 						datecontrol ref CustomerDateOfBirth
-						booleancontrol ref CustomerSendBirthdayCards 
+						booleancontrol ref CustomerSendBirthdayCards
 					}
 				}
 
@@ -79,17 +110,32 @@ project MangoDemo {
 					referencecontrol ref CustomerCountry
 					integercontrol ref CustomerDiscount
 					datecontrol ref CustomerDateOfBirth
-					booleancontrol ref CustomerSendBirthdayCards 
+					booleancontrol ref CustomerSendBirthdayCards
 				}
 			}
 
 			//---------------------------------------------
 			// country datatypes
 			//---------------------------------------------
-			stringdatatype IsoName { label "Name" }
-			stringdatatype IsoCode2 { label "ISO-Code (2)" maxLength 2 minLength 2 }
-			stringdatatype IsoCode3 { label "ISO-Code (3)" maxLength 3 minLength 3 }
-			entitydatatype CountryCurrency { label "Currency" entity Currency }
+			stringdatatype IsoName {
+				label "Name"
+			}
+			stringdatatype IsoCode2 {
+				label "ISO-Code (2)"
+				maxLength 2
+				minLength 2
+			}
+			stringdatatype IsoCode3 {
+				label "ISO-Code (3)"
+				maxLength 3
+				minLength 3
+			}
+			decimaldatatype CountryExchangeRate {
+				label "Exchange Rate"
+			}
+			entitydatatype CountryCurrency {
+				label "Currency" entity Currency
+			}
 
 			//---------------------------------------------
 			// country entity
@@ -101,30 +147,46 @@ project MangoDemo {
 				string IsoCode3 countryIsoCode3
 				string IsoName countryName
 				entity CountryCurrency countryCurrency
+				decimal CountryExchangeRate countryExchangeRate
 			}
 
 			//---------------------------------------------
 			// country dictionary
 			//---------------------------------------------
 			dictionary Country {
-			
+
 				entity Country
 
 				dictionarycontrols {
-					textcontrol CountryIsoCode2 { entityattribute countryIsoCode2 }
-					textcontrol CountryIsoCode3 {  entityattribute countryIsoCode3 }
-					textcontrol CountryName { entityattribute countryName }
-					referencecontrol CountryCurrency { entityattribute countryCurrency dictionary Currency }
+					textcontrol CountryIsoCode2 {
+						entityattribute countryIsoCode2
+					}
+					textcontrol CountryIsoCode3 {
+						entityattribute countryIsoCode3
+					}
+					textcontrol CountryName {
+						entityattribute countryName
+					}
+					referencecontrol CountryCurrency {
+						entityattribute countryCurrency
+						dictionary Currency
+					}
+					bigdecimalcontrol CountryExchangeRate {
+						entityattribute countryExchangeRate
+						readonly true
+					}
 				}
 
 				dictionarysearch CountrySearch {
 
 					label "Countries"
-					
+
 					dictionaryfilter CountryFilter {
 						layout { columns 2 }
 						textcontrol ref CountryIsoCode2
-						textcontrol ref CountryIsoCode3 { label "ISO-3166 (Alpha 3)" }
+						textcontrol ref CountryIsoCode3 {
+							label "ISO-3166 (Alpha 3)"
+						}
 						textcontrol ref CountryName
 						referencecontrol ref CountryCurrency
 					}
@@ -139,11 +201,14 @@ project MangoDemo {
 
 				dictionaryeditor CountryEditor {
 					layout { columns 2 }
-					
+
 					textcontrol ref CountryIsoCode2
-					textcontrol ref CountryIsoCode3 { label "Alpha 3" }
+					textcontrol ref CountryIsoCode3 {
+						label "Alpha 3"
+					}
 					textcontrol ref CountryName
 					referencecontrol ref CountryCurrency
+					bigdecimalcontrol ref CountryExchangeRate
 				}
 			}
 
@@ -161,12 +226,16 @@ project MangoDemo {
 				entity Currency
 
 				dictionarycontrols {
-					textcontrol CurrencyName { entityattribute currencyName }
-					textcontrol CurrencyIsoCode { entityattribute currencyIsoCode }
+					textcontrol CurrencyName {
+						entityattribute currencyName
+					}
+					textcontrol CurrencyIsoCode {
+						entityattribute currencyIsoCode
+					}
 				}
 
 				dictionarysearch CurrencySearch {
-					
+
 					label "Currencies"
 
 					dictionaryfilter CurrencyFilter {
@@ -210,20 +279,39 @@ project MangoDemo {
 				method void generate ( )
 			}
 
-			stringdatatype StringDatatype1 { maxLength 42 minLength 2 }
-			stringdatatype StringDatatype2 extends StringDatatype1 { maxLength 32 }
-			stringdatatype StringDatatype3 { }
-			stringdatatype StringDatatype4 { }
-			booleandatatype BooleanDatatype1 { label "Boolean1" }
-			entitydatatype Entity2Datatype { entity Entity2 }
+			stringdatatype StringDatatype1 {
+				maxLength 42
+				minLength 2
+			}
+			stringdatatype StringDatatype2 extends StringDatatype1 {
+				maxLength 32
+			}
+			stringdatatype StringDatatype3 {
+			}
+			stringdatatype StringDatatype4 {
+			}
+			booleandatatype BooleanDatatype1 {
+				label "Boolean1"
+			}
+			entitydatatype Entity2Datatype {
+				entity Entity2
+			}
 			binarydatatype BinaryDatatype1 { }
-			entitydatatype Entity3Datatype { entity Entity3 }
+			entitydatatype Entity3Datatype {
+				entity Entity3
+			}
 			enumeration Enumeration1 { EnumerationValue1 ,  EnumerationValue2 => "Value2" }
-			enumerationdatatype Enumeration1Datatype { enumeration Enumeration1 }
-			datedatatype DateDatatype1 { }
-			datedatatype DateDatatype2 { }
-			decimaldatatype DecimalDatatype1 { }
-			integerdatatype IntegerDatatype1 { }
+			enumerationdatatype Enumeration1Datatype {
+				enumeration Enumeration1
+			}
+			datedatatype DateDatatype1 {
+			}
+			datedatatype DateDatatype2 {
+			}
+			decimaldatatype DecimalDatatype1 {
+			}
+			integerdatatype IntegerDatatype1 {
+			}
 
 			entity Entity1 {
 				naturalkey { stringDatatype1 }
@@ -296,7 +384,9 @@ project MangoDemo {
 					entity Entity2
 
 					dictionarycontrols {
-						textcontrol TextControl2 { entityattribute Entity2.stringDatatype2 }
+						textcontrol TextControl2 {
+							entityattribute Entity2.stringDatatype2
+						}
 					} labelcontrols {
 					textcontrol ref TextControl2
 					}
@@ -323,15 +413,34 @@ project MangoDemo {
 
 					dictionarycontrols {
 
-						textcontrol TextControl1 { entityattribute Entity1.stringDatatype1 }
-						textcontrol TextControl2 { entityattribute Entity1.stringDatatype2 }
-						textcontrol TextControl3 { entityattribute Entity1.stringDatatype3 }
-						referencecontrol ReferenceControl1 { entityattribute Entity1.entity2Datatype dictionary DemoDictionary2 }
-						booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
-						integercontrol IntegerControl1 { entityattribute Entity1.integerDatatype1 }
-						bigdecimalcontrol DecimalControl1 { entityattribute Entity1.decimalDatatype1 }
-						datecontrol DateControl1 { entityattribute Entity1.dateDatype1 }
-						enumerationcontrol EnumerationControl1 { entityattribute Entity1.enumeration1Datatype }
+						textcontrol TextControl1 {
+							entityattribute Entity1.stringDatatype1
+						}
+						textcontrol TextControl2 {
+							entityattribute Entity1.stringDatatype2
+						}
+						textcontrol TextControl3 {
+							entityattribute Entity1.stringDatatype3
+						}
+						referencecontrol ReferenceControl1 {
+							entityattribute Entity1.entity2Datatype
+							dictionary DemoDictionary2
+						}
+						booleancontrol BooleanControl1 {
+							entityattribute Entity1.booleanDatatype1
+						}
+						integercontrol IntegerControl1 {
+							entityattribute Entity1.integerDatatype1
+						}
+						bigdecimalcontrol DecimalControl1 {
+							entityattribute Entity1.decimalDatatype1
+						}
+						datecontrol DateControl1 {
+							entityattribute Entity1.dateDatype1
+						}
+						enumerationcontrol EnumerationControl1 {
+							entityattribute Entity1.enumeration1Datatype
+						}
 					}
 
 					dictionarysearch DemoSearch1 {
@@ -390,11 +499,21 @@ project MangoDemo {
 					entity Entity1
 
 					dictionarycontrols {
-						textcontrol Textcontrol1 { entityattribute Entity1.stringDatatype1 }
-						textcontrol Textcontrol2 { entityattribute Entity1.stringDatatype2 }
-						textcontrol Textcontrol3 { entityattribute Entity1.stringDatatype3 }
-						booleancontrol BooleanControl1 { entityattribute Entity1.booleanDatatype1 }
-						enumerationcontrol Enumerationcontrol1 { entityattribute Entity1.enumeration1Datatype }
+						textcontrol Textcontrol1 {
+							entityattribute Entity1.stringDatatype1
+						}
+						textcontrol Textcontrol2 {
+							entityattribute Entity1.stringDatatype2
+						}
+						textcontrol Textcontrol3 {
+							entityattribute Entity1.stringDatatype3
+						}
+						booleancontrol BooleanControl1 {
+							entityattribute Entity1.booleanDatatype1
+						}
+						enumerationcontrol Enumerationcontrol1 {
+							entityattribute Entity1.enumeration1Datatype
+						}
 					}
 
 					dictionarysearch DictionarySearch1 {

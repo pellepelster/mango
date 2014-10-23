@@ -21,6 +21,7 @@ import io.pelle.mango.client.web.test.controls.TextTestControl;
 import io.pelle.mango.client.web.util.I18NProxy;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
+import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
@@ -36,6 +37,16 @@ public class DemoClientTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
+
+	@Test
+	public void testCountryEditorExchangeRateReadOnly() {
+
+		DictionaryEditorModuleTestUI<CountryVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR);
+		DecimalTestControl readOnlyControl = editor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_EXCHANGE_RATE);
+		readOnlyControl.assertReadOnly();
+		readOnlyControl.enterValue("abc");
+		readOnlyControl.assertValueString("");
+	}
 
 	@Test
 	public void testDemoDictionary2TextControl2() {

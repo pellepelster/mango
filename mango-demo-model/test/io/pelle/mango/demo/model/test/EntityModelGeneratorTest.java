@@ -3,6 +3,7 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
+import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
@@ -36,6 +37,11 @@ public class EntityModelGeneratorTest {
 	@Test
 	public void testStringAttributeDescriptor() {
 		assertEquals(StringAttributeDescriptor.class, Entity1.STRINGDATATYPE1.getClass());
+	}
+
+	@Test
+	public void testCountryExchangeRateReadOnly() {
+		assertTrue(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_EXCHANGE_RATE.isReadonly());
 	}
 
 	@Test

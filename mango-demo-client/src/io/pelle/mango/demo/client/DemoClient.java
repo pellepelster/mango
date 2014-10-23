@@ -1,9 +1,13 @@
 package io.pelle.mango.demo.client;
 
+import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.gwt.GWTLayoutFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
+import io.pelle.mango.demo.client.showcase.CountryVO;
+
+import java.math.BigDecimal;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -12,6 +16,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
 import com.google.gwt.user.client.ui.HTML;
@@ -71,8 +76,6 @@ public class DemoClient implements EntryPoint {
 
 		MangoDemoClientConfiguration.registerAll();
 
-		MangoDemoNavigationModel.ROOT.setHelpText("xxx");
-
 		String string1 = "";
 		string1 += "<strong>Model defining this control</strong><br/>";
 		string1 += "<pre>";
@@ -127,6 +130,16 @@ public class DemoClient implements EntryPoint {
 		createNavigationHelpText();
 		createCountrySearchHelpText();
 		createCountryEditorHelpText();
+
+		MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.addEditorHook(new BaseEditorHook<CountryVO>() {
+
+			@Override
+			public void onSave(AsyncCallback<Boolean> asyncCallback, CountryVO vo) {
+
+				vo.setCountryExchangeRate(new BigDecimal(1.56));
+				asyncCallback.onSuccess(true);
+			}
+		});
 
 	}
 
@@ -184,6 +197,11 @@ public class DemoClient implements EntryPoint {
 		helpText += "      referencecontrol CountryCurrency {\n";
 		helpText += "        entityattribute countryCurrency\n";
 		helpText += "        dictionary Currency\n";
+		helpText += "      }\n";
+		helpText += "      bigdecimalcontrol CountryExchangeRate {\n";
+		helpText += "        entityattribute countryExchangeRate\n";
+		helpText += "        readonly true\n";
+		helpText += "      }\n";
 		helpText += "    }\n";
 		helpText += "  }\n";
 		helpText += "  [...]\n";
@@ -193,6 +211,7 @@ public class DemoClient implements EntryPoint {
 		helpText += "    textcontrol ref CountryIsoCode3 {\n        label \"Alpha 3\"\n      }\n";
 		helpText += "    textcontrol ref CountryName\n";
 		helpText += "    referencecontrol ref CountryCurrency\n";
+		helpText += "    bigdecimalcontrol ref CountryExchangeRate\n";
 		helpText += "  }\n";
 		helpText += "}\n";
 		helpText += "</pre>";

@@ -45,7 +45,7 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
-	public void testNauralKeyIsMandatory() {
+	public void testNaturalKeyIsMandatory() {
 		assertTrue(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.isMandatory());
 	}
 

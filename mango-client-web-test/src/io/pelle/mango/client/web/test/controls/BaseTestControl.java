@@ -22,12 +22,14 @@ public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, Val
 
 	private boolean hasErrors;
 
+	private boolean readonly = false;
+
 	private List<IValidationMessage> validationMessages = new ArrayList<IValidationMessage>();
 
 	private String valueString;
 
 	public BaseTestControl(ElementType baseControl) {
-		
+
 		this.baseControl = baseControl;
 
 		baseControl.addUpdateListener(this);
@@ -79,7 +81,7 @@ public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, Val
 	public void assertValueString(String valueString) {
 		Assert.assertEquals(valueString, this.valueString);
 	}
-	
+
 	public void assertHasErrorWithText(String text) {
 
 		for (IValidationMessage validationMessage : validationMessages) {
@@ -99,8 +101,7 @@ public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, Val
 	public String getValue() {
 		return valueString;
 	}
-	
-	
+
 	@Override
 	public void onUpdate() {
 		this.value = this.baseControl.getValue();
@@ -108,6 +109,7 @@ public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, Val
 		this.validationMessages.clear();
 		this.validationMessages.addAll(Lists.newArrayList(baseControl.getValidationMessages()));
 		this.valueString = baseControl.format();
+		this.readonly = baseControl.isReadonly();
 	}
 
 	@Override
@@ -118,5 +120,9 @@ public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, Val
 	@Override
 	public void onFocusLeave() {
 		endEdit();
+	}
+
+	public void assertReadOnly() {
+		Assert.assertTrue(readonly);
 	}
 }

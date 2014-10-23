@@ -24,6 +24,8 @@ public interface IBaseControl<ValueType, ModelType extends IBaseModel> extends I
 
 	boolean isMandatory();
 
+	boolean isReadonly();
+
 	IValidationMessages getValidationMessages();
 
 	void addUpdateListener(IControlUpdateListener controlUpdateListener);
@@ -31,7 +33,7 @@ public interface IBaseControl<ValueType, ModelType extends IBaseModel> extends I
 	Optional<IBooleanExpression> getExpression(PathExpression pathExpression);
 
 	void beginEdit();
-	
+
 	void endEdit();
 
 }

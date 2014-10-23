@@ -427,6 +427,11 @@ h6,.h6{
     position: absolute;
 }
 
+.form-control-disabled {
+	cursor: not-allowed;
+	background-color: #EEE;
+	opacity: 1;
+}
 .navigationOverview {
 }
 

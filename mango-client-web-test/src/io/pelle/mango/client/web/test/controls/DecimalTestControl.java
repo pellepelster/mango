@@ -14,7 +14,6 @@ public class DecimalTestControl extends BaseTestControl<IBigDecimalControl, BigD
 	@Override
 	public void onUpdate() {
 		super.onUpdate();
-
 	}
 
 }

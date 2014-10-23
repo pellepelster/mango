@@ -55,37 +55,33 @@ class DictionaryControls {
 
 	@Inject
 	extension AttributeUtils
-	
-	
+
 	def dictionaryControlConstant(DictionaryControl dictionaryControl) '''
 		public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryControlType»("«ModelUtil.
 			getControlName(dictionaryControl)»", this);
 	'''
 
 	def dictionaryControlCommonSetters(DictionaryControl dictionaryControl) '''
+		
 		«IF dictionaryControl.baseControl != null»
-			
-				«dictionaryControl.dictionaryConstantName».setMandatory(«dictionaryControl.baseControl.mandatory.toString().toLowerCase()»);
-				
-				«IF dictionaryControl.baseControl.entityattribute != null»
-					«dictionaryControl.dictionaryConstantName».setAttributePath("«dictionaryControl.baseControl.entityattribute.name»");
-					
-					«IF dictionaryControl.baseControl.entityattribute.naturalKeyAttribute»
-						// natural key attribute
-						«dictionaryControl.dictionaryConstantName».setMandatory(true);
-					«ENDIF»
-				«ENDIF»
-			
-				«IF dictionaryControl.baseControl.labels != null»
-					«dictionaryControlLabelSetters(dictionaryControl, dictionaryControl.baseControl.labels)»
-				«ENDIF»
-				
-				«IF dictionaryControl.baseControl.entityattribute != null»
-					«dictionaryControl.datatypeLabelSetter(dictionaryControl.baseControl.entityattribute)»
-				«ENDIF»
-				
+		
+		«dictionaryControl.dictionaryConstantName».setReadonly(«dictionaryControl.baseControl.readonly»);
+		«dictionaryControl.dictionaryConstantName».setMandatory(«dictionaryControl.baseControl.mandatory»);
+		«IF dictionaryControl.baseControl.entityattribute != null»
+		«dictionaryControl.datatypeLabelSetter(dictionaryControl.baseControl.entityattribute)»
 		«ENDIF»
 		
+		«IF dictionaryControl.baseControl.entityattribute != null»
+		«dictionaryControl.dictionaryConstantName».setAttributePath("«dictionaryControl.baseControl.entityattribute.name»");
+		«IF dictionaryControl.baseControl.entityattribute.naturalKeyAttribute»
+		«dictionaryControl.dictionaryConstantName».setMandatory(true);
+		«ENDIF»
+		«ENDIF»
+					
+		«IF dictionaryControl.baseControl.labels != null»
+		«dictionaryControlLabelSetters(dictionaryControl, dictionaryControl.baseControl.labels)»
+		«ENDIF»
+		«ENDIF»
 	'''
 
 	def dictionaryControlLabelSetters(DictionaryControl dictionaryControl, Labels labels) '''
@@ -122,14 +118,14 @@ class DictionaryControls {
 		
 			public «dictionaryControl.dictionaryClassName»(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {
 			
-			super("«ModelUtil.getControlName(dictionaryControl)»", parent);
+				super("«ModelUtil.getControlName(dictionaryControl)»", parent);
 		
 				«FOR dictionaryLabelControl : dictionaryControl.labelcontrols»
-			«dictionaryControl.dictionaryControlConstantSetters»
+					«dictionaryControl.dictionaryControlConstantSetters»
 				«ENDFOR»
 		
 				«FOR dictionaryLabelControl : dictionaryControl.labelcontrols»
-				this.getLabelControls().add(«dictionaryLabelControl.dictionaryConstantName»);
+					this.getLabelControls().add(«dictionaryLabelControl.dictionaryConstantName»);
 				«ENDFOR»
 			}
 		}
@@ -222,11 +218,10 @@ class DictionaryControls {
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryBigDecimalControl dictionaryControl) '''
+		«dictionaryControl.dictionaryControlCommonSetters»
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»
-		
-		«dictionaryControl.dictionaryControlCommonSetters»
 	'''
 
 	//-------------------------------------------------------------------------

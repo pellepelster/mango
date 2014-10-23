@@ -120,14 +120,17 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 	}
 
 	protected void setValueInternal(ValueType value) {
-		getRootElement().clearValidationMessages(this);
 
-		validate(value);
+		if (!isReadonly()) {
+			getRootElement().clearValidationMessages(this);
 
-		if (getRootElement().getValidationMessages(this).hasErrors()) {
-			getVOWrapper().set(getAttributePathInternal(), null);
-		} else {
-			getVOWrapper().set(getAttributePathInternal(), value);
+			validate(value);
+
+			if (getRootElement().getValidationMessages(this).hasErrors()) {
+				getVOWrapper().set(getAttributePathInternal(), null);
+			} else {
+				getVOWrapper().set(getAttributePathInternal(), value);
+			}
 		}
 
 	}
@@ -217,6 +220,11 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 
 	@Override
 	public void endEdit() {
+	}
+
+	@Override
+	public boolean isReadonly() {
+		return getModel().isReadonly();
 	}
 
 	protected abstract ParseResult parseValueInternal(String valueString);
