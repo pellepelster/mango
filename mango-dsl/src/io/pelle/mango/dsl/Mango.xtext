@@ -404,7 +404,7 @@ DictionaryReferenceControl:
 	{DictionaryReferenceControl}
 	"referencecontrol" (name=ID)? ("ref" ref=[ DictionaryReferenceControl | QualifiedName ])? ("{"
 		baseControl=BaseDictionaryControl
-		"dictionary" dictionary=[ Dictionary | QualifiedName ]
+		("dictionary" dictionary=[ Dictionary | QualifiedName ])?
 		("controlType" controlType=ControlType)?
 		("labelcontrols {" (labelcontrols+=DictionaryControl)* "}")? 
 	"}")?;

@@ -83,8 +83,8 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		defaultBlockFormat(c, m.dictionaryDateControlRule, m.dictionaryDateControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryDateControlAccess.rightCurlyBracketKeyword_4_2)
 
 		// reference control
-		defaultBlockFormat(c, m.dictionaryReferenceControlRule, m.dictionaryReferenceControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryReferenceControlAccess.rightCurlyBracketKeyword_4_6)
-		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.dictionaryReferenceControlAccess.dictionaryKeyword_4_2);
+		defaultBlockFormat(c, m.dictionaryReferenceControlRule, m.dictionaryReferenceControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryReferenceControlAccess.rightCurlyBracketKeyword_4_5)
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.dictionaryReferenceControlAccess.dictionaryKeyword_4_2_0);
 
 		defaultBlockFormat(c, m.dictionaryBooleanControlRule, m.dictionaryBooleanControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryBooleanControlAccess.rightCurlyBracketKeyword_4_2)
 
