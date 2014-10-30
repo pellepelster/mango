@@ -53,8 +53,8 @@ class SpringGenerator {
 						<prop key="hibernate.query.substitutions">true 1, false 0</prop>
 						<prop key="hibernate.connection.autocommit">true</prop>
 						<prop key="hibernate.FlushMode">AUTO</prop>
-						<prop key="hibernate.show_sql">true</prop>
-						<prop key="hibernate.format_sql">true</prop>
+						<prop key="hibernate.show_sql">${hibernate.sql.show:false}</prop>
+						<prop key="hibernate.format_sql">${hibernate.sql.format:false}</prop>
 					</props>
 				</property>
 			</bean>
