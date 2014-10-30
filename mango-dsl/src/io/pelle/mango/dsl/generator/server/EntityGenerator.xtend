@@ -47,13 +47,13 @@ class EntityGenerator extends BaseEntityGenerator {
 		@SuppressWarnings("all")
 		public class «entityName(entity)» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
 		
-				public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
-		
-				public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
-		
-				«entity.attributeDescriptorsFromExtends»
-		
-				«entity.compileGetAttributeDescriptors»
+			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
+	
+			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
+	
+			«entity.attributeDescriptorsFromExtends»
+	
+			«entity.compileGetAttributeDescriptors»
 		
 			«IF entity.extends == null»
 			@Id
@@ -71,6 +71,11 @@ class EntityGenerator extends BaseEntityGenerator {
 			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
 				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»
 			«ENDFOR»
+			
+			@Override
+			public String toString() {
+				return com.google.common.base.Objects.toStringHelper(this).«FOR naturalKeyAttribute : entity.naturalKeyAttributes SEPARATOR "."»addValue(«naturalKeyAttribute.attributeName»)«ENDFOR»«IF !entity.naturalKeyAttributes.empty».«ENDIF»toString();
+			}
 		}
 	'''
 
