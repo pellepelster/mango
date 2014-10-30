@@ -51,7 +51,7 @@ class GWTSpringServices {
 	        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
 			«FOR service: model.eAllContents.toIterable.filter(Service)»
-			<bean class="«service.restControllerFullQualifiedName»" />
+			<bean id="«service.restControllerBeanName»" class="«service.restControllerFullQualifiedName»" />
 			«ENDFOR»
 
 	</beans>

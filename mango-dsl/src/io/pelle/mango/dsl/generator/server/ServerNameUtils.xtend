@@ -76,6 +76,10 @@ class ServerNameUtils extends NameUtils {
 	}
 
 	// rest controller
+	def restControllerBeanName(Service service) {
+		return service.restControllerName.toFirstLower
+	}
+	
 	def restControllerName(Service service) {
 		return service.name.toFirstUpper + "RestController"
 	}

@@ -75,16 +75,20 @@ class RestServices extends BaseServices {
 			}
 		
 			«FOR method : service.remoteMethods»
+				public «method.methodReturn» «method.methodName»(«method.params.methodParameters»«IF !method.params.isEmpty», «ENDIF»javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
+					«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ", "»«parameter.name»«ENDFOR»);
+				}
+
 				@RequestMapping(value = "«method.restMapping»", produces="application/json", method = RequestMethod.POST, consumes = "application/json")
 				@ResponseBody
 				@Transactional
 				«IF method.params.size == 1 && method.params.hasOnlyType(typeof(ValueObject))»
-					public «method.methodReturn» «method.methodName»PostRequestBody(@RequestBody «method.params.get(0).parameterType.qualifiedName» requestBody) {
-						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(requestBody);
+					public «method.methodReturn» «method.methodName»PostRequestBody(@RequestBody «method.params.get(0).parameterType.qualifiedName» requestBody, javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
+						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF»«method.methodName»(requestBody, httpServletResponse, httpServletRequest);
 					}
 				«ELSE»
-					public «method.methodReturn» «method.methodName»PostRequestBody(«IF !method.params.isEmpty»@RequestBody «restControllerRequestVOName(service, method)» requestBody«ENDIF») {
-						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ","»requestBody.«parameter.name.getterName»()«ENDFOR»);
+					public «method.methodReturn» «method.methodName»PostRequestBody(«IF !method.params.isEmpty»@RequestBody «restControllerRequestVOName(service, method)» requestBody, «ENDIF»javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
+						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF» «method.methodName»(«FOR parameter : method.params SEPARATOR ","»requestBody.«parameter.name.getterName»()«ENDFOR»«IF !method.params.isEmpty», «ENDIF»httpServletResponse, httpServletRequest);
 					}
 				«ENDIF»
 			«ENDFOR»
