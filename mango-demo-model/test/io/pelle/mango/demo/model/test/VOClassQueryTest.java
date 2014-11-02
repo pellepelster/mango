@@ -15,7 +15,7 @@ public class VOClassQueryTest {
 	public void testAttributesDescriptorQuery() {
 
 		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors();
-		assertEquals(15, attributesDescriptorQuery.getCount());
+		assertEquals(16, attributesDescriptorQuery.getCount());
 	}
 
 	@Test

@@ -390,25 +390,31 @@ class TypeUtils {
 	}
 
 	def dispatch compileEntityAttributeDescriptor(EntityEntityAttribute entityAttribute, Entity entity) '''
-	«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
-	«entityAttribute.compileEntityAttributeDescriptorCommon(null)»
-	«ELSE»
-public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»> «entityAttribute.name.attributeConstantName» = new «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»>(«entityAttribute.parentEntity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
-	«ENDIF»
-'''	
+		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
+		«entityAttribute.compileEntityAttributeDescriptorCommon(null)»
+		«ELSE»
+		public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»> «entityAttribute.name.attributeConstantName» = new «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»>(«entityAttribute.parentEntity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
+		«ENDIF»
+	'''	
 
 	//-----------------
 	// enumeration
 	//-----------------
 	def dispatch String getType(EnumerationEntityAttribute entityAttribute)
 	{
-		getType(entityAttribute.type)
+		getTypeWithCardinality(entityAttribute.cardinality, getType(entityAttribute.type))
 	}
 
 	def dispatch String getRawType(EnumerationEntityAttribute entityAttribute)
 	{
 		getType(entityAttribute.type)
 	}
+	
+	def dispatch String getTypeClass(EnumerationEntityAttribute entityAttribute)
+	{
+		getTypeClassWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
+	}
+
 
 	//-------------------------------------------------------------------------
 	// initializer 
@@ -442,7 +448,17 @@ public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.ty
 				null
 		}
 	}
-	
+
+	def dispatch String getInitializer(EnumerationEntityAttribute entityAttribute)
+	{
+		switch entityAttribute.cardinality {
+			case Cardinality.ONETOMANY: 
+				"new " + ArrayList.name +  "<" + entityAttribute.type.type + ">()"
+			default: 
+				null
+		}
+	}
+		
 	def dispatch String getInitializer(ValueObjectEntityAttribute entityAttribute)
 	{
 		switch entityAttribute.cardinality {

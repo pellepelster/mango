@@ -324,6 +324,7 @@ project MangoDemo {
 				string StringDatatype1 0..n stringDatatype1List
 				entity Entity2Datatype entity2Datatype
 				enumeration Enumeration1Datatype enumeration1Datatype
+				enumeration Enumeration1Datatype 0..n enumeration1Datatypes
 				integer IntegerDatatype1 integerDatatype1
 				decimal DecimalDatatype1 decimalDatatype1
 				date DateDatatype1 dateDatype1
