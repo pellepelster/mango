@@ -14,6 +14,7 @@ import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
+import io.pelle.mango.dsl.mango.Cardinality
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -164,14 +165,30 @@ class VOGenerator extends BaseEntityGenerator {
 		set«entityAttribute.name.toFirstUpper()»((«entityAttribute.type») value);'''
 
 	def dispatch genericVOSetterValue(EnumerationEntityAttribute enumerationEntityAttribute) '''
+		«IF enumerationEntityAttribute.cardinality == Cardinality.ONETOMANY»
+		if (value instanceof java.util.List) {
+			
+			java.util.List enumValues = (java.util.List) value;
+			
+			for (Object enumValue : enumValues) {
+				
+				if (enumValue instanceof java.lang.String) {
+					get«enumerationEntityAttribute.name.toFirstUpper()»().add(«enumerationEntityAttribute.enumerationFullQualifiedName».valueOf(enumValue.toString()));
+				}
+				else {
+					get«enumerationEntityAttribute.name.toFirstUpper()»().add((«enumerationEntityAttribute.type.type») enumValue);
+				}
+			}
+		}
+		«ELSE»
 		if (value instanceof «String.name»)
 		{
 			set«enumerationEntityAttribute.name.toFirstUpper()»(«enumerationEntityAttribute.enumerationFullQualifiedName».valueOf((«String.name») value));
-		}
-		else
-		{
+		} else {
 			set«enumerationEntityAttribute.name.toFirstUpper()»((«enumerationEntityAttribute.type.type») value);
-		}'''
+		}
+		«ENDIF»
+		'''
 
 	def genericVOSetter(Entity entity) '''
 		public void set(java.lang.String name, java.lang.Object value) {

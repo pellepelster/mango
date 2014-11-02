@@ -76,6 +76,22 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testEntity1Enumeration1List() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		entity1VO.getEnumeration1Datatypes().add(ENUMERATION1.ENUMERATIONVALUE1);
+
+		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
+
+		Entity1VO result1 = baseEntityService.read(result.getVO().getId(), Entity1VO.class.getName());
+		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, result.getVO().getEnumeration1Datatypes().get(0));
+		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, result1.getEnumeration1Datatypes().get(0));
+	}
+
+	@Test
 	public void testFilterStringIgnoreCase() {
 
 		baseVODAO.deleteAll(Entity1VO.class);

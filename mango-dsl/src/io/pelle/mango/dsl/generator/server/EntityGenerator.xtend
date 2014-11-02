@@ -92,6 +92,9 @@ class EntityGenerator extends BaseEntityGenerator {
 	def dispatch compileEntityAttributeJpaAnnotations(EnumerationEntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»")
 		@javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
+		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
+		@javax.persistence.ElementCollection(fetch=javax.persistence.FetchType.EAGER)
+		«ENDIF»
 	'''
 
 	def dispatch compileEntityAttributeJpaAnnotations(DateEntityAttribute entityAttribute) '''

@@ -120,7 +120,9 @@ public abstract class BaseCopyBean {
 					List<Object> targetList = (List<Object>) fieldDescriptor.getTargetValue();
 
 					for (Object sourceListObject : sourceList) {
-						if (visited.containsKey(sourceListObject)) {
+						if (sourceListObject != null && sourceListObject.getClass().isEnum()) {
+							targetList.add(sourceListObject);
+						} else if (visited.containsKey(sourceListObject)) {
 							targetList.add(visited.get(sourceListObject));
 						} else if (sourceListObject == null) {
 							// targetList.add(null);
