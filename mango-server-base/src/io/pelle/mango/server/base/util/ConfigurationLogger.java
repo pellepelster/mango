@@ -74,6 +74,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 			addProperty(table, ConfigurationParameters.MAIL_SENDER_PORT);
 			addProperty(table, ConfigurationParameters.MAIL_SENDER_USERNAME);
 			addProperty(table, ConfigurationParameters.MAIL_SENDER_PASSWORD);
+			addProperty(table, ConfigurationParameters.MAIL_SENDER_FROM);
 			addProperty(table, ConfigurationParameters.HIBERNATE_SQL_SHOW);
 			addProperty(table, ConfigurationParameters.HIBERNATE_SQL_FORMAT);
 

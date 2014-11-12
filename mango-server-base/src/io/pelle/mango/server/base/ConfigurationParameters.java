@@ -12,6 +12,8 @@ public interface ConfigurationParameters {
 
 	public static String MAIL_SENDER_PASSWORD = "mail.sender.password";
 
+	public static String MAIL_SENDER_FROM = "mail.sender.from";
+
 	public static String HIBERNATE_SQL_SHOW = "hibernate.sql.show";
 
 	public static String HIBERNATE_SQL_FORMAT = "hibernate.sql.format";
