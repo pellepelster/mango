@@ -9,12 +9,15 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448819"
-   height="1052.3622047"
+   width="744.09448"
+   height="1052.3622"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="mango_logo.svg">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="mango_logo.svg"
+   inkscape:export-filename="/home/pelle/git/mango/documents/mango_logo.png"
+   inkscape:export-xdpi="614.07001"
+   inkscape:export-ydpi="614.07001">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -25,8 +28,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="621.56023"
-     inkscape:cy="562.65698"
+     inkscape:cx="423.16207"
+     inkscape:cy="605.69406"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -34,7 +37,11 @@
      inkscape:window-height="880"
      inkscape:window-x="-2"
      inkscape:window-y="-3"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -50,32 +57,37 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
-    <path
-       style="fill:#ffd42a;stroke:#ffd42a;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 186.07141,299.14791 c 0.77671,-12.15458 33.86913,-19.61446 38.2143,-46.07144 5.5984,-34.08766 46.35058,-61.47204 80.71429,-65 17.68322,-1.81545 34.28765,4.26546 44.28571,16.42857 13.24821,16.11707 14.82717,41.48859 10,61.78572 -4.45724,18.74166 -18.00843,32.7253 -33.92856,46.78571 -18.51166,16.34919 -46.25689,26.94017 -70.71429,26.07143 -26.17965,-0.92991 -70.2689,-13.43657 -68.57145,-39.99999 z"
-       id="path3066"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="sssaasss"
-       inkscape:export-filename="/home/pelle/git/mango/documents/path3074.png"
-       inkscape:export-xdpi="6.5729513"
-       inkscape:export-ydpi="6.5729513" />
-    <path
-       style="fill:#88aa00;stroke:#88aa00;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 403.92858,285.93361 c -18.94543,-14.64632 -34.24062,-43.71317 -38.2143,-71.78571 -1.4845,-10.48743 11.02065,-23.90923 23.92858,-6.07143 17.20762,23.77964 11.40404,57.06624 14.28572,77.85714 z"
-       id="path3072"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="cssc"
-       inkscape:export-filename="/home/pelle/git/mango/documents/path3074.png"
-       inkscape:export-xdpi="6.5729513"
-       inkscape:export-ydpi="6.5729513" />
-    <path
-       style="fill:#501616;stroke:#501616;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 346.25,208.25504 3.39286,2.85714 29.64286,-26.60714 -6.07143,-6.42857 z"
-       id="path3074"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccc"
-       inkscape:export-xdpi="6.5729513"
-       inkscape:export-ydpi="6.5729513" />
+     id="layer1"
+     transform="translate(-28.398156,814.10582)">
+    <g
+       id="g3039"
+       transform="matrix(2.5710683,0,0,2.5710683,-559.97105,-1151.2378)">
+      <path
+         inkscape:export-ydpi="6.5729513"
+         inkscape:export-xdpi="6.5729513"
+         inkscape:export-filename="/home/pelle/git/mango/documents/path3074.png"
+         sodipodi:nodetypes="sssaasss"
+         inkscape:connector-curvature="0"
+         id="path3066"
+         d="m 264.64284,376.29077 c 0.77671,-12.15458 33.86913,-19.61446 38.2143,-46.07144 5.5984,-34.08766 46.35058,-61.47204 80.71429,-65 17.68322,-1.81545 34.28765,4.26546 44.28571,16.42857 13.24821,16.11707 14.82717,41.48859 10,61.78572 -4.45724,18.74166 -18.00843,32.7253 -33.92856,46.78571 -18.51166,16.34919 -46.25689,26.94017 -70.71429,26.07143 -26.17965,-0.92991 -70.2689,-13.43657 -68.57145,-39.99999 z"
+         style="fill:#ffd42a;stroke:#ffd42a;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="6.5729513"
+         inkscape:export-xdpi="6.5729513"
+         inkscape:export-filename="/home/pelle/git/mango/documents/path3074.png"
+         sodipodi:nodetypes="cssc"
+         inkscape:connector-curvature="0"
+         id="path3072"
+         d="m 482.50001,363.07647 c -18.94543,-14.64632 -34.24062,-43.71317 -38.2143,-71.78571 -1.4845,-10.48743 11.02065,-23.90923 23.92858,-6.07143 17.20762,23.77964 11.40404,57.06624 14.28572,77.85714 z"
+         style="fill:#88aa00;stroke:#88aa00;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="6.5729513"
+         inkscape:export-xdpi="6.5729513"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path3074"
+         d="m 424.82143,285.3979 3.39286,2.85714 29.64286,-26.60714 -6.07143,-6.42857 z"
+         style="fill:#501616;stroke:#501616;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
   </g>
 </svg>

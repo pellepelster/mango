@@ -20,4 +20,12 @@ dependencies {
 	
 	compile 'org.codehaus.woodstox:woodstox-core-lgpl:4.4.0'
 
+	// mail
+	compile group: "javax.mail", name: "mail", version: "1.4.7"
+	compile group: "jaf", name: "activation", version: "1.0.2"
+	compile group: "org.apache.velocity", name: "velocity", version: "1.7"
+	compile group: "org.springframework.integration", name: "spring-integration-mail", version: "4.0.3.RELEASE"
+	testCompile group: "com.icegreen", name: "greenmail", version: "1.4.0"
+
+
 }
