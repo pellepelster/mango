@@ -22,7 +22,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 
 	private final AbstractBeanFactory beanFactory;
 
-	private final Map<String, String> cache = new ConcurrentHashMap<>();
+	private final Map<String, String> cache = new ConcurrentHashMap<String, String>();
 
 	private boolean logged = false;
 
