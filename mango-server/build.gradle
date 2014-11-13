@@ -27,5 +27,4 @@ dependencies {
 	compile group: "org.springframework.integration", name: "spring-integration-mail", version: "4.0.3.RELEASE"
 	testCompile group: "com.icegreen", name: "greenmail", version: "1.4.0"
 
-
 }

@@ -19,6 +19,11 @@ public class MailServiceTest {
 	public void testSendMail() {
 
 		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", "Steve");
+		model.put("link", "http://www.example.org");
+		model.put("username", "steve23");
+
+		mailService.sendMail("steve@yahoo.com", "classpath://mailtemplate.vm", model);
 
 	}
 
