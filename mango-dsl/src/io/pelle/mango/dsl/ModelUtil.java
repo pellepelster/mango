@@ -1,5 +1,6 @@
 package io.pelle.mango.dsl;
 
+import io.pelle.mango.dsl.mango.Datatype;
 import io.pelle.mango.dsl.mango.DictionaryControl;
 import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.EntityAttribute;
@@ -64,7 +65,7 @@ public class ModelUtil {
 		return null;
 	}
 
-	public static Object getControlRef(Object dictionaryControl) {
+	public static Object getRefObject(Object dictionaryControl) {
 		try {
 			return PropertyUtils.getProperty(dictionaryControl, "ref");
 		} catch (Exception e) {
@@ -116,18 +117,36 @@ public class ModelUtil {
 	}
 
 	@SuppressWarnings("unchecked")
+	public static <DatatypeType extends Datatype> ArrayList<DatatypeType> getDatatypeHierarchy(DatatypeType datatypeType) {
+
+		ArrayList<DatatypeType> datatypeHierarchy = new ArrayList<DatatypeType>();
+
+		datatypeHierarchy.add(datatypeType);
+
+		DatatypeType refDatatype = (DatatypeType) getRefObject(datatypeType);
+
+		while (refDatatype != null) {
+			datatypeHierarchy.add(refDatatype);
+
+			refDatatype = (DatatypeType) getRefObject(refDatatype);
+		}
+
+		return datatypeHierarchy;
+	}
+
+	@SuppressWarnings("unchecked")
 	public static <ControlyType extends DictionaryControl> ArrayList<ControlyType> getControlHierarchy(ControlyType dictionaryControl) {
 
 		ArrayList<ControlyType> controlHierarchy = new ArrayList<ControlyType>();
 
 		controlHierarchy.add(dictionaryControl);
 
-		ControlyType refControl = (ControlyType) getControlRef(dictionaryControl);
+		ControlyType refControl = (ControlyType) getRefObject(dictionaryControl);
 
 		while (refControl != null) {
 			controlHierarchy.add(refControl);
 
-			refControl = (ControlyType) getControlRef(refControl);
+			refControl = (ControlyType) getRefObject(refControl);
 		}
 
 		return controlHierarchy;
@@ -163,7 +182,7 @@ public class ModelUtil {
 
 		return null;
 	}
-	
+
 	public static EObject getRoot(EObject eObject) {
 
 		EObject current = eObject;
@@ -178,7 +197,7 @@ public class ModelUtil {
 	public static Model getRootModel(EObject eObject) {
 
 		EObject root = getRoot(eObject);
-		
+
 		if (root instanceof ModelRoot) {
 			return ((ModelRoot) root).getModelRoot();
 		}
