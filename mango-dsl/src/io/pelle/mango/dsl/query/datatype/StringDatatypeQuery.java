@@ -28,7 +28,7 @@ public class StringDatatypeQuery extends BaseDatatypeQuery<StringDataType> {
 	}
 
 	public boolean hasMaxLength() {
-		return getStructuralFeature(MangoPackage.Literals.STRING_DATA_TYPE__MAX_LENGTH).isPresent();
+		return getStructuralFeature(MangoPackage.Literals.STRING_DATA_TYPE__MAX_LENGTH).isPresent() && getMaxLength() > 0;
 	}
 
 }

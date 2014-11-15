@@ -18,6 +18,7 @@ import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.server.base.BaseEntity
+import io.pelle.mango.dsl.query.datatype.StringDatatypeQuery
 
 class EntityGenerator extends BaseEntityGenerator {
 
@@ -106,7 +107,7 @@ class EntityGenerator extends BaseEntityGenerator {
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
 			@javax.persistence.ElementCollection(fetch=javax.persistence.FetchType.EAGER)
 		«ELSE»
-			@Column(name = "«entityAttribute.entityTableColumnName»")
+			@Column(name = "«entityAttribute.entityTableColumnName»"«IF StringDatatypeQuery.createQuery(entityAttribute.type).hasMaxLength», length = «StringDatatypeQuery.createQuery(entityAttribute.type).maxLength»«ENDIF»)
 		«ENDIF»
 	'''
 
