@@ -19,6 +19,8 @@ import io.pelle.mango.dsl.mango.DateDataType
 import io.pelle.mango.dsl.mango.DateEntityAttribute
 import io.pelle.mango.dsl.mango.DecimalDataType
 import io.pelle.mango.dsl.mango.DecimalEntityAttribute
+import io.pelle.mango.dsl.mango.DoubleDataType
+import io.pelle.mango.dsl.mango.DoubleEntityAttribute
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityDataType
@@ -26,6 +28,8 @@ import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.EnumerationDataType
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
+import io.pelle.mango.dsl.mango.FloatDataType
+import io.pelle.mango.dsl.mango.FloatEntityAttribute
 import io.pelle.mango.dsl.mango.IntegerDataType
 import io.pelle.mango.dsl.mango.IntegerEntityAttribute
 import io.pelle.mango.dsl.mango.LongDataType
@@ -249,6 +253,32 @@ class TypeUtils {
 	def dispatch String getType(DecimalEntityAttribute entityAttribute)
 	{
 		return BigDecimal.name
+	}
+
+	//-----------------
+	// float
+	//-----------------
+	def dispatch String getType(FloatDataType dataType)
+	{
+		return typeof(Float).name
+	}
+	
+	def dispatch String getType(FloatEntityAttribute entityAttribute)
+	{
+		return Float.name
+	}
+
+	//-----------------
+	// double
+	//-----------------
+	def dispatch String getType(DoubleDataType dataType)
+	{
+		return typeof(Double).name
+	}
+	
+	def dispatch String getType(DoubleEntityAttribute entityAttribute)
+	{
+		return Double.name
 	}
 	
 

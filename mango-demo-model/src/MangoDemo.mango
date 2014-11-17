@@ -306,14 +306,12 @@ project MangoDemo {
 			enumerationdatatype Enumeration1Datatype {
 				enumeration Enumeration1
 			}
-			datedatatype DateDatatype1 {
-			}
-			datedatatype DateDatatype2 {
-			}
-			decimaldatatype DecimalDatatype1 {
-			}
-			integerdatatype IntegerDatatype1 {
-			}
+			datedatatype DateDatatype1 { }
+			datedatatype DateDatatype2 { }
+			decimaldatatype DecimalDatatype1 { }
+			integerdatatype IntegerDatatype1 { }
+			floatdatatype FloatDatatype1 { }
+			doubledatatype DoubleDatatype1 { }
 
 			entity Entity1 {
 				naturalkey { stringDatatype1 }
@@ -327,6 +325,8 @@ project MangoDemo {
 				enumeration Enumeration1Datatype 0..n enumeration1Datatypes
 				integer IntegerDatatype1 integerDatatype1
 				decimal DecimalDatatype1 decimalDatatype1
+				double DoubleDatatype1 doubleDatatype1
+				float FloatDatatype1 floatDatatype1
 				date DateDatatype1 dateDatype1
 				date DateDatatype2 dateDatype2
 			}

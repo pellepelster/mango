@@ -6,10 +6,12 @@ import io.pelle.mango.dsl.mango.BooleanEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.DateEntityAttribute
 import io.pelle.mango.dsl.mango.DecimalEntityAttribute
+import io.pelle.mango.dsl.mango.DoubleEntityAttribute
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
+import io.pelle.mango.dsl.mango.FloatEntityAttribute
 import io.pelle.mango.dsl.mango.IntegerEntityAttribute
 import io.pelle.mango.dsl.mango.LongEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
@@ -88,15 +90,17 @@ class XmlSchema {
 	}
 
 	// simple types
-	def dispatch xsdType(StringEntityAttribute stringEntityAttribute) '''xsd:string'''
-	def dispatch xsdType(IntegerEntityAttribute integerEntityAttribute) '''xsd:integer'''
-	def dispatch xsdType(BooleanEntityAttribute booleanEntityAttribute) '''xsd:boolean'''
-	def dispatch xsdType(LongEntityAttribute longEntityAttribute) '''xsd:long'''
-	def dispatch xsdType(BinaryEntityAttribute binaryEntityAttribute) '''xsd:hexBinary'''
-	def dispatch xsdType(DateEntityAttribute dateEntityAttribute) '''xsd:date'''
-	def dispatch xsdType(DecimalEntityAttribute bigDecimalDatatype)'''xsd:decimal'''
-	def dispatch xsdType(EntityEntityAttribute entityEntityAttribute) ''''''
-	def dispatch xsdType(EnumerationEntityAttribute enumerationEntityAttribute) ''''''
+	def dispatch xsdType(StringEntityAttribute entityAttribute) '''xsd:string'''
+	def dispatch xsdType(IntegerEntityAttribute entityAttribute) '''xsd:integer'''
+	def dispatch xsdType(BooleanEntityAttribute entityAttribute) '''xsd:boolean'''
+	def dispatch xsdType(LongEntityAttribute entityAttribute) '''xsd:long'''
+	def dispatch xsdType(BinaryEntityAttribute entityAttribute) '''xsd:hexBinary'''
+	def dispatch xsdType(DateEntityAttribute entityAttribute) '''xsd:date'''
+	def dispatch xsdType(DecimalEntityAttribute entityAttribute)'''xsd:decimal'''
+	def dispatch xsdType(FloatEntityAttribute entityAttribute)'''xsd:float'''
+	def dispatch xsdType(DoubleEntityAttribute entityAttribute)'''xsd:double'''
+	def dispatch xsdType(EntityEntityAttribute entityAttribute) ''''''
+	def dispatch xsdType(EnumerationEntityAttribute entityAttribute) ''''''
 
 	//- xsd attributes ------------------------------------------------------------
 	def dispatch xsdAttribute(Entity entity, EntityAttribute attribute) '''
