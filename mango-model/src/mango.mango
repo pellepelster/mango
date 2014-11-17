@@ -7,11 +7,24 @@ import io.pelle.mango.client.base.db.vos.Result
 import io.pelle.mango.client.base.vo.query.SelectQuery
 import io.pelle.mango.client.DictionaryHierarchicalNodeVO
 import io.pelle.mango.client.Systeminformation
-import io.pelle.mango.client.LogEntry
 
 project Mango {
 
 	package io.pelle.^mango {
+
+		package log {
+			
+			datedatatype LogEntryTimestamp { }
+			stringdatatype LogEntryMessage { }
+			stringdatatype LogEntryReference { }
+			
+			entity LogEntry {
+				date LogEntryTimestamp timestamp
+				string LogEntryMessage message
+				string LogEntryReference ^reference
+			}
+			
+		}
 
 		valueobject SearchResultItem {
 		}
@@ -19,10 +32,6 @@ project Mango {
 		valueobject Systeminformation {
 			string hostName
 			string ipAddress
-		}
-		
-		valueobject LogEntry {
-			string logText
 		}
 		
 		entity DictionaryLabelSearchIndex {
@@ -76,8 +85,6 @@ project Mango {
 
 			method Systeminformation getSystemInformation ()
 	
-			method LogEntry getLog ()
-
 		}
 			
 		

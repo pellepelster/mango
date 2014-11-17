@@ -26,6 +26,7 @@ class MangoModelProject extends MangoBaseProject {
 			xtextTooling group: 'io.pelle.mango', name: 'mango-dsl', version: '+'
 			xtextTooling group: 'io.pelle.mango', name: 'mango-server', version: '+'
 			compile group: 'io.pelle.mango', name: 'mango-server', version: '+'
+			compile group: 'io.pelle.mango', name: 'mango-model', version: '+'
 			testCompile group: 'io.pelle.mango', name: 'mango-db', version: '+', configuration: 'testArtifacts'
 		}
 				
