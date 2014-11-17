@@ -22,7 +22,10 @@ import io.pelle.mango.demo.server.test.Entity5;
 import io.pelle.mango.demo.server.test.Entity6;
 import io.pelle.mango.demo.server.test.Entity7;
 
+import java.lang.reflect.Field;
 import java.util.List;
+
+import javax.persistence.Column;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -67,6 +70,13 @@ public class EntityModelGeneratorTest {
 		assertEquals(String.class, Entity1.STRINGDATATYPE1.getAttributeType());
 		assertEquals(String.class, Entity1.STRINGDATATYPE1.getListAttributeType());
 		assertEquals("stringDatatype1", Entity1.STRINGDATATYPE1.getAttributeName());
+	}
+
+	@Test
+	public void testEntity1StringDatatype1JPAColumLength() throws NoSuchFieldException, SecurityException {
+		Field field = Entity1.class.getDeclaredField("stringDatatype1");
+		Column column = field.getAnnotation(Column.class);
+		assertEquals(42, column.length());
 	}
 
 	@Test
