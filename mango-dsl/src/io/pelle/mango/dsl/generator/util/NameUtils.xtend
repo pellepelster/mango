@@ -169,7 +169,7 @@ class NameUtils {
 	}
 	
 	def serviceSpringName(Service service) {
-		return service.serviceName
+		return service.serviceName.toFirstLower
 	}
 
 	def methodName(ServiceMethod serviceMethod) {
