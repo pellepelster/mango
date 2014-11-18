@@ -27,9 +27,4 @@ dependencies {
 	compile group: "org.springframework.integration", name: "spring-integration-mail", version: "4.0.3.RELEASE"
 	testCompile group: "com.icegreen", name: "greenmail", version: "1.4.0"
 
-	// jms
-    compile group: "org.springframework", name: "spring-jms", version: versions.spring
-    compile group: "org.apache.activemq", name: "activemq-broker", version: "5.10.0"
-    compile group: "org.apache.activemq", name: "activemq-spring", version: "5.10.0"
-
 }

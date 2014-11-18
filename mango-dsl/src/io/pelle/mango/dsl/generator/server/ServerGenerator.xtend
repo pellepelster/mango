@@ -4,6 +4,7 @@
 package io.pelle.mango.dsl.generator.server
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
+import io.pelle.mango.dsl.generator.server.service.GWTSpringServices
 import io.pelle.mango.dsl.generator.server.service.RestServices
 import io.pelle.mango.dsl.generator.server.service.SpringServices
 import io.pelle.mango.dsl.generator.xml.XmlNameUtils
@@ -12,12 +13,15 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
 import javax.inject.Inject
+import org.apache.commons.logging.Log
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import io.pelle.mango.dsl.generator.server.service.GWTSpringServices
+import static org.apache.commons.logging.LogFactory.*
 
 class ServerGenerator implements IGenerator {
+
+	val Log LOG = getLog(getClass().getName())
 
 	@Inject 
 	extension EntityGenerator

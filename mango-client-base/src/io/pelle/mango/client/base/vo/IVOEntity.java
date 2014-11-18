@@ -1,7 +1,8 @@
 package io.pelle.mango.client.base.vo;
 
+import java.io.Serializable;
 
-public interface IVOEntity extends IHasChangeTracker {
+public interface IVOEntity extends IHasChangeTracker, Serializable {
 
 	public static final String ID_FIELD_NAME = "id";
 

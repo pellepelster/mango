@@ -13,14 +13,20 @@ import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.DateEntityAttribute
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
+import io.pelle.mango.dsl.mango.EntityDisableIdField
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
+import io.pelle.mango.dsl.mango.EntityOptionsContainer
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
-import io.pelle.mango.server.base.BaseEntity
 import io.pelle.mango.dsl.query.datatype.StringDatatypeQuery
-
+import io.pelle.mango.server.base.BaseEntity
+import org.apache.commons.logging.Log
+import static org.apache.commons.logging.LogFactory.*
+	
 class EntityGenerator extends BaseEntityGenerator {
+
+	val Log LOG = getLog(getClass().getName())
 
 	@Inject
 	extension AttributeUtils
@@ -32,6 +38,7 @@ class EntityGenerator extends BaseEntityGenerator {
 	extension TypeUtils
 
 	def compileEntity(Entity entity) '''
+		«System.out.println(String.format("generating entity '%s' (entityDisableIdField: %s", entity.entityName, entity.entityDisableIdField))»
 		package «entity.packageName»;
 		
 		import javax.persistence.*;
@@ -46,17 +53,17 @@ class EntityGenerator extends BaseEntityGenerator {
 		«ELSE»
 		«ENDIF»
 		@SuppressWarnings("all")
-		public class «entityName(entity)» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
+		public class «entity.entityName» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
 		
 			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
-	
-			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
 	
 			«entity.attributeDescriptorsFromExtends»
 	
 			«entity.compileGetAttributeDescriptors»
 		
-			«IF entity.extends == null»
+			«IF entity.extends == null && !entity.entityDisableIdField»
+			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
+
 			@Id
 			@Column(name = "«entity.entityTableIdColumnName»")
 			@GeneratedValue(strategy = GenerationType.TABLE, generator = "«entity.entityTableIdSequenceName»")
@@ -111,6 +118,22 @@ class EntityGenerator extends BaseEntityGenerator {
 		«ENDIF»
 	'''
 
+	def <T> getEntityOption(EntityOptionsContainer entityOptionsContainer, Class<T> entityOptionType) {
+		return entityOptionsContainer.options.findFirst[e|entityOptionType.isAssignableFrom(e.class)] as T
+	}
+
+	def <T> getEntityOption(Entity entity, Class<T> entityOptionType) {
+		if (entity.entityOptions != null) {
+			return getEntityOption(entity.entityOptions, entityOptionType)
+		} else {
+			return null;
+		}
+	}
+
+	def <T> entityDisableIdField(Entity entity) {
+		return Boolean.TRUE.equals(entity.getEntityOption(typeof(EntityDisableIdField)))
+	}
+	
 	def dispatch compileEntityAttributeJpaAnnotations(EntityEntityAttribute entityAttribute) '''
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
 		@OneToMany()

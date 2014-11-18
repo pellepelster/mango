@@ -19,6 +19,7 @@ project Mango {
 			stringdatatype LogEntryReference { }
 			
 			entity LogEntry {
+				entityoptions { disableIdField true }
 				date LogEntryTimestamp timestamp
 				string LogEntryMessage message
 				string LogEntryReference ^reference
