@@ -4,7 +4,6 @@ import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.gwt.GWTLayoutFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
-import io.pelle.mango.client.web.modules.log.LogModule;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 
@@ -32,7 +31,6 @@ public class DemoClient implements EntryPoint {
 		MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
 		init();
 		ModuleHandler.getInstance().startUIModule(ModuleNavigationModule.NAVIGATION_UI_MODULE_LOCATOR, Direction.WEST.toString());
-		ModuleHandler.getInstance().startUIModule(LogModule.UI_MODULE_LOCATOR, Direction.WEST.toString());
 
 		String greetingText = "";
 		greetingText += "<h2>Mango Showcase</h2><br/>";

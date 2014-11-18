@@ -9,10 +9,11 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.client.gwt.modules.dictionary.controls;
+package io.pelle.mango.client.gwt.modules.dictionary.controls.numbers;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBigDecimalControlModel;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.BaseControlFactory;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.BigDecimalControl;
 

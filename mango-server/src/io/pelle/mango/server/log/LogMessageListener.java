@@ -17,6 +17,7 @@ public class LogMessageListener {
 		public LogEntryVO apply(LogEvent logEvent) {
 			LogEntryVO logEntry = new LogEntryVO();
 			logEntry.setMessage(logEvent.getMessage());
+			logEntry.setTimestamp(logEvent.getTimestamp());
 			return logEntry;
 		}
 	};

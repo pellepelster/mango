@@ -31,7 +31,6 @@ public class LogModule extends BaseLogModule {
 
 	public LogModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
 		super(moduleUrl, moduleCallback, parameters);
-
 		getModuleCallback().onSuccess(this);
 	}
 
@@ -46,11 +45,7 @@ public class LogModule extends BaseLogModule {
 
 	@Override
 	public String getTitle() {
-		if (hasParameter(MODULE_TITLE_PARAMETER_ID)) {
-			return this.parameters.get(MODULE_TITLE_PARAMETER_ID).toString();
-		} else {
-			return MangoClientWeb.MESSAGES.navigationTitle();
-		}
+		return MangoClientWeb.MESSAGES.logTitle();
 	}
 
 	@Override

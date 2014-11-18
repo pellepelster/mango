@@ -565,6 +565,13 @@ project MangoDemo {
 					dictionarySearch DemoDictionary2.DemoSearch2
 				}
 			}
+			
+			navigationnode Administration {
+				navigationnode Log {
+					moduleDefinition Log
+				}
+			}
+			
 		}
 	}
 }

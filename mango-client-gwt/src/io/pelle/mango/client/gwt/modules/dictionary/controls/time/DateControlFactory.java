@@ -9,7 +9,7 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.client.gwt.modules.dictionary.controls;
+package io.pelle.mango.client.gwt.modules.dictionary.controls.time;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
@@ -17,6 +17,8 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITable
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IDateControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.BaseControlFactory;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.GwtDateControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.DateControl;
 

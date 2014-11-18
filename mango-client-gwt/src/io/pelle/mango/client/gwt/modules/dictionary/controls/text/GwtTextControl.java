@@ -9,34 +9,35 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.client.gwt.modules.dictionary.controls;
+package io.pelle.mango.client.gwt.modules.dictionary.controls.text;
 
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.BaseControlWithHelp;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
-import io.pelle.mango.client.web.modules.dictionary.controls.IntegerControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
 
 import com.google.gwt.user.client.ui.TextBox;
 
-public class GwtIntegerControl extends TextBox implements IGwtControl {
+public class GwtTextControl extends BaseControlWithHelp<TextBox> implements IGwtControl {
 
-	public GwtIntegerControl(IntegerControl integerControl) {
-		new ControlHelper(this, integerControl, this, true);
-		ensureDebugId(DictionaryModelUtil.getDebugId(integerControl.getModel()));
+	public GwtTextControl(final TextControl textControl) {
+		super(new TextBox(), textControl.getModel());
+
+		new ControlHelper(getWidget(), textControl, this, true);
+		getWidget().ensureDebugId(DictionaryModelUtil.getDebugId(textControl.getModel()));
+		getWidget().setMaxLength(textControl.getModel().getMaxLength());
 	}
 
-	@Override
 	public void setContent(Object content) {
 		if (content != null) {
-
-			if (content instanceof Integer) {
-				super.setValue(content.toString());
+			if (content instanceof String) {
+				getWidget().setValue((String) content);
 			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
-
 		} else {
-			super.setValue(null);
+			getWidget().setValue("");
 		}
 	}
 

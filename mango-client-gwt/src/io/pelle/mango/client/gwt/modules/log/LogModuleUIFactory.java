@@ -18,7 +18,6 @@ import io.pelle.mango.client.gwt.modules.IGwtModuleUI;
 import io.pelle.mango.client.web.module.BaseModuleUIFactory;
 import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.log.LogModule;
-import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.Map;
@@ -35,7 +34,7 @@ public class LogModuleUIFactory extends BaseModuleUIFactory<Panel, IGwtModuleUI<
 
 	@Override
 	public void getNewInstance(final String moduleUrl, final AsyncCallback<IGwtModuleUI<LogModule>> moduleCallback, Map<String, Object> parameters, Optional<IModuleUI<?, ?>> previousModuleUI) {
-		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, ModuleNavigationModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
+		ModuleHandler.getInstance().startModule(ModuleUtils.concatenate(moduleUrl, LogModule.MODULE_LOCATOR), parameters, new BaseErrorAsyncCallback<IModule>() {
 			@Override
 			public void onSuccess(IModule result) {
 				moduleCallback.onSuccess(new LogModuleUI((LogModule) result));

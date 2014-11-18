@@ -26,6 +26,7 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 
 public class HierarchicalDataProvider extends AsyncDataProvider<DictionaryHierarchicalNodeVO> {
+
 	private HierarchicalConfigurationVO hierarchicalConfiguration;
 
 	private DictionaryHierarchicalNodeVO parentHierarchicalNode;

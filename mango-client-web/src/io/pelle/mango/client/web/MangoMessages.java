@@ -152,4 +152,14 @@ public interface MangoMessages extends Messages {
 
 	@DefaultMessage("?")
 	String helpShort();
+
+	@DefaultMessage("Log")
+	String logTitle();
+
+	@DefaultMessage("Message")
+	String logMessageTitle();
+
+	@DefaultMessage("Time")
+	String logTimestampTitle();
+
 }

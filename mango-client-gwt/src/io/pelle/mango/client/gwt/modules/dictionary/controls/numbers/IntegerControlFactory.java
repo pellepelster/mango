@@ -9,31 +9,34 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.client.gwt.modules.dictionary.controls;
+package io.pelle.mango.client.gwt.modules.dictionary.controls.numbers;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
-import io.pelle.mango.client.base.modules.dictionary.model.controls.ITextControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IIntegerControlModel;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.BaseControlFactory;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
-import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.IntegerControl;
 
 import com.google.gwt.user.client.ui.Widget;
 
-public class TextControlFactory extends BaseControlFactory<ITextControlModel, TextControl> {
+/**
+ * control factory for integer controls
+ * 
+ * @author pelle
+ * 
+ */
+public class IntegerControlFactory extends BaseControlFactory<IIntegerControlModel, IntegerControl> {
 
 	/** {@inheritDoc} */
 	@Override
-	public Widget createControl(TextControl textControl, LAYOUT_TYPE layoutType) {
-		if (textControl.getModel().isReadonly()) {
-			return new ReadonlyControl(textControl);
-		} else {
-			return new GwtTextControl(textControl);
-		}
+	public Widget createControl(IntegerControl integerControl, LAYOUT_TYPE layoutType) {
+		return new GwtIntegerControl(integerControl);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public boolean supports(BaseDictionaryControl<?, ?> baseControl) {
-		return baseControl instanceof TextControl;
+		return baseControl instanceof IntegerControl;
 	}
 
 }

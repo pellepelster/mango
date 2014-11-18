@@ -16,6 +16,7 @@ import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.gwt.modules.dictionary.editor.DictionaryEditorModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.search.DictionarySearchModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.hierarchical.HierarchicalTreeModuleUIFactory;
+import io.pelle.mango.client.gwt.modules.log.LogModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.navigation.NavigationModuleUIFactory;
 import io.pelle.mango.client.gwt.utils.HtmlWithHelp;
 import io.pelle.mango.client.web.MangoClientWeb;
@@ -140,6 +141,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionarySearchModuleUIFactory());
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionaryEditorModuleUIFactory());
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new HierarchicalTreeModuleUIFactory());
+		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new LogModuleUIFactory());
 
 		rootPanel = new DockLayoutPanel(Unit.PCT);
 		rootPanel.setWidth("100%");

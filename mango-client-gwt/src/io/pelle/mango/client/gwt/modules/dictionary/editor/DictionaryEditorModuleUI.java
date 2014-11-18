@@ -57,8 +57,8 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 	private final HtmlWithHelp editorTitle;
 
 	@SuppressWarnings("rawtypes")
-	public DictionaryEditorModuleUI(DictionaryEditorModule<VOType> editorModule, final Optional<IModuleUI> previousModuleUI) {
-		super(editorModule, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
+	public DictionaryEditorModuleUI(DictionaryEditorModule<VOType> module, final Optional<IModuleUI> previousModuleUI) {
+		super(module, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
 
 		verticalPanel = new VerticalPanel();
 
@@ -70,7 +70,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 		verticalPanel.add(actionBar);
 
 		// - title -------------------------------------------------------------
-		editorTitle = new HtmlWithHelp(editorModule.getTitle(), editorModule.getHelpText());
+		editorTitle = new HtmlWithHelp(module.getTitle(), module.getHelpText());
 		editorTitle.addStyleName(GwtStyles.TITLE);
 		verticalPanel.add(editorTitle);
 

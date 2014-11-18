@@ -9,34 +9,32 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.client.gwt.modules.dictionary.controls;
+package io.pelle.mango.client.gwt.modules.dictionary.controls.numbers;
 
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
-import io.pelle.mango.client.web.modules.dictionary.controls.BigDecimalControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
-
-import java.math.BigDecimal;
+import io.pelle.mango.client.web.modules.dictionary.controls.IntegerControl;
 
 import com.google.gwt.user.client.ui.TextBox;
 
-public class GwtBigDecimalControl extends TextBox implements IGwtControl {
-	private final BigDecimalControl bigDecimalControl;
+public class GwtIntegerControl extends TextBox implements IGwtControl {
 
-	public GwtBigDecimalControl(BigDecimalControl bigDecimalControl) {
-		this.bigDecimalControl = bigDecimalControl;
-		new ControlHelper(this, bigDecimalControl, this, true);
-		ensureDebugId(DictionaryModelUtil.getDebugId(bigDecimalControl.getModel()));
+	public GwtIntegerControl(IntegerControl integerControl) {
+		new ControlHelper(this, integerControl, this, true);
+		ensureDebugId(DictionaryModelUtil.getDebugId(integerControl.getModel()));
 	}
 
 	@Override
 	public void setContent(Object content) {
 		if (content != null) {
-			if (content instanceof BigDecimal) {
-				super.setValue(bigDecimalControl.format());
+
+			if (content instanceof Integer) {
+				super.setValue(content.toString());
 			} else {
 				throw new RuntimeException("unsupported value type '" + content.getClass().getName() + "'");
 			}
+
 		} else {
 			super.setValue(null);
 		}
