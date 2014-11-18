@@ -75,6 +75,8 @@ class DictionaryNavigationGenerator {
 			
 			«IF navigationNode.module != null»
 			setModuleLocator(«IModuleUI.UI_MODULE_ID_PARAMETER_NAME» + "=«navigationNode.module.name»");
+			«ELSEIF navigationNode.moduleDefinition != null»
+			setModuleLocator(«IModuleUI.UI_MODULE_ID_PARAMETER_NAME» + "=«navigationNode.moduleDefinition.name»");
 			«ELSEIF navigationNode.dictionaryEditor != null»
 			setModuleLocator("«IModuleUI.UI_MODULE_ID_PARAMETER_NAME»=DictionaryEditor&" + io.pelle.mango.client.modules.BaseDictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID + "=«EmfModelQuery.createEObjectQuery(navigationNode.dictionaryEditor).getParentByType(Dictionary).match.name»");
 			«ELSEIF navigationNode.dictionarySearch != null»

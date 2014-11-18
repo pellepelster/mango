@@ -142,7 +142,7 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.dictionaryControlRule);
 
 		// navigation node
-		defaultBlockFormat(c, m.navigationNodeRule, m.navigationNodeAccess.leftCurlyBracketKeyword_2, m.navigationNodeAccess.rightCurlyBracketKeyword_8)
+		defaultBlockFormat(c, m.navigationNodeRule, m.navigationNodeAccess.leftCurlyBracketKeyword_2, m.navigationNodeAccess.rightCurlyBracketKeyword_9)
 
 		// enumeration
 		c.setLinewrap(1, 1, 2).before(m.enumerationRule);

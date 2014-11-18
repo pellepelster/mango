@@ -30,6 +30,11 @@ project Mango {
 		}
 
 		package log {
+		
+			moduledefinition Log {
+				parameters {
+				}
+			}
 			
 			datedatatype LogEntryTimestamp { }
 			stringdatatype LogEntryMessage { }
@@ -49,7 +54,7 @@ project Mango {
 		}
 
 		package system {
-		
+
 			valueobject Systeminformation {
 				string hostName
 				string ipAddress

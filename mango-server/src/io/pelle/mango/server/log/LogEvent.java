@@ -1,4 +1,4 @@
-package io.pelle.mango.server.service.logger;
+package io.pelle.mango.server.log;
 
 import com.google.common.base.Objects;
 

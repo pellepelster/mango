@@ -37,6 +37,7 @@ import java.util.Set;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class HierarchicalTreeModule extends BaseModuleHierarchicalTreeModule {
+
 	public final static String MODULE_LOCATOR = ModuleUtils.getBaseModuleUrl(MODULE_ID);
 
 	public final static String UI_MODULE_ID = MODULE_ID;

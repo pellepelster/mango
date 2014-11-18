@@ -1,6 +1,6 @@
-package io.pelle.mango.server.service.logger;
+package io.pelle.mango.server.log;
 
-import io.pelle.mango.client.baseentityservice.IBaseEntityService;
+import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.log.LogEntryVO;
 
 import org.apache.log4j.Logger;

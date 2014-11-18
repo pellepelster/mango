@@ -20,8 +20,8 @@ import io.pelle.mango.client.web.module.ModuleFactoryRegistry;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModuleFactory;
 import io.pelle.mango.client.web.modules.hierarchical.HierarchicalTreeModuleFactory;
+import io.pelle.mango.client.web.modules.log.LogModuleFactory;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModuleFactory;
-import io.pelle.mango.client.web.modules.system.SystemModuleFactory;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -98,7 +98,7 @@ public final class MangoClientWeb implements EntryPoint {
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new DictionaryEditorModuleFactory());
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new ModuleNavigationModuleFactory());
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new HierarchicalTreeModuleFactory());
-		ModuleFactoryRegistry.getInstance().addModuleFactory(new SystemModuleFactory());
+		ModuleFactoryRegistry.getInstance().addModuleFactory(new LogModuleFactory());
 
 		if (GWT.isClient()) {
 			MESSAGES = ((MangoMessages) GWT.create(MangoMessages.class));

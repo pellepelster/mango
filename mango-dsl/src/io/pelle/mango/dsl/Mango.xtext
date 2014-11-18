@@ -498,6 +498,7 @@ Service:
 NavigationNode:
 	"navigationnode" name=ID "{"
 	("label" label=STRING)?
+	("moduleDefinition" moduleDefinition=[ ModuleDefinition | QualifiedName ])?
 	("module" module=[ Module | QualifiedName ])?
 	("dictionaryEditor" dictionaryEditor=[ DictionaryEditor | QualifiedName ])?
 	("dictionarySearch" dictionarySearch=[ DictionarySearch | QualifiedName ])?
