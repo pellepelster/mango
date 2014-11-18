@@ -2,7 +2,7 @@ package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.baseentityservice.IBaseEntityService;
+import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.server.xml.XmlVOExporter;

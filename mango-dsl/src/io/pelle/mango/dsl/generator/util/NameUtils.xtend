@@ -75,7 +75,7 @@ class NameUtils {
 	}
 
 	def dispatch String getPackageName(Service service) {
-		return combinePackageName(getPackageName(service.eContainer), service.name.packageName)
+		return getPackageName(service.eContainer)
 	}
 
 	// entity

@@ -3,7 +3,7 @@ package io.pelle.mango.demo.server;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import io.pelle.mango.demo.client.test.ValueObject2;
-import io.pelle.mango.demo.server.test.resttest.RestTestRestControllerMethodWithBooleanParameterRequest;
+import io.pelle.mango.demo.server.test.RestTestRestControllerMethodWithBooleanParameterRequest;
 
 import org.junit.Ignore;
 import org.junit.Test;

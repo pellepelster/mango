@@ -5,12 +5,29 @@ import io.pelle.mango.client.base.vo.IBaseVO
 import io.pelle.mango.client.base.messages.IValidationMessage
 import io.pelle.mango.client.base.db.vos.Result
 import io.pelle.mango.client.base.vo.query.SelectQuery
-import io.pelle.mango.client.DictionaryHierarchicalNodeVO
-import io.pelle.mango.client.Systeminformation
+import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO
+import io.pelle.mango.client.system.Systeminformation
+import io.pelle.mango.client.log.LogEntryVO
 
 project Mango {
 
 	package io.pelle.^mango {
+
+		package ^entity {
+		
+			service BaseEntityService {
+				method <NewVOType extends IBaseVO> NewVOType getNewVO ( String voClassName, Map<String,String> properties )
+				method <CreateVOType extends IBaseVO> CreateVOType create ( CreateVOType vo )
+				method <ValidateVOType extends IBaseVO> List<IValidationMessage> validate ( ValidateVOType vo )
+				method <ValidateAndSaveVOType extends IBaseVO> Result<ValidateAndSaveVOType> validateAndSave ( ValidateAndSaveVOType vo )
+				method <ValidateAndCreateVOType extends IBaseVO> Result<ValidateAndCreateVOType> validateAndCreate ( ValidateAndCreateVOType vo )
+				method <SaveVOType extends IBaseVO> SaveVOType save ( SaveVOType vo )
+				method <FilterVOType extends IBaseVO> List<FilterVOType> filter ( SelectQuery<FilterVOType> selectQuery )
+				method void deleteAll ( String voClassName )
+				method <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
+				method <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
+			}
+		}
 
 		package log {
 			
@@ -25,14 +42,47 @@ project Mango {
 				string LogEntryReference ^reference
 			}
 			
+    		service LogService {
+				method List<LogEntryVO> getLog(int start, int count)
+			}
+			
 		}
 
-		valueobject SearchResultItem {
+		package system {
+		
+			valueobject Systeminformation {
+				string hostName
+				string ipAddress
+			}
+
+			service SystemService {
+				method Systeminformation getSystemInformation ()
+			}
+		}
+
+		package hierarchy {
+		
+			entity DictionaryHierarchicalNode {
+				string ^label
+				string dictionaryName
+				long voId
+				string voClassName
+				string parentClassName
+				long parentVOId
+				boolean hasChildren
+				entity DictionaryHierarchicalNode 0..n children
+			}
+			
+			service HierachicalService {
+				method List<DictionaryHierarchicalNodeVO> getRootNodes ( String id )
+				method HierarchicalConfigurationVO getConfigurationById  ( String id )
+				method List<HierarchicalConfigurationVO> getConfigurations ()
+				method Boolean hasChildren ( String voClassName, Long voId )
+				method List<DictionaryHierarchicalNodeVO> getChildNodes ( String id, Long voId, String voClassName )
+			}
 		}
 		
-		valueobject Systeminformation {
-			string hostName
-			string ipAddress
+		valueobject SearchResultItem {
 		}
 		
 		entity DictionaryLabelSearchIndex {
@@ -42,17 +92,6 @@ project Mango {
 			string ^text
 		}
 
-		entity DictionaryHierarchicalNode {
-			string ^label
-			string dictionaryName
-			long voId
-			string voClassName
-			string parentClassName
-			long parentVOId
-			boolean hasChildren
-			entity DictionaryHierarchicalNode 0..n children
-		}
-				
 		stringdatatype FileName {
 		}
 		
@@ -68,27 +107,6 @@ project Mango {
 			string FileUUID fileUUID
 		}
 				
-		service HierachicalService {
-
-			method List<DictionaryHierarchicalNodeVO> getRootNodes ( String id )
-			
-			method HierarchicalConfigurationVO getConfigurationById  ( String id )
-			
-			method List<HierarchicalConfigurationVO> getConfigurations ()
-			
-			method Boolean hasChildren ( String voClassName, Long voId )
-			
-			method List<DictionaryHierarchicalNodeVO> getChildNodes ( String id, Long voId, String voClassName )
-		
-		}
-			
-		service SystemService {
-
-			method Systeminformation getSystemInformation ()
-	
-		}
-			
-		
 		package modules {
 
 			moduledefinition ModuleNavigation {
@@ -142,29 +160,6 @@ project Mango {
 					
 				}
 			}
-		}
-		
-		service BaseEntityService {
-
-			method <NewVOType extends IBaseVO> NewVOType getNewVO ( String voClassName, Map<String,String> properties )
-
-			method <CreateVOType extends IBaseVO> CreateVOType create ( CreateVOType vo )
-
-			method <ValidateVOType extends IBaseVO> List<IValidationMessage> validate ( ValidateVOType vo )
-
-			method <ValidateAndSaveVOType extends IBaseVO> Result<ValidateAndSaveVOType> validateAndSave ( ValidateAndSaveVOType vo )
-
-			method <ValidateAndCreateVOType extends IBaseVO> Result<ValidateAndCreateVOType> validateAndCreate ( ValidateAndCreateVOType vo )
-		
-			method <SaveVOType extends IBaseVO> SaveVOType save ( SaveVOType vo )
-				
-			method <FilterVOType extends IBaseVO> List<FilterVOType> filter ( SelectQuery<FilterVOType> selectQuery )
-
-			method void deleteAll ( String voClassName )
-
-			method <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
-
-			method <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
 		}
 	}
 }

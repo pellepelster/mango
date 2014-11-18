@@ -6,7 +6,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
-import io.pelle.mango.client.baseentityservice.IBaseEntityService;
+import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.util.BeanUtils;
 import io.pelle.mango.server.base.xml.IXmlVOImporter;
 import io.pelle.mango.server.base.xml.XmlElementDescriptor;

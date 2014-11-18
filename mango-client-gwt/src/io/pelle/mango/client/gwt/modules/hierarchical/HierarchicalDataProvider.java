@@ -11,9 +11,9 @@
  */
 package io.pelle.mango.client.gwt.modules.hierarchical;
 
-import io.pelle.mango.client.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
+import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 

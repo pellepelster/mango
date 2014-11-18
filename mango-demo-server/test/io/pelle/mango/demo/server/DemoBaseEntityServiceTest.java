@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.baseentityservice.IBaseEntityService;
+import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;

@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
-import io.pelle.mango.client.baseentityservice.IBaseEntityService;
+import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;

@@ -8,9 +8,7 @@ public class MangoLogger {
 	private LogEventBus logEventBus;
 
 	public void info(String message) {
-
 		LogEvent logEvent = new LogEvent(message);
-
 		sendLogMessage(logEvent);
 	}
 

@@ -1,6 +1,6 @@
 package io.pelle.mango.demo.server.test;
 
-import io.pelle.mango.server.service.logger.MangoLogger;
+import io.pelle.mango.server.log.MangoLogger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

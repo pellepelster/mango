@@ -5,7 +5,7 @@ import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
 import io.pelle.mango.client.base.util.CollectionUtils;
-import io.pelle.mango.client.hierachicalservice.IHierachicalService;
+import io.pelle.mango.client.hierarchy.IHierachicalService;
 import io.pelle.mango.client.modules.BaseDictionaryEditorModule;
 
 import java.util.ArrayList;
@@ -36,9 +36,7 @@ public class HierarchicalMandatoryValidator implements IValidator {
 			if (hierarchicalVO.getParent() == null && !HierarchicalConfigurationVO.isRootDictionary(dictionaryId, this.hierachicalService.getConfigurations())) {
 				result.add(new ValidationMessage(ValidatorMessages.MANDATORY_ATTRIBUTE, CollectionUtils.getMap(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, IHierarchicalVO.FIELD_PARENT.getAttributeName(),
 						IValidationMessage.VOCLASS_CONTEXT_KEY, hierarchicalVO.getClass().getSimpleName())));
-
 			}
-
 		}
 
 		return result;

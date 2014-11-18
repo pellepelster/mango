@@ -1,6 +1,5 @@
 package io.pelle.mango.client.gwt.modules.dictionary.container;
 
-import io.pelle.mango.client.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IHierarchicalControlModel;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
@@ -8,6 +7,7 @@ import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
 import io.pelle.mango.client.gwt.modules.hierarchical.HierarchicalTree;
+import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.web.MangoClientWeb;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;

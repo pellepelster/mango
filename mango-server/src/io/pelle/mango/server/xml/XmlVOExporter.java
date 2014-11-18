@@ -3,7 +3,7 @@ package io.pelle.mango.server.xml;
 import io.pelle.mango.client.base.db.vos.UUID;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.baseentityservice.IBaseEntityService;
+import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.util.BeanUtils;
 import io.pelle.mango.db.voquery.VOClassQuery;
 

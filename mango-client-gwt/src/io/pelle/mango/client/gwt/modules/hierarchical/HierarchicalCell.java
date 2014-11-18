@@ -11,7 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.hierarchical;
 
-import io.pelle.mango.client.DictionaryHierarchicalNodeVO;
+import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 
 import com.google.gwt.cell.client.AbstractSafeHtmlCell;
 import com.google.gwt.cell.client.Cell;
