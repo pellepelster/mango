@@ -102,6 +102,7 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 
 		try {
 			Class<?> voClass = Class.forName(voClassName);
+			@SuppressWarnings("unchecked")
 			NewVOType vo = (NewVOType) ConstructorUtils.invokeConstructor(voClass, new Object[0]);
 
 			return vo;
@@ -110,6 +111,7 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <ReadVOType extends IBaseVO> ReadVOType read(Long id, String voClassName) {
 		return (ReadVOType) baseVODAO.read(id, BeanUtils.getVOClass(voClassName));

@@ -60,8 +60,6 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 
 		private List<IBaseVO> list;
 
-		private String attributeName;
-
 		public ListAdderCallback(List<IBaseVO> list) {
 			super();
 			this.list = list;
@@ -102,6 +100,7 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void importVOsInternal(XMLEventReader eventReader, BinaryFileReadCallback binaryFileReadCallback) throws Exception {
 
 		while (eventReader.hasNext()) {
@@ -138,12 +137,6 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 								resolveVOReference(eventReader, event, (Class<IBaseVO>) attributeDescriptor.getAttributeType(), new VOAttributeSetteCallback(vo, attributeDescriptor.getAttributeName()));
 							} else if (List.class.isAssignableFrom(attributeDescriptor.getAttributeType())) {
 								if (event.isStartElement()) {
-									StartElement listReferenceStartElement = event.asStartElement();
-
-									// XmlElementDescriptor
-									// listReferenceXmlElementDescriptor =
-									// this.voXmlMapper.getElementDescriptor(listReferenceStartElement.getName().getLocalPart());
-
 									resolveVOReference(eventReader, event, (Class<IBaseVO>) attributeDescriptor.getListAttributeType(), new ListAdderCallback((List<IBaseVO>) vo.get(attributeDescriptor.getAttributeName())));
 								}
 							} else if (attributeDescriptor.getAttributeType().isArray()) {
