@@ -24,10 +24,10 @@ public class DateSafeHtmlRenderer implements SafeHtmlRenderer<Date> {
 	}
 
 	public SafeHtml render(Date object) {
-		return (object == null) ? SafeHtmlUtils.EMPTY_SAFE_HTML : SafeHtmlUtils.fromString(DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM).format(object));
+		return (object == null) ? SafeHtmlUtils.EMPTY_SAFE_HTML : SafeHtmlUtils.fromString(object.toLocaleString());
 	}
 
 	public void render(Date object, SafeHtmlBuilder appendable) {
-		appendable.append(SafeHtmlUtils.fromString(DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM).format(object)));
+		appendable.append(SafeHtmlUtils.fromString(object.toLocaleString()));
 	}
 }
