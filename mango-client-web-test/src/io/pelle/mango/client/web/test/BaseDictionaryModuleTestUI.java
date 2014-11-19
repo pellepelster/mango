@@ -44,6 +44,9 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 		return new TextTestControl(this.baseDictionaryModule.getElement(controlModel));
 	}
 
+	public void onResize() {
+	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <VOType extends IBaseVO> ReferenceTestControl<VOType> getControl(ReferenceControlModel<VOType> controlModel) {
 		return new ReferenceTestControl(this.baseDictionaryModule.getElement(controlModel));

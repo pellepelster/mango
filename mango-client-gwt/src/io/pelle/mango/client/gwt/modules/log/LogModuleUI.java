@@ -22,7 +22,9 @@ import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -40,7 +42,15 @@ import com.google.gwt.view.client.HasData;
  */
 public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 
+	final static Logger LOG = Logger.getLogger("LogModuleUI");
+
 	private final VerticalPanel verticalPanel;
+
+	private HTML title;
+
+	private SimplePager pager;
+
+	private DataGrid<LogEntryVO> dataGrid;
 
 	private final AsyncDataProvider<LogEntryVO> dataProvider = new AsyncDataProvider<LogEntryVO>() {
 
@@ -72,11 +82,11 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		verticalPanel.setHeight("100%");
 
 		// - title -------------------------------------------------------------
-		HTML title = new HTML(module.getTitle());
+		title = new HTML(module.getTitle());
 		title.addStyleName(GwtStyles.TITLE);
 		verticalPanel.add(title);
 
-		DataGrid<LogEntryVO> dataGrid = new DataGrid<LogEntryVO>();
+		dataGrid = new DataGrid<LogEntryVO>();
 		dataGrid.setWidth("100%");
 		dataGrid.setHeight(BaseCellTable.DEFAULT_TABLE_HEIGHT);
 
@@ -98,9 +108,29 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		dataProvider.addDataDisplay(dataGrid);
 		verticalPanel.add(dataGrid);
 
-		SimplePager pager = new SimplePager();
+		pager = new SimplePager();
 		pager.setDisplay(dataGrid);
 		verticalPanel.add(pager);
+	}
+
+	@Override
+	public void onResize() {
+
+		LOG.info("title:" + title.getElement().getAbsoluteBottom());
+
+		pager.getElement().getStyle().setBottom(verticalPanel.getParent().getOffsetHeight(), Unit.PX);
+
+		LOG.info("pager:" + pager.getAbsoluteTop());
+		LOG.info("parent:" + (title.getElement().getAbsoluteBottom() - pager.getAbsoluteTop()));
+
+		// int h = title.getOffsetHeight() + pager.getOffsetHeight();
+
+		// dataGrid.getElement().getStyle().setTop(title.getElement().getAbsoluteBottom(),
+		// Unit.PX);
+		// dataGrid.getElement().getStyle().setBottom(pager.getAbsoluteTop(),
+		// Unit.PX);
+		// dataGrid.setHeight((pager.getAbsoluteTop() -
+		// title.getElement().getAbsoluteBottom()) + "px");
 	}
 
 	/** {@inheritDoc} */

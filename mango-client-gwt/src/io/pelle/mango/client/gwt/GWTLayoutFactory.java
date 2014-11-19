@@ -32,6 +32,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.logical.shared.ResizeEvent;
+import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -59,6 +62,10 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		public PanelLayoutInfo(int size, boolean supportsMultipleChildren, Widget widget) {
 			super();
 			this.widget = widget;
+		}
+
+		public List<IModuleUI<Panel, ?>> getModuleUIs() {
+			return moduleUIs;
 		}
 
 		public boolean conainsModuleUI(IModuleUI<Panel, ?> moduleUI) {
@@ -151,6 +158,20 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		initializePanelLayout(Direction.CENTER, 85, false);
 
 		RootLayoutPanel.get().add(rootPanel);
+
+		Window.addResizeHandler(new ResizeHandler() {
+
+			@Override
+			public void onResize(ResizeEvent event) {
+
+				for (Map.Entry<Direction, PanelLayoutInfo> panelEntry : panels.entrySet()) {
+					for (IModuleUI<Panel, ?> moduleUI : panelEntry.getValue().getModuleUIs()) {
+						moduleUI.onResize();
+					}
+				}
+
+			}
+		});
 	}
 
 	private Map<StackLayoutPanel, List<IModuleUI<Panel, ?>>> stackLayoutPanelMappings = new HashMap<StackLayoutPanel, List<IModuleUI<Panel, ?>>>();

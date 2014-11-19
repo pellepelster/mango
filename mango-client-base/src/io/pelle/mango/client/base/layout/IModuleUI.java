@@ -45,4 +45,6 @@ public interface IModuleUI<ContainerType, ModuleType extends IModule> {
 
 	void updateUrl(String moduleUrl);
 
+	void onResize();
+
 }

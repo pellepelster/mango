@@ -29,4 +29,8 @@ public abstract class BaseGwtModuleUI<ModuleType extends IModule> extends BaseMo
 		super(module, uiModuleId);
 	}
 
+	@Override
+	public void onResize() {
+	}
+
 }
