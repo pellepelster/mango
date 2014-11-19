@@ -22,6 +22,8 @@ import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import java.util.List;
 import java.util.logging.Logger;
 
+import com.google.gwt.event.dom.client.MouseWheelEvent;
+import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.event.logical.shared.AttachEvent;
@@ -49,29 +51,26 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 
 	private HTML title;
 
-	private SimplePager pager;
-
 	private LogDataGrid<LogEntryVO> dataGrid;
 
 	private final AsyncDataProvider<LogEntryVO> dataProvider = new AsyncDataProvider<LogEntryVO>() {
 
 		@Override
 		protected void onRangeChanged(final HasData<LogEntryVO> display) {
+
 			final int start = display.getVisibleRange().getStart();
 			final int length = display.getVisibleRange().getLength();
 
-			MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLog(start, length, new BaseErrorAsyncCallback<List<LogEntryVO>>() {
+			MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLog(length, new BaseErrorAsyncCallback<List<LogEntryVO>>() {
 
 				@Override
 				public void onSuccess(List<LogEntryVO> result) {
-					updateRowCount(start + length + length, false);
+					updateRowCount(display.getRowCount() + result.size(), true);
 					updateRowData(display, start, result);
 				};
 			});
 		}
 	};
-
-	private VerticalPanel footerPanel;
 
 	private VerticalPanel headerPanel;
 
@@ -98,26 +97,6 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		dataGrid.setWidth("98%");
 		panel.add(dataGrid);
 
-		dataGrid.getScrollPanel().addScrollHandler(new ScrollHandler() {
-
-			@Override
-			public void onScroll(ScrollEvent event) {
-
-				if (pager.hasNextPage()) {
-					if (dataGrid.getScrollPanel().getVerticalScrollPosition() == dataGrid.getScrollPanel().getMaximumVerticalScrollPosition()) {
-						pager.nextPage();
-					}
-				}
-
-				if (pager.hasPreviousPage()) {
-					if (dataGrid.getScrollPanel().getVerticalScrollPosition() == dataGrid.getScrollPanel().getMinimumVerticalScrollPosition()) {
-						pager.previousPage();
-					}
-				}
-
-			}
-		});
-
 		dataGrid.addColumn(new DateColumn<LogEntryVO>() {
 			@Override
 			public Long getValue(LogEntryVO object) {
@@ -135,17 +114,65 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 
 		dataProvider.addDataDisplay(dataGrid);
 
-		footerPanel = new VerticalPanel();
-		pager = new SimplePager();
+		final SimplePager pager = new SimplePager();
 		pager.setDisplay(dataGrid);
-		// footerPanel.add(pager);
 
-		panel.add(pager);
 		panel.addAttachHandler(new Handler() {
 
 			@Override
 			public void onAttachOrDetach(AttachEvent event) {
 				onResize();
+			}
+		});
+
+		dataGrid.getScrollPanel().addDomHandler(new MouseWheelHandler() {
+
+			@Override
+			public void onMouseWheel(MouseWheelEvent event) {
+				if (event.getDeltaY() < 0) {
+					if (dataGrid.getScrollPanel().getVerticalScrollPosition() == dataGrid.getScrollPanel().getMinimumVerticalScrollPosition()) {
+						MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLogAfter(dataGrid.getVisibleItems().get(0).getTimestamp(), dataGrid.getPageSize(), new BaseErrorAsyncCallback<List<LogEntryVO>>() {
+							@Override
+							public void onSuccess(List<LogEntryVO> result) {
+								dataProvider.updateRowData(0, result);
+							};
+						});
+					}
+				} else {
+					if (dataGrid.getScrollPanel().getVerticalScrollPosition() == dataGrid.getScrollPanel().getMaximumVerticalScrollPosition()) {
+						MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService()
+								.getLogBefore(dataGrid.getVisibleItems().get(dataGrid.getVisibleItems().size() - 1).getTimestamp(), dataGrid.getPageSize(), new BaseErrorAsyncCallback<List<LogEntryVO>>() {
+									@Override
+									public void onSuccess(List<LogEntryVO> result) {
+										dataProvider.updateRowData(0, result);
+									};
+								});
+					}
+
+				}
+			}
+		}, MouseWheelEvent.getType());
+
+		dataGrid.getScrollPanel().addScrollHandler(new ScrollHandler() {
+
+			@Override
+			public void onScroll(ScrollEvent event) {
+
+				// if (pager.hasNextPage()) {
+				// if (dataGrid.getScrollPanel().getVerticalScrollPosition() ==
+				// dataGrid.getScrollPanel().getMaximumVerticalScrollPosition())
+				// {
+				// pager.nextPage();
+				// }
+				// }
+				//
+				// if (pager.hasPreviousPage()) {
+				// if (dataGrid.getScrollPanel().getVerticalScrollPosition() ==
+				// dataGrid.getScrollPanel().getMinimumVerticalScrollPosition())
+				// {
+				// pager.previousPage();
+				// }
+				// }
 			}
 		});
 
@@ -156,14 +183,13 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 
 		int totalHeight = panel.getParent().getOffsetHeight();
 		int headerHeight = headerPanel.getOffsetHeight() + headerPanel.getAbsoluteTop();
-		int footerHeight = pager.getOffsetHeight();
 
 		// LOG.info("header:" + headerPanel.getOffsetHeight() + "/" +
 		// headerPanel.getAbsoluteTop());
 		// LOG.info("pager:" + pager.getOffsetHeight() + "/" +
 		// pager.getAbsoluteTop());
 
-		int tableHeight = totalHeight - (headerHeight + footerHeight);
+		int tableHeight = totalHeight - (headerHeight);
 		LOG.info("tableHeight:" + tableHeight);
 
 		dataGrid.setHeight(tableHeight + "px");

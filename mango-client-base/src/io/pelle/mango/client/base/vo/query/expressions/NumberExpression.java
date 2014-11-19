@@ -4,19 +4,18 @@ import io.pelle.mango.client.base.vo.query.IAliasProvider;
 import io.pelle.mango.client.base.vo.query.IExpression;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import com.google.common.base.Objects;
 
 @SuppressWarnings("serial")
-public class BigDecimalExpression implements IExpression, Serializable {
+public class NumberExpression implements IExpression, Serializable {
 
-	private BigDecimal value;
+	private Number value;
 
-	public BigDecimalExpression() {
+	public NumberExpression() {
 	}
 
-	public BigDecimalExpression(BigDecimal value) {
+	public NumberExpression(Number value) {
 		this.value = value;
 	}
 

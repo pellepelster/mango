@@ -6,6 +6,8 @@ import io.pelle.mango.client.base.vo.ChangeTrackingArrayList
 import io.pelle.mango.client.base.vo.EntityAttributeDescriptor
 import io.pelle.mango.client.base.vo.EnumerationAttributeDescriptor
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
+import io.pelle.mango.client.base.vo.IntegerAttributeDescriptor
+import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
@@ -321,6 +323,10 @@ class TypeUtils {
 	//-----------------
 	// integer
 	//-----------------
+	def dispatch compileEntityAttributeDescriptor(IntegerEntityAttribute entityAttribute, Entity entity) '''
+	public static «IntegerAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «IntegerAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
+	'''
+
 	def dispatch String getType(IntegerDataType dataType)
 	{
 		return typeof(Integer).name
@@ -334,6 +340,10 @@ class TypeUtils {
 	//-----------------
 	// long
 	//-----------------
+	def dispatch compileEntityAttributeDescriptor(LongEntityAttribute entityAttribute, Entity entity) '''
+	public static «LongAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
+	'''
+	
 	def dispatch String getType(LongDataType dataType)
 	{
 		return typeof(Long).name
@@ -366,8 +376,6 @@ class TypeUtils {
 	}
 	
 	//-----------------
-
-
 	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
 	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.minLength», «entityAttribute.maxLength», «entityAttribute.naturalKeyOrder»);
 	'''

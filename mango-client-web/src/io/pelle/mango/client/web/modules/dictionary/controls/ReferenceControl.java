@@ -9,7 +9,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
-import io.pelle.mango.client.base.vo.query.expressions.LongExpression;
+import io.pelle.mango.client.base.vo.query.expressions.NumberExpression;
 import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
@@ -90,7 +90,7 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 	@Override
 	public Optional<IBooleanExpression> getExpression(PathExpression pathExpression) {
 		if (getValue() != null) {
-			return Optional.<IBooleanExpression> of(new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new LongExpression(getValue().getId())));
+			return Optional.<IBooleanExpression> of(new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new NumberExpression(getValue().getId())));
 		} else {
 			return super.getExpression(pathExpression);
 		}

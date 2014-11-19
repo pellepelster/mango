@@ -7,8 +7,8 @@ import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBigDecimalControlModel;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
-import io.pelle.mango.client.base.vo.query.expressions.BigDecimalExpression;
 import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
+import io.pelle.mango.client.base.vo.query.expressions.NumberExpression;
 import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
@@ -50,7 +50,7 @@ public class BigDecimalControl extends BaseDictionaryControl<IBigDecimalControlM
 	@Override
 	public Optional<IBooleanExpression> getExpression(PathExpression pathExpression) {
 		if (getValue() != null) {
-			return Optional.<IBooleanExpression> of(new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new BigDecimalExpression(getValue())));
+			return Optional.<IBooleanExpression> of(new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new NumberExpression(getValue())));
 		} else {
 			return super.getExpression(pathExpression);
 		}

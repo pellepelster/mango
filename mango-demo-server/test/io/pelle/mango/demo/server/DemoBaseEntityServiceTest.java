@@ -92,6 +92,30 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testFilterLongGreaterLess() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		entity1VO.setIntegerDatatype1(3);
+		baseEntityService.validateAndSave(entity1VO);
+
+		entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("AAA");
+		entity1VO.setIntegerDatatype1(6);
+		baseEntityService.validateAndSave(entity1VO);
+
+		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.lessThan(5)));
+		assertEquals(1, filterResult.size());
+		assertEquals((Integer) 3, filterResult.get(0).getIntegerDatatype1());
+
+		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.greaterThan(5)));
+		assertEquals(1, filterResult.size());
+		assertEquals((Integer) 6, filterResult.get(0).getIntegerDatatype1());
+	}
+
+	@Test
 	public void testFilterStringIgnoreCase() {
 
 		baseVODAO.deleteAll(Entity1VO.class);
@@ -112,7 +136,6 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals(2, filterResult.size());
 		assertTrue("aaa".equals(filterResult.get(0).getStringDatatype1()) || "aaa".equals(filterResult.get(1).getStringDatatype1()));
 		assertTrue("AAA".equals(filterResult.get(0).getStringDatatype1()) || "AAA".equals(filterResult.get(1).getStringDatatype1()));
-
 	}
 
 	@Test

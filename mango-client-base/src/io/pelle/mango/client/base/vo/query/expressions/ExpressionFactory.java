@@ -55,7 +55,7 @@ public class ExpressionFactory {
 		IBooleanExpression compareExpression = null;
 
 		PathExpression pathExpression = new PathExpression(clazz.getName(), attributePath);
-		compareExpression = new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new LongExpression(value));
+		compareExpression = new CompareExpression(pathExpression, ComparisonOperator.EQUALS, new NumberExpression(value));
 
 		return compareExpression;
 

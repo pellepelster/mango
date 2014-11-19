@@ -13,7 +13,7 @@ public class DateSafeHtmlRenderer implements SafeHtmlRenderer<Long> {
 
 	private static DateSafeHtmlRenderer instance;
 
-	private static final DateTimeFormat FORMAT = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);
+	private static final DateTimeFormat FORMAT = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_LONG);
 
 	public static DateSafeHtmlRenderer getInstance() {
 		if (instance == null) {

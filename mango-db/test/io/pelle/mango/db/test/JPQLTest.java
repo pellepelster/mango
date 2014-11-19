@@ -55,31 +55,31 @@ public class JPQLTest extends TestCase {
 
 	@Test
 	public void testCriteria() {
-		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1)));
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1l)));
 		assertEquals("SELECT x0 FROM DBTest1 x0 WHERE x0.id = 1", query.getJPQL(EntityVOMapper.INSTANCE));
 	}
 
 	@Test
 	public void testCriteriaAndOr() {
-		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1).and(DBTest1.ID.eq(2).or(DBTest1.ID.eq(3)))));
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1l).and(DBTest1.ID.eq(2l).or(DBTest1.ID.eq(3l)))));
 		assertEquals("SELECT x0 FROM DBTest1 x0 WHERE x0.id = 1 AND x0.id = 2 OR x0.id = 3", query.getJPQL(EntityVOMapper.INSTANCE));
 	}
 
 	@Test
 	public void testCriteriaAndNestedOr() {
-		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1).and(or(DBTest1.ID.eq(2), DBTest1.ID.eq(3)))));
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1l).and(or(DBTest1.ID.eq(2l), DBTest1.ID.eq(3l)))));
 		assertEquals("SELECT x0 FROM DBTest1 x0 WHERE x0.id = 1 AND (x0.id = 2 OR x0.id = 3)", query.getJPQL(EntityVOMapper.INSTANCE));
 	}
 
 	@Test
 	public void testCriteriaOrNestedAnd() {
-		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1).or(and(DBTest1.ID.eq(2), DBTest1.ID.eq(3)))));
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1l).or(and(DBTest1.ID.eq(2l), DBTest1.ID.eq(3l)))));
 		assertEquals("SELECT x0 FROM DBTest1 x0 WHERE x0.id = 1 OR (x0.id = 2 AND x0.id = 3)", query.getJPQL(EntityVOMapper.INSTANCE));
 	}
 
 	@Test
 	public void testCriteriaOr() {
-		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1).or(DBTest1.ID.eq(2))));
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1l).or(DBTest1.ID.eq(2l))));
 		assertEquals("SELECT x0 FROM DBTest1 x0 WHERE x0.id = 1 OR x0.id = 2", query.getJPQL(EntityVOMapper.INSTANCE));
 	}
 
@@ -91,7 +91,7 @@ public class JPQLTest extends TestCase {
 
 	@Test
 	public void testCriteriaAnd() {
-		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1).and(DBTest1.ID.eq(2))));
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).where(DBTest1.ID.eq(1l).and(DBTest1.ID.eq(2l))));
 		assertEquals("SELECT x0 FROM DBTest1 x0 WHERE x0.id = 1 AND x0.id = 2", query.getJPQL(EntityVOMapper.INSTANCE));
 	}
 
