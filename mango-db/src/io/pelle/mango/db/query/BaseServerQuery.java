@@ -1,5 +1,6 @@
 package io.pelle.mango.db.query;
 
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IEntityVOMapper;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.BaseQuery;
@@ -11,14 +12,13 @@ import io.pelle.mango.db.util.DBUtil;
 import java.util.Collection;
 
 public class BaseServerQuery<T extends IVOEntity, Q> {
-	
+
 	private BaseQuery<T, Q> selectQuery;
-	
-	protected BaseServerQuery(BaseQuery<T, Q> selectQuery)
-	{
+
+	protected BaseServerQuery(BaseQuery<T, Q> selectQuery) {
 		this.selectQuery = selectQuery;
 	}
-	
+
 	protected String getSelectClause() {
 		String result = "";
 		String delimiter = "";
@@ -43,6 +43,29 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 		return result;
 	}
 
+	protected String getOrderClause() {
+
+		StringBuilder result = new StringBuilder();
+
+		if (!selectQuery.getOrderBys().isEmpty()) {
+			result.append("ORDER BY ");
+		}
+
+		String delimiter = "";
+		for (IAttributeDescriptor<?> orderBy : selectQuery.getOrderBys()) {
+
+			result.append(delimiter);
+			result.append(orderBy.getAttributeName());
+			delimiter = ", ";
+		}
+
+		if (!selectQuery.getOrderBys().isEmpty()) {
+			result.append(" " + selectQuery.getSortOrder());
+		}
+
+		return result.toString();
+	}
+
 	private void addJoins(StringBuilder result, String parentAlias, Collection<Join> joins) {
 
 		for (Join join : joins) {
@@ -51,8 +74,7 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 			addJoins(result, join.getAlias(), join.getJoins());
 		}
 	}
-	
-	
+
 	protected String getWhereClause() {
 
 		StringBuilder result = new StringBuilder();
@@ -64,7 +86,7 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 
 		return result.toString();
 	}
-	
+
 	protected String getJoinClause() {
 
 		StringBuilder result = new StringBuilder();
@@ -75,6 +97,5 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 
 		return result.toString();
 	}
-
 
 }

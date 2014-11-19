@@ -24,6 +24,24 @@ public class JPQLTest extends TestCase {
 	}
 
 	@Test
+	public void testOrderByDefault() {
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).orderBy(DBTest1.TESTSTRING));
+		assertEquals("SELECT x0 FROM DBTest1 x0 ORDER BY testString ASC", query.getJPQL(EntityVOMapper.INSTANCE));
+	}
+
+	@Test
+	public void testOrderByDefaultDescending() {
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).orderBy(DBTest1.TESTSTRING).descending());
+		assertEquals("SELECT x0 FROM DBTest1 x0 ORDER BY testString DESC", query.getJPQL(EntityVOMapper.INSTANCE));
+	}
+
+	@Test
+	public void testOrderByDefaultAscending() {
+		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).orderBy(DBTest1.TESTSTRING).ascending());
+		assertEquals("SELECT x0 FROM DBTest1 x0 ORDER BY testString ASC", query.getJPQL(EntityVOMapper.INSTANCE));
+	}
+
+	@Test
 	public void testJoin1() {
 		ServerSelectQuery<DBTest1> query = ServerSelectQuery.adapt(SelectQuery.selectFrom(DBTest1.class).join(DBTest1.TEST2S, DBTest2.TEST3));
 		assertEquals("SELECT x0 FROM DBTest1 x0 LEFT JOIN x0.test2s x1 LEFT JOIN x1.test3 x2", query.getJPQL(EntityVOMapper.INSTANCE));

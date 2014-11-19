@@ -244,6 +244,37 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testEntity1Sort() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		baseEntityService.create(entity1VO);
+
+		entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("bbb");
+		baseEntityService.create(entity1VO);
+
+		entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("ccc");
+		baseEntityService.create(entity1VO);
+
+		SelectQuery<Entity1VO> selectQuery = SelectQuery.selectFrom(Entity1VO.class).orderBy(Entity1VO.STRINGDATATYPE1);
+
+		List<Entity1VO> result1 = this.baseEntityService.filter(selectQuery);
+		assertEquals("aaa", result1.get(0).getStringDatatype1());
+		assertEquals("bbb", result1.get(1).getStringDatatype1());
+		assertEquals("ccc", result1.get(2).getStringDatatype1());
+
+		selectQuery = SelectQuery.selectFrom(Entity1VO.class).orderBy(Entity1VO.STRINGDATATYPE1).descending();
+		result1 = this.baseEntityService.filter(selectQuery);
+		assertEquals("ccc", result1.get(0).getStringDatatype1());
+		assertEquals("bbb", result1.get(1).getStringDatatype1());
+		assertEquals("aaa", result1.get(2).getStringDatatype1());
+	}
+
+	@Test
 	public void testEntity3VOBinaryDatatype1() {
 
 		byte[] data = new byte[] { 0xa, 0xb, 0xc };

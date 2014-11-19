@@ -13,11 +13,19 @@ import com.google.common.base.Optional;
 @SuppressWarnings("serial")
 public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable {
 
+	private List<IAttributeDescriptor<?>> orderBys = new ArrayList<IAttributeDescriptor<?>>();
+
 	protected IAliasProvider aliasProvider = new AliasProvider();
 
 	private Optional<IExpression> whereExpression = Optional.absent();
 
 	private List<Entity> froms = new ArrayList<Entity>();
+
+	private enum SORT_ORDER {
+		DESC, ASC
+	}
+
+	private SORT_ORDER sortOrder = SORT_ORDER.ASC;
 
 	public BaseQuery() {
 		super();
@@ -61,13 +69,35 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 	public Q where(IExpression expression) {
 		whereExpression = Optional.of(expression);
 		return getQuery();
+	}
 
+	public Q orderBy(IAttributeDescriptor<?> orderBy) {
+		orderBys.add(orderBy);
+		return getQuery();
 	}
 
 	protected abstract Q getQuery();
 
 	public Optional<IExpression> getWhereExpression() {
 		return whereExpression;
+	}
+
+	public List<IAttributeDescriptor<?>> getOrderBys() {
+		return orderBys;
+	}
+
+	public SORT_ORDER getSortOrder() {
+		return sortOrder;
+	}
+
+	public Q descending() {
+		this.sortOrder = SORT_ORDER.DESC;
+		return getQuery();
+	}
+
+	public Q ascending() {
+		this.sortOrder = SORT_ORDER.ASC;
+		return getQuery();
 	}
 
 }

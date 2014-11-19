@@ -8,9 +8,9 @@ import java.io.Serializable;
 public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T>> implements Serializable {
 
 	private int maxResults = MAX_RESULTS_DEFAULT;
-	
+
 	private int firstResult = FIRST_RESULT_DEFAULT;
-	
+
 	public static int MAX_RESULTS_DEFAULT = 50;
 
 	public static int FIRST_RESULT_DEFAULT = 0;
@@ -50,11 +50,11 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 		this.firstResult = firstResult;
 		return this;
 	}
-	
+
 	public int getFirstResult() {
 		return firstResult;
 	}
-	
+
 	public int getMaxResults() {
 		return maxResults;
 	}
