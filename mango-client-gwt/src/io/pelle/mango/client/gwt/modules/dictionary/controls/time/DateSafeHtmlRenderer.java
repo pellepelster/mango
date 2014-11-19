@@ -9,9 +9,11 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.text.shared.SafeHtmlRenderer;
 
-public class DateSafeHtmlRenderer implements SafeHtmlRenderer<Date> {
+public class DateSafeHtmlRenderer implements SafeHtmlRenderer<Long> {
 
 	private static DateSafeHtmlRenderer instance;
+
+	private static final DateTimeFormat FORMAT = DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM);
 
 	public static DateSafeHtmlRenderer getInstance() {
 		if (instance == null) {
@@ -23,11 +25,11 @@ public class DateSafeHtmlRenderer implements SafeHtmlRenderer<Date> {
 	private DateSafeHtmlRenderer() {
 	}
 
-	public SafeHtml render(Date object) {
-		return (object == null) ? SafeHtmlUtils.EMPTY_SAFE_HTML : SafeHtmlUtils.fromString(object.toLocaleString());
+	public SafeHtml render(Long object) {
+		return (object == null) ? SafeHtmlUtils.EMPTY_SAFE_HTML : SafeHtmlUtils.fromString(FORMAT.format(new Date(object)));
 	}
 
-	public void render(Date object, SafeHtmlBuilder appendable) {
-		appendable.append(SafeHtmlUtils.fromString(object.toLocaleString()));
+	public void render(Long object, SafeHtmlBuilder appendable) {
+		appendable.append(SafeHtmlUtils.fromString(FORMAT.format(new Date(object))));
 	}
 }

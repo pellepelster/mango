@@ -1,26 +1,24 @@
 package io.pelle.mango.server.log;
 
-import java.util.Date;
-
 import com.google.common.base.Objects;
 
 public class LogEvent {
 
 	private String message;
 
-	private final Date timestamp;
+	private final long timestamp;
 
 	public LogEvent(String message) {
 		super();
 		this.message = message;
-		this.timestamp = new Date();
+		this.timestamp = System.currentTimeMillis();
 	}
 
 	public String getMessage() {
 		return message;
 	}
 
-	public Date getTimestamp() {
+	public long getTimestamp() {
 		return timestamp;
 	}
 

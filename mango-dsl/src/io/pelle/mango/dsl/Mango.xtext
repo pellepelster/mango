@@ -73,7 +73,7 @@ Datatype:
 	SimpleDataType | EntityDataType;
 
 SimpleDataType:
-	StringDataType | DecimalDataType | DateDataType | IntegerDataType | BinaryDataType | EnumerationDataType | BooleanDataType | DoubleDataType  | FloatDataType;
+	StringDataType | DecimalDataType | DateDataType | IntegerDataType | BinaryDataType | EnumerationDataType | BooleanDataType | DoubleDataType  | FloatDataType | LongDataType;
 
 enum Cardinality: 
 	onetoone = "0..1" | onetomany = "0..n" | manytomany = "n..n";

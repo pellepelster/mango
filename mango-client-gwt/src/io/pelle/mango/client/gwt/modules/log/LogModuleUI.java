@@ -12,7 +12,6 @@
 package io.pelle.mango.client.gwt.modules.log;
 
 import io.pelle.mango.client.gwt.GwtStyles;
-import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.time.DateColumn;
 import io.pelle.mango.client.log.LogEntryVO;
@@ -20,31 +19,18 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.log.LogModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
-import java.awt.ScrollPane;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.DomEvent;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.ScrollEvent;
 import com.google.gwt.event.dom.client.ScrollHandler;
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
-import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Event.NativePreviewHandler;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.Event.NativePreviewEvent;
-import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
@@ -101,7 +87,7 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		panel.setHeight("100%");
 
 		headerPanel = new VerticalPanel();
-		
+
 		// - title -------------------------------------------------------------
 		title = new HTML(module.getTitle());
 		title.addStyleName(GwtStyles.TITLE);
@@ -111,18 +97,18 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		dataGrid = new LogDataGrid<LogEntryVO>();
 		dataGrid.setWidth("98%");
 		panel.add(dataGrid);
-		
+
 		dataGrid.getScrollPanel().addScrollHandler(new ScrollHandler() {
-			
+
 			@Override
 			public void onScroll(ScrollEvent event) {
-				
+
 				if (pager.hasNextPage()) {
 					if (dataGrid.getScrollPanel().getVerticalScrollPosition() == dataGrid.getScrollPanel().getMaximumVerticalScrollPosition()) {
 						pager.nextPage();
 					}
 				}
-				
+
 				if (pager.hasPreviousPage()) {
 					if (dataGrid.getScrollPanel().getVerticalScrollPosition() == dataGrid.getScrollPanel().getMinimumVerticalScrollPosition()) {
 						pager.previousPage();
@@ -131,10 +117,10 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 
 			}
 		});
-		
+
 		dataGrid.addColumn(new DateColumn<LogEntryVO>() {
 			@Override
-			public Date getValue(LogEntryVO object) {
+			public Long getValue(LogEntryVO object) {
 				return object.getTimestamp();
 			}
 		}, MangoClientWeb.MESSAGES.logTimestampTitle());
@@ -152,17 +138,17 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		footerPanel = new VerticalPanel();
 		pager = new SimplePager();
 		pager.setDisplay(dataGrid);
-		//footerPanel.add(pager);
+		// footerPanel.add(pager);
 
 		panel.add(pager);
 		panel.addAttachHandler(new Handler() {
-			
+
 			@Override
 			public void onAttachOrDetach(AttachEvent event) {
 				onResize();
 			}
 		});
-		
+
 	}
 
 	@Override
@@ -171,9 +157,11 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		int totalHeight = panel.getParent().getOffsetHeight();
 		int headerHeight = headerPanel.getOffsetHeight() + headerPanel.getAbsoluteTop();
 		int footerHeight = pager.getOffsetHeight();
-		
-		//LOG.info("header:" + headerPanel.getOffsetHeight() + "/" + headerPanel.getAbsoluteTop());
-		//LOG.info("pager:" + pager.getOffsetHeight() + "/" + pager.getAbsoluteTop());
+
+		// LOG.info("header:" + headerPanel.getOffsetHeight() + "/" +
+		// headerPanel.getAbsoluteTop());
+		// LOG.info("pager:" + pager.getOffsetHeight() + "/" +
+		// pager.getAbsoluteTop());
 
 		int tableHeight = totalHeight - (headerHeight + footerHeight);
 		LOG.info("tableHeight:" + tableHeight);
