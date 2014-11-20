@@ -6,12 +6,18 @@ public class LogEvent {
 
 	private String message;
 
+	private String reference;
+
 	private final long timestamp;
 
 	public LogEvent(String message) {
+		this(message, System.currentTimeMillis());
+	}
+
+	public LogEvent(String message, long timeStamp) {
 		super();
 		this.message = message;
-		this.timestamp = System.currentTimeMillis();
+		this.timestamp = timeStamp;
 	}
 
 	public String getMessage() {
@@ -25,6 +31,14 @@ public class LogEvent {
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("timestamp", timestamp).add("message", message).toString();
+	}
+
+	public void setReference(String reference) {
+		this.reference = reference;
+	}
+
+	public String getReference() {
+		return reference;
 	}
 
 }

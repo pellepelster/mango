@@ -13,7 +13,7 @@ package io.pelle.mango.client.gwt.modules.log;
 
 import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
-import io.pelle.mango.client.gwt.modules.dictionary.controls.time.DateColumn;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.time.TimestampColumn;
 import io.pelle.mango.client.gwt.modules.log.EndlessDataGrid.EndlessDataGridCallback;
 import io.pelle.mango.client.log.LogEntryVO;
 import io.pelle.mango.client.web.MangoClientWeb;
@@ -27,7 +27,6 @@ import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
@@ -74,31 +73,39 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		dataGrid.setWidth("98%");
 		dataGrid.setDataGridCallback(new EndlessDataGridCallback<LogEntryVO>() {
 
-			private AsyncCallback<List<LogEntryVO>> callback = new BaseErrorAsyncCallback<List<LogEntryVO>>() {
-				@Override
-				public void onSuccess(List<LogEntryVO> result) {
-					setData(result);
-				};
-			};
-
 			@Override
-			void initalGetData(int pageSize) {
-				MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLog(pageSize, callback);
+			void initalData(int pageSize) {
+				MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLog(pageSize, null, new BaseErrorAsyncCallback<List<LogEntryVO>>() {
+					@Override
+					public void onSuccess(List<LogEntryVO> result) {
+						initialDataFinished(result);
+					};
+				});
 			}
 
 			@Override
-			void getDataBefore(LogEntryVO item, int pageSize) {
-				MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLogAfter(item.getTimestamp(), pageSize, callback);
+			void onPageUp(LogEntryVO item, int pageSize) {
+				MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLogAfter(item.getTimestamp(), pageSize, null, new BaseErrorAsyncCallback<List<LogEntryVO>>() {
+					@Override
+					public void onSuccess(List<LogEntryVO> result) {
+						pageUpFinished(result);
+					};
+				});
 			}
 
 			@Override
-			void getDataAfter(LogEntryVO item, int pageSize) {
-				MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLogBefore(item.getTimestamp(), pageSize, callback);
+			void onPageDown(LogEntryVO item, int pageSize) {
+				MangoClientWeb.getInstance().getRemoteServiceLocator().getLogService().getLogBefore(item.getTimestamp(), pageSize, null, new BaseErrorAsyncCallback<List<LogEntryVO>>() {
+					@Override
+					public void onSuccess(List<LogEntryVO> result) {
+						pageDownFinished(result);
+					};
+				});
 			}
 		});
 		panel.add(dataGrid);
 
-		dataGrid.addColumn(new DateColumn<LogEntryVO>() {
+		dataGrid.addColumn(new TimestampColumn<LogEntryVO>() {
 			@Override
 			public Long getValue(LogEntryVO object) {
 				return object.getTimestamp();

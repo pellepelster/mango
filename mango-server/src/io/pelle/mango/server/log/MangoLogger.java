@@ -8,7 +8,22 @@ public class MangoLogger {
 	private LogEventBus logEventBus;
 
 	public void info(String message) {
-		LogEvent logEvent = new LogEvent(message);
+		info(message, null);
+	}
+
+	public void info(String message, String reference) {
+		info(message, reference, -1);
+	}
+
+	public void info(String message, String reference, long timestamp) {
+		LogEvent logEvent = null;
+		
+		if (timestamp > -1) {
+			logEvent = new LogEvent(message, timestamp);
+		} else {
+			logEvent = new LogEvent(message);
+		}
+		logEvent.setReference(reference);
 		sendLogMessage(logEvent);
 	}
 

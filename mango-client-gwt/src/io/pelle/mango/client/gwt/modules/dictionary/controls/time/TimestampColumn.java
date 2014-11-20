@@ -2,9 +2,9 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls.time;
 
 import com.google.gwt.user.cellview.client.Column;
 
-public abstract class DateColumn<T> extends Column<T, Long> {
+public abstract class TimestampColumn<T> extends Column<T, Long> {
 
-	public DateColumn() {
-		super(new DateCell());
+	public TimestampColumn() {
+		super(new TimestampCell());
 	}
 }

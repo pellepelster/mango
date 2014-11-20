@@ -48,9 +48,9 @@ project Mango {
 			}
 			
     		service LogService {
-				method List<LogEntryVO> getLog(int count)
-				method List<LogEntryVO> getLogBefore(Long timestamp, int count)
-				method List<LogEntryVO> getLogAfter(Long timestamp, int count)
+				method List<LogEntryVO> getLog(int count, String ^reference)
+				method List<LogEntryVO> getLogBefore(Long timestamp, int count, String ^reference)
+				method List<LogEntryVO> getLogAfter(Long timestamp, int count, String ^reference)
 			}
 			
 		}
