@@ -15,7 +15,9 @@ public class EndlessDataGrid<T> extends DataGrid<T> {
 
 	public static String NEW_ROW_STYLE = "endless-grid-new-row";
 
-	private int CALLBACK_QUIET_PERIOD = 200;
+	private int CALLBACK_QUIET_PERIOD_DEFAULT = 200;
+
+	private int callbackQuietPeriod = CALLBACK_QUIET_PERIOD_DEFAULT;
 
 	private long lastCallbackInvocation = -1;
 
@@ -137,7 +139,7 @@ public class EndlessDataGrid<T> extends DataGrid<T> {
 
 				if (lastCallbackInvocation > -1) {
 					long quietTime = System.currentTimeMillis() - lastCallbackInvocation;
-					fireCallback &= quietTime >= CALLBACK_QUIET_PERIOD;
+					fireCallback &= quietTime >= callbackQuietPeriod;
 				}
 
 				if (fireCallback) {
@@ -161,6 +163,10 @@ public class EndlessDataGrid<T> extends DataGrid<T> {
 			}
 		}, MouseWheelEvent.getType());
 
+	}
+
+	public void setCallbackQuietPeriod(int callbackQuietPeriod) {
+		this.callbackQuietPeriod = callbackQuietPeriod;
 	}
 
 }
