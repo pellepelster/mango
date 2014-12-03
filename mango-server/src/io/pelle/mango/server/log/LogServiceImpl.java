@@ -12,37 +12,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
 
-
 public class LogServiceImpl implements ILogService {
+
+	@Autowired
+	private LogReferenceKeyMapperRegistry referenceKeyMapperRegistry;
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
 
-	public SelectQuery<LogEntryVO> getBaseQuery(int count, String reference) {
+	public SelectQuery<LogEntryVO> getBaseQuery(int count, Object reference) {
 		SelectQuery<LogEntryVO> baseQuery = SelectQuery.selectFrom(LogEntryVO.class).orderBy(LogEntryVO.TIMESTAMP).setMaxResults(count);
-		
-		if (reference != null) {
-			baseQuery.where(LogEntryVO.REFERENCE.eq(reference));
+
+		String referenceKey = referenceKeyMapperRegistry.getLogReferenceKey(reference);
+
+		if (referenceKey != null) {
+			baseQuery.where(LogEntryVO.REFERENCE.eq(referenceKey));
 		}
-		
+
 		return baseQuery;
 	}
 
 	@Override
-	public List<LogEntryVO> getLog(int count, String reference) {
+	public List<LogEntryVO> getLog(int count, Object reference) {
 		SelectQuery<LogEntryVO> logQuery = getBaseQuery(count, reference).descending();
 		return baseEntityService.filter(logQuery);
 	}
 
 	@Override
-	public List<LogEntryVO> getLogBefore(Long timestamp, int count, String reference) {
+	public List<LogEntryVO> getLogBefore(Long timestamp, int count, Object reference) {
 		SelectQuery<LogEntryVO> logQuery = getBaseQuery(count, reference).descending();
 		logQuery.where(LogEntryVO.TIMESTAMP.lessThan(timestamp));
 		return baseEntityService.filter(logQuery);
 	}
 
 	@Override
-	public List<LogEntryVO> getLogAfter(Long timestamp, int count, String reference) {
+	public List<LogEntryVO> getLogAfter(Long timestamp, int count, Object reference) {
 		SelectQuery<LogEntryVO> logQuery = getBaseQuery(count, reference).ascending();
 		logQuery.where(LogEntryVO.TIMESTAMP.greaterThan(timestamp));
 		return new ArrayList<LogEntryVO>(Lists.reverse(baseEntityService.filter(logQuery)));

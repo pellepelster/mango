@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.log.ILogService;
 import io.pelle.mango.client.log.LogEntryVO;
+import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.server.log.MangoLogger;
 
 import java.util.List;
@@ -38,12 +39,30 @@ public class DemoLogServiceTest extends BaseDemoTest {
 		assertEquals(logEntries1.size() - 1, logEntries3.size());
 
 	}
-	
+
 	@Test
-	public void testLogReference() throws InterruptedException {
-		
+	public void testLogValueObjectReference() throws InterruptedException {
+
 		baseEntityService.deleteAll(LogEntryVO.class.getName());
-		
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("xxx");
+		entity1VO = baseEntityService.create(entity1VO);
+
+		mangoLogger.info("test1", entity1VO);
+
+		Thread.sleep(1000);
+
+		List<LogEntryVO> logEntries = logService.getLog(50, entity1VO);
+		assertEquals(1, logEntries.size());
+		assertEquals("io.pelle.mango.demo.client.test.Entity1VO#" + entity1VO.getId(), logEntries.get(0).getReference());
+	}
+
+	@Test
+	public void testLogStringReference() throws InterruptedException {
+
+		baseEntityService.deleteAll(LogEntryVO.class.getName());
+
 		mangoLogger.info("test1", "reference1");
 
 		Thread.sleep(1000);
@@ -60,7 +79,7 @@ public class DemoLogServiceTest extends BaseDemoTest {
 		for (int i = from; i > to; i--) {
 			int realIndex = from - i;
 			logEntryVO = logEntries.get(realIndex);
-			assertEquals((long)i, (long)logEntryVO.getTimestamp());
+			assertEquals((long) i, (long) logEntryVO.getTimestamp());
 			assertEquals("reference1", logEntryVO.getReference());
 		}
 
@@ -74,10 +93,10 @@ public class DemoLogServiceTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testGetLog() throws InterruptedException {
-		
+	public void testGetLogPaging() throws InterruptedException {
+
 		baseEntityService.deleteAll(LogEntryVO.class.getName());
-		
+
 		for (int i = 1; i <= 200; i++) {
 			mangoLogger.info("test1", "reference1", i);
 		}
@@ -86,7 +105,7 @@ public class DemoLogServiceTest extends BaseDemoTest {
 
 		List<LogEntryVO> logEntries1 = logService.getLog(50, "reference1");
 		assertEquals(50, logEntries1.size());
-		
+
 		LogEntryVO lastLogEntryVO1 = assertRangeAndorder(logEntries1, 200, 150);
 
 		List<LogEntryVO> logEntries2 = logService.getLogBefore(lastLogEntryVO1.getTimestamp(), 50, "reference1");
