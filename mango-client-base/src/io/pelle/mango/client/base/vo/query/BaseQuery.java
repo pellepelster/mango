@@ -21,7 +21,7 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 
 	private List<Entity> froms = new ArrayList<Entity>();
 
-	private enum SORT_ORDER {
+	public enum SORT_ORDER {
 		DESC, ASC
 	}
 
@@ -88,6 +88,10 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 
 	public SORT_ORDER getSortOrder() {
 		return sortOrder;
+	}
+
+	public void setSortOrder(SORT_ORDER sortOrder) {
+		this.sortOrder = sortOrder;
 	}
 
 	public Q descending() {
