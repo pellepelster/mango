@@ -49,6 +49,10 @@
     <!--  jackson mapper configuration -->
    	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
 
+	<bean class="io.pelle.mango.server.log.LogReferenceKeyMapperRegistry" />
+	
+	<bean class="io.pelle.mango.server.log.ValueObjectLogReferenceKeyMapper" />
+
 	<bean
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="objectMapper" />

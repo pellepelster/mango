@@ -17,9 +17,5 @@
 
 	<bean class="io.pelle.mango.server.log.LogMessageListener" />
 
-	<bean class="io.pelle.mango.server.log.LogReferenceKeyMapperRegistry" />
-	
-	<bean class="io.pelle.mango.server.log.ValueObjectLogReferenceKeyMapper" />
-	
 </beans>
              

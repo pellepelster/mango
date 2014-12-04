@@ -20,10 +20,10 @@
 	    </property>
 	</bean>
 	
-	<bean id="pingTask" class="io.pelle.mango.demo.server.test.PingTask" />
+	<bean id="logTask" class="io.pelle.mango.demo.server.test.LogTask" />
 
 	<task:scheduled-tasks>
-		<task:scheduled ref="pingTask" method="ping" fixed-delay="2500"/>
+		<task:scheduled ref="logTask" method="createLogEntries" fixed-delay="2500"/>
 	</task:scheduled-tasks>
 	
 </beans>

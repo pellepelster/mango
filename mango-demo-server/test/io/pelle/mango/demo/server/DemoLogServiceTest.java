@@ -28,16 +28,11 @@ public class DemoLogServiceTest extends BaseDemoTest {
 	public void testLogEntriesFromPingTask() throws InterruptedException {
 
 		Thread.sleep(5000);
-		List<LogEntryVO> logEntries1 = logService.getLog(50, null);
+		List<LogEntryVO> logEntries1 = logService.getLog(50, "ping");
 		Thread.sleep(5000);
-		List<LogEntryVO> logEntries2 = logService.getLog(50, null);
+		List<LogEntryVO> logEntries2 = logService.getLog(50, "ping");
 
 		assertTrue(logEntries2.size() > logEntries1.size());
-
-		LogEntryVO logEntryVO = logEntries1.get(0);
-		List<LogEntryVO> logEntries3 = logService.getLogBefore(logEntryVO.getTimestamp(), 50, null);
-		assertEquals(logEntries1.size() - 1, logEntries3.size());
-
 	}
 
 	@Test
@@ -79,8 +74,8 @@ public class DemoLogServiceTest extends BaseDemoTest {
 		for (int i = from; i > to; i--) {
 			int realIndex = from - i;
 			logEntryVO = logEntries.get(realIndex);
-			assertEquals((long) i, (long) logEntryVO.getTimestamp());
 			assertEquals("reference1", logEntryVO.getReference());
+			assertEquals((long) i, (long) logEntryVO.getTimestamp());
 		}
 
 		return logEntryVO;

@@ -54,6 +54,8 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	private static final String DICTIONARY_INFO_BUTTON_DEBUG_ID = "DictionaryInfoButton";
 
+	private static final String DICTIONARY_LOG_BUTTON_DEBUG_ID = "DictionaryLogButton";
+
 	private final HtmlWithHelp editorTitle;
 
 	@SuppressWarnings("rawtypes")
