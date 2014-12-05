@@ -54,4 +54,7 @@ public interface MangoResources extends ClientBundle {
 	@Source("hierarchy.png")
 	ImageResource hierarchy();
 
+	@Source("log.png")
+	ImageResource log();
+
 }

@@ -56,7 +56,16 @@ public class EndlessDataGrid<T> extends DataGrid<T> {
 
 					dataGrid.setNewData(data);
 
-					List<C> fill = dataGrid.getDataProvider().getList().subList(data.size(), dataGrid.getDataProvider().getList().size() - 1);
+					List<C> currentList = dataGrid.getDataProvider().getList();
+
+					List<C> fill = null;
+
+					if (data.size() + currentList.size() <= dataGrid.getPageSize()) {
+						fill = currentList;
+					} else {
+						fill = currentList.subList(data.size() - 1, currentList.size() - 1);
+					}
+
 					data.addAll(fill);
 				}
 

@@ -17,7 +17,7 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 
 	protected IAliasProvider aliasProvider = new AliasProvider();
 
-	private Optional<IExpression> whereExpression = Optional.absent();
+	private Optional<IBooleanExpression> whereExpression = Optional.absent();
 
 	private List<Entity> froms = new ArrayList<Entity>();
 
@@ -66,8 +66,10 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 		this.froms = froms;
 	}
 
-	public Q where(IExpression expression) {
+	public Q where(IBooleanExpression expression) {
+
 		whereExpression = Optional.of(expression);
+
 		return getQuery();
 	}
 
@@ -78,7 +80,7 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 
 	protected abstract Q getQuery();
 
-	public Optional<IExpression> getWhereExpression() {
+	public Optional<IBooleanExpression> getWhereExpression() {
 		return whereExpression;
 	}
 

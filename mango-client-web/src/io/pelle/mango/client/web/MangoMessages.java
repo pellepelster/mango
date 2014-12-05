@@ -162,4 +162,7 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("Time")
 	String logTimestampTitle();
 
+	@DefaultMessage("Log")
+	String log();
+
 }

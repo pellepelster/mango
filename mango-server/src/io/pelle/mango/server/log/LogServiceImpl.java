@@ -9,11 +9,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
 
 public class LogServiceImpl implements ILogService {
+
+	private static final Logger LOG = Logger.getLogger(LogServiceImpl.class);
 
 	@Autowired
 	private LogReferenceKeyMapperRegistry referenceKeyMapperRegistry;
@@ -22,6 +25,7 @@ public class LogServiceImpl implements ILogService {
 	private IBaseEntityService baseEntityService;
 
 	public SelectQuery<LogEntryVO> getBaseQuery(int count, Serializable reference) {
+
 		SelectQuery<LogEntryVO> baseQuery = SelectQuery.selectFrom(LogEntryVO.class).orderBy(LogEntryVO.TIMESTAMP).setMaxResults(count);
 
 		String referenceKey = referenceKeyMapperRegistry.getLogReferenceKey(reference);
@@ -35,21 +39,36 @@ public class LogServiceImpl implements ILogService {
 
 	@Override
 	public List<LogEntryVO> getLog(int count, Serializable reference) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(String.format("retrieving %d log entries for reference '%s'", count, reference));
+		}
+
 		SelectQuery<LogEntryVO> logQuery = getBaseQuery(count, reference).descending();
 		return baseEntityService.filter(logQuery);
 	}
 
 	@Override
 	public List<LogEntryVO> getLogBefore(Long timestamp, int count, Serializable reference) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(String.format("retrieving %d log entries before %tc for reference '%s'", count, timestamp, reference));
+		}
+
 		SelectQuery<LogEntryVO> logQuery = getBaseQuery(count, reference).descending();
-		logQuery.where(LogEntryVO.TIMESTAMP.lessThan(timestamp));
+		logQuery.getWhereExpression().get().and(LogEntryVO.TIMESTAMP.lessThan(timestamp));
 		return baseEntityService.filter(logQuery);
 	}
 
 	@Override
 	public List<LogEntryVO> getLogAfter(Long timestamp, int count, Serializable reference) {
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(String.format("retrieving %d log entries after %tc for reference '%s'", count, timestamp, reference));
+		}
+
 		SelectQuery<LogEntryVO> logQuery = getBaseQuery(count, reference).ascending();
-		logQuery.where(LogEntryVO.TIMESTAMP.greaterThan(timestamp));
+		logQuery.getWhereExpression().get().and(LogEntryVO.TIMESTAMP.greaterThan(timestamp));
 		return new ArrayList<LogEntryVO>(Lists.reverse(baseEntityService.filter(logQuery)));
 	}
 }

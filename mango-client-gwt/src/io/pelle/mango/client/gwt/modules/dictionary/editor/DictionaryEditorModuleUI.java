@@ -99,14 +99,15 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 			}
 		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_SAVE_BUTTON_DEBUG_ID);
 
-		final Button refreshButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorRefresh(), MangoClientWeb.MESSAGES.editorRefresh(), new ClickHandler() {
-			/** {@inheritDoc} */
-			@Override
-			public void onClick(ClickEvent event) {
-				getModule().getDictionaryEditor().refresh();
-			}
+		final Button refreshButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorRefresh(),
+				MangoClientWeb.MESSAGES.editorRefresh(), new ClickHandler() {
+					/** {@inheritDoc} */
+					@Override
+					public void onClick(ClickEvent event) {
+						getModule().getDictionaryEditor().refresh();
+					}
 
-		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_REFRESH_BUTTON_DEBUG_ID);
+				}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_REFRESH_BUTTON_DEBUG_ID);
 		refreshButton.setEnabled(false);
 
 		if (getModule().getDictionaryEditor().getMetaInformation().isPresent()) {
@@ -114,8 +115,9 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 			final MetaInformationPopupPanel infoPopupPanel = new MetaInformationPopupPanel(getModule().getDictionaryEditor());
 			infoPopupPanel.setAutoHideEnabled(true);
 
-			final Button infoButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(), MangoClientWeb.MESSAGES.dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-"
-					+ getModule().getDictionaryModel().getName() + "-" + DICTIONARY_INFO_BUTTON_DEBUG_ID);
+			final Button infoButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(),
+					MangoClientWeb.MESSAGES.dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-"
+							+ DICTIONARY_INFO_BUTTON_DEBUG_ID);
 			infoButton.addClickHandler(new ClickHandler() {
 				/** {@inheritDoc} */
 				@Override
@@ -126,11 +128,12 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 		}
 
 		if (getModule().isLogDisplayEnabled()) {
+			
 			final LogPopupPanel logPopupPanel = new LogPopupPanel(getModule().getDictionaryEditor());
 			logPopupPanel.setAutoHideEnabled(true);
 
-			final Button logButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(), MangoClientWeb.MESSAGES.dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-"
-					+ getModule().getDictionaryModel().getName() + "-" + DICTIONARY_LOG_BUTTON_DEBUG_ID);
+			final Button logButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.log(), MangoClientWeb.MESSAGES.log(),
+					DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_LOG_BUTTON_DEBUG_ID);
 			logButton.addClickHandler(new ClickHandler() {
 				/** {@inheritDoc} */
 				@Override
@@ -179,7 +182,9 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	@Override
 	public boolean isInstanceOf(String moduleUrl) {
-		return super.isInstanceOf(moduleUrl) && Objects.equal(getModule().getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
+		return super.isInstanceOf(moduleUrl)
+				&& Objects.equal(getModule().getEditorDictionaryName(),
+						ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
 	}
 
 	/** {@inheritDoc} */

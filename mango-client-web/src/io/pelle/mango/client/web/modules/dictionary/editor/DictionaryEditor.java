@@ -12,7 +12,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.editor.IEditorModel;
 import io.pelle.mango.client.base.util.CollectionUtils;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.query.IExpression;
+import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
@@ -52,7 +52,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 		this.dictionaryModel = dictionaryModel;
 		this.voWrapper = new EditorVOWrapper<VOType>();
 		voWrapper.setDirtyCallback(new IDirtyCallback() {
-			
+
 			@Override
 			public void onDirtyChange() {
 				fireUpdateListeners();
@@ -104,7 +104,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 	public void load(long id, final AsyncCallback<Void> callback) {
 
 		SelectQuery<VOType> selectQuery = new SelectQuery<VOType>(dictionaryModel.getVOClass());
-		IExpression expression = ExpressionFactory.createLongExpression(dictionaryModel.getVOClass(), IBaseVO.ID_FIELD_NAME, id);
+		IBooleanExpression expression = ExpressionFactory.createLongExpression(dictionaryModel.getVOClass(), IBaseVO.ID_FIELD_NAME, id);
 		selectQuery.where(expression);
 
 		if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent().getName())) {
