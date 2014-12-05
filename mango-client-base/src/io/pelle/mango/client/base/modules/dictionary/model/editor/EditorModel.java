@@ -7,45 +7,50 @@ import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
-public class EditorModel<VOType extends IBaseVO> extends BaseModel<Object> implements IEditorModel
-{
+public class EditorModel<VOType extends IBaseVO> extends BaseModel<Object> implements IEditorModel {
 
 	private static final long serialVersionUID = 7452528927479882166L;
+
+	private boolean logDisplayEnabled;
 
 	private String label;
 
 	private ICompositeModel compositeModel;
 
-	public EditorModel(String name, IBaseModel parent)
-	{
+	public EditorModel(String name, IBaseModel parent) {
 		super(name, parent);
 	}
 
 	@Override
-	public ICompositeModel getCompositeModel()
-	{
+	public ICompositeModel getCompositeModel() {
 		return this.compositeModel;
 	}
 
 	@Override
-	public String getLabel()
-	{
+	public String getLabel() {
 		return this.label;
 	}
 
-	public void setLabel(String label)
-	{
+	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	public void setCompositeModel(ICompositeModel compositeModel)
-	{
+	public void setCompositeModel(ICompositeModel compositeModel) {
 		this.compositeModel = compositeModel;
 	}
 
-	public void addEditorHook(BaseEditorHook<VOType> editorHook)
-	{
+	public void addEditorHook(BaseEditorHook<VOType> editorHook) {
 		DictionaryHookRegistry.getInstance().addEditorHook(getName(), editorHook);
+	}
+
+	@Override
+	public void enableLogDisplay() {
+		logDisplayEnabled = true;
+	}
+
+	@Override
+	public boolean isLogDisplayEnabled() {
+		return logDisplayEnabled;
 	}
 
 }

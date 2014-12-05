@@ -20,8 +20,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.IBaseRootModel;
  * @version $Rev$, $Date$
  * 
  */
-public interface IEditorModel extends IBaseRootModel
-{
+public interface IEditorModel extends IBaseRootModel {
 
 	/**
 	 * Returns the title
@@ -29,5 +28,9 @@ public interface IEditorModel extends IBaseRootModel
 	 * @return
 	 */
 	String getLabel();
+
+	void enableLogDisplay();
+
+	boolean isLogDisplayEnabled();
 
 }

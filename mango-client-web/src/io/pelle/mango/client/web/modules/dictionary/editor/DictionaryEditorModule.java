@@ -151,4 +151,7 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
 		return getDictionaryModel().getEditorModel().getHelpText();
 	}
 
+	public boolean isLogDisplayEnabled() {
+		return dictionaryEditor.getModel().isLogDisplayEnabled();
+	}
 }

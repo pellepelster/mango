@@ -125,6 +125,21 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 			});
 		}
 
+		if (getModule().isLogDisplayEnabled()) {
+			final LogPopupPanel logPopupPanel = new LogPopupPanel(getModule().getDictionaryEditor());
+			logPopupPanel.setAutoHideEnabled(true);
+
+			final Button logButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(), MangoClientWeb.MESSAGES.dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-"
+					+ getModule().getDictionaryModel().getName() + "-" + DICTIONARY_LOG_BUTTON_DEBUG_ID);
+			logButton.addClickHandler(new ClickHandler() {
+				/** {@inheritDoc} */
+				@Override
+				public void onClick(ClickEvent event) {
+					logPopupPanel.showRelativeTo(logButton);
+				}
+			});
+		}
+
 		for (final IButton button : getModule().getEditorButtons()) {
 			actionBar.addSingleButton(button);
 

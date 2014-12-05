@@ -32,6 +32,8 @@ public class DemoClient implements EntryPoint {
 		init();
 		ModuleHandler.getInstance().startUIModule(ModuleNavigationModule.NAVIGATION_UI_MODULE_LOCATOR, Direction.WEST.toString());
 
+		MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.enableLogDisplay();
+
 		String greetingText = "";
 		greetingText += "<h2>Mango Showcase</h2><br/>";
 		greetingText += "<span style=\"font-size:150%;\">This example Mango application showcases some key features that make up the generic CRUD UI part of Mango.<br/>";
