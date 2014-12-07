@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.log.ILogService;
+import io.pelle.mango.client.log.LOGLEVEL;
 import io.pelle.mango.client.log.LogEntryVO;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.server.log.MangoLogger;
@@ -93,7 +94,7 @@ public class DemoLogServiceTest extends BaseDemoTest {
 		baseEntityService.deleteAll(LogEntryVO.class.getName());
 
 		for (int i = 1; i <= 200; i++) {
-			mangoLogger.info("test1", "reference1", i);
+			mangoLogger.log("test1", LOGLEVEL.INFO, "reference1", i);
 		}
 
 		Thread.sleep(2000);

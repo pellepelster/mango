@@ -16,12 +16,8 @@ public class LogDataGridCallback extends EndlessDataGridCallback<LogEntryVO> {
 		this.reference = reference;
 	}
 
-	public static LogDataGridCallback createWithReference(Serializable reference) {
+	public static LogDataGridCallback create(Serializable reference) {
 		return new LogDataGridCallback(reference);
-	}
-
-	public static LogDataGridCallback create() {
-		return new LogDataGridCallback(null);
 	}
 
 	@Override

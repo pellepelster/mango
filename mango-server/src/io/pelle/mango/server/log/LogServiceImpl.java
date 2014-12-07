@@ -56,7 +56,13 @@ public class LogServiceImpl implements ILogService {
 		}
 
 		SelectQuery<LogEntryVO> logQuery = getBaseQuery(count, reference).descending();
-		logQuery.getWhereExpression().get().and(LogEntryVO.TIMESTAMP.lessThan(timestamp));
+
+		if (logQuery.getWhereExpression().isPresent()) {
+			logQuery.getWhereExpression().get().and(LogEntryVO.TIMESTAMP.lessThan(timestamp));
+		} else {
+			logQuery.where(LogEntryVO.TIMESTAMP.lessThan(timestamp));
+		}
+
 		return baseEntityService.filter(logQuery);
 	}
 
@@ -68,7 +74,14 @@ public class LogServiceImpl implements ILogService {
 		}
 
 		SelectQuery<LogEntryVO> logQuery = getBaseQuery(count, reference).ascending();
-		logQuery.getWhereExpression().get().and(LogEntryVO.TIMESTAMP.greaterThan(timestamp));
+
+		if (logQuery.getWhereExpression().isPresent()) {
+			logQuery.getWhereExpression().get().and(LogEntryVO.TIMESTAMP.greaterThan(timestamp));
+		} else {
+			logQuery.where(LogEntryVO.TIMESTAMP.greaterThan(timestamp));
+		}
+
 		return new ArrayList<LogEntryVO>(Lists.reverse(baseEntityService.filter(logQuery)));
 	}
+
 }

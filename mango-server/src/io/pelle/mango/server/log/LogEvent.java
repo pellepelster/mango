@@ -1,5 +1,7 @@
 package io.pelle.mango.server.log;
 
+import io.pelle.mango.client.log.LOGLEVEL;
+
 import com.google.common.base.Objects;
 
 public class LogEvent {
@@ -10,13 +12,16 @@ public class LogEvent {
 
 	private final long timestamp;
 
-	public LogEvent(String message) {
-		this(message, System.currentTimeMillis());
+	private final LOGLEVEL level;
+
+	public LogEvent(String message, LOGLEVEL level) {
+		this(message, level, System.currentTimeMillis());
 	}
 
-	public LogEvent(String message, long timeStamp) {
+	public LogEvent(String message, LOGLEVEL level, long timeStamp) {
 		super();
 		this.message = message;
+		this.level = level;
 		this.timestamp = timeStamp;
 	}
 
@@ -39,6 +44,10 @@ public class LogEvent {
 
 	public String getReference() {
 		return reference;
+	}
+
+	public LOGLEVEL getLevel() {
+		return level;
 	}
 
 }

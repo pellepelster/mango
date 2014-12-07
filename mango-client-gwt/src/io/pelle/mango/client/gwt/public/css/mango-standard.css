@@ -605,3 +605,14 @@ h6,.h6{
 .endless-grid-new-row {
 	font-weight: bold;
  }
+ 
+.log-level-INFO {
+}
+
+.log-level-WARNING {
+	color: #9E9400;
+}
+
+.log-level-ERROR {
+	color: #D62020;
+}

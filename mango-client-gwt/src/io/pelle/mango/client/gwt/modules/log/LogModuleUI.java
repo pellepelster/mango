@@ -13,18 +13,13 @@ package io.pelle.mango.client.gwt.modules.log;
 
 import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
-import io.pelle.mango.client.gwt.modules.dictionary.controls.time.TimestampColumn;
-import io.pelle.mango.client.log.LogEntryVO;
-import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.log.LogModule;
 
 import java.util.logging.Logger;
 
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
-import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
@@ -40,26 +35,11 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 
 	final static Logger LOG = Logger.getLogger("LogModuleUI");
 
-	public static final Column<LogEntryVO, ?> LOG_TIMESTAMP_COLUMN = new TimestampColumn<LogEntryVO>() {
-		@Override
-		public Long getValue(LogEntryVO object) {
-			return object.getTimestamp();
-		}
-	};
-
-	public static final Column<LogEntryVO, ?> LOG_MESSAGE_COLUMN = new TextColumn<LogEntryVO>() {
-
-		@Override
-		public String getValue(LogEntryVO object) {
-			return object.getMessage();
-		}
-	};
-
 	private final FlowPanel panel;
 
 	private HTML title;
 
-	private EndlessDataGrid<LogEntryVO> dataGrid;
+	private EndlessLogDataGrid logDataGrid;
 
 	private VerticalPanel headerPanel;
 
@@ -82,16 +62,12 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		headerPanel.add(title);
 		panel.add(headerPanel);
 
-		dataGrid = new EndlessDataGrid<LogEntryVO>();
-		dataGrid.setWidth("98%");
-		dataGrid.setDataGridCallback(LogDataGridCallback.create());
-		panel.add(dataGrid);
-
-		dataGrid.addColumn(LOG_TIMESTAMP_COLUMN, MangoClientWeb.MESSAGES.logTimestampTitle());
-		dataGrid.addColumn(LOG_MESSAGE_COLUMN, MangoClientWeb.MESSAGES.logMessageTitle());
+		logDataGrid = new EndlessLogDataGrid();
+		logDataGrid.setWidth("98%");
+		panel.add(logDataGrid);
 
 		final SimplePager pager = new SimplePager();
-		pager.setDisplay(dataGrid);
+		pager.setDisplay(logDataGrid);
 
 		panel.addAttachHandler(new Handler() {
 
@@ -112,7 +88,7 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 		int tableHeight = totalHeight - (headerHeight);
 		LOG.info("tableHeight:" + tableHeight);
 
-		dataGrid.setHeight(tableHeight + "px");
+		logDataGrid.setHeight(tableHeight + "px");
 	}
 
 	/** {@inheritDoc} */

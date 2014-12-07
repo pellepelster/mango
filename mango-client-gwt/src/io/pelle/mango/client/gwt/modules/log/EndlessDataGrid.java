@@ -3,6 +3,9 @@ package io.pelle.mango.client.gwt.modules.log;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Iterables;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -22,6 +25,8 @@ public class EndlessDataGrid<T> extends DataGrid<T> {
 	private long lastCallbackInvocation = -1;
 
 	private boolean callbackRunning = false;
+
+	private List<RowStyles<T>> rowStyleList = new ArrayList<RowStyles<T>>();
 
 	protected void setCallbackRunning(boolean running) {
 		if (running) {
@@ -109,26 +114,51 @@ public class EndlessDataGrid<T> extends DataGrid<T> {
 		return (ScrollPanel) header.getContentWidget();
 	}
 
+	@Override
+	public void setRowStyles(RowStyles<T> rowStyles) {
+		addRowStyles(rowStyles);
+	}
+
+	public void addRowStyles(RowStyles<T> rowStyles) {
+		rowStyleList.add(rowStyles);
+	}
+
+	private RowStyles<T> NEW_DATA_ROWSTYLE = new RowStyles<T>() {
+
+		@Override
+		public String getStyleNames(T row, int rowIndex) {
+
+			String styleNames = "";
+
+			if (newData.contains(row)) {
+				newData.remove(row);
+				styleNames += NEW_ROW_STYLE;
+			}
+
+			return styleNames;
+		}
+	};
+
 	public EndlessDataGrid() {
 		super();
 		dataProvider.addDataDisplay(this);
 
-		setRowStyles(new RowStyles<T>() {
-
+		super.setRowStyles(new RowStyles<T>() {
 			@Override
-			public String getStyleNames(T row, int rowIndex) {
+			public String getStyleNames(final T row, final int rowIndex) {
+				Iterable<String> styles = Iterables.transform(rowStyleList, new Function<RowStyles<T>, String>() {
+					@Override
+					public String apply(RowStyles<T> input) {
+						return input.getStyleNames(row, rowIndex);
+					}
+				});
 
-				String styleNames = "";
-
-				if (newData.contains(row)) {
-					newData.remove(row);
-					styleNames += NEW_ROW_STYLE;
-				}
-
-				return styleNames;
+				return Joiner.on(" ").join(styles);
 			}
-
 		});
+
+		addRowStyles(NEW_DATA_ROWSTYLE);
+
 	}
 
 	public void setDataGridCallback(EndlessDataGridCallback<T> dataGridCallback) {

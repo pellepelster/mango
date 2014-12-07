@@ -23,12 +23,12 @@ public class LogReferenceKeyMapperRegistry {
 
 		if (reference == null || reference instanceof String) {
 			result = (String) reference;
-		}
+		} else {
+			Optional<ILogReferenceKeyMapper> referenceKeyMapper = getReferenceMapper(reference);
 
-		Optional<ILogReferenceKeyMapper> referenceKeyMapper = getReferenceMapper(reference);
-
-		if (referenceKeyMapper.isPresent()) {
-			result = referenceKeyMapper.get().getReferenceKey(reference);
+			if (referenceKeyMapper.isPresent()) {
+				result = referenceKeyMapper.get().getReferenceKey(reference);
+			}
 		}
 
 		if (LOG.isDebugEnabled()) {

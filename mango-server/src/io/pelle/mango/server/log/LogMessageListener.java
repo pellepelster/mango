@@ -15,10 +15,12 @@ public class LogMessageListener {
 
 		@Override
 		public LogEntryVO apply(LogEvent logEvent) {
+
 			LogEntryVO logEntry = new LogEntryVO();
 			logEntry.setMessage(logEvent.getMessage());
 			logEntry.setTimestamp(logEvent.getTimestamp());
 			logEntry.setReference(logEvent.getReference());
+			logEntry.setLevel(logEvent.getLevel());
 			return logEntry;
 		}
 	};
