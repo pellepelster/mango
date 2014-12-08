@@ -3,7 +3,7 @@ package io.pelle.mango.demo.server.test;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CountryVO;
-import io.pelle.mango.server.log.MangoLogger;
+import io.pelle.mango.server.log.IMangoLogger;
 
 import java.util.Random;
 
@@ -15,7 +15,7 @@ public class LogTask {
 	private IBaseEntityService baseEntityService;
 
 	@Autowired
-	private MangoLogger mangoLogger;
+	private IMangoLogger mangoLogger;
 
 	private Random random = new Random();
 
@@ -24,16 +24,24 @@ public class LogTask {
 		int level = randInt(0, 2);
 
 		if (level == 0) {
-			mangoLogger.info("ping", "ping");
+			mangoLogger.info("info message", "ping");
 		} else if (level == 1) {
-			mangoLogger.warn("ping", "ping");
+			mangoLogger.warn("warning message", "ping");
 		} else if (level == 2) {
-			mangoLogger.error("ping", "ping");
+			mangoLogger.error("error message", "ping");
 		}
 
 		for (CountryVO countryVO : baseEntityService.filter(SelectQuery.selectFrom(CountryVO.class))) {
 
-			mangoLogger.info("country ping", countryVO);
+			level = randInt(0, 2);
+
+			if (level == 0) {
+				mangoLogger.info("country info message", countryVO);
+			} else if (level == 1) {
+				mangoLogger.warn("country warning message", countryVO);
+			} else if (level == 2) {
+				mangoLogger.error("country error message", countryVO);
+			}
 		}
 
 	}
