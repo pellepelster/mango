@@ -1,8 +1,6 @@
 package io.pelle.mango.client.base.vo;
 
-public interface IAttributeDescriptor<AttributeType> {
-
-	IEntityDescriptor<?> getParent();
+public interface IAttributeDescriptor<AttributeType> extends IMetaDescriptor {
 
 	String getAttributeName();
 
@@ -14,4 +12,6 @@ public interface IAttributeDescriptor<AttributeType> {
 	
 	int getNaturalKeyOrder();
 	
+	<T> T path(T attributeDescriptor);
+
 }

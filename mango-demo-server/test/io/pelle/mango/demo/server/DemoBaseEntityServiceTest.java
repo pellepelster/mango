@@ -139,6 +139,44 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testFilterNested() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("zzz1");
+
+		Entity2VO entity2VO = new Entity2VO();
+		entity2VO.setStringDatatype2("xxx1");
+		entity1VO.setEntity2Datatype(entity2VO);
+
+		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
+		assertTrue(result.getValidationMessages().isEmpty());
+
+		entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("zzz2");
+
+		entity2VO = new Entity2VO();
+		entity2VO.setStringDatatype2("xxx2");
+		entity1VO.setEntity2Datatype(entity2VO);
+
+		result = baseEntityService.validateAndSave(entity1VO);
+		assertTrue(result.getValidationMessages().isEmpty());
+		assertNotNull(result.getVO().getEntity2Datatype());
+
+		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.ENTITY2DATATYPE.path(Entity2VO.STRINGDATATYPE2).eq("uuu")));
+		assertEquals(0, filterResult.size());
+
+		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
+		assertEquals(2, filterResult.size());
+
+		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.ENTITY2DATATYPE.path(Entity2VO.STRINGDATATYPE2).eq("xxx1")));
+		assertEquals(1, filterResult.size());
+		assertEquals("xxx1", filterResult.get(0).getEntity2Datatype().getStringDatatype2());
+
+	}
+
+	@Test
 	public void testFilterByEnumeration() {
 
 		baseVODAO.deleteAll(Entity1VO.class);

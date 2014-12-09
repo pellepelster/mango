@@ -2,8 +2,8 @@ package io.pelle.mango.client.base.vo;
 
 public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<AttributeType> {
 
-	private final IEntityDescriptor<?> parent;
-
+	private final IMetaDescriptor parent;
+	
 	private final String attributeName;
 
 	private final Class<?> attributeType;
@@ -16,19 +16,19 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 
 	public static final int NO_NATURAL_KEY = -1;
 
-	public AttributeDescriptor(IEntityDescriptor<?> parent, String attributeName, Class<?> attributeType) {
+	public AttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType) {
 		this(parent, attributeName, attributeType, attributeType, false, NO_NATURAL_KEY);
 	}
 
-	public AttributeDescriptor(IEntityDescriptor<?> parent, String attributeName, Class<?> attributeType, boolean mandatory) {
+	public AttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, boolean mandatory) {
 		this(parent, attributeName, attributeType, attributeType, mandatory, NO_NATURAL_KEY);
 	}
 
-	public AttributeDescriptor(IEntityDescriptor<?> parent, String attributeName, Class<?> attributeType, Class<?> attributeListType) {
+	public AttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> attributeListType) {
 		this(parent, attributeName, attributeType, attributeListType, false, NO_NATURAL_KEY);
 	}
 	
-	public AttributeDescriptor(IEntityDescriptor<?> parent, String attributeName, Class<?> attributeType, Class<?> attributeListType, boolean mandatory, int naturalKeyOrder) {
+	public AttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> attributeListType, boolean mandatory, int naturalKeyOrder) {
 		super();
 
 		this.parent = parent;
@@ -66,7 +66,7 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 
 	/** {@inheritDoc} */
 	@Override
-	public IEntityDescriptor<?> getParent() {
+	public IMetaDescriptor getParent() {
 		return parent;
 	}
 
@@ -81,5 +81,16 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 	public int getNaturalKeyOrder() {
 		return naturalKeyOrder;
 	}
-
+	
+	@Override
+	public <T> T path(T attributeDescriptor) {
+		
+		if (attributeDescriptor instanceof StringAttributeDescriptor) {
+			StringAttributeDescriptor stringAttributeDescriptor = (StringAttributeDescriptor) attributeDescriptor;
+			return (T) stringAttributeDescriptor.cloneWithNewParent(this);
+		}
+		
+		throw new RuntimeException("unsupported attribute descriptor type '" + attributeDescriptor.getClass() + "'");
+		
+	}
 }

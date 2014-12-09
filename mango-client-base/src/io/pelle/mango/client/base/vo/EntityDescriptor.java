@@ -14,4 +14,9 @@ public class EntityDescriptor<T extends IVOEntity> implements IEntityDescriptor<
 		return voEntityClass;
 	}
 
+	@Override
+	public IMetaDescriptor getParent() {
+		return null;
+	}
+
 }

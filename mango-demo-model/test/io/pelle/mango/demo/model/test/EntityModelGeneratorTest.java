@@ -2,6 +2,7 @@ package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
@@ -373,8 +374,10 @@ public class EntityModelGeneratorTest {
 	@Test
 	@Ignore
 	public void testExtendsAttributeDescriptors() {
-		assertEquals(Entity6.class, Entity6.STRING1.getParent().getVOEntityClass());
-		assertEquals(Entity7.class, Entity7.STRING1.getParent().getVOEntityClass());
+		assertTrue(Entity6.STRING1.getParent() instanceof IEntityDescriptor);
+		assertTrue(Entity7.STRING1.getParent() instanceof IEntityDescriptor);
+		assertEquals(Entity6.class, ((IEntityDescriptor)Entity6.STRING1.getParent()).getVOEntityClass());
+		assertEquals(Entity7.class, ((IEntityDescriptor) Entity7.STRING1.getParent()).getVOEntityClass());
 	}
 
 	@Test

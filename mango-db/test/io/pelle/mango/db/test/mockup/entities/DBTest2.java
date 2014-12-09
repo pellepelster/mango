@@ -35,7 +35,7 @@ public class DBTest2 extends BaseEntity implements IBaseEntity {
 
 	public static final StringAttributeDescriptor TEST1 = new StringAttributeDescriptor(DB_TEST2, "test1");
 
-	public static final String TESTSTRING = "testString";
+	public static final StringAttributeDescriptor TESTSTRING = new StringAttributeDescriptor(DB_TEST2, "testString");
 
 	@Id
 	@Column(name = "test2_id")

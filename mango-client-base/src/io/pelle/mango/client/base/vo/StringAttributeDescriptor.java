@@ -14,22 +14,22 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 
 	public static final int NO_LENGTH_LIMIT = -1;
 	
-	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName) {
-		this(entityDescriptor, attributeName, NO_LENGTH_LIMIT);
+	public StringAttributeDescriptor(IMetaDescriptor parent, String attributeName) {
+		this(parent, attributeName, NO_LENGTH_LIMIT);
 	}
 	
-	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> collectionType) {
-		this(entityDescriptor, attributeName, collectionType, NO_LENGTH_LIMIT, NO_LENGTH_LIMIT, NO_NATURAL_KEY);
+	public StringAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> collectionType) {
+		this(parent, attributeName, collectionType, NO_LENGTH_LIMIT, NO_LENGTH_LIMIT, NO_NATURAL_KEY);
 	}
 
-	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> collectionType, int minLength, int maxLength, int naturalKeyOrder) {
-		super(entityDescriptor, attributeName, collectionType, String.class, naturalKeyOrder);
+	public StringAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> collectionType, int minLength, int maxLength, int naturalKeyOrder) {
+		super(parent, attributeName, collectionType, String.class, naturalKeyOrder);
 		this.minLength = minLength;
 		this.maxLength = maxLength;
 	}
 
-	public StringAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, int maxLength) {
-		this(entityDescriptor, attributeName, String.class, NO_LENGTH_LIMIT, maxLength, NO_NATURAL_KEY);
+	public StringAttributeDescriptor(IMetaDescriptor parent, String attributeName, int maxLength) {
+		this(parent, attributeName, String.class, NO_LENGTH_LIMIT, maxLength, NO_NATURAL_KEY);
 	}
 
 	public IBooleanExpression eq(String value) {
@@ -47,6 +47,11 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 	public IBooleanExpression like(String value) {
 		return new LikeExpression(entityFieldExpression, new StringExpression(value), false);
 	}
+	
+	protected StringAttributeDescriptor cloneWithNewParent(IAttributeDescriptor<?> parentAttributeDescriptor) {
+		StringAttributeDescriptor clone = new StringAttributeDescriptor(parentAttributeDescriptor, getAttributeName(), getListAttributeType(),  minLength, maxLength, getNaturalKeyOrder());
+		return clone;
+	}
 
 	public int getMaxLength() {
 		return maxLength;
@@ -55,4 +60,5 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 	public int getMinLength() {
 		return minLength;
 	}
+
 }
