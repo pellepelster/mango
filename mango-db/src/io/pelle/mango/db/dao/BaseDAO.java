@@ -9,7 +9,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.apache.log4j.Logger;
+
 public class BaseDAO {
+
+	private static Logger LOG = Logger.getLogger(BaseDAO.class);
 
 	@SuppressWarnings("unchecked")
 	public List<IBaseEntity> getResultList(SelectQuery<?> selectQuery, EntityManager entityManager) {
@@ -20,7 +24,13 @@ public class BaseDAO {
 	public List getResultList(SelectQuery<?> selectQuery, EntityManager entityManager, int firstResult, int maxResults) {
 
 		String jpql = ServerSelectQuery.adapt(selectQuery).getJPQL(EntityVOMapper.getInstance());
-		return entityManager.createQuery(jpql).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+		LOG.debug(jpql);
+
+		try {
+			return entityManager.createQuery(jpql).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+		} catch (Exception e) {
+			throw new RuntimeException(String.format("error executing jpql '%s'", jpql), e);
+		}
 	}
 
 }

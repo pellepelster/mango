@@ -3,7 +3,7 @@ package io.pelle.mango.client.base.vo;
 public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<AttributeType> {
 
 	private final IMetaDescriptor parent;
-	
+
 	private final String attributeName;
 
 	private final Class<?> attributeType;
@@ -27,7 +27,7 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 	public AttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> attributeListType) {
 		this(parent, attributeName, attributeType, attributeListType, false, NO_NATURAL_KEY);
 	}
-	
+
 	public AttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> attributeListType, boolean mandatory, int naturalKeyOrder) {
 		super();
 
@@ -81,16 +81,20 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 	public int getNaturalKeyOrder() {
 		return naturalKeyOrder;
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T path(T attributeDescriptor) {
-		
+
 		if (attributeDescriptor instanceof StringAttributeDescriptor) {
 			StringAttributeDescriptor stringAttributeDescriptor = (StringAttributeDescriptor) attributeDescriptor;
 			return (T) stringAttributeDescriptor.cloneWithNewParent(this);
+		} else if (attributeDescriptor instanceof EnumerationAttributeDescriptor) {
+			EnumerationAttributeDescriptor enumerationAttributeDescriptor = (EnumerationAttributeDescriptor) attributeDescriptor;
+			return (T) enumerationAttributeDescriptor.cloneWithNewParent(this);
 		}
-		
+
 		throw new RuntimeException("unsupported attribute descriptor type '" + attributeDescriptor.getClass() + "'");
-		
+
 	}
 }

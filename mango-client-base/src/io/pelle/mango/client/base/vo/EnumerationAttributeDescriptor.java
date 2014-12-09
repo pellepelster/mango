@@ -7,8 +7,8 @@ import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 
 public class EnumerationAttributeDescriptor<ENUM_TYPE> extends BaseExpressionAttributeDescriptor<String> implements IAttributeDescriptor<String> {
 
-	public EnumerationAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> attributeType, Class<?> collectionType, int naturalKeyOrder) {
-		super(entityDescriptor, attributeName, collectionType, attributeType, naturalKeyOrder);
+	public EnumerationAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> collectionType, int naturalKeyOrder) {
+		super(parent, attributeName, collectionType, attributeType, naturalKeyOrder);
 	}
 
 	public IBooleanExpression eq(ENUM_TYPE value) {
@@ -17,6 +17,11 @@ public class EnumerationAttributeDescriptor<ENUM_TYPE> extends BaseExpressionAtt
 
 	public IBooleanExpression neq(ENUM_TYPE value) {
 		return new CompareExpression(entityFieldExpression, ComparisonOperator.NOT_EQUALS, new StringExpression(value.toString()));
+	}
+
+	protected EnumerationAttributeDescriptor<ENUM_TYPE> cloneWithNewParent(IAttributeDescriptor<?> parentAttributeDescriptor) {
+		EnumerationAttributeDescriptor<ENUM_TYPE> clone = new EnumerationAttributeDescriptor<ENUM_TYPE>(parentAttributeDescriptor, getAttributeName(), getAttributeType(), getListAttributeType(), getNaturalKeyOrder());
+		return clone;
 	}
 
 }
