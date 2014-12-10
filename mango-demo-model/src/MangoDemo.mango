@@ -119,7 +119,7 @@ project MangoDemo {
 			//---------------------------------------------
 			stringdatatype CountryName {
 				label "Name"
-				maxLength 64
+				maxLength 256
 			}
 			stringdatatype IsoCode2 {
 				label "ISO-Code (2)"
