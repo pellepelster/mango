@@ -72,9 +72,9 @@ public class AwsRdsMysqlJndiInjector implements ServletContextListener {
 			InitialContext ic = new InitialContext();
 
 			ic.createSubcontext("java:");
-			ic.createSubcontext("java:/comp");
-			ic.createSubcontext("java:/comp/env");
-			ic.createSubcontext("java:/comp/env/jdbc");
+			ic.createSubcontext("java:comp");
+			ic.createSubcontext("java:comp/env");
+			ic.createSubcontext("java:comp/env/jdbc");
 
 			BasicDataSource dataSource = new BasicDataSource();
 
@@ -89,7 +89,7 @@ public class AwsRdsMysqlJndiInjector implements ServletContextListener {
 				dataSource.setPassword(getProperty(RDS_PASSWORD));
 			}
 
-			String fullJndiName = "java:/comp/env/jdbc/" + getProperty(JNDI_NAME);
+			String fullJndiName = "java:comp/env/jdbc/" + getProperty(JNDI_NAME);
 			ic.bind(fullJndiName, dataSource);
 
 			log(contextEvent, "bound '" + fullJndiName + "' to '" + dataSource.getUrl() + "'");
