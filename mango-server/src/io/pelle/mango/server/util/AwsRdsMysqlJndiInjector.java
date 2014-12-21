@@ -30,17 +30,17 @@ public class AwsRdsMysqlJndiInjector implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent servletContext) {
 	}
 
-	private boolean hasEnvironment(String name) {
-		return getEnvironment(name) != null;
+	private boolean hasProperty(String name) {
+		return getProperty(name) != null;
 	}
 
-	private String getEnvironment(String name) {
-		return System.getenv(name);
+	private String getProperty(String name) {
+		return System.getProperty(name);
 	}
 
 	private String getEnvironment(String name, String def) {
-		if (hasEnvironment(name)) {
-			return getEnvironment(name);
+		if (hasProperty(name)) {
+			return getProperty(name);
 		} else {
 			return def;
 		}
@@ -57,10 +57,12 @@ public class AwsRdsMysqlJndiInjector implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent contextEvent) {
 
-		if (!hasEnvironment(RDS_HOSTNAME) || !hasEnvironment(RDS_DB_NAME) || !hasEnvironment(JNDI_NAME)) {
+		if (!hasProperty(RDS_HOSTNAME) || !hasProperty(RDS_DB_NAME) || !hasProperty(JNDI_NAME)) {
 			log(contextEvent, String.format("environment variables '%s', '%s' or '%s' not found", RDS_HOSTNAME, RDS_DB_NAME, JNDI_NAME));
 			return;
 		}
+
+		log(contextEvent, String.format("hostname: '%s', db name: '%s', jdni name: '%s'", RDS_HOSTNAME, RDS_DB_NAME, JNDI_NAME));
 
 		try {
 
@@ -77,17 +79,17 @@ public class AwsRdsMysqlJndiInjector implements ServletContextListener {
 			BasicDataSource dataSource = new BasicDataSource();
 
 			dataSource.setDriverClassName(MYSQL_DRIVER_NAME);
-			dataSource.setUrl(String.format("jdbc:mysql://%s:%s/%s", getEnvironment(RDS_HOSTNAME), getEnvironment(RDS_PORT, MYSQL_PORT_DEFAULT), getEnvironment(RDS_DB_NAME)));
+			dataSource.setUrl(String.format("jdbc:mysql://%s:%s/%s", getProperty(RDS_HOSTNAME), getEnvironment(RDS_PORT, MYSQL_PORT_DEFAULT), getProperty(RDS_DB_NAME)));
 
-			if (hasEnvironment(RDS_USERNAME)) {
-				dataSource.setUsername(getEnvironment(RDS_USERNAME));
+			if (hasProperty(RDS_USERNAME)) {
+				dataSource.setUsername(getProperty(RDS_USERNAME));
 			}
 
-			if (hasEnvironment(RDS_PASSWORD)) {
-				dataSource.setPassword(getEnvironment(RDS_PASSWORD));
+			if (hasProperty(RDS_PASSWORD)) {
+				dataSource.setPassword(getProperty(RDS_PASSWORD));
 			}
 
-			String fullJndiName = "java:/comp/env/jdbc/" + getEnvironment(JNDI_NAME);
+			String fullJndiName = "java:/comp/env/jdbc/" + getProperty(JNDI_NAME);
 			ic.bind(fullJndiName, dataSource);
 
 			log(contextEvent, "bound '" + fullJndiName + "' to '" + dataSource.getUrl() + "'");
