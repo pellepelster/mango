@@ -29,7 +29,7 @@
 	</context-param>
 
 	<listener>
-		<listener-class>io.pelle.mango.server.base.util.AwsRdsMysqlJndi</listener-class>
+		<listener-class>io.pelle.mango.server.util.AwsRdsMysqlJndiInjector</listener-class>
 	</listener>
 
 	<listener>

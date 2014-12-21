@@ -1,4 +1,4 @@
-package io.pelle.mango.server.base.util;
+package io.pelle.mango.server.util;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;

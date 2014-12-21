@@ -25,6 +25,10 @@ dependencies {
 	compile group: "jaf", name: "activation", version: "1.0.2"
 	compile group: "org.apache.velocity", name: "velocity", version: "1.7"
 	compile group: "org.springframework.integration", name: "spring-integration-mail", version: "4.0.3.RELEASE"
+
+	compile group: 'org.apache.tomcat', name: 'tomcat-catalina', version: "8.0.15"
+	compile group: "org.apache.tomcat", name: "dbcp", version: "6.0.39"
+
 	testCompile group: "com.icegreen", name: "greenmail", version: "1.4.0"
 
 }
