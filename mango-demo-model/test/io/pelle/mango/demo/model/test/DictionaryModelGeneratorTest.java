@@ -41,7 +41,7 @@ public class DictionaryModelGeneratorTest {
 
 	@Test
 	public void testDictionary2OveriddenPluralLabel() {
-		assertEquals("Entity2 Labels", MangoDemoDictionaryModel.DEMO_DICTIONARY2.getLabel());
+		assertEquals("Entity2 Labels", MangoDemoDictionaryModel.DEMO_DICTIONARY2.getPluralLabel());
 	}
 
 	@Test
