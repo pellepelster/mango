@@ -85,7 +85,7 @@ class EntityGenerator extends BaseEntityGenerator {
 			
 			@Override
 			public String toString() {
-				return com.google.common.base.Objects.toStringHelper(this).«FOR naturalKeyAttribute : entity.naturalKeyAttributes SEPARATOR "."»addValue(«naturalKeyAttribute.attributeName»)«ENDFOR»«IF !entity.naturalKeyAttributes.empty».«ENDIF»toString();
+				return com.google.common.base.Objects.toStringHelper(this).«FOR naturalKeyAttribute : entity.naturalKeyAttributes SEPARATOR "."»addValue(«naturalKeyAttribute.attributeName.getterName»())«ENDFOR»«IF !entity.naturalKeyAttributes.empty».«ENDIF»toString();
 			}
 		}
 	'''
