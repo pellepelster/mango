@@ -11,6 +11,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.search.ResultModel
 import io.pelle.mango.client.base.modules.dictionary.model.search.SearchModel
 import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.generator.GeneratorConstants
+import io.pelle.mango.dsl.generator.server.EntityUtils
 import io.pelle.mango.dsl.mango.Dictionary
 import io.pelle.mango.dsl.mango.DictionaryEditor
 import io.pelle.mango.dsl.mango.DictionaryFilter
@@ -26,6 +27,9 @@ class DictionaryGenerator {
 
 	@Inject
 	extension DictionaryControls
+
+	@Inject
+	extension EntityUtils
 
 	@Inject
 	extension DictionaryContainerGenerator
@@ -171,10 +175,14 @@ class DictionaryGenerator {
 				
 				«IF dictionary.label != null»
 				setLabel("«dictionary.label»");
+				«ELSEIF dictionary.entity != null && dictionary.entity.hasLabel»
+				setLabel("«dictionary.entity.label»");
 				«ENDIF»
 		
 				«IF dictionary.pluralLabel != null»
 				setPluralLabel("«dictionary.pluralLabel»");
+				«ELSEIF dictionary.entity != null && dictionary.entity.hasPluralLabel»
+				setPluralLabel("«dictionary.entity.pluralLabel»");
 				«ENDIF»
 			}
 		}

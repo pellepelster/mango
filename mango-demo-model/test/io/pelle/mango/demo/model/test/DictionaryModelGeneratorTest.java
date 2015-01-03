@@ -30,6 +30,21 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testDictionary1Label() {
+		assertEquals(null, MangoDemoDictionaryModel.DEMO_DICTIONARY1.getLabel());
+	}
+
+	@Test
+	public void testDictionary2OveriddenLabel() {
+		assertEquals("Entity2 Label", MangoDemoDictionaryModel.DEMO_DICTIONARY2.getLabel());
+	}
+
+	@Test
+	public void testDictionary2OveriddenPluralLabel() {
+		assertEquals("Entity2 Labels", MangoDemoDictionaryModel.DEMO_DICTIONARY2.getLabel());
+	}
+
+	@Test
 	public void testLayoutColumnsEditor() {
 		assertEquals(2, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.getCompositeModel().getLayout().getColumns());
 	}

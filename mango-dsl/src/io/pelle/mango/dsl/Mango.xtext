@@ -34,11 +34,19 @@ EnumerationValue: name=ID ("=>" value=STRING)?;
 enum IdGeneratorStrategy: TABLE | SEQUENCE;
 
 EntityOptions:
-	EntityDisableIdField;
+	EntityDisableIdField | EntityLabelField | EntityPluralLabelField;
 	
 EntityDisableIdField:
 	{EntityDisableIdField}
-	("disableIdField" disableIdField?=XBooleanLiteral)?;
+	"disableIdField" disableIdField?=XBooleanLiteral;
+
+EntityLabelField:
+	{EntityLabelField}
+	"label" label=STRING?;
+
+EntityPluralLabelField:
+	{EntityPluralLabelField}
+	"pluralLabel" pluralLabel=STRING;
 
 EntityIdGenerationStrategy:
 	{EntityIdGenerationStrategy}
@@ -47,7 +55,7 @@ EntityIdGenerationStrategy:
 EntityOptionsContainer:
 	{EntityOptionsContainer}
 		"entityoptions" "{" 
-			options+=EntityOptions
+			(options+=EntityOptions)*
 		"}";
 
 Entity:

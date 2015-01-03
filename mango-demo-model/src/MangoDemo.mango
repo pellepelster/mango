@@ -332,6 +332,10 @@ project MangoDemo {
 			}
 
 			entity Entity2 {
+				entityoptions {
+					label "Entity2 Label"
+					pluralLabel "Entity2 Labels"
+				}
 				string StringDatatype2 stringDatatype2
 				entity Entity3Datatype 0..n entity3Datatypes
 			}
@@ -386,12 +390,16 @@ project MangoDemo {
 				dictionary DemoDictionary2 {
 					entity Entity2
 
+					
+
 					dictionarycontrols {
 						textcontrol TextControl2 {
 							entityattribute Entity2.stringDatatype2
 						}
-					} labelcontrols {
-					textcontrol ref TextControl2
+					} 
+					
+					labelcontrols {
+						textcontrol ref TextControl2
 					}
 
 					dictionarysearch DemoSearch2 {

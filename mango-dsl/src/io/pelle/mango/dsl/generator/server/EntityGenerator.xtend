@@ -29,6 +29,9 @@ class EntityGenerator extends BaseEntityGenerator {
 	val Log LOG = getLog(getClass().getName())
 
 	@Inject
+	extension EntityUtils
+	
+	@Inject
 	extension AttributeUtils
 
 	@Inject
@@ -117,22 +120,6 @@ class EntityGenerator extends BaseEntityGenerator {
 			@Column(name = "«entityAttribute.entityTableColumnName»"«IF StringDatatypeQuery.createQuery(entityAttribute.type).hasMaxLength», length = «StringDatatypeQuery.createQuery(entityAttribute.type).maxLength»«ENDIF»)
 		«ENDIF»
 	'''
-
-	def <T> getEntityOption(EntityOptionsContainer entityOptionsContainer, Class<T> entityOptionType) {
-		return entityOptionsContainer.options.findFirst[e|entityOptionType.isAssignableFrom(e.class)] as T
-	}
-
-	def <T> getEntityOption(Entity entity, Class<T> entityOptionType) {
-		if (entity.entityOptions != null) {
-			return getEntityOption(entity.entityOptions, entityOptionType)
-		} else {
-			return null;
-		}
-	}
-
-	def <T> entityDisableIdField(Entity entity) {
-		return Boolean.TRUE.equals(entity.getEntityOption(typeof(EntityDisableIdField)))
-	}
 	
 	def dispatch compileEntityAttributeJpaAnnotations(EntityEntityAttribute entityAttribute) '''
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»

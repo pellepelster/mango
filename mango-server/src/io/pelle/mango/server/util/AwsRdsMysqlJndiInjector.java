@@ -69,12 +69,12 @@ public class AwsRdsMysqlJndiInjector implements ServletContextListener {
 			System.setProperty(Context.INITIAL_CONTEXT_FACTORY, "org.apache.naming.java.javaURLContextFactory");
 			System.setProperty(Context.URL_PKG_PREFIXES, "org.apache.naming");
 
-			InitialContext ic = new InitialContext();
+			InitialContext initialContext = new InitialContext();
 
-			ic.createSubcontext("java:");
-			ic.createSubcontext("java:comp");
-			ic.createSubcontext("java:comp/env");
-			ic.createSubcontext("java:comp/env/jdbc");
+			initialContext.createSubcontext("java:");
+			initialContext.createSubcontext("java:comp");
+			initialContext.createSubcontext("java:comp/env");
+			initialContext.createSubcontext("java:comp/env/jdbc");
 
 			BasicDataSource dataSource = new BasicDataSource();
 
@@ -90,7 +90,7 @@ public class AwsRdsMysqlJndiInjector implements ServletContextListener {
 			}
 
 			String fullJndiName = "java:comp/env/jdbc/" + getProperty(JNDI_NAME);
-			ic.bind(fullJndiName, dataSource);
+			initialContext.bind(fullJndiName, dataSource);
 
 			log(contextEvent, "bound '" + fullJndiName + "' to '" + dataSource.getUrl() + "'");
 
