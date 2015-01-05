@@ -25,7 +25,11 @@ class EntityUtils {
 	}
 
 	def <T> getLabel(Entity entity) {
-		return entity.getEntityOption(typeof(EntityLabelField)).label
+		if (hasLabel(entity)) {
+			return entity.getEntityOption(typeof(EntityLabelField)).label
+		} else {
+			return null
+		}
 	}
 
 	def <T> hasPluralLabel(Entity entity) {
@@ -33,7 +37,11 @@ class EntityUtils {
 	}
 
 	def <T> getPluralLabel(Entity entity) {
-		return entity.getEntityOption(typeof(EntityPluralLabelField)).pluralLabel
+		if (hasPluralLabel(entity)) {
+			return entity.getEntityOption(typeof(EntityPluralLabelField)).pluralLabel
+		} else {
+			return null
+		}
 	}
 
 	def <T> entityDisableIdField(Entity entity) {

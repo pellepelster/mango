@@ -58,7 +58,7 @@ class EntityGenerator extends BaseEntityGenerator {
 		@SuppressWarnings("all")
 		public class «entity.entityName» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
 		
-			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
+			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.label»", "«entity.pluralLabel»");
 	
 			«entity.attributeDescriptorsFromExtends»
 	

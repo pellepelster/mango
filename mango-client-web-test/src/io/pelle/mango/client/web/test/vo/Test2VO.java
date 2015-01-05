@@ -21,7 +21,7 @@ import java.util.Date;
 
 public class Test2VO extends BaseVO implements IBaseVO {
 
-	public static final io.pelle.mango.client.base.vo.IEntityDescriptor<Test2VO> ENTITY = new io.pelle.mango.client.base.vo.EntityDescriptor<Test2VO>(Test2VO.class);
+	public static final io.pelle.mango.client.base.vo.IEntityDescriptor<Test2VO> ENTITY = new io.pelle.mango.client.base.vo.EntityDescriptor<Test2VO>(Test2VO.class, null, null);
 
 	public enum ENUM2 {
 		ENUM2_VALUE1, ENUM2_VALUE2, ENUM2_VALUE3

@@ -19,7 +19,7 @@ import io.pelle.mango.client.base.vo.IEntityDescriptor;
 
 public class DBTest3VO extends BaseVO {
 
-	public static final IEntityDescriptor<DBTest3VO> DB_TEST3 = new EntityDescriptor<DBTest3VO>(DBTest3VO.class);
+	public static final IEntityDescriptor<DBTest3VO> DB_TEST3 = new EntityDescriptor<DBTest3VO>(DBTest3VO.class, null, null);
 
 	private static final long serialVersionUID = -1511549650470779575L;
 

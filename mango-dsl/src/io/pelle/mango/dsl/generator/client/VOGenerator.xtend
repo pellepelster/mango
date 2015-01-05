@@ -7,17 +7,21 @@ import io.pelle.mango.client.base.vo.IEntityDescriptor
 import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
+import io.pelle.mango.dsl.generator.server.EntityUtils
 import io.pelle.mango.dsl.generator.util.AttributeUtils
+import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
-import io.pelle.mango.dsl.mango.Cardinality
 
 class VOGenerator extends BaseEntityGenerator {
 
+	@Inject
+	extension EntityUtils
+	
 	@Inject
 	extension AttributeUtils
 
@@ -33,7 +37,7 @@ class VOGenerator extends BaseEntityGenerator {
 		@SuppressWarnings("all")
 		public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
 		
-			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass»);
+			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.label»", "«entity.pluralLabel»");
 
 			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
 

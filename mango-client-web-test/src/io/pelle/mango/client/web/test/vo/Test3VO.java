@@ -17,7 +17,7 @@ import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
 public class Test3VO extends BaseVO implements IBaseVO {
-	public static final io.pelle.mango.client.base.vo.IEntityDescriptor<Test1VO> ENTITY = new io.pelle.mango.client.base.vo.EntityDescriptor<Test1VO>(Test1VO.class);
+	public static final io.pelle.mango.client.base.vo.IEntityDescriptor<Test1VO> ENTITY = new io.pelle.mango.client.base.vo.EntityDescriptor<Test1VO>(Test1VO.class, null, null);
 
 	private static final long serialVersionUID = -8497877063767382205L;
 

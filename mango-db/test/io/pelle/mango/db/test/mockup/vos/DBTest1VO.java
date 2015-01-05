@@ -30,7 +30,7 @@ public class DBTest1VO extends BaseVO {
 
 	private static final long serialVersionUID = 6869411076738783234L;
 
-	public static final IEntityDescriptor<DBTest1VO> DB_TEST1 = new EntityDescriptor<DBTest1VO>(DBTest1VO.class);
+	public static final IEntityDescriptor<DBTest1VO> DB_TEST1 = new EntityDescriptor<DBTest1VO>(DBTest1VO.class, null, null);
 
 	public static final IAttributeDescriptor<List<DBTest2VO>> TEST2S = new AttributeDescriptor<List<DBTest2VO>>(DB_TEST1, "test2s", List.class, DBTest2VO.class);
 
