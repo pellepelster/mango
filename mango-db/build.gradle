@@ -8,7 +8,6 @@ dependencies {
 	
     compile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.7.Final'
 	compile group: "org.hibernate", name: "hibernate-entitymanager", version: "4.3.7.Final"
-	compile group: "org.hibernate", name: "hibernate-validator", version: "5.1.1.Final"
 	
     compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
 	

@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
+import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
@@ -53,6 +55,15 @@ public class DemoClientTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 		baseEntityService.deleteAll(Entity2VO.class.getName());
+
+		MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_SEARCH2.addSearchHook(new BaseSearchHook<Entity2VO>() {
+
+			@Override
+			public SelectQuery<Entity2VO> beforeSearch(
+					SelectQuery<Entity2VO> selectQuery) {
+				return super.beforeSearch(selectQuery);
+			}
+		});
 
 		DictionaryEditorModuleTestUI<Entity2VO> editor2 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2);
 		TextTestControl textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);

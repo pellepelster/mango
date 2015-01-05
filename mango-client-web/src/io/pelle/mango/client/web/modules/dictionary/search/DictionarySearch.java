@@ -2,6 +2,8 @@ package io.pelle.mango.client.web.modules.dictionary.search;
 
 import io.pelle.mango.client.base.modules.dictionary.IVOWrapper;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
+import io.pelle.mango.client.base.modules.dictionary.hooks.ISearchHook;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.search.IFilterModel;
@@ -111,6 +113,12 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 
 		selectQuery.setMaxResults(dictionaryResult.getMaxResults() + 1);
 
+		if (DictionaryHookRegistry.getInstance().hasSearchHook(getModel().getSearchModel())) {
+			for(ISearchHook<VOType> searchHook : DictionaryHookRegistry.getInstance().getSearchHook(getModel().getSearchModel())) {
+				selectQuery = searchHook.beforeSearch(selectQuery);
+			}
+		}
+		
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().filter(selectQuery, new BaseErrorAsyncCallback<List<VOType>>() {
 
 			@Override

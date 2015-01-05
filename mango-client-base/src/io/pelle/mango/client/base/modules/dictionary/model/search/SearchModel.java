@@ -1,5 +1,7 @@
 package io.pelle.mango.client.base.modules.dictionary.model.search;
 
+import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
+import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -43,4 +45,7 @@ public class SearchModel<VOType extends IBaseVO> extends BaseModel<Object> imple
 		this.resultModel = resultModel;
 	}
 
+	public void addSearchHook(BaseSearchHook<VOType> searchHook) {
+		DictionaryHookRegistry.getInstance().addSearchHook(this, searchHook);
+	}
 }

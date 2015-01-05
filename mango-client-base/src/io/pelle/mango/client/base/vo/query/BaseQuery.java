@@ -73,6 +73,18 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 		return getQuery();
 	}
 
+	public Q addWhereAnd(IBooleanExpression expression) {
+
+		if (whereExpression.isPresent()) {
+			whereExpression.get().and(expression);
+		} 
+		else {
+			where(expression);
+		}
+
+		return getQuery();
+	}
+
 	public Q orderBy(IAttributeDescriptor<?> orderBy) {
 		orderBys.add(orderBy);
 		return getQuery();
