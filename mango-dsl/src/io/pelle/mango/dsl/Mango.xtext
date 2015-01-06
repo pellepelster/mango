@@ -34,7 +34,12 @@ EnumerationValue: name=ID ("=>" value=STRING)?;
 enum IdGeneratorStrategy: TABLE | SEQUENCE;
 
 EntityOptions:
-	EntityDisableIdField | EntityLabelField | EntityPluralLabelField;
+	EntityDisableIdField | EntityLabelField | EntityPluralLabelField | EntityNaturalKeyFields;
+
+EntityNaturalKeyFields:
+	{EntityNaturalKeyFields}
+	"naturalkey {" naturalKeyAttributes+=[EntityAttribute | QualifiedName ] (", " naturalKeyAttributes+=[EntityAttribute | QualifiedName ])* "}";
+
 	
 EntityDisableIdField:
 	{EntityDisableIdField}
@@ -61,7 +66,6 @@ EntityOptionsContainer:
 Entity:
 	'entity' name=ID ('extends' extends=[Entity|QualifiedName])? ('jvmtype' jvmtype=JvmTypeReference)? '{'
 		(entityOptions=EntityOptionsContainer)?
-		("naturalkey {" naturalKeyAttributes+=[EntityAttribute | QualifiedName ] (", " naturalKeyAttributes+=[EntityAttribute | QualifiedName ])* "}")?
 		(attributes+=EntityAttribute)*
 	'}';
 

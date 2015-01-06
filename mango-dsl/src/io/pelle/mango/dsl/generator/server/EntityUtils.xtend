@@ -5,6 +5,8 @@ import io.pelle.mango.dsl.mango.EntityDisableIdField
 import io.pelle.mango.dsl.mango.EntityLabelField
 import io.pelle.mango.dsl.mango.EntityOptionsContainer
 import io.pelle.mango.dsl.mango.EntityPluralLabelField
+import io.pelle.mango.dsl.mango.EntityNaturalKeyFields
+import java.util.Collections
 
 class EntityUtils {
 
@@ -32,10 +34,21 @@ class EntityUtils {
 		}
 	}
 
+	def <T> getNaturalKeyFields(Entity entity) {
+		if (hasNaturalKeyFields(entity)) {
+			return entity.getEntityOption(typeof(EntityNaturalKeyFields)).naturalKeyAttributes
+		} else {
+			Collections.emptyList
+		}
+	}
+
 	def <T> hasPluralLabel(Entity entity) {
 		return entity.getEntityOption(typeof(EntityPluralLabelField)) != null
 	}
 
+	def <T> hasNaturalKeyFields(Entity entity) {
+		return entity.getEntityOption(typeof(EntityNaturalKeyFields)) != null
+	}
 	def <T> getPluralLabel(Entity entity) {
 		if (hasPluralLabel(entity)) {
 			return entity.getEntityOption(typeof(EntityPluralLabelField)).pluralLabel

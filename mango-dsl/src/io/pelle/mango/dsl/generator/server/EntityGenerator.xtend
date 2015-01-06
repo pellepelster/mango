@@ -13,17 +13,16 @@ import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.DateEntityAttribute
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
-import io.pelle.mango.dsl.mango.EntityDisableIdField
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
-import io.pelle.mango.dsl.mango.EntityOptionsContainer
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.dsl.query.datatype.StringDatatypeQuery
 import io.pelle.mango.server.base.BaseEntity
 import org.apache.commons.logging.Log
+
 import static org.apache.commons.logging.LogFactory.*
-	
+
 class EntityGenerator extends BaseEntityGenerator {
 
 	val Log LOG = getLog(getClass().getName())
@@ -50,9 +49,10 @@ class EntityGenerator extends BaseEntityGenerator {
 		@Table(name = "«entity.entityTableName»")
 		«IF EntityQuery.isExtendedByOtherEntity(entity)»
 		@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.JOINED)
-		@javax.persistence.PrimaryKeyJoinColumn(name="«entity.entityTableIdColumnName»")
+		«««@javax.persistence.DiscriminatorColumn(name="discriminator", discriminatorType=DiscriminatorType.STRING)
 		«ENDIF»
 		«IF entity.extends != null»
+		«««@javax.persistence.DiscriminatorValue(value="«entity.entityTableName»")
 		«ELSE»
 		«ENDIF»
 		@SuppressWarnings("all")
@@ -85,7 +85,7 @@ class EntityGenerator extends BaseEntityGenerator {
 			
 			@Override
 			public String toString() {
-				return com.google.common.base.Objects.toStringHelper(this).«FOR naturalKeyAttribute : entity.naturalKeyAttributes SEPARATOR "."»addValue(«naturalKeyAttribute.attributeName.getterName»())«ENDFOR»«IF !entity.naturalKeyAttributes.empty».«ENDIF»toString();
+				return com.google.common.base.Objects.toStringHelper(this).«FOR naturalKeyAttribute : entity.naturalKeyFields SEPARATOR "."»addValue(«naturalKeyAttribute.attributeName.getterName»())«ENDFOR»«IF !entity.naturalKeyFields.empty».«ENDIF»toString();
 			}
 		}
 	'''

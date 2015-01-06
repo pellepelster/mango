@@ -142,7 +142,9 @@ project MangoDemo {
 			// country entity
 			//---------------------------------------------
 			entity Country {
-				naturalkey { countryIsoCode2 }
+				entityoptions {
+					naturalkey { countryIsoCode2 }
+				}
 
 				string IsoCode2 countryIsoCode2
 				string IsoCode3 countryIsoCode3
@@ -218,8 +220,10 @@ project MangoDemo {
 			// currency
 			//--------------------------------
 			entity Currency {
-				naturalkey { currencyIsoCode }
-
+				entityoptions {
+					naturalkey { currencyIsoCode }
+				}
+				
 				string CountryName currencyName
 				string IsoCode3 currencyIsoCode
 			}
@@ -314,7 +318,9 @@ project MangoDemo {
 			doubledatatype DoubleDatatype1 { }
 
 			entity Entity1 {
-				naturalkey { stringDatatype1 }
+				entityoptions {
+					naturalkey { stringDatatype1 }
+				}
 				string StringDatatype1 stringDatatype1
 				string StringDatatype1 stringDatatype2
 				string StringDatatype1 stringDatatype3

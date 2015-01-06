@@ -16,11 +16,15 @@ import io.pelle.mango.dsl.mango.IntegerEntityAttribute
 import io.pelle.mango.dsl.mango.LongEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
+import io.pelle.mango.dsl.generator.server.EntityUtils
 
 class XmlSchema {
 
 	@Inject
 	extension XmlNameUtils
+
+	@Inject
+	extension EntityUtils
 
 	def xmlSchema(Entity entity, boolean generateImports) '''
 	<xsd:schema
@@ -74,7 +78,7 @@ class XmlSchema {
 		<xsd:sequence>
 			<xsd:element name="id" type="xsd:integer"/>
 			«FOR attribute : entity.attributes»
-				«IF entity.naturalKeyAttributes.contains(attribute)»
+				«IF entity.naturalKeyFields.contains(attribute)»
 					«xsdAttribute(entity, attribute)»
 				«ENDIF»
 			«ENDFOR»

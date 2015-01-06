@@ -55,4 +55,6 @@ public interface IBaseVO extends Serializable, IVOEntity {
 
 	String getNaturalKey();
 
+	boolean hasNaturalKey();
+
 }

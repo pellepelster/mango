@@ -16,7 +16,6 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.IAssignmen
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
-import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,22 +46,6 @@ public final class DictionaryModelUtil {
 
 	public static String getLabel(IDictionaryModel dictionaryModel) {
 		return Objects.firstNonNull(dictionaryModel.getLabel(), dictionaryModel.getName());
-	}
-
-	public static List<IBaseControlModel> getLabelControlsWithFallback(IReferenceControlModel referenceControlModel, IDictionaryModel dictionaryModel) {
-		if (!referenceControlModel.getLabelControls().isEmpty()) {
-			return referenceControlModel.getLabelControls();
-		} else {
-			return getLabelControlsWithFallback(dictionaryModel);
-		}
-	}
-
-	public static List<IBaseControlModel> getLabelControlsWithFallback(IDictionaryModel dictionaryModel) {
-		if (!dictionaryModel.getLabelControls().isEmpty()) {
-			return dictionaryModel.getLabelControls();
-		} else {
-			return dictionaryModel.getSearchModel().getResultModel().getControls();
-		}
 	}
 
 	public static void createReferenceContainerList(IBaseContainerModel parentContainerModel, List<String> dictionaryNames) {

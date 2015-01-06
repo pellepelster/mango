@@ -89,6 +89,11 @@ public class VOBeanUtil {
 			return null;
 		}
 
+		@Override
+		public boolean hasNaturalKey() {
+			return false;
+		}
+
 	}
 
 	private static class ListAndQualifierResult {

@@ -43,7 +43,6 @@ public class DictionaryModelProvider {
 		return dictionaryModels;
 	}
 
-	@Deprecated
 	public static IDictionaryModel getDictionaryModelForClass(Class<? extends IBaseVO> voClass) {
 		for (Map.Entry<String, IDictionaryModel> entry : dictionaries.entrySet()) {
 			if (entry.getValue().getVOClass().equals(voClass)) {

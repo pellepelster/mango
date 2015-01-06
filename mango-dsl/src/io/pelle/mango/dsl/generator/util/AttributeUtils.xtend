@@ -6,6 +6,7 @@ import io.pelle.mango.dsl.emf.EmfModelQuery
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
+import io.pelle.mango.dsl.generator.server.EntityUtils
 
 class AttributeUtils {
 
@@ -15,16 +16,19 @@ class AttributeUtils {
 	@Inject
 	extension TypeUtils
 
+	@Inject
+	extension EntityUtils
+
 	//-------------------------------------------------------------------------
 	// natural key
 	//-------------------------------------------------------------------------
 	def boolean isNaturalKeyAttribute(EntityAttribute entityAttribute) {
-		return entityAttribute.parentEntity.naturalKeyAttributes.contains(entityAttribute)
+		return entityAttribute.parentEntity.naturalKeyFields.contains(entityAttribute)
 	}
 	
 	def naturalKeyOrder(EntityAttribute entityAttribute) {
 		if (entityAttribute.naturalKeyAttribute) {
-			return EmfModelQuery.createEObjectQuery(entityAttribute).getParentByType(Entity).match.naturalKeyAttributes.
+			return EmfModelQuery.createEObjectQuery(entityAttribute).getParentByType(Entity).match.naturalKeyFields.
 				indexOf(entityAttribute)
 		} else {
 			AttributeDescriptor.NO_NATURAL_KEY

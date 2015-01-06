@@ -56,7 +56,7 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.datatypeRule);
 
 		// entity
-		defaultBlockFormat(c, m.entityRule, m.entityAccess.leftCurlyBracketKeyword_4, m.entityAccess.rightCurlyBracketKeyword_8)
+		defaultBlockFormat(c, m.entityRule, m.entityAccess.leftCurlyBracketKeyword_4, m.entityAccess.rightCurlyBracketKeyword_7)
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.entityAttributeRule);
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.entityAttributeRule);
 

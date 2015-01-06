@@ -28,6 +28,7 @@ import io.pelle.mango.client.web.modules.dictionary.controls.ControlContentPrese
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Objects;
@@ -82,8 +83,26 @@ public final class DictionaryUtil {
 	}
 
 	public static String getLabel(IReferenceControlModel referenceControlModel, IBaseVO vo) {
+
 		IDictionaryModel dictionaryModel = DictionaryModelProvider.getDictionary(referenceControlModel.getDictionaryName());
-		List<IBaseControlModel> labelControlModels = DictionaryModelUtil.getLabelControlsWithFallback(referenceControlModel, dictionaryModel);
+
+		List<IBaseControlModel> labelControlModels = Collections.emptyList();
+
+		if (!referenceControlModel.getLabelControls().isEmpty()) {
+			labelControlModels = referenceControlModel.getLabelControls();
+		} else {
+			if (!dictionaryModel.getLabelControls().isEmpty()) {
+				labelControlModels = dictionaryModel.getLabelControls();
+			} else {
+
+				if (vo.hasNaturalKey()) {
+					return vo.getNaturalKey();
+				} else {
+					labelControlModels = dictionaryModel.getSearchModel().getResultModel().getControls();
+				}
+			}
+		}
+
 		return DictionaryUtil.getLabel(labelControlModels, vo);
 	}
 
