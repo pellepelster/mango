@@ -59,8 +59,7 @@ public class DemoClientTest extends BaseDemoTest {
 		MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_SEARCH2.addSearchHook(new BaseSearchHook<Entity2VO>() {
 
 			@Override
-			public SelectQuery<Entity2VO> beforeSearch(
-					SelectQuery<Entity2VO> selectQuery) {
+			public SelectQuery<Entity2VO> beforeSearch(SelectQuery<Entity2VO> selectQuery) {
 				return super.beforeSearch(selectQuery);
 			}
 		});
@@ -356,13 +355,13 @@ public class DemoClientTest extends BaseDemoTest {
 		DateTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
 		control.enterValue("a");
 		control.assertHasErrorWithText("'a' is not a valid date");
-		control.enterValue("2014-8-28");
+		control.enterValue("2014-8-28 12:00");
 		editor.save();
 
 		// create 2
 		editor = createDemoDictionary1Editor1();
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
-		control.enterValue("2015-9-29");
+		control.enterValue("2015-9-29 13:00");
 		editor.save();
 
 		// search all
@@ -372,19 +371,19 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// search 1
 		control = search.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.DATE_CONTROL1);
-		control.enterValue("2014-8-28");
+		control.enterValue("2014-8-28 12:00");
 		search.execute();
 		search.assertSearchResults(1);
 
 		// search 2
 		control = search.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.DATE_CONTROL1);
-		control.enterValue("2015-9-29");
+		control.enterValue("2015-9-29 13:00");
 		search.execute();
 		search.assertSearchResults(1);
 
 		editor = search.openEditor(0);
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
-		assertEquals("2015-09-29", control.getValue());
+		assertEquals("2015-09-29 13:00", control.getValue());
 	}
 
 	@Test
