@@ -97,7 +97,7 @@ public class DemoLogServiceTest extends BaseDemoTest {
 			mangoLogger.log("test1", LOGLEVEL.INFO, "reference1", i);
 		}
 
-		Thread.sleep(2000);
+		Thread.sleep(4000);
 
 		List<LogEntryVO> logEntries1 = logService.getLog(50, "reference1");
 		assertEquals(50, logEntries1.size());
