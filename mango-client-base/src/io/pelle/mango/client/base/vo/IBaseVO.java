@@ -53,8 +53,4 @@ public interface IBaseVO extends Serializable, IVOEntity {
 	 */
 	HashMap<String, Object> getData();
 
-	String getNaturalKey();
-
-	boolean hasNaturalKey();
-
 }

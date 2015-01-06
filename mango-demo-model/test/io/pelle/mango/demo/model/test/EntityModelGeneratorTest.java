@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
@@ -15,6 +16,7 @@ import io.pelle.mango.demo.client.test.ValueObject1;
 import io.pelle.mango.demo.client.test.ValueObject2;
 import io.pelle.mango.demo.client.test.ValueObject3;
 import io.pelle.mango.demo.client.test.ValueObject4;
+import io.pelle.mango.demo.server.showcase.Country;
 import io.pelle.mango.demo.server.test.Entity1;
 import io.pelle.mango.demo.server.test.Entity2;
 import io.pelle.mango.demo.server.test.Entity3;
@@ -47,6 +49,24 @@ public class EntityModelGeneratorTest {
 	@Test
 	public void testCountryExchangeRateReadOnly() {
 		assertTrue(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_EXCHANGE_RATE.isReadonly());
+	}
+
+	@Test
+	public void testGetNaturalKey() {
+
+		Country country = new Country();
+		country.setCountryIsoCode2("DE");
+
+		assertTrue(country.hasNaturalKey());
+		assertEquals("DE", country.getNaturalKey());
+	}
+
+	@Test
+	public void testHasNaturalKey() {
+		Entity2 entity2 = new Entity2();
+
+		assertEquals(entity2.getNaturalKey(), entity2.toString());
+		assertFalse(entity2.hasNaturalKey());
 	}
 
 	@Test
@@ -104,7 +124,7 @@ public class EntityModelGeneratorTest {
 		assertEquals(Boolean.class, Entity1VO.BOOLEANDATATYPE1.getListAttributeType());
 		assertEquals("booleanDatatype1", Entity1.BOOLEANDATATYPE1.getAttributeName());
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// DecimalDatatype1
 	// -------------------------------------------------------------------------
@@ -121,7 +141,7 @@ public class EntityModelGeneratorTest {
 		assertEquals(BigDecimal.class, Entity1VO.DECIMALDATATYPE1.getListAttributeType());
 		assertEquals("decimalDatatype1", Entity1.DECIMALDATATYPE1.getAttributeName());
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// DoubleDatatype1
 	// -------------------------------------------------------------------------
@@ -138,7 +158,7 @@ public class EntityModelGeneratorTest {
 		assertEquals(Double.class, Entity1VO.DOUBLEDATATYPE1.getListAttributeType());
 		assertEquals("doubleDatatype1", Entity1.DOUBLEDATATYPE1.getAttributeName());
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// FloatDatatype1
 	// -------------------------------------------------------------------------
@@ -172,7 +192,7 @@ public class EntityModelGeneratorTest {
 		assertEquals(String.class, Entity1.STRINGDATATYPE1LIST.getListAttributeType());
 		assertEquals("stringDatatype1List", Entity1.STRINGDATATYPE1LIST.getAttributeName());
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// Entity2Datatype
 	// -------------------------------------------------------------------------
@@ -376,7 +396,7 @@ public class EntityModelGeneratorTest {
 	public void testExtendsAttributeDescriptors() {
 		assertTrue(Entity6.STRING1.getParent() instanceof IEntityDescriptor);
 		assertTrue(Entity7.STRING1.getParent() instanceof IEntityDescriptor);
-		assertEquals(Entity6.class, ((IEntityDescriptor)Entity6.STRING1.getParent()).getVOEntityClass());
+		assertEquals(Entity6.class, ((IEntityDescriptor) Entity6.STRING1.getParent()).getVOEntityClass());
 		assertEquals(Entity7.class, ((IEntityDescriptor) Entity7.STRING1.getParent()).getVOEntityClass());
 	}
 

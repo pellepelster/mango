@@ -83,6 +83,8 @@ class EntityGenerator extends BaseEntityGenerator {
 				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»
 			«ENDFOR»
 			
+			«entity.compileNaturalKey»
+			
 			@Override
 			public String toString() {
 				return com.google.common.base.Objects.toStringHelper(this).«FOR naturalKeyAttribute : entity.naturalKeyFields SEPARATOR "."»addValue(«naturalKeyAttribute.attributeName.getterName»())«ENDFOR»«IF !entity.naturalKeyFields.empty».«ENDIF»toString();

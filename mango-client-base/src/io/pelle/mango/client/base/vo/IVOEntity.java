@@ -14,4 +14,7 @@ public interface IVOEntity extends IHasChangeTracker, Serializable {
 
 	void setOid(long oid);
 
+	String getNaturalKey();
+
+	boolean hasNaturalKey();
 }

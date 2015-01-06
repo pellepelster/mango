@@ -10,6 +10,26 @@ import java.util.Collections
 
 class EntityUtils {
 
+	def compileNaturalKey(Entity entity) '''
+		«IF entity.hasNaturalKeyFields»
+			@java.lang.Override
+			public String getNaturalKey() 
+			{
+				java.lang.StringBuffer sb = new java.lang.StringBuffer();
+				«FOR naturalKeyAttribute : entity.naturalKeyFields SEPARATOR "sb.append(\", \");"»
+				sb.append(this.get«naturalKeyAttribute.name.toFirstUpper()»());
+				«ENDFOR»
+				return sb.toString();
+			}
+
+			@Override
+			public boolean hasNaturalKey() {
+				return true;
+			}
+			
+		«ENDIF»
+	'''
+
 	def <T> getEntityOption(EntityOptionsContainer entityOptionsContainer, Class<T> entityOptionType) {
 		return entityOptionsContainer.options.findFirst[e|entityOptionType.isAssignableFrom(e.class)] as T
 	}

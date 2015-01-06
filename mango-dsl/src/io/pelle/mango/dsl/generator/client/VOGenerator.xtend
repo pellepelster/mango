@@ -57,24 +57,8 @@ class VOGenerator extends BaseEntityGenerator {
 			
 			«entity.genericVOSetter»
 			
-			«IF entity.hasNaturalKeyFields»
-				@java.lang.Override
-				public String getNaturalKey() 
-				{
-					java.lang.StringBuffer sb = new java.lang.StringBuffer();
-					«FOR naturalKeyAttribute : entity.naturalKeyFields SEPARATOR "sb.append(\", \");"»
-					sb.append(this.get«naturalKeyAttribute.name.toFirstUpper()»());
-					«ENDFOR»
-					return sb.toString();
-				}
+			«entity.compileNaturalKey»
 
-				@Override
-				public boolean hasNaturalKey() {
-					return true;
-				}
-				
-			«ENDIF»
-			
 			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
 				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»
 			«ENDFOR»

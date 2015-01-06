@@ -34,4 +34,14 @@ public abstract class BaseEntity implements IBaseEntity {
 		return changeTracker;
 	}
 
+	@Override
+	public String getNaturalKey() {
+		return toString();
+	}
+
+	@Override
+	public boolean hasNaturalKey() {
+		return false;
+	}
+
 }
