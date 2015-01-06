@@ -4,12 +4,15 @@
 package io.pelle.mango.dsl.generator.client.web
 
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider
+import io.pelle.mango.client.base.modules.navigation.NavigationTreeProvider
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNameUtils
 import io.pelle.mango.dsl.mango.Dictionary
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.NavigationNode
 import javax.inject.Inject
+import io.pelle.mango.dsl.mango.Entity
+import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider
 
 /**
  * Generates code from your model files on save.
@@ -46,10 +49,11 @@ class GWTClient extends BaseServices {
 			{
 				registerDictionaries();
 				registerEnumerationValueParser();
-				
+				registerValueObjectEntityDescriptors();
 				«IF !model.eAllContents.filter(NavigationNode).isEmpty»
 					registerNavigation();
 				«ENDIF»
+				
 			}
 
 			public static void registerEnumerationValueParser()
@@ -57,6 +61,12 @@ class GWTClient extends BaseServices {
 				«DictionaryModelProvider.name».registerEnumerationConverter(new «model.enumerationValueParserFullQualifiedName»());
 			}
 
+			public static void registerValueObjectEntityDescriptors()
+			{
+				«FOR entity : model.eAllContents().toIterable.filter(Entity)»
+				«VOMetaModelProvider.name».registerEntityDescriptor(«entity.voFullQualifiedName».«entity.entityConstantName»);
+				«ENDFOR»
+			}
 
 			public static void registerDictionaries()
 			{
@@ -68,7 +78,7 @@ class GWTClient extends BaseServices {
 			«IF !model.eAllContents.filter(NavigationNode).isEmpty»
 			public static void registerNavigation()
 			{
-				«io.pelle.mango.client.base.modules.navigation.NavigationTreeProvider.name».addRootNavigationElement(«model.navigationNodeClassName».ROOT);
+				«NavigationTreeProvider.name».addRootNavigationElement(«model.navigationNodeClassName».ROOT);
 			}
 			«ENDIF»
 	}

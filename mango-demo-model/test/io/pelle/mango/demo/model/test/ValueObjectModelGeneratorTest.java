@@ -3,6 +3,9 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider;
+import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
+import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
@@ -45,4 +48,14 @@ public class ValueObjectModelGeneratorTest {
 		assertFalse(entity2VO.hasNaturalKey());
 	}
 
+	@Test
+	public void testValueObjectMetaModelProvider() {
+
+		MangoDemoClientConfiguration.registerAll();
+
+		assertEquals("Entity2 Label", VOMetaModelProvider.getValueObjectEntityDescriptor(Entity2VO.class.getName()).getLabel());
+		assertEquals("Entity2 Labels", VOMetaModelProvider.getValueObjectEntityDescriptor(Entity2VO.class.getName()).getPluralLabel());
+
+		assertEquals("Entity2 Label", VOMetaModelProvider.getEntityDescriptor(MangoDemoDictionaryModel.DEMO_DICTIONARY2).getLabel());
+	}
 }

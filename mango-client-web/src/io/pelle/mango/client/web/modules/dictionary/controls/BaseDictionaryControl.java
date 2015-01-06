@@ -95,10 +95,6 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 		return label;
 	}
 
-	public String getFilterLabel() {
-		return DictionaryModelUtil.getFilterLabel(getModel());
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public ValueType getValue() {

@@ -16,6 +16,8 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.IAssignmen
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel;
+import io.pelle.mango.client.base.vo.IEntityDescriptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,16 @@ public final class DictionaryModelUtil {
 	}
 
 	public static String getLabel(IBaseControlModel baseControlModel) {
-		return Objects.firstNonNull(baseControlModel.getLabel(), baseControlModel.getName());
+
+		String label = null;
+
+		if (baseControlModel instanceof ReferenceControlModel) {
+			ReferenceControlModel referenceControlModel = (ReferenceControlModel) baseControlModel;
+			IDictionaryModel dictionaryModel = DictionaryModelProvider.getDictionary(referenceControlModel.getDictionaryName());
+			label = getLabel(dictionaryModel);
+		}
+
+		return Objects.firstNonNull(baseControlModel.getLabel(), Objects.firstNonNull(label, baseControlModel.getName()));
 	}
 
 	public static String getEditorLabel(IDictionaryModel dictionaryModel) {
@@ -45,7 +56,10 @@ public final class DictionaryModelUtil {
 	}
 
 	public static String getLabel(IDictionaryModel dictionaryModel) {
-		return Objects.firstNonNull(dictionaryModel.getLabel(), dictionaryModel.getName());
+
+		IEntityDescriptor<?> entityDescriptor = VOMetaModelProvider.getEntityDescriptor(dictionaryModel);
+
+		return Objects.firstNonNull(dictionaryModel.getLabel(), Objects.firstNonNull(entityDescriptor.getLabel(), dictionaryModel.getName()));
 	}
 
 	public static void createReferenceContainerList(IBaseContainerModel parentContainerModel, List<String> dictionaryNames) {
