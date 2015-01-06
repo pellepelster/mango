@@ -15,8 +15,8 @@ public class GwtUtils {
 		DefaultDateTimeFormatInfo info = new DefaultDateTimeFormatInfo();
 
 		switch (dateFormat) {
-		case SHORT:
-			format = new DateTimeFormat(info.dateFormatShort(), info) {
+		case DATE_TIME_SHORT:
+			format = new DateTimeFormat(info.dateTimeShort(info.timeFormatShort(), info.dateFormatShort()), info) {
 			};
 			break;
 
