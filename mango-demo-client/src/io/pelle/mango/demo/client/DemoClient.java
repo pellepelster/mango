@@ -7,8 +7,10 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 import io.pelle.mango.demo.client.showcase.CountryVO;
+import io.pelle.mango.demo.client.test.Entity1VO;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Overflow;
@@ -32,19 +34,6 @@ public class DemoClient implements EntryPoint {
 		MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
 		init();
 		ModuleHandler.getInstance().startUIModule(ModuleNavigationModule.NAVIGATION_UI_MODULE_LOCATOR, Direction.WEST.toString());
-
-		MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.enableLogDisplay();
-
-		MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH.COUNTRY_RESULT.setTableHook(new BaseTableHook<CountryVO>() {
-			@Override
-			public String getStyleName(CountryVO tableRow) {
-				if (tableRow.getCountryIsoCode2() != null && tableRow.getCountryIsoCode2().toLowerCase().equals("de")) {
-					return "countryResultRow";
-				} else {
-					return super.getStyleName(tableRow);
-				}
-			}
-		});
 
 		String greetingText = "";
 		greetingText += "<h2>Mango Showcase</h2><br/>";
@@ -141,9 +130,21 @@ public class DemoClient implements EntryPoint {
 
 		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.REFERENCE_CONTROL1.setHelpText(replaceKeywords(string2));
 
+		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.addEditorHook(new BaseEditorHook<Entity1VO>() {
+
+			@Override
+			public void onSave(AsyncCallback<Boolean> asyncCallback, Entity1VO vo) {
+
+				vo.setDateDatype1(new Date());
+				asyncCallback.onSuccess(true);
+			}
+		});
+
 		createNavigationHelpText();
 		createCountrySearchHelpText();
 		createCountryEditorHelpText();
+
+		MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.enableLogDisplay();
 
 		MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.addEditorHook(new BaseEditorHook<CountryVO>() {
 
@@ -152,6 +153,17 @@ public class DemoClient implements EntryPoint {
 
 				vo.setCountryExchangeRate(new BigDecimal(1.56));
 				asyncCallback.onSuccess(true);
+			}
+		});
+
+		MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH.COUNTRY_RESULT.setTableHook(new BaseTableHook<CountryVO>() {
+			@Override
+			public String getStyleName(CountryVO tableRow) {
+				if (tableRow.getCountryIsoCode2() != null && tableRow.getCountryIsoCode2().toLowerCase().equals("de")) {
+					return "countryResultRow";
+				} else {
+					return super.getStyleName(tableRow);
+				}
 			}
 		});
 

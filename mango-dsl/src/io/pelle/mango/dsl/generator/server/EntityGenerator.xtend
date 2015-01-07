@@ -112,7 +112,7 @@ class EntityGenerator extends BaseEntityGenerator {
 
 	def dispatch compileEntityAttributeJpaAnnotations(DateEntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»")
-		@javax.persistence.Temporal(javax.persistence.TemporalType.DATE)
+		@javax.persistence.Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	'''
  
 	def dispatch compileEntityAttributeJpaAnnotations(StringEntityAttribute entityAttribute) '''
