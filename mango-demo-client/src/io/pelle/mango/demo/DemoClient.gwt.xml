@@ -6,6 +6,8 @@
 	<inherits name='io.pelle.mango.demo.MangoDemoGenerated' />
 
 	<add-linker name="xsiframe" />
+	<stylesheet src="DemoClient.css"/>
+	
 	<set-configuration-property name="devModeRedirectEnabled"
 		value="true" />
 

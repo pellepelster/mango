@@ -27,6 +27,7 @@ import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.RowStyles;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -55,6 +56,14 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 		dataProvider.addDataDisplay(this);
 		this.baseTableElement = baseTableElement;
 		this.baseControls = baseTableElement.getControls();
+
+		setRowStyles(new RowStyles<IBaseTable.ITableRow<VOType>>() {
+			@Override
+			public String getStyleNames(IBaseTable.ITableRow<VOType> row, int rowIndex) {
+				return row.getStyleNames();
+			}
+		});
+
 	}
 
 	protected void createModelColumns() {

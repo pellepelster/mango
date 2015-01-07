@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.web.test;
 
+import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
@@ -72,7 +73,8 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 		AsyncCallbackFuture<Result<VOType>> future = AsyncCallbackFuture.create();
 		this.module.getDictionaryEditor().save(Optional.of(future.getCallback()));
-		future.get();
+		assertTrue(future.get().getValidationMessages().isEmpty());
+
 	}
 
 	@Override

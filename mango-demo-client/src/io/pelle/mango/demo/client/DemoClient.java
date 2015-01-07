@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.client;
 
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
+import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
 import io.pelle.mango.client.gwt.GWTLayoutFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
@@ -33,6 +34,17 @@ public class DemoClient implements EntryPoint {
 		ModuleHandler.getInstance().startUIModule(ModuleNavigationModule.NAVIGATION_UI_MODULE_LOCATOR, Direction.WEST.toString());
 
 		MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.enableLogDisplay();
+
+		MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH.COUNTRY_RESULT.setTableHook(new BaseTableHook<CountryVO>() {
+			@Override
+			public String getStyleName(CountryVO tableRow) {
+				if (tableRow.getCountryIsoCode2() != null && tableRow.getCountryIsoCode2().toLowerCase().equals("de")) {
+					return "countryResultRow";
+				} else {
+					return super.getStyleName(tableRow);
+				}
+			}
+		});
 
 		String greetingText = "";
 		greetingText += "<h2>Mango Showcase</h2><br/>";

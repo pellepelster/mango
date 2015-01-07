@@ -1,14 +1,12 @@
 package io.pelle.mango.client.base.modules.dictionary.model.containers;
 
-import io.pelle.mango.client.base.modules.dictionary.container.IAssignmentTable;
 import io.pelle.mango.client.base.modules.dictionary.model.BaseTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayout;
 import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayoutData;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
-public class AssignmentTableModel<VOType extends IBaseVO> extends BaseTableModel<IAssignmentTable<VOType>> implements IAssignmentTableModel
-{
+public class AssignmentTableModel<VOType extends IBaseVO> extends BaseTableModel<VOType> implements IAssignmentTableModel {
 
 	private static final long serialVersionUID = 1832725605229414533L;
 
@@ -16,30 +14,25 @@ public class AssignmentTableModel<VOType extends IBaseVO> extends BaseTableModel
 
 	private String attributePath;
 
-	public AssignmentTableModel(String name, IBaseModel parent)
-	{
+	public AssignmentTableModel(String name, IBaseModel parent) {
 		super(name, parent);
 	}
 
 	@Override
-	public String getAttributePath()
-	{
+	public String getAttributePath() {
 		return this.attributePath;
 	}
 
 	@Override
-	public String getDictionaryName()
-	{
+	public String getDictionaryName() {
 		return this.dictionaryName;
 	}
 
-	public void setDictionaryName(String dictionaryName)
-	{
+	public void setDictionaryName(String dictionaryName) {
 		this.dictionaryName = dictionaryName;
 	}
 
-	public void setAttributePath(String attributePath)
-	{
+	public void setAttributePath(String attributePath) {
 		this.attributePath = attributePath;
 	}
 

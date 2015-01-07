@@ -1,6 +1,7 @@
 package io.pelle.mango.client.base.modules.dictionary.hooks;
 
 import io.pelle.mango.client.base.modules.dictionary.BaseDictionaryElementUtil;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IFileControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.search.ISearchModel;
 
@@ -10,8 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("rawtypes")
-public class DictionaryHookRegistry
-{
+public class DictionaryHookRegistry {
 	private static DictionaryHookRegistry instance;
 
 	private Map<String, List<BaseEditorHook>> editorHooks = new HashMap<String, List<BaseEditorHook>>();
@@ -20,73 +20,69 @@ public class DictionaryHookRegistry
 
 	private Map<String, IFileControlHook> fileControlHooks = new HashMap<String, IFileControlHook>();
 
-	private DictionaryHookRegistry()
-	{
+	private Map<String, BaseTableHook> tableHooks = new HashMap<String, BaseTableHook>();
+
+	private DictionaryHookRegistry() {
 	}
 
-	public static DictionaryHookRegistry getInstance()
-	{
-		if (instance == null)
-		{
+	public static DictionaryHookRegistry getInstance() {
+		if (instance == null) {
 			instance = new DictionaryHookRegistry();
 		}
 
 		return instance;
 	}
 
+	public void addTableHook(IBaseTableModel baseTableModel, BaseTableHook<?> baseTableHook) {
+		this.tableHooks.put(BaseDictionaryElementUtil.getModelId(baseTableModel), baseTableHook);
+	}
+
+	public IBaseTableHook<?> getTableHook(IBaseTableModel baseTableModel) {
+		return this.tableHooks.get(BaseDictionaryElementUtil.getModelId(baseTableModel));
+	}
+
 	// editor hook
-	public void addEditorHook(String dictionaryId, BaseEditorHook editorHook)
-	{
-		if (this.editorHooks.get(dictionaryId) == null)
-		{
+	public void addEditorHook(String dictionaryId, BaseEditorHook editorHook) {
+		if (this.editorHooks.get(dictionaryId) == null) {
 			this.editorHooks.put(dictionaryId, new ArrayList<BaseEditorHook>());
 		}
 
 		this.editorHooks.get(dictionaryId).add(editorHook);
 	}
 
-	public void addSearchHook(ISearchModel searchModel, BaseSearchHook baseSearchHook)
-	{
-		if (this.searchHooks.get(searchModel.getName()) == null)
-		{
+	public void addSearchHook(ISearchModel searchModel, BaseSearchHook baseSearchHook) {
+		if (this.searchHooks.get(searchModel.getName()) == null) {
 			this.searchHooks.put(searchModel.getName(), new ArrayList<BaseSearchHook>());
 		}
 
 		this.searchHooks.get(searchModel.getName()).add(baseSearchHook);
 	}
 
-	public void setFileControlHook(IFileControlModel fileControlModel, IFileControlHook fileControlHook)
-	{
+	public void setFileControlHook(IFileControlModel fileControlModel, IFileControlHook fileControlHook) {
 		this.fileControlHooks.put(BaseDictionaryElementUtil.getModelId(fileControlModel), fileControlHook);
 	}
 
-	public IFileControlHook getFileControlHook(IFileControlModel fileControlModel)
-	{
+	public IFileControlHook getFileControlHook(IFileControlModel fileControlModel) {
 		return this.fileControlHooks.get(BaseDictionaryElementUtil.getModelId(fileControlModel));
 	}
 
-	public boolean hasFileControlHook(IFileControlModel fileControlModel)
-	{
+	public boolean hasFileControlHook(IFileControlModel fileControlModel) {
 		return getFileControlHook(fileControlModel) != null;
 	}
 
-	public boolean hasEditorHook(String dictionaryId)
-	{
+	public boolean hasEditorHook(String dictionaryId) {
 		return this.editorHooks.containsKey(dictionaryId) && !this.editorHooks.get(dictionaryId).isEmpty();
 	}
 
-	public List<BaseEditorHook> getEditorHook(String dictionaryId)
-	{
+	public List<BaseEditorHook> getEditorHook(String dictionaryId) {
 		return this.editorHooks.get(dictionaryId);
 	}
 
-	public boolean hasSearchHook(ISearchModel searchModel)
-	{
+	public boolean hasSearchHook(ISearchModel searchModel) {
 		return this.searchHooks.containsKey(searchModel.getName()) && !this.searchHooks.get(searchModel.getName()).isEmpty();
 	}
 
-	public List<BaseSearchHook> getSearchHook(ISearchModel searchModel)
-	{
+	public List<BaseSearchHook> getSearchHook(ISearchModel searchModel) {
 		return this.searchHooks.get(searchModel.getName());
 	}
 

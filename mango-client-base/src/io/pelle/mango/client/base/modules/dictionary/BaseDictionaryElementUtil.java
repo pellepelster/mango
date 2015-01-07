@@ -22,6 +22,7 @@ public class BaseDictionaryElementUtil {
 	}
 
 	public static List<String> getParentModelIds(BaseModel<?> baseModel) {
+
 		List<String> modelIds = new ArrayList<String>();
 
 		IBaseModel currentModel = baseModel;

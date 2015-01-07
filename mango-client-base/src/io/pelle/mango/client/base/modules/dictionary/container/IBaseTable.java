@@ -9,15 +9,14 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface IBaseTable<VOType extends IBaseVO> extends IBaseContainer
-{
-	public interface TableUpdateListener
-	{
+public interface IBaseTable<VOType extends IBaseVO> extends IBaseContainer {
+	public interface TableUpdateListener {
 		void onUpdate();
 	}
 
-	interface ITableRow<RowVOType extends IBaseVO>
-	{
+	interface ITableRow<RowVOType extends IBaseVO> {
+
+		String getStyleNames();
 
 		RowVOType getVO();
 

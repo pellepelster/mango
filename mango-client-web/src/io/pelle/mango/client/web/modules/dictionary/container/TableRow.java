@@ -2,6 +2,8 @@ package io.pelle.mango.client.web.modules.dictionary.container;
 
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
+import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
+import io.pelle.mango.client.base.modules.dictionary.hooks.IBaseTableHook;
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
@@ -18,9 +20,12 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 public class TableRow<VOType extends IBaseVO, ModelType extends IBaseTableModel> extends BaseDictionaryElement<ModelType> implements IBaseTable.ITableRow<VOType> {
+
 	private List<BaseDictionaryControl<?, ?>> columns = new ArrayList<BaseDictionaryControl<?, ?>>();
 
 	private final EditorVOWrapper<VOType> voWrapper;
+
+	private IBaseTableHook<VOType> baseTableHook;
 
 	@SuppressWarnings("static-access")
 	public TableRow(VOType vo, BaseTableElement<VOType, ModelType> parent) {
@@ -31,6 +36,7 @@ public class TableRow<VOType extends IBaseVO, ModelType extends IBaseTableModel>
 		}
 
 		this.voWrapper = new EditorVOWrapper<VOType>(vo);
+		baseTableHook = (IBaseTableHook<VOType>) DictionaryHookRegistry.getInstance().getTableHook(parent.getModel());
 	}
 
 	@Override
@@ -67,6 +73,15 @@ public class TableRow<VOType extends IBaseVO, ModelType extends IBaseTableModel>
 	@Override
 	public List<? extends BaseDictionaryElement<?>> getAllChildren() {
 		return this.columns;
+	}
+
+	@Override
+	public String getStyleNames() {
+		if (baseTableHook != null) {
+			return baseTableHook.getStyleName(getVO());
+		} else {
+			return null;
+		}
 	}
 
 }

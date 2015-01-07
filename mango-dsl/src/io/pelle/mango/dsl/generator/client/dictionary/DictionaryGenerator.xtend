@@ -17,6 +17,7 @@ import io.pelle.mango.dsl.mango.DictionaryEditor
 import io.pelle.mango.dsl.mango.DictionaryFilter
 import io.pelle.mango.dsl.mango.DictionaryResult
 import io.pelle.mango.dsl.mango.DictionarySearch
+import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import org.eclipse.xtext.generator.IFileSystemAccess
 
@@ -90,7 +91,7 @@ class DictionaryGenerator {
 		}
 
 		if (dictionary.dictionarysearch != null) {
-			dictionary.dictionarysearch.dictionaryGenerator(fsa)
+			dictionary.dictionarysearch.dictionaryGenerator(dictionary.entity, fsa)
 		}
 
 	}
@@ -193,17 +194,16 @@ class DictionaryGenerator {
 		dictionaryFilter.containercontents.dictionaryGenerator(fsa)
 	}
 
-	def dictionaryResultGenerator(DictionaryResult dictionaryResult, IFileSystemAccess fsa) {
-
-		fsa.generateFile(dictionaryResult.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryResult.dictionaryClass)
+	def dictionaryResultGenerator(DictionaryResult dictionaryResult, Entity entity, IFileSystemAccess fsa) {
+		fsa.generateFile(dictionaryResult.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryResult.dictionaryClass(entity))
 
 	}
 
-	def dictionaryGenerator(DictionarySearch dictionarySearch, IFileSystemAccess fsa) {
+	def dictionaryGenerator(DictionarySearch dictionarySearch, Entity entity, IFileSystemAccess fsa) {
 
 		fsa.generateFile(dictionarySearch.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionarySearch.dictionaryClass)
 
-		dictionarySearch.dictionaryresult.dictionaryResultGenerator(fsa)
+		dictionarySearch.dictionaryresult.dictionaryResultGenerator(entity, fsa)
 
 		for (dictionaryfilter : dictionarySearch.dictionaryfilters) {
 			dictionaryfilter.dictionaryFilterGenerator(fsa)
@@ -243,11 +243,11 @@ class DictionaryGenerator {
 		}
 	'''
 
-	def dictionaryClass(DictionaryResult dictionaryResult) '''
+	def dictionaryClass(DictionaryResult dictionaryResult, Entity entity) '''
 		package «dictionaryResult.packageName»;
 		
 		@«SuppressWarnings.name»("all")
-		public class «dictionaryResult.dictionaryClassName» extends «ResultModel.name» {
+		public class «dictionaryResult.dictionaryClassName» extends «ResultModel.name»<«entity.voFullQualifiedName»> {
 		
 			«FOR dictionaryControl : dictionaryResult.resultcolumns»
 				«dictionaryControl.dictionaryControlConstant»

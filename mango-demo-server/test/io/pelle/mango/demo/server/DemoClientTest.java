@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
+import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
@@ -39,6 +40,32 @@ public class DemoClientTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
+
+	@Test
+	public void testBaseTableHookRowColor() {
+
+		MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH.COUNTRY_RESULT.setTableHook(new BaseTableHook<CountryVO>() {
+			@Override
+			public String getStyleName(CountryVO tableRow) {
+				if (tableRow.getCountryIsoCode2().equals("DE")) {
+					return "style1";
+				} else {
+					return super.getStyleName(tableRow);
+				}
+			}
+		});
+
+		DictionaryEditorModuleTestUI<CountryVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR);
+		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2);
+		control.enterValue("DE");
+		editor.save();
+
+		DictionarySearchModuleTestUI<Entity2VO> search = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH);
+		search.execute();
+		search.assertSearchResults(1);
+
+		assertEquals("style1", search.getResultRow(0).getStyleNames());
+	}
 
 	@Test
 	public void testCountryEditorExchangeRateReadOnly() {
