@@ -94,13 +94,15 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 		}
 
-		actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryCreate(), MangoClientWeb.MESSAGES.dictionaryCreate(), new ClickHandler() {
-			/** {@inheritDoc} */
-			@Override
-			public void onClick(ClickEvent event) {
-				DictionaryEditorModuleFactory.openEditor(getModule().getDictionaryModel().getName());
-			}
-		}, DictionarySearchModule.MODULE_ID + "-" + module.getDictionaryModel().getName() + "-" + DICTIONARY_CREATE_BUTTON_DEBUG_ID);
+		if (module.isCreateEnabled()) {
+			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryCreate(), MangoClientWeb.MESSAGES.dictionaryCreate(), new ClickHandler() {
+				/** {@inheritDoc} */
+				@Override
+				public void onClick(ClickEvent event) {
+					DictionaryEditorModuleFactory.openEditor(getModule().getDictionaryModel().getName());
+				}
+			}, DictionarySearchModule.MODULE_ID + "-" + module.getDictionaryModel().getName() + "-" + DICTIONARY_CREATE_BUTTON_DEBUG_ID);
+		}
 
 		dictionaryResultPanel.addStyleName(GwtStyles.TOP_SPACER);
 		dictionaryResultPanel.setWidth("100%");

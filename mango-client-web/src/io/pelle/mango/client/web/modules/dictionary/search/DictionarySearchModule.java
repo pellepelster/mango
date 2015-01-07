@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -57,9 +56,9 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 		return ModuleUtils.getBaseUIModuleUrl(SEARCH_QUERY_RESULT_UI_MODULE_ID) + "&" + SEARCHTEXT_PARAMETER_ID + "=" + searchText;
 	}
 
-	private Optional<IDictionaryModel> dictionaryModel = Optional.absent();
+	private IDictionaryModel dictionaryModel;
 
-	private Optional<DictionarySearch<VOType>> dictionarySearch = Optional.absent();
+	private DictionarySearch<VOType> dictionarySearch;
 
 	private String title = MangoClientWeb.MESSAGES.dictionarySearch();
 
@@ -75,8 +74,8 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 	}
 
 	private void init(String dictionaryName) {
-		DictionarySearchModule.this.dictionaryModel = Optional.of(DictionaryModelProvider.getDictionary(dictionaryName));
-		DictionarySearchModule.this.dictionarySearch = Optional.of(new DictionarySearch<VOType>(this.dictionaryModel.get()));
+		DictionarySearchModule.this.dictionaryModel = DictionaryModelProvider.getDictionary(dictionaryName);
+		DictionarySearchModule.this.dictionarySearch = new DictionarySearch<VOType>(this.dictionaryModel);
 
 		getModuleCallback().onSuccess(DictionarySearchModule.this);
 
@@ -84,8 +83,8 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 
 	@Override
 	public String getTitle() {
-		if (this.dictionarySearch.isPresent()) {
-			return this.dictionarySearch.get().getTitle();
+		if (this.dictionarySearch != null) {
+			return this.dictionarySearch.getTitle();
 		} else {
 			return this.title;
 		}
@@ -99,7 +98,7 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 	}
 
 	public DictionarySearch<VOType> getDictionarySearch() {
-		return this.dictionarySearch.get();
+		return this.dictionarySearch;
 	}
 
 	@Override
@@ -117,11 +116,11 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 
 	@Override
 	public <ElementType> ElementType getElement(BaseModel<ElementType> baseModel) {
-		return DictionaryElementUtil.getElement(this.dictionarySearch.get().getActiveFilter(), baseModel);
+		return DictionaryElementUtil.getElement(this.dictionarySearch.getActiveFilter(), baseModel);
 	}
 
 	public IDictionaryModel getDictionaryModel() {
-		return this.dictionaryModel.get();
+		return this.dictionaryModel;
 	}
 
 	@Override
@@ -129,4 +128,7 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 		return getDictionaryModel().getSearchModel().getHelpText();
 	}
 
+	public boolean isCreateEnabled() {
+		return dictionaryModel.getSearchModel().isCreateEnabled();
+	}
 }

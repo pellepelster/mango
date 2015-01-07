@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchModel<VOType extends IBaseVO> extends BaseModel<Object> implements ISearchModel {
+
 	private List<IFilterModel> filters = new ArrayList<IFilterModel>();
 
 	private static final long serialVersionUID = 7452528927479882166L;
@@ -17,6 +18,8 @@ public class SearchModel<VOType extends IBaseVO> extends BaseModel<Object> imple
 	private IResultModel resultModel;
 
 	private String label;
+
+	private boolean createEnabled = true;
 
 	public void setLabel(String label) {
 		this.label = label;
@@ -47,5 +50,14 @@ public class SearchModel<VOType extends IBaseVO> extends BaseModel<Object> imple
 
 	public void addSearchHook(BaseSearchHook<VOType> searchHook) {
 		DictionaryHookRegistry.getInstance().addSearchHook(this, searchHook);
+	}
+
+	public void setCreateEnabled(boolean createEnabled) {
+		this.createEnabled = createEnabled;
+	}
+
+	@Override
+	public boolean isCreateEnabled() {
+		return createEnabled;
 	}
 }

@@ -23,27 +23,14 @@ import java.util.List;
  * @version $Rev$, $Date$
  * 
  */
-public interface ISearchModel extends IBaseModel
-{
-	/**
-	 * Models for the filter
-	 * 
-	 * @return
-	 */
+public interface ISearchModel extends IBaseModel {
+
 	List<IFilterModel> getFilterModels();
 
-	/**
-	 * Model for the result UI
-	 * 
-	 * @return
-	 */
 	IResultModel getResultModel();
 
-	/**
-	 * Returns the title
-	 * 
-	 * @return
-	 */
 	String getLabel();
+
+	boolean isCreateEnabled();
 
 }
