@@ -20,8 +20,8 @@ public class GwtUtils {
 			};
 			break;
 
-		case YEAR_MONTH_DAY:
-			format = new DateTimeFormat("yyyy-MM-dd", info) {
+		case YEAR_MONTH_DAY_HOUR_MINUTE_SECOND:
+			format = new DateTimeFormat("yyyy-MM-dd HH:mm:ss", info) {
 			};
 			break;
 		}

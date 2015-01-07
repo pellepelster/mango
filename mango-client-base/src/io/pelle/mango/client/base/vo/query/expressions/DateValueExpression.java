@@ -24,7 +24,7 @@ public class DateValueExpression implements IExpression, Serializable {
 
 	@Override
 	public String getJPQL(IAliasProvider aliasProvider) {
-		return "'" + GwtUtils.formatDate(value, IDateControlModel.DATE_FORMAT.YEAR_MONTH_DAY) + "'";
+		return "'" + GwtUtils.formatDate(value, IDateControlModel.DATE_FORMAT.YEAR_MONTH_DAY_HOUR_MINUTE_SECOND) + "'";
 	}
 
 	@Override
