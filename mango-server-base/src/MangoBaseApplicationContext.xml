@@ -51,7 +51,7 @@
 
 	<bean class="io.pelle.mango.server.log.LogReferenceKeyMapperRegistry" />
 	
-	<bean class="io.pelle.mango.server.log.ValueObjectLogReferenceKeyMapper" />
+	<bean class="io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper" />
 
 	<bean
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

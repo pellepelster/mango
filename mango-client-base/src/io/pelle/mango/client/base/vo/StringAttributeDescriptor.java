@@ -6,18 +6,18 @@ import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
 import io.pelle.mango.client.base.vo.query.expressions.LikeExpression;
 import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 
-public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor<String> implements IAttributeDescriptor<String> {
+public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor<String> {
 
 	private final int maxLength;
 
 	private final int minLength;
 
 	public static final int NO_LENGTH_LIMIT = -1;
-	
+
 	public StringAttributeDescriptor(IMetaDescriptor parent, String attributeName) {
 		this(parent, attributeName, NO_LENGTH_LIMIT);
 	}
-	
+
 	public StringAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> collectionType) {
 		this(parent, attributeName, collectionType, NO_LENGTH_LIMIT, NO_LENGTH_LIMIT, NO_NATURAL_KEY);
 	}
@@ -47,9 +47,9 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 	public IBooleanExpression like(String value) {
 		return new LikeExpression(entityFieldExpression, new StringExpression(value), false);
 	}
-	
+
 	protected StringAttributeDescriptor cloneWithNewParent(IAttributeDescriptor<?> parentAttributeDescriptor) {
-		StringAttributeDescriptor clone = new StringAttributeDescriptor(parentAttributeDescriptor, getAttributeName(), getListAttributeType(),  minLength, maxLength, getNaturalKeyOrder());
+		StringAttributeDescriptor clone = new StringAttributeDescriptor(parentAttributeDescriptor, getAttributeName(), getListAttributeType(), minLength, maxLength, getNaturalKeyOrder());
 		return clone;
 	}
 

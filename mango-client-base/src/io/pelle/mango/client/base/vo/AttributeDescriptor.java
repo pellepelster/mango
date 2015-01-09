@@ -92,6 +92,9 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 		} else if (attributeDescriptor instanceof EnumerationAttributeDescriptor) {
 			EnumerationAttributeDescriptor enumerationAttributeDescriptor = (EnumerationAttributeDescriptor) attributeDescriptor;
 			return (T) enumerationAttributeDescriptor.cloneWithNewParent(this);
+		} else if (attributeDescriptor instanceof LongAttributeDescriptor) {
+			LongAttributeDescriptor longAttributeDescriptor = (LongAttributeDescriptor) attributeDescriptor;
+			return (T) longAttributeDescriptor.cloneWithNewParent(this);
 		}
 
 		throw new RuntimeException("unsupported attribute descriptor type '" + attributeDescriptor.getClass() + "'");

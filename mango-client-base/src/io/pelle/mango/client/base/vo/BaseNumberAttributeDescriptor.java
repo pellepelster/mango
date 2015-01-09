@@ -7,8 +7,8 @@ import io.pelle.mango.client.base.vo.query.expressions.NumberExpression;
 
 public class BaseNumberAttributeDescriptor<T extends Number> extends BaseExpressionAttributeDescriptor<T> {
 
-	public BaseNumberAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<T> numberClass) {
-		super(entityDescriptor, attributeName, numberClass, AttributeDescriptor.NO_NATURAL_KEY);
+	public BaseNumberAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<T> numberClass) {
+		super(parent, attributeName, numberClass, AttributeDescriptor.NO_NATURAL_KEY);
 	}
 
 	public IBooleanExpression eq(T value) {
