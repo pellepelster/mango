@@ -5,6 +5,10 @@ import io.pelle.mango.client.base.vo.IVOEntity;
 @SuppressWarnings("serial")
 public class CountQuery<T extends IVOEntity> extends BaseQuery<T, CountQuery<T>> {
 
+	public CountQuery() {
+		super();
+	}
+
 	public CountQuery(Class<? extends IVOEntity> from) {
 		getFroms().add(new Entity(aliasProvider, from.getName()));
 	}

@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,10 +23,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 
 @Component
-public class BaseVODAO extends BaseDAO implements IBaseVODAO {
-
-	@PersistenceContext
-	private EntityManager entityManager;
+public class BaseVODAO extends BaseDAO<IBaseVO> implements IBaseVODAO {
 
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;

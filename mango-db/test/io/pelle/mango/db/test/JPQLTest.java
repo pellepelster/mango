@@ -3,9 +3,12 @@ package io.pelle.mango.db.test;
 import static io.pelle.mango.client.base.vo.query.BaseQuery.and;
 import static io.pelle.mango.client.base.vo.query.BaseQuery.or;
 import static io.pelle.mango.client.base.vo.query.CountQuery.countFrom;
+import static io.pelle.mango.client.base.vo.query.DeleteQuery.deleteFrom;
 import io.pelle.mango.client.base.vo.query.CountQuery;
+import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.query.ServerCountQuery;
+import io.pelle.mango.db.query.ServerDeleteQuery;
 import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.db.test.mockup.EntityVOMapper;
 import io.pelle.mango.db.test.mockup.entities.DBTest1;
@@ -140,6 +143,12 @@ public class JPQLTest extends TestCase {
 	public void testSelectCount() {
 		CountQuery<DBTest1> query = countFrom(DBTest1.class);
 		assertEquals("SELECT COUNT(x0) FROM DBTest1 x0", ServerCountQuery.adapt(query).getJPQL(EntityVOMapper.INSTANCE));
+	}
+
+	@Test
+	public void testDeleteQuery() {
+		DeleteQuery<DBTest1> query = deleteFrom(DBTest1.class);
+		assertEquals("DELETE FROM DBTest1 x0", ServerDeleteQuery.adapt(query).getJPQL(EntityVOMapper.INSTANCE));
 	}
 
 }

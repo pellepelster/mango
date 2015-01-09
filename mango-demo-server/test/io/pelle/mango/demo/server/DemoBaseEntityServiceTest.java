@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
+import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.dao.IBaseVODAO;
@@ -368,6 +369,28 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3VO);
 		entity3VO = this.baseEntityService.read(result1.getVO().getId(), Entity3VO.class.getName());
 		assertArrayEquals(data, entity3VO.getBinaryDatatype1());
+	}
+
+	@Test
+	public void testDeleteQuery() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		baseEntityService.validateAndCreate(entity1VO);
+
+		entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("bbb");
+		baseEntityService.validateAndCreate(entity1VO);
+
+		assertEquals(2, baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class)).size());
+
+		baseEntityService.deleteQuery(DeleteQuery.deleteFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.eq("aaa")));
+		assertEquals(1, baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class)).size());
+
+		baseEntityService.deleteQuery(DeleteQuery.deleteFrom(Entity1VO.class));
+		assertEquals(0, baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class)).size());
 	}
 
 	@Test

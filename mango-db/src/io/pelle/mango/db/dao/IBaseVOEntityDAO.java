@@ -2,6 +2,7 @@ package io.pelle.mango.db.dao;
 
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.CountQuery;
+import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 
 import java.util.List;
@@ -27,5 +28,7 @@ public interface IBaseVOEntityDAO<VOENTITYTYPE extends IVOEntity> {
 	<T extends VOENTITYTYPE> long count(CountQuery<T> countQuery);
 
 	<T extends VOENTITYTYPE> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey);
+
+	<T extends VOENTITYTYPE> void deleteQuery(DeleteQuery<T> deleteQuery);
 
 }

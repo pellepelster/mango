@@ -1,19 +1,26 @@
 package io.pelle.mango.db.dao;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.db.query.ServerDeleteQuery;
 import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.db.util.EntityVOMapper;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-public class BaseDAO {
+public class BaseDAO<VOENTITYTYPE extends IVOEntity> {
 
 	private static Logger LOG = Logger.getLogger(BaseDAO.class);
+
+	@PersistenceContext
+	protected EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")
 	public List<IBaseEntity> getResultList(SelectQuery<?> selectQuery, EntityManager entityManager) {
@@ -31,6 +38,15 @@ public class BaseDAO {
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("error executing jpql '%s'", jpql), e);
 		}
+	}
+
+	public <T extends VOENTITYTYPE> void deleteQuery(DeleteQuery<T> deleteQuery) {
+
+		String query = ServerDeleteQuery.adapt(deleteQuery).getJPQL(EntityVOMapper.getInstance());
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(String.format("executing delete query '%s'", query));
+		}
+		entityManager.createQuery(query).executeUpdate();
 	}
 
 }

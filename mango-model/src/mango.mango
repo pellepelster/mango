@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.vo.IBaseVO
 import io.pelle.mango.client.base.messages.IValidationMessage
 import io.pelle.mango.client.base.db.vos.Result
 import io.pelle.mango.client.base.vo.query.SelectQuery
+import io.pelle.mango.client.base.vo.query.DeleteQuery
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO
 import io.pelle.mango.client.system.Systeminformation
 import io.pelle.mango.client.log.LogEntryVO
@@ -25,6 +26,7 @@ project Mango {
 				method <FilterVOType extends IBaseVO> List<FilterVOType> filter ( SelectQuery<FilterVOType> selectQuery )
 				method void deleteAll ( String voClassName )
 				method <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
+				method <DeleteVOType extends IBaseVO> void deleteQuery ( DeleteQuery<DeleteVOType> deleteQuery )
 				method <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
 			}
 		}

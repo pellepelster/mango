@@ -3,6 +3,7 @@ package io.pelle.mango.server.entity;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.dao.IBaseVODAO;
@@ -124,5 +125,10 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 
 	public void setValidators(List<IValidator> validators) {
 		this.validators = validators;
+	}
+
+	@Override
+	public <DeleteVOType extends IBaseVO> void deleteQuery(DeleteQuery<DeleteVOType> deleteQuery) {
+		baseVODAO.deleteQuery(deleteQuery);
 	}
 }

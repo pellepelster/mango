@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -47,12 +46,9 @@ import com.codahale.metrics.Timer;
 import com.google.common.base.Optional;
 
 @Component
-public class BaseEntityDAO extends BaseDAO implements IBaseEntityDAO {
+public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDAO {
 
 	private static Logger LOG = Logger.getLogger(BaseEntityDAO.class);
-
-	@PersistenceContext
-	private EntityManager entityManager;
 
 	private Optional<Timer> createTimer = Optional.absent();
 
