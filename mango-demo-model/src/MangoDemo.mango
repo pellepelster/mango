@@ -1,5 +1,4 @@
 import io.pelle.mango.demo.client.test.ValueObject2
-
 project MangoDemo {
 
 	package io.pelle.mango.demo {
@@ -16,7 +15,8 @@ project MangoDemo {
 				label "Last Name"
 			}
 			entitydatatype CustomerCountry {
-				label "Country" entity Country
+				label "Country"
+				entity Country
 			}
 			integerdatatype CustomerDiscount {
 				label "Discount (%)"
@@ -28,9 +28,13 @@ project MangoDemo {
 				label "Send birthday cards"
 			}
 
-			enumeration CustomerTitle { MR => "Mr." MRS => "Mrs" }
+			enumeration CustomerTitle {
+				MR => "Mr."
+				MRS => "Mrs"
+			}
 			enumerationdatatype CustomerTitle {
-				label "Title" enumeration CustomerTitle
+				label "Title"
+				enumeration CustomerTitle
 			}
 
 			entity Customer {
@@ -70,9 +74,11 @@ project MangoDemo {
 					booleancontrol CustomerSendBirthdayCards {
 						entityattribute sendBirthdayCards
 					}
-				} labelcontrols {
-				textcontrol ref CustomerLastName
-				textcontrol ref CustomerFirstName
+				}
+				labelcontrols
+					{
+					textcontrol ref CustomerLastName
+					textcontrol ref CustomerFirstName
 				}
 
 				dictionarysearch CustomerSearch {
@@ -135,7 +141,8 @@ project MangoDemo {
 				label "Exchange Rate"
 			}
 			entitydatatype CountryCurrency {
-				label "Currency" entity Currency
+				label "Currency"
+				entity Currency
 			}
 
 			//---------------------------------------------
@@ -143,7 +150,9 @@ project MangoDemo {
 			//---------------------------------------------
 			entity Country {
 				entityoptions {
-					naturalkey { countryIsoCode2 }
+					naturalkey {
+						countryIsoCode2
+					}
 				}
 
 				string IsoCode2 countryIsoCode2
@@ -168,8 +177,7 @@ project MangoDemo {
 						entityattribute countryIsoCode3
 					}
 					textcontrol CountryName {
-						entityattribute countryName
-						width 32
+						entityattribute countryName width 32
 					}
 					referencecontrol CountryCurrency {
 						entityattribute countryCurrency
@@ -221,9 +229,11 @@ project MangoDemo {
 			//--------------------------------
 			entity Currency {
 				entityoptions {
-					naturalkey { currencyIsoCode }
+					naturalkey {
+						currencyIsoCode
+					}
 				}
-				
+
 				string CountryName currencyName
 				string IsoCode3 currencyIsoCode
 			}
@@ -306,20 +316,29 @@ project MangoDemo {
 			entitydatatype Entity3Datatype {
 				entity Entity3
 			}
-			enumeration Enumeration1 { EnumerationValue1 EnumerationValue2 => "Value2" }
+			enumeration Enumeration1 {
+				EnumerationValue1
+				EnumerationValue2 => "Value2"
+			}
 			enumerationdatatype Enumeration1Datatype {
 				enumeration Enumeration1
 			}
-			datedatatype DateDatatype1 { }
-			datedatatype DateDatatype2 { }
-			decimaldatatype DecimalDatatype1 { }
-			integerdatatype IntegerDatatype1 { }
+			datedatatype DateDatatype1 {
+			}
+			datedatatype DateDatatype2 {
+			}
+			decimaldatatype DecimalDatatype1 {
+			}
+			integerdatatype IntegerDatatype1 {
+			}
 			floatdatatype FloatDatatype1 { }
 			doubledatatype DoubleDatatype1 { }
 
 			entity Entity1 {
 				entityoptions {
-					naturalkey { stringDatatype1 }
+					naturalkey {
+						stringDatatype1
+					}
 				}
 				string StringDatatype1 stringDatatype1
 				string StringDatatype1 stringDatatype2
@@ -396,15 +415,15 @@ project MangoDemo {
 				dictionary DemoDictionary2 {
 					entity Entity2
 
-					
 
 					dictionarycontrols {
 						textcontrol TextControl2 {
 							entityattribute Entity2.stringDatatype2
 						}
-					} 
-					
-					labelcontrols {
+					}
+
+					labelcontrols
+						{
 						textcontrol ref TextControl2
 					}
 
@@ -579,13 +598,13 @@ project MangoDemo {
 					dictionarySearch DemoDictionary2.DemoSearch2
 				}
 			}
-			
+
 			navigationnode Administration {
 				navigationnode Log {
 					moduleDefinition Log
 				}
 			}
-			
+
 		}
 	}
 }

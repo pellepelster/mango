@@ -41,7 +41,11 @@ project Mango {
 			longdatatype LogEntryTimestamp { }
 			stringdatatype LogEntryMessage { }
 			stringdatatype LogEntryReference { }
-			enumeration LogLevel { INFO, WARNING, ERROR }
+			enumeration LogLevel {
+				INFO
+				WARNING
+				ERROR
+			}
 			
 			entity LogEntry {
 				entityoptions { disableIdField true }
