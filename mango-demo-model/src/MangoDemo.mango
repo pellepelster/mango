@@ -28,7 +28,7 @@ project MangoDemo {
 				label "Send birthday cards"
 			}
 
-			enumeration CustomerTitle { MR => "Mr." ,  MRS => "Mrs" }
+			enumeration CustomerTitle { MR => "Mr." MRS => "Mrs" }
 			enumerationdatatype CustomerTitle {
 				label "Title" enumeration CustomerTitle
 			}
@@ -306,7 +306,7 @@ project MangoDemo {
 			entitydatatype Entity3Datatype {
 				entity Entity3
 			}
-			enumeration Enumeration1 { EnumerationValue1 ,  EnumerationValue2 => "Value2" }
+			enumeration Enumeration1 { EnumerationValue1 EnumerationValue2 => "Value2" }
 			enumerationdatatype Enumeration1Datatype {
 				enumeration Enumeration1
 			}

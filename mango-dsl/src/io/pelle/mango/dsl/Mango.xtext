@@ -23,7 +23,7 @@ AbstractElement:
 // enumeration
 //-----------------------------------------------------------------------------
 Enumeration: "enumeration" name=ID "{"
-	enumerationValues+=EnumerationValue (", " enumerationValues+=EnumerationValue)*
+	(enumerationValues+=EnumerationValue)*
 "}";
 
 EnumerationValue: name=ID ("=>" value=STRING)?;
@@ -38,7 +38,7 @@ EntityOptions:
 
 EntityNaturalKeyFields:
 	{EntityNaturalKeyFields}
-	"naturalkey {" naturalKeyAttributes+=[EntityAttribute | QualifiedName ] (", " naturalKeyAttributes+=[EntityAttribute | QualifiedName ])* "}";
+	"naturalkey" "{" naturalKeyAttributes+=[EntityAttribute | QualifiedName ] (", " naturalKeyAttributes+=[EntityAttribute | QualifiedName ])* "}";
 
 	
 EntityDisableIdField:
@@ -59,9 +59,9 @@ EntityIdGenerationStrategy:
 
 EntityOptionsContainer:
 	{EntityOptionsContainer}
-		"entityoptions" "{" 
-			(options+=EntityOptions)*
-		"}";
+	"entityoptions" "{" 
+		(options+=EntityOptions)*
+	"}";
 
 Entity:
 	'entity' name=ID ('extends' extends=[Entity|QualifiedName])? ('jvmtype' jvmtype=JvmTypeReference)? '{'
@@ -272,7 +272,7 @@ Dictionary:
 		(dictionarycontrols+=DictionaryControl)*
 	"}")?
 
-	("labelcontrols {"
+	("labelcontrols" "{"
 		(labelcontrols+=DictionaryControl)*
 	"}")?
 
@@ -310,12 +310,12 @@ DictionaryResult:
 
 //- layout --------------------------------------------------------------------
 ColumnLayout:
-	"layout {"
+	"layout" "{"
 		"columns" columns=INT
 	"}";
 
 ColumnLayoutData: 
-	"layoutdata {"
+	"layoutdata" "{"
 		"columnspan" columnspan=INT
 	"}";
 //- /layout -------------------------------------------------------------------
@@ -343,7 +343,7 @@ DictionaryEditableTable:
 
 		"entityattribute" entityattribute=[ EntityAttribute | QualifiedName ]
 		
-		"columncontrols {"
+		"columncontrols" "{"
 			(columncontrols+=DictionaryControl)*
 		"}"
 	"}";
@@ -358,7 +358,7 @@ DictionaryAssignmentTable:
 		
 		"entityattribute" entityattribute=[ EntityAttribute | QualifiedName ]
 		"dictionary" dictionary=[ Dictionary | QualifiedName ]
-		"columncontrols {"
+		"columncontrols" "{"
 			(columncontrols+=DictionaryControl)*
 		"}"
 	"}";
@@ -461,7 +461,7 @@ DictionaryReferenceControl:
 		baseControl=BaseDictionaryControl
 		("dictionary" dictionary=[ Dictionary | QualifiedName ])?
 		("controlType" controlType=ControlType)?
-		("labelcontrols {" (labelcontrols+=DictionaryControl)* "}")? 
+		("labelcontrols" "{" (labelcontrols+=DictionaryControl)* "}")? 
 	"}")?;
 
 DictionaryFileControl:
@@ -474,7 +474,7 @@ DictionaryFileControl:
 Module:
 	"module" name=ID "{"
 		"moduledefinition" moduledefinition=[ ModuleDefinition | QualifiedName ]
-		("parameters {"
+		("parameters" "{"
 			(moduleParameters+=ModuleParameter)*
 		"}")?	
 	"}";
@@ -483,7 +483,7 @@ ModuleParameter: moduleDefinitionParameter=[ ModuleDefinitionParameter | Qualifi
 
 ModuleDefinition:
 	"moduledefinition" name=ID "{"
-		("parameters {"
+		("parameters" "{"
 			(moduleDefinitionParameters+=ModuleDefinitionParameter)*
 		"}")?	
 	"}";
@@ -503,7 +503,7 @@ ServiceMethod:
 Service:
 	{Service}
 	"service" name=ID "{"
-		("options1 {" remoteServiceOptions=ServiceOptions "}")?
+		("options1" "{" remoteServiceOptions=ServiceOptions "}")?
 		(remoteMethods+=ServiceMethod)*
 	"}";
 	
