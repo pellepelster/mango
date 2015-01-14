@@ -22,12 +22,12 @@ class AttributeUtils {
 	//-------------------------------------------------------------------------
 	// natural key
 	//-------------------------------------------------------------------------
-	def boolean isNaturalKeyAttribute(EntityAttribute entityAttribute) {
+	def boolean hasNaturalKeyAttribute(EntityAttribute entityAttribute) {
 		return entityAttribute.parentEntity.naturalKeyFields.contains(entityAttribute)
 	}
 	
 	def naturalKeyOrder(EntityAttribute entityAttribute) {
-		if (entityAttribute.naturalKeyAttribute) {
+		if (entityAttribute.hasNaturalKeyAttribute) {
 			return EmfModelQuery.createEObjectQuery(entityAttribute).getParentByType(Entity).match.naturalKeyFields.
 				indexOf(entityAttribute)
 		} else {

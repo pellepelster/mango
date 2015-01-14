@@ -57,6 +57,7 @@ public final class WidthCalculationStrategy {
 	private WidthCalculationStrategy() {
 	}
 
+	@SuppressWarnings("rawtypes")
 	private boolean isUppercase(IBaseControlModel baseControlModel) {
 		boolean uppercase = false;
 
@@ -80,7 +81,7 @@ public final class WidthCalculationStrategy {
 	}
 
 	private float getControlWidthInternal(IBaseControlModel baseControlModel) {
-		return getWidth(baseControlModel.getWidthHint(), isUppercase(baseControlModel));
+		return getWidth(baseControlModel.getWidth(), isUppercase(baseControlModel));
 	}
 
 	private int getControlWidth(IBaseControlModel baseControlModel) {

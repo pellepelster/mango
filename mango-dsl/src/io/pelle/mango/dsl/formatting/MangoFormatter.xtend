@@ -80,8 +80,8 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.labelsAccess.editorLabelKeyword_4_0);
 
 		// base datatype
-		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.baseDataTypeAccess.labelAssignment_1_1);
-		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.baseDataTypeAccess.labelKeyword_1_0);
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.baseDataTypeLabelAccess.labelKeyword_1);
+		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).after(m.baseDataTypeWidthAccess.widthKeyword_1);
 
 		// text control
 		defaultBlockFormat(c, m.dictionaryTextControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryTextControlAccess.rightCurlyBracketKeyword_4_2)

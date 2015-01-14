@@ -72,7 +72,7 @@ class DictionaryGenerator {
 			}
 		
 			«FOR dictionary : model.eAllContents.toIterable.filter(Dictionary)»
-			«dictionary.dictionaryConstant»;
+			«dictionary.dictionaryConstant»
 			«ENDFOR»
 		
 		}

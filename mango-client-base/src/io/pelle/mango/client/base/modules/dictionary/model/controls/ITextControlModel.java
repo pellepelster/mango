@@ -23,25 +23,10 @@ public interface ITextControlModel extends IBaseControlModel
 
 	static final int MIN_LENGTH_DEFAULT = 0;
 
-	/**
-	 * Regular expression to check against
-	 * 
-	 * @return
-	 */
 	String getFormatRegularExpression();
 
-	/**
-	 * Returns the maximum text length
-	 * 
-	 * @return
-	 */
 	int getMaxLength();
 
-	/**
-	 * Returns the minimum text length
-	 * 
-	 * @return
-	 */
 	int getMinLength();
 	
 

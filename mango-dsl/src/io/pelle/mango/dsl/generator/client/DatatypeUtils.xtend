@@ -2,6 +2,7 @@ package io.pelle.mango.dsl.generator.client
 
 import io.pelle.mango.dsl.mango.BaseDataType
 import io.pelle.mango.dsl.mango.BaseDataTypeLabel
+import io.pelle.mango.dsl.mango.BaseDataTypeWidth
 
 class DatatypeUtils {
 
@@ -21,8 +22,16 @@ class DatatypeUtils {
 		return getEntityOption(baseDatatype, BaseDataTypeLabel) != null;
 	}
 	
-	def <T> getLabel(BaseDataType baseDatatype) {
-		return getEntityOption(baseDatatype, BaseDataTypeLabel);
+	def getLabel(BaseDataType baseDatatype) {
+		return getEntityOption(baseDatatype, BaseDataTypeLabel).label;
+	}
+	
+	def boolean hasWidth(BaseDataType baseDatatype) {
+		return getEntityOption(baseDatatype, BaseDataTypeWidth) != null && getEntityOption(baseDatatype, BaseDataTypeWidth).width > 0;
+	}
+	
+	def getWidth(BaseDataType baseDatatype) {
+		return getEntityOption(baseDatatype, BaseDataTypeWidth).width;
 	}
 	
 }

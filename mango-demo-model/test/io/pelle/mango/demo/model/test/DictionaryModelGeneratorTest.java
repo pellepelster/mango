@@ -55,6 +55,12 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testCountryCountryName() {
+		assertEquals(32, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME.getWidth());
+	}
+
+	
+	@Test
 	public void testStringDatatype1GetAttributePath() {
 		assertEquals("stringDatatype1", MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1.getAttributePath());
 	}

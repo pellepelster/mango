@@ -25,52 +25,22 @@ public interface IBaseControlModel extends IBaseModel, IContentAwareModel {
 
 	static final String EDITOR_LABEL_MESSAGE_KEY = "dictionaryControlEditorLabel";
 
-	static final int DEFAULT_WIDTH_HINT = 16;
+	static final int DEFAULT_WIDTH = 16;
 
-	static final int MAX_LENGTH_DEFAULT = DEFAULT_WIDTH_HINT;
+	static final int MAX_LENGTH_DEFAULT = DEFAULT_WIDTH;
 
 	String getLabel();
 
-	/**
-	 * Label for column header
-	 * 
-	 * @return
-	 */
 	String getColumnLabel();
 
-	/**
-	 * Label for input field
-	 * 
-	 * @return
-	 */
 	String getEditorLabel();
 
-	/**
-	 * Label for input field
-	 * 
-	 * @return
-	 */
 	String getFilterLabel();
 
-	/**
-	 * The controls tooltip
-	 * 
-	 * @return
-	 */
 	String getToolTip();
 
-	/**
-	 * Returns the width hint for this control
-	 * 
-	 * @return
-	 */
-	int getWidthHint();
+	int getWidth();
 
-	/**
-	 * Control content is required
-	 * 
-	 * @return
-	 */
 	boolean isMandatory();
 
 	boolean isReadonly();

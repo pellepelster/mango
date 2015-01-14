@@ -20,11 +20,6 @@ package io.pelle.mango.client.base.modules.dictionary.model;
 public interface IContentAwareModel extends IBaseModel
 {
 
-	/**
-	 * The attribute of the backing VO for this element
-	 * 
-	 * @return
-	 */
 	String getAttributePath();
 
 }

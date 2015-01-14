@@ -21,15 +21,6 @@ public class TextControlModel extends BaseControlModel<ITextControl> implements 
 	}
 
 	@Override
-	public int getWidthHint() {
-		if (getWidth() > 0) {
-			return getWidth();
-		} else {
-			return getMaxLength();
-		}
-	}
-
-	@Override
 	public int getMaxLength() {
 		return this.maxLength;
 	}

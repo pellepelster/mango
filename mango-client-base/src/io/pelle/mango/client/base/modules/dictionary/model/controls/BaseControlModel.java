@@ -61,11 +61,6 @@ public abstract class BaseControlModel<ControlElementType> extends BaseModel<Con
 	}
 
 	@Override
-	public int getWidthHint() {
-		return IBaseControlModel.DEFAULT_WIDTH_HINT;
-	}
-
-	@Override
 	public boolean isMandatory() {
 		return this.mandatory;
 	}

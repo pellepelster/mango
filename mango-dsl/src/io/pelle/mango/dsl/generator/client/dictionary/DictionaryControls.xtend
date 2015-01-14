@@ -14,6 +14,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceCon
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.client.ClientTypeUtils
+import io.pelle.mango.dsl.generator.client.DatatypeUtils
 import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.mango.BaseDataType
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
@@ -24,8 +25,6 @@ import io.pelle.mango.dsl.mango.DictionaryBigDecimalControl
 import io.pelle.mango.dsl.mango.DictionaryBooleanControl
 import io.pelle.mango.dsl.mango.DictionaryControl
 import io.pelle.mango.dsl.mango.DictionaryControlGroup
-import io.pelle.mango.dsl.mango.DictionaryControlGroupOptionMultiFilterField
-import io.pelle.mango.dsl.mango.DictionaryControlGroupOptionsContainer
 import io.pelle.mango.dsl.mango.DictionaryDateControl
 import io.pelle.mango.dsl.mango.DictionaryEnumerationControl
 import io.pelle.mango.dsl.mango.DictionaryFileControl
@@ -44,7 +43,6 @@ import io.pelle.mango.dsl.mango.LongEntityAttribute
 import io.pelle.mango.dsl.mango.MapEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import org.eclipse.emf.ecore.EObject
-import io.pelle.mango.dsl.generator.client.DatatypeUtils
 
 class DictionaryControls {
 
@@ -60,33 +58,47 @@ class DictionaryControls {
 	@Inject
 	extension AttributeUtils
 
+	@Inject
+	extension ControlUtils
+
 	def dictionaryControlConstant(DictionaryControl dictionaryControl) '''
-		public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.dictionaryControlType»("«ModelUtil.
-			getControlName(dictionaryControl)»", this);
+		public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.
+			dictionaryControlType»("«ModelUtil.getControlName(dictionaryControl)»", this);
 	'''
 
 	def dictionaryControlCommonSetters(DictionaryControl dictionaryControl) '''
 		
-		«IF dictionaryControl.baseControl != null»
-		
-		«dictionaryControl.dictionaryConstantName».setWidth(«dictionaryControl.baseControl.width»);
-		«dictionaryControl.dictionaryConstantName».setReadonly(«dictionaryControl.baseControl.readonly»);
-		«dictionaryControl.dictionaryConstantName».setMandatory(«dictionaryControl.baseControl.mandatory»);
-		«IF dictionaryControl.baseControl.entityattribute != null»
-		«dictionaryControl.datatypeLabelSetter(dictionaryControl.baseControl.entityattribute)»
+		«IF dictionaryControl.hasWidth»
+			// dictionary control '«dictionaryControl.name»' width
+			«dictionaryControl.dictionaryConstantName».setWidth(«dictionaryControl.width»);
 		«ENDIF»
 		
-		«IF dictionaryControl.baseControl.entityattribute != null»
-		«dictionaryControl.dictionaryConstantName».setAttributePath("«dictionaryControl.baseControl.entityattribute.name»");
-		«IF dictionaryControl.baseControl.entityattribute.naturalKeyAttribute»
-		«dictionaryControl.dictionaryConstantName».setMandatory(true);
+		«IF dictionaryControl.hasReadonly»
+			// dictionary control '«dictionaryControl.name»' is readonly
+			«dictionaryControl.dictionaryConstantName».setReadonly(«dictionaryControl.readonly»);
 		«ENDIF»
+		
+		«IF dictionaryControl.hasMandatory»
+			// dictionary control '«dictionaryControl.name»' is mandatory
+			«dictionaryControl.dictionaryConstantName».setMandatory(«dictionaryControl.mandatory»);
 		«ENDIF»
-					
-		«IF dictionaryControl.baseControl.labels != null»
-		«dictionaryControlLabelSetters(dictionaryControl, dictionaryControl.baseControl.labels)»
+		
+		«IF dictionaryControl.hasEntityAttribute»
+
+			«dictionaryControl.datatypeSetters(dictionaryControl.entityAttribute)»
+			«dictionaryControl.dictionaryConstantName».setAttributePath("«dictionaryControl.entityAttribute.name»");
+			
+			«IF dictionaryControl.baseControl.entityattribute.hasNaturalKeyAttribute»
+				// entity attribute '«dictionaryControl.entityAttribute.name»' is natural key
+				«dictionaryControl.dictionaryConstantName».setMandatory(true);
+			«ENDIF»
+			
 		«ENDIF»
+		
+		«IF dictionaryControl.hasBaseControl»
+			«dictionaryControlLabelSetters(dictionaryControl, dictionaryControl.baseControl.labels)»
 		«ENDIF»
+		
 	'''
 
 	def dictionaryControlLabelSetters(DictionaryControl dictionaryControl, Labels labels) '''
@@ -145,13 +157,16 @@ class DictionaryControls {
 
 	def dispatch dictionaryControlConstantSetters(DictionaryControl dictionaryControl) ''''''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, BaseDataType baseDataType) '''
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, BaseDataType baseDataType) '''
 		«IF baseDataType != null && baseDataType.hasLabel» 
 			«dictionaryControl.dictionaryConstantName».setLabel("«baseDataType.label»");
 		«ENDIF»
+		«IF baseDataType != null && baseDataType.hasWidth» 
+			«dictionaryControl.dictionaryConstantName».setWidth("«baseDataType.width»");
+		«ENDIF»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EObject entity) '''
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, EObject entity) '''
 		// no label to inherit here
 	'''
 
@@ -162,8 +177,8 @@ class DictionaryControls {
 		«TextControlModel.name»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, StringEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, StringEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
 		
 		«IF entityAttribute.type != null && entityAttribute.type.maxLength > 0» 
 			«dictionaryControl.dictionaryConstantName».setMaxLength(«entityAttribute.type.maxLength»);
@@ -185,8 +200,8 @@ class DictionaryControls {
 		«IntegerControlModel.name»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, IntegerEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, IntegerEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryIntegerControl dictionaryControl) '''
@@ -200,15 +215,15 @@ class DictionaryControls {
 	//-------------------------------------------------------------------------
 	// DictionaryLongControl
 	//-------------------------------------------------------------------------
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, LongEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, LongEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
 	'''
 
 	//-------------------------------------------------------------------------
 	// DictionaryLongControl
 	//-------------------------------------------------------------------------
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, MapEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, MapEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
 	'''
 
 	//-------------------------------------------------------------------------
@@ -218,8 +233,8 @@ class DictionaryControls {
 		«BigDecimalControlModel.name»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, DecimalEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, DecimalEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryBigDecimalControl dictionaryControl) '''
@@ -236,8 +251,8 @@ class DictionaryControls {
 		«BooleanControlModel.name»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, BooleanEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, BooleanEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryBooleanControl dictionaryControl) '''
@@ -255,8 +270,8 @@ class DictionaryControls {
 		«DateControlModel.name»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, DateEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, DateEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryDateControl dictionaryControl) '''
@@ -275,15 +290,17 @@ class DictionaryControls {
 		
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EnumerationEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl,
+		EnumerationEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type)»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EnumerationAttributeType enumerationAttributeType) '''
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl,
+		EnumerationAttributeType enumerationAttributeType) '''
 		'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, EnumerationDataType enumerationDataType) '''
-		«dictionaryControl.datatypeLabelSetter(enumerationDataType.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, EnumerationDataType enumerationDataType) '''
+		«dictionaryControl.datatypeSetters(enumerationDataType.baseDataType)»
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryEnumerationControl dictionaryControl) '''
@@ -314,12 +331,13 @@ class DictionaryControls {
 			«ENDIF»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryReferenceControl dictionaryControl, EntityDataType entityDataType) '''
-		«dictionaryControl.datatypeLabelSetter(entityDataType.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryReferenceControl dictionaryControl, EntityDataType entityDataType) '''
+		«dictionaryControl.datatypeSetters(entityDataType.baseDataType)»
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryReferenceControl dictionaryControl, EntityEntityAttribute entityEntityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityEntityAttribute.type)»
+	def dispatch String datatypeSetters(DictionaryReferenceControl dictionaryControl,
+		EntityEntityAttribute entityEntityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityEntityAttribute.type)»
 	'''
 
 	//-------------------------------------------------------------------------
@@ -344,8 +362,8 @@ class DictionaryControls {
 		«FileControlModel.name»<«IBaseControl.name»>
 	'''
 
-	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, BinaryEntityAttribute entityAttribute) '''
-		«dictionaryControl.datatypeLabelSetter(entityAttribute.type.baseDataType)»
+	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, BinaryEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryFileControl dictionaryControl) '''
@@ -370,22 +388,6 @@ class DictionaryControls {
 		
 		«dictionaryControl.dictionaryControlCommonSetters»
 	'''
-
-	def <T> getControlGroupOption(DictionaryControlGroupOptionsContainer controlGroupOptionsContainer, Class<T> controlGroupOptionType) {
-		return controlGroupOptionsContainer.options.findFirst[e|controlGroupOptionType.isAssignableFrom(e.class)] as T
-	}
-
-	def <T> getControlGroupOption(DictionaryControlGroup controlGroup, Class<T> controlGroupOptionType) {
-		if (controlGroup.controlGroupOptions != null) {
-			return getControlGroupOption(controlGroup.controlGroupOptions, controlGroupOptionType)
-		} else {
-			return null;
-		}
-	}
-
-	def <T> mulitFilterField(DictionaryControlGroup controlGroup) {
-		return Boolean.TRUE.equals(controlGroup.getControlGroupOption(typeof(DictionaryControlGroupOptionMultiFilterField)))
-	}
 
 	def dictionaryControlClass(DictionaryControlGroup dictionaryControlGroup) '''
 		
