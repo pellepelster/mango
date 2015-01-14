@@ -303,6 +303,7 @@ project MangoDemo {
 				maxLength 32
 			}
 			stringdatatype StringDatatype3 {
+				width 31
 			}
 			stringdatatype StringDatatype4 {
 			}
@@ -342,7 +343,7 @@ project MangoDemo {
 				}
 				string StringDatatype1 stringDatatype1
 				string StringDatatype1 stringDatatype2
-				string StringDatatype1 stringDatatype3
+				string StringDatatype3 stringDatatype3
 				boolean BooleanDatatype1 booleanDatatype1
 				string StringDatatype1 0..n stringDatatype1List
 				entity Entity2Datatype entity2Datatype

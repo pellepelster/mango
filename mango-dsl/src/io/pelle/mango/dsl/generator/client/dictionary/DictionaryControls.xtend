@@ -86,6 +86,7 @@ class DictionaryControls {
 		«IF dictionaryControl.hasEntityAttribute»
 
 			«dictionaryControl.datatypeSetters(dictionaryControl.entityAttribute)»
+			
 			«dictionaryControl.dictionaryConstantName».setAttributePath("«dictionaryControl.entityAttribute.name»");
 			
 			«IF dictionaryControl.baseControl.entityattribute.hasNaturalKeyAttribute»
@@ -158,11 +159,17 @@ class DictionaryControls {
 	def dispatch dictionaryControlConstantSetters(DictionaryControl dictionaryControl) ''''''
 
 	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, BaseDataType baseDataType) '''
+		
+		// datatypeSetters control '«dictionaryControl»', base datatype '«baseDataType»'
+		
 		«IF baseDataType != null && baseDataType.hasLabel» 
+			// label from datatype '«baseDataType.toString»'
 			«dictionaryControl.dictionaryConstantName».setLabel("«baseDataType.label»");
 		«ENDIF»
+		
 		«IF baseDataType != null && baseDataType.hasWidth» 
-			«dictionaryControl.dictionaryConstantName».setWidth("«baseDataType.width»");
+			// width from datatype '«baseDataType.toString»'
+			«dictionaryControl.dictionaryConstantName».setWidth(«baseDataType.width»);
 		«ENDIF»
 	'''
 
@@ -186,6 +193,8 @@ class DictionaryControls {
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryTextControl dictionaryControl) '''
+		// dictionary control '«dictionaryControl.toString»' parent '«dictionaryControl.eContainer.toString»'
+		
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»
@@ -326,9 +335,9 @@ class DictionaryControls {
 		
 		«dictionaryControl.dictionaryControlCommonSetters»
 		
-			«IF dictionaryControl.dictionary != null»
-				«dictionaryControl.dictionaryConstantName».setDictionaryName("«dictionaryControl.dictionary.name»");
-			«ENDIF»
+		«IF dictionaryControl.dictionary != null»
+			«dictionaryControl.dictionaryConstantName».setDictionaryName("«dictionaryControl.dictionary.name»");
+		«ENDIF»
 	'''
 
 	def dispatch String datatypeSetters(DictionaryReferenceControl dictionaryControl, EntityDataType entityDataType) '''
