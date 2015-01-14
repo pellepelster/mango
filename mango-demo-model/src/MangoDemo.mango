@@ -344,6 +344,7 @@ project MangoDemo {
 				string StringDatatype1 stringDatatype1
 				string StringDatatype1 stringDatatype2
 				string StringDatatype3 stringDatatype3
+				string StringDatatype4 stringDatatype4
 				boolean BooleanDatatype1 booleanDatatype1
 				string StringDatatype1 0..n stringDatatype1List
 				entity Entity2Datatype entity2Datatype
@@ -459,6 +460,9 @@ project MangoDemo {
 						textcontrol TextControl3 {
 							entityattribute Entity1.stringDatatype3
 						}
+						textcontrol TextControl4 {
+							entityattribute Entity1.stringDatatype4
+						}
 						referencecontrol ReferenceControl1 {
 							entityattribute Entity1.entity2Datatype
 							dictionary DemoDictionary2
@@ -519,6 +523,7 @@ project MangoDemo {
 						textcontrol ref TextControl1
 						textcontrol ref TextControl2
 						textcontrol ref TextControl3
+						textcontrol ref TextControl4
 						referencecontrol ref ReferenceControl1
 						booleancontrol ref BooleanControl1
 						enumerationcontrol ref EnumerationControl1

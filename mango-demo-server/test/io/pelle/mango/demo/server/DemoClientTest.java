@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -232,6 +233,14 @@ public class DemoClientTest extends BaseDemoTest {
 		search.execute();
 		search.assertSearchResults(1);
 		assertEquals("abc", search.getResultRow(0).getVO().getStringDatatype1());
+	}
+
+	@Test
+	@Ignore
+	public void testDictionary1TextControl4DefaultWidth() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
+		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL4);
 	}
 
 	@Test

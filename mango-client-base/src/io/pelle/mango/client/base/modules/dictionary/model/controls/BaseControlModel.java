@@ -25,7 +25,7 @@ public abstract class BaseControlModel<ControlElementType> extends BaseModel<Con
 
 	private String attributePath;
 
-	public int width;
+	public int width = DEFAULT_WIDTH;
 
 	public BaseControlModel(String name, IBaseModel parent) {
 		super(name, parent);

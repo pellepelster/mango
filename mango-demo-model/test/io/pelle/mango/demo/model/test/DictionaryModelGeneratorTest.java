@@ -92,6 +92,11 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testDictionary1TextControl4DefaultWidth() {
+		assertEquals(16, MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL4.getWidth());
+	}
+
+	@Test
 	public void testEnumerationConverterGetEnumerationValues() {
 		Map<String, String> enumerationValues = DictionaryModelProvider.getEnumerationValues(ENUMERATION1.class.getName());
 		assertEquals(2, enumerationValues.size());
