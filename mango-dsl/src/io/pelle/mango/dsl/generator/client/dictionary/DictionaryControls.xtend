@@ -44,11 +44,15 @@ import io.pelle.mango.dsl.mango.LongEntityAttribute
 import io.pelle.mango.dsl.mango.MapEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import org.eclipse.emf.ecore.EObject
+import io.pelle.mango.dsl.generator.client.DatatypeUtils
 
 class DictionaryControls {
 
 	@Inject
 	extension DictionaryNameUtils
+
+	@Inject
+	extension DatatypeUtils
 
 	@Inject
 	extension ClientTypeUtils
@@ -142,7 +146,7 @@ class DictionaryControls {
 	def dispatch dictionaryControlConstantSetters(DictionaryControl dictionaryControl) ''''''
 
 	def dispatch String datatypeLabelSetter(DictionaryControl dictionaryControl, BaseDataType baseDataType) '''
-		«IF baseDataType != null && baseDataType.label != null» 
+		«IF baseDataType != null && baseDataType.hasLabel» 
 			«dictionaryControl.dictionaryConstantName».setLabel("«baseDataType.label»");
 		«ENDIF»
 	'''

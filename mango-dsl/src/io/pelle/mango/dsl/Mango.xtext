@@ -105,7 +105,17 @@ SimpleTypeType:
 
 BaseDataType:
 	{BaseDataType}
-	("label" label=STRING)?;
+	(baseDatatypeProperties+=BaseDataTypeProperties)*;
+
+BaseDataTypeProperties: BaseDataTypeWidth | BaseDataTypeLabel;
+
+BaseDataTypeWidth:
+	{BaseDataTypeWidth}
+	"width" width=INT?;
+
+BaseDataTypeLabel:
+	{BaseDataTypeLabel}
+	"label" label=STRING;
 
 //-----------------------------------------------------------------------------
 // string
