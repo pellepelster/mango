@@ -27,8 +27,4 @@ public class MailServiceTest {
 
 	}
 
-	public void setMailService(MailService mailService) {
-		this.mailService = mailService;
-	}
-
 }
