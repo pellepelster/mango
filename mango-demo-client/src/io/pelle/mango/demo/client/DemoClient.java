@@ -2,6 +2,9 @@ package io.pelle.mango.demo.client;
 
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
+import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.core.property.PropertyBuilder;
+import io.pelle.mango.client.core.property.PropertyProvider;
 import io.pelle.mango.client.gwt.GWTLayoutFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
@@ -27,6 +30,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class DemoClient implements EntryPoint {
+
+	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.createStringDatabaseProperty("stringProperty1", "An example string property");
 
 	/** {@inheritDoc} */
 	@Override
@@ -76,6 +81,8 @@ public class DemoClient implements EntryPoint {
 	}
 
 	public void init() {
+
+		PropertyProvider.getInstance().addProperties(STRING_PROPERTY1);
 
 		MangoDemoClientConfiguration.registerAll();
 

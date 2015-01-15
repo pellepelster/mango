@@ -609,6 +609,9 @@ project MangoDemo {
 				navigationnode Log {
 					moduleDefinition Log
 				}
+				navigationnode Properties {
+					moduleDefinition Property
+				}
 			}
 
 		}

@@ -33,20 +33,19 @@ project Mango {
 		}
 
 		package property {
+
+			moduledefinition Property {
+				parameters {
+				}
+			}
 			
 			entity PropertyValue {
 				string key
 				string value
 			}
 			
-			valueobject PropertyCategory {
-				string name
-				valueobject PropertyCategory 0..n propertyCategories
-				valueobject PropertyDefinition 0..n propertyDefinitions
-			}
-
 			service PropertyService {
-				method <VALUETYPE> PROPERTYTYPE getProperty ( IProperty<VALUETYPE> property )
+				method <VALUETYPE> VALUETYPE getProperty ( IProperty<VALUETYPE> property )
 				method <VALUETYPE> void setProperty ( IProperty<VALUETYPE> property, VALUETYPE value )
 			}
 

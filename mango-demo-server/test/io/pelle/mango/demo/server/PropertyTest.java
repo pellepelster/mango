@@ -4,15 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import io.pelle.mango.client.base.property.IProperty;
-import io.pelle.mango.client.core.property.PropertiesBuilder;
 import io.pelle.mango.client.core.property.PropertyBuilder;
 import io.pelle.mango.client.core.property.SystemProperties;
 import io.pelle.mango.client.property.IPropertyService;
-import io.pelle.mango.client.property.PropertyCategory;
 import io.pelle.mango.db.dao.BaseEntityDAO;
 import io.pelle.mango.server.property.PropertyValue;
-
-import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,18 +36,20 @@ public class PropertyTest extends BaseDemoTest {
 	private IPropertyService propertyService;
 
 	@Test
-	@org.junit.Ignore
+	@Ignore
 	public void testCreateCategory() {
 
-		PropertiesBuilder.getInstance().createCategory("zzz");
-		List<PropertyCategory> propertyCategories = PropertiesBuilder.getInstance().getRootCategories();
-		assertEquals(1, propertyCategories.size());
-		assertEquals("zzz", propertyCategories.get(0).getName());
-
-		PropertiesBuilder.getInstance().createCategory("zzz");
-		propertyCategories = PropertiesBuilder.getInstance().getRootCategories();
-		assertEquals(1, propertyCategories.size());
-		assertEquals("zzz", propertyCategories.get(0).getName());
+		// PropertiesBuilder.getInstance().createCategory("zzz");
+		// List<PropertyCategory> propertyCategories =
+		// PropertiesBuilder.getInstance().getRootCategories();
+		// assertEquals(1, propertyCategories.size());
+		// assertEquals("zzz", propertyCategories.get(0).getName());
+		//
+		// PropertiesBuilder.getInstance().createCategory("zzz");
+		// propertyCategories =
+		// PropertiesBuilder.getInstance().getRootCategories();
+		// assertEquals(1, propertyCategories.size());
+		// assertEquals("zzz", propertyCategories.get(0).getName());
 	}
 
 	@Test

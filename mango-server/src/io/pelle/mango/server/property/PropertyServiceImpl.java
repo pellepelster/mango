@@ -3,35 +3,33 @@ package io.pelle.mango.server.property;
 import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.property.IPropertyService;
-import io.pelle.mango.client.property.PropertyCategory;
-import io.pelle.mango.client.property.PropertyDefinition;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.gwt.thirdparty.guava.common.base.Objects;
 
 public class PropertyServiceImpl implements IPropertyService {
 
-	public static Predicate<PropertyCategory> categoryByName(final String categoryName) {
-		return new Predicate<PropertyCategory>() {
-			@Override
-			public boolean apply(PropertyCategory input) {
-				return Objects.equal(categoryName, input.getName());
-			}
-		};
-	}
-
-	public static Predicate<PropertyDefinition> propertyByName(final String propertyKey) {
-		return new Predicate<PropertyDefinition>() {
-			@Override
-			public boolean apply(PropertyDefinition input) {
-				return Objects.equal(propertyKey, input.getKey());
-			}
-		};
-	}
+	// public static Predicate<PropertyCategory> categoryByName(final String
+	// categoryName) {
+	// return new Predicate<PropertyCategory>() {
+	// @Override
+	// public boolean apply(PropertyCategory input) {
+	// return Objects.equal(categoryName, input.getName());
+	// }
+	// };
+	// }
+	//
+	// public static Predicate<PropertyDefinition> propertyByName(final String
+	// propertyKey) {
+	// return new Predicate<PropertyDefinition>() {
+	// @Override
+	// public boolean apply(PropertyDefinition input) {
+	// return Objects.equal(propertyKey, input.getKey());
+	// }
+	// };
+	// }
 
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;

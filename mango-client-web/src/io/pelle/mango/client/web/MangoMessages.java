@@ -13,6 +13,7 @@ package io.pelle.mango.client.web;
 
 import com.google.gwt.i18n.client.LocalizableResource.Generate;
 import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.safehtml.shared.SafeHtml;
 
 @Generate(format = "com.google.gwt.i18n.rebind.format.PropertiesFormat")
 public interface MangoMessages extends Messages {
@@ -164,5 +165,8 @@ public interface MangoMessages extends Messages {
 
 	@DefaultMessage("Log")
 	String log();
+
+	@DefaultMessage("Properties")
+	SafeHtml properties();
 
 }

@@ -59,4 +59,9 @@ public abstract class BasePropertyBuilder<VALUETYPE> implements IProperty<VALUET
 		return Objects.toString(value, null);
 	}
 
+	@Override
+	public String getName() {
+		return name;
+	}
+
 }

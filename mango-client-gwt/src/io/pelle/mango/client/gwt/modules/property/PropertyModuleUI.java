@@ -11,12 +11,17 @@
  */
 package io.pelle.mango.client.gwt.modules.property;
 
+import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
+import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.property.PropertyModule;
 
 import java.util.logging.Logger;
 
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
@@ -32,13 +37,32 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 	private HTML title;
 
-	private VerticalPanel panel;
+	private VerticalPanel panel = new VerticalPanel();
 
 	/**
 	 * @param module
 	 */
 	public PropertyModuleUI(PropertyModule module) {
 		super(module, PropertyModule.UI_MODULE_ID);
+		panel.setSpacing(GwtStyles.SPACING);
+
+		title = new HTML(MangoClientWeb.MESSAGES.properties());
+		title.addStyleName(GwtStyles.TITLE);
+		panel.add(title);
+
+		for (IProperty<?> property : getModule().getProperties()) {
+
+			HorizontalPanel propertyPanel = new HorizontalPanel();
+
+			Label propertyLabel = new Label(property.getName());
+			propertyPanel.add(propertyLabel);
+
+			EditableLabel editableLabel = new EditableLabel();
+			editableLabel.setText(property.getKey());
+			propertyPanel.add(editableLabel);
+
+			panel.add(propertyPanel);
+		}
 
 	}
 

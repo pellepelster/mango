@@ -13,4 +13,6 @@ public interface IProperty<VALUETYPE> {
 	VALUETYPE parseValue(String valueString);
 
 	String toString(VALUETYPE value);
+
+	String getName();
 }
