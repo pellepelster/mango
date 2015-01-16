@@ -2,18 +2,17 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.6.4//EN" "http://google-web-toolkit.googlecode.com/svn/tags/1.6.4/distro-source/core/src/gwt-module.dtd">
 <module rename-to="DemoClient">
 
-	<inherits name='io.pelle.mango.MangoClientGwt' />
+	<inherits name="com.google.gwt.logging.Logging" />
 	<inherits name='io.pelle.mango.demo.MangoDemoGenerated' />
+	<inherits name='io.pelle.mango.MangoClientGwt' />
 
-	<add-linker name="xsiframe" />
 	<stylesheet src="DemoClient.css"/>
 	
-	<set-configuration-property name="devModeRedirectEnabled"
-		value="true" />
+	<add-linker name="xsiframe" />
+	<set-configuration-property name="devModeRedirectEnabled" value="true" />
 
 	<entry-point class="io.pelle.mango.demo.client.DemoClient" />
 
-	<inherits name="com.google.gwt.logging.Logging" />
 	<set-property name="gwt.logging.logLevel" value="INFO" />
 	<set-property name="gwt.logging.enabled" value="TRUE" />
 	<set-property name="gwt.logging.developmentModeHandler" value="ENABLED" />

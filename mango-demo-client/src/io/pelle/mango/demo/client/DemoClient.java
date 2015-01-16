@@ -3,6 +3,7 @@ package io.pelle.mango.demo.client;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
 import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.base.property.IPropertyCategory;
 import io.pelle.mango.client.core.property.PropertyBuilder;
 import io.pelle.mango.client.core.property.PropertyProvider;
 import io.pelle.mango.client.gwt.GWTLayoutFactory;
@@ -32,6 +33,16 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public class DemoClient implements EntryPoint {
 
 	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.createStringDatabaseProperty("stringProperty1", "An example string property");
+
+	private static final IProperty<String> STRING_PROPERTY2 = PropertyBuilder.createStringDatabaseProperty("stringProperty2", "An example string property");
+
+	private static final IProperty<String> STRING_PROPERTY3 = PropertyBuilder.createStringDatabaseProperty("stringProperty3", "An example string property");
+
+	private static final IProperty<String> STRING_PROPERTY4 = PropertyBuilder.createStringDatabaseProperty("stringProperty4", "An example string property");
+
+	private static final IProperty<String> STRING_PROPERTY5 = PropertyBuilder.createStringDatabaseProperty("stringProperty5", "An example string property");
+
+	private static final IProperty<String> STRING_PROPERTY6 = PropertyBuilder.createStringDatabaseProperty("stringProperty6", "An example string property");
 
 	/** {@inheritDoc} */
 	@Override
@@ -80,11 +91,26 @@ public class DemoClient implements EntryPoint {
 		greeting.show();
 	}
 
+	public void initProperties() {
+
+		IPropertyCategory category1 = PropertyProvider.getInstance().createCategory("category1");
+		category1.addProperty(STRING_PROPERTY1);
+		category1.addProperty(STRING_PROPERTY2);
+		category1.addProperty(STRING_PROPERTY3);
+
+		IPropertyCategory category2 = PropertyProvider.getInstance().createCategory("category2");
+		category2.addProperty(STRING_PROPERTY4);
+		category2.addProperty(STRING_PROPERTY5);
+		category2.addProperty(STRING_PROPERTY6);
+
+		// PropertyProvider.getInstance().getRootCategory().addProperty(STRING_PROPERTY1);
+	}
+
 	public void init() {
 
-		PropertyProvider.getInstance().getRootCategory().addProperty(STRING_PROPERTY1);
-
 		MangoDemoClientConfiguration.registerAll();
+
+		initProperties();
 
 		String string1 = "";
 		string1 += "<strong>Model defining this control</strong><br/>";

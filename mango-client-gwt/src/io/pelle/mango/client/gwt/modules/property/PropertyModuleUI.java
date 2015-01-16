@@ -12,6 +12,7 @@
 package io.pelle.mango.client.gwt.modules.property;
 
 import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.base.property.IPropertyCategory;
 import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.web.MangoClientWeb;
@@ -26,14 +27,9 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-/**
- * UI for the navigation module
- * 
- * @author pelle
- * 
- */
 public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 	final static Logger LOG = Logger.getLogger("PropertyModuleUI");
@@ -42,18 +38,31 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 	private VerticalPanel panel = new VerticalPanel();
 
-	/**
-	 * @param module
-	 */
 	public PropertyModuleUI(PropertyModule module) {
 		super(module, PropertyModule.UI_MODULE_ID);
 		panel.setSpacing(GwtStyles.SPACING);
+		panel.setWidth("100%");
 
 		title = new HTML(MangoClientWeb.MESSAGES.properties());
 		title.addStyleName(GwtStyles.TITLE);
 		panel.add(title);
 
-		for (IProperty<?> property : getModule().getProperties()) {
+		TabPanel categories = new TabPanel();
+		categories.setWidth("70%");
+
+		for (IPropertyCategory category : getModule().getRootCategory().getCategories()) {
+			VerticalPanel categoryPanel = new VerticalPanel();
+			categoryPanel.setWidth("100%");
+			categories.add(categoryPanel, category.getName());
+			createProperties(categoryPanel, category);
+		}
+
+		panel.add(categories);
+	}
+
+	private void createProperties(Panel panel, IPropertyCategory category) {
+
+		for (IProperty<?> property : category.getProperties()) {
 
 			HorizontalPanel propertyPanel = new HorizontalPanel();
 			propertyPanel.setSpacing(GwtStyles.SPACING);
@@ -67,7 +76,7 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 					GWT.log(event.getValue());
 				}
 			});
-			
+
 			editableLabel.setTextBoxStyle(GwtStyles.FORM_CONTROL);
 			editableLabel.addButtonStyleName(GwtStyles.BUTTON);
 			editableLabel.addButtonStyleName(GwtStyles.BUTTON_DEFAULT);
@@ -76,7 +85,6 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 			panel.add(propertyPanel);
 		}
-
 	}
 
 	/** {@inheritDoc} */

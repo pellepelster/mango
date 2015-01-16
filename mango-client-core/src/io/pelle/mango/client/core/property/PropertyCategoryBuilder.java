@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Function;
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 public class PropertyCategoryBuilder extends BasePropertiesBuilder implements IPropertyCategory {
 
@@ -67,6 +69,16 @@ public class PropertyCategoryBuilder extends BasePropertiesBuilder implements IP
 		}
 
 		return result;
+	}
+
+	@Override
+	public List<IPropertyCategory> getCategories() {
+		return Lists.newArrayList(Iterables.transform(categories, new Function<PropertyCategoryBuilder, IPropertyCategory>() {
+			@Override
+			public IPropertyCategory apply(PropertyCategoryBuilder input) {
+				return input;
+			}
+		}));
 	}
 
 	// PropertyCategoryBuilder(PropertyCategory category) {

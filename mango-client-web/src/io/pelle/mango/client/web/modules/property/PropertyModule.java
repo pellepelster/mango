@@ -13,12 +13,11 @@ package io.pelle.mango.client.web.modules.property;
 
 import io.pelle.mango.client.base.module.IModule;
 import io.pelle.mango.client.base.module.ModuleUtils;
-import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.base.property.IPropertyCategory;
 import io.pelle.mango.client.core.property.PropertyProvider;
 import io.pelle.mango.client.property.BasePropertyModule;
 import io.pelle.mango.client.web.MangoClientWeb;
 
-import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -36,8 +35,8 @@ public class PropertyModule extends BasePropertyModule {
 		getModuleCallback().onSuccess(this);
 	}
 
-	public List<IProperty<?>> getProperties() {
-		return PropertyProvider.getInstance().getRootCategory().getProperties();
+	public IPropertyCategory getRootCategory() {
+		return PropertyProvider.getInstance().getRootCategory();
 	}
 
 	@Override
