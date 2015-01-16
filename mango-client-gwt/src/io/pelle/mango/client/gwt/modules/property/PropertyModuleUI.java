@@ -53,11 +53,12 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 		for (IProperty<?> property : getModule().getProperties()) {
 
 			HorizontalPanel propertyPanel = new HorizontalPanel();
+			propertyPanel.setSpacing(GwtStyles.SPACING);
 
 			Label propertyLabel = new Label(property.getName());
 			propertyPanel.add(propertyLabel);
 
-			EditableLabel editableLabel = new EditableLabel();
+			BaseEditableLabel editableLabel = new BaseEditableLabel();
 			editableLabel.setText(property.getKey());
 			propertyPanel.add(editableLabel);
 

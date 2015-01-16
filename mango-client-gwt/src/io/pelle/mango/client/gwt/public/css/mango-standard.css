@@ -616,3 +616,15 @@ h6,.h6{
 .log-level-ERROR {
 	color: #D62020;
 }
+
+/**********************
+     editable label
+ **********************/
+.editablelable-editable { 
+	border-bottom: 1px rgb(204, 204, 204) dashed;
+}
+
+.editablelable-readonly { }
+
+.editablelable { 
+}
