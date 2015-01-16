@@ -2,16 +2,16 @@ package io.pelle.mango.client.core.property;
 
 import io.pelle.mango.client.base.property.IProperty;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PropertyProvider {
+
+	private static final String ROOT_CATEGORY_NAME = "ROOT_CATEGORY";
 
 	private static PropertyProvider instance;
 
-	private List<IProperty<?>> properties = new ArrayList<IProperty<?>>();
-
+	private PropertyCategoryBuilder rootCategory;
+	
 	private PropertyProvider() {
+		rootCategory = new PropertyCategoryBuilder(ROOT_CATEGORY_NAME);
 	}
 
 	public static PropertyProvider getInstance() {
@@ -23,11 +23,20 @@ public class PropertyProvider {
 		return instance;
 	}
 
-	public void addProperties(IProperty<?> property) {
-		properties.add(property);
+	public PropertyCategoryBuilder createCategory(String name) {
+		return rootCategory.createCategory(name);
 	}
 
-	public List<IProperty<?>> getProperties() {
-		return properties;
+	public void addProperty(IProperty<?> property) {
+		rootCategory.addProperty(property);
 	}
+
+	public PropertyGroupBuilder createGroup(String name) {
+		return rootCategory.createGroup(name);
+	}
+	
+	public PropertyCategoryBuilder getRootCategory() {
+		return rootCategory;
+	}
+	
 }

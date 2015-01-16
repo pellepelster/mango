@@ -37,6 +37,7 @@ import com.google.gwt.user.client.ui.Panel;
  * 
  */
 public class NavigationModuleOverviewUI extends BaseGwtModuleUI<ModuleNavigationModule> {
+	
 	private static final String NAVIGATION_OVERVIEW_STYLE = "navigationOverview";
 
 	private static final String NAVIGATION_OVERVIEW_PANEL_WRAPPER_STYLE = "navigationOverviewPanelWrapper";
@@ -58,7 +59,6 @@ public class NavigationModuleOverviewUI extends BaseGwtModuleUI<ModuleNavigation
 		List<NavigationTreeElement> children = module.getChildrenForNavigationElement(module.getNavigationTreeElementName());
 
 		int columns = (int) Math.ceil((double) children.size() / 2);
-		int rows = columns;
 
 		grid = new Grid(columns, columns);
 		grid.addStyleName(NAVIGATION_OVERVIEW_STYLE);

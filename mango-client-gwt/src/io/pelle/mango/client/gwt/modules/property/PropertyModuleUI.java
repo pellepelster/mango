@@ -19,6 +19,9 @@ import io.pelle.mango.client.web.modules.property.PropertyModule;
 
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -58,8 +61,17 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 			Label propertyLabel = new Label(property.getName());
 			propertyPanel.add(propertyLabel);
 
-			BaseEditableLabel editableLabel = new BaseEditableLabel();
-			editableLabel.setText(property.getKey());
+			StringEditableLabel editableLabel = new StringEditableLabel(new ValueChangeHandler<String>() {
+				@Override
+				public void onValueChange(ValueChangeEvent<String> event) {
+					GWT.log(event.getValue());
+				}
+			});
+			
+			editableLabel.setTextBoxStyle(GwtStyles.FORM_CONTROL);
+			editableLabel.addButtonStyleName(GwtStyles.BUTTON);
+			editableLabel.addButtonStyleName(GwtStyles.BUTTON_DEFAULT);
+			editableLabel.setValue(property.getKey());
 			propertyPanel.add(editableLabel);
 
 			panel.add(propertyPanel);

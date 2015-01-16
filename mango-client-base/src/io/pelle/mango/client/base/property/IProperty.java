@@ -15,4 +15,5 @@ public interface IProperty<VALUETYPE> {
 	String toString(VALUETYPE value);
 
 	String getName();
+
 }

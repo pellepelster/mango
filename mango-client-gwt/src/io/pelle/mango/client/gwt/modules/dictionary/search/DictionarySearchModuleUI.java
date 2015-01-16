@@ -70,10 +70,9 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 		final DictionaryResultPanel<VOType> dictionaryResultPanel = new DictionaryResultPanel<VOType>(getModule().getDictionaryModel(), getModule().getDictionarySearch().getDictionaryResult());
 
 		if (getModule().getDictionarySearch().hasFilter()) {
-			// searchModel.getFilterModel().get(0)
+			@SuppressWarnings("unchecked")
 			final DictionaryFilterPanel<VOType> dictionaryFilter = new DictionaryFilterPanel<VOType>(getModule().getDictionarySearch().getActiveFilter(), (Class<VOType>) module.getDictionaryModel().getVOClass());
 
-			// dictionaryFilter.addStyleName(GwtStyles.VERTICAL_SPACING);
 			verticalPanel.add(dictionaryFilter);
 
 			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.searchSearch(), MangoClientWeb.MESSAGES.searchSearch(), new ClickHandler() {

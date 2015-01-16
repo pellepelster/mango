@@ -1,9 +1,13 @@
 package io.pelle.mango.server.property;
 
 import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.base.property.IPropertyCategory;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -116,6 +120,17 @@ public class PropertyServiceImpl implements IPropertyService {
 		default:
 			throw new RuntimeException("unsupported property type '" + property.getType() + "'");
 		}
+	}
+
+	@Override
+	public Map getPropertyValues(IPropertyCategory propertyCategory) {
+		Map<IProperty<?>, Object> result = new HashMap<IProperty<?>, Object>();
+
+		for (IProperty<?> property : propertyCategory.getAllProperties()) {
+			result.put(property, getProperty(property));
+		}
+
+		return result;
 	}
 
 }

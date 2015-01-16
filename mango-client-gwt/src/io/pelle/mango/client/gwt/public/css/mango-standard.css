@@ -228,7 +228,7 @@ h6,.h6{
          button
  **********************/
 
- .gwt-Button, .btn{
+ .gwt-Button, .btn {
 	display:inline-block;
 	padding:6px 12px;
 	margin-bottom:0;
@@ -620,11 +620,11 @@ h6,.h6{
 /**********************
      editable label
  **********************/
-.editablelable-editable { 
+.editablelabel-editable { 
 	border-bottom: 1px rgb(204, 204, 204) dashed;
 }
 
-.editablelable-readonly { }
+.editablelabel-readonly { }
 
-.editablelable { 
+.editablelabel { 
 }

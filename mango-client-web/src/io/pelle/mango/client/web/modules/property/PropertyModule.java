@@ -37,7 +37,7 @@ public class PropertyModule extends BasePropertyModule {
 	}
 
 	public List<IProperty<?>> getProperties() {
-		return PropertyProvider.getInstance().getProperties();
+		return PropertyProvider.getInstance().getRootCategory().getProperties();
 	}
 
 	@Override

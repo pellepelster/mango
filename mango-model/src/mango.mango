@@ -10,6 +10,8 @@ import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO
 import io.pelle.mango.client.system.Systeminformation
 import io.pelle.mango.client.log.LogEntryVO
 import io.pelle.mango.client.base.property.IProperty
+import io.pelle.mango.client.base.property.IPropertyCategory
+import java.io.Serializable
 
 project Mango {
 
@@ -47,6 +49,7 @@ project Mango {
 			service PropertyService {
 				method <VALUETYPE> VALUETYPE getProperty ( IProperty<VALUETYPE> property )
 				method <VALUETYPE> void setProperty ( IProperty<VALUETYPE> property, VALUETYPE value )
+				method Map getPropertyValues ( IPropertyCategory propertyCategory )
 			}
 
 		}

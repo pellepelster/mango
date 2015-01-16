@@ -82,7 +82,7 @@ public class DemoClient implements EntryPoint {
 
 	public void init() {
 
-		PropertyProvider.getInstance().addProperties(STRING_PROPERTY1);
+		PropertyProvider.getInstance().getRootCategory().addProperty(STRING_PROPERTY1);
 
 		MangoDemoClientConfiguration.registerAll();
 
