@@ -6,7 +6,7 @@
 	<inherits name="com.google.gwt.resources.Resources" />
 	<inherits name="com.google.gwt.user.Debug"/>
  	<inherits name="gwtupload.GWTUpload"/>
- 
+	<inherits name='io.pelle.mango.gwt.commons.MangoGwtCommons' />
 	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
 	
  	<stylesheet src="css/mango-standard.css"/>

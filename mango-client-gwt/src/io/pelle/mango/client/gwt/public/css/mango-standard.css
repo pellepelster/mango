@@ -619,18 +619,21 @@ fieldset[disabled] .btn-primary.active {
 .editablelabel-editable {
   border-bottom: 1px #a09e7d dashed;
 }
+.editablelabel .form-control {
+  width: 5em;
+}
 /**********************
      tab bar
  **********************/
-.gwt-TabBarItem {
+.gwt-TabBar .gwt-TabBarItem {
   white-space: nowrap;
-  margin: 10px;
   font-weight: normal;
-  border-color: #afad93;
+  padding: 10px;
+  background-color: #f9f7d5;
 }
-.gwt-TabBarItem-selected {
-  margin: 5px;
-  background-color: #c3c1ae;
+.gwt-TabBar .gwt-TabBarItem-selected {
+  padding: 10px;
+  background-color: #a09e7d;
 }
 .gwt-TabPanelBottom {
   border: none;

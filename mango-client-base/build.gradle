@@ -7,6 +7,8 @@ dependencies {
 	compile group: 'commons-httpclient', name: 'commons-httpclient', version: "3.1"
 	compile group: 'commons-fileupload', name: 'commons-fileupload', version: "1.2.2"
 
+	compile project(':mango-gwt-commons')
+
 }
 
 jar {

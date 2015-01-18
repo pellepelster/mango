@@ -17,6 +17,7 @@ import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.property.PropertyModule;
+import io.pelle.mango.gwt.commons.StringEditableLabel;
 
 import java.util.logging.Logger;
 
@@ -52,12 +53,14 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 		for (IPropertyCategory category : getModule().getRootCategory().getCategories()) {
 			VerticalPanel categoryPanel = new VerticalPanel();
-			categoryPanel.setWidth("100%");
 			categories.add(categoryPanel, category.getName());
 			createProperties(categoryPanel, category);
 		}
 
-		panel.add(categories);
+		if (categories.getWidgetCount() > 0) {
+			categories.selectTab(0);
+			panel.add(categories);
+		}
 	}
 
 	private void createProperties(Panel panel, IPropertyCategory category) {
@@ -65,7 +68,7 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 		for (IProperty<?> property : category.getProperties()) {
 
 			HorizontalPanel propertyPanel = new HorizontalPanel();
-			propertyPanel.setSpacing(GwtStyles.SPACING);
+			propertyPanel.setSpacing(GwtStyles.SPACING * 2);
 
 			Label propertyLabel = new Label(property.getName());
 			propertyPanel.add(propertyLabel);
@@ -76,7 +79,6 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 					GWT.log(event.getValue());
 				}
 			});
-
 			editableLabel.setTextBoxStyle(GwtStyles.FORM_CONTROL);
 			editableLabel.addButtonStyleName(GwtStyles.BUTTON);
 			editableLabel.addButtonStyleName(GwtStyles.BUTTON_DEFAULT);

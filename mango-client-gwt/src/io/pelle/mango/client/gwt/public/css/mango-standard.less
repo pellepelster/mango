@@ -631,20 +631,23 @@ h6,.h6{
 .editablelabel { 
 }
 
+.editablelabel .form-control {
+	width: 5em;
+}
 
 /**********************
      tab bar
  **********************/
-.gwt-TabBarItem {
+.gwt-TabBar .gwt-TabBarItem {
 	white-space: nowrap;
-	margin: 10px;
 	font-weight: normal;
-    border-color: @dark;
+	padding: 10px;
+	background-color: @lighter;
 }
 
-.gwt-TabBarItem-selected {
-	margin: 5px;
-	background-color: @light;
+.gwt-TabBar .gwt-TabBarItem-selected {
+	padding: 10px;
+    background-color: @darker;
 }
 
 .gwt-TabPanelBottom {
@@ -652,3 +655,4 @@ h6,.h6{
 	border-top: 1px solid;
 	border-color: @middle;
 }
+
