@@ -1,0 +1,9 @@
+dependencies {
+	compile group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
+	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
+}
+
+jar {
+	from sourceSets.main.allSource
+	from sourceSets.main.output.classesDir
+}

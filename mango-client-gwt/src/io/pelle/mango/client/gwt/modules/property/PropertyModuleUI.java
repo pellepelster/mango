@@ -17,6 +17,8 @@ import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.property.PropertyModule;
+import io.pelle.mango.gwt.commons.BaseEditableLabel;
+import io.pelle.mango.gwt.commons.BooleanEditableLabel;
 import io.pelle.mango.gwt.commons.StringEditableLabel;
 
 import java.util.logging.Logger;
@@ -73,17 +75,36 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 			Label propertyLabel = new Label(property.getName());
 			propertyPanel.add(propertyLabel);
 
-			StringEditableLabel editableLabel = new StringEditableLabel(new ValueChangeHandler<String>() {
-				@Override
-				public void onValueChange(ValueChangeEvent<String> event) {
-					GWT.log(event.getValue());
-				}
-			});
-			editableLabel.setTextBoxStyle(GwtStyles.FORM_CONTROL);
-			editableLabel.addButtonStyleName(GwtStyles.BUTTON);
-			editableLabel.addButtonStyleName(GwtStyles.BUTTON_DEFAULT);
-			editableLabel.setValue(property.getKey());
-			propertyPanel.add(editableLabel);
+			BaseEditableLabel<?, ?> baseEditableLabel = null;
+			switch (property.getValueType()) {
+			case BOOLEAN:
+				BooleanEditableLabel booleanEditableLabel = new BooleanEditableLabel(new ValueChangeHandler<Boolean>() {
+					@Override
+					public void onValueChange(ValueChangeEvent<Boolean> event) {
+						GWT.log(event.getValue().toString());
+					}
+				});
+				baseEditableLabel = booleanEditableLabel;
+				break;
+			case STRING:
+				StringEditableLabel stringEditableLabel = new StringEditableLabel(new ValueChangeHandler<String>() {
+					@Override
+					public void onValueChange(ValueChangeEvent<String> event) {
+						GWT.log(event.getValue());
+					}
+				});
+				stringEditableLabel.addButtonStyleName(GwtStyles.BUTTON);
+				stringEditableLabel.addButtonStyleName(GwtStyles.BUTTON_DEFAULT);
+				stringEditableLabel.setValue(property.getKey());
+				baseEditableLabel = stringEditableLabel;
+				break;
+
+			default:
+				throw new RuntimeException("unsupported property value type + '" + property.getValueType() + "'");
+			}
+
+			baseEditableLabel.setControlStyle(GwtStyles.FORM_CONTROL);
+			propertyPanel.add(baseEditableLabel);
 
 			panel.add(propertyPanel);
 		}

@@ -15,52 +15,8 @@ import com.google.common.base.Optional;
 
 public class PropertyServiceImpl implements IPropertyService {
 
-	// public static Predicate<PropertyCategory> categoryByName(final String
-	// categoryName) {
-	// return new Predicate<PropertyCategory>() {
-	// @Override
-	// public boolean apply(PropertyCategory input) {
-	// return Objects.equal(categoryName, input.getName());
-	// }
-	// };
-	// }
-	//
-	// public static Predicate<PropertyDefinition> propertyByName(final String
-	// propertyKey) {
-	// return new Predicate<PropertyDefinition>() {
-	// @Override
-	// public boolean apply(PropertyDefinition input) {
-	// return Objects.equal(propertyKey, input.getKey());
-	// }
-	// };
-	// }
-
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
-
-	// private void updateValues(List<PropertyCategory> categories) {
-	//
-	// for (PropertyCategory category : categories) {
-	// updatePropertyValues(category.getPropertyDefinitions());
-	// }
-	// }
-	//
-	// private void updatePropertyValues(List<PropertyDefinition> properties) {
-	//
-	// for (PropertyDefinition property : properties) {
-	// property.setValue(getPropertyValue(property));
-	// }
-	// }
-	//
-	// public List<PropertyCategory> getRootPropertyCategory() {
-	//
-	// List<PropertyCategory> rootCategories =
-	// PropertiesBuilder.getInstance().getRootCategories();
-	//
-	// updateValues(rootCategories);
-	//
-	// return rootCategories;
-	// }
 
 	@Override
 	public <VALUETYPE> VALUETYPE getProperty(IProperty<VALUETYPE> property) {

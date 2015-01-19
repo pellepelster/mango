@@ -32,11 +32,11 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class DemoClient implements EntryPoint {
 
-	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.createStringDatabaseProperty("stringProperty1", "An example string property");
+	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.createStringDatabaseProperty("stringProperty1", "A string property");
 
-	private static final IProperty<String> STRING_PROPERTY2 = PropertyBuilder.createStringDatabaseProperty("stringProperty2", "An example string property");
+	private static final IProperty<String> STRING_PROPERTY2 = PropertyBuilder.createStringDatabaseProperty("stringProperty2", "Antother string property");
 
-	private static final IProperty<String> STRING_PROPERTY3 = PropertyBuilder.createStringDatabaseProperty("stringProperty3", "An example string property");
+	private static final IProperty<Boolean> BOOLEAN_PROPERTY3 = PropertyBuilder.createBooleanDatabaseProperty("booleanProperty3", "A boolean property");
 
 	private static final IProperty<String> STRING_PROPERTY4 = PropertyBuilder.createStringDatabaseProperty("stringProperty4", "An example string property");
 
@@ -96,7 +96,7 @@ public class DemoClient implements EntryPoint {
 		IPropertyCategory category1 = PropertyProvider.getInstance().createCategory("category1");
 		category1.addProperty(STRING_PROPERTY1);
 		category1.addProperty(STRING_PROPERTY2);
-		category1.addProperty(STRING_PROPERTY3);
+		category1.addProperty(BOOLEAN_PROPERTY3);
 
 		IPropertyCategory category2 = PropertyProvider.getInstance().createCategory("category2");
 		category2.addProperty(STRING_PROPERTY4);
