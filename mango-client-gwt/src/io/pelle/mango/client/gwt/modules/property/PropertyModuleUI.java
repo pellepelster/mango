@@ -84,13 +84,13 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 				break;
 			case STRING:
 				StringEditableLabel stringEditableLabel = new StringEditableLabel();
-				stringEditableLabel.setControlStyle(GwtStyles.FORM_CONTROL);
+				stringEditableLabel.addControlStyle(GwtStyles.FORM_CONTROL);
 				stringEditableLabel.setValue(property.getKey());
 				baseEditableLabel = stringEditableLabel;
 				break;
 			case INTEGER:
 				IntegerEditableLabel integerEditableLabel = new IntegerEditableLabel();
-				integerEditableLabel.setControlStyle(GwtStyles.FORM_CONTROL);
+				integerEditableLabel.addControlStyle(GwtStyles.FORM_CONTROL);
 				//integerEditableLabel.setValue(property.getKey());
 				baseEditableLabel = integerEditableLabel;
 				break;
@@ -99,8 +99,8 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 				throw new RuntimeException("unsupported property value type + '" + property.getValueType() + "'");
 			}
 			
-			baseEditableLabel.addButtonStyleName(GwtStyles.BUTTON);
-			baseEditableLabel.addButtonStyleName(GwtStyles.BUTTON_DEFAULT);
+			baseEditableLabel.addButtonStyle(GwtStyles.BUTTON);
+			baseEditableLabel.addButtonStyle(GwtStyles.BUTTON_DEFAULT);
 			baseEditableLabel.setErrorStyle(GwtStyles.FORM_CONTROL_ERROR);
 
 			baseEditableLabel.addValueChangeHandler(new ValueChangeHandler() {

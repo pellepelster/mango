@@ -147,7 +147,7 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 
 	}
 
-	public void setControlStyle(String styleName) {
+	public void addControlStyle(String styleName) {
 		control.addStyleName(styleName);
 	}
 
@@ -234,7 +234,7 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 		blurTimer.schedule(200);
 	}
 
-	public void addButtonStyleName(String styleName) {
+	public void addButtonStyle(String styleName) {
 		okButton.addStyleName(styleName);
 		cancelButton.addStyleName(styleName);
 	}
