@@ -20,13 +20,13 @@ import io.pelle.mango.client.gwt.ControlHandler;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseTableDataGrid;
 import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
-import io.pelle.mango.client.gwt.widgets.ImageButton;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.container.EditableTable;
 import io.pelle.mango.client.web.modules.dictionary.container.IContainer;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.client.web.util.DummyAsyncCallback;
+import io.pelle.mango.gwt.commons.ImageButton;
 
 import java.util.Collections;
 import java.util.List;

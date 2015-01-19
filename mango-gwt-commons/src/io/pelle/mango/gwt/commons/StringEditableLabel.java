@@ -9,6 +9,9 @@ public class StringEditableLabel extends BaseEditableLabel<String, TextBox> {
 		super(handler);
 	}
 
+	public StringEditableLabel() {
+	}
+
 	@Override
 	protected String formatValue(String value) {
 		return value;
@@ -25,7 +28,11 @@ public class StringEditableLabel extends BaseEditableLabel<String, TextBox> {
 
 	@Override
 	protected String getValueFromControl() {
-		return getControl().getValue();
+		if (getControl().getValue() == null || getControl().getValue().trim().isEmpty()) {
+			return null;
+		} else {
+			return getControl().getValue();
+		}
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public interface GwtStyles {
 
 	String CONTROL_HAS_FEEDBACK_STYLE = "has-feedback";
 
-	String CONTROL_ERROR_STYLE = "form-control-error";
+	String FORM_CONTROL_ERROR = "form-control-error";
 
 	String CONTROL_DISABLED_STYLE = "form-control-disabled";
 

@@ -35,10 +35,14 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 
 	public static final String EDITABLE_LABEL_READONLY_STYLE = "editablelabel-readonly";
 
+	public static final String EDITABLE_LABEL_ERROR_STYLE = "editablelabel-error";
+
 	public static final String EDITABLE_LABEL_STYLE = "editablelabel";
 
 	public static final String EDITABLE_LABEL_EDIT_PANEL_STYLE = "editablelabel-editpanel";
 
+	private String errorStyle = null;
+	
 	@Generate(format = "com.google.gwt.i18n.rebind.format.PropertiesFormat")
 	public interface EditableLabelMessages extends Messages {
 
@@ -53,7 +57,7 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 
 	}
 
-	private EditableLabelMessages MESSAGES = ((EditableLabelMessages) GWT.create(EditableLabelMessages.class));
+	public EditableLabelMessages MESSAGES = ((EditableLabelMessages) GWT.create(EditableLabelMessages.class));
 
 	final int VIEW_MODE = 0;
 
@@ -67,7 +71,7 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 
 	private CONTROLTYPE control;
 
-	private VALUETYPE value;
+	private VALUETYPE value = null;
 
 	private Button okButton;
 
@@ -95,6 +99,10 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 		}
 	};
 
+	public BaseEditableLabel() {
+		this(null);
+	}
+	
 	public BaseEditableLabel(ValueChangeHandler<VALUETYPE> handler) {
 
 		editLabel = createLabel();
@@ -130,8 +138,13 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 			}
 		});
 
-		addValueChangeHandler(handler);
 		updateLabelStyle();
+		setValue(null, false);
+		
+		if (handler != null) {
+			addValueChangeHandler(handler);
+		}
+
 	}
 
 	public void setControlStyle(String styleName) {
@@ -166,23 +179,24 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 	}
 
 	private void endEdit() {
-		value = getValueFromControl();
-		decks.showWidget(VIEW_MODE);
-		setValue(value);
+		
+		if (validateControl()) {
+			getControl().removeStyleName(getErrorStyle());
+			value = getValueFromControl();
+			decks.showWidget(VIEW_MODE);
+			setValue(value);
+		} else {
+			getControl().addStyleName(getErrorStyle());
+		}
 	}
 
-	protected abstract String formatValue(VALUETYPE value);
-
-	protected abstract CONTROLTYPE createControl();
-
-	protected abstract VALUETYPE getValueFromControl();
-
-	protected abstract void setValueToControl(VALUETYPE value);
-
+	
+	
 	@Override
 	public void setValue(VALUETYPE value, boolean fireEvents) {
 		this.value = value;
-		editLabel.setText(Objects.firstNonNull(formatValue(value), MESSAGES.emptyValue()));
+		editLabel.setText((value == null) ? MESSAGES.emptyValue() : Objects.firstNonNull(formatValue(value), MESSAGES.emptyValue()));
+		
 		setValueToControl(value);
 
 		if (fireEvents) {
@@ -261,8 +275,28 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 		return button;
 	}
 
-	public CONTROLTYPE getControl() {
+	protected CONTROLTYPE getControl() {
 		return control;
 	}
+
+	protected boolean validateControl() {
+		return true;
+	};
+
+	public String getErrorStyle() {
+		return Objects.firstNonNull(errorStyle, EDITABLE_LABEL_ERROR_STYLE);
+	}
+	
+	public void setErrorStyle(String errorStyle) {
+		this.errorStyle = errorStyle;
+	}
+	
+	protected abstract String formatValue(VALUETYPE value);
+
+	protected abstract CONTROLTYPE createControl();
+
+	protected abstract VALUETYPE getValueFromControl();
+
+	protected abstract void setValueToControl(VALUETYPE value);
 
 }

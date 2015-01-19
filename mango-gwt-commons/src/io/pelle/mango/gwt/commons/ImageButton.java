@@ -9,47 +9,37 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.client.gwt.widgets;
+package io.pelle.mango.gwt.commons;
 
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 
-/**
- * @author pelle
- * 
- */
-public class ImageButton extends Button
-{
+public class ImageButton extends Button {
 
 	private String text;
 
-	public ImageButton()
-	{
+	public ImageButton() {
 		super();
 	}
 
-	public ImageButton(ImageResource imageResource)
-	{
+	public ImageButton(ImageResource imageResource) {
 		setResource(imageResource);
 	}
 
-	public ImageButton(String text)
-	{
+	public ImageButton(String text) {
 		setText(text);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String getText()
-	{
+	public String getText() {
 		return this.text;
 	}
 
-	public void setResource(ImageResource imageResource)
-	{
+	public void setResource(ImageResource imageResource) {
 		Image img = new Image(imageResource);
 		String definedStyles = img.getElement().getAttribute("style");
 		img.getElement().setAttribute("style", definedStyles + "; margin-left:15px; margin-right:15px; vertical-align:middle;");
@@ -58,8 +48,7 @@ public class ImageButton extends Button
 
 	/** {@inheritDoc} */
 	@Override
-	public void setText(String text)
-	{
+	public void setText(String text) {
 		this.text = text;
 		Element span = DOM.createElement("span");
 		span.setInnerText(text);

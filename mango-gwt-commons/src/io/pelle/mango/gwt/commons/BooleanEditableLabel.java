@@ -10,6 +10,9 @@ public class BooleanEditableLabel extends BaseEditableLabel<Boolean, CheckBox> {
 		super(handler);
 	}
 
+	public BooleanEditableLabel() {
+	}
+
 	@Override
 	protected String formatValue(Boolean value) {
 		return value.toString();

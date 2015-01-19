@@ -34,7 +34,7 @@ public class DemoClient implements EntryPoint {
 
 	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.createStringDatabaseProperty("stringProperty1", "A string property");
 
-	private static final IProperty<String> STRING_PROPERTY2 = PropertyBuilder.createStringDatabaseProperty("stringProperty2", "Antother string property");
+	private static final IProperty<Integer> INTEGER_PROPERTY2 = PropertyBuilder.createIntegerDatabaseProperty("integerProperty2", "A integer property");
 
 	private static final IProperty<Boolean> BOOLEAN_PROPERTY3 = PropertyBuilder.createBooleanDatabaseProperty("booleanProperty3", "A boolean property");
 
@@ -91,11 +91,11 @@ public class DemoClient implements EntryPoint {
 		greeting.show();
 	}
 
-	public void initProperties() {
+	private void initProperties() {
 
 		IPropertyCategory category1 = PropertyProvider.getInstance().createCategory("category1");
 		category1.addProperty(STRING_PROPERTY1);
-		category1.addProperty(STRING_PROPERTY2);
+		category1.addProperty(INTEGER_PROPERTY2);
 		category1.addProperty(BOOLEAN_PROPERTY3);
 
 		IPropertyCategory category2 = PropertyProvider.getInstance().createCategory("category2");

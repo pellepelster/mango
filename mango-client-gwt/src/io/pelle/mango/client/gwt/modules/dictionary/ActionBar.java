@@ -15,7 +15,7 @@ import io.pelle.mango.client.base.db.vos.UUID;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButtonUpdateHandler;
 import io.pelle.mango.client.gwt.GwtStyles;
-import io.pelle.mango.client.gwt.widgets.ImageButton;
+import io.pelle.mango.gwt.commons.ImageButton;
 
 import java.util.HashMap;
 import java.util.Map;

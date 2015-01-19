@@ -4,8 +4,8 @@ import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
-import io.pelle.mango.client.gwt.widgets.ImageButton;
 import io.pelle.mango.client.web.MangoClientWeb;
+import io.pelle.mango.gwt.commons.ImageButton;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

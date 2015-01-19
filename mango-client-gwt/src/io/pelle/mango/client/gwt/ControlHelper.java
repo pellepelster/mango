@@ -114,11 +114,11 @@ public class ControlHelper implements IControlUpdateListener {
 		}
 
 		if (baseControl.getValidationMessages().hasErrors()) {
-			uiObject.addStyleName(GwtStyles.CONTROL_ERROR_STYLE);
+			uiObject.addStyleName(GwtStyles.FORM_CONTROL_ERROR);
 			Map<String, Object> context = CollectionUtils.getMap(IBaseControlModel.EDITOR_LABEL_MESSAGE_KEY, DictionaryModelUtil.getEditorLabel(baseControl.getModel()));
 			uiObject.setTitle(baseControl.getValidationMessages().getValidationMessageString(context));
 		} else {
-			uiObject.removeStyleName(GwtStyles.CONTROL_ERROR_STYLE);
+			uiObject.removeStyleName(GwtStyles.FORM_CONTROL_ERROR);
 			uiObject.setTitle("");
 		}
 

@@ -18,12 +18,12 @@ import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ControlHandler;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
-import io.pelle.mango.client.gwt.widgets.ImageButton;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.container.AssignmentTable;
 import io.pelle.mango.client.web.modules.dictionary.container.IContainer;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrategy;
+import io.pelle.mango.gwt.commons.ImageButton;
 
 import java.util.Collection;
 import java.util.Collections;
