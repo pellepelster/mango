@@ -5,7 +5,10 @@ import io.pelle.mango.client.base.property.PROPERTY_VALUE_TYPE;
 
 public class StringPropertyBuilder extends BasePropertyBuilder<String> {
 
-	StringPropertyBuilder(String key, String name, PROPERTY_TYPE type) {
+	public StringPropertyBuilder() {
+	}
+
+	public StringPropertyBuilder(String key, String name, PROPERTY_TYPE type) {
 		super(key, name, type);
 	}
 

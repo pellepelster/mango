@@ -1,6 +1,8 @@
 package io.pelle.mango.client.base.property;
 
-public interface IProperty<VALUETYPE> {
+import java.io.Serializable;
+
+public interface IProperty<VALUETYPE extends Serializable> {
 
 	PROPERTY_TYPE getType();
 

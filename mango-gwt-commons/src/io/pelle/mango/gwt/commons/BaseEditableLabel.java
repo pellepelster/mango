@@ -1,5 +1,7 @@
 package io.pelle.mango.gwt.commons;
 
+import java.io.Serializable;
+
 import com.google.common.base.Objects;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Float;
@@ -29,7 +31,7 @@ import com.google.gwt.user.client.ui.FocusWidget;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.Label;
 
-public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidget> extends Composite implements HasValue<VALUETYPE>, HasValueChangeHandlers<VALUETYPE>, KeyUpHandler, BlurHandler {
+public abstract class BaseEditableLabel<VALUETYPE extends Serializable, CONTROLTYPE extends FocusWidget> extends Composite implements HasValue<VALUETYPE>, HasValueChangeHandlers<VALUETYPE>, KeyUpHandler, BlurHandler {
 
 	public static final String EDITABLE_LABEL_EDITABLE_STYLE = "editablelabel-editable";
 
@@ -42,7 +44,7 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 	public static final String EDITABLE_LABEL_EDIT_PANEL_STYLE = "editablelabel-editpanel";
 
 	private String errorStyle = null;
-	
+
 	@Generate(format = "com.google.gwt.i18n.rebind.format.PropertiesFormat")
 	public interface EditableLabelMessages extends Messages {
 
@@ -102,7 +104,7 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 	public BaseEditableLabel() {
 		this(null);
 	}
-	
+
 	public BaseEditableLabel(ValueChangeHandler<VALUETYPE> handler) {
 
 		editLabel = createLabel();
@@ -140,7 +142,7 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 
 		updateLabelStyle();
 		setValue(null, false);
-		
+
 		if (handler != null) {
 			addValueChangeHandler(handler);
 		}
@@ -179,7 +181,7 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 	}
 
 	private void endEdit() {
-		
+
 		if (validateControl()) {
 			getControl().removeStyleName(getErrorStyle());
 			value = getValueFromControl();
@@ -190,13 +192,11 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 		}
 	}
 
-	
-	
 	@Override
 	public void setValue(VALUETYPE value, boolean fireEvents) {
 		this.value = value;
 		editLabel.setText((value == null) ? MESSAGES.emptyValue() : Objects.firstNonNull(formatValue(value), MESSAGES.emptyValue()));
-		
+
 		setValueToControl(value);
 
 		if (fireEvents) {
@@ -286,11 +286,11 @@ public abstract class BaseEditableLabel<VALUETYPE, CONTROLTYPE extends FocusWidg
 	public String getErrorStyle() {
 		return Objects.firstNonNull(errorStyle, EDITABLE_LABEL_ERROR_STYLE);
 	}
-	
+
 	public void setErrorStyle(String errorStyle) {
 		this.errorStyle = errorStyle;
 	}
-	
+
 	protected abstract String formatValue(VALUETYPE value);
 
 	protected abstract CONTROLTYPE createControl();

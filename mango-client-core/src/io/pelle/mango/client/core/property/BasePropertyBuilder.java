@@ -3,9 +3,10 @@ package io.pelle.mango.client.core.property;
 import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.PROPERTY_TYPE;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class BasePropertyBuilder<VALUETYPE> implements IProperty<VALUETYPE> {
+public abstract class BasePropertyBuilder<VALUETYPE extends Serializable> implements IProperty<VALUETYPE> {
 
 	private String key;
 
@@ -22,6 +23,9 @@ public abstract class BasePropertyBuilder<VALUETYPE> implements IProperty<VALUET
 		this.key = key;
 		this.name = name;
 		this.type = type;
+	}
+
+	public BasePropertyBuilder() {
 	}
 
 	public BasePropertyBuilder<VALUETYPE> defaultValue(VALUETYPE defaultValue) {

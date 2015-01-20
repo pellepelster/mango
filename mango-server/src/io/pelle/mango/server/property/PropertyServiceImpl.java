@@ -6,6 +6,7 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class PropertyServiceImpl implements IPropertyService {
 	private IBaseEntityDAO baseEntityDAO;
 
 	@Override
-	public <VALUETYPE> VALUETYPE getProperty(IProperty<VALUETYPE> property) {
+	public <VALUETYPE extends Serializable> VALUETYPE getProperty(IProperty<VALUETYPE> property) {
 
 		VALUETYPE value = null;
 
@@ -52,7 +53,7 @@ public class PropertyServiceImpl implements IPropertyService {
 	}
 
 	@Override
-	public <VALUETYPE> void setProperty(IProperty<VALUETYPE> property, VALUETYPE value) {
+	public <VALUETYPE extends Serializable> void setProperty(IProperty<VALUETYPE> property, VALUETYPE value) {
 
 		switch (property.getType()) {
 		case SYSTEM:

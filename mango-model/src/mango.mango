@@ -47,8 +47,8 @@ project Mango {
 			}
 			
 			service PropertyService {
-				method <VALUETYPE> VALUETYPE getProperty ( IProperty<VALUETYPE> property )
-				method <VALUETYPE> void setProperty ( IProperty<VALUETYPE> property, VALUETYPE value )
+				method <VALUETYPE extends Serializable> VALUETYPE getProperty ( IProperty<VALUETYPE> property )
+				method <VALUETYPE extends Serializable> void setProperty ( IProperty<VALUETYPE> property, VALUETYPE value )
 				method Map getPropertyValues ( IPropertyCategory propertyCategory )
 			}
 
