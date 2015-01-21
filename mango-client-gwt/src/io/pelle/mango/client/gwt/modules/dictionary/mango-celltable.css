@@ -2,10 +2,10 @@
       cell table
  **********************/
 .cellTableOddRow {
-  background-color: #f9f7d5;
+  background-color: #f3f3f5;
 }
 .cellTableOddRowCell {
-  border: selectionBorderWidth solid #f9f7d5;
+  border: selectionBorderWidth solid #f3f3f5;
 }
 .cellTableEvenRow {
   background-color: #ffffff;
@@ -14,21 +14,17 @@
   border: selectionBorderWidth solid #ffffff;
 }
 .cellTableHoveredRow {
-  background-color: #c3c1ae;
-}
-.cellTableSelectedRow {
-  background-color: #afad93;
-  color: #fff;
-  -webkit-transition: background-color 5s ease;
-  -moz-transition: background-color 5s ease;
-  transition: background-color 5s ease;
-}
-.cellTableSelectedRowCell {
-  border: selectionBorderWidth solid #afad93;
+  background-color: #b1b3cc;
 }
 .cellTableHoveredRow {
-  background: #a09e7d;
+  background: #9595a2;
+}
+.cellTableSelectedRow {
+  background-color: #aaaab5;
+}
+.cellTableSelectedRowCell {
+  border: selectionBorderWidth solid #aaaab5;
 }
 .cellTableHoveredRowCell {
-  border: selectionBorderWidth solid #a09e7d;
+  border: selectionBorderWidth solid #9595a2;
 }

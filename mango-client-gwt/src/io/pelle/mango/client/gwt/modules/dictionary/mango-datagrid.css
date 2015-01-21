@@ -8,16 +8,16 @@
   border: selectionBorderWidth solid #ffffff;
 }
 .dataGridOddRow {
-  background: #f9f7d5;
+  background: #f3f3f5;
 }
 .dataGridOddRowCell {
-  border: selectionBorderWidth solid #f9f7d5;
+  border: selectionBorderWidth solid #f3f3f5;
 }
 .dataGridHoveredRow {
-  background: #c3c1ae;
+  background: #b1b3cc;
 }
 .dataGridHoveredRowCell {
-  border: selectionBorderWidth solid #c3c1ae;
+  border: selectionBorderWidth solid #b1b3cc;
 }
 .dataGridKeyboardSelectedRow {
   background: #ffc;
@@ -26,8 +26,8 @@
   border: selectionBorderWidth solid #ffc;
 }
 .dataGridSelectedRow {
-  background: #afad93;
+  background: #aaaab5;
 }
 .dataGridSelectedRowCell {
-  border: selectionBorderWidth solid #afad93;
+  border: selectionBorderWidth solid #aaaab5;
 }
