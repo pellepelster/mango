@@ -75,6 +75,10 @@ public interface GwtStyles {
 
 	String TOP_SPACER = "top-spacer";
 
+	String TALE_ROW_EVEN = "table-row-even";
+
+	String TALE_ROW_UNEVEN = "table-row-uneven";
+
 	int FADE_IN_DURATION = 150;
 
 	int FADE_OUT_DURATION = FADE_IN_DURATION;

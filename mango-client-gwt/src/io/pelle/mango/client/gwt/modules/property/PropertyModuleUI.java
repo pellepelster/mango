@@ -17,13 +17,20 @@ import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.property.PropertyModule;
+import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.gwt.commons.BaseEditableLabel;
 import io.pelle.mango.gwt.commons.BooleanEditableLabel;
 import io.pelle.mango.gwt.commons.IntegerEditableLabel;
 import io.pelle.mango.gwt.commons.StringEditableLabel;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
@@ -38,6 +45,8 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 	private HTML title;
 
 	private VerticalPanel panel = new VerticalPanel();
+
+	private Map<IProperty<Serializable>, BaseEditableLabel<Serializable, ?>> properties2Label = new HashMap<IProperty<Serializable>, BaseEditableLabel<Serializable, ?>>();
 
 	public PropertyModuleUI(PropertyModule module) {
 		super(module, PropertyModule.UI_MODULE_ID);
@@ -65,7 +74,7 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 	private void createProperties(Panel panel, IPropertyCategory category) {
 
-		for (final IProperty<?> property : category.getProperties()) {
+		for (final IProperty<? extends Serializable> property : category.getProperties()) {
 
 			HorizontalPanel propertyPanel = new HorizontalPanel();
 			propertyPanel.setSpacing(GwtStyles.SPACING * 2);
@@ -73,17 +82,18 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 			Label propertyLabel = new Label(property.getName());
 			propertyPanel.add(propertyLabel);
 
-			BaseEditableLabel baseEditableLabel = null;
+			BaseEditableLabel<? extends Serializable, ?> baseEditableLabel = null;
 			switch (property.getValueType()) {
 			case BOOLEAN:
 				BooleanEditableLabel booleanEditableLabel = new BooleanEditableLabel();
 				baseEditableLabel = booleanEditableLabel;
 				break;
 			case STRING:
-				StringEditableLabel stringEditableLabel = new StringEditableLabel();
+				final StringEditableLabel stringEditableLabel = new StringEditableLabel();
 				stringEditableLabel.addControlStyle(GwtStyles.FORM_CONTROL);
 				stringEditableLabel.setValue(property.getKey());
 				baseEditableLabel = stringEditableLabel;
+
 				break;
 			case INTEGER:
 				IntegerEditableLabel integerEditableLabel = new IntegerEditableLabel();
@@ -96,33 +106,51 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 				throw new RuntimeException("unsupported property value type + '" + property.getValueType() + "'");
 			}
 
+			// setValuChangeCallback(baseEditableLabel, property);
 			baseEditableLabel.addButtonStyle(GwtStyles.BUTTON);
 			baseEditableLabel.addButtonStyle(GwtStyles.BUTTON_DEFAULT);
 			baseEditableLabel.setErrorStyle(GwtStyles.FORM_CONTROL_ERROR);
 
-			// final BaseEditableLabel tmp = baseEditableLabel;
-			//
-			// // @SuppressWarnings({ "rawtypes", "unchecked" })
-			// baseEditableLabel.addValueChangeHandler(new ValueChangeHandler()
-			// {
-			// @Override
-			// public void onValueChange(ValueChangeEvent event) {
-			//
-			// MangoClientWeb.getInstance().getRemoteServiceLocator().getPropertyService().setProperty(property,
-			// event.getValue(), new BaseErrorAsyncCallback() {
-			//
-			// @Override
-			// public void onSuccess(Object result) {
-			// tmp.setValue(result);
-			// }
-			// });
-			// }
-			// });
-
 			propertyPanel.add(baseEditableLabel);
 
+			// properties2Label.put(property, baseEditableLabel);
 			panel.add(propertyPanel);
 		}
+
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getPropertyService().getPropertyValues(category, new AsyncCallback<Map>() {
+
+			@Override
+			public void onSuccess(Map result) {
+				Map<IProperty<Serializable>, Serializable> values = result;
+
+				for (Map.Entry<IProperty<Serializable>, Serializable> propertyValue : values.entrySet()) {
+					if (properties2Label.containsKey(propertyValue.getKey())) {
+						properties2Label.get(propertyValue.getKey()).setValue(propertyValue.getValue());
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
+
+	}
+
+	private <VALUETYPE extends Serializable> void setValuChangeCallback(BaseEditableLabel<VALUETYPE, ?> baseEditableLabel, final IProperty<VALUETYPE> property) {
+
+		baseEditableLabel.addValueChangeHandler(new ValueChangeHandler<VALUETYPE>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<VALUETYPE> event) {
+
+				MangoClientWeb.getInstance().getRemoteServiceLocator().getPropertyService().setProperty(property, event.getValue(), new BaseErrorAsyncCallback<Void>() {
+					@Override
+					public void onSuccess(Void result) {
+					}
+				});
+			}
+		});
+
 	}
 
 	/** {@inheritDoc} */

@@ -5,18 +5,22 @@ import io.pelle.mango.client.base.property.IProperty;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.base.Objects;
+
 public abstract class BasePropertiesBuilder {
 
-	private final String name;
-	
+	private final String id;
+
+	private String name;
+
 	private List<IProperty<?>> properties = new ArrayList<IProperty<?>>();
 
-	public BasePropertiesBuilder(String name) {
-		this.name = name;
+	public BasePropertiesBuilder(String id) {
+		this.id = id;
 	}
-	
-	public String getName() {
-		return name;
+
+	public String getId() {
+		return id;
 	}
 
 	public void addProperty(IProperty<?> property) {
@@ -26,5 +30,13 @@ public abstract class BasePropertiesBuilder {
 	public List<IProperty<?>> getProperties() {
 		return properties;
 	}
-	
+
+	public String getName() {
+		return Objects.firstNonNull(name, id);
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 }

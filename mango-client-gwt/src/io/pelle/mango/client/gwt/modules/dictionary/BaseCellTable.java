@@ -15,6 +15,7 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.container.BaseTableRowKeyProvider;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseTableElement;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
@@ -22,6 +23,7 @@ import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrat
 
 import java.util.List;
 
+import com.google.common.base.Objects;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -60,7 +62,18 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 		setRowStyles(new RowStyles<IBaseTable.ITableRow<VOType>>() {
 			@Override
 			public String getStyleNames(IBaseTable.ITableRow<VOType> row, int rowIndex) {
-				return row.getStyleNames();
+
+				String rowStyle = "";
+
+				rowStyle += Objects.firstNonNull(row.getStyleNames(), "");
+
+				if (rowIndex % 2 == 0) {
+					rowStyle += " " + GwtStyles.TALE_ROW_EVEN;
+				} else {
+					rowStyle += " " + GwtStyles.TALE_ROW_UNEVEN;
+				}
+
+				return rowStyle;
 			}
 		});
 

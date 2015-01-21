@@ -640,3 +640,6 @@ fieldset[disabled] .btn-primary.active {
   border-top: 1px solid;
   border-color: #d3d2c6;
 }
+.table-row-uneven {
+  background-color: #f9f7d5;
+}

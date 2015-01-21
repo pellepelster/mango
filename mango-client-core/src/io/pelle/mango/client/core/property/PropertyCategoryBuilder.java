@@ -20,38 +20,38 @@ public class PropertyCategoryBuilder extends BasePropertiesBuilder implements IP
 
 	private List<PropertyGroupBuilder> groups = new ArrayList<PropertyGroupBuilder>();
 
-	private Predicate<BasePropertiesBuilder> getByName(final String name) {
+	private Predicate<BasePropertiesBuilder> getById(final String id) {
 		return new Predicate<BasePropertiesBuilder>() {
 
 			@Override
 			public boolean apply(BasePropertiesBuilder input) {
-				return Objects.equal(input.getName(), name);
+				return Objects.equal(input.getId(), id);
 			}
 		};
 	}
 
-	public PropertyCategoryBuilder(String name) {
-		super(name);
+	public PropertyCategoryBuilder(String id) {
+		super(id);
 	}
 
-	public PropertyCategoryBuilder createCategory(String name) {
+	public PropertyCategoryBuilder createCategory(String id) {
 
-		Optional<PropertyCategoryBuilder> category = Iterables.tryFind(categories, getByName(name));
+		Optional<PropertyCategoryBuilder> category = Iterables.tryFind(categories, getById(id));
 
 		if (!category.isPresent()) {
-			category = Optional.of(new PropertyCategoryBuilder(name));
+			category = Optional.of(new PropertyCategoryBuilder(id));
 			categories.add(category.get());
 		}
 
 		return category.get();
 	}
 
-	public PropertyGroupBuilder createGroup(String name) {
+	public PropertyGroupBuilder createGroup(String id) {
 
-		Optional<PropertyGroupBuilder> group = Iterables.tryFind(groups, getByName(name));
+		Optional<PropertyGroupBuilder> group = Iterables.tryFind(groups, getById(id));
 
 		if (!group.isPresent()) {
-			group = Optional.of(new PropertyGroupBuilder(name));
+			group = Optional.of(new PropertyGroupBuilder(id));
 			groups.add(group.get());
 		}
 
@@ -81,34 +81,4 @@ public class PropertyCategoryBuilder extends BasePropertiesBuilder implements IP
 		}));
 	}
 
-	// PropertyCategoryBuilder(PropertyCategory category) {
-	// super(category);
-	// }
-
-	// private PropertyCategory category;
-	//
-	// public BaseCategoryBuilder(PropertyCategory category) {
-	// super();
-	// this.category = category;
-	// }
-	//
-	// public PropertyCategoryBuilder createCategory(String categoryName) {
-	//
-	// Optional<PropertyCategory> optionalCategory = null;
-	// //Iterables.tryFind(category.getPropertyCategories(),
-	// PropertyService1.categoryByName(categoryName));
-	//
-	// if (!optionalCategory.isPresent()) {
-	// optionalCategory = Optional.of(new PropertyCategory());
-	// optionalCategory.get().setName(categoryName);
-	// category.getPropertyCategories().add(optionalCategory.get());
-	// }
-	//
-	// return new PropertyCategoryBuilder(optionalCategory.get());
-	// }
-	//
-	//
-	// protected PropertyCategory getCategory() {
-	// return category;
-	// }
 }

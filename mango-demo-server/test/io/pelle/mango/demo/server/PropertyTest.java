@@ -43,6 +43,12 @@ public class PropertyTest extends BaseDemoTest {
 	private IPropertyService propertyService;
 
 	@Test
+	public void testDefaultNameIsId() {
+		IPropertyCategory category1 = PropertyProvider.getInstance().createCategory("zzz");
+		assertEquals("zzz", category1.getName());
+	}
+
+	@Test
 	public void testCreateSameCategory() {
 		IPropertyCategory category1 = PropertyProvider.getInstance().createCategory("zzz");
 		IPropertyCategory category2 = PropertyProvider.getInstance().createCategory("zzz");
