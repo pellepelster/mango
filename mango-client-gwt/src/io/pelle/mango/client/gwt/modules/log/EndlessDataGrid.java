@@ -1,11 +1,15 @@
 package io.pelle.mango.client.gwt.modules.log;
 
+import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
+import io.pelle.mango.client.gwt.modules.dictionary.BaseDataGridResources;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterables;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.user.cellview.client.DataGrid;
@@ -140,7 +144,8 @@ public class EndlessDataGrid<T> extends DataGrid<T> {
 	};
 
 	public EndlessDataGrid() {
-		super();
+		super(BaseCellTable.DEFAULT_PAGESIZE, (BaseDataGridResources) GWT.create(BaseDataGridResources.class));
+
 		dataProvider.addDataDisplay(this);
 
 		super.setRowStyles(new RowStyles<T>() {

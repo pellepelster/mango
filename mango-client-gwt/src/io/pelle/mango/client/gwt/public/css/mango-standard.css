@@ -4,7 +4,7 @@
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 /**********************
-        myadmin
+        mango
  **********************/
 .top-spacer {
   margin-top: 1.5em;
@@ -23,7 +23,7 @@
 }
 .docklayoutpanel-west {
   margin-right: 1em;
-  background-color: #f9f7d5;
+  background-color: #fcfbeb;
 }
 .docklayoutpanel-line_end {
   margin-top: 1em;
@@ -639,7 +639,4 @@ fieldset[disabled] .btn-primary.active {
   border: none;
   border-top: 1px solid;
   border-color: #d3d2c6;
-}
-.table-row-uneven {
-  background-color: #f9f7d5;
 }

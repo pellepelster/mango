@@ -24,6 +24,7 @@ import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrat
 import java.util.List;
 
 import com.google.common.base.Objects;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -50,10 +51,13 @@ public abstract class BaseCellTable<VOType extends IBaseVO> extends CellTable<IB
 
 	public static final int DEFAULT_MAX_RESULTS = 15;
 
+	public static final int DEFAULT_PAGESIZE = 15;
+
 	private BaseTableElement<VOType, ?> baseTableElement;
 
 	public BaseCellTable(BaseTableElement<VOType, ?> baseTableElement, BaseTableRowKeyProvider<VOType> keyProvider) {
-		super(keyProvider);
+		super(DEFAULT_PAGESIZE, (BaseCellTableResources) GWT.create(BaseCellTableResources.class), keyProvider);
+
 		selectionModel = new SingleSelectionModel<IBaseTable.ITableRow<VOType>>(keyProvider);
 		dataProvider.addDataDisplay(this);
 		this.baseTableElement = baseTableElement;

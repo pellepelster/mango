@@ -3,6 +3,7 @@ package io.pelle.mango.client.core.property;
 import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.IPropertyCategory;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +15,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-public class PropertyCategoryBuilder extends BasePropertiesBuilder implements IPropertyCategory {
+public class PropertyCategoryBuilder extends BasePropertiesBuilder implements IPropertyCategory, Serializable {
 
 	private List<PropertyCategoryBuilder> categories = new ArrayList<PropertyCategoryBuilder>();
 
@@ -28,6 +29,10 @@ public class PropertyCategoryBuilder extends BasePropertiesBuilder implements IP
 				return Objects.equal(input.getId(), id);
 			}
 		};
+	}
+
+	public PropertyCategoryBuilder() {
+		super();
 	}
 
 	public PropertyCategoryBuilder(String id) {

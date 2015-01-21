@@ -1,0 +1,41 @@
+@import "../../public/css/colors.less";
+
+/**********************
+      cell table
+ **********************/
+ 
+.cellTableOddRow {
+    background-color: @lighter;
+}
+
+.cellTableOddRowCell {
+	border: selectionBorderWidth solid @lighter;
+}
+
+.cellTableEvenRow {
+    background-color: #ffffff;
+}
+
+.cellTableEvenRowCell {
+	border: selectionBorderWidth solid #ffffff;
+}
+
+.cellTableHoveredRow {
+    background-color: @light;
+}
+
+.cellTableHoveredRow {
+	background: @darker;
+}
+
+.cellTableSelectedRow {
+    background-color: @dark;
+}
+
+.cellTableSelectedRowCell {
+	border: selectionBorderWidth solid @dark;
+}
+
+.cellTableHoveredRowCell {
+	border: selectionBorderWidth solid @darker;
+}

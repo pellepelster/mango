@@ -9,11 +9,14 @@ import com.google.common.base.Objects;
 
 public abstract class BasePropertiesBuilder {
 
-	private final String id;
+	private String id;
 
 	private String name;
 
 	private List<IProperty<?>> properties = new ArrayList<IProperty<?>>();
+
+	public BasePropertiesBuilder() {
+	}
 
 	public BasePropertiesBuilder(String id) {
 		this.id = id;

@@ -1,17 +1,13 @@
+@import "colors.less";
+
 @font-face {
   font-family: 'Glyphicons Halflings';
   src: url('../fonts/glyphicons-halflings-regular.eot');
   src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
 }
 
-@dark: #AFAD93;
-@darker: #A09E7D;
-@light: #C3C1AE;
-@lighter: #F9F7D5;
-@middle: #D3D2C6;
-
 /**********************
-        myadmin
+        mango
  **********************/
 
 .top-spacer {
@@ -36,7 +32,7 @@
 
 .docklayoutpanel-west {
 	margin-right: 1em;
-	background-color: @lighter;
+	background-color: lighten(@lighter, 5%);
 }
 
 .docklayoutpanel-line_end {
@@ -654,11 +650,4 @@ h6,.h6{
 	border: none;
 	border-top: 1px solid;
 	border-color: @middle;
-}
-
-.table-row-even {
-}
-
-.table-row-uneven {
-    background-color: @lighter;
 }

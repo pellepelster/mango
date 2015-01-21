@@ -6,7 +6,7 @@ import io.pelle.mango.client.base.property.PROPERTY_TYPE;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class BasePropertyBuilder<VALUETYPE extends Serializable> implements IProperty<VALUETYPE> {
+public abstract class BasePropertyBuilder<VALUETYPE extends Serializable> implements IProperty<VALUETYPE>, Serializable {
 
 	private String key;
 

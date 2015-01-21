@@ -1,0 +1,34 @@
+/**********************
+      cell table
+ **********************/
+.cellTableOddRow {
+  background-color: #f9f7d5;
+}
+.cellTableOddRowCell {
+  border: selectionBorderWidth solid #f9f7d5;
+}
+.cellTableEvenRow {
+  background-color: #ffffff;
+}
+.cellTableEvenRowCell {
+  border: selectionBorderWidth solid #ffffff;
+}
+.cellTableHoveredRow {
+  background-color: #c3c1ae;
+}
+.cellTableSelectedRow {
+  background-color: #afad93;
+  color: #fff;
+  -webkit-transition: background-color 5s ease;
+  -moz-transition: background-color 5s ease;
+  transition: background-color 5s ease;
+}
+.cellTableSelectedRowCell {
+  border: selectionBorderWidth solid #afad93;
+}
+.cellTableHoveredRow {
+  background: #a09e7d;
+}
+.cellTableHoveredRowCell {
+  border: selectionBorderWidth solid #a09e7d;
+}

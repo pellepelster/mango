@@ -1,0 +1,33 @@
+/**********************
+      data grid 
+ **********************/
+.dataGridEvenRow {
+  background: #ffffff;
+}
+.dataGridEvenRowCell {
+  border: selectionBorderWidth solid #ffffff;
+}
+.dataGridOddRow {
+  background: #f9f7d5;
+}
+.dataGridOddRowCell {
+  border: selectionBorderWidth solid #f9f7d5;
+}
+.dataGridHoveredRow {
+  background: #c3c1ae;
+}
+.dataGridHoveredRowCell {
+  border: selectionBorderWidth solid #c3c1ae;
+}
+.dataGridKeyboardSelectedRow {
+  background: #ffc;
+}
+.dataGridKeyboardSelectedRowCell {
+  border: selectionBorderWidth solid #ffc;
+}
+.dataGridSelectedRow {
+  background: #afad93;
+}
+.dataGridSelectedRowCell {
+  border: selectionBorderWidth solid #afad93;
+}
