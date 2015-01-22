@@ -8,17 +8,17 @@ import com.google.gwt.user.client.ui.HasValue;
 public class FullRatingWidget extends BaseRatingWidget implements HasValue<Integer> {
 
 	public FullRatingWidget() {
-		this(false);
+		this(false, false);
 	}
 
-	public FullRatingWidget(boolean readonly) {
-		super(readonly, true);
+	public FullRatingWidget(boolean readonly, boolean showClear) {
+		super(readonly, true, showClear);
 	}
 
 	public HandlerRegistration addValueChangeHandler(ValueChangeHandler<Integer> handler) {
 
 		setRatingChangedHandler(new RatingChangedHandler() {
-			
+
 			@Override
 			public void ratingChanged(int rating) {
 				ValueChangeEvent.fire(FullRatingWidget.this, rating);

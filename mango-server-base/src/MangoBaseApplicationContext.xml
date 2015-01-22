@@ -24,7 +24,7 @@
 	</bean>
 
 
-	<bean class="io.pelle.mango.server.base.util.ConfigurationLogger" />
+	<bean class="io.pelle.mango.server.util.ConfigurationLogger" />
 
  	<mvc:annotation-driven />
 

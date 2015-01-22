@@ -11,11 +11,11 @@ import com.google.gwt.user.client.ui.HasValue;
 public class FractionRatingWidget extends BaseRatingWidget implements HasValue<Float> {
 
 	public FractionRatingWidget() {
-		this(false);
+		this(false, false);
 	}
 
-	public FractionRatingWidget(boolean readonly) {
-		super(readonly, false);
+	public FractionRatingWidget(boolean readonly, boolean showClear) {
+		super(readonly, false, showClear);
 	}
 
 	private float getFractionRating(int rating) {

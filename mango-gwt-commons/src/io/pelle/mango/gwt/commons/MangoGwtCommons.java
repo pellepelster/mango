@@ -13,7 +13,8 @@ import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -21,8 +22,11 @@ import com.google.gwt.user.client.ui.TabPanel;
 
 public class MangoGwtCommons implements EntryPoint {
 
-	private FractionRatingWidget ratingWidgetSum2;
-	private FullRatingWidget ratingWidgetSum1;
+	private FractionRatingWidget ratingWidgetSumHalf;
+
+	private FullRatingWidget ratingWidgetSumFull;
+
+	private NumberFormat HALF_FORMAT = NumberFormat.getFormat("0.0");
 
 	@Override
 	public void onModuleLoad() {
@@ -38,8 +42,10 @@ public class MangoGwtCommons implements EntryPoint {
 	}
 
 	private List<BaseRatingWidget> ratingWidgets = new ArrayList<BaseRatingWidget>();
-	private Label ratingLabelSum2;
-	private Label ratingLabelSum1;
+
+	private Label ratingLabelSumHalf;
+
+	private Label ratingLabelSumFull;
 
 	private void updateSumWidgets() {
 
@@ -56,13 +62,16 @@ public class MangoGwtCommons implements EntryPoint {
 
 		sum = sum / ratingWidgets.size();
 
-		ratingWidgetSum2.setValue(sum);
-		ratingLabelSum2.setText("" + sum);
+		ratingWidgetSumHalf.setValue(sum);
+		ratingLabelSumHalf.setText(HALF_FORMAT.format(sum));
+
+		ratingLabelSumFull.setText("" + Math.round(sum));
+		ratingWidgetSumFull.setValue(Math.round(sum));
 	}
 
 	private Panel createRatingPanel() {
 
-		Grid grid = new Grid(6, 3);
+		FlexTable grid = new FlexTable();
 		grid.setCellSpacing(20);
 		int row = 0;
 
@@ -85,6 +94,7 @@ public class MangoGwtCommons implements EntryPoint {
 				updateSumWidgets();
 			}
 		});
+
 		row++;
 
 		// full stars
@@ -123,7 +133,7 @@ public class MangoGwtCommons implements EntryPoint {
 
 			@Override
 			public void onValueChange(ValueChangeEvent<Float> event) {
-				ratingLabelHalf.setText("" + event.getValue());
+				ratingLabelHalf.setText(HALF_FORMAT.format(event.getValue()));
 				updateSumWidgets();
 			}
 		});
@@ -146,7 +156,7 @@ public class MangoGwtCommons implements EntryPoint {
 
 			@Override
 			public void onValueChange(ValueChangeEvent<Float> event) {
-				ratingLabelHalfLarge.setText("" + event.getValue());
+				ratingLabelHalfLarge.setText(HALF_FORMAT.format(event.getValue()));
 				updateSumWidgets();
 			}
 		});
@@ -156,20 +166,20 @@ public class MangoGwtCommons implements EntryPoint {
 		// half stars
 		grid.setWidget(row, 0, new Label("Half stars (small)"));
 
-		FractionRatingWidget ratingWidget4 = new FractionRatingWidget();
-		ratingWidget4.setResources((SmallRatingWidgetResources) GWT.create(SmallRatingWidgetResources.class));
-		ratingWidgets.add(ratingWidget4);
-		grid.setWidget(row, 1, ratingWidget4);
+		FractionRatingWidget ratingWidgetHalfSmall = new FractionRatingWidget();
+		ratingWidgetHalfSmall.setResources((SmallRatingWidgetResources) GWT.create(SmallRatingWidgetResources.class));
+		ratingWidgets.add(ratingWidgetHalfSmall);
+		grid.setWidget(row, 1, ratingWidgetHalfSmall);
 
-		final Label ratingLabel4 = new Label();
-		ratingLabel4.setWidth("4em");
-		grid.setWidget(row, 2, ratingLabel4);
+		final Label ratingLabelHalfSmall = new Label();
+		ratingLabelHalfSmall.setWidth("4em");
+		grid.setWidget(row, 2, ratingLabelHalfSmall);
 
-		ratingWidget4.addValueChangeHandler(new ValueChangeHandler<Float>() {
+		ratingWidgetHalfSmall.addValueChangeHandler(new ValueChangeHandler<Float>() {
 
 			@Override
 			public void onValueChange(ValueChangeEvent<Float> event) {
-				ratingLabel4.setText("" + event.getValue());
+				ratingLabelHalfSmall.setText(HALF_FORMAT.format(event.getValue()));
 				updateSumWidgets();
 			}
 		});
@@ -179,24 +189,24 @@ public class MangoGwtCommons implements EntryPoint {
 		// full stars
 		grid.setWidget(row, 0, new Label("Full stars (readonly)"));
 
-		ratingWidgetSum1 = new FullRatingWidget(true);
-		grid.setWidget(row, 1, ratingWidgetSum1);
+		ratingWidgetSumFull = new FullRatingWidget(true, false);
+		grid.setWidget(row, 1, ratingWidgetSumFull);
 
-		ratingLabelSum1 = new Label();
-		ratingLabelSum1.setWidth("4em");
-		grid.setWidget(row, 2, ratingLabelSum1);
+		ratingLabelSumFull = new Label();
+		ratingLabelSumFull.setWidth("4em");
+		grid.setWidget(row, 2, ratingLabelSumFull);
 
 		row++;
 
 		// half stars
 		grid.setWidget(row, 0, new Label("Half stars (readonly)"));
 
-		ratingWidgetSum2 = new FractionRatingWidget(true);
-		grid.setWidget(row, 1, ratingWidgetSum2);
+		ratingWidgetSumHalf = new FractionRatingWidget(true, false);
+		grid.setWidget(row, 1, ratingWidgetSumHalf);
 
-		ratingLabelSum2 = new Label();
-		ratingLabelSum2.setWidth("4em");
-		grid.setWidget(row, 2, ratingLabelSum2);
+		ratingLabelSumHalf = new Label();
+		ratingLabelSumHalf.setWidth("4em");
+		grid.setWidget(row, 2, ratingLabelSumHalf);
 
 		row++;
 
