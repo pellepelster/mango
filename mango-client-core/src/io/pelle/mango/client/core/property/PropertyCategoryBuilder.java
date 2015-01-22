@@ -15,17 +15,17 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
-public class PropertyCategoryBuilder extends BasePropertiesBuilder implements IPropertyCategory, Serializable {
+public class PropertyCategoryBuilder extends BasePropertyContainerBuilder implements IPropertyCategory, Serializable {
 
 	private List<PropertyCategoryBuilder> categories = new ArrayList<PropertyCategoryBuilder>();
 
 	private List<PropertyGroupBuilder> groups = new ArrayList<PropertyGroupBuilder>();
 
-	private Predicate<BasePropertiesBuilder> getById(final String id) {
-		return new Predicate<BasePropertiesBuilder>() {
+	private Predicate<BasePropertyContainerBuilder> getById(final String id) {
+		return new Predicate<BasePropertyContainerBuilder>() {
 
 			@Override
-			public boolean apply(BasePropertiesBuilder input) {
+			public boolean apply(BasePropertyContainerBuilder input) {
 				return Objects.equal(input.getId(), id);
 			}
 		};

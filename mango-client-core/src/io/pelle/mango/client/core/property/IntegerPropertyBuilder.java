@@ -12,6 +12,10 @@ public class IntegerPropertyBuilder extends BasePropertyBuilder<Integer> {
 		super(key, name, type);
 	}
 
+	public IntegerPropertyBuilder(String key, PROPERTY_TYPE type) {
+		super(key, type);
+	}
+	
 	@Override
 	public Integer parseValue(String valueString) {
 		return Integer.parseInt(valueString);

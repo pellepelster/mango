@@ -18,10 +18,10 @@ import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.property.PropertyModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
-import io.pelle.mango.gwt.commons.BaseEditableLabel;
-import io.pelle.mango.gwt.commons.BooleanEditableLabel;
-import io.pelle.mango.gwt.commons.IntegerEditableLabel;
-import io.pelle.mango.gwt.commons.StringEditableLabel;
+import io.pelle.mango.gwt.commons.editableLabel.BaseEditableLabel;
+import io.pelle.mango.gwt.commons.editableLabel.BooleanEditableLabel;
+import io.pelle.mango.gwt.commons.editableLabel.IntegerEditableLabel;
+import io.pelle.mango.gwt.commons.editableLabel.StringEditableLabel;
 
 import java.io.Serializable;
 import java.util.HashMap;

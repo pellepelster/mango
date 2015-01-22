@@ -11,7 +11,11 @@ public class BooleanPropertyBuilder extends BasePropertyBuilder<Boolean> {
 	public BooleanPropertyBuilder(String key, String name, PROPERTY_TYPE type) {
 		super(key, name, type);
 	}
-
+	
+	public BooleanPropertyBuilder(String key, PROPERTY_TYPE type) {
+		super(key, type);
+	}
+	
 	@Override
 	public Boolean parseValue(String valueString) {
 		return Boolean.parseBoolean(valueString);

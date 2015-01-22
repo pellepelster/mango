@@ -18,6 +18,9 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable> implem
 
 	private PROPERTY_TYPE type;
 
+	public BasePropertyBuilder() {
+	}
+
 	public BasePropertyBuilder(String key, String name, PROPERTY_TYPE type) {
 		super();
 		this.key = key;
@@ -25,7 +28,8 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable> implem
 		this.type = type;
 	}
 
-	public BasePropertyBuilder() {
+	public BasePropertyBuilder(String key, PROPERTY_TYPE type) {
+		this(key, null, type);
 	}
 
 	public BasePropertyBuilder<VALUETYPE> defaultValue(VALUETYPE defaultValue) {

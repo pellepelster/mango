@@ -1,4 +1,4 @@
-package io.pelle.mango.gwt.commons;
+package io.pelle.mango.gwt.commons.editableLabel;
 
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.CheckBox;

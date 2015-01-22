@@ -9,39 +9,76 @@ import io.pelle.mango.db.dao.IBaseEntityDAO;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.support.AbstractBeanFactory;
 
 import com.google.common.base.Optional;
 
 public class PropertyServiceImpl implements IPropertyService {
 
+	private final Map<String, String> cache = new ConcurrentHashMap<String, String>();
+
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
 
+	@Autowired
+	private AbstractBeanFactory beanFactory;
+
+	public String getSpringProperty(String key) {
+
+		if (cache.containsKey(key)) {
+			return cache.get(key);
+		}
+
+		String value = null;
+		try {
+			value = beanFactory.resolveEmbeddedValue("${" + key.trim() + "}");
+
+			if (value != null) {
+				cache.put(key, value);
+			}
+		} catch (IllegalArgumentException e) {
+			// ignore non existant values
+		}
+
+		if (value != null) {
+			cache.put(key, value);
+		} else {
+			value = "<none>";
+		}
+
+		return value;
+	}
+	
 	@Override
 	public <VALUETYPE extends Serializable> VALUETYPE getProperty(IProperty<VALUETYPE> property) {
 
-		VALUETYPE value = null;
-
+		String valueString = null;
+		
 		switch (property.getType()) {
 		case SYSTEM:
-			value = property.parseValue(System.getProperty(property.getKey()));
+			valueString = System.getProperty(property.getKey());
 			break;
 		case DATABASE:
 
 			Optional<PropertyValue> dbProperty = baseEntityDAO.read(SelectQuery.selectFrom(PropertyValue.class).where(PropertyValue.KEY.eq(property.getKey())));
 
 			if (dbProperty.isPresent()) {
-				value = property.parseValue(dbProperty.get().getValue());
+				valueString = dbProperty.get().getValue();
 			}
+			break;
+		case SPRING:
+			valueString = getSpringProperty(property.getKey());
 			break;
 
 		default:
 			throw new RuntimeException("unsupported property type '" + property.getType() + "'");
 		}
 
-		if (value == null) {
+		
+		if (valueString == null || valueString.trim().isEmpty()) {
 			if (property.getFallback() != null) {
 				return getProperty(property.getFallback());
 			} else if (property.getDefaultValue() != null) {
@@ -49,7 +86,7 @@ public class PropertyServiceImpl implements IPropertyService {
 			}
 		}
 
-		return value;
+		return property.parseValue(valueString);
 	}
 
 	@Override

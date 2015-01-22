@@ -3,7 +3,7 @@ package io.pelle.mango.demo.server;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.demo.server.test.Entity1;
-import io.pelle.mango.gwt.commons.StringEditableLabel;
+import io.pelle.mango.gwt.commons.editableLabel.StringEditableLabel;
 
 import org.junit.Ignore;
 import org.junit.Test;

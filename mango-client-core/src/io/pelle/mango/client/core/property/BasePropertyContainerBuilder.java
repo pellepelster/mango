@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.google.common.base.Objects;
 
-public abstract class BasePropertiesBuilder {
+public abstract class BasePropertyContainerBuilder {
 
 	private String id;
 
@@ -15,10 +15,10 @@ public abstract class BasePropertiesBuilder {
 
 	private List<IProperty<?>> properties = new ArrayList<IProperty<?>>();
 
-	public BasePropertiesBuilder() {
+	public BasePropertyContainerBuilder() {
 	}
 
-	public BasePropertiesBuilder(String id) {
+	public BasePropertyContainerBuilder(String id) {
 		this.id = id;
 	}
 

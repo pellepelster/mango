@@ -5,6 +5,7 @@ dependencies {
 
 	compile group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
 	compile group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt
+	compile group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
 	compile group: "commons-beanutils", name: "commons-beanutils-core", version: "1.8.3"
 	compile group: 'com.google.guava', name: 'guava', version: versions.guava
 	compile 'com.google.code.findbugs:jsr305:2.0.3'

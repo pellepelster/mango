@@ -1,9 +1,8 @@
-package io.pelle.mango.server.base.util;
+package io.pelle.mango.server.util;
 
-import io.pelle.mango.server.base.ConfigurationParameters;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.property.IPropertyService;
+import io.pelle.mango.server.ConfigurationParameters;
 
 import org.apache.commons.lang3.StringUtils;
 import org.nocrala.tools.texttablefmt.BorderStyle;
@@ -14,49 +13,18 @@ import org.nocrala.tools.texttablefmt.CellStyle.NullStyle;
 import org.nocrala.tools.texttablefmt.ShownBorders;
 import org.nocrala.tools.texttablefmt.Table;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 
+import com.google.common.base.Objects;
+
 public class ConfigurationLogger implements ApplicationListener<ContextRefreshedEvent> {
-
-	private final AbstractBeanFactory beanFactory;
-
-	private final Map<String, String> cache = new ConcurrentHashMap<String, String>();
 
 	private boolean logged = false;
 
 	@Autowired
-	protected ConfigurationLogger(AbstractBeanFactory beanFactory) {
-		this.beanFactory = beanFactory;
-	}
-
-	public String getProperty(String key) {
-
-		if (cache.containsKey(key)) {
-			return cache.get(key);
-		}
-
-		String value = null;
-		try {
-			value = beanFactory.resolveEmbeddedValue("${" + key.trim() + "}");
-
-			if (value != null) {
-				cache.put(key, value);
-			}
-		} catch (IllegalArgumentException e) {
-			// ignore non existant values
-		}
-
-		if (value != null) {
-			cache.put(key, value);
-		} else {
-			value = "<none>";
-		}
-
-		return value;
-	}
-
+	private IPropertyService propertyService;
+	
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 
@@ -93,14 +61,10 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 		}
 	}
 
-	private void addProperty(Table table, String propertyKey) {
-		table.addCell(propertyKey);
-		table.addCell(getProperty(propertyKey));
-		table.addCell(getProperty(defaultPropertyKey(propertyKey)));
-	}
-
-	private String defaultPropertyKey(String key) {
-		return key + ".default";
+	private void addProperty(Table table, IProperty<?> property) {
+		table.addCell(property.getKey());
+		table.addCell(propertyService.getProperty(property).toString());
+		table.addCell(Objects.firstNonNull(property.getDefaultValue(), "").toString());
 	}
 
 }

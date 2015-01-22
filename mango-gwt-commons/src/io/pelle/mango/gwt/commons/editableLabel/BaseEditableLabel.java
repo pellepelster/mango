@@ -1,4 +1,4 @@
-package io.pelle.mango.gwt.commons;
+package io.pelle.mango.gwt.commons.editableLabel;
 
 import java.io.Serializable;
 
