@@ -18,25 +18,20 @@ package io.pelle.mango.client.base.modules.dictionary.model.controls;
  * @version $Rev$, $Date$
  * 
  */
-public interface IIntegerControlModel extends IBaseControlModel
-{
+public interface IIntegerControlModel extends IBaseControlModel {
 
 	public static int MAX_DEFAULT = Integer.MAX_VALUE;
 
 	public static int MIN_DEFAULT = Integer.MIN_VALUE;
 
-	/**
-	 * Returns the maximum
-	 * 
-	 * @return
-	 */
 	Integer getMax();
 
-	/**
-	 * Returns the minimum
-	 * 
-	 * @return
-	 */
 	Integer getMin();
+
+	enum CONTROL_TYPE {
+		TEXTCONTROL, RATING
+	}
+
+	CONTROL_TYPE getControlType();
 
 }

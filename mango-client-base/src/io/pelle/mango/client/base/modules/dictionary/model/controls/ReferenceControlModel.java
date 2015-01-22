@@ -15,7 +15,7 @@ public class ReferenceControlModel<VOType extends IBaseVO> extends BaseControlMo
 
 	private List<IBaseControlModel> labelControls = new ArrayList<IBaseControlModel>();
 
-	private CONTROL_TYPE controlType = CONTROL_TYPE.TEXT;
+	private CONTROL_TYPE controlType = CONTROL_TYPE.TEXTCONTROL;
 
 	private int suggestionsLimit = DEFAULT_SUGGESTIONS_LIMIT;
 

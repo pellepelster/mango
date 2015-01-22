@@ -30,6 +30,7 @@ import io.pelle.mango.dsl.mango.DictionaryEnumerationControl
 import io.pelle.mango.dsl.mango.DictionaryFileControl
 import io.pelle.mango.dsl.mango.DictionaryHierarchicalControl
 import io.pelle.mango.dsl.mango.DictionaryIntegerControl
+import io.pelle.mango.dsl.mango.DictionaryIntegerControlInputType
 import io.pelle.mango.dsl.mango.DictionaryReferenceControl
 import io.pelle.mango.dsl.mango.DictionaryTextControl
 import io.pelle.mango.dsl.mango.EntityDataType
@@ -37,6 +38,7 @@ import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationAttributeType
 import io.pelle.mango.dsl.mango.EnumerationDataType
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
+import io.pelle.mango.dsl.mango.IntegerControlInputType
 import io.pelle.mango.dsl.mango.IntegerEntityAttribute
 import io.pelle.mango.dsl.mango.Labels
 import io.pelle.mango.dsl.mango.LongEntityAttribute
@@ -218,6 +220,12 @@ class DictionaryControls {
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»
 		
+		«var controlInputType = dictionaryControl.getIntegerControlInputType()»
+		
+		«IF  controlInputType != null»
+			«dictionaryControl.dictionaryConstantName».setControlType(io.pelle.mango.client.base.modules.dictionary.model.controls.IIntegerControlModel.CONTROL_TYPE.«controlInputType.toString.toUpperCase»);
+		«ENDIF»
+		
 		«dictionaryControl.dictionaryControlCommonSetters»
 	'''
 
@@ -329,6 +337,7 @@ class DictionaryControls {
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryReferenceControl dictionaryControl) '''
+		
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»

@@ -86,7 +86,7 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		// text control
 		defaultBlockFormat(c, m.dictionaryTextControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryTextControlAccess.rightCurlyBracketKeyword_4_2)
 			
-		defaultBlockFormat(c, m.dictionaryIntegerControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryIntegerControlAccess.rightCurlyBracketKeyword_4_2)
+		defaultBlockFormat(c, m.dictionaryIntegerControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryIntegerControlAccess.rightCurlyBracketKeyword_4_3)
 		defaultBlockFormat(c, m.dictionaryBigDecimalControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryBigDecimalControlAccess.rightCurlyBracketKeyword_4_2)
 		defaultBlockFormat(c, m.dictionaryDateControlAccess.leftCurlyBracketKeyword_4_0, m.dictionaryDateControlAccess.rightCurlyBracketKeyword_4_2)
 

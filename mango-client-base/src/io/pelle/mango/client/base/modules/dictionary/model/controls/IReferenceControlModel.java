@@ -25,7 +25,7 @@ public interface IReferenceControlModel extends IBaseLookupControlModel {
 	public static int DEFAULT_SUGGESTIONS_LIMIT = 20;
 
 	enum CONTROL_TYPE {
-		TEXT, DROPDOWN
+		TEXTCONTROL, DROPDOWN
 	}
 
 	CONTROL_TYPE getControlType();

@@ -4,6 +4,8 @@ import io.pelle.mango.dsl.mango.DictionaryControl
 import io.pelle.mango.dsl.mango.DictionaryControlGroup
 import io.pelle.mango.dsl.mango.DictionaryControlGroupOptionMultiFilterField
 import io.pelle.mango.dsl.mango.DictionaryControlGroupOptionsContainer
+import io.pelle.mango.dsl.mango.DictionaryIntegerControl
+import io.pelle.mango.dsl.mango.DictionaryIntegerControlInputType
 import io.pelle.mango.dsl.mango.MangoPackage
 
 class ControlUtils {
@@ -21,8 +23,7 @@ class ControlUtils {
 	}
 
 	def hasReadonly(DictionaryControl dictionaryControl) {
-		return dictionaryControl.baseControl != null &&
-			dictionaryControl.baseControl.eGet(MangoPackage.Literals.BASE_DICTIONARY_CONTROL__READONLY) != null
+		return dictionaryControl.baseControl != null && dictionaryControl.baseControl.eGet(MangoPackage.Literals.BASE_DICTIONARY_CONTROL__READONLY) != null
 	}
 
 	def getMandatory(DictionaryControl dictionaryControl) {
@@ -30,8 +31,7 @@ class ControlUtils {
 	}
 
 	def hasMandatory(DictionaryControl dictionaryControl) {
-		return dictionaryControl.baseControl != null &&
-			dictionaryControl.baseControl.eGet(MangoPackage.Literals.BASE_DICTIONARY_CONTROL__MANDATORY) != null
+		return dictionaryControl.baseControl != null && dictionaryControl.baseControl.eGet(MangoPackage.Literals.BASE_DICTIONARY_CONTROL__MANDATORY) != null
 	}
 
 	def hasBaseControl(DictionaryControl dictionaryControl) {
@@ -47,12 +47,11 @@ class ControlUtils {
 	}
 
 	def <T> mulitFilterField(DictionaryControlGroup controlGroup) {
-		return Boolean.TRUE.equals(
-			controlGroup.getControlGroupOption(typeof(DictionaryControlGroupOptionMultiFilterField)))
+		return Boolean.TRUE.equals(controlGroup.getControlGroupOption(typeof(DictionaryControlGroupOptionMultiFilterField)))
 	}
 
-	def <T> getControlGroupOption(DictionaryControlGroupOptionsContainer controlGroupOptionsContainer,
-		Class<T> controlGroupOptionType) {
+	// control group options
+	def <T> getControlGroupOption(DictionaryControlGroupOptionsContainer controlGroupOptionsContainer, Class<T> controlGroupOptionType) {
 		return controlGroupOptionsContainer.options.findFirst[e|controlGroupOptionType.isAssignableFrom(e.class)] as T
 	}
 
@@ -63,4 +62,22 @@ class ControlUtils {
 			return null;
 		}
 	}
-}
+
+	// integer control options
+	def <T> getIntegerOption(DictionaryIntegerControl integerControl, Class<T> integerControlOptionType) {
+		if (integerControl.options != null) {
+			return integerControl.options.findFirst[e|integerControlOptionType.isAssignableFrom(e.class)] as T
+		} else {
+			return null;
+		}
+	}
+
+	def <T> getIntegerControlInputType(DictionaryIntegerControl integerControl) {
+		var options = integerControl.getIntegerOption(DictionaryIntegerControlInputType)
+
+		if (options != null) {
+			options.inputtype
+		}
+	}
+}		
+		

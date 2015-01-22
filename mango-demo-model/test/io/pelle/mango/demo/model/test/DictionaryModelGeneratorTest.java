@@ -3,6 +3,7 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IIntegerControlModel;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
@@ -89,6 +90,16 @@ public class DictionaryModelGeneratorTest {
 		assertEquals(null, DictionaryModelProvider.getEnumerationValue(ENUMERATION1.class.getName(), null));
 		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, DictionaryModelProvider.getEnumerationValue(ENUMERATION1.class.getName(), "ENUMERATIONVALUE1"));
 
+	}
+
+	@Test
+	public void testDictionary1IntegerControl1DefaultControlInputType() {
+		assertEquals(IIntegerControlModel.CONTROL_TYPE.TEXTCONTROL, MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.INTEGER_CONTROL1.getControlType());
+	}
+
+	@Test
+	public void testDictionary1IntegerControl1RatingControlInputType() {
+		assertEquals(IIntegerControlModel.CONTROL_TYPE.RATING, MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.INTEGER_CONTROL2.getControlType());
 	}
 
 	@Test

@@ -351,6 +351,7 @@ project MangoDemo {
 				enumeration Enumeration1Datatype enumeration1Datatype
 				enumeration Enumeration1Datatype 0..n enumeration1Datatypes
 				integer IntegerDatatype1 integerDatatype1
+				integer IntegerDatatype1 integerDatatype2
 				decimal DecimalDatatype1 decimalDatatype1
 				double DoubleDatatype1 doubleDatatype1
 				float FloatDatatype1 floatDatatype1
@@ -473,6 +474,10 @@ project MangoDemo {
 						integercontrol IntegerControl1 {
 							entityattribute Entity1.integerDatatype1
 						}
+						integercontrol IntegerControl2 {
+							entityattribute Entity1.integerDatatype2
+							inputtype rating
+						}
 						bigdecimalcontrol DecimalControl1 {
 							entityattribute Entity1.decimalDatatype1
 						}
@@ -528,6 +533,7 @@ project MangoDemo {
 						booleancontrol ref BooleanControl1
 						enumerationcontrol ref EnumerationControl1
 						integercontrol ref IntegerControl1
+						integercontrol ref IntegerControl2
 						bigdecimalcontrol ref DecimalControl1
 						datecontrol ref DateControl1
 					}

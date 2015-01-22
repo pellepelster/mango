@@ -386,9 +386,6 @@ Labels:
 	("toolTip" toolTip=STRING)?;
 	
 //- controls ------------------------------------------------------------------
-enum ControlType: 
-	text = "text" | dropdown = "dropdown";
-	
 BaseDictionaryControl:
 		("entityattribute" entityattribute=[ EntityAttribute | QualifiedName ])?
 		labels=Labels
@@ -434,10 +431,22 @@ DictionaryTextControl:
 		baseControl=BaseDictionaryControl
 	"}")?;
 
+
+enum IntegerControlInputType: 
+	text = "textbox" | rating = "rating";
+
+DictionaryIntegerControlInputType:
+	{DictionaryIntegerControlInputType}
+	"inputtype" inputtype=IntegerControlInputType;
+
+DictionaryIntegerControlOptions:
+	DictionaryIntegerControlInputType;
+
 DictionaryIntegerControl:
 	{DictionaryIntegerControl}
 	"integercontrol" (name=ID)? ("ref" ref=[ DictionaryIntegerControl | QualifiedName ])? ("{"
 		baseControl=BaseDictionaryControl
+		(options+=DictionaryIntegerControlOptions)*
 	"}")?;
 
 DictionaryBigDecimalControl:
@@ -464,13 +473,15 @@ DictionaryEnumerationControl:
 		baseControl=BaseDictionaryControl
 	"}")?;
 
-
+enum ReferenceControlType: 
+	text = "text" | dropdown = "dropdown";
+	
 DictionaryReferenceControl:
 	{DictionaryReferenceControl}
 	"referencecontrol" (name=ID)? ("ref" ref=[ DictionaryReferenceControl | QualifiedName ])? ("{"
 		baseControl=BaseDictionaryControl
 		("dictionary" dictionary=[ Dictionary | QualifiedName ])?
-		("controlType" controlType=ControlType)?
+		("controlType" controlType=ReferenceControlType)?
 		("labelcontrols" "{" (labelcontrols+=DictionaryControl)* "}")? 
 	"}")?;
 
