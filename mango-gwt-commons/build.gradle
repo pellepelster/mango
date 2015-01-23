@@ -1,9 +1,33 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/'
+        }
+        
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.4'
+    }
+}
+
+apply plugin: 'gwt'
+
+configurations {
+	gwt
+	gwtTest
+}
+
 dependencies {
 	compile group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
 	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
+	gwtTest group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
 }
 
-jar {
-	from sourceSets.main.allSource
-	from sourceSets.main.output.classesDir
+gwt {
+    gwtVersion = versions.gwt
+    modules 'io.pelle.mango.gwt.commons.MangoGwtCommons'
+	logLevel = 'ERROR'
 }
+
+compileGwt.onlyIf { !project.hasProperty('skipCompileGwt') }

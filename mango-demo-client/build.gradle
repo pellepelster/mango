@@ -23,6 +23,7 @@ dependencies {
 	compile project(path: ':mango-demo-model', configuration: 'generatedClientGWT')
 	compile project(path: ':mango-client-web-test')
 	compile project(path: ':mango-client-gwt')
+	compile project(path: ':mango-gwt-commons')
 	gwtTest group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
 }
 
@@ -36,9 +37,9 @@ gwt {
 			files(project(':mango-client-gwt').sourceSets.main.allJava.srcDirs)
 }
 
-ext.gwtTestLibDir = new File('lib-gwt-test')
 
 task copyGwtTestLibs(type: Copy) {
+	ext.gwtTestLibDir = new File('lib-gwt-test')
 	gwtTestLibDir.mkdirs()
 	into gwtTestLibDir
 	from configurations.gwtTest

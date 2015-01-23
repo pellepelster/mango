@@ -11,6 +11,10 @@ public class FullRatingWidget extends BaseRatingWidget implements HasValue<Integ
 		this(false, false);
 	}
 
+	public FullRatingWidget(boolean readonly) {
+		this(readonly, false);
+	}
+
 	public FullRatingWidget(boolean readonly, boolean showClear) {
 		super(readonly, true, showClear);
 	}

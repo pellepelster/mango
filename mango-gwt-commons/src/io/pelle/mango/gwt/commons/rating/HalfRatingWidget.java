@@ -8,13 +8,13 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasValue;
 
-public class FractionRatingWidget extends BaseRatingWidget implements HasValue<Float> {
+public class HalfRatingWidget extends BaseRatingWidget implements HasValue<Float> {
 
-	public FractionRatingWidget() {
+	public HalfRatingWidget() {
 		this(false, false);
 	}
 
-	public FractionRatingWidget(boolean readonly, boolean showClear) {
+	public HalfRatingWidget(boolean readonly, boolean showClear) {
 		super(readonly, false, showClear);
 	}
 
@@ -28,7 +28,7 @@ public class FractionRatingWidget extends BaseRatingWidget implements HasValue<F
 
 			@Override
 			public void ratingChanged(int rating) {
-				ValueChangeEvent.fire(FractionRatingWidget.this, getFractionRating(rating));
+				ValueChangeEvent.fire(HalfRatingWidget.this, getFractionRating(rating));
 			}
 		});
 

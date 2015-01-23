@@ -26,9 +26,9 @@ jmeterRun.configure {
 
 dependencies {
 
-	compile project(path: ':mango-demo-model', configuration: 'generatedClientGWT')
-	compile project(path: ':mango-demo-model', configuration: 'generatedServer')
-	compile project(path: ':mango-demo-model', configuration: 'generatedXml')
+	compile project(path: ':mango-demo-model', configuration: 'generatedClientGWT' )
+	compile project(path: ':mango-demo-model', configuration: 'generatedServer' )
+	compile project(path: ':mango-demo-model', configuration: 'generatedXml' )
 	compile project(path: ':mango-server')
 	compile project(path: ':mango-client-web-test')
 	
@@ -63,6 +63,8 @@ war {
 	webInf { from 'WebContent/WEB-INF' }
 	metaInf { from 'WebContent/META-INF' }
 	from project(':mango-demo-client').tasks.compileGwt.outputs
+	//from project(':mango-demo-client').tasks.compileGwt.outputs.plus(project(':mango-gwt-commons').tasks.compileGwt.outputs)
+	//from project(':mango-gwt-commons').tasks.compileGwt.outputs
 }
 
 task jettyEclipseRunDaemon() {
