@@ -137,6 +137,10 @@ project MangoDemo {
 				maxLength 3
 				minLength 3
 			}
+			integerdatatype CountryRating {
+				label "Rating"
+			}
+			
 			decimaldatatype CountryExchangeRate {
 				label "Exchange Rate"
 			}
@@ -157,6 +161,7 @@ project MangoDemo {
 
 				string IsoCode2 countryIsoCode2
 				string IsoCode3 countryIsoCode3
+				integer CountryRating countryRating
 				string CountryName countryName
 				entity CountryCurrency countryCurrency
 				decimal CountryExchangeRate countryExchangeRate
@@ -186,6 +191,10 @@ project MangoDemo {
 					bigdecimalcontrol CountryExchangeRate {
 						entityattribute countryExchangeRate
 						readonly true
+					}
+					integercontrol CountryRating {
+						entityattribute countryRating
+						inputtype rating
 					}
 				}
 
@@ -221,6 +230,7 @@ project MangoDemo {
 					textcontrol ref CountryName
 					referencecontrol ref CountryCurrency
 					bigdecimalcontrol ref CountryExchangeRate
+					integercontrol ref CountryRating
 				}
 			}
 

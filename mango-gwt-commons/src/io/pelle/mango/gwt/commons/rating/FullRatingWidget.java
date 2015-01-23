@@ -45,7 +45,11 @@ public class FullRatingWidget extends BaseRatingWidget implements HasValue<Integ
 	@Override
 	public void setValue(Integer value, boolean fireEvents) {
 
-		setRating(value, false);
+		if (value == null) {
+			setValue(0, false);
+		} else {
+			setRating(value, false);
+		}
 
 		if (fireEvents) {
 			ValueChangeEvent.fire(this, getRating());

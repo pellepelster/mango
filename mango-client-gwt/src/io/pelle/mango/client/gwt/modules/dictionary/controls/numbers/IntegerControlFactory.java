@@ -30,7 +30,12 @@ public class IntegerControlFactory extends BaseControlFactory<IIntegerControlMod
 	/** {@inheritDoc} */
 	@Override
 	public Widget createControl(IntegerControl integerControl, LAYOUT_TYPE layoutType) {
-		return new GwtIntegerControl(integerControl);
+		switch (integerControl.getModel().getControlType()) {
+		case RATING:
+			return new GwtRatingControl(integerControl);
+		default:
+			return new GwtIntegerControl(integerControl);
+		}
 	}
 
 	/** {@inheritDoc} */

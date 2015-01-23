@@ -40,10 +40,10 @@ public class ControlHelper implements IControlUpdateListener {
 	private boolean isUpdating = false;
 
 	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener) {
-		this(uiObject, baseControl, gwtControl, addValueChangeListener, true);
+		this(uiObject, baseControl, gwtControl, addValueChangeListener, true, true);
 	}
 
-	public <ValueType> ControlHelper(final Widget widget, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener, boolean addDefaultStyle) {
+	public <ValueType> ControlHelper(final Widget widget, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener, boolean addDefaultStyle, boolean setWidth) {
 
 		this.uiObject = widget;
 		this.baseControl = baseControl;
@@ -58,11 +58,14 @@ public class ControlHelper implements IControlUpdateListener {
 			widget.addStyleName(GwtStyles.CONTROL_DISABLED_STYLE);
 		}
 
-		widget.setWidth(WidthCalculationStrategy.getInstance().getControlWidthCss(baseControl.getModel()));
+		if (setWidth) {
+			widget.setWidth(WidthCalculationStrategy.getInstance().getControlWidthCss(baseControl.getModel()));
+		}
 
 		baseControl.addUpdateListener(this);
 
 		if (widget instanceof HasValue<?>) {
+
 			final HasValue<ValueType> hasValueWidget = (HasValue<ValueType>) widget;
 
 			if (addValueChangeListener) {

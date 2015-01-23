@@ -27,7 +27,7 @@ public class GwtBooleanControl extends CheckBox implements IGwtControl, IControl
 
 	public GwtBooleanControl(final BooleanControl control) {
 		this.control = control;
-		new ControlHelper(this, control, this, true, false);
+		new ControlHelper(this, control, this, true, false, true);
 		ensureDebugId(DictionaryModelUtil.getDebugId(control.getModel()));
 
 		addValueChangeHandler(new ValueChangeHandler<Boolean>() {

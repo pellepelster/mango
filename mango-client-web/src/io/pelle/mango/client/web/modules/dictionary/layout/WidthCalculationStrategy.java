@@ -41,11 +41,6 @@ public final class WidthCalculationStrategy {
 		return width * factor;
 	}
 
-	// public String getPxWidth(int characters, boolean uppercase, float factor)
-	// {
-	// return getWidth(characters, uppercase, factor) + "px";
-	// }
-
 	public static WidthCalculationStrategy getInstance() {
 		if (instance == null) {
 			instance = new WidthCalculationStrategy();

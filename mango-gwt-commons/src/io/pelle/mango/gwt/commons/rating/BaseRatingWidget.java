@@ -201,6 +201,7 @@ public abstract class BaseRatingWidget extends Composite implements ClickHandler
 	}
 
 	protected void setRating(int rating, boolean fireChangedHandler) {
+		
 		this.rating = rating;
 		updateStarImages();
 
