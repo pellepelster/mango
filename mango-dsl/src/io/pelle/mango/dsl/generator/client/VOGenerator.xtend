@@ -166,7 +166,7 @@ class VOGenerator extends BaseEntityGenerator {
 			for (Object enumValue : enumValues) {
 				
 				if (enumValue instanceof java.lang.String) {
-					get«enumerationEntityAttribute.name.toFirstUpper()»().add(«enumerationEntityAttribute.enumerationFullQualifiedName».valueOf(enumValue.toString()));
+					get«enumerationEntityAttribute.name.toFirstUpper()»().add(«enumerationEntityAttribute.type.type».valueOf(enumValue.toString()));
 				}
 				else {
 					get«enumerationEntityAttribute.name.toFirstUpper()»().add((«enumerationEntityAttribute.type.type») enumValue);
@@ -176,7 +176,7 @@ class VOGenerator extends BaseEntityGenerator {
 		«ELSE»
 		if (value instanceof «String.name»)
 		{
-			set«enumerationEntityAttribute.name.toFirstUpper()»(«enumerationEntityAttribute.enumerationFullQualifiedName».valueOf((«String.name») value));
+			set«enumerationEntityAttribute.name.toFirstUpper()»(«enumerationEntityAttribute.type.type».valueOf((«String.name») value));
 		} else {
 			set«enumerationEntityAttribute.name.toFirstUpper()»((«enumerationEntityAttribute.type.type») value);
 		}
