@@ -27,7 +27,8 @@ import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 
 public abstract class BaseCellControl<T> extends AbstractEditableCell<T, ViewData<T>> {
-	static class ViewData<T> {
+	
+	public static class ViewData<T> {
 		private boolean isEditing;
 
 		private boolean isEditingAgain;

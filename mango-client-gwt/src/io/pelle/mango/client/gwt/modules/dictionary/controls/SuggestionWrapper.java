@@ -13,7 +13,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.modules.dictionary.controls.IReferenceControl;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.gwt.modules.dictionary.controls.SuggestCellControl.SuggestCellSuggestion;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.table.SuggestCellControl.SuggestCellSuggestion;
 
 public class SuggestionWrapper<VOTYPE extends IBaseVO> implements SuggestCellSuggestion<VOTYPE> {
 	

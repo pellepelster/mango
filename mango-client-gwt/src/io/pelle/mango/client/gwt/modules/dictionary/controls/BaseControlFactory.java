@@ -16,6 +16,8 @@ import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITable
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.table.HighlightingTextCell;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.table.TableRowColumn;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 
 import com.google.gwt.cell.client.FieldUpdater;

@@ -9,10 +9,12 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.client.gwt.modules.dictionary.controls;
+package io.pelle.mango.client.gwt.modules.dictionary.controls.table;
 
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.BaseCellControl;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.ControlHtmlRenderer;
 
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;

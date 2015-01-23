@@ -1,4 +1,4 @@
-package io.pelle.mango.client.gwt.modules.dictionary.controls;
+package io.pelle.mango.client.gwt.modules.dictionary.controls.table;
 
 import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.gwt.utils.HtmlUtils;
