@@ -13,6 +13,11 @@ buildscript {
 
 apply plugin: 'gwt'
 
+jar {
+	from sourceSets.main.allSource
+	from sourceSets.main.output.classesDir
+}
+
 configurations {
 	gwt
 	gwtTest

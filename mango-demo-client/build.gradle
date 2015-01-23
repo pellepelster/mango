@@ -23,7 +23,6 @@ dependencies {
 	compile project(path: ':mango-demo-model', configuration: 'generatedClientGWT')
 	compile project(path: ':mango-client-web-test')
 	compile project(path: ':mango-client-gwt')
-	compile project(path: ':mango-gwt-commons')
 	gwtTest group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
 }
 
