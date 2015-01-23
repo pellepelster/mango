@@ -31,7 +31,7 @@ dependencies {
 
 gwt {
     gwtVersion = versions.gwt
-    modules 'io.pelle.mango.gwt.commons.MangoGwtCommons'
+    modules 'io.pelle.mango.gwt.commons.MangoGwtCommonsDemo'
 	logLevel = 'ERROR'
 }
 
