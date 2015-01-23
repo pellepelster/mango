@@ -19,6 +19,4 @@
 	<set-property name="gwt.logging.consoleHandler" value="ENABLED" />
 	<set-property name="gwt.logging.firebugHandler" value="ENABLED" />
 
-	<entry-point class="io.pelle.mango.gwt.commons.MangoGwtCommons" />
-
 </module>
