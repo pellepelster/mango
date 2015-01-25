@@ -51,7 +51,7 @@ public class DemoLogServiceTest extends BaseDemoTest {
 
 		List<LogEntryVO> logEntries = logService.getLog(50, entity1VO);
 		assertEquals(1, logEntries.size());
-		assertEquals("io.pelle.mango.demo.client.test.Entity1#" + entity1VO.getId(), logEntries.get(0).getReference());
+		assertEquals("io.pelle.mango.demo.server.test.Entity1#" + entity1VO.getId(), logEntries.get(0).getReference());
 	}
 
 	@Test
