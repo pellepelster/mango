@@ -1,6 +1,8 @@
 package io.pelle.mango.server.log;
 
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.db.util.EntityVOMapper;
 
 public class VOEntityLogReferenceKeyMapper implements ILogReferenceKeyMapper {
 
@@ -10,6 +12,13 @@ public class VOEntityLogReferenceKeyMapper implements ILogReferenceKeyMapper {
 		assert object instanceof IVOEntity;
 
 		IVOEntity baseVO = (IVOEntity) object;
+
+		Class<?> entityClass = object.getClass();
+
+		if (baseVO instanceof IBaseVO) {
+			entityClass = EntityVOMapper.getInstance().getEntityClass(entityClass);
+		}
+
 		return baseVO.getClass().getName() + "#" + baseVO.getId();
 	}
 
