@@ -19,7 +19,7 @@ public class VOEntityLogReferenceKeyMapper implements ILogReferenceKeyMapper {
 			entityClass = EntityVOMapper.getInstance().getEntityClass(entityClass);
 		}
 
-		return baseVO.getClass().getName() + "#" + baseVO.getId();
+		return entityClass.getName() + "#" + baseVO.getId();
 	}
 
 	@Override
