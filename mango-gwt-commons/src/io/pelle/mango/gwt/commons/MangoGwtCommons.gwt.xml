@@ -9,5 +9,6 @@
   	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
   
 	<source path="" />
+	<entry-point class="io.pelle.mango.gwt.commons.MangoGwtCommons" />
 
 </module>

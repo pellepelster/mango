@@ -4,7 +4,7 @@
 
 	<inherits name="io.pelle.mango.gwt.commons.MangoGwtCommons" />
   
-	<entry-point class="io.pelle.mango.gwt.commons.MangoGwtCommons" />
+	<entry-point class="io.pelle.mango.gwt.commons.MangoGwtCommonsDemo" />
 
 	<source path="" />
 

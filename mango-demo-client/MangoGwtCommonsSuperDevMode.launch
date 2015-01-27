@@ -23,6 +23,6 @@
 </listAttribute>
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.google.gwt.dev.codeserver.CodeServer"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="io.pelle.mango.gwt.commons.MangoGwtCommons"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="io.pelle.mango.gwt.commons.MangoGwtCommonsDemo"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="mango-gwt-commons"/>
 </launchConfiguration>
