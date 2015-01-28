@@ -20,6 +20,7 @@ import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
@@ -48,11 +49,19 @@ public class MangoGwtCommonsDemo implements EntryPoint {
 		tabPanel.setHeight("100%");
 		tabPanel.setWidth("100%");
 
+		Panel toastrPanel = createToastrPanel();
 		tabPanel.add(createRatingPanel(), "Rating Widget");
-		tabPanel.add(createPlaygorundPanel(), "Playground");
-		tabPanel.add(createToastrPanel(), "Toastr");
+		tabPanel.add(toastrPanel, "Toastr");
 
-		tabPanel.selectTab(0);
+		String tabParamter = Window.Location.getParameter("tab");
+		if (tabParamter != null) {
+			if (tabParamter.equals("toastr")) {
+				tabPanel.selectTab(toastrPanel);
+			}
+
+		} else {
+			tabPanel.selectTab(0);
+		}
 		RootLayoutPanel.get().add(tabPanel);
 	}
 
