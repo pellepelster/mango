@@ -22,6 +22,7 @@ import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
@@ -182,9 +183,24 @@ public class MangoGwtCommonsDemo implements EntryPoint {
 		grid.setWidget(2, 2, bottomRightPanel);
 		grid.getCellFormatter().setHorizontalAlignment(2, 2, HasHorizontalAlignment.ALIGN_CENTER);
 
+		VerticalPanel centerPanel = new VerticalPanel();
 		String text = "<h4>Try the buttons to show the toastr messages in different positions and message types. Due to the architecture of toastr itself messages will only start appearing in new positions if all old messages from the previous position are dismissed.</h4>";
-		HTMLPanel panel = new HTMLPanel(text);
-		grid.setWidget(1, 1, panel);
+		centerPanel.add(new HTMLPanel(text));
+
+		Grid centerGrid = new Grid(1, 3);
+		CheckBox setCloseButton = new CheckBox("setCloseButton(true/false)");
+		centerGrid.setWidget(0, 1, setCloseButton);
+
+		setCloseButton.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+			@Override
+			public void onValueChange(ValueChangeEvent<Boolean> event) {
+
+			}
+		});
+
+		centerPanel.add(centerGrid);
+
+		grid.setWidget(1, 1, centerPanel);
 		grid.getCellFormatter().setWidth(1, 1, "30%");
 
 		return grid;
