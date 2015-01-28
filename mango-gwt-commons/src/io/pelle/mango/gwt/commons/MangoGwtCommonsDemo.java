@@ -24,6 +24,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.Grid;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasHorizontalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
@@ -88,6 +90,53 @@ public class MangoGwtCommonsDemo implements EntryPoint {
 
 	}
 
+	private void addButtonsToPanel(VerticalPanel panel, final ToastPosition toastPosition) {
+
+		panel.setSpacing(10);
+		panel.add(new HTML("<pre>Toastr.setPosition(ToastPosition." + toastPosition.toString() + ");</pre>"));
+
+		Button successButton = new Button("Toastr.success(\"Sucess\", ToastPosition." + toastPosition.toString() + ".toString());");
+		successButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Toastr.setPosition(toastPosition);
+				Toastr.success("Sucess", toastPosition.toString());
+			}
+		});
+		panel.add(successButton);
+
+		Button infoButton = new Button("Toastr.info(\"Info\", ToastPosition." + toastPosition.toString() + ".toString());");
+		infoButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Toastr.setPosition(toastPosition);
+				Toastr.info("Info", toastPosition.toString());
+			}
+		});
+		panel.add(infoButton);
+
+		Button warningButton = new Button("Toastr.warn(\"Warning\", ToastPosition." + toastPosition.toString() + ".toString());");
+		warningButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Toastr.setPosition(toastPosition);
+				Toastr.warn("Warning", toastPosition.toString());
+			}
+		});
+		panel.add(warningButton);
+
+		Button errorButton = new Button("Toastr.error(\"Error\", ToastPosition." + toastPosition.toString() + ".toString());");
+		errorButton.addClickHandler(new ClickHandler() {
+			@Override
+			public void onClick(ClickEvent event) {
+				Toastr.setPosition(toastPosition);
+				Toastr.error("Error", toastPosition.toString());
+			}
+		});
+		panel.add(errorButton);
+
+	}
+
 	private Panel createToastrPanel() {
 
 		Grid grid = new Grid(3, 3);
@@ -95,30 +144,39 @@ public class MangoGwtCommonsDemo implements EntryPoint {
 		grid.setHeight("100%");
 
 		VerticalPanel topLeftPanel = new VerticalPanel();
-
-		Button b = new Button("info");
-		b.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				Toastr.setPosition(ToastPosition.TOP_LEFT);
-				Toastr.info("test", "test");
-			}
-		});
-		topLeftPanel.add(b);
+		addButtonsToPanel(topLeftPanel, ToastPosition.TOP_LEFT);
 		grid.setWidget(0, 0, topLeftPanel);
+		grid.getCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_CENTER);
 
-		VerticalPanel topMiddlePanel = new VerticalPanel();
+		VerticalPanel topFullWidthPanel = new VerticalPanel();
+		addButtonsToPanel(topFullWidthPanel, ToastPosition.TOP_FULL_WIDTH);
+		grid.setWidget(0, 1, topFullWidthPanel);
+		grid.getCellFormatter().setHorizontalAlignment(0, 1, HasHorizontalAlignment.ALIGN_CENTER);
 
-		b = new Button("test");
-		b.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				Toastr.setPosition(ToastPosition.TOP_FULL_WIDTH);
-				Toastr.info("test", "test");
-			}
-		});
-		topMiddlePanel.add(b);
-		grid.setWidget(1, 0, topMiddlePanel);
+		VerticalPanel topRightPanel = new VerticalPanel();
+		addButtonsToPanel(topRightPanel, ToastPosition.TOP_RIGHT);
+		grid.setWidget(0, 2, topRightPanel);
+		grid.getCellFormatter().setHorizontalAlignment(0, 2, HasHorizontalAlignment.ALIGN_CENTER);
+
+		VerticalPanel bottomLeftPanel = new VerticalPanel();
+		addButtonsToPanel(bottomLeftPanel, ToastPosition.BOTTOM_LEFT);
+		grid.setWidget(2, 0, bottomLeftPanel);
+		grid.getCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_CENTER);
+
+		VerticalPanel bottomFullWidthPanel = new VerticalPanel();
+		addButtonsToPanel(bottomFullWidthPanel, ToastPosition.BOTTOM_FULL_WIDTH);
+		grid.setWidget(2, 1, bottomFullWidthPanel);
+		grid.getCellFormatter().setHorizontalAlignment(2, 1, HasHorizontalAlignment.ALIGN_CENTER);
+
+		VerticalPanel bottomRightPanel = new VerticalPanel();
+		addButtonsToPanel(bottomRightPanel, ToastPosition.BOTTOM_RIGHT);
+		grid.setWidget(2, 2, bottomRightPanel);
+		grid.getCellFormatter().setHorizontalAlignment(2, 2, HasHorizontalAlignment.ALIGN_CENTER);
+
+		String text = "<h4>Try the buttons to show the toastr messages in different positions and message types. Due to the architecture of toastr itself messages will only start appearing in new positions if all old messages from the previous position are dismissed.</h4>";
+		HTMLPanel panel = new HTMLPanel(text);
+		grid.setWidget(1, 1, panel);
+		grid.getCellFormatter().setWidth(1, 1, "30%");
 
 		return grid;
 	}

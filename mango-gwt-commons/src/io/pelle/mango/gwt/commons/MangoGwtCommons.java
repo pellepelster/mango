@@ -9,9 +9,9 @@ import com.google.gwt.resources.client.TextResource;
 
 public class MangoGwtCommons implements EntryPoint {
 
-	interface Resources extends ClientBundle {
+	Resources INSTANCE = GWT.create(Resources.class);
 
-		Resources INSTANCE = GWT.create(Resources.class);
+	interface Resources extends ClientBundle {
 
 		@Source("toastr.min.js")
 		TextResource toastrJs();
@@ -26,9 +26,10 @@ public class MangoGwtCommons implements EntryPoint {
 
 	@Override
 	public void onModuleLoad() {
-		ScriptInjector.fromString(Resources.INSTANCE.jqueryJs().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
-		ScriptInjector.fromString(Resources.INSTANCE.toastrJs().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
-		StyleInjector.inject(Resources.INSTANCE.toastrCss().getText());
+
+		ScriptInjector.fromString(INSTANCE.jqueryJs().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
+		ScriptInjector.fromString(INSTANCE.toastrJs().getText()).setWindow(ScriptInjector.TOP_WINDOW).inject();
+		StyleInjector.inject(INSTANCE.toastrCss().getText());
 	}
 
 }

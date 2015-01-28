@@ -45,7 +45,7 @@ public final class Toastr {
 												}-*/;
 
 	public static native void warn(String title, String text)/*-{
-																$wnd.toastr.warning(title, text);
+																$wnd.toastr.warning(text, title);
 																}-*/;
 
 	public static native void info(String text)/*-{
@@ -53,7 +53,7 @@ public final class Toastr {
 												}-*/;
 
 	public static native void info(String title, String text)/*-{
-																$wnd.toastr.info(title, text);
+																$wnd.toastr.info(text, title);
 																}-*/;
 
 	public static native void error(String text)/*-{
@@ -61,7 +61,7 @@ public final class Toastr {
 												}-*/;
 
 	public static native void error(String title, String text)/*-{
-																$wnd.toastr.error(title, text);
+																$wnd.toastr.error(text, title);
 																}-*/;
 
 	public static native void success(String text)/*-{
@@ -69,8 +69,12 @@ public final class Toastr {
 													}-*/;
 
 	public static native void success(String title, String text)/*-{
-																$wnd.toastr.success(title, text);
+																$wnd.toastr.success(text, title);
 																}-*/;
+
+	public static native void clear()/*-{
+										$wnd.toastr.clear();
+										}-*/;
 
 	public static void setPosition(ToastPosition position) {
 		setPositionClass(position.getValue());
