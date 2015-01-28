@@ -20,8 +20,6 @@ import io.pelle.mango.client.web.test.util.FocusManager;
 
 import org.junit.Assert;
 
-import com.google.common.base.Optional;
-
 /**
  * UI for the navigation module
  * 
@@ -71,7 +69,7 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 		FocusManager.getInstance().setCurrentWidget(this);
 
 		AsyncCallbackFuture<Result<VOType>> future = AsyncCallbackFuture.create();
-		this.module.getDictionaryEditor().save(Optional.of(future.getCallback()));
+		this.module.getDictionaryEditor().save(future.getCallback());
 		// assertTrue(future.get().getValidationMessages().isEmpty());
 
 	}

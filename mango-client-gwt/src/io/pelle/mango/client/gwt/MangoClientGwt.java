@@ -11,6 +11,9 @@
  */
 package io.pelle.mango.client.gwt;
 
+import io.pelle.mango.gwt.commons.toastr.ToastPosition;
+import io.pelle.mango.gwt.commons.toastr.Toastr;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +34,7 @@ public class MangoClientGwt implements EntryPoint {
 				LOG.log(Level.SEVERE, unwrapped.getMessage(), unwrapped);
 			}
 		});
+		Toastr.setPosition(ToastPosition.TOP_FULL_WIDTH);
 	}
 
 	private Throwable unwrap(Throwable e) {

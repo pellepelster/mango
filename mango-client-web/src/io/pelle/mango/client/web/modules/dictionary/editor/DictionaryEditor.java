@@ -142,8 +142,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 	private class SaveCallback extends BaseAsyncCallback<Result<VOType>, Result<VOType>> {
 
-		public SaveCallback(Optional<AsyncCallback<Result<VOType>>> parentCallback) {
-			super(parentCallback);
+		public SaveCallback(AsyncCallback<Result<VOType>> parentCallback) {
+			super(Optional.fromNullable(parentCallback));
 		}
 
 		/** {@inheritDoc} */
@@ -192,10 +192,10 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 	}
 
 	public void save() {
-		save(Optional.<AsyncCallback<Result<VOType>>> absent());
+		save(null);
 	}
 
-	public void save(final Optional<AsyncCallback<Result<VOType>>> callback) {
+	public void save(final AsyncCallback<Result<VOType>> callback) {
 
 		// if (!this.dataBindingContext.hasErrors())
 		// {
@@ -224,7 +224,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 		// }
 	}
 
-	private void internalSave(Optional<AsyncCallback<Result<VOType>>> callback) {
+	private void internalSave(AsyncCallback<Result<VOType>> callback) {
 
 		SaveCallback saveCallback = new SaveCallback(callback);
 
