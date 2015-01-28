@@ -1,12 +1,12 @@
 package io.pelle.mango.gwt.commons.toastr;
 
-public enum ShowMethod {
+public enum HideMethod {
 
-	FADE_IN("fadeIn"), SLIDE_DOWN("slideDown");
+	FADE_OUT("fadeOut");
 
 	private String value;
 
-	private ShowMethod(String pos) {
+	private HideMethod(String pos) {
 		this.value = pos;
 	}
 

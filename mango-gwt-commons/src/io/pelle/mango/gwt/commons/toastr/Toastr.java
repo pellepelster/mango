@@ -80,7 +80,7 @@ public final class Toastr {
 		setPositionClass(position.getValue());
 	}
 
-	public static void setHideMethod(ShowMethod method) {
+	public static void setHideMethod(HideMethod method) {
 		setHideMethod(method.getValue());
 	}
 
