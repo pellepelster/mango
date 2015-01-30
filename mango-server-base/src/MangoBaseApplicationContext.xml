@@ -11,6 +11,10 @@
            				http://www.springframework.org/schema/mvc
         				http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
+	<import resource="classpath:/MangoBaseApplicationContext-gen.xml" />
+	<import resource="classpath:/MangoSpringServices-gen.xml" />
+
+ 	<mvc:annotation-driven />
 
 	<bean id="propertyConfigurer" class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 	    <property name="nullValue" value='""' />
@@ -24,35 +28,10 @@
 	</bean>
 
 
-	<bean class="io.pelle.mango.server.util.ConfigurationLogger" />
-
- 	<mvc:annotation-driven />
-
-	<import resource="classpath:/MangoBaseApplicationContext-gen.xml" />
-
-	<import resource="classpath:/MangoSpringServices-gen.xml" />
-
-	<bean class="io.pelle.mango.server.validator.NaturalKeyValidator" />
-
-	<bean class="io.pelle.mango.server.validator.LengthValidator" />
-    
-    <bean name="xmlVOImporter" class="io.pelle.mango.server.xml.XmlVOImporter" />
-    
-    <bean name="xmlVOExporter" class="io.pelle.mango.server.xml.XmlVOExporter" />
-    
-   	<bean class="io.pelle.mango.server.xml.XmlVOMapper" />
-    
-    <bean class="io.pelle.mango.server.MangoApplicationContext"/>
-
     <bean id="metricRegistry" class="com.codahale.metrics.MetricRegistry"/>
     
     <!--  jackson mapper configuration -->
    	<bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper" />
-
-	<bean class="io.pelle.mango.server.log.LogReferenceKeyMapperRegistry" />
-	
-	<bean class="io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper" />
-
 	<bean
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="objectMapper" />

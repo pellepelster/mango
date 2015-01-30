@@ -109,8 +109,7 @@ public final class ModuleHandler {
 	};
 
 	@SuppressWarnings("unchecked")
-	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters,
-			final Optional<AsyncCallback<IModuleUI>> callback) {
+	public void startUIModule(final String moduleUrl, final String location1, final Map<String, Object> parameters, final Optional<AsyncCallback<IModuleUI>> callback) {
 
 		final String location = getLocation(location1);
 
@@ -134,28 +133,25 @@ public final class ModuleHandler {
 
 			if (ModuleUIFactoryRegistry.getInstance().supports(moduleUrl)) {
 
-				ModuleUIFactoryRegistry.getInstance().getModuleFactory(moduleUrl)
-						.getNewInstance(moduleUrl, new BaseAsyncCallback<IModuleUI, IModuleUI>(callback) {
+				ModuleUIFactoryRegistry.getInstance().getModuleFactory(moduleUrl).getNewInstance(moduleUrl, new BaseAsyncCallback<IModuleUI, IModuleUI>(callback) {
 
-							@Override
-							public void onSuccess(IModuleUI moduleUI) {
+					@Override
+					public void onSuccess(IModuleUI moduleUI) {
 
-								if (moduleUI.contributesToBreadCrumbs()) {
-									stashCurrentAndShow(moduleUI, location);
-								}
-								else
-								{
-									closeCurrentAndShow(moduleUI, location);
-								}
-								
-								onModuleUIAdd(moduleUI, location);
+						if (moduleUI.contributesToBreadCrumbs()) {
+							stashCurrentAndShow(moduleUI, location);
+						} else {
+							closeCurrentAndShow(moduleUI, location);
+						}
 
-								if (callback.isPresent()) {
-									callback.get().onSuccess(moduleUI);
-								}
-							}
+						onModuleUIAdd(moduleUI, location);
 
-						}, parameters, peekCurrentModule(location));
+						if (callback.isPresent()) {
+							callback.get().onSuccess(moduleUI);
+						}
+					}
+
+				}, parameters, peekCurrentModule(location));
 			} else {
 				throw new RuntimeException("unsupported module url '" + moduleUrl + "'");
 			}

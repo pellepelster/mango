@@ -14,14 +14,12 @@ package io.pelle.mango.client.web.module;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class ModuleUIFactoryRegistry
-{
+public final class ModuleUIFactoryRegistry {
+
 	private static ModuleUIFactoryRegistry instance;
 
-	public static ModuleUIFactoryRegistry getInstance()
-	{
-		if (instance == null)
-		{
+	public static ModuleUIFactoryRegistry getInstance() {
+		if (instance == null) {
 			instance = new ModuleUIFactoryRegistry();
 		}
 
@@ -30,21 +28,16 @@ public final class ModuleUIFactoryRegistry
 
 	private final List<IModuleUIFactory<?, ?>> moduleFactories = new ArrayList<IModuleUIFactory<?, ?>>();
 
-	private ModuleUIFactoryRegistry()
-	{
+	private ModuleUIFactoryRegistry() {
 	}
 
-	public void addModuleFactory(IModuleUIFactory<?, ?> moduleFactory)
-	{
+	public void addModuleFactory(IModuleUIFactory<?, ?> moduleFactory) {
 		this.moduleFactories.add(moduleFactory);
 	}
 
-	public IModuleUIFactory getModuleFactory(String moduleUrl)
-	{
-		for (IModuleUIFactory moduleUIFactory : this.moduleFactories)
-		{
-			if (moduleUIFactory.supports(moduleUrl))
-			{
+	public IModuleUIFactory getModuleFactory(String moduleUrl) {
+		for (IModuleUIFactory moduleUIFactory : this.moduleFactories) {
+			if (moduleUIFactory.supports(moduleUrl)) {
 				return moduleUIFactory;
 			}
 		}
@@ -52,8 +45,7 @@ public final class ModuleUIFactoryRegistry
 		return null;
 	}
 
-	public boolean supports(String moduleUrl)
-	{
+	public boolean supports(String moduleUrl) {
 		return getModuleFactory(moduleUrl) != null;
 	}
 }
