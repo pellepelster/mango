@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+           				http://www.springframework.org/schema/context 
+           				http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<import resource="classpath:/MangoBaseApplicationContext.xml" />
+
+	<bean class="io.pelle.mango.server.util.ConfigurationLogger" />
+
+	<bean class="io.pelle.mango.server.validator.NaturalKeyValidator" />
+	<bean class="io.pelle.mango.server.validator.LengthValidator" />
+    
+    <bean name="xmlVOImporter" class="io.pelle.mango.server.xml.XmlVOImporter" />
+    <bean name="xmlVOExporter" class="io.pelle.mango.server.xml.XmlVOExporter" />
+   	<bean class="io.pelle.mango.server.xml.XmlVOMapper" />
+    
+    <bean class="io.pelle.mango.server.MangoApplicationContext"/>
+
+	<bean class="io.pelle.mango.server.log.LogReferenceKeyMapperRegistry" />
+	<bean class="io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper" />
+
+</beans>
