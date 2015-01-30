@@ -2,13 +2,7 @@ buildscript {
     repositories {
         mavenCentral()
     }
-
-    dependencies {
-        classpath "com.github.houbie:lesscss-gradle-plugin:1.0.3-less-1.7.0"
-    }
 }
-
-apply plugin: "lesscss"
 
 dependencies {
 	compile project(':mango-client-web')
@@ -20,8 +14,3 @@ jar {
 	from sourceSets.main.output.classesDir
 }
 
-task('test1', type: com.github.houbie.gradle.lesscss.LesscTask) {
-	sourceDir "src"
-    include "**/*.less"
-    destinationDir = "src"
-}

@@ -63,8 +63,6 @@ war {
 	webInf { from 'WebContent/WEB-INF' }
 	metaInf { from 'WebContent/META-INF' }
 	from project(':mango-demo-client').tasks.compileGwt.outputs
-	//from project(':mango-demo-client').tasks.compileGwt.outputs.plus(project(':mango-gwt-commons').tasks.compileGwt.outputs)
-	//from project(':mango-gwt-commons').tasks.compileGwt.outputs
 }
 
 task jettyEclipseRunDaemon() {

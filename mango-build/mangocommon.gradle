@@ -106,10 +106,11 @@ allprojects {
 				snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
 					authentication(userName: ossrhUsername, password: ossrhPassword)
 				}
-	
+        
 				pom.project {
 					name 'mango'
 					packaging 'jar'
+					
 					// optionally artifactId can be defined here
 					description 'mango web framework'
 					url 'http://pellepelster.github.io/mango/'

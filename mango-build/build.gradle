@@ -36,9 +36,6 @@ allprojects {
 
 	apply plugin: 'eclipse'
 	
-	javadoc.enabled = false
-	javadocJar.enabled = false
-	
 	sourceSets {
 		main {
 			java { srcDirs = ["src"] }
@@ -50,6 +47,10 @@ allprojects {
 		}
 	}
 	
+	javadoc {
+    	exclude "**/**"
+	}
+
 	eclipse {
 		pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir
 	}
