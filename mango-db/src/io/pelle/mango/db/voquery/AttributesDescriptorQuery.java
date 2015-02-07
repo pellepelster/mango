@@ -36,6 +36,16 @@ public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> extend
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public <C extends IAttributeDescriptor<?>> AttributesDescriptorQuery<C> byName(final String attributeName) {
+		return new AttributesDescriptorQuery(voEntityClass, Collections2.filter(getCollection(), new Predicate<T>() {
+			@Override
+			public boolean apply(T atttributeDescriptor) {
+				return atttributeDescriptor.getAttributeName().toLowerCase().equals(attributeName.toLowerCase());
+			}
+		}));
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public AttributesDescriptorQuery<T> naturalKeys() {
 
 		List<T> naturalKeyAttributeDescriptors = new ArrayList(Collections2.filter(getCollection(), new Predicate<T>() {

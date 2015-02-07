@@ -29,6 +29,17 @@ public class VOClassQueryTest {
 	}
 
 	@Test
+	public void testAttributesDescriptorQueryByName() {
+
+		AttributesDescriptorQuery<StringAttributeDescriptor> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDatatype1");
+		assertEquals("stringDatatype1", attributesDescriptorQuery.getSingleResult().getAttributeName());
+		
+		attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDATatype1");
+		assertEquals("stringDatatype1", attributesDescriptorQuery.getSingleResult().getAttributeName());
+
+	}
+
+	@Test
 	public void testAttributesDescriptorQueryNaturalKeys() {
 
 		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().naturalKeys();
