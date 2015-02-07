@@ -37,12 +37,8 @@ public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> extend
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <C extends IAttributeDescriptor<?>> AttributesDescriptorQuery<C> byName(final String attributeName) {
-		return new AttributesDescriptorQuery(voEntityClass, Collections2.filter(getCollection(), new Predicate<T>() {
-			@Override
-			public boolean apply(T atttributeDescriptor) {
-				return atttributeDescriptor.getAttributeName().toLowerCase().equals(attributeName.toLowerCase());
-			}
-		}));
+		return new AttributesDescriptorQuery(voEntityClass, Collections2.filter(getCollection(),
+				io.pelle.mango.db.voquery.Predicates.attributeDescriptorByName(attributeName)));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
