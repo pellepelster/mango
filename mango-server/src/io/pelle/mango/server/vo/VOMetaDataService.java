@@ -1,6 +1,7 @@
 package io.pelle.mango.server.vo;
 
 import io.pelle.mango.client.base.db.vos.IMobileBaseVO;
+import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IEntityVOMapper;
 import io.pelle.mango.db.util.BeanUtils;
@@ -14,15 +15,14 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-
-@Component
 public class VOMetaDataService {
 
 	private final static Logger LOG = Logger.getLogger(VOMetaDataService.class);
 
 	private List<Class<? extends IBaseVO>> voClasses = new ArrayList<Class<? extends IBaseVO>>();
+
+	private List<Class<? extends IBaseEntity>> entityClasses = new ArrayList<Class<? extends IBaseEntity>>();
 
 	@Autowired
 	public void setEntityVOMappers(List<IEntityVOMapper> entityVOMappers) {
@@ -31,6 +31,7 @@ public class VOMetaDataService {
 
 		for (IEntityVOMapper entityVOMapper : entityVOMappers) {
 			voClasses.addAll(entityVOMapper.getVOClasses());
+			entityClasses.addAll(entityVOMapper.getEntityClasses());
 		}
 
 		buildMetaData(voClasses);
@@ -79,6 +80,10 @@ public class VOMetaDataService {
 
 	public List<Class<? extends IBaseVO>> getVOClasses() {
 		return this.voClasses;
+	}
+
+	public List<Class<? extends IBaseEntity>> getEntityClasses() {
+		return this.entityClasses;
 	}
 
 }

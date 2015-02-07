@@ -24,4 +24,6 @@
 	<bean class="io.pelle.mango.server.log.LogReferenceKeyMapperRegistry" />
 	<bean class="io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper" />
 
+	<bean class="io.pelle.mango.server.vo.VOMetaDataService" />
+
 </beans>

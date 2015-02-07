@@ -114,17 +114,17 @@ public class DemoLogServiceTest extends BaseDemoTest {
 
 		List<LogEntryVO> logEntries4 = logService.getLogBefore(lastLogEntryVO3.getTimestamp(), 50, "reference1");
 		assertEquals(50, logEntries4.size());
-		LogEntryVO lastLogEntryVO4 = assertRangeAndorder(logEntries4, 50, 1);
+		assertRangeAndorder(logEntries4, 50, 1);
 
 		List<LogEntryVO> logEntries5 = logService.getLogAfter(logEntries4.get(0).getTimestamp(), 50, "reference1");
 		assertEquals(50, logEntries5.size());
 		print(logEntries5);
-		LogEntryVO lastLogEntryVO5 = assertRangeAndorder(logEntries5, 100, 50);
+		assertRangeAndorder(logEntries5, 100, 50);
 
 		List<LogEntryVO> logEntries6 = logService.getLogAfter(logEntries5.get(0).getTimestamp(), 50, "reference1");
 		assertEquals(50, logEntries6.size());
 		print(logEntries6);
-		LogEntryVO lastLogEntryVO6 = assertRangeAndorder(logEntries6, 150, 100);
+		assertRangeAndorder(logEntries6, 150, 100);
 
 	}
 
