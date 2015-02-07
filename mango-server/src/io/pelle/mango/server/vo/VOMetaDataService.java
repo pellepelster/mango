@@ -5,10 +5,12 @@ import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IEntityVOMapper;
 import io.pelle.mango.db.util.BeanUtils;
+import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.DirectedGraph;
 import io.pelle.mango.server.TopologicalSort;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -31,7 +33,6 @@ public class VOMetaDataService {
 
 		for (IEntityVOMapper entityVOMapper : entityVOMappers) {
 			voClasses.addAll(entityVOMapper.getVOClasses());
-			entityClasses.addAll(entityVOMapper.getEntityClasses());
 		}
 
 		buildMetaData(voClasses);
@@ -76,14 +77,30 @@ public class VOMetaDataService {
 		} catch (Exception e) {
 			LOG.error("error sorting vo classes", e);
 		}
+		
+		for(Class<? extends IBaseVO> voClass : voClasses) {
+			entityClasses.add(EntityVOMapper.getInstance().getEntityClass(voClass));
+		}
 	}
 
-	public List<Class<? extends IBaseVO>> getVOClasses() {
+	public Collection<Class<? extends IBaseVO>> getVOClasses() {
 		return this.voClasses;
 	}
 
-	public List<Class<? extends IBaseEntity>> getEntityClasses() {
+	public Collection<Class<? extends IBaseEntity>> getEntityClasses() {
 		return this.entityClasses;
+	}
+
+	public Class<? extends IBaseEntity> getEntityClassForName(String entityName) {
+
+		for (Class<? extends IBaseEntity> entityClass : entityClasses) {
+
+			if (entityClass.getSimpleName().toLowerCase().equals(entityName.toLowerCase())) {
+				return entityClass;
+			}
+		}
+
+		return null;
 	}
 
 }

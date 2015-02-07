@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.*;
+import io.pelle.mango.demo.server.showcase.Country;
 import io.pelle.mango.server.vo.VOMetaDataService;
 
 import org.junit.Test;
@@ -16,4 +17,12 @@ public class DemoEntityMetaInformationTest extends BaseDemoTest {
 		assertEquals(15, metaDataService.getVOClasses().size());
 		assertEquals(15, metaDataService.getEntityClasses().size());
 	}
+
+	@Test
+	public void testGetEntityClassForName() {
+		assertEquals(Country.class, metaDataService.getEntityClassForName("country"));
+		assertEquals(Country.class, metaDataService.getEntityClassForName("CoUntry"));
+	}
+
+	
 }
