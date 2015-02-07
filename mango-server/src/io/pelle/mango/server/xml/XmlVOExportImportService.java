@@ -176,23 +176,4 @@ public class XmlVOExportImportService {
 		return voClass;
 	}
 
-	public void setBaseEntityService(IBaseEntityService baseEntityService) {
-		this.baseEntityService = baseEntityService;
-	}
-
-	public void setXmlVOExporter(XmlVOExporter xmlVOExporter) {
-		this.xmlVOExporter = xmlVOExporter;
-	}
-
-	public void setXmlVOImporter(XmlVOImporter xmlVOImporter) {
-		this.xmlVOImporter = xmlVOImporter;
-	}
-
-	public void setXmlVOMapper(XmlVOMapper xmlVOMapper) {
-		this.xmlVOMapper = xmlVOMapper;
-	}
-
-	public void setMetaDataService(VOMetaDataService metaDataService) {
-		this.metaDataService = metaDataService;
-	}
 }
