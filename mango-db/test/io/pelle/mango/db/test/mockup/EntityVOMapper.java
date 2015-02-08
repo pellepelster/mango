@@ -29,9 +29,15 @@ public class EntityVOMapper implements IEntityVOMapper {
 		throw new RuntimeException("not implemented");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Class<? extends IBaseEntity> getEntityClass(Class<?> clazz) {
 		return (Class<? extends IBaseEntity>) clazz;
+	}
+
+	@Override
+	public Class<? extends IBaseVO> getVOClass(Class<?> clazz) {
+		throw new RuntimeException("not implemented");
 	}
 
 }

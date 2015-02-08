@@ -43,7 +43,7 @@ class EntityUtils {
 	}
 
 	def <T> hasLabel(Entity entity) {
-		return entity.getEntityOption(typeof(EntityLabelField)) != null
+		return entity.getEntityOption(typeof(EntityLabelField)) != null && !entity.getEntityOption(typeof(EntityLabelField)).label.empty
 	}
 
 	def <T> getLabel(Entity entity) {

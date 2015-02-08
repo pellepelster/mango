@@ -3,28 +3,48 @@ package io.pelle.mango.server.vo;
 import io.pelle.mango.client.base.db.vos.IMobileBaseVO;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.client.base.vo.IEntityVOMapper;
+import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.db.util.BeanUtils;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.DirectedGraph;
 import io.pelle.mango.server.TopologicalSort;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import net.vidageek.mirror.dsl.Mirror;
+import net.vidageek.mirror.list.dsl.Matcher;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.base.Objects;
 
 public class VOMetaDataService {
 
 	private final static Logger LOG = Logger.getLogger(VOMetaDataService.class);
 
+	private Map<Class<? extends IBaseVO>, IEntityDescriptor<?>> entityDescriptors = new HashMap<Class<? extends IBaseVO>, IEntityDescriptor<?>>();
+
 	private List<Class<? extends IBaseVO>> voClasses = new ArrayList<Class<? extends IBaseVO>>();
 
 	private List<Class<? extends IBaseEntity>> entityClasses = new ArrayList<Class<? extends IBaseEntity>>();
+
+	private Matcher<Field> PUBLIC_STATIC_MATCHER = new Matcher<Field>() {
+		@Override
+		public boolean accepts(Field field) {
+			return Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers());
+		}
+	};
 
 	@Autowired
 	public void setEntityVOMappers(List<IEntityVOMapper> entityVOMappers) {
@@ -49,6 +69,23 @@ public class VOMetaDataService {
 			} else {
 				LOG.info(String.format("found '%s'", voClass.getName()));
 				this.voClasses.add((Class<? extends IBaseVO>) voClass);
+			}
+		}
+
+		for (Class<? extends IBaseVO> voClass : this.voClasses) {
+			for (Field staticField : new Mirror().on(voClass).reflectAll().fields().matching(PUBLIC_STATIC_MATCHER)) {
+				try {
+					Object o = staticField.get(voClass);
+					if (o instanceof IEntityDescriptor) {
+						IEntityDescriptor<?> entityDescriptor = (IEntityDescriptor<?>) o;
+
+						if (voClass.equals(entityDescriptor.getVOEntityClass())) {
+							entityDescriptors.put(voClass, entityDescriptor);
+						}
+					}
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
 			}
 		}
 
@@ -77,8 +114,8 @@ public class VOMetaDataService {
 		} catch (Exception e) {
 			LOG.error("error sorting vo classes", e);
 		}
-		
-		for(Class<? extends IBaseVO> voClass : voClasses) {
+
+		for (Class<? extends IBaseVO> voClass : voClasses) {
 			entityClasses.add(EntityVOMapper.getInstance().getEntityClass(voClass));
 		}
 	}
@@ -101,6 +138,16 @@ public class VOMetaDataService {
 		}
 
 		return null;
+	}
+
+	public String getLabel(Class<? extends IVOEntity> voEntityClass) {
+		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getVOClass(voEntityClass);
+		return Objects.firstNonNull(entityDescriptors.get(voClass).getLabel(), voEntityClass.getName());
+	}
+
+	public String getPluralLabel(Class<? extends IVOEntity> voEntityClass) {
+		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getVOClass(voEntityClass);
+		return Objects.firstNonNull(entityDescriptors.get(voClass).getPluralLabel(), voEntityClass.getName());
 	}
 
 }

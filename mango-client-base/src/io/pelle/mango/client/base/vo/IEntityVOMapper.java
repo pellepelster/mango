@@ -9,5 +9,7 @@ public interface IEntityVOMapper {
 
 	Class<? extends IBaseEntity> getEntityClass(Class<?> clazz);
 
+	Class<? extends IBaseVO> getVOClass(Class<?> clazz);
+
 	List<Class<? extends IBaseVO>> getVOClasses();
 }

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
            				http://www.springframework.org/schema/context 
@@ -14,16 +13,31 @@
 
 	<bean class="io.pelle.mango.server.validator.NaturalKeyValidator" />
 	<bean class="io.pelle.mango.server.validator.LengthValidator" />
-    
-    <bean name="xmlVOImporter" class="io.pelle.mango.server.xml.XmlVOImporter" />
-    <bean name="xmlVOExporter" class="io.pelle.mango.server.xml.XmlVOExporter" />
-   	<bean class="io.pelle.mango.server.xml.XmlVOMapper" />
-    
-    <bean class="io.pelle.mango.server.MangoApplicationContext"/>
+
+	<bean name="xmlVOImporter" class="io.pelle.mango.server.xml.XmlVOImporter" />
+	<bean name="xmlVOExporter" class="io.pelle.mango.server.xml.XmlVOExporter" />
+	<bean class="io.pelle.mango.server.xml.XmlVOMapper" />
+
+	<bean class="io.pelle.mango.server.MangoApplicationContext" />
 
 	<bean class="io.pelle.mango.server.log.LogReferenceKeyMapperRegistry" />
 	<bean class="io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper" />
 
 	<bean class="io.pelle.mango.server.vo.VOMetaDataService" />
+
+	<!-- freemarker config -->
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="classpath:templates" />
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="true" />
+		<property name="suffix" value=".ftl" />
+	</bean>
+	
+	<bean class="io.pelle.mango.server.entity.EntityRestApiController" />
+	<bean class="io.pelle.mango.server.entity.EntityApiIndexController" />
 
 </beans>

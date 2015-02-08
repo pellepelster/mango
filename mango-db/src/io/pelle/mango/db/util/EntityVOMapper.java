@@ -93,12 +93,23 @@ public final class EntityVOMapper implements IEntityVOMapper {
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public Class<? extends IBaseEntity> getEntityClass(Class<?> clazz) {
-
 		if (IBaseEntity.class.isAssignableFrom(clazz)) {
 			return (Class<? extends IBaseEntity>) clazz;
 		} else {
 			return (Class<? extends IBaseEntity>) getMappedClass(clazz);
 		}
 	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Class<? extends IBaseVO> getVOClass(Class<?> clazz) {
+		if (IBaseVO.class.isAssignableFrom(clazz)) {
+			return (Class<? extends IBaseVO>) clazz;
+		} else {
+			return (Class<? extends IBaseVO>) getMappedClass(clazz);
+		}
+	}
+
 }

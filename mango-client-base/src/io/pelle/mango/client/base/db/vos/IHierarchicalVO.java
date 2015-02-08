@@ -25,7 +25,7 @@ import io.pelle.mango.client.base.vo.IEntityDescriptor;
  */
 public interface IHierarchicalVO extends IBaseHierarchical, IBaseVO {
 
-	public static final IEntityDescriptor<IHierarchicalVO> ENTITY_DESCRIPTOR = new EntityDescriptor<IHierarchicalVO>(IHierarchicalVO.class, null, null);
+	public static final IEntityDescriptor<IHierarchicalVO> ENTITY_DESCRIPTOR = new EntityDescriptor<IHierarchicalVO>(IHierarchicalVO.class, null, null, null);
 
 	public static final IAttributeDescriptor<IHierarchicalVO> FIELD_PARENT = new AttributeDescriptor<IHierarchicalVO>(ENTITY_DESCRIPTOR, "parent", IHierarchicalVO.class);
 

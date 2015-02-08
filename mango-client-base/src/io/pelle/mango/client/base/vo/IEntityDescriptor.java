@@ -7,4 +7,6 @@ public interface IEntityDescriptor<T extends IVOEntity> extends IMetaDescriptor 
 	String getLabel();
 
 	String getPluralLabel();
+
+	String getName();
 }

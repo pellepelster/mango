@@ -23,7 +23,7 @@ import java.util.List;
 
 public class Test1VO extends BaseVO implements IBaseVO {
 
-	public static final io.pelle.mango.client.base.vo.IEntityDescriptor<Test1VO> ENTITY = new io.pelle.mango.client.base.vo.EntityDescriptor<Test1VO>(Test1VO.class, null, null);
+	public static final io.pelle.mango.client.base.vo.IEntityDescriptor<Test1VO> ENTITY = new io.pelle.mango.client.base.vo.EntityDescriptor<Test1VO>(Test1VO.class, null, null, null);
 
 	public enum ENUM1 {
 		ENUM1_VALUE1, ENUM1_VALUE2, ENUM1_VALUE3

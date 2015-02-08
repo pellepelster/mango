@@ -31,7 +31,7 @@ import javax.persistence.Table;
 @Table(name = "test2")
 public class DBTest2 extends BaseEntity implements IBaseEntity {
 
-	public static final IEntityDescriptor<DBTest2> DB_TEST2 = new EntityDescriptor<DBTest2>(DBTest2.class, null, null);
+	public static final IEntityDescriptor<DBTest2> DB_TEST2 = new EntityDescriptor<DBTest2>(DBTest2.class, null, null, null);
 
 	public static final StringAttributeDescriptor TEST1 = new StringAttributeDescriptor(DB_TEST2, "test1");
 

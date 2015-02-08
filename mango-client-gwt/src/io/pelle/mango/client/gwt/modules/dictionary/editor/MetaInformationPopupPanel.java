@@ -1,6 +1,8 @@
 package io.pelle.mango.client.gwt.modules.dictionary.editor;
 
 import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
+import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
+import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
 
@@ -11,7 +13,8 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
 import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.user.client.ui.Grid;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.PopupPanel;
 
 public class MetaInformationPopupPanel extends PopupPanel {
@@ -26,26 +29,38 @@ public class MetaInformationPopupPanel extends PopupPanel {
 
 	private HtmlLabelTemplate TEMPLATE = GWT.create(HtmlLabelTemplate.class);
 
-	private Grid grid;
+	private FlexTable grid;
 
 	private DictionaryEditor<?> dictionaryEditor;
 
 	public MetaInformationPopupPanel(DictionaryEditor<?> dictionaryEditor) {
 		super();
 		this.dictionaryEditor = dictionaryEditor;
-		grid = new Grid(4, 2);
 
-		grid.setHTML(0, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoCreateDate()));
-		grid.setHTML(0, 1, formatLabelValue(null));
+		grid = new FlexTable();
 
-		grid.setHTML(1, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoCreateUser()));
-		grid.setHTML(1, 1, formatLabelValue(null));
+		int row = 0;
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoCreateDate()));
+		grid.setHTML(row, 1, formatLabelValue(null));
 
-		grid.setHTML(2, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoUpdateDate()));
-		grid.setHTML(2, 1, formatLabelValue(null));
+		row++;
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoCreateUser()));
+		grid.setHTML(row, 1, formatLabelValue(null));
 
-		grid.setHTML(3, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoUpdateUser()));
-		grid.setHTML(3, 1, formatLabelValue(null));
+		row++;
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoUpdateDate()));
+		grid.setHTML(row, 1, formatLabelValue(null));
+
+		row++;
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoUpdateUser()));
+		grid.setHTML(row, 1, formatLabelValue(null));
+
+		row++;
+		grid.getFlexCellFormatter().setColSpan(row, 0, 2);
+		Anchor anchor = new Anchor(MangoClientWeb.MESSAGES.entityApi(), com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/entity/"
+				+ VOMetaModelProvider.getEntityDescriptor((IDictionaryModel) dictionaryEditor.getParent()).getName().toLowerCase() + "/api/index");
+		anchor.setTarget("_blank");
+		grid.setWidget(row, 0, anchor);
 
 		add(grid);
 		updateMetainformation(dictionaryEditor.getMetaInformation().get());

@@ -22,7 +22,7 @@ public abstract class BaseHierarchicalTestVO extends BaseVO implements IHierarch
 		ENUM1_VALUE1, ENUM1_VALUE2, ENUM1_VALUE3
 	};
 
-	public static final io.pelle.mango.client.base.vo.IEntityDescriptor<BaseHierarchicalTestVO> ENTITY = new io.pelle.mango.client.base.vo.EntityDescriptor<BaseHierarchicalTestVO>(BaseHierarchicalTestVO.class, null, null);
+	public static final io.pelle.mango.client.base.vo.IEntityDescriptor<BaseHierarchicalTestVO> ENTITY = new io.pelle.mango.client.base.vo.EntityDescriptor<BaseHierarchicalTestVO>(BaseHierarchicalTestVO.class, null, null, null);
 
 	private static final long serialVersionUID = 5114820135502917898L;
 

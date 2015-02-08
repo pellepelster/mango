@@ -20,7 +20,7 @@ import io.pelle.mango.db.test.mockup.entities.DBTest2;
 
 public class DBTest2VO extends BaseVO {
 
-	public static final IEntityDescriptor<DBTest2> DB_TEST2 = new EntityDescriptor<DBTest2>(DBTest2VO.class, null, null);
+	public static final IEntityDescriptor<DBTest2> DB_TEST2 = new EntityDescriptor<DBTest2>(DBTest2VO.class, null, null, null);
 
 	private static final long serialVersionUID = -7944707321103683238L;
 
