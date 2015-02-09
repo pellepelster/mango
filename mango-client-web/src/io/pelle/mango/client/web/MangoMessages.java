@@ -169,7 +169,10 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("Properties")
 	SafeHtml properties();
 
-	@DefaultMessage("Entity API")
-	SafeHtml entityApi();
+	@DefaultMessage("Api")
+	String apiLabel();
+
+	@DefaultMessage("{0} REST")
+	String entityRestApi(String entityName);
 
 }

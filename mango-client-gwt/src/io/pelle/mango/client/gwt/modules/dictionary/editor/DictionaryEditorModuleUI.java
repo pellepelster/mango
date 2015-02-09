@@ -112,7 +112,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 		if (getModule().getDictionaryEditor().getMetaInformation().isPresent()) {
 			// info popup panel
-			final MetaInformationPopupPanel infoPopupPanel = new MetaInformationPopupPanel(getModule().getDictionaryEditor());
+			final MetaInformationPopupPanel infoPopupPanel = new MetaInformationPopupPanel(getModule().getDictionaryEditor(), getModule().getDictionaryModel());
 			infoPopupPanel.setAutoHideEnabled(true);
 
 			final Button infoButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(), MangoClientWeb.MESSAGES.dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-"

@@ -3,6 +3,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.editor;
 import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider;
+import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
 
@@ -33,9 +34,10 @@ public class MetaInformationPopupPanel extends PopupPanel {
 
 	private DictionaryEditor<?> dictionaryEditor;
 
-	public MetaInformationPopupPanel(DictionaryEditor<?> dictionaryEditor) {
+	public MetaInformationPopupPanel(DictionaryEditor<?> dictionaryEditor, IDictionaryModel dictionaryModel) {
 		super();
 		this.dictionaryEditor = dictionaryEditor;
+		IEntityDescriptor<?> entityDescriptor = VOMetaModelProvider.getValueObjectEntityDescriptor(dictionaryModel.getVOClass().getName()); 
 
 		grid = new FlexTable();
 
@@ -56,16 +58,21 @@ public class MetaInformationPopupPanel extends PopupPanel {
 		grid.setHTML(row, 1, formatLabelValue(null));
 
 		row++;
-		grid.getFlexCellFormatter().setColSpan(row, 0, 2);
-		Anchor anchor = new Anchor(MangoClientWeb.MESSAGES.entityApi(), com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/entity/"
-				+ VOMetaModelProvider.getEntityDescriptor((IDictionaryModel) dictionaryEditor.getParent()).getName().toLowerCase() + "/api/index");
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.apiLabel()));
+		
+		Anchor anchor = new Anchor(MangoClientWeb.MESSAGES.entityRestApi(capitalize(entityDescriptor.getName())), com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/entity/"
+				+ entityDescriptor.getName().toLowerCase() + "/api/index");
 		anchor.setTarget("_blank");
-		grid.setWidget(row, 0, anchor);
+		grid.setWidget(row, 1, anchor);
 
 		add(grid);
 		updateMetainformation(dictionaryEditor.getMetaInformation().get());
 	}
 
+	private String capitalize(String input) {
+		return input.substring(0, 1).toUpperCase() + input.substring(1);
+	}
+	
 	@Override
 	public void show() {
 		updateMetainformation(dictionaryEditor.getMetaInformation().get());

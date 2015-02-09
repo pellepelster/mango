@@ -6,8 +6,10 @@ import io.pelle.mango.server.vo.VOMetaDataService;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,18 +23,25 @@ public class EntityApiIndexController {
 
 	public final static String BASE_URL_TEMPLATE_VARIABLE = "baseUrl";
 
+	public final static String INDEX_PATH = "index";
+
 	@Autowired
 	private VOMetaDataService voMetaDataService;
 
-	@RequestMapping(value = "entity/{entityName}/api/index", method = RequestMethod.GET)
-	public ModelAndView index(@PathVariable String entityName, HttpRequest httpRequest) {
+	@RequestMapping(value = "entity/{entityName}/api/" + INDEX_PATH, method = RequestMethod.GET)
+	public ModelAndView index(@PathVariable String entityName, HttpServletRequest request) {
 
 		Class<? extends IBaseEntity> entityClass = voMetaDataService.getEntityClassForName(entityName);
 
 		Map<String, String> templateVariables = new HashMap<String, String>();
-		templateVariables.put(ENTITY_LABEL_TEMPLATE_VARIABLE, voMetaDataService.getLabel(entityClass));
-		templateVariables.put(BASE_URL_TEMPLATE_VARIABLE, httpRequest.getURI().toString());
+		templateVariables.put(ENTITY_LABEL_TEMPLATE_VARIABLE, WordUtils.capitalize(voMetaDataService.getLabel(entityClass)));
+		templateVariables.put(BASE_URL_TEMPLATE_VARIABLE, getDefaultBaseUrl(request));
 
-		return new ModelAndView("EntityApiIndex", templateVariables);
+		return new ModelAndView("EntityRestApiIndex", templateVariables);
+	}
+
+	private String getDefaultBaseUrl(HttpServletRequest request) {
+		return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+				+ request.getRequestURI().substring(0, request.getRequestURI().lastIndexOf(INDEX_PATH) - 1);
 	}
 }

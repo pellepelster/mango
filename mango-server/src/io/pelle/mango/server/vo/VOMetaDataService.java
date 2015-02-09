@@ -140,14 +140,17 @@ public class VOMetaDataService {
 		return null;
 	}
 
-	public String getLabel(Class<? extends IVOEntity> voEntityClass) {
+	public IEntityDescriptor<?> getEntityDescriptor(Class<? extends IVOEntity> voEntityClass) {
 		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getVOClass(voEntityClass);
-		return Objects.firstNonNull(entityDescriptors.get(voClass).getLabel(), voEntityClass.getName());
+		return entityDescriptors.get(voClass);
+	}
+
+	public String getLabel(Class<? extends IVOEntity> voEntityClass) {
+		return Objects.firstNonNull(getEntityDescriptor(voEntityClass).getLabel(), voEntityClass.getName());
 	}
 
 	public String getPluralLabel(Class<? extends IVOEntity> voEntityClass) {
-		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getVOClass(voEntityClass);
-		return Objects.firstNonNull(entityDescriptors.get(voClass).getPluralLabel(), voEntityClass.getName());
+		return Objects.firstNonNull(getEntityDescriptor(voEntityClass).getPluralLabel(), voEntityClass.getName());
 	}
 
 }

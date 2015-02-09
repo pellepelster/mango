@@ -21,14 +21,17 @@
     <div class="container">
 
         <h1>${entityName} REST API</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+        <!-- 
+        <p class="lead"></p>
+        -->
 
 		<h2>Get ${entityName} by id</h2>
-		<pre>${baseUrl}</pre>
+		<pre>${baseUrl}/rest/byid/{entityId}</pre>
 
 		<h2>Get ${entityName} by natural key</h2>
+		<pre>${baseUrl}/rest/bynaturalkey/{naturalKey}</pre>
 
-    </div><!-- /.container -->
+    </div>
 
 
     <!-- Bootstrap core JavaScript

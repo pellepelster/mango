@@ -2,10 +2,13 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
            				http://www.springframework.org/schema/context 
-           				http://www.springframework.org/schema/context/spring-context.xsd">
+           				http://www.springframework.org/schema/context/spring-context.xsd
+           				http://www.springframework.org/schema/mvc
+        				http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 	<import resource="classpath:/MangoBaseApplicationContext.xml" />
 
@@ -36,8 +39,22 @@
 		<property name="cache" value="true" />
 		<property name="suffix" value=".ftl" />
 	</bean>
-	
+
 	<bean class="io.pelle.mango.server.entity.EntityRestApiController" />
 	<bean class="io.pelle.mango.server.entity.EntityApiIndexController" />
+
+	<!-- jackson mapper configuration -->
+	<bean id="objectMapper" class="io.pelle.mango.server.xml.MangoObjectMapper" />
+
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="false">
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="objectMapper">
+					<ref bean="objectMapper" />
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
 
 </beans>
