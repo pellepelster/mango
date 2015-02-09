@@ -77,8 +77,7 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 
 		if (whereExpression.isPresent()) {
 			whereExpression.get().and(expression);
-		} 
-		else {
+		} else {
 			where(expression);
 		}
 
