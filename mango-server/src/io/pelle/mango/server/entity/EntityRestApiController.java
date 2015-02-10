@@ -2,12 +2,16 @@ package io.pelle.mango.server.entity;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
+import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.server.vo.VOMetaDataService;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -23,6 +27,20 @@ public class EntityRestApiController {
 
 	@Autowired
 	private VOMetaDataService metaDataService;
+
+	@RequestMapping("entity/{entityName}/api/rest/query")
+	@SuppressWarnings("unchecked")
+	public <T extends IBaseEntity> List<T> query(@PathVariable String entityName, @RequestBody String query) {
+
+		Class<? extends IBaseEntity> entityClass = getEntityClassByNameOrExplode(entityName);
+
+		ServerSelectQuery<T> selectQuery = EntityUtils.createSelectQuery(entityClass, query);
+
+		List<T> result = baseEntityDAO.filter(selectQuery);
+
+		return result;
+
+	}
 
 	@RequestMapping("entity/{entityName}/api/rest/byid/{entityId}")
 	@SuppressWarnings("unchecked")
