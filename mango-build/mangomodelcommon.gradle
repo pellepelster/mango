@@ -148,6 +148,8 @@ processGeneratedClientGWTResources.dependsOn("xtextGenerate")
 compileGeneratedXmlJava.dependsOn("xtextGenerate")
 processGeneratedXmlResources.dependsOn("xtextGenerate")
 
+//xtextGenerate.onlyIf { !project.hasProperty('skipGenerate') }
+
 artifacts {
 	archives sourceJar, javadocJar
 	generatedServer generatedServerJar, generatedServerSourceJar

@@ -54,6 +54,8 @@ task generateXtext(type: JavaExec) {
 	]
 }
 
+generateXtext.onlyIf { !project.hasProperty('skipGenerate') }
+
 compileXtend.doFirst {
 	def xtendOutputDir = file(sourceSets.main.xtendOutputDir)
 
@@ -78,3 +80,4 @@ task clean.doLast {
     }
 }
 compileXtend.dependsOn generateXtext
+compileXtend.onlyIf { !project.hasProperty('skipGenerate') }

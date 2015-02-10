@@ -32,24 +32,28 @@ public class EntityRestApiController {
 
 	@RequestMapping("entity/{entityName}/api/rest/query")
 	@SuppressWarnings("unchecked")
-	public <T extends IBaseEntity> List<T> query(@PathVariable String entityName, @RequestParam(required = false) String queryParamter, @RequestBody(required = false) String requestBody) {
+	public <T extends IBaseEntity> List<T> query(@PathVariable String entityName, @RequestParam(required = false) String query, @RequestBody(required = false) String requestBody) {
 
-		String expressionString = ""; 
+		String expressionString = "";
 
 		if (!StringUtils.isEmpty(requestBody)) {
 			expressionString = requestBody;
 		}
-		
-		if (!StringUtils.isEmpty(queryParamter)) {
-			expressionString = queryParamter;
+
+		if (!StringUtils.isEmpty(query)) {
+			expressionString = query;
 		}
-				
+
 		Class<T> entityClass = (Class<T>) getEntityClassByNameOrExplode(entityName);
-		SelectQuery<T> selectQuery = EntityUtils.createSelectQuery(entityClass, expressionString);
 
-		List<T> result = baseEntityDAO.filter(selectQuery);
+		try {
+			SelectQuery<T> selectQuery = EntityUtils.createSelectQuery(entityClass, expressionString);
+			List<T> result = baseEntityDAO.filter(selectQuery);
 
-		return result;
+			return result;
+		} catch (Exception e) {
+			throw new RuntimeException(String.format("'%s' is not an valid expression", expressionString));
+		}
 	}
 
 	@RequestMapping("entity/{entityName}/api/rest/byid/{entityId}")
