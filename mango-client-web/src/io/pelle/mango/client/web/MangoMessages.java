@@ -172,7 +172,7 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("Api")
 	String apiLabel();
 
-	@DefaultMessage("{0} REST")
-	String entityRestApi(String entityName);
+	@DefaultMessage("{0} API")
+	String entityApi(String entityName);
 
 }

@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>${entityLabel} REST API</title>
+	<title>${entityLabel} API</title>
 
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.12.0/codemirror.css" rel="stylesheet">
@@ -159,7 +159,13 @@
 		
 		
 		<h2>Get ${entityLabel} by custom query</h2>
-		<p>Returns all ${entityLabel} matching a query that can either be given by query parameter <code>query</code> or by posting the query as body.</p>
+		<p>Returns all ${entityLabel} matching a query that can either be given by query parameter <code>query</code> or by posting the query as body. Expressions are based on <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/expressions.html">Spring Expression Language (SpEL)</a>, see Mango documentation for detailed instructions</p>
+
+		<p>
+		<strong>Expression example</strong><br/>
+		<code>attribute1 == 'string' &amp;&amp; (attribute2 == 12 || attribute3 != 'string')</code>
+		</p>
+		
 		<pre>${baseUrl}/rest/query?query={query}</pre>
 
 				<div class="panel panel-info">
