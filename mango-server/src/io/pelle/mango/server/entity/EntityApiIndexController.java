@@ -1,6 +1,7 @@
 package io.pelle.mango.server.entity;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.server.vo.VOMetaDataService;
 
 import java.util.HashMap;
@@ -8,13 +9,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gwt.thirdparty.guava.common.base.Objects;
 
 @Controller
 public class EntityApiIndexController {
@@ -33,11 +35,13 @@ public class EntityApiIndexController {
 
 		Class<? extends IBaseEntity> entityClass = voMetaDataService.getEntityClassForName(entityName);
 
+		IEntityDescriptor<?> entityDescriptor = voMetaDataService.getEntityDescriptor(entityClass);
+		
 		Map<String, String> templateVariables = new HashMap<String, String>();
-		templateVariables.put(ENTITY_LABEL_TEMPLATE_VARIABLE, WordUtils.capitalize(voMetaDataService.getLabel(entityClass)));
+		templateVariables.put(ENTITY_LABEL_TEMPLATE_VARIABLE, Objects.firstNonNull(entityDescriptor.getLabel(), entityDescriptor.getName()));
 		templateVariables.put(BASE_URL_TEMPLATE_VARIABLE, getDefaultBaseUrl(request));
 
-		return new ModelAndView("EntityRestApiIndex", templateVariables);
+		return new ModelAndView("EntityApiIndex", templateVariables);
 	}
 
 	private String getDefaultBaseUrl(HttpServletRequest request) {

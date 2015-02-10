@@ -2,7 +2,7 @@ package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import io.pelle.mango.db.test.mockup.EntityVOMapper;
+import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.server.showcase.Country;
 import io.pelle.mango.demo.server.showcase.Customer;
@@ -55,28 +55,44 @@ public class EntityUtilsTest extends BaseDemoTest {
 
 	@Test(expected = RuntimeException.class)
 	public void testCreateInvalidExpression() {
-		assertEquals("xxx", EntityUtils.createSelectQuery(CountryVO.class, "name == 'xxx'").getJPQL(EntityVOMapper.INSTANCE));
+		assertEquals("xxx", EntityUtils.createServerSelectQuery(CountryVO.class, "name == 'xxx'").getJPQL(EntityVOMapper.getInstance()));
 	}
 
 	@Test
-	public void testCreateSimpleExpression() {
-		assertEquals("SELECT x0 FROM CountryVO x0 WHERE x0.countryName = 'xxx'", EntityUtils.createSelectQuery(CountryVO.class, "countryName == 'xxx'").getJPQL(EntityVOMapper.INSTANCE));
+	public void testCreateQuerySimpleExpressionVO() {
+		assertEquals("SELECT x0 FROM Country x0 WHERE x0.countryName = 'xxx'", EntityUtils.createServerSelectQuery(CountryVO.class, "countryName == 'xxx'")
+				.getJPQL(EntityVOMapper.getInstance()));
 	}
 
 	@Test
-	public void testCreateAndExpression() {
-		assertEquals("SELECT x0 FROM CountryVO x0 WHERE (x0.countryName = 'xxx' AND x0.countryName = 'yyy')", EntityUtils.createSelectQuery(CountryVO.class, "countryName == 'xxx' && countryName == 'yyy'").getJPQL(EntityVOMapper.INSTANCE));
+	public void testCreateQuerySimpleExpressionEntity() {
+		assertEquals("SELECT x0 FROM Country x0 WHERE x0.countryName = 'xxx'", EntityUtils.createServerSelectQuery(Country.class, "countryName == 'xxx'")
+				.getJPQL(EntityVOMapper.getInstance()));
 	}
 
 	@Test
-	public void testCreateExpressionBrackets() {
-		assertEquals("SELECT x0 FROM CountryVO x0 WHERE (x0.countryName = 'xxx' OR (x0.countryName = 'zzz' AND x0.countryName = 'uuu') )",
-				EntityUtils.createSelectQuery(CountryVO.class, "countryName == 'xxx' || (countryName == 'zzz' && countryName == 'uuu')").getJPQL(EntityVOMapper.INSTANCE));
+	public void testCreateQueryAndExpression() {
+		assertEquals("SELECT x0 FROM Country x0 WHERE (x0.countryName = 'xxx' AND x0.countryName = 'yyy')",
+				EntityUtils.createServerSelectQuery(CountryVO.class, "countryName == 'xxx' && countryName == 'yyy'").getJPQL(EntityVOMapper.getInstance()));
 	}
 
 	@Test
-	public void testCreateOrExpression() {
-		assertEquals("SELECT x0 FROM CountryVO x0 WHERE (x0.countryName = 'xxx' OR x0.countryName = 'yyy')", EntityUtils.createSelectQuery(CountryVO.class, "countryName == 'xxx' || countryName == 'yyy'").getJPQL(EntityVOMapper.INSTANCE));
+	public void testCreateQueryEmpty() {
+		assertEquals("SELECT x0 FROM Country x0", EntityUtils.createServerSelectQuery(CountryVO.class, "").getJPQL(EntityVOMapper.getInstance()));
+	}
+	
+	@Test
+	public void testCreateQueryExpressionBrackets() {
+		assertEquals(
+				"SELECT x0 FROM Country x0 WHERE (x0.countryName = 'xxx' OR (x0.countryName = 'zzz' AND x0.countryName = 'uuu') )",
+				EntityUtils.createServerSelectQuery(CountryVO.class, "countryName == 'xxx' || (countryName == 'zzz' && countryName == 'uuu')").getJPQL(
+						EntityVOMapper.getInstance()));
+	}
+
+	@Test
+	public void testCreateQueryOrExpression() {
+		assertEquals("SELECT x0 FROM Country x0 WHERE (x0.countryName = 'xxx' OR x0.countryName = 'yyy')",
+				EntityUtils.createServerSelectQuery(CountryVO.class, "countryName == 'xxx' || countryName == 'yyy'").getJPQL(EntityVOMapper.getInstance()));
 	}
 
 }

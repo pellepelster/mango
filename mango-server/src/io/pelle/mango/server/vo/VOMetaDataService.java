@@ -27,8 +27,6 @@ import net.vidageek.mirror.list.dsl.Matcher;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.common.base.Objects;
-
 public class VOMetaDataService {
 
 	private final static Logger LOG = Logger.getLogger(VOMetaDataService.class);
@@ -143,14 +141,6 @@ public class VOMetaDataService {
 	public IEntityDescriptor<?> getEntityDescriptor(Class<? extends IVOEntity> voEntityClass) {
 		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getVOClass(voEntityClass);
 		return entityDescriptors.get(voClass);
-	}
-
-	public String getLabel(Class<? extends IVOEntity> voEntityClass) {
-		return Objects.firstNonNull(getEntityDescriptor(voEntityClass).getLabel(), voEntityClass.getName());
-	}
-
-	public String getPluralLabel(Class<? extends IVOEntity> voEntityClass) {
-		return Objects.firstNonNull(getEntityDescriptor(voEntityClass).getPluralLabel(), voEntityClass.getName());
 	}
 
 }

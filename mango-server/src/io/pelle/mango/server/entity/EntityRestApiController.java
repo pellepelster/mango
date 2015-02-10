@@ -1,18 +1,20 @@
 package io.pelle.mango.server.entity;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.server.vo.VOMetaDataService;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,16 +32,24 @@ public class EntityRestApiController {
 
 	@RequestMapping("entity/{entityName}/api/rest/query")
 	@SuppressWarnings("unchecked")
-	public <T extends IBaseEntity> List<T> query(@PathVariable String entityName, @RequestBody String query) {
+	public <T extends IBaseEntity> List<T> query(@PathVariable String entityName, @RequestParam(required = false) String queryParamter, @RequestBody(required = false) String requestBody) {
 
-		Class<? extends IBaseEntity> entityClass = getEntityClassByNameOrExplode(entityName);
+		String expressionString = ""; 
 
-		ServerSelectQuery<T> selectQuery = EntityUtils.createSelectQuery(entityClass, query);
+		if (!StringUtils.isEmpty(requestBody)) {
+			expressionString = requestBody;
+		}
+		
+		if (!StringUtils.isEmpty(queryParamter)) {
+			expressionString = queryParamter;
+		}
+				
+		Class<T> entityClass = (Class<T>) getEntityClassByNameOrExplode(entityName);
+		SelectQuery<T> selectQuery = EntityUtils.createSelectQuery(entityClass, expressionString);
 
 		List<T> result = baseEntityDAO.filter(selectQuery);
 
 		return result;
-
 	}
 
 	@RequestMapping("entity/{entityName}/api/rest/byid/{entityId}")

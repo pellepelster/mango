@@ -1,7 +1,6 @@
 package io.pelle.mango.server.entity;
 
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
@@ -20,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.expression.spel.SpelNode;
 import org.springframework.expression.spel.ast.IntLiteral;
 import org.springframework.expression.spel.ast.OpAnd;
@@ -89,41 +89,47 @@ public class EntityUtils {
 		return result;
 	}
 
-	public static <T extends IBaseVO> ServerSelectQuery<T> createSelectQuery(Class<T> voClass, String expressionString) {
+	public static <T extends IVOEntity> SelectQuery<T> createSelectQuery(Class<T> voEntityClass, String expressionString) {
+		SelectQuery<T> selectQuery = SelectQuery.selectFrom(voEntityClass);
 
-		IExpression expression = createExpression(voClass, expressionString);
-
-		SelectQuery<T> selectQuery = SelectQuery.selectFrom(voClass).where((IBooleanExpression) expression);
-
-		return ServerSelectQuery.adapt(selectQuery);
+		if (!StringUtils.isEmpty(expressionString)) {
+			IExpression expression = createExpression(voEntityClass, expressionString);
+			selectQuery.where((IBooleanExpression) expression);
+		}
+		
+		return selectQuery;
 	}
 
-	public static IExpression createExpression(Class<? extends IBaseVO> voClass, String expressionString) {
+	public static <T extends IVOEntity> ServerSelectQuery<T> createServerSelectQuery(Class<T> voEntityClass, String expressionString) {
+		return ServerSelectQuery.adapt(createSelectQuery(voEntityClass, expressionString));
+	}
+
+	public static <T extends IVOEntity> IExpression createExpression(Class<T> voEntityClass, String expressionString) {
 
 		SpelExpressionParser parser = new SpelExpressionParser();
 		SpelExpression exp = parser.parseRaw(expressionString);
-		IExpression expression = createExpression(exp.getAST(), voClass);
+		IExpression expression = createExpression(exp.getAST(), voEntityClass);
 		return expression;
 	}
 
-	public static IExpression createExpression(SpelNode spelNode, Class<? extends IBaseVO> voClass) {
+	public static <T extends IVOEntity> IExpression createExpression(SpelNode spelNode, Class<T> voEntityClass) {
 
-		VOClassQuery voClassQuery = VOClassQuery.createQuery(voClass);
+		VOClassQuery voClassQuery = VOClassQuery.createQuery(voEntityClass);
 
 		if (spelNode instanceof OpAnd) {
 			OpAnd node = (OpAnd) spelNode;
-			return new BooleanExpression(createExpression(node.getLeftOperand(), voClass), LOGICAL_OPERATOR.AND, createExpression(node.getRightOperand(), voClass));
+			return new BooleanExpression(createExpression(node.getLeftOperand(), voEntityClass), LOGICAL_OPERATOR.AND, createExpression(node.getRightOperand(), voEntityClass));
 		}
 
 		if (spelNode instanceof OpOr) {
 			OpOr node = (OpOr) spelNode;
-			return new BooleanExpression(createExpression(node.getLeftOperand(), voClass), LOGICAL_OPERATOR.OR, createExpression(node.getRightOperand(), voClass));
+			return new BooleanExpression(createExpression(node.getLeftOperand(), voEntityClass), LOGICAL_OPERATOR.OR, createExpression(node.getRightOperand(), voEntityClass));
 		}
 
 		if (spelNode instanceof OpEQ) {
 			OpEQ node = (OpEQ) spelNode;
 
-			return new CompareExpression(createExpression(node.getLeftOperand(), voClass), ComparisonOperator.EQUALS, createExpression(node.getRightOperand(), voClass));
+			return new CompareExpression(createExpression(node.getLeftOperand(), voEntityClass), ComparisonOperator.EQUALS, createExpression(node.getRightOperand(), voEntityClass));
 		}
 
 		if (spelNode instanceof PropertyOrFieldReference) {
@@ -132,10 +138,10 @@ public class EntityUtils {
 			String attributeName = node.getName();
 
 			if (!voClassQuery.attributesDescriptors().byName(attributeName).hasExactlyOne()) {
-				throw new RuntimeException(String.format("attribute '%s' not found for class '%s'", attributeName, voClass.getName()));
+				throw new RuntimeException(String.format("attribute '%s' not found for class '%s'", attributeName, voEntityClass.getName()));
 			}
 
-			return new PathExpression(voClass.getName(), node.getName());
+			return new PathExpression(voEntityClass.getName(), node.getName());
 		}
 
 		if (spelNode instanceof IntLiteral) {
