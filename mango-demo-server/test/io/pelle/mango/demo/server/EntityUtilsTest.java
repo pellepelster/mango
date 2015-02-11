@@ -3,7 +3,6 @@ package io.pelle.mango.demo.server;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
-import io.pelle.mango.client.base.vo.query.QueryUtils;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.server.showcase.Country;
@@ -17,7 +16,7 @@ public class EntityUtilsTest extends BaseDemoTest {
 
 	@Test
 	public void testParseOperatorFromText() {
-		assertEquals(ComparisonOperator.LIKE_NO_CASE, QueryUtils.parseOperatorFromText("abc%"));
+		assertEquals(ComparisonOperator.LIKE_NO_CASE, EntityUtils.parseOperatorFromText("abc%"));
 	}
 
 	@Test
