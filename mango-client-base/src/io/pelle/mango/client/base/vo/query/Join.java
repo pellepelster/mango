@@ -18,13 +18,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Represents a join in a JPQL query
- * 
- * @author pelle
- * @version $Rev: 797 $, $Date: 2010-12-17 14:39:43 +0100 (Fri, 17 Dec 2010) $
- * 
- */
+@SuppressWarnings("serial")
 public class Join implements IEntity, Serializable {
 
 	/**
