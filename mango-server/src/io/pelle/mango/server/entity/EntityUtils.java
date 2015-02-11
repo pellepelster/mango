@@ -163,4 +163,13 @@ public class EntityUtils {
 
 		throw new RuntimeException(String.format("unsupported spel node '%s'", spelNode));
 	}
+
+	public static ComparisonOperator parseOperatorFromText(String text) {
+
+		if (text.endsWith("%")) {
+			return ComparisonOperator.LIKE_NO_CASE;
+		}
+
+		return ComparisonOperator.EQUALS_NO_CASE;
+	}
 }
