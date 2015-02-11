@@ -25,6 +25,7 @@ import org.springframework.expression.spel.ast.IntLiteral;
 import org.springframework.expression.spel.ast.OpAnd;
 import org.springframework.expression.spel.ast.OpEQ;
 import org.springframework.expression.spel.ast.OpOr;
+import org.springframework.expression.spel.ast.OperatorMatches;
 import org.springframework.expression.spel.ast.PropertyOrFieldReference;
 import org.springframework.expression.spel.ast.StringLiteral;
 import org.springframework.expression.spel.standard.SpelExpression;
@@ -96,7 +97,7 @@ public class EntityUtils {
 			IExpression expression = createExpression(voEntityClass, expressionString);
 			selectQuery.where((IBooleanExpression) expression);
 		}
-		
+
 		return selectQuery;
 	}
 
@@ -130,6 +131,12 @@ public class EntityUtils {
 			OpEQ node = (OpEQ) spelNode;
 
 			return new CompareExpression(createExpression(node.getLeftOperand(), voEntityClass), ComparisonOperator.EQUALS, createExpression(node.getRightOperand(), voEntityClass));
+		}
+
+		if (spelNode instanceof OperatorMatches) {
+			OperatorMatches node = (OperatorMatches) spelNode;
+
+			return new CompareExpression(createExpression(node.getLeftOperand(), voEntityClass), ComparisonOperator.LIKE_NO_CASE, createExpression(node.getRightOperand(), voEntityClass));
 		}
 
 		if (spelNode instanceof PropertyOrFieldReference) {
