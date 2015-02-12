@@ -15,17 +15,13 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
+import io.pelle.mango.dsl.mango.MapEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.dsl.query.datatype.StringDatatypeQuery
 import io.pelle.mango.server.base.BaseEntity
-import org.apache.commons.logging.Log
-
-import static org.apache.commons.logging.LogFactory.*
 
 class EntityGenerator extends BaseEntityGenerator {
-
-	val Log LOG = getLog(getClass().getName())
 
 	@Inject
 	extension EntityUtils
@@ -115,6 +111,12 @@ class EntityGenerator extends BaseEntityGenerator {
 		@javax.persistence.Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	'''
  
+	def dispatch compileEntityAttributeJpaAnnotations(MapEntityAttribute entityAttribute) '''
+		@Column(name = "«entityAttribute.entityTableColumnName»")
+		@ElementCollection(fetch = FetchType.EAGER)
+		@JoinTable(name = "«entityAttribute.parentEntity.entityTableName»_«entityAttribute.name.toLowerCase»", joinColumns = @JoinColumn(name = "id"))
+	'''
+
 	def dispatch compileEntityAttributeJpaAnnotations(StringEntityAttribute entityAttribute) '''
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
 			@javax.persistence.ElementCollection(fetch=javax.persistence.FetchType.EAGER)

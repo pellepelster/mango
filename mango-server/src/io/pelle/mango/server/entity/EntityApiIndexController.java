@@ -30,7 +30,7 @@ public class EntityApiIndexController {
 	@Autowired
 	private VOMetaDataService voMetaDataService;
 
-	@RequestMapping(value = "entity/{entityName}/api/" + INDEX_PATH, method = RequestMethod.GET)
+	@RequestMapping(value = "api/entity/{entityName}/" + INDEX_PATH, method = RequestMethod.GET)
 	public ModelAndView index(@PathVariable String entityName, HttpServletRequest request) {
 
 		Class<? extends IBaseEntity> entityClass = voMetaDataService.getEntityClassForName(entityName);

@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.pelle.mango.client.api.WebHookVO;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.vo.query.DeleteQuery;
@@ -15,6 +16,7 @@ import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity3VO;
+import io.pelle.mango.server.api.WebHook;
 
 import java.util.Date;
 import java.util.List;
@@ -393,6 +395,22 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals(0, baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class)).size());
 	}
 
+	@Test
+	public void testCreateAndReadMap() {
+
+		baseEntityService.deleteAll(WebHook.class.getName());
+
+		WebHookVO webHook1 = new WebHookVO();
+		webHook1.getConfig().put("aaa", "bbb");
+
+		webHook1 = baseEntityService.create(webHook1);
+
+		WebHookVO result = baseEntityService.read(webHook1.getId(), WebHook.class.getName());
+		
+		assertEquals(1, result.getConfig().size());
+		assertEquals("bbb", result.getConfig().get("aaa"));
+	}
+	
 	@Test
 	public void testValidateAndCreate1() {
 

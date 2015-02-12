@@ -3,33 +3,26 @@ package io.pelle.mango.server.entity;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.server.vo.VOMetaDataService;
+import io.pelle.mango.server.BaseEntityApiController;
 
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Optional;
 
 @RestController
-public class EntityRestApiController {
+public class EntityApiController extends BaseEntityApiController {
 
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
 
-	@Autowired
-	private VOMetaDataService metaDataService;
-
-	@RequestMapping("entity/{entityName}/api/rest/query")
+	@RequestMapping("api/entity/{entityName}/query")
 	@SuppressWarnings("unchecked")
 	public <T extends IBaseEntity> List<T> query(@PathVariable String entityName, @RequestParam(required = false) String query) {
 
@@ -51,7 +44,7 @@ public class EntityRestApiController {
 		}
 	}
 
-	@RequestMapping("entity/{entityName}/api/rest/byid/{entityId}")
+	@RequestMapping("api/entity/{entityName}/byid/{entityId}")
 	@SuppressWarnings("unchecked")
 	public <T extends IBaseEntity> T entityById(@PathVariable String entityName, @PathVariable long entityId) {
 
@@ -67,14 +60,7 @@ public class EntityRestApiController {
 
 	}
 
-	@ExceptionHandler(RuntimeException.class)
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public String handleException(Exception e) {
-		return e.getMessage();
-	}
-
-	@RequestMapping("entity/{entityName}/api/rest/bynaturalkey/{naturalKey}")
+	@RequestMapping("api/entity/{entityName}/bynaturalkey/{naturalKey}")
 	@SuppressWarnings("unchecked")
 	public <T extends IBaseEntity> T entityByNaturalKey(@PathVariable String entityName, @PathVariable String naturalKey) {
 
@@ -87,17 +73,6 @@ public class EntityRestApiController {
 		} else {
 			throw new RuntimeException(String.format("no entity found for natural key '%s'", naturalKey));
 		}
-	}
-
-	private Class<? extends IBaseEntity> getEntityClassByNameOrExplode(String entityName) {
-
-		Class<? extends IBaseEntity> entityClass = metaDataService.getEntityClassForName(entityName);
-
-		if (entityClass == null) {
-			throw new RuntimeException(String.format("could not find entity entity for name '%s'", entityName));
-		}
-
-		return entityClass;
 	}
 
 }

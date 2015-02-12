@@ -40,7 +40,7 @@
 		<property name="suffix" value=".ftl" />
 	</bean>
 
-	<bean class="io.pelle.mango.server.entity.EntityRestApiController" />
+	<bean class="io.pelle.mango.server.entity.EntityApiController" />
 	<bean class="io.pelle.mango.server.entity.EntityApiIndexController" />
 
 	<!-- jackson mapper configuration -->

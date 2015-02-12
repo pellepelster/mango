@@ -195,10 +195,26 @@ class TypeUtils {
 	//-----------------
 	// MapEntityAttribute
 	//-----------------
-	def dispatch String getType(MapEntityAttribute mapEntityAttribute)
+	def dispatch String getType(MapEntityAttribute entityAttribute)
 	{
-		return "java.util.Map<" + mapEntityAttribute.keyType.type + ", " + mapEntityAttribute.valueType.type + ">"
+		return "java.util.Map<" + entityAttribute.keyType.type + ", " + entityAttribute.valueType.type + ">"
 	}
+
+	def dispatch String getRawTypeClass(MapEntityAttribute entityAttribute)
+	{
+		return "java.util.Map.class"
+	}
+
+	def dispatch String getTypeClass(MapEntityAttribute entityAttribute)
+	{
+		return "java.util.Map.class"
+	}
+
+	def dispatch String getInitializer(MapEntityAttribute entityAttribute)
+	{
+		return "new java.util.HashMap<" + entityAttribute.keyType.type + ", " + entityAttribute.valueType.type + ">()"
+	}
+		
 	
 	//-----------------
 	// EnumerationDataType
@@ -496,7 +512,7 @@ class TypeUtils {
 				null
 		}
 	}
-		
+
 	def dispatch String getInitializer(ValueObjectEntityAttribute entityAttribute)
 	{
 		switch entityAttribute.cardinality {

@@ -37,13 +37,13 @@
 <body>
     <div class="container">
 
-		<h1>${entityLabel} REST API</h1>
+		<h1>${entityLabel} API</h1>
 		<p>Provides JSON access to ${entityLabel}.</p>
 
 		<h2>Get ${entityLabel} by id</h2>
         <p>Returns the ${entityLabel} with the id given by the path variable <code>{entityId}</code>. If no entity is found an HTTP 404 is returned.</p>
 
-		<pre>${baseUrl}/rest/byid/{entityId}</pre>
+		<pre>${baseUrl}/byid/{entityId}</pre>
         
 		<div class="panel panel-info">
 		
@@ -57,7 +57,7 @@
 				<div class="panel-body">
 					<form class="form-inline">
 						<div class="form-group">
-							<label for="byIdInput">${baseUrl}/rest/byid/</label>
+							<label for="byIdInput">${baseUrl}/byid/</label>
 							<input type="text" class="form-control" id="byIdInput" placeholder="Id">
 						</div>
 						<button type="button" id="byIdSubmit" class="btn btn-default">GET</button>
@@ -85,7 +85,7 @@
 						
 						if (value) {
 							$.ajax({
-								url: "${baseUrl}/rest/byid/" + value
+								url: "${baseUrl}/byid/" + value
 							}).then(function(data) {
 								byIdEditor.getDoc().setValue(JSON.stringify(data, null, '\t'));
 							}).fail(function(jqXHR, data) {
@@ -101,7 +101,7 @@
         
 		<h2>Get ${entityLabel} by natural key</h2>
         <p>Returns the ${entityLabel} with the natural key given by the path variable <code>{naturalKey}</code>. If no entity is found an HTTP 404 is returned.</p>
-		<pre>${baseUrl}/rest/bynaturalkey/{naturalKey}</pre>
+		<pre>${baseUrl}/bynaturalkey/{naturalKey}</pre>
 
 		<div class="panel panel-info">
 		
@@ -115,7 +115,7 @@
 				<div class="panel-body">
 					<form class="form-inline">
 						<div class="form-group">
-							<label for="byNaturalKeyInput">${baseUrl}/rest/bynaturalkey/</label>
+							<label for="byNaturalKeyInput">${baseUrl}/bynaturalkey/</label>
 							<input type="text" class="form-control" id="byNaturalKeyInput" placeholder="Natural Key">
 						</div>
 						<button type="button" id="byNaturalKeySubmit" class="btn btn-default">GET</button>
@@ -143,7 +143,7 @@
 						
 						if (value) {
 							$.ajax({
-								url: "${baseUrl}/rest/bynaturalkey/" + value
+								url: "${baseUrl}/bynaturalkey/" + value
 							}).then(function(data) {
 								byNaturalKeyEditor.getDoc().setValue(JSON.stringify(data, null, '\t'));
 							}).fail(function(jqXHR, data) {
@@ -166,7 +166,7 @@
 		<code>attribute1 == 'string' &amp;&amp; (attribute2 == 12 || attribute3 != 'string')</code>
 		</p>
 		
-		<pre>${baseUrl}/rest/query?query={query}</pre>
+		<pre>${baseUrl}/query?query={query}</pre>
 
 				<div class="panel panel-info">
 		
@@ -180,7 +180,7 @@
 				<div class="panel-body">
 					<form class="form-inline">
 						<div class="form-group">
-							<label for="byQueryInput">${baseUrl}/rest/query/</label>
+							<label for="byQueryInput">${baseUrl}/query/</label>
 							<input type="text" class="form-control" id="byQueryInput" placeholder="Query">
 						</div>
 						<button type="button" id="byQuerySubmit" class="btn btn-default">GET</button>
@@ -208,7 +208,7 @@
 						
 						if (value) {
 							$.ajax({
-								url: "${baseUrl}/rest/query?query=" + value
+								url: "${baseUrl}/query?query=" + value
 							}).then(function(data) {
 								byQueryEditor.getDoc().setValue(JSON.stringify(data, null, '\t'));
 							}).fail(function(jqXHR, data) {

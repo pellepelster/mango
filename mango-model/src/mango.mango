@@ -17,6 +17,15 @@ project Mango {
 
 	package io.pelle.^mango {
 
+		package api {
+			entity WebHook {
+				string name
+				string url
+				map string string config
+				string 0..n events
+			}
+		}
+		
 		package ^entity {
 		
 			service BaseEntityService {

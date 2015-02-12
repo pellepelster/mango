@@ -1,6 +1,7 @@
 package io.pelle.mango.dsl.generator.xml
 
 import com.google.inject.Inject
+import io.pelle.mango.dsl.generator.server.EntityUtils
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.BooleanEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
@@ -14,9 +15,10 @@ import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.FloatEntityAttribute
 import io.pelle.mango.dsl.mango.IntegerEntityAttribute
 import io.pelle.mango.dsl.mango.LongEntityAttribute
+import io.pelle.mango.dsl.mango.MapEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
-import io.pelle.mango.dsl.generator.server.EntityUtils
+import io.pelle.mango.dsl.generator.util.AttributeUtils
 
 class XmlSchema {
 
@@ -25,6 +27,9 @@ class XmlSchema {
 
 	@Inject
 	extension EntityUtils
+
+	@Inject
+	extension AttributeUtils
 
 	def xmlSchema(Entity entity, boolean generateImports) '''
 	<xsd:schema
@@ -83,7 +88,15 @@ class XmlSchema {
 				«ENDIF»
 			«ENDFOR»
 			</xsd:sequence>
-		</xsd:complexType>
+	</xsd:complexType>
+	
+	<xs:complexType name="MapType">
+		<xs:sequence>
+			<xs:element name="key" type="xs:anyType"/>
+			<xs:element name="value" type="xs:anyType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
 	</xsd:schema>
 	'''
 
@@ -103,6 +116,7 @@ class XmlSchema {
 	def dispatch xsdType(DecimalEntityAttribute entityAttribute)'''xsd:decimal'''
 	def dispatch xsdType(FloatEntityAttribute entityAttribute)'''xsd:float'''
 	def dispatch xsdType(DoubleEntityAttribute entityAttribute)'''xsd:double'''
+	def dispatch xsdType(MapEntityAttribute entityAttribute)'''«entityAttribute.parentEntity.xmlNamespacePrefix»:MapType'''
 	def dispatch xsdType(EntityEntityAttribute entityAttribute) ''''''
 	def dispatch xsdType(EnumerationEntityAttribute entityAttribute) ''''''
 

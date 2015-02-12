@@ -60,8 +60,8 @@ public class MetaInformationPopupPanel extends PopupPanel {
 		row++;
 		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.apiLabel()));
 		
-		Anchor anchor = new Anchor(MangoClientWeb.MESSAGES.entityApi(capitalize(entityDescriptor.getName())), com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/entity/"
-				+ entityDescriptor.getName().toLowerCase() + "/api/index");
+		Anchor anchor = new Anchor(MangoClientWeb.MESSAGES.entityApi(capitalize(entityDescriptor.getName())), com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/api/entity/"
+				+ entityDescriptor.getName().toLowerCase() + "/index");
 		anchor.setTarget("_blank");
 		grid.setWidget(row, 1, anchor);
 
