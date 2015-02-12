@@ -391,6 +391,7 @@ public class EntityModelGeneratorTest {
 		assertTrue(valueObject1.getValueObjects2().isEmpty());
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Test
 	@Ignore
 	public void testExtendsAttributeDescriptors() {

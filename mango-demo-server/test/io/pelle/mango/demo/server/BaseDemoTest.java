@@ -4,11 +4,9 @@ import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.junit.runner.RunWith;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 		"classpath:/MangoSpringServices-gen.xml" })
 @TransactionConfiguration(defaultRollback = false)
 @Transactional
-@TestExecutionListeners({ TransactionalTestExecutionListener.class })
 public abstract class BaseDemoTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	public BaseDemoTest() {

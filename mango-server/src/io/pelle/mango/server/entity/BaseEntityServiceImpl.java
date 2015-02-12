@@ -25,6 +25,7 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 	private IBaseVODAO baseVODAO;
 
 	@Override
+	@Transactional
 	public <CreateVOType extends IBaseVO> CreateVOType create(CreateVOType vo) {
 		return baseVODAO.create(vo);
 	}

@@ -4,6 +4,7 @@ dependencies {
 	
 	testCompile group: "org.springframework", name: "spring-test", version: versions.spring
 	testCompile group: "org.apache.derby", name: "derby", version: "10.9.1.0"
+	testCompile group: "com.jayway.jsonpath", name: "json-path", version: "1.2.0"
 
 	compile group: "org.springframework", name: "spring-tx", version: versions.spring
 	compile group: "org.springframework", name: "spring-context", version: versions.spring
