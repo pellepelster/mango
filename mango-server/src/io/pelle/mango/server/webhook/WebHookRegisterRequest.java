@@ -1,15 +1,24 @@
 package io.pelle.mango.server.webhook;
 
 public class WebHookRegisterRequest {
-	
-	private String hookId;
 
-	public String getHookId() {
-		return hookId;
+	private String name;
+
+	private String url;
+
+	public String getName() {
+		return name;
 	}
 
-	public void setHookId(String hookId) {
-		this.hookId = hookId;
+	public void setName(String name) {
+		this.name = name;
 	}
-	
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }

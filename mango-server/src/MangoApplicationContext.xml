@@ -44,6 +44,7 @@
 	<bean class="io.pelle.mango.server.entity.EntityApiIndexController" />
 
 	<bean class="io.pelle.mango.server.webhook.WebHookApiController" />
+	<bean class="io.pelle.mango.server.webhook.WebHookRegistry" />
 
 	<!-- jackson mapper configuration -->
 	<bean id="objectMapper" class="io.pelle.mango.server.xml.MangoObjectMapper" />

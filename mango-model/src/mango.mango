@@ -20,6 +20,7 @@ project Mango {
 		package api {
 			entity WebHook {
 				string name
+				string ^type
 				string url
 				map string string config
 				string 0..n events

@@ -48,6 +48,8 @@ import com.google.common.base.Optional;
 @Component
 public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDAO {
 
+	private List<IDAOCallback> callbacks = new ArrayList<IDAOCallback>();
+
 	private static Logger LOG = Logger.getLogger(BaseEntityDAO.class);
 
 	private Optional<Timer> createTimer = Optional.absent();
@@ -87,11 +89,19 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 
 			T result = mergeRecursive(entity);
 
+			fireOnCreateCallbacks(result);
+
 			return result;
 		} finally {
 			if (context.isPresent()) {
 				context.get().stop();
 			}
+		}
+	}
+
+	public <T extends IBaseEntity> void fireOnCreateCallbacks(T entity) {
+		for (IDAOCallback daoCallback : callbacks) {
+			daoCallback.onCreate(entity);
 		}
 	}
 
@@ -109,8 +119,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 		for (Object entity : getAll(entityClass)) {
 			this.entityManager.remove(entity);
 		}
-
-		// @see https://github.com/pellepelster/myadmin/issues/8
 
 		// if (BeanUtil.hasAnnotatedAttribute1(entityClass,
 		// ElementCollection.class))
@@ -330,6 +338,11 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 		} else {
 			return Optional.of(result.get(0));
 		}
+	}
+
+	@Override
+	public void registerCallback(IDAOCallback callback) {
+		callbacks.add(callback);
 	}
 
 }
