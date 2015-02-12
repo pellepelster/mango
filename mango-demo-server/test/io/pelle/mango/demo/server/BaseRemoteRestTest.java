@@ -11,11 +11,11 @@ import com.jayway.restassured.specification.RequestSpecification;
 /**
  * Created by pelle on 2/19/14.
  */
-public class BaseRestTest {
+public class BaseRemoteRestTest {
 
 	private String baseUrl = "http://localhost:9090/remote";
 
-	public BaseRestTest() {
+	public BaseRemoteRestTest() {
 	}
 
 	public String getBaseUrl() {

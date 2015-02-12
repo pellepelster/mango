@@ -33,7 +33,7 @@ public class EntityApiTest extends BaseDemoModelTest {
 
 	@Test
 	public void testGetEntityApiIndex() throws Exception {
-		mockMvc.perform(get("/entity/country/api/index")).andExpect(status().isOk());
+		mockMvc.perform(get("/api/entity/country/index")).andExpect(status().isOk());
 	}
 
 	@Test
@@ -47,9 +47,9 @@ public class EntityApiTest extends BaseDemoModelTest {
 
 		countryVO = baseEntityService.create(countryVO);
 
-		mockMvc.perform(get("/entity/country/api/rest/byid/{entityId}", countryVO.getId())).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.countryIsoCode2").value("AA"));
+		mockMvc.perform(get("/api/entity/country/byid/{entityId}", countryVO.getId())).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.countryIsoCode2").value("AA"));
 	}
-	
+
 	@Test
 	public void testGetEntityByNaturalKey() throws Exception {
 
@@ -61,9 +61,9 @@ public class EntityApiTest extends BaseDemoModelTest {
 
 		countryVO = baseEntityService.create(countryVO);
 
-		mockMvc.perform(get("/entity/country/api/rest/bynaturalkey/{naturalKey}", "AA")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.countryIsoCode2").value("AA"));
+		mockMvc.perform(get("/api/entity/country/bynaturalkey/{naturalKey}", "AA")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.countryIsoCode2").value("AA"));
 	}
-	
+
 	@Test
 	public void testGetEntitiesByQuery() throws Exception {
 
@@ -75,7 +75,7 @@ public class EntityApiTest extends BaseDemoModelTest {
 
 		countryVO = baseEntityService.create(countryVO);
 
-		mockMvc.perform(get("/entity/country/api/rest/query", "countryIsoCode2 == 'AA'")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.[0]countryIsoCode2").value("AA"));
+		mockMvc.perform(get("/api/entity/country/query", "countryIsoCode2 == 'AA'")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.[0]countryIsoCode2").value("AA"));
 	}
 
 }

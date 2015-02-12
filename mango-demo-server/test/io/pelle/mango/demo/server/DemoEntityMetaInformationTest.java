@@ -19,8 +19,8 @@ public class DemoEntityMetaInformationTest extends BaseDemoTest {
 
 	@Test
 	public void testGetVOClasses() {
-		assertEquals(15, metaDataService.getVOClasses().size());
-		assertEquals(15, metaDataService.getEntityClasses().size());
+		assertEquals(16, metaDataService.getVOClasses().size());
+		assertEquals(16, metaDataService.getEntityClasses().size());
 	}
 
 	@Test
@@ -32,17 +32,17 @@ public class DemoEntityMetaInformationTest extends BaseDemoTest {
 	@Test
 	@Ignore
 	public void testGetLabelDefaults() {
-		
+
 		IEntityDescriptor<?> entityDescriptor = metaDataService.getEntityDescriptor(CountryVO.class);
 		assertEquals("io.pelle.mango.demo.client.showcase.CountryVO", entityDescriptor.getLabel());
-		
+
 		entityDescriptor = metaDataService.getEntityDescriptor(Country.class);
 		assertEquals("io.pelle.mango.demo.server.showcase.Country", entityDescriptor.getLabel());
 	}
 
 	@Test
 	public void testGetLabel() {
-		
+
 		IEntityDescriptor<?> entityDescriptor = metaDataService.getEntityDescriptor(Entity2VO.class);
 		assertEquals("Entity2 Label", entityDescriptor.getLabel());
 
@@ -52,10 +52,10 @@ public class DemoEntityMetaInformationTest extends BaseDemoTest {
 
 	@Test
 	public void testGetPluralLabels() {
-		
+
 		IEntityDescriptor<?> entityDescriptor = metaDataService.getEntityDescriptor(Entity2VO.class);
 		assertEquals("Entity2 Labels", entityDescriptor.getPluralLabel());
-		
+
 		entityDescriptor = metaDataService.getEntityDescriptor(Entity2.class);
 		assertEquals("Entity2 Labels", entityDescriptor.getPluralLabel());
 	}

@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.jayway.restassured.response.Response;
 
-public class DemoRestServiceTest extends BaseRestTest {
+public class DemoRemoteRestServiceTest extends BaseRemoteRestTest {
 
 	@Test
 	@Ignore
