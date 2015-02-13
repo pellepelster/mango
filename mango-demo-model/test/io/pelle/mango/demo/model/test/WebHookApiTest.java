@@ -92,6 +92,8 @@ public class WebHookApiTest extends BaseDemoModelTest {
 		countryVO.setCountryIsoCode3("AAA");
 		baseEntityService.create(countryVO);
 
+		Thread.sleep(500);
+
 		verify(postRequestedFor(urlMatching("/countryhook")).withRequestBody(equalToJson("{ payload: { countryIsoCode2: \"AA\" } }", JSONCompareMode.LENIENT)));
 	}
 }
