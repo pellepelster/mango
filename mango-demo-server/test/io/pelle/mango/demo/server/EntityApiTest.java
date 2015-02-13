@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.model.test;
+package io.pelle.mango.demo.server;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @WebAppConfiguration
-public class EntityApiTest extends BaseDemoModelTest {
+public class EntityApiTest extends BaseDemoTest {
 
 	private MockMvc mockMvc;
 

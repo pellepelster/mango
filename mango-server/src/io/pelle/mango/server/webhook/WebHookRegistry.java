@@ -7,14 +7,19 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.dao.IDAOCallback;
+import io.pelle.mango.server.log.IMangoLogger;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.AsyncRestTemplate;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -23,7 +28,10 @@ import com.google.common.cache.LoadingCache;
 @RestController
 public class WebHookRegistry implements InitializingBean {
 
-	private final RestTemplate restTemplate = new RestTemplate();
+	@Autowired
+	private IMangoLogger mangoLogger;
+
+	private final AsyncRestTemplate restTemplate = new AsyncRestTemplate();
 
 	private LoadingCache<String, List<WebHookVO>> hooks = CacheBuilder.newBuilder().build(new CacheLoader<String, List<WebHookVO>>() {
 		public List<WebHookVO> load(String key) {
@@ -41,8 +49,20 @@ public class WebHookRegistry implements InitializingBean {
 		return entityClass.getName();
 	}
 
-	public void registerEntityWebHook(Class<? extends IBaseEntity> entityClass, WebHookVO webHook) {
+	public WebHookVO registerEntityWebHook(Class<? extends IBaseEntity> entityClass, WebHookVO webHook) {
+
+		if (StringUtils.isEmpty(webHook.getName())) {
+			throw new RuntimeException("no name provided");
+		}
+
+		if (StringUtils.isEmpty(webHook.getUrl())) {
+			throw new RuntimeException("no URL provided");
+		}
+
 		hooks.invalidate(getKey(entityClass));
+
+		return baseVODAO.create(webHook);
+
 	}
 
 	public List<WebHookVO> getAllEntityWebHooks(String key) {
@@ -54,13 +74,28 @@ public class WebHookRegistry implements InitializingBean {
 		return getAllEntityWebHooks(getKey(entityClass));
 	}
 
+	private String getReference(WebHookVO webHook) {
+		return webHook.getName();
+	}
+
 	public <VOType extends IVOEntity> void callEntityWebHooks(List<WebHookVO> webHooks, VOType voEntity) {
-		for (WebHookVO webHook : webHooks) {
-			try {
-				restTemplate.postForEntity(webHook.getUrl(), new EntityWebHookCall(voEntity), Void.class);
-			} catch (HttpClientErrorException e) {
-				e.getStatusCode();
-			}
+		for (final WebHookVO webHook : webHooks) {
+
+			HttpEntity<Object> httpEntity = new HttpEntity<Object>(new EntityWebHookCall(voEntity));
+			ListenableFuture<ResponseEntity<Void>> result = restTemplate.postForEntity(webHook.getUrl(), httpEntity, Void.class);
+
+			result.addCallback(new ListenableFutureCallback<ResponseEntity<Void>>() {
+
+				@Override
+				public void onSuccess(ResponseEntity<Void> result) {
+				}
+
+				@Override
+				public void onFailure(Throwable ex) {
+					mangoLogger.error(String.format("execution of webhook '%s' failed: %s", webHook.getName(), ex.getMessage()), getReference(webHook));
+				}
+			});
+
 		}
 	}
 

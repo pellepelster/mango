@@ -58,7 +58,7 @@ public class WebHookApiController extends BaseEntityApiController {
 		webHook.setName(webHookRegisterRequest.getName());
 		webHook.setUrl(webHookRegisterRequest.getUrl());
 
-		return baseVODAO.create(webHook);
+		return webHookRegistry.registerEntityWebHook(entityClass, webHook);
 	}
 
 }

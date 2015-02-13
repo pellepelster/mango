@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.model.test;
+package io.pelle.mango.demo.server;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
@@ -35,7 +35,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 @WebAppConfiguration
-public class WebHookApiTest extends BaseDemoModelTest {
+public class WebHookApiTest extends BaseDemoTest {
 
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.wireMockConfig().port(8888));
