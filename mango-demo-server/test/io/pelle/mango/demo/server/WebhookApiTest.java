@@ -14,13 +14,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import io.pelle.mango.client.api.WebHookVO;
+import io.pelle.mango.client.api.webhook.WebhookVO;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -35,7 +34,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
 @WebAppConfiguration
-public class WebHookApiTest extends BaseDemoTest {
+public class WebhookApiTest extends BaseDemoTest {
 
 	@Rule
 	public WireMockRule wireMockRule = new WireMockRule(WireMockConfiguration.wireMockConfig().port(8888));
@@ -55,32 +54,58 @@ public class WebHookApiTest extends BaseDemoTest {
 
 	@Test
 	public void testListWebhooks() throws Exception {
-		baseEntityService.deleteAll(WebHookVO.class.getName());
+		baseEntityService.deleteAll(WebhookVO.class.getName());
 		mockMvc.perform(get("/api/entity/country/webhooks")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").value(Matchers.hasSize(0)));
+	}
+
+	@Test
+	public void testCreateWebhookWithoutName() throws Exception {
+		baseEntityService.deleteAll(WebhookVO.class.getName());
+		mockMvc.perform(post("/api/entity/country/webhooks").content("{ }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().is5xxServerError()).andExpect(jsonPath("$.error").value("no name provided"));
+	}
+
+	@Test
+	public void testCreateWebhookDuplicateName() throws Exception {
+		baseEntityService.deleteAll(WebhookVO.class.getName());
+		mockMvc.perform(post("/api/entity/country/webhooks").content("{ \"name\": \"abc\",\"url\": \"def\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.name").value("abc"));
+		mockMvc.perform(post("/api/entity/country/webhooks").content("{ \"name\": \"abc\",\"url\": \"def\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().is5xxServerError())
+				.andExpect(jsonPath("$.error").value("webhook with name 'abc' already registered"));
+	}
+
+	@Test
+	public void testCreateWebhookWithoutUrl() throws Exception {
+		baseEntityService.deleteAll(WebhookVO.class.getName());
+		mockMvc.perform(post("/api/entity/country/webhooks").content("{ \"name\": \"abc\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().is5xxServerError())
+				.andExpect(jsonPath("$.error").value("no URL provided"));
 	}
 
 	@Test
 	public void testCreateWebhook() throws Exception {
-		baseEntityService.deleteAll(WebHookVO.class.getName());
+		baseEntityService.deleteAll(WebhookVO.class.getName());
 
-		mockMvc.perform(post("/api/entity/country/webhooks").content("{ \"name\": \"abc\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.name").value("abc"));
+		mockMvc.perform(post("/api/entity/country/webhooks").content("{ \"name\": \"abc\",\"url\": \"def\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.name").value("abc"));
 		mockMvc.perform(get("/api/entity/country/webhooks")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").value(Matchers.hasSize(1)));
 	}
 
 	@Test
-	@Ignore
 	public void testDeleteWebhook() throws Exception {
-		baseEntityService.deleteAll(WebHookVO.class.getName());
+		baseEntityService.deleteAll(WebhookVO.class.getName());
 
-		mockMvc.perform(post("/api/entity/country/webhooks").content("{ \"name\": \"abc\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.name").value("abc"));
+		mockMvc.perform(post("/api/entity/country/webhooks").content("{ \"name\": \"abc\", \"url\": \"abc\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.name").value("abc"));
 		mockMvc.perform(get("/api/entity/country/webhooks")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").value(Matchers.hasSize(1)));
-		mockMvc.perform(delete("/api/entity/country/webhooks/{hookName}", "abc")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.").value(true));
+		mockMvc.perform(delete("/api/entity/country/webhooks/{hookName}", "abc")).andDo(print()).andExpect(status().isOk());
 		mockMvc.perform(get("/api/entity/country/webhooks")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$").value(Matchers.hasSize(0)));
 	}
 
 	@Test
+	public void testDeleteNotExistingWebhook() throws Exception {
+		baseEntityService.deleteAll(WebhookVO.class.getName());
+		mockMvc.perform(delete("/api/entity/country/webhooks/{hookName}", "abc")).andDo(print()).andExpect(status().is5xxServerError()).andExpect(jsonPath("$.error").value("webhook with name 'abc' does not exist"));
+	}
+
+	@Test
 	public void testCallWebhook() throws Exception {
-		baseEntityService.deleteAll(WebHookVO.class.getName());
+		baseEntityService.deleteAll(WebhookVO.class.getName());
 
 		stubFor(post(urlEqualTo("/countryhook")).willReturn(aResponse().withStatus(200)));
 

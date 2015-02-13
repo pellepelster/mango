@@ -23,6 +23,7 @@ import io.pelle.mango.client.web.modules.hierarchical.HierarchicalTreeModuleFact
 import io.pelle.mango.client.web.modules.log.LogModuleFactory;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModuleFactory;
 import io.pelle.mango.client.web.modules.property.PropertyModuleFactory;
+import io.pelle.mango.client.web.modules.webhook.WebHookModuleFactory;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.shared.GWT;
@@ -101,6 +102,7 @@ public final class MangoClientWeb implements EntryPoint {
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new HierarchicalTreeModuleFactory());
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new LogModuleFactory());
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new PropertyModuleFactory());
+		ModuleFactoryRegistry.getInstance().addModuleFactory(new WebHookModuleFactory());
 
 		if (GWT.isClient()) {
 			MESSAGES = ((MangoMessages) GWT.create(MangoMessages.class));

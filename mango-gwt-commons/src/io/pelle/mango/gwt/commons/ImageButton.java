@@ -26,10 +26,12 @@ public class ImageButton extends Button {
 	}
 
 	public ImageButton(ImageResource imageResource) {
+		this();
 		setResource(imageResource);
 	}
 
 	public ImageButton(String text) {
+		this();
 		setText(text);
 	}
 

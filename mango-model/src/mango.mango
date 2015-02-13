@@ -9,6 +9,8 @@ import io.pelle.mango.client.base.vo.query.DeleteQuery
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO
 import io.pelle.mango.client.system.Systeminformation
 import io.pelle.mango.client.log.LogEntryVO
+import io.pelle.mango.client.api.webhook.WebhookDefinition
+import io.pelle.mango.client.api.webhook.WebhookVO
 import io.pelle.mango.client.base.property.IProperty
 import io.pelle.mango.client.base.property.IPropertyCategory
 import java.io.Serializable
@@ -18,12 +20,31 @@ project Mango {
 	package io.pelle.^mango {
 
 		package api {
-			entity WebHook {
-				string name
-				string ^type
-				string url
-				map string string config
-				string 0..n events
+		
+			package webhook {
+			
+				moduledefinition Webhook {
+					parameters {
+					}
+				}
+	
+				valueobject WebhookDefinition {
+					string name
+					string 0..n events
+				}
+			
+				entity Webhook {
+					string name
+					string ^type
+					string url
+					map string string config
+					string 0..n events
+				}
+				
+				service WebhookService {
+					method List<WebhookDefinition> getWebhookDefinitions()
+					method List<WebhookVO> getWebhooks()
+				}
 			}
 		}
 		

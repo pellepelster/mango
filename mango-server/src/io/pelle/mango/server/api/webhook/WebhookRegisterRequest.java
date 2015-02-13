@@ -1,6 +1,6 @@
-package io.pelle.mango.server.webhook;
+package io.pelle.mango.server.api.webhook;
 
-public class WebHookRegisterRequest {
+public class WebhookRegisterRequest {
 
 	private String name;
 

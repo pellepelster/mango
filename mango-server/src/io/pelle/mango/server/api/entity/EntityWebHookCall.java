@@ -1,4 +1,4 @@
-package io.pelle.mango.server.webhook;
+package io.pelle.mango.server.api.entity;
 
 public class EntityWebHookCall {
 

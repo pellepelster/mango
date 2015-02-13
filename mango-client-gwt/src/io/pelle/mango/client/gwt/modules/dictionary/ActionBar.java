@@ -15,7 +15,7 @@ import io.pelle.mango.client.base.db.vos.UUID;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButtonUpdateHandler;
 import io.pelle.mango.client.gwt.GwtStyles;
-import io.pelle.mango.gwt.commons.ImageButton;
+import io.pelle.mango.client.gwt.utils.MangoButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,12 +58,10 @@ public class ActionBar extends HorizontalPanel {
 			buttonToolbar.add(buttonGroup);
 		}
 
-		ImageButton button = new ImageButton();
-		button.addStyleName(GwtStyles.BUTTON);
-		button.addStyleName(GwtStyles.BUTTON_DEFAULT);
-
+		MangoButton button = new MangoButton();
 		button.setResource(imageResource);
 		button.setTitle(title);
+		
 		buttonBars.get(buttonGroupName).add(button);
 
 		if (clickHandler != null) {

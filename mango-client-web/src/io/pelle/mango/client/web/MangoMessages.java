@@ -175,4 +175,10 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("{0} API")
 	String entityApi(String entityName);
 
+	@DefaultMessage("Webhooks")
+	String webHooksTitle();
+
+	@DefaultMessage("Add Webhook")
+	String webHooksAdd();
+
 }

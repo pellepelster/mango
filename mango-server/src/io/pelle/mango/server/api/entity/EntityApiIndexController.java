@@ -1,4 +1,4 @@
-package io.pelle.mango.server.entity;
+package io.pelle.mango.server.api.entity;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
