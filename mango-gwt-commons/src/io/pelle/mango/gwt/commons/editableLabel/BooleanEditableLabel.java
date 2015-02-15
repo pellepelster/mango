@@ -2,7 +2,6 @@ package io.pelle.mango.gwt.commons.editableLabel;
 
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.CheckBox;
-import com.google.gwt.user.client.ui.TextBox;
 
 public class BooleanEditableLabel extends BaseEditableLabel<Boolean, CheckBox> {
 
@@ -16,10 +15,6 @@ public class BooleanEditableLabel extends BaseEditableLabel<Boolean, CheckBox> {
 	@Override
 	protected String formatValue(Boolean value) {
 		return value.toString();
-	}
-
-	protected TextBox createTextBox() {
-		return new TextBox();
 	}
 
 	@Override

@@ -1,17 +1,13 @@
 package io.pelle.mango.client.gwt.utils;
 
-import com.google.gwt.resources.client.ImageResource;
+import io.pelle.mango.client.gwt.ImageButton;
 
-import io.pelle.mango.client.gwt.GwtStyles;
-import io.pelle.mango.gwt.commons.ImageButton;
+import com.google.gwt.resources.client.ImageResource;
 
 public class MangoButton extends ImageButton {
 
 	public MangoButton() {
 		super();
-		
-		addStyleName(GwtStyles.BUTTON);
-		addStyleName(GwtStyles.BUTTON_DEFAULT);
 	}
 
 	public MangoButton(ImageResource imageResource) {

@@ -36,7 +36,7 @@ public class ColumnLayoutStrategy {
 			int colummCount = baseContainer.getColummCount();
 
 			FlexTable flexTable = new FlexTable();
-			flexTable.setCellSpacing(5);
+			flexTable.addStyleName(GwtStyles.FORM);
 			parent.add(flexTable);
 
 			int currentRow = 0;

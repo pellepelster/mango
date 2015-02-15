@@ -20,10 +20,11 @@ import io.pelle.mango.client.gwt.utils.MangoButton;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.gwtbootstrap3.client.ui.ButtonGroup;
+import org.gwtbootstrap3.client.ui.ButtonToolBar;
+
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 
@@ -35,25 +36,21 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
  */
 public class ActionBar extends HorizontalPanel {
 
-	private final FlowPanel buttonToolbar = new FlowPanel();
+	private final ButtonToolBar buttonToolbar = new ButtonToolBar();
 
-	private final Map<String, FlowPanel> buttonBars = new HashMap<String, FlowPanel>();
+	private final Map<String, ButtonGroup> buttonBars = new HashMap<String, ButtonGroup>();
 
 	public ActionBar() {
 		setWidth("100%");
 		setHorizontalAlignment(HasAlignment.ALIGN_LEFT);
-		// addStyleName(GwtStyles.SEPARATOR_BORDER_BOTTOM);
-		// addStyleName(GwtStyles.SEPARATOR_BORDER_TOP);
 		addStyleName(GwtStyles.DEBUG_BORDER);
-		// addStyleName(GwtStyles.VERTICAL_SPACING);
-		buttonToolbar.addStyleName(GwtStyles.BUTTON_TOOLBAR);
 		add(buttonToolbar);
+
 	}
 
-	private Button addButton(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
+	private MangoButton addButton(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
 		if (!buttonBars.containsKey(buttonGroupName)) {
-			FlowPanel buttonGroup = new FlowPanel();
-			buttonGroup.addStyleName(GwtStyles.BUTTON_GROUP);
+			ButtonGroup buttonGroup = new ButtonGroup();
 			buttonBars.put(buttonGroupName, buttonGroup);
 			buttonToolbar.add(buttonGroup);
 		}
@@ -61,7 +58,7 @@ public class ActionBar extends HorizontalPanel {
 		MangoButton button = new MangoButton();
 		button.setResource(imageResource);
 		button.setTitle(title);
-		
+
 		buttonBars.get(buttonGroupName).add(button);
 
 		if (clickHandler != null) {
@@ -72,20 +69,20 @@ public class ActionBar extends HorizontalPanel {
 		return button;
 	}
 
-	public Button addToButtonGroup(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
+	public MangoButton addToButtonGroup(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
 		return addButton(buttonGroupName, imageResource, title, clickHandler, debugId);
 	}
 
-	public Button addToButtonGroup(String buttonGroupName, ImageResource imageResource, String title, String debugId) {
+	public MangoButton addToButtonGroup(String buttonGroupName, ImageResource imageResource, String title, String debugId) {
 		return addButton(buttonGroupName, imageResource, title, null, debugId);
 	}
 
-	public Button addSingleButton(ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
+	public MangoButton addSingleButton(ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
 		return addButton(UUID.uuid(), imageResource, title, clickHandler, debugId);
 	}
 
-	public Button addSingleButton(final IButton button) {
-		final Button uiButton = addButton(UUID.uuid(), button.getImage(), button.getTitle(), button, button.getDebugId());
+	public MangoButton addSingleButton(final IButton button) {
+		final MangoButton uiButton = addButton(UUID.uuid(), button.getImage(), button.getTitle(), button, button.getDebugId());
 
 		button.addUpdatehandler(new IButtonUpdateHandler() {
 
@@ -98,7 +95,7 @@ public class ActionBar extends HorizontalPanel {
 		return uiButton;
 	}
 
-	public Button addSingleButton(ImageResource imageResource, String title, String debugId) {
+	public MangoButton addSingleButton(ImageResource imageResource, String title, String debugId) {
 		return addButton(UUID.uuid(), imageResource, title, null, debugId);
 	}
 

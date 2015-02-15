@@ -9,12 +9,13 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.gwt.commons;
+package io.pelle.mango.client.gwt;
+
+import org.gwtbootstrap3.client.ui.Button;
 
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 
 public class ImageButton extends Button {

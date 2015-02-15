@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.model.test;
+package io.pelle.mango.demo.server;
 
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import static org.junit.Assert.assertEquals;
@@ -21,7 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class DemoBaseVODAOTest extends BaseDemoModelTest {
+public class DemoBaseVODAOTest extends BaseDemoTest {
 
 	@Autowired
 	private DataSource dataSource;

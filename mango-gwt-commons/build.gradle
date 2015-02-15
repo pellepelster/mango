@@ -27,6 +27,7 @@ dependencies {
 	compile group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
 	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
 	gwtTest group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
+	compile 'org.gwtbootstrap3:gwtbootstrap3:0.8.1'
 }
 
 gwt {

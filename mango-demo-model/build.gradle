@@ -8,6 +8,5 @@ dependencies {
 	compile project(path: ':mango-server')
 	
 	testCompile group: "com.jayway.jsonpath", name: "json-path", version: "1.2.0"
-	testCompile group: "com.github.tomakehurst", name: "wiremock", version: "1.53"
 	
 }

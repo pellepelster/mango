@@ -8,7 +8,8 @@
  	<inherits name="gwtupload.GWTUpload"/>
 	<inherits name='io.pelle.mango.gwt.commons.MangoGwtCommons' />
 	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
-	
+	<inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
+	 
  	<stylesheet src="css/mango-standard.css"/>
  
 	<source path="client.gwt" />

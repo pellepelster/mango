@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.gwtbootstrap3.client.ui.constants.Styles;
+
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -90,14 +92,14 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 				break;
 			case STRING:
 				final StringEditableLabel stringEditableLabel = new StringEditableLabel();
-				stringEditableLabel.addControlStyle(GwtStyles.FORM_CONTROL);
+				stringEditableLabel.addControlStyle(Styles.FORM_CONTROL);
 				stringEditableLabel.setValue(property.getKey());
 				baseEditableLabel = stringEditableLabel;
 
 				break;
 			case INTEGER:
 				IntegerEditableLabel integerEditableLabel = new IntegerEditableLabel();
-				integerEditableLabel.addControlStyle(GwtStyles.FORM_CONTROL);
+				integerEditableLabel.addControlStyle(Styles.FORM_CONTROL);
 				// integerEditableLabel.setValue(property.getKey());
 				baseEditableLabel = integerEditableLabel;
 				break;
@@ -107,8 +109,7 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 			}
 
 			// setValuChangeCallback(baseEditableLabel, property);
-			baseEditableLabel.addButtonStyle(GwtStyles.BUTTON);
-			baseEditableLabel.addButtonStyle(GwtStyles.BUTTON_DEFAULT);
+			baseEditableLabel.addButtonStyle(Styles.BTN);
 			baseEditableLabel.setErrorStyle(GwtStyles.FORM_CONTROL_ERROR);
 
 			propertyPanel.add(baseEditableLabel);

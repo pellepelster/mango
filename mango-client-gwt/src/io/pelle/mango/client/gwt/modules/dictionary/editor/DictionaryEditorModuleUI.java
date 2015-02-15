@@ -28,12 +28,13 @@ import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModul
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.gwt.commons.toastr.Toastr;
 
+import org.gwtbootstrap3.client.ui.Button;
+
 import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 

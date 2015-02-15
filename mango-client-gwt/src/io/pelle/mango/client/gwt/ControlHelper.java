@@ -21,6 +21,8 @@ import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrat
 
 import java.util.Map;
 
+import org.gwtbootstrap3.client.ui.constants.Styles;
+
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -50,7 +52,7 @@ public class ControlHelper implements IControlUpdateListener {
 		this.gwtControl = gwtControl;
 
 		if (addDefaultStyle) {
-			widget.addStyleName(GwtStyles.FORM_CONTROL);
+			widget.addStyleName(Styles.FORM_CONTROL);
 		}
 
 		if (baseControl.isReadonly()) {

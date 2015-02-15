@@ -16,6 +16,8 @@ import io.pelle.mango.demo.client.test.Entity1VO;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.gwtbootstrap3.client.ui.Button;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.dom.client.Style.Unit;
@@ -24,7 +26,6 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.PopupPanel;

@@ -27,6 +27,8 @@ public interface GwtStyles {
 
 	String MODULE = "module";
 
+	String FORM = "form";
+
 	String CONTROL_HAS_FEEDBACK_STYLE = "has-feedback";
 
 	String FORM_CONTROL_ERROR = "form-control-error";
@@ -60,18 +62,6 @@ public interface GwtStyles {
 	double ENABLED_OPACITY = 1.0d;
 
 	int SPACING = 10;
-
-	String BUTTON_GROUP = "btn-group";
-
-	String BUTTON_TOOLBAR = "btn-toolbar";
-
-	String BUTTON_PRIMARY = "btn-primary";
-
-	String BUTTON_DEFAULT = "btn-default";
-
-	String BUTTON = "btn";
-
-	String FORM_CONTROL = "form-control";
 
 	String TOP_SPACER = "top-spacer";
 

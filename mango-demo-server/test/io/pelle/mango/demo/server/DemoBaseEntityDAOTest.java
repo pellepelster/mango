@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.model.test;
+package io.pelle.mango.demo.server;
 
 import static io.pelle.mango.client.base.vo.query.CountQuery.countFrom;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
@@ -28,7 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Optional;
 
-public class DemoBaseEntityDAOTest extends BaseDemoModelTest {
+public class DemoBaseEntityDAOTest extends BaseDemoTest {
 
 	@Autowired
 	private DataSource dataSource;

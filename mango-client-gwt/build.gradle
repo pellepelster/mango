@@ -7,6 +7,7 @@ buildscript {
 dependencies {
 	compile project(':mango-client-web')
 	compile 'com.googlecode.gwtupload:gwtupload:1.0.1'
+	compile 'org.gwtbootstrap3:gwtbootstrap3:0.8.1'
 }
 
 jar {

@@ -17,10 +17,6 @@ public class IntegerEditableLabel extends BaseEditableLabel<Integer, TextBox> {
 		return value.toString();
 	}
 
-	protected TextBox createTextBox() {
-		return new TextBox();
-	}
-
 	@Override
 	protected TextBox createControl() {
 		return new TextBox();

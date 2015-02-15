@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.model.test;
+package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
 import io.pelle.mango.db.util.EntityVOMapper;
@@ -7,7 +7,7 @@ import io.pelle.mango.demo.server.test.Entity1;
 
 import org.junit.Test;
 
-public class EntityVOMapperTest extends BaseDemoModelTest {
+public class EntityVOMapperTest extends BaseDemoTest {
 
 	@Test
 	public void testMappings() {
