@@ -117,9 +117,12 @@ class XmlNameUtils {
 	//-------------------------------------------------------------------------
 	// wsdl
 	//-------------------------------------------------------------------------
+	def entityImportExportName(Entity entity)  {
+		return entity.name.toLowerCase + "_import_export";		
+	}
 	
 	def entityImportExportWSDLName(Entity entity)  {
-		return entity.name.toLowerCase + "_import_export.wsdl";		
+		return entity.entityImportExportName + ".wsdl";		
 	}
 	
 	def entityImportExportWSDLFullQualifiedFileName(Entity entity) {
@@ -136,7 +139,7 @@ class XmlNameUtils {
 	}
 	
 	def entityImportExportWSDLBeanId(Entity entity) {
-		return entity.name.toFirstLower + "WsdlDefinition";
+		return entity.name.toFirstLower + "ImportExportWSDLDefinition"
 	}
 
 	//-------------------------------------------------------------------------

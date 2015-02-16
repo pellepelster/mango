@@ -90,12 +90,12 @@ class XmlSchema {
 			</xsd:sequence>
 	</xsd:complexType>
 	
-	<xs:complexType name="MapType">
-		<xs:sequence>
-			<xs:element name="key" type="xs:anyType"/>
-			<xs:element name="value" type="xs:anyType"/>
-		</xs:sequence>
-	</xs:complexType>
+	<xsd:complexType name="MapType">
+		<xsd:sequence>
+			<xsd:element name="key" type="xsd:anyType"/>
+			<xsd:element name="value" type="xsd:anyType"/>
+		</xsd:sequence>
+	</xsd:complexType>
 	
 	</xsd:schema>
 	'''
