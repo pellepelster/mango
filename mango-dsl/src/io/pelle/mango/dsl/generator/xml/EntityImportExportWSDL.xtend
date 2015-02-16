@@ -73,13 +73,16 @@ class EntityImportExportWSDL {
 	<beans xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
 		xmlns:sws="http://www.springframework.org/schema/web-services"
 		xsi:schemaLocation="http://www.springframework.org/schema/beans  
-							http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+							http://www.springframework.org/schema/beans/spring-beans.xsd  
 							http://www.springframework.org/schema/web-services  
-							http://www.springframework.org/schema/web-services/web-services-2.0.xsd  
+							http://www.springframework.org/schema/web-services/web-services.xsd  
 							http://www.springframework.org/schema/context  
-							http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+							http://www.springframework.org/schema/context/spring-context.xsd
+							http://www.springframework.org/schema/mvc 
+							http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
 		<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"/>
 
@@ -97,24 +100,15 @@ class EntityImportExportWSDL {
 		    <property name="mappings">
 		        <props>
 		        	«FOR entity : ModelQuery.createQuery(model).allEntities»
-		        	<prop key="«entity.entityImportExportWSDLName»">«entity.entityImportExportWSDLBeanId»</prop>
-		        	<prop key="«entity.xsdFileName»">resourceHttpRequestHandler</prop>
+		        	<prop key="«entity.entityImportExportWSDLFullQualifiedFileName»">«entity.entityImportExportWSDLBeanId»</prop>
 					«ENDFOR»
 		        </props>
 		    </property>
 		    <property name="defaultHandler" ref="messageDispatcher" />
 		</bean>
 
-	    <bean id="resourceHttpRequestHandler" class="org.springframework.web.servlet.resource.ResourceHttpRequestHandler">
-	        <property name="locations">
-	            <list>
-		        	«FOR entity : ModelQuery.createQuery(model).allEntities»
-		        	<value>classpath:/«entity.xsdFileName»</value>
-					«ENDFOR»
-	            </list>
-	        </property>
-	    </bean>
-	    
+		<mvc:resources mapping="schema/*" location="classpath:/schema/" />
+
 		«FOR entity : ModelQuery.createQuery(model).allEntities»
 			<!-- «entity» -->
 			<bean id="«entity.entityImportExportWebserviceEndpointBeanId»" class="«entity.entityImportExportWebserviceEndpointFullQualifiedName»">

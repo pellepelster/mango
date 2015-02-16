@@ -52,7 +52,7 @@ class XmlNameUtils {
 	// xsd
 	//=========================================================================
 	def xsdFullQualifiedFileName(Entity entity) {
-		return entity.xsdFileName
+		return "schema/" + entity.xsdFileName
 	}
 
 	def xsdFileName(Entity entity) {
@@ -126,7 +126,7 @@ class XmlNameUtils {
 	}
 	
 	def entityImportExportWSDLFullQualifiedFileName(Entity entity) {
-		return entityImportExportWSDLName(entity);
+		return "schema/" + entityImportExportWSDLName(entity);
 	}
 	
 	def String entityImportExportWSDLNamespace(Entity entity) {
