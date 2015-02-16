@@ -628,6 +628,9 @@ project MangoDemo {
 				navigationnode Properties {
 					moduleDefinition Property
 				}
+				navigationnode Webhooks {
+					moduleDefinition Webhook
+				}
 			}
 
 		}
