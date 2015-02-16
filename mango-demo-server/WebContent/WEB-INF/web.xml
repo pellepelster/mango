@@ -70,12 +70,6 @@
 	<servlet>
 		<servlet-name>mangodemo-webservices</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<!-- 
-		<init-param>
-			<param-name>transformWsdlLocations</param-name>
-			<param-value>true</param-value>
-		</init-param>
-		 -->
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 
