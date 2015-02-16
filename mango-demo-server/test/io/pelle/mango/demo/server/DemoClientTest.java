@@ -45,6 +45,8 @@ public class DemoClientTest extends BaseDemoTest {
 	@Test
 	public void testBaseTableHookRowColor() {
 
+		baseEntityService.deleteAll(CountryVO.class.getName());
+
 		MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH.COUNTRY_RESULT.setTableHook(new BaseTableHook<CountryVO>() {
 			@Override
 			public String getStyleName(CountryVO tableRow) {
@@ -70,6 +72,8 @@ public class DemoClientTest extends BaseDemoTest {
 
 	@Test
 	public void testCountryEditorExchangeRateReadOnly() {
+
+		baseEntityService.deleteAll(CountryVO.class.getName());
 
 		DictionaryEditorModuleTestUI<CountryVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR);
 		DecimalTestControl readOnlyControl = editor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_EXCHANGE_RATE);
@@ -562,10 +566,6 @@ public class DemoClientTest extends BaseDemoTest {
 		search.execute();
 		search.assertSearchResults(3);
 
-	}
-
-	public void setBaseEntityService(IBaseEntityService baseEntityService) {
-		this.baseEntityService = baseEntityService;
 	}
 
 	@Autowired
