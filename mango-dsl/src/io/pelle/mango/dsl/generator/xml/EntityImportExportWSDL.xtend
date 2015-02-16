@@ -83,6 +83,38 @@ class EntityImportExportWSDL {
 
 		<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"/>
 
+		<bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory" />
+		
+		<bean class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter">
+		    <property name="messageFactory" ref="messageFactory" />
+		</bean>
+		
+		<bean id="messageDispatcher" class="org.springframework.ws.soap.server.SoapMessageDispatcher" />
+		
+		<bean class="org.springframework.ws.transport.http.WsdlDefinitionHandlerAdapter" />
+		
+		<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		    <property name="mappings">
+		        <props>
+		        	«FOR entity : ModelQuery.createQuery(model).allEntities»
+		        	<prop key="«entity.entityImportExportWSDLName»">«entity.entityImportExportWSDLBeanId»</prop>
+		        	<prop key="«entity.xsdFileName»">resourceHttpRequestHandler</prop>
+					«ENDFOR»
+		        </props>
+		    </property>
+		    <property name="defaultHandler" ref="messageDispatcher" />
+		</bean>
+
+	    <bean id="resourceHttpRequestHandler" class="org.springframework.web.servlet.resource.ResourceHttpRequestHandler">
+	        <property name="locations">
+	            <list>
+		        	«FOR entity : ModelQuery.createQuery(model).allEntities»
+		        	<value>classpath:/«entity.xsdFileName»</value>
+					«ENDFOR»
+	            </list>
+	        </property>
+	    </bean>
+	    
 		«FOR entity : ModelQuery.createQuery(model).allEntities»
 			<!-- «entity» -->
 			<bean id="«entity.entityImportExportWebserviceEndpointBeanId»" class="«entity.entityImportExportWebserviceEndpointFullQualifiedName»">
