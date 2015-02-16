@@ -16,6 +16,7 @@ import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
+import java.io.Serializable
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -96,7 +97,7 @@ class VOGenerator extends BaseEntityGenerator {
 	def compileValueObject(ValueObject valueObject) '''
 		package «getPackageName(valueObject)»;
 		
-		public class «valueObject.voName» «IF valueObject.extends != null»extends «voFullQualifiedName(valueObject.extends)»«ENDIF» {
+		public class «valueObject.voName» «IF valueObject.extends != null»extends «voFullQualifiedName(valueObject.extends)»«ENDIF» implements «Serializable.name» {
 		
 			public «valueObject.voName»() {
 			}
