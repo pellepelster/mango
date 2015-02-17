@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project activeEnvironment="Default" name="mango-demo-server" resourceRoot="" soapui-version="5.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Entity1ImportBinding" type="wsdl" bindingName="{http://mangodemo/entity1}Entity1ImportBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/webservices/entity1ImportExportWebService.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/webservices/entity1ImportExportWebService.wsdl"><con:part><con:url>http://localhost:9090/webservices/entity1ImportExportWebService.wsdl</con:url><con:content><![CDATA[<definitions name="Entity1ImportExport" targetNamespace="http://mangodemo/entity1" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:entity1="http://mangodemo/entity1" xmlns:entity2="http://mangodemo/entity2" xmlns:entity3="http://mangodemo/entity3" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://mangodemo/entity1" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<con:soapui-project activeEnvironment="Default" name="mango-demo-server" resourceRoot="" soapui-version="5.0.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config"><con:settings/><con:interface xsi:type="con:WsdlInterface" wsaVersion="NONE" name="Entity1ImportBinding" type="wsdl" bindingName="{http://mangodemo/entity1}Entity1ImportBinding" soapVersion="1_1" anonymous="optional" definition="http://localhost:9090/webservices/schema/entity1_import_export.wsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:settings/><con:definitionCache type="TEXT" rootPart="http://localhost:9090/webservices/schema/entity1_import_export.wsdl"><con:part><con:url>http://localhost:9090/webservices/schema/entity1_import_export.wsdl</con:url><con:content><![CDATA[<definitions name="Entity1ImportExport" targetNamespace="http://mangodemo/entity1" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://mangodemo/entity1" xmlns:entity1="http://mangodemo/entity1" xmlns:entity2="http://mangodemo/entity2" xmlns:entity3="http://mangodemo/entity3" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <types>
-    <xsd:schema elementFormDefault="unqualified" targetNamespace="http://mangodemo/entity1" xmlns="http://mangodemo/entity1">
+    <xsd:schema targetNamespace="http://mangodemo/entity1" elementFormDefault="unqualified" xmlns="http://mangodemo/entity1">
       <xsd:element name="Entity1List">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity1" type="Entity1Type"/>
+            <xsd:element name="Entity1" type="Entity1Type" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -13,18 +13,21 @@
         <xsd:sequence>
           <xsd:element name="id" type="xsd:integer"/>
           <xsd:element name="stringDatatype1" type="xsd:string"/>
+          <xsd:element name="stringDatatype2" type="xsd:string"/>
+          <xsd:element name="stringDatatype3" type="xsd:string"/>
+          <xsd:element name="stringDatatype4" type="xsd:string"/>
           <xsd:element name="booleanDatatype1" type="xsd:boolean"/>
           <xsd:element name="stringDatatype1List" type="xsd:string"/>
           <xsd:element name="entity2Datatype" type="entity2:Entity2ReferenceType"/>
           <xsd:element name="enumeration1Datatype">
             <xsd:complexType>
-              <xsd:sequence maxOccurs="unbounded" minOccurs="0">
+              <xsd:sequence minOccurs="0" maxOccurs="unbounded">
                 <xsd:element name="KeyValue">
                   <xsd:complexType>
                     <xsd:simpleContent>
                       <xsd:extension base="xsd:string">
-                        <xsd:attribute name="key" type="xsd:string"/>
-                        <xsd:attribute name="value" type="xsd:string"/>
+                        <xsd:attribute type="xsd:string" name="key"/>
+                        <xsd:attribute type="xsd:string" name="value"/>
                       </xsd:extension>
                     </xsd:simpleContent>
                   </xsd:complexType>
@@ -32,11 +35,34 @@
               </xsd:sequence>
             </xsd:complexType>
           </xsd:element>
+          <xsd:element name="enumeration1Datatypes">
+            <xsd:complexType>
+              <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+                <xsd:element name="KeyValue">
+                  <xsd:complexType>
+                    <xsd:simpleContent>
+                      <xsd:extension base="xsd:string">
+                        <xsd:attribute type="xsd:string" name="key"/>
+                        <xsd:attribute type="xsd:string" name="value"/>
+                      </xsd:extension>
+                    </xsd:simpleContent>
+                  </xsd:complexType>
+                </xsd:element>
+              </xsd:sequence>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="integerDatatype1" type="xsd:integer"/>
+          <xsd:element name="integerDatatype2" type="xsd:integer"/>
+          <xsd:element name="decimalDatatype1" type="xsd:decimal"/>
+          <xsd:element name="doubleDatatype1" type="xsd:double"/>
+          <xsd:element name="floatDatatype1" type="xsd:float"/>
+          <xsd:element name="dateDatype1" type="xsd:date"/>
+          <xsd:element name="dateDatype2" type="xsd:date"/>
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="Entity1ReferenceList">
         <xsd:sequence>
-          <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity1Reference" type="Entity1ReferenceType"/>
+          <xsd:element name="Entity1Reference" type="Entity1ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="Entity1ReferenceType">
@@ -45,12 +71,18 @@
           <xsd:element name="stringDatatype1" type="xsd:string"/>
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="MapType">
+        <xsd:sequence>
+          <xsd:element name="key" type="xsd:anyType"/>
+          <xsd:element name="value" type="xsd:anyType"/>
+        </xsd:sequence>
+      </xsd:complexType>
     </xsd:schema>
-    <xsd:schema elementFormDefault="unqualified" targetNamespace="http://mangodemo/entity2" xmlns="http://mangodemo/entity2">
+    <xsd:schema targetNamespace="http://mangodemo/entity2" elementFormDefault="unqualified" xmlns="http://mangodemo/entity2">
       <xsd:element name="Entity2List">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity2" type="Entity2Type"/>
+            <xsd:element name="Entity2" type="Entity2Type" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -63,7 +95,7 @@
       </xsd:complexType>
       <xsd:complexType name="Entity2ReferenceList">
         <xsd:sequence>
-          <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity2Reference" type="Entity2ReferenceType"/>
+          <xsd:element name="Entity2Reference" type="Entity2ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="Entity2ReferenceType">
@@ -71,12 +103,18 @@
           <xsd:element name="id" type="xsd:integer"/>
         </xsd:sequence>
       </xsd:complexType>
+      <xsd:complexType name="MapType">
+        <xsd:sequence>
+          <xsd:element name="key" type="xsd:anyType"/>
+          <xsd:element name="value" type="xsd:anyType"/>
+        </xsd:sequence>
+      </xsd:complexType>
     </xsd:schema>
-    <xsd:schema elementFormDefault="unqualified" targetNamespace="http://mangodemo/entity3" xmlns="http://mangodemo/entity3">
+    <xsd:schema targetNamespace="http://mangodemo/entity3" elementFormDefault="unqualified" xmlns="http://mangodemo/entity3">
       <xsd:element name="Entity3List">
         <xsd:complexType>
           <xsd:sequence>
-            <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity3" type="Entity3Type"/>
+            <xsd:element name="Entity3" type="Entity3Type" minOccurs="0" maxOccurs="unbounded"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -89,12 +127,18 @@
       </xsd:complexType>
       <xsd:complexType name="Entity3ReferenceList">
         <xsd:sequence>
-          <xsd:element maxOccurs="unbounded" minOccurs="0" name="Entity3Reference" type="Entity3ReferenceType"/>
+          <xsd:element name="Entity3Reference" type="Entity3ReferenceType" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
       </xsd:complexType>
       <xsd:complexType name="Entity3ReferenceType">
         <xsd:sequence>
           <xsd:element name="id" type="xsd:integer"/>
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="MapType">
+        <xsd:sequence>
+          <xsd:element name="key" type="xsd:anyType"/>
+          <xsd:element name="value" type="xsd:anyType"/>
         </xsd:sequence>
       </xsd:complexType>
     </xsd:schema>

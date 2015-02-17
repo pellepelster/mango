@@ -9,7 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import packagename.client.TodoVO;
 
-@ContextConfiguration(locations = { "classpath:/MangoApplicationContext.xml", "classpath:/MangoApplicationContext.xml", "classpath:/MangoSpringServices-gen.xml", "classpath:/ProjectNameApplicationContext.xml", "classpath:/ProjectNameDB-gen.xml", "classpath:/ProjectNameBaseApplicationContext-gen.xml" })
+@ContextConfiguration(locations = { "classpath:/MangoLoggerApplicationContext.xml", "classpath:/MangoApplicationContext.xml", "classpath:/MangoSpringServices-gen.xml", "classpath:/ProjectNameApplicationContext.xml", "classpath:/ProjectNameDB-gen.xml", "classpath:/ProjectNameBaseApplicationContext-gen.xml" })
 public class TodoServiceTest extends BaseDBTest {
 
 	public TodoServiceTest() {
