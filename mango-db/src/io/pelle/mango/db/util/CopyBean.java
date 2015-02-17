@@ -12,35 +12,30 @@ import io.pelle.mango.db.copy.handler.TypeEqualsCopyHandler;
  * @version $Rev$, $Date$
  * 
  */
-public final class CopyBean extends BaseCopyBean
-{
+public final class CopyBean extends BaseCopyBean {
 
 	private static CopyBean instance;
 
-	public static CopyBean getInstance()
-	{
-		if (instance == null)
-		{
+	public static CopyBean getInstance() {
+		if (instance == null) {
 			instance = new CopyBean();
 		}
 
 		return instance;
 	}
-	
+
 	@Override
-	protected Class<?> getMappedTargetType(Class<?> sourceType)
-	{
+	protected Class<?> getMappedTargetType(Class<?> sourceType) {
 		return EntityVOMapper.getInstance().getMappedClass(sourceType);
 	}
 
-	private CopyBean()
-	{
+	private CopyBean() {
 		super();
-		
+
+		addFieldCopyHandler(new MapCopyHandler());
 		addFieldCopyHandler(new TypeEqualsCopyHandler());
 		addFieldCopyHandler(new EnumCopyHandler());
-		addFieldCopyHandler(new MapCopyHandler());
-		
+
 	}
 
 }

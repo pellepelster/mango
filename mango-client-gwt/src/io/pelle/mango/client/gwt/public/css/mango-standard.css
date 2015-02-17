@@ -211,3 +211,8 @@
   border-collapse: initial;
   border-spacing: 5px;
 }
+.panel-info > .panel-heading {
+  color: #aaaab5;
+  background-color: #b1b3cc;
+  border-color: #f3f3f5;
+}

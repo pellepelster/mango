@@ -19,6 +19,7 @@ import io.pelle.mango.demo.client.test.Entity3VO;
 import io.pelle.mango.server.api.webhook.Webhook;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
@@ -407,6 +408,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		WebhookVO result = baseEntityService.read(webHook1.getId(), Webhook.class.getName());
 
+		assertTrue(result.getConfig() instanceof HashMap);
 		assertEquals(1, result.getConfig().size());
 		assertEquals("bbb", result.getConfig().get("aaa"));
 	}
@@ -425,7 +427,4 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals(0, result.getValidationMessages().size());
 	}
 
-	public void setBaseVODAO(IBaseVODAO baseVODAO) {
-		this.baseVODAO = baseVODAO;
-	}
 }

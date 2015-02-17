@@ -6,8 +6,11 @@ import io.pelle.mango.client.base.db.vos.Result;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Transactional
 public class WebhookServiceImpl implements IWebhookService {
 
 	@Autowired
@@ -15,7 +18,7 @@ public class WebhookServiceImpl implements IWebhookService {
 
 	@Override
 	public List<WebhookVO> getWebhooks() {
-		return null;
+		return entityWebhookRegistry.getWebhooks();
 	}
 
 	@Override

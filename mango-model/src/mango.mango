@@ -29,6 +29,7 @@ project Mango {
 				}
 	
 				valueobject WebhookDefinition {
+					string id
 					string name
 					string 0..n events
 				}

@@ -180,4 +180,9 @@ public class EntityWebhookRegistry implements InitializingBean {
 			}
 		});
 	}
+
+	public List<WebhookVO> getWebhooks() {
+		SelectQuery<WebhookVO> selectQuery = SelectQuery.selectFrom(WebhookVO.class);
+		return baseVODAO.filter(selectQuery);
+	}
 }

@@ -17,10 +17,13 @@ import io.pelle.mango.client.base.module.IModule;
 import io.pelle.mango.client.base.module.ModuleUtils;
 import io.pelle.mango.client.web.MangoClientWeb;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class WebHookModule extends BaseWebhookModule {
@@ -31,16 +34,11 @@ public class WebHookModule extends BaseWebhookModule {
 
 	public final static String UI_MODULE_LOCATOR = ModuleUtils.getBaseUIModuleUrl(UI_MODULE_ID);
 
-	private List<WebhookDefinition> webhookDefinictions = new ArrayList<WebhookDefinition>();
+	private List<WebhookDefinition> WEBHOOK_DEFINITIONS = Arrays.asList(new WebhookDefinition[] { EntityWebhookDefitnition.INSTANCE });
 
 	public WebHookModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
 		super(moduleUrl, moduleCallback, parameters);
 		getModuleCallback().onSuccess(WebHookModule.this);
-
-		// = Arrays.asList(new WebhookDefinition[] {
-		// EntityWebhookDefitnition.INSTANCE });
-
-		// VOMetaModelProvider.getEntityDescriptor(dictionaryModel)
 	}
 
 	@Override
@@ -54,6 +52,15 @@ public class WebHookModule extends BaseWebhookModule {
 	}
 
 	public List<WebhookDefinition> getWebHookDefinitions() {
-		return webhookDefinictions;
+		return WEBHOOK_DEFINITIONS;
+	}
+
+	public Optional<WebhookDefinition> getWebHookDefinitionById(final String id) {
+		return Iterables.tryFind(WEBHOOK_DEFINITIONS, new Predicate<WebhookDefinition>() {
+			@Override
+			public boolean apply(WebhookDefinition input) {
+				return input.getId().equals(id);
+			}
+		});
 	}
 }

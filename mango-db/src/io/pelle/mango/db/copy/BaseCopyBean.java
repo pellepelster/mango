@@ -183,7 +183,6 @@ public abstract class BaseCopyBean {
 						} catch (Exception e) {
 							throw new RuntimeException(e);
 						}
-
 						break;
 					}
 				}
