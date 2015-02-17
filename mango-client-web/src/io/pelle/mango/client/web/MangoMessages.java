@@ -195,4 +195,11 @@ public interface MangoMessages extends Messages {
 
 	@DefaultMessage("Delete")
 	String webHookDelete();
+
+	@DefaultMessage("Edit")
+	String webHookEdit();
+
+	@DefaultMessage("Cancel")
+	String webHookCancel();
+
 }

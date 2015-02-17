@@ -14,11 +14,10 @@ package io.pelle.mango.client.gwt.modules.webhook;
 import io.pelle.mango.client.api.webhook.WebhookDefinition;
 import io.pelle.mango.client.api.webhook.WebhookVO;
 import io.pelle.mango.client.base.db.vos.Result;
-import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
+import io.pelle.mango.client.gwt.modules.webhook.WebhookPanel.WebhookPanelCallback;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.databinding.ValidationUtils;
-import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
 import io.pelle.mango.client.web.modules.webhook.WebHookModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.gwt.commons.toastr.Toastr;
@@ -32,19 +31,10 @@ import org.gwtbootstrap3.client.ui.AnchorListItem;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.ButtonGroup;
 import org.gwtbootstrap3.client.ui.DropDownMenu;
-import org.gwtbootstrap3.client.ui.FieldSet;
-import org.gwtbootstrap3.client.ui.Form;
-import org.gwtbootstrap3.client.ui.FormGroup;
-import org.gwtbootstrap3.client.ui.FormLabel;
 import org.gwtbootstrap3.client.ui.Heading;
-import org.gwtbootstrap3.client.ui.Input;
-import org.gwtbootstrap3.client.ui.ListBox;
-import org.gwtbootstrap3.client.ui.constants.FormType;
 import org.gwtbootstrap3.client.ui.constants.HeadingSize;
-import org.gwtbootstrap3.client.ui.constants.InputType;
 import org.gwtbootstrap3.client.ui.constants.Toggle;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -58,7 +48,7 @@ import com.google.gwt.user.client.ui.Panel;
  * @author pelle
  * 
  */
-public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements AsyncCallback<Result<WebhookVO>> {
+public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements AsyncCallback<Result<WebhookVO>>, WebhookPanelCallback {
 
 	final static Logger LOG = Logger.getLogger("LogModuleUI");
 
@@ -68,7 +58,7 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements A
 
 	private FlowPanel panelBody;
 
-	private Map<WebhookVO, Panel> webhookPanels = new HashMap<WebhookVO, Panel>();
+	private Map<WebhookVO, WebhookPanel> webhookPanels = new HashMap<WebhookVO, WebhookPanel>();
 
 	/**
 	 * @param module
@@ -105,7 +95,8 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements A
 				@Override
 				public void onClick(ClickEvent event) {
 					WebhookVO webhook = new WebhookVO();
-					addPanel(webhookDefinition, webhook);
+					WebhookPanel webhookPanel = addPanel(webhookDefinition, webhook);
+					webhookPanel.setStatus(true);
 				}
 			});
 			downMenu.add(anchorListItem);
@@ -129,84 +120,10 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements A
 
 	}
 
-	private void addPanel(final WebhookDefinition webhookDefinition, WebhookVO webhook) {
-		FlowPanel webhookPanel = createWebhookPanel(webhook, webhookDefinition);
+	private WebhookPanel addPanel(final WebhookDefinition webhookDefinition, WebhookVO webhook) {
+		WebhookPanel webhookPanel = new WebhookPanel(this, webhook, webhookDefinition);
 		webhookPanels.put(webhook, webhookPanel);
 		panelBody.add(webhookPanel);
-	}
-
-	private FlowPanel createWebhookPanel(final WebhookVO webhook, final WebhookDefinition webhookDefinition) {
-
-		EntityWebhookDefitnition entityWebhookDefitnition = (EntityWebhookDefitnition) webhookDefinition;
-
-		final FlowPanel webhookPanel = new FlowPanel();
-
-		Form form = new Form();
-		webhookPanel.add(form);
-		form.setType(FormType.INLINE);
-
-		FieldSet fieldSet = new FieldSet();
-		form.add(fieldSet);
-
-		FormGroup formGroup = new FormGroup();
-		fieldSet.add(formGroup);
-
-		FormLabel nameLabel = new FormLabel();
-		nameLabel.setText(MangoClientWeb.MESSAGES.webHookName());
-		formGroup.add(nameLabel);
-
-		final Input nameInput = new Input();
-		formGroup.add(nameInput);
-		nameInput.setType(InputType.TEXT);
-		nameInput.setText(webhook.getName());
-
-		FormLabel urlLabel = new FormLabel();
-		urlLabel.setText(MangoClientWeb.MESSAGES.webHookURL());
-		formGroup.add(urlLabel);
-
-		final Input urlInput = new Input();
-		formGroup.add(urlInput);
-		urlInput.setType(InputType.TEXT);
-		urlInput.setText(webhook.getUrl());
-
-		FormLabel entityLabel = new FormLabel();
-		entityLabel.setText(MangoClientWeb.MESSAGES.webHookName());
-		formGroup.add(entityLabel);
-
-		final ListBox entitiesListBox = new ListBox();
-
-		for (IEntityDescriptor<?> entityDescriptor : entityWebhookDefitnition.getEntityDescriptors()) {
-			entitiesListBox.addItem(Objects.firstNonNull(entityDescriptor.getLabel(), entityDescriptor.getName()), entityDescriptor.getVOEntityClass().getName());
-		}
-
-		formGroup.add(entitiesListBox);
-
-		Button saveButton = new Button(MangoClientWeb.MESSAGES.webHookSave());
-		formGroup.add(saveButton);
-		saveButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				webhook.setName(nameInput.getText());
-				webhook.setUrl(urlInput.getText());
-				webhook.setType(webhookDefinition.getId());
-				webhook.getData().put(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY, entitiesListBox.getValue(entitiesListBox.getSelectedIndex()));
-
-				MangoClientWeb.getInstance().getRemoteServiceLocator().getWebhookService().addWebhook(webhook, WebhookModuleUI.this);
-			}
-		});
-
-		Button deleteButton = new Button(MangoClientWeb.MESSAGES.webHookDelete());
-		deleteButton.addClickHandler(new ClickHandler() {
-
-			@Override
-			public void onClick(ClickEvent event) {
-				panelBody.remove(webhookPanel);
-				webhookPanels.remove(webhook);
-			}
-		});
-		formGroup.add(deleteButton);
-
 		return webhookPanel;
 	}
 
@@ -227,9 +144,30 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements A
 
 	@Override
 	public void onSuccess(Result<WebhookVO> result) {
-		if (!result.isOk()) {
+		if (result.isOk()) {
+			webhookPanels.get(result.getVO()).setStatus(false);
+		} else {
 			Toastr.error(ValidationUtils.getErrorMessage(result.getValidationMessages()));
 		}
+	}
+
+	@Override
+	public void onAdd(WebhookVO webhook) {
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getWebhookService().addWebhook(webhook, WebhookModuleUI.this);
+	}
+
+	@Override
+	public void onDelete(WebhookVO webhook) {
+
+		WebhookPanel webhookPanel = webhookPanels.get(webhook);
+		panelBody.remove(webhookPanel);
+		webhookPanels.remove(webhook);
+	}
+
+	@Override
+	public void onCancel(WebhookVO webhook) {
+		WebhookPanel webhookPanel = webhookPanels.get(webhook);
+		webhookPanel.reset();
 	}
 
 }

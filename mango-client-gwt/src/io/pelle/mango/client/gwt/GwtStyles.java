@@ -29,6 +29,8 @@ public interface GwtStyles {
 
 	String FORM = "form";
 
+	String WEBHOOK_CONTAINER = "webhook-container";
+
 	String CONTROL_HAS_FEEDBACK_STYLE = "has-feedback";
 
 	String FORM_CONTROL_ERROR = "form-control-error";
@@ -44,12 +46,6 @@ public interface GwtStyles {
 	String HELP_POPUP_STYLE = "help-popup";
 
 	String TITLE = "title";
-
-	String H1_CLASS = "h1";
-
-	String H2_CLASS = "h2";
-
-	String H3_CLASS = "h3";
 
 	String H4_CLASS = "h4";
 
