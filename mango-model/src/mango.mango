@@ -42,8 +42,8 @@ project Mango {
 				}
 				
 				service WebhookService {
-					method List<WebhookDefinition> getWebhookDefinitions()
 					method List<WebhookVO> getWebhooks()
+					method Result<WebhookVO> addWebhook(WebhookVO webhook)
 				}
 			}
 		}

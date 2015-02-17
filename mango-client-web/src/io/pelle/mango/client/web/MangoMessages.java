@@ -181,4 +181,15 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("Add Webhook")
 	String webHooksAdd();
 
+	@DefaultMessage("Save")
+	String webHookSave();
+
+	@DefaultMessage("URL")
+	String webHookURL();
+
+	@DefaultMessage("Name")
+	String webHookName();
+
+	@DefaultMessage("Delete")
+	String webHookDelete();
 }

@@ -13,6 +13,7 @@ package io.pelle.mango.client.base.modules.dictionary.model;
 
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +35,10 @@ public class VOMetaModelProvider {
 
 	public static IEntityDescriptor<?> getEntityDescriptor(IDictionaryModel dictionaryModel) {
 		return getValueObjectEntityDescriptor(dictionaryModel.getVOClass().getName());
+	}
+
+	public static Collection<IEntityDescriptor<?>> getEntityDescriptors() {
+		return descriptors.values();
 	}
 
 }

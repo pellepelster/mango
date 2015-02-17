@@ -49,4 +49,8 @@ public class Result<VOType extends IBaseVO> implements Serializable
 		this.vo = vo;
 	}
 
+	public boolean isOk() {
+		return validationMessages.isEmpty();
+	}
+
 }

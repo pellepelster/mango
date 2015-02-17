@@ -1,7 +1,10 @@
 package io.pelle.mango.server.api.webhook;
 
 import io.pelle.mango.client.api.webhook.WebhookVO;
+import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.web.modules.dictionary.databinding.ValidationUtils;
+import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.server.BaseEntityApiController;
 
@@ -54,8 +57,16 @@ public class WebhookApiController extends BaseEntityApiController {
 		webHook.setType(entityClass.getName());
 		webHook.setName(webHookRegisterRequest.getName());
 		webHook.setUrl(webHookRegisterRequest.getUrl());
+		webHook.getData().put(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY, entityClass.getName());
 
-		return webHookRegistry.registerEntityWebHook(entityClass, webHook);
+		Result<WebhookVO> result = webHookRegistry.registerEntityWebHook(webHook);
+		
+		if (result.isOk()) {
+			return result.getVO();
+		} else {
+			throw new WebhookException(ValidationUtils.getErrorMessage(result.getValidationMessages()));
+		}
+		
 	}
 
 }

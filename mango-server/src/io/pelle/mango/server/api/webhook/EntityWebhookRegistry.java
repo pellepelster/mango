@@ -1,17 +1,19 @@
 package io.pelle.mango.server.api.webhook;
 
-import io.pelle.mango.client.api.webhook.WebhookDefinition;
 import io.pelle.mango.client.api.webhook.WebhookVO;
+import io.pelle.mango.client.base.db.vos.Result;
+import io.pelle.mango.client.base.messages.IMessage;
+import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.dao.IDAOCallback;
 import io.pelle.mango.server.api.entity.EntityWebHookCall;
 import io.pelle.mango.server.log.IMangoLogger;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +23,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.AsyncRestTemplate;
 
 import com.google.common.base.Optional;
@@ -29,14 +30,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 
-@RestController
 public class EntityWebhookRegistry implements InitializingBean {
-
-	public enum EntityWebHookEvents {
-		ON_CREATE, ON_SAVE
-	}
-
-	public static final WebhookDefinition ENTITY_WEBHOOK = new WebhookDefinition("Entity Webhook", Arrays.asList(new String[] { EntityWebHookEvents.ON_CREATE.toString(), EntityWebHookEvents.ON_SAVE.toString() }));
 
 	@Autowired
 	private IMangoLogger mangoLogger;
@@ -77,25 +71,58 @@ public class EntityWebhookRegistry implements InitializingBean {
 		}
 	}
 
-	public WebhookVO registerEntityWebHook(Class<? extends IBaseEntity> entityClass, WebhookVO webHook) {
+	@SuppressWarnings("unchecked")
+	private Class<? extends IBaseEntity> getEntityClass(WebhookVO webhook) {
 
-		if (StringUtils.isEmpty(webHook.getName())) {
-			throw new WebhookException("no name provided");
+		Object entityClassName = webhook.getData().get(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY);
+
+		if (entityClassName == null || StringUtils.isEmpty(entityClassName.toString())) {
+			return null;
+		} else {
+			try {
+				return (Class<? extends IBaseEntity>) Class.forName(entityClassName.toString());
+			} catch (ClassNotFoundException e) {
+				return null;
+			}
+		}
+	}
+
+	public Result<WebhookVO> validateRegisterRequest(WebhookVO webhook) {
+
+		Result<WebhookVO> result = new Result<WebhookVO>();
+		result.setVO(webhook);
+
+		Class<? extends IBaseEntity> entityClass = getEntityClass(webhook);
+		if (entityClass == null) {
+			result.getValidationMessages().add(new ValidationMessage(IMessage.SEVERITY.ERROR, EntityWebhookRegistry.class.getName(), "no entity class name provided"));
+			return result;
 		}
 
-		if (StringUtils.isEmpty(webHook.getUrl())) {
-			throw new WebhookException("no URL provided");
+		if (StringUtils.isEmpty(webhook.getName())) {
+			result.getValidationMessages().add(new ValidationMessage(IMessage.SEVERITY.ERROR, EntityWebhookRegistry.class.getName(), "no name provided"));
 		}
 
-		SelectQuery<WebhookVO> selectQuery = SelectQuery.selectFrom(WebhookVO.class).where(WebhookVO.TYPE.eq(getCacheKey(entityClass)).and(WebhookVO.NAME.eq(webHook.getName())));
+		if (StringUtils.isEmpty(webhook.getUrl())) {
+			result.getValidationMessages().add(new ValidationMessage(IMessage.SEVERITY.ERROR, EntityWebhookRegistry.class.getName(), "no URL provided"));
+		}
+
+		SelectQuery<WebhookVO> selectQuery = SelectQuery.selectFrom(WebhookVO.class).where(WebhookVO.TYPE.eq(getCacheKey(entityClass)).and(WebhookVO.NAME.eq(webhook.getName())));
 
 		if (baseVODAO.read(selectQuery).isPresent()) {
-			throw new WebhookException(String.format("webhook with name '%s' already registered", webHook.getName()));
+			throw new WebhookException(String.format("webhook with name '%s' already registered", webhook.getName()));
 		}
 
-		WebhookVO result = baseVODAO.create(webHook);
+		return result;
+	}
 
-		hooks.invalidate(getCacheKey(entityClass));
+	public Result<WebhookVO> registerEntityWebHook(WebhookVO webhook) {
+
+		Result<WebhookVO> result = validateRegisterRequest(webhook);
+
+		if (result.isOk()) {
+			result.setVO(baseVODAO.create(result.getVO()));
+			hooks.invalidate(getCacheKey(getEntityClass(webhook)));
+		}
 
 		return result;
 

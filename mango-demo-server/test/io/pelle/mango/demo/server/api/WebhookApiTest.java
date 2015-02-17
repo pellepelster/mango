@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.api;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.equalToJson;
@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import io.pelle.mango.client.api.webhook.WebhookVO;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CountryVO;
+import io.pelle.mango.demo.server.BaseDemoTest;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -61,7 +62,7 @@ public class WebhookApiTest extends BaseDemoTest {
 	@Test
 	public void testCreateWebhookWithoutName() throws Exception {
 		baseEntityService.deleteAll(WebhookVO.class.getName());
-		mockMvc.perform(post("/api/entity/country/webhooks").content("{ }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().is5xxServerError()).andExpect(jsonPath("$.error").value("no name provided"));
+		mockMvc.perform(post("/api/entity/country/webhooks").content("{ }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().is5xxServerError()).andExpect(jsonPath("$.error").value("no name provided; no URL provided"));
 	}
 
 	@Test

@@ -31,24 +31,16 @@ public class WebHookModule extends BaseWebhookModule {
 
 	public final static String UI_MODULE_LOCATOR = ModuleUtils.getBaseUIModuleUrl(UI_MODULE_ID);
 
-	private List<WebhookDefinition> webHookDefinitions = new ArrayList<WebhookDefinition>();
+	private List<WebhookDefinition> webhookDefinictions = new ArrayList<WebhookDefinition>();
 
 	public WebHookModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
 		super(moduleUrl, moduleCallback, parameters);
+		getModuleCallback().onSuccess(WebHookModule.this);
 
-		MangoClientWeb.getInstance().getRemoteServiceLocator().getWebhookService().getWebhookDefinitions(new AsyncCallback<List<WebhookDefinition>>() {
+		// = Arrays.asList(new WebhookDefinition[] {
+		// EntityWebhookDefitnition.INSTANCE });
 
-			@Override
-			public void onSuccess(List<WebhookDefinition> result) {
-				webHookDefinitions.addAll(result);
-				getModuleCallback().onSuccess(WebHookModule.this);
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				getModuleCallback().onFailure(caught);
-			}
-		});
+		// VOMetaModelProvider.getEntityDescriptor(dictionaryModel)
 	}
 
 	@Override
@@ -61,4 +53,7 @@ public class WebHookModule extends BaseWebhookModule {
 		return MODULE_ID.equals(ModuleUtils.getModuleId(moduleUrl));
 	}
 
+	public List<WebhookDefinition> getWebHookDefinitions() {
+		return webhookDefinictions;
+	}
 }

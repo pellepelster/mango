@@ -2,6 +2,7 @@ dependencies {
 	
 	compile project(":mango-server-base")
 	compile project(":mango-client-core")
+	compile project(":mango-client-web")
 	compile project(":mango-db")
 	
 	compile project(path: ":mango-model", configuration: "generatedClientGWT")

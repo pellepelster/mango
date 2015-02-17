@@ -13,22 +13,35 @@ package io.pelle.mango.client.web.modules.dictionary.databinding;
 
 import io.pelle.mango.client.base.messages.IValidationMessage;
 
+import java.util.List;
+
 /**
  * Utilities for validator handling
  * 
  * @author pelle
  * 
  */
-public final class ValidationUtils
-{
+public final class ValidationUtils {
 
-	private ValidationUtils()
-	{
+	private ValidationUtils() {
 	}
 
-	public static String getAttributeContext(IValidationMessage validationMessage)
-	{
+	public static String getAttributeContext(IValidationMessage validationMessage) {
 		return String.valueOf(validationMessage.getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
+	}
+
+	public static String getErrorMessage(List<IValidationMessage> validationMessages) {
+		StringBuilder sb = new StringBuilder();
+
+		for (IValidationMessage validationMessage : validationMessages) {
+
+			if (sb.length() > 0) {
+				sb.append("; ");
+			}
+			sb.append(validationMessage.getMessage());
+		}
+
+		return sb.toString();
 	}
 
 }
