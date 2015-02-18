@@ -38,7 +38,7 @@ public class WebhookApiController extends BaseEntityApiController {
 	@RequestMapping(value = "api/entity/{entityName}/webhooks/{hookName}", method = RequestMethod.DELETE)
 	public void deleteHook(@PathVariable String entityName, @PathVariable String hookName) {
 		Class<? extends IBaseEntity> entityClass = getEntityClassByNameOrExplode(entityName);
-		webHookRegistry.deleteHook(entityClass, hookName);
+		webHookRegistry.deleteHook(entityClass.getName(), hookName);
 	}
 
 	@ExceptionHandler(WebhookException.class)
@@ -53,16 +53,14 @@ public class WebhookApiController extends BaseEntityApiController {
 
 		Class<? extends IBaseEntity> entityClass = getEntityClassByNameOrExplode(entityName);
 
-		WebhookVO webHook = new WebhookVO();
-		webHook.setType(entityClass.getName());
+		WebhookVO webHook = EntityWebhookDefitnition.INSTANCE.createNewWebHook(entityClass);
 		webHook.setName(webHookRegisterRequest.getName());
 		webHook.setUrl(webHookRegisterRequest.getUrl());
-		webHook.getData().put(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY, entityClass.getName());
 
-		Result<WebhookVO> result = webHookRegistry.registerEntityWebHook(webHook);
+		Result<WebhookVO> result = webHookRegistry.addEntityWebHook(webHook);
 		
 		if (result.isOk()) {
-			return result.getVO();
+			return result.getValue();
 		} else {
 			throw new WebhookException(ValidationUtils.getErrorMessage(result.getValidationMessages()));
 		}

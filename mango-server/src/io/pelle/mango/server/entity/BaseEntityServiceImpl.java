@@ -58,7 +58,7 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 		if (validationMessages.isEmpty()) {
 			vo = save(vo);
 		}
-		result.setVO(vo);
+		result.setValue(vo);
 
 		return result;
 	}
@@ -75,7 +75,7 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 		if (validationMessages.isEmpty()) {
 			vo = create(vo);
 		}
-		result.setVO(vo);
+		result.setValue(vo);
 
 		return result;
 	}

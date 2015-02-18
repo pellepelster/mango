@@ -11,6 +11,8 @@ import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
 import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.server.api.webhook.Webhook;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -31,22 +33,45 @@ public class WebhookServiceTest extends BaseDemoTest {
 		WebhookVO webhook = new WebhookVO();
 
 		Result<WebhookVO> result = webhookService.addWebhook(webhook);
-		assertFalse(result.getValidationMessages().isEmpty());
+		assertFalse(result.isOk());
 	}
 
 	@Test
-	public void testAddWebhookDefinition() {
+	public void testDeleteWebhookDefinition() {
+		
 		baseEntityService.deleteAll(WebhookVO.class.getName());
 
-		WebhookVO webhook = new WebhookVO();
+		WebhookVO webhook = EntityWebhookDefitnition.INSTANCE.createNewWebHook(Webhook.class);
 		webhook.setName("abc");
 		webhook.setUrl("def");
-		webhook.getConfig().put(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY, Webhook.class.getName());
-		webhook.setType(EntityWebhookDefitnition.INSTANCE.getId());
 
 		Result<WebhookVO> result = webhookService.addWebhook(webhook);
-		assertTrue(result.getValidationMessages().isEmpty());
-		assertEquals(Webhook.class.getName(), result.getVO().getConfig().get(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY));
-	}
+		assertTrue(result.isOk());
 
+		assertFalse(webhookService.getWebhooks().isEmpty());
+		webhookService.removeWebhook(webhook);
+		assertTrue(webhookService.getWebhooks().isEmpty());
+	}
+	
+	@Test
+	public void testAddWebhookDefinition() {
+		
+		baseEntityService.deleteAll(WebhookVO.class.getName());
+
+		WebhookVO webhook = EntityWebhookDefitnition.INSTANCE.createNewWebHook(Webhook.class);
+		webhook.setName("abc");
+		webhook.setUrl("def");
+
+		Result<WebhookVO> result = webhookService.addWebhook(webhook);
+		assertTrue(result.isOk());
+		assertFalse(result.getValue().isNew());
+		assertEquals(Webhook.class.getName(), result.getValue().getType());
+		
+		List<WebhookVO> webhooks = webhookService.getWebhooks();
+		
+		assertEquals(1, webhooks.size());
+		assertEquals("abc", webhooks.get(0).getName());
+		assertEquals("def", webhooks.get(0).getUrl());
+		assertFalse(webhooks.get(0).isNew());
+	}
 }

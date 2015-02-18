@@ -56,10 +56,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals(0, result1.getValidationMessages().size());
 		Date end = new Date();
 
-		assertNull(result1.getVO().getCreateUser());
-		assertNull(result1.getVO().getUpdateUser());
-		assertTrue(result1.getVO().getCreateDate().after(start) && result1.getVO().getCreateDate().before(end));
-		assertTrue(result1.getVO().getUpdateDate().after(start) && result1.getVO().getUpdateDate().before(end));
+		assertNull(result1.getValue().getCreateUser());
+		assertNull(result1.getValue().getUpdateUser());
+		assertTrue(result1.getValue().getCreateDate().after(start) && result1.getValue().getCreateDate().before(end));
+		assertTrue(result1.getValue().getUpdateDate().after(start) && result1.getValue().getUpdateDate().before(end));
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
 
-		assertEquals("aaa", result.getVO().getStringDatatype1());
+		assertEquals("aaa", result.getValue().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());
 
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
@@ -90,8 +90,8 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
 
-		Entity1VO result1 = baseEntityService.read(result.getVO().getId(), Entity1VO.class.getName());
-		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, result.getVO().getEnumeration1Datatypes().get(0));
+		Entity1VO result1 = baseEntityService.read(result.getValue().getId(), Entity1VO.class.getName());
+		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, result.getValue().getEnumeration1Datatypes().get(0));
 		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, result1.getEnumeration1Datatypes().get(0));
 	}
 
@@ -166,7 +166,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		result = baseEntityService.validateAndSave(entity1VO);
 		assertTrue(result.getValidationMessages().isEmpty());
-		assertNotNull(result.getVO().getEntity2Datatype());
+		assertNotNull(result.getValue().getEntity2Datatype());
 
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.ENTITY2DATATYPE.path(Entity2VO.STRINGDATATYPE2).eq("uuu")));
 		assertEquals(0, filterResult.size());
@@ -213,7 +213,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
 
-		assertEquals("aaa", result.getVO().getStringDatatype1());
+		assertEquals("aaa", result.getValue().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());
 	}
 
@@ -227,7 +227,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
 
-		assertEquals("aaa", result.getVO().getStringDatatype1());
+		assertEquals("aaa", result.getValue().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());
 	}
 
@@ -272,7 +272,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
 		assertEquals(0, result1.getValidationMessages().size());
 
-		entity1VO = result1.getVO();
+		entity1VO = result1.getValue();
 		assertEquals("aaa", entity1VO.getStringDatatype1());
 		entity1VO.setBooleanDatatype1(true);
 
@@ -350,7 +350,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		entity3VO.setBinaryDatatype1(data);
 
 		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3VO);
-		entity3VO = this.baseEntityService.read(result1.getVO().getId(), Entity3VO.class.getName());
+		entity3VO = this.baseEntityService.read(result1.getValue().getId(), Entity3VO.class.getName());
 		assertArrayEquals(data, entity3VO.getBinaryDatatype1());
 	}
 
@@ -370,7 +370,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		entity3VO.setBinaryDatatype1(data);
 
 		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3VO);
-		entity3VO = this.baseEntityService.read(result1.getVO().getId(), Entity3VO.class.getName());
+		entity3VO = this.baseEntityService.read(result1.getValue().getId(), Entity3VO.class.getName());
 		assertArrayEquals(data, entity3VO.getBinaryDatatype1());
 	}
 
@@ -423,7 +423,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
 
-		assertEquals("aaa", result.getVO().getStringDatatype1());
+		assertEquals("aaa", result.getValue().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());
 	}
 

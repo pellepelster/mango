@@ -150,8 +150,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 		@Override
 		public void onSuccess(Result<VOType> result) {
 			if (result.getValidationMessages().isEmpty()) {
-				setVO(result.getVO());
-				MangoClientWeb.EVENT_BUS.fireEvent(new VOSavedEvent(result.getVO()));
+				setVO(result.getValue());
+				MangoClientWeb.EVENT_BUS.fireEvent(new VOSavedEvent(result.getValue()));
 			} else {
 				DictionaryEditor.this.addValidationMessages(result.getValidationMessages());
 			}

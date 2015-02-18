@@ -17,6 +17,7 @@ import io.pelle.mango.client.web.modules.log.LogModule;
 
 import java.util.logging.Logger;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.user.cellview.client.SimplePager;
@@ -82,13 +83,16 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 	@Override
 	public void onResize() {
 
-		int totalHeight = panel.getParent().getOffsetHeight();
-		int headerHeight = headerPanel.getOffsetHeight() + headerPanel.getAbsoluteTop();
+		if (headerPanel != null && panel != null) {
+			
+			int totalHeight = panel.getParent().getOffsetHeight();
+			int headerHeight = headerPanel.getOffsetHeight() + headerPanel.getAbsoluteTop();
 
-		int tableHeight = totalHeight - (headerHeight);
-		LOG.info("tableHeight:" + tableHeight);
+			int tableHeight = totalHeight - (headerHeight);
+			logDataGrid.setHeight(tableHeight + "px");
+			//GWT.log(tableHeight + "px");
+		}
 
-		logDataGrid.setHeight(tableHeight + "px");
 	}
 
 	/** {@inheritDoc} */

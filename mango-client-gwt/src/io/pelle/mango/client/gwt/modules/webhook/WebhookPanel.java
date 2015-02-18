@@ -114,10 +114,10 @@ public class WebhookPanel extends FlowPanel {
 
 			@Override
 			public void onClick(ClickEvent event) {
+				
 				webhook.setName(nameInput.getText());
 				webhook.setUrl(urlInput.getText());
-				webhook.setType(webhookDefinition.getId());
-				webhook.getConfig().put(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY, entitiesListBox.getValue(entitiesListBox.getSelectedIndex()));
+				webhook.setType(entitiesListBox.getValue(entitiesListBox.getSelectedIndex()));
 
 				callback.onAdd(WebhookPanel.this);
 			}
@@ -137,7 +137,7 @@ public class WebhookPanel extends FlowPanel {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				if (webhook.isNew()) {
+				if (WebhookPanel.this.webhook.isNew()) {
 					callback.onCancelNew(WebhookPanel.this);
 				} else {
 					cancel();
@@ -163,7 +163,7 @@ public class WebhookPanel extends FlowPanel {
 		urlInput.setText(webhook.getUrl());
 
 		for (int i = 0; i < entitiesListBox.getItemCount(); i++) {
-			if (entitiesListBox.getValue(i).equals(webhook.getConfig().get(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY))) {
+			if (entitiesListBox.getValue(i).equals(webhook.getType())) {
 				entitiesListBox.setSelectedIndex(i);
 			}
 		}
@@ -182,7 +182,7 @@ public class WebhookPanel extends FlowPanel {
 		if (status) {
 			buttonGroup.add(saveButton);
 
-			if (webhook.isNew()) {
+			if (this.webhook.isNew()) {
 				buttonGroup.remove(deleteButton);
 			} else {
 				buttonGroup.add(deleteButton);
@@ -203,7 +203,7 @@ public class WebhookPanel extends FlowPanel {
 	}
 
 	public WebhookVO getWebhook() {
-		return webhook;
+		return this.webhook;
 	}
 
 	public void setWebhook(WebhookVO webhook) {

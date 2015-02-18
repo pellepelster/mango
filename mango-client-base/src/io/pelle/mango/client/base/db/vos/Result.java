@@ -12,16 +12,15 @@
 package io.pelle.mango.client.base.db.vos;
 
 import io.pelle.mango.client.base.messages.IValidationMessage;
-import io.pelle.mango.client.base.vo.IBaseVO;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
-public class Result<VOType extends IBaseVO> implements Serializable
+public class Result<Type extends Serializable> implements Serializable
 {
-	private VOType vo;
+	private Type value;
 	
 	private List<IValidationMessage> validationMessages = new ArrayList<IValidationMessage>();
 
@@ -34,9 +33,9 @@ public class Result<VOType extends IBaseVO> implements Serializable
 		return validationMessages;
 	}
 
-	public VOType getVO()
+	public Type getValue()
 	{
-		return vo;
+		return value;
 	}
 
 	public void setValidationMessages(List<IValidationMessage> validationMessages)
@@ -44,9 +43,9 @@ public class Result<VOType extends IBaseVO> implements Serializable
 		this.validationMessages = validationMessages;
 	}
 
-	public void setVO(VOType vo)
+	public void setValue(Type value)
 	{
-		this.vo = vo;
+		this.value = value;
 	}
 
 	public boolean isOk() {

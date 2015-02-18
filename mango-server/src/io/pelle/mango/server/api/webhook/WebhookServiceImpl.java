@@ -23,7 +23,12 @@ public class WebhookServiceImpl implements IWebhookService {
 
 	@Override
 	public Result<WebhookVO> addWebhook(WebhookVO webhook) {
-		return entityWebhookRegistry.registerEntityWebHook(webhook);
+		return entityWebhookRegistry.addEntityWebHook(webhook);
+	}
+
+	@Override
+	public Boolean removeWebhook(WebhookVO webhook) {
+		return entityWebhookRegistry.deleteHook(webhook).getValue();
 	}
 
 }

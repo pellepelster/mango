@@ -18,6 +18,7 @@ import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.gwt.modules.webhook.WebhookPanel.WebhookPanelCallback;
 import io.pelle.mango.client.web.MangoClientWeb;
+import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
 import io.pelle.mango.client.web.modules.webhook.WebHookModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.gwt.commons.toastr.Toastr;
@@ -65,7 +66,6 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 		panel = new FlowPanel();
 		panel.ensureDebugId(WebHookModule.UI_MODULE_ID);
 		panel.setWidth("80%");
-		// panel.setHeight("100%");
 
 		// - title -------------------------------------------------------------
 		title = new Heading(HeadingSize.H2);
@@ -90,7 +90,7 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 			anchorListItem.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {
-					WebhookVO webhook = new WebhookVO();
+					WebhookVO webhook = EntityWebhookDefitnition.INSTANCE.createNewWebHook();
 					WebhookPanel webhookPanel = addPanel(webhookDefinition, webhook);
 					webhookPanel.setStatus(true);
 				}
@@ -104,7 +104,7 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 			public void onSuccess(List<WebhookVO> result) {
 				for (WebhookVO webhook : result) {
 
-					Optional<WebhookDefinition> webhookDefinition = getModule().getWebHookDefinitionById(webhook.getType());
+					Optional<WebhookDefinition> webhookDefinition = getModule().getWebHookDefinitionById(webhook.getDefinitionId());
 
 					if (webhookDefinition.isPresent()) {
 						addPanel(webhookDefinition.get(), webhook);
@@ -139,7 +139,7 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 			@Override
 			public void onSuccess(Result<WebhookVO> result) {
 				if (result.isOk()) {
-					webhookPanel.setWebhook(result.getVO());
+					webhookPanel.setWebhook(result.getValue());
 					webhookPanel.setStatus(false);
 				} else {
 					for (IValidationMessage validationMessage : result.getValidationMessages()) {
@@ -157,8 +157,20 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 	}
 
 	@Override
-	public void onDelete(WebhookPanel webhookPanel) {
-		panelBody.remove(webhookPanel);
+	public void onDelete(final WebhookPanel webhookPanel) {
+		
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getWebhookService().removeWebhook(webhookPanel.getWebhook(), new AsyncCallback<Boolean>() {
+
+			@Override
+			public void onSuccess(Boolean result) {
+				panelBody.remove(webhookPanel);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Toastr.error(caught.getMessage());
+			}
+		});
 	}
 
 	@Override

@@ -35,6 +35,7 @@ project Mango {
 				}
 			
 				entity Webhook {
+					string definitionId
 					string name
 					string ^type
 					string url
@@ -45,6 +46,7 @@ project Mango {
 				service WebhookService {
 					method List<WebhookVO> getWebhooks()
 					method Result<WebhookVO> addWebhook(WebhookVO webhook)
+					method Boolean removeWebhook(WebhookVO webhook)
 				}
 			}
 		}

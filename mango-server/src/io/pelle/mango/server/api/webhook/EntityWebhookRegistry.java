@@ -7,11 +7,9 @@ import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.dao.IDAOCallback;
-import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.api.entity.EntityWebHookCall;
 import io.pelle.mango.server.log.IMangoLogger;
 
@@ -54,47 +52,36 @@ public class EntityWebhookRegistry implements InitializingBean {
 		return entityClass.getName();
 	}
 
-	private String getReference(WebhookVO webHook) {
+	private String getLogReference(WebhookVO webHook) {
 		return webHook.getName();
 	}
 
-	public void deleteHook(Class<? extends IBaseEntity> entityClass, String hookName) {
+	public Result<Boolean> deleteHook(WebhookVO webhook) {
+		return deleteHook(webhook.getType(), webhook.getName());
+	}
+	
+	public Result<Boolean> deleteHook(String entityClassName, String hookName) {
 
-		SelectQuery<WebhookVO> selectQuery = SelectQuery.selectFrom(WebhookVO.class).where(WebhookVO.TYPE.eq(entityClass.getName()).and(WebhookVO.NAME.eq(hookName)));
+		SelectQuery<WebhookVO> selectQuery = SelectQuery.selectFrom(WebhookVO.class).where(WebhookVO.TYPE.eq(entityClassName).and(WebhookVO.NAME.eq(hookName)));
 
 		Optional<WebhookVO> webHook = baseVODAO.read(selectQuery);
 
 		if (webHook.isPresent()) {
 			baseVODAO.delete(webHook.get());
-			hooks.invalidate(getCacheKey(entityClass));
+			hooks.invalidate(entityClassName);
 		} else {
 			throw new WebhookException(String.format("webhook with name '%s' does not exist", hookName));
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private Class<? extends IBaseEntity> getEntityClass(WebhookVO webhook) {
-
-		String entityClassName = webhook.getConfig().get(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY);
-
-		if (entityClassName == null || StringUtils.isEmpty(entityClassName.toString())) {
-			return null;
-		} else {
-			try {
-				return EntityVOMapper.getInstance().getEntityClass(Class.forName(entityClassName.toString()));
-			} catch (ClassNotFoundException e) {
-				return null;
-			}
-		}
+		
+		return new Result<Boolean>();
 	}
 
 	public Result<WebhookVO> validateRegisterRequest(WebhookVO webhook) {
 
 		Result<WebhookVO> result = new Result<WebhookVO>();
-		result.setVO(webhook);
+		result.setValue(webhook);
 
-		Class<? extends IBaseEntity> entityClass = getEntityClass(webhook);
-		if (entityClass == null) {
+		if (StringUtils.isEmpty(webhook.getType())) {
 			result.getValidationMessages().add(new ValidationMessage(IMessage.SEVERITY.ERROR, EntityWebhookRegistry.class.getName(), "no entity class name provided"));
 			return result;
 		}
@@ -107,7 +94,7 @@ public class EntityWebhookRegistry implements InitializingBean {
 			result.getValidationMessages().add(new ValidationMessage(IMessage.SEVERITY.ERROR, EntityWebhookRegistry.class.getName(), "no URL provided"));
 		}
 
-		SelectQuery<WebhookVO> selectQuery = SelectQuery.selectFrom(WebhookVO.class).where(WebhookVO.TYPE.eq(getCacheKey(entityClass)).and(WebhookVO.NAME.eq(webhook.getName())));
+		SelectQuery<WebhookVO> selectQuery = SelectQuery.selectFrom(WebhookVO.class).where(WebhookVO.TYPE.eq(webhook.getType()).and(WebhookVO.NAME.eq(webhook.getName())));
 
 		if (baseVODAO.read(selectQuery).isPresent()) {
 			throw new WebhookException(String.format("webhook with name '%s' already registered", webhook.getName()));
@@ -116,13 +103,13 @@ public class EntityWebhookRegistry implements InitializingBean {
 		return result;
 	}
 
-	public Result<WebhookVO> registerEntityWebHook(WebhookVO webhook) {
+	public Result<WebhookVO> addEntityWebHook(WebhookVO webhook) {
 
 		Result<WebhookVO> result = validateRegisterRequest(webhook);
 
 		if (result.isOk()) {
-			result.setVO(baseVODAO.create(result.getVO()));
-			hooks.invalidate(getCacheKey(getEntityClass(webhook)));
+			result.setValue(baseVODAO.create(result.getValue()));
+			hooks.invalidate(webhook.getType());
 		}
 
 		return result;
@@ -139,10 +126,19 @@ public class EntityWebhookRegistry implements InitializingBean {
 	}
 
 	public <VOType extends IVOEntity> void callEntityWebHooks(List<WebhookVO> webHooks, VOType voEntity) {
+		
 		for (final WebhookVO webHook : webHooks) {
 
 			HttpEntity<Object> httpEntity = new HttpEntity<Object>(new EntityWebHookCall(voEntity));
-			ListenableFuture<ResponseEntity<Void>> result = restTemplate.postForEntity(webHook.getUrl(), httpEntity, Void.class);
+
+			ListenableFuture<ResponseEntity<Void>> result = null;
+
+			try {
+				result = restTemplate.postForEntity(webHook.getUrl(), httpEntity, Void.class);
+			} catch (Exception e) {
+				mangoLogger.error(String.format("execution of webhook '%s' failed: %s", webHook.getName(), e.getMessage()), getLogReference(webHook));
+				return;
+			}
 
 			result.addCallback(new ListenableFutureCallback<ResponseEntity<Void>>() {
 
@@ -152,7 +148,7 @@ public class EntityWebhookRegistry implements InitializingBean {
 
 				@Override
 				public void onFailure(Throwable ex) {
-					mangoLogger.error(String.format("execution of webhook '%s' failed: %s", webHook.getName(), ex.getMessage()), getReference(webHook));
+					mangoLogger.error(String.format("execution of webhook '%s' failed: %s", webHook.getName(), ex.getMessage()), getLogReference(webHook));
 				}
 			});
 
@@ -161,6 +157,7 @@ public class EntityWebhookRegistry implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		
 		baseEntityDAO.registerCallback(new IDAOCallback() {
 
 			@Override
@@ -173,6 +170,10 @@ public class EntityWebhookRegistry implements InitializingBean {
 
 			@Override
 			public <VOType extends IVOEntity> void onDelete(VOType voEntity) {
+				if (voEntity.getClass().equals(Webhook.class))
+				{
+					hooks.invalidateAll();
+				}
 			}
 
 			@Override
