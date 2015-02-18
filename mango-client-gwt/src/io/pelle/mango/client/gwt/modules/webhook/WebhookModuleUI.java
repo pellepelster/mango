@@ -14,17 +14,15 @@ package io.pelle.mango.client.gwt.modules.webhook;
 import io.pelle.mango.client.api.webhook.WebhookDefinition;
 import io.pelle.mango.client.api.webhook.WebhookVO;
 import io.pelle.mango.client.base.db.vos.Result;
+import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.gwt.modules.webhook.WebhookPanel.WebhookPanelCallback;
 import io.pelle.mango.client.web.MangoClientWeb;
-import io.pelle.mango.client.web.modules.dictionary.databinding.ValidationUtils;
 import io.pelle.mango.client.web.modules.webhook.WebHookModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.gwt.commons.toastr.Toastr;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.gwtbootstrap3.client.ui.AnchorListItem;
@@ -48,7 +46,7 @@ import com.google.gwt.user.client.ui.Panel;
  * @author pelle
  * 
  */
-public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements AsyncCallback<Result<WebhookVO>>, WebhookPanelCallback {
+public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements WebhookPanelCallback {
 
 	final static Logger LOG = Logger.getLogger("LogModuleUI");
 
@@ -57,8 +55,6 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements A
 	private Heading title;
 
 	private FlowPanel panelBody;
-
-	private Map<WebhookVO, WebhookPanel> webhookPanels = new HashMap<WebhookVO, WebhookPanel>();
 
 	/**
 	 * @param module
@@ -122,7 +118,6 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements A
 
 	private WebhookPanel addPanel(final WebhookDefinition webhookDefinition, WebhookVO webhook) {
 		WebhookPanel webhookPanel = new WebhookPanel(this, webhook, webhookDefinition);
-		webhookPanels.put(webhook, webhookPanel);
 		panelBody.add(webhookPanel);
 		return webhookPanel;
 	}
@@ -138,36 +133,37 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements A
 	}
 
 	@Override
-	public void onFailure(Throwable caught) {
-		Toastr.error(caught.getMessage());
+	public void onAdd(final WebhookPanel webhookPanel) {
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getWebhookService().addWebhook(webhookPanel.getWebhook(), new AsyncCallback<Result<WebhookVO>>() {
+
+			@Override
+			public void onSuccess(Result<WebhookVO> result) {
+				if (result.isOk()) {
+					webhookPanel.setWebhook(result.getVO());
+					webhookPanel.setStatus(false);
+				} else {
+					for (IValidationMessage validationMessage : result.getValidationMessages()) {
+						Toastr.error(validationMessage.getMessage());
+					}
+				}
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Toastr.error(caught.getMessage());
+			}
+
+		});
 	}
 
 	@Override
-	public void onSuccess(Result<WebhookVO> result) {
-		if (result.isOk()) {
-			webhookPanels.get(result.getVO()).setStatus(false);
-		} else {
-			Toastr.error(ValidationUtils.getErrorMessage(result.getValidationMessages()));
-		}
-	}
-
-	@Override
-	public void onAdd(WebhookVO webhook) {
-		MangoClientWeb.getInstance().getRemoteServiceLocator().getWebhookService().addWebhook(webhook, WebhookModuleUI.this);
-	}
-
-	@Override
-	public void onDelete(WebhookVO webhook) {
-
-		WebhookPanel webhookPanel = webhookPanels.get(webhook);
+	public void onDelete(WebhookPanel webhookPanel) {
 		panelBody.remove(webhookPanel);
-		webhookPanels.remove(webhook);
 	}
 
 	@Override
-	public void onCancel(WebhookVO webhook) {
-		WebhookPanel webhookPanel = webhookPanels.get(webhook);
-		webhookPanel.reset();
+	public void onCancelNew(WebhookPanel webhookPanel) {
+		panelBody.remove(webhookPanel);
 	}
 
 }

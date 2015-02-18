@@ -11,6 +11,7 @@ import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.dao.IDAOCallback;
+import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.api.entity.EntityWebHookCall;
 import io.pelle.mango.server.log.IMangoLogger;
 
@@ -74,13 +75,13 @@ public class EntityWebhookRegistry implements InitializingBean {
 	@SuppressWarnings("unchecked")
 	private Class<? extends IBaseEntity> getEntityClass(WebhookVO webhook) {
 
-		Object entityClassName = webhook.getData().get(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY);
+		String entityClassName = webhook.getConfig().get(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY);
 
 		if (entityClassName == null || StringUtils.isEmpty(entityClassName.toString())) {
 			return null;
 		} else {
 			try {
-				return (Class<? extends IBaseEntity>) Class.forName(entityClassName.toString());
+				return EntityVOMapper.getInstance().getEntityClass(Class.forName(entityClassName.toString()));
 			} catch (ClassNotFoundException e) {
 				return null;
 			}

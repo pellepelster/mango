@@ -26,11 +26,11 @@ public class WebhookPanel extends FlowPanel {
 
 	public interface WebhookPanelCallback {
 
-		void onAdd(WebhookVO webhook);
+		void onAdd(WebhookPanel webhookPanel);
 
-		void onDelete(WebhookVO webhook);
+		void onDelete(WebhookPanel webhookPanel);
 
-		void onCancel(WebhookVO webhook);
+		void onCancelNew(WebhookPanel webhookPanel);
 
 	}
 
@@ -117,9 +117,9 @@ public class WebhookPanel extends FlowPanel {
 				webhook.setName(nameInput.getText());
 				webhook.setUrl(urlInput.getText());
 				webhook.setType(webhookDefinition.getId());
-				webhook.getData().put(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY, entitiesListBox.getValue(entitiesListBox.getSelectedIndex()));
+				webhook.getConfig().put(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY, entitiesListBox.getValue(entitiesListBox.getSelectedIndex()));
 
-				callback.onAdd(webhook);
+				callback.onAdd(WebhookPanel.this);
 			}
 		});
 
@@ -128,7 +128,7 @@ public class WebhookPanel extends FlowPanel {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				callback.onDelete(webhook);
+				callback.onDelete(WebhookPanel.this);
 			}
 		});
 
@@ -137,7 +137,11 @@ public class WebhookPanel extends FlowPanel {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				callback.onCancel(webhook);
+				if (webhook.isNew()) {
+					callback.onCancelNew(WebhookPanel.this);
+				} else {
+					cancel();
+				}
 			}
 		});
 
@@ -159,7 +163,7 @@ public class WebhookPanel extends FlowPanel {
 		urlInput.setText(webhook.getUrl());
 
 		for (int i = 0; i < entitiesListBox.getItemCount(); i++) {
-			if (entitiesListBox.getValue(i).equals(webhook.getData().get(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY))) {
+			if (entitiesListBox.getValue(i).equals(webhook.getConfig().get(EntityWebhookDefitnition.ENTITY_CLASS_NAME_KEY))) {
 				entitiesListBox.setSelectedIndex(i);
 			}
 		}
@@ -177,7 +181,12 @@ public class WebhookPanel extends FlowPanel {
 
 		if (status) {
 			buttonGroup.add(saveButton);
-			buttonGroup.add(deleteButton);
+
+			if (webhook.isNew()) {
+				buttonGroup.remove(deleteButton);
+			} else {
+				buttonGroup.add(deleteButton);
+			}
 			buttonGroup.add(cancelButton);
 			buttonGroup.remove(editButton);
 		} else {
@@ -188,8 +197,17 @@ public class WebhookPanel extends FlowPanel {
 		}
 	}
 
-	public void reset() {
+	public void cancel() {
 		setStatus(false);
+		updateUI();
+	}
+
+	public WebhookVO getWebhook() {
+		return webhook;
+	}
+
+	public void setWebhook(WebhookVO webhook) {
+		this.webhook = webhook;
 		updateUI();
 	}
 
