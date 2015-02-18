@@ -7,6 +7,7 @@ import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition.EntityWebHookEvents;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.dao.IDAOCallback;
@@ -59,7 +60,7 @@ public class EntityWebhookRegistry implements InitializingBean {
 	public Result<Boolean> deleteHook(WebhookVO webhook) {
 		return deleteHook(webhook.getType(), webhook.getName());
 	}
-	
+
 	public Result<Boolean> deleteHook(String entityClassName, String hookName) {
 
 		SelectQuery<WebhookVO> selectQuery = SelectQuery.selectFrom(WebhookVO.class).where(WebhookVO.TYPE.eq(entityClassName).and(WebhookVO.NAME.eq(hookName)));
@@ -72,7 +73,7 @@ public class EntityWebhookRegistry implements InitializingBean {
 		} else {
 			throw new WebhookException(String.format("webhook with name '%s' does not exist", hookName));
 		}
-		
+
 		return new Result<Boolean>();
 	}
 
@@ -125,11 +126,11 @@ public class EntityWebhookRegistry implements InitializingBean {
 		return getAllEntityWebhooks(getCacheKey(entityClass));
 	}
 
-	public <VOType extends IVOEntity> void callEntityWebHooks(List<WebhookVO> webHooks, VOType voEntity) {
-		
+	public <VOType extends IVOEntity> void callEntityWebHooks(EntityWebHookEvents event, List<WebhookVO> webHooks, VOType voEntity) {
+
 		for (final WebhookVO webHook : webHooks) {
 
-			HttpEntity<Object> httpEntity = new HttpEntity<Object>(new EntityWebHookCall(voEntity));
+			HttpEntity<Object> httpEntity = new HttpEntity<Object>(new EntityWebHookCall(event.toString(), voEntity));
 
 			ListenableFuture<ResponseEntity<Void>> result = null;
 
@@ -157,7 +158,7 @@ public class EntityWebhookRegistry implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		
+
 		baseEntityDAO.registerCallback(new IDAOCallback() {
 
 			@Override
@@ -170,15 +171,14 @@ public class EntityWebhookRegistry implements InitializingBean {
 
 			@Override
 			public <VOType extends IVOEntity> void onDelete(VOType voEntity) {
-				if (voEntity.getClass().equals(Webhook.class))
-				{
+				if (voEntity.getClass().equals(Webhook.class)) {
 					hooks.invalidateAll();
 				}
 			}
 
 			@Override
 			public <VOType extends IVOEntity> void onCreate(VOType voEntity) {
-				callEntityWebHooks(hooks.getUnchecked(getCacheKey(voEntity.getClass())), voEntity);
+				callEntityWebHooks(EntityWebHookEvents.ON_CREATE, hooks.getUnchecked(getCacheKey(voEntity.getClass())), voEntity);
 			}
 		});
 	}

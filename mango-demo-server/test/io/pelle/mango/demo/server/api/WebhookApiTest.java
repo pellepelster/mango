@@ -62,7 +62,8 @@ public class WebhookApiTest extends BaseDemoTest {
 	@Test
 	public void testCreateWebhookWithoutName() throws Exception {
 		baseEntityService.deleteAll(WebhookVO.class.getName());
-		mockMvc.perform(post("/api/entity/country/webhooks").content("{ }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().is5xxServerError()).andExpect(jsonPath("$.error").value("no name provided; no URL provided"));
+		mockMvc.perform(post("/api/entity/country/webhooks").content("{ }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().is5xxServerError())
+				.andExpect(jsonPath("$.error").value("no name provided; no URL provided"));
 	}
 
 	@Test
@@ -120,6 +121,6 @@ public class WebhookApiTest extends BaseDemoTest {
 
 		Thread.sleep(500);
 
-		verify(postRequestedFor(urlMatching("/countryhook")).withRequestBody(equalToJson("{ payload: { countryIsoCode2: \"AA\" } }", JSONCompareMode.LENIENT)));
+		verify(postRequestedFor(urlMatching("/countryhook")).withRequestBody(equalToJson("{ event: \"ON_CREATE\", payload: { countryIsoCode2: \"AA\" } }", JSONCompareMode.LENIENT)));
 	}
 }
