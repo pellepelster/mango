@@ -3,12 +3,21 @@ project ProjectName {
 	package packagename {
 
 		stringdatatype TodoTitle {
+			label "Title"
 		}
 
 		booleandatatype TodoCompleted {
+			label "Completed"			
 		}
 
 		entity Todo {
+		
+			entityoptions {
+				naturalkey {
+					Todo.title
+				}
+			}
+			
 			string TodoTitle title
 			boolean TodoCompleted completed
 		}
@@ -21,21 +30,27 @@ project ProjectName {
 				textcontrol TodoTitle {
 					entityattribute Todo.title
 				}
+				booleancontrol TodoCompleted { 
+					entityattribute Todo.completed
+				}
 			}
 	
 			dictionarysearch TodoSearch {
 				
 				dictionaryfilter TodoFilter {
 					textcontrol ref TodoTitle
+					booleancontrol ref TodoCompleted
 				}
 				
 				dictionaryresult TodoResult {
 					textcontrol ref TodoTitle
+					booleancontrol ref TodoCompleted
 				}
 			}
 			
 			dictionaryeditor TodoEditor {
 				textcontrol ref TodoTitle
+				booleancontrol ref TodoCompleted
 			}
 		}
 		
