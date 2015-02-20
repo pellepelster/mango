@@ -1,13 +1,16 @@
 var todoServices = angular.module('todoServices', ['ngResource']);
 
-todoServices.factory('Todos', ['$resource',
+todoServices.factory('TodoServices', ['$resource',
 	function($resource){
-		return $resource('../remote/todos/:action', {}, {
+		return $resource('../remote/projectnameservice/:action', {}, {
 			getAll: {
-                params: { 'action': 'all' }
+				method: 'POST',
+				params: { 'action': 'getall' },
+				isArray: true
             },
-			add: {
-                params: { 'action': 'all' }
+			save: {
+				method: 'POST',
+				params: { 'action': 'save' }
             },	
 		});
 }]);

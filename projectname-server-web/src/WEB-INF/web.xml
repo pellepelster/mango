@@ -23,7 +23,8 @@
             classpath:/ProjectNameBaseApplicationContext-gen.xml,
             classpath:/MangoSpringServices-gen.xml,
             classpath:/MangoApplicationContext.xml,
-            classpath:/MangoLoggerApplicationContext.xml
+            classpath:/MangoLoggerApplicationContext.xml,
+            classpath:/ProjectNameSpringServices-gen.xml
 		</param-value>
 	</context-param>
 

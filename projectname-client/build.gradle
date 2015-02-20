@@ -30,7 +30,8 @@ dependencies {
 
 gwt {
 	gwtVersion = '2.6.1'
-	modules 'packagename.ProjectNameAdminClient'
+	modules 'packagename.projectname.ProjectNameAdminClient'
+	logLevel = 'ERROR'
 }
 
 ext.gwtTestLibDir = new File('lib-gwt-test')

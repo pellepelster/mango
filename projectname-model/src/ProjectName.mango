@@ -1,6 +1,10 @@
+import java.util.List
+import packagename.projectname.client.TodoVO
+import packagename.projectname.client.TodoRequest
+
 project ProjectName {
 
-	package packagename {
+	package packagename.projectname {
 
 		stringdatatype TodoTitle {
 			label "Title"
@@ -20,6 +24,19 @@ project ProjectName {
 			
 			string TodoTitle title
 			boolean TodoCompleted completed
+		}
+
+		valueobject TodoRequest {
+			long id
+			string title
+			boolean completed
+		}
+		
+		service ProjectNameService {
+			method List<TodoVO> getAll()
+			method void delete(Long todoId)
+			method void deleteAll()
+			method TodoVO save(TodoRequest todo)
 		}
 			
 		dictionary Todo {
