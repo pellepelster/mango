@@ -1,6 +1,10 @@
+import java.util.List
+import packagename.projectname.client.TodoVO
+import packagename.projectname.client.TodoRequest
+
 project ProjectName {
 
-	package packagename {
+	package packagename.projectname {
 
 		stringdatatype TodoTitle {
 		}
@@ -9,8 +13,28 @@ project ProjectName {
 		}
 
 		entity Todo {
+		
+			entityoptions {
+				naturalkey {
+					Todo.title
+				}
+			}
+		
 			string TodoTitle title
 			boolean TodoCompleted completed
+		}
+
+		valueobject TodoRequest {
+			long id
+			string title
+			boolean completed
+		}
+		
+		service ProjectNameService {
+			method List<TodoVO> getAll()
+			method void delete(Long todoId)
+			method void deleteAll()
+			method TodoVO save(TodoRequest todo)
 		}
 			
 		dictionary Todo {
@@ -21,21 +45,27 @@ project ProjectName {
 				textcontrol TodoTitle {
 					entityattribute Todo.title
 				}
+				booleancontrol TodoCompleted { 
+					entityattribute Todo.completed
+				}
 			}
 	
 			dictionarysearch TodoSearch {
 				
 				dictionaryfilter TodoFilter {
 					textcontrol ref TodoTitle
+					booleancontrol ref TodoCompleted
 				}
 				
 				dictionaryresult TodoResult {
 					textcontrol ref TodoTitle
+					booleancontrol ref TodoCompleted
 				}
 			}
 			
 			dictionaryeditor TodoEditor {
 				textcontrol ref TodoTitle
+				booleancontrol ref TodoCompleted
 			}
 		}
 		

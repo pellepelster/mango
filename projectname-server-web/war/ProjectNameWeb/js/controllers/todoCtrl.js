@@ -1,18 +1,18 @@
-/*global angular */
-
-/**
- * The main controller for the app. The controller:
- * - retrieves and persists the model via the todoStorage service
- * - exposes the model to the template and provides event handlers
- */
 angular.module('todomvc')
-	.controller('TodoCtrl', function TodoCtrl($scope, Todos, $routeParams, $filter, $resource, todoStorage) {
+	.controller('TodoCtrl', function TodoCtrl($scope, TodoServices, $routeParams, $filter, $resource) {
 		'use strict';
 
-		var Todo = $resource('../remote/todos/:todoId', { userId: '@id' });
+		$scope.todos = [];
+		
+		$scope.updateTodos = function () {
+			TodoServices.getAll({}).$promise.then(function(data) {  
+				$scope.todos = data;
+			});
+		};
+		
+		$scope.updateTodos();
 
-		$scope.todos = Todo.query();
-
+				
 		$scope.newTodo = '';
 		$scope.editedTodo = null;
 
@@ -24,7 +24,9 @@ angular.module('todomvc')
 			
 			newValue.forEach(function (todo, id) {
 				if (oldValue[id] && [id].completed != oldValue[id].completed) {					
-					Todo.save({ id: todo.id }, todo);				
+					TodoServices.save(todo).$promise.then(function(data) {  
+						// $scope.updateTodos() 
+					});
 				}
 			});
 		}, true);
@@ -45,12 +47,13 @@ angular.module('todomvc')
 				return;
 			}
 			
-			var todo = new Todo();
+			var todo = {};
 			todo.title = newTodo;
-			todo.$save(function(data) { 			
-				$scope.todos = Todo.query(); 
-			});
 			
+			TodoServices.save(todo).$promise.then(function(data) {  
+				$scope.updateTodos() 
+			});
+
 			$scope.newTodo = '';
 		};
 
@@ -68,8 +71,8 @@ angular.module('todomvc')
 				$scope.removeTodo(todo);
 			}
 			else {
-				Todo.save({ id: todo.id }, todo, function(data) {
-					$scope.todos = Todo.query();
+				TodoServices.save(todo).$promise.then(function(data) {  
+					$scope.updateTodos() 
 				});
 			}
 		};
@@ -81,13 +84,14 @@ angular.module('todomvc')
 
 		$scope.removeTodo = function (todo) {
 			Todo.delete({ todoId: todo.id }, function(data) {
-				$scope.todos = Todo.query();
+				$scope.updateTodos();
 			});
 		};
 
 		$scope.toggleCompleted = function (todo) {
-			todo.$save(function(data) {
-				$scope.todos = Todo.query();
+			
+			TodoServices.save(todo).$promise.then(function(data) {  
+				$scope.updateTodos() 
 			});
 		};
 		

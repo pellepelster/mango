@@ -5,8 +5,8 @@
  *
  * @type {angular.Module}
  */
-angular.module('todomvc', ['ngRoute', 'todoServices'])
-	.config(function ($routeProvider) {
+angular.module('todomvc', ['ngRoute', 'todoServices', 'ngResource' ])
+	.config(function ($routeProvider, $httpProvider) {
 		'use strict';
 
 		$routeProvider.when('/', {
@@ -18,4 +18,6 @@ angular.module('todomvc', ['ngRoute', 'todoServices'])
 		}).otherwise({
 			redirectTo: '/'
 		});
+		
+		$httpProvider.defaults.headers.common['Content-Type'] = "application/json";
 	});
