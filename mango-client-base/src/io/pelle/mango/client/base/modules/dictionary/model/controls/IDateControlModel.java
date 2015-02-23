@@ -21,7 +21,7 @@ package io.pelle.mango.client.base.modules.dictionary.model.controls;
 public interface IDateControlModel extends IBaseControlModel {
 
 	enum DATE_FORMAT {
-		DATE_TIME_SHORT, YEAR_MONTH_DAY_HOUR_MINUTE_SECOND
+		DATE_SHORT, DATE_TIME_SHORT, YEAR_MONTH_DAY_HOUR_MINUTE_SECOND
 	}
 
 	DATE_FORMAT getDateFormat();

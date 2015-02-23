@@ -16,7 +16,7 @@ public class DateControlModel extends BaseControlModel<IDateControl> implements 
 	@Override
 	public DATE_FORMAT getDateFormat() {
 		if (dateFormat == null) {
-			dateFormat = IDateControlModel.DATE_FORMAT.DATE_TIME_SHORT;
+			dateFormat = IDateControlModel.DATE_FORMAT.DATE_SHORT;
 		}
 
 		return this.dateFormat;

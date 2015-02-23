@@ -19,7 +19,10 @@ public class GwtUtils {
 			format = new DateTimeFormat(info.dateTimeShort(info.timeFormatShort(), info.dateFormatShort()), info) {
 			};
 			break;
-
+		case DATE_SHORT:
+			format = new DateTimeFormat(info.dateFormatShort()) {
+			};
+			break;
 		case YEAR_MONTH_DAY_HOUR_MINUTE_SECOND:
 			format = new DateTimeFormat("yyyy-MM-dd HH:mm:ss", info) {
 			};

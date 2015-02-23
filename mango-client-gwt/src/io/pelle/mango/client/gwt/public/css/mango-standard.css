@@ -225,3 +225,37 @@
 .webhook-container .form-control {
   margin-right: 10px;
 }
+.datePickerDay {
+  font-size: 100%;
+}
+.datePickerWeekdayLabel,
+.datePickerWeekendLabel,
+.datePickerMonthSelector {
+  background-color: #aaaab5;
+  color: #000;
+  font-size: 110%;
+  padding: 5px;
+}
+.gwt-DatePicker {
+  border: 1px solid #9595a2;
+}
+.datePickerDay {
+  font-size: 100%;
+  padding: 5px;
+}
+td.datePickerMonth,
+td.datePickerYear {
+  font-size: 120%;
+  color: #000;
+  font-weight: normal;
+}
+.datePickerNextButton .html-face {
+  color: #000;
+  font-size: 200%;
+  font-weight: normal;
+}
+.datePickerPreviousButton .html-face {
+  color: #000;
+  font-size: 200%;
+  font-weight: normal;
+}
