@@ -12,4 +12,6 @@
  
 	<source path="client.base" />
 
+	<super-source path="jrestubs" />
+
 </module>

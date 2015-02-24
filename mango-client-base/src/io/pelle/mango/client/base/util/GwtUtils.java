@@ -3,6 +3,7 @@ package io.pelle.mango.client.base.util;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IDateControlModel;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.google.gwt.core.shared.GWT;
@@ -66,8 +67,15 @@ public class GwtUtils {
 			switch (dateFormat) {
 			case DATE_TIME_SHORT:
 				dateFormatInstance = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+				break;
 			case DATE_SHORT:
 				dateFormatInstance = DateFormat.getDateInstance(DateFormat.SHORT);
+				break;
+			case YEAR_MONTH_DAY_HOUR_MINUTE_SECOND:
+				dateFormatInstance = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				break;
+			default:
+				break;
 			}
 			return dateFormatInstance.format(date);
 		}
