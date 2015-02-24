@@ -2,8 +2,10 @@ package io.pelle.mango.client.base.util;
 
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IDateControlModel;
 
+import java.text.DateFormat;
 import java.util.Date;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.i18n.shared.DefaultDateTimeFormatInfo;
 
@@ -33,15 +35,42 @@ public class GwtUtils {
 	}
 
 	public static Date parseDate(String dateString, IDateControlModel.DATE_FORMAT dateFormat) {
+
+		Date date = null;
 		try {
-			return getFormat(dateFormat).parse(dateString);
-		} catch (IllegalArgumentException e) {
-			return null;
+
+			if (GWT.isClient()) {
+				date = getFormat(dateFormat).parse(dateString);
+			} else {
+				switch (dateFormat) {
+				case DATE_TIME_SHORT:
+					DateFormat dateTimeShort = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+					date = dateTimeShort.parse(dateString);
+				case DATE_SHORT:
+					DateFormat dateShort = DateFormat.getDateInstance(DateFormat.SHORT);
+					date = dateShort.parse(dateString);
+				}
+			}
+		} catch (Exception e) {
+			e.toString();
 		}
+
+		return date;
 	}
 
 	public static String formatDate(Date date, IDateControlModel.DATE_FORMAT dateFormat) {
-		return getFormat(dateFormat).format(date);
+		if (GWT.isClient()) {
+			return getFormat(dateFormat).format(date);
+		} else {
+			DateFormat dateFormatInstance = null;
+			switch (dateFormat) {
+			case DATE_TIME_SHORT:
+				dateFormatInstance = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+			case DATE_SHORT:
+				dateFormatInstance = DateFormat.getDateInstance(DateFormat.SHORT);
+			}
+			return dateFormatInstance.format(date);
+		}
 	}
 
 }

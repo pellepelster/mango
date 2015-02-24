@@ -29,6 +29,8 @@ import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
@@ -387,6 +389,10 @@ public class DemoClientTest extends BaseDemoTest {
 	@Test
 	public void testDictionary1DateControl1() {
 
+		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
+		String date1 = df.format(new Date(2014, 8, 28));
+		String date2 = df.format(new Date(2015, 9, 29));
+
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 		baseEntityService.deleteAll(Entity2VO.class.getName());
 
@@ -395,13 +401,13 @@ public class DemoClientTest extends BaseDemoTest {
 		DateTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
 		control.enterValue("a");
 		control.assertHasErrorWithText("'a' is not a valid date");
-		control.enterValue("2014-8-28 12:00");
+		control.enterValue(date1);
 		editor.save();
 
 		// create 2
 		editor = createDemoDictionary1Editor1();
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
-		control.enterValue("2015-9-29 13:00");
+		control.enterValue(date2);
 		editor.save();
 
 		// search all
@@ -411,19 +417,19 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// search 1
 		control = search.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.DATE_CONTROL1);
-		control.enterValue("2014-8-28 12:00");
+		control.enterValue(date1);
 		search.execute();
 		search.assertSearchResults(1);
 
 		// search 2
 		control = search.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.DATE_CONTROL1);
-		control.enterValue("2015-9-29 13:00");
+		control.enterValue(date2);
 		search.execute();
 		search.assertSearchResults(1);
 
 		editor = search.openEditor(0);
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
-		assertEquals("2015-09-29 13:00", control.getValue());
+		assertEquals(date2, control.getValue());
 	}
 
 	@Test
