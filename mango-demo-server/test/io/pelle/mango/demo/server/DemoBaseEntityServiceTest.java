@@ -96,6 +96,50 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testFilterLongGreaterEquals() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		entity1VO.setIntegerDatatype1(3);
+		baseEntityService.validateAndSave(entity1VO);
+
+		entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("AAA");
+		entity1VO.setIntegerDatatype1(6);
+		baseEntityService.validateAndSave(entity1VO);
+
+		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.greaterThan(3)));
+		assertEquals(1, filterResult.size());
+
+		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.greaterThanEquals(3)));
+		assertEquals(2, filterResult.size());
+	}
+
+	@Test
+	public void testFilterLongLessEquals() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		entity1VO.setIntegerDatatype1(3);
+		baseEntityService.validateAndSave(entity1VO);
+
+		entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("AAA");
+		entity1VO.setIntegerDatatype1(6);
+		baseEntityService.validateAndSave(entity1VO);
+
+		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.lessThan(6)));
+		assertEquals(1, filterResult.size());
+
+		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.lessThanEquals(6)));
+		assertEquals(2, filterResult.size());
+	}
+
+	@Test
 	public void testFilterLongGreaterLess() {
 
 		baseVODAO.deleteAll(Entity1VO.class);

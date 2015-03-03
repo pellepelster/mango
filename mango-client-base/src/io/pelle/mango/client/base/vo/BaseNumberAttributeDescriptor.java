@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
 import io.pelle.mango.client.base.vo.query.expressions.NumberExpression;
 
+@SuppressWarnings("serial")
 public class BaseNumberAttributeDescriptor<T extends Number> extends BaseExpressionAttributeDescriptor<T> {
 
 	public BaseNumberAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<T> numberClass) {
@@ -17,6 +18,14 @@ public class BaseNumberAttributeDescriptor<T extends Number> extends BaseExpress
 
 	public IBooleanExpression lessThan(T value) {
 		return new CompareExpression(entityFieldExpression, ComparisonOperator.LESS, new NumberExpression(value));
+	}
+
+	public IBooleanExpression lessThanEquals(T value) {
+		return new CompareExpression(entityFieldExpression, ComparisonOperator.LESS_EQUALS, new NumberExpression(value));
+	}
+
+	public IBooleanExpression greaterThanEquals(T value) {
+		return new CompareExpression(entityFieldExpression, ComparisonOperator.GREATER_EQUALS, new NumberExpression(value));
 	}
 
 	public IBooleanExpression greaterThan(T value) {
