@@ -3,6 +3,7 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import io.pelle.mango.client.base.vo.BigDecimalAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
@@ -92,6 +93,7 @@ public class EntityModelGeneratorTest {
 		assertEquals(String.class, Entity1.STRINGDATATYPE1.getAttributeType());
 		assertEquals(String.class, Entity1.STRINGDATATYPE1.getListAttributeType());
 		assertEquals("stringDatatype1", Entity1.STRINGDATATYPE1.getAttributeName());
+		assertTrue(Entity1.STRINGDATATYPE1 instanceof StringAttributeDescriptor);
 	}
 
 	@Test
@@ -105,7 +107,8 @@ public class EntityModelGeneratorTest {
 	public void testEntity1VOStringDatatype1() {
 		assertEquals(String.class, Entity1VO.STRINGDATATYPE1.getAttributeType());
 		assertEquals(String.class, Entity1VO.STRINGDATATYPE1.getListAttributeType());
-		assertEquals("stringDatatype1", Entity1.STRINGDATATYPE1.getAttributeName());
+		assertEquals("stringDatatype1", Entity1VO.STRINGDATATYPE1.getAttributeName());
+		assertTrue(Entity1VO.STRINGDATATYPE1 instanceof StringAttributeDescriptor);
 	}
 
 	// -------------------------------------------------------------------------
@@ -133,13 +136,15 @@ public class EntityModelGeneratorTest {
 		assertEquals(BigDecimal.class, Entity1.DECIMALDATATYPE1.getAttributeType());
 		assertEquals(BigDecimal.class, Entity1.DECIMALDATATYPE1.getListAttributeType());
 		assertEquals("decimalDatatype1", Entity1.DECIMALDATATYPE1.getAttributeName());
+		assertTrue(Entity1.DECIMALDATATYPE1 instanceof BigDecimalAttributeDescriptor);
 	}
 
 	@Test
 	public void testEntity1VODecimalDatatype1() {
 		assertEquals(BigDecimal.class, Entity1VO.DECIMALDATATYPE1.getAttributeType());
 		assertEquals(BigDecimal.class, Entity1VO.DECIMALDATATYPE1.getListAttributeType());
-		assertEquals("decimalDatatype1", Entity1.DECIMALDATATYPE1.getAttributeName());
+		assertEquals("decimalDatatype1", Entity1VO.DECIMALDATATYPE1.getAttributeName());
+		assertTrue(Entity1VO.DECIMALDATATYPE1 instanceof BigDecimalAttributeDescriptor);
 	}
 
 	// -------------------------------------------------------------------------
@@ -156,7 +161,7 @@ public class EntityModelGeneratorTest {
 	public void testEntity1VODoubleDatatype1() {
 		assertEquals(Double.class, Entity1VO.DOUBLEDATATYPE1.getAttributeType());
 		assertEquals(Double.class, Entity1VO.DOUBLEDATATYPE1.getListAttributeType());
-		assertEquals("doubleDatatype1", Entity1.DOUBLEDATATYPE1.getAttributeName());
+		assertEquals("doubleDatatype1", Entity1VO.DOUBLEDATATYPE1.getAttributeName());
 	}
 
 	// -------------------------------------------------------------------------
@@ -173,7 +178,7 @@ public class EntityModelGeneratorTest {
 	public void testEntity1VOFloatDatatype1() {
 		assertEquals(Float.class, Entity1VO.FLOATDATATYPE1.getAttributeType());
 		assertEquals(Float.class, Entity1VO.FLOATDATATYPE1.getListAttributeType());
-		assertEquals("floatDatatype1", Entity1.FLOATDATATYPE1.getAttributeName());
+		assertEquals("floatDatatype1", Entity1VO.FLOATDATATYPE1.getAttributeName());
 	}
 
 	// -------------------------------------------------------------------------
@@ -207,7 +212,7 @@ public class EntityModelGeneratorTest {
 	public void testEntity1VOEnumerationDatatype() {
 		assertEquals(ENUMERATION1.class, Entity1VO.ENUMERATION1DATATYPE.getAttributeType());
 		assertEquals(ENUMERATION1.class, Entity1VO.ENUMERATION1DATATYPE.getListAttributeType());
-		assertEquals("enumeration1Datatype", Entity1.ENUMERATION1DATATYPE.getAttributeName());
+		assertEquals("enumeration1Datatype", Entity1VO.ENUMERATION1DATATYPE.getAttributeName());
 	}
 
 	// -------------------------------------------------------------------------
@@ -224,7 +229,7 @@ public class EntityModelGeneratorTest {
 	public void testEntity1VOEntity2VODatatype() {
 		assertEquals(Entity2VO.class, Entity1VO.ENTITY2DATATYPE.getAttributeType());
 		assertEquals(Entity2VO.class, Entity1VO.ENTITY2DATATYPE.getListAttributeType());
-		assertEquals("entity2Datatype", Entity1.ENTITY2DATATYPE.getAttributeName());
+		assertEquals("entity2Datatype", Entity1VO.ENTITY2DATATYPE.getAttributeName());
 	}
 
 	// -------------------------------------------------------------------------

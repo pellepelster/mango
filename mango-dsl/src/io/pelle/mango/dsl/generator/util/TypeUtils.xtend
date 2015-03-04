@@ -46,6 +46,7 @@ import java.math.BigDecimal
 import java.util.ArrayList
 import java.util.Date
 import java.util.List
+import io.pelle.mango.client.base.vo.BigDecimalAttributeDescriptor
 
 class TypeUtils {
 
@@ -272,6 +273,10 @@ class TypeUtils {
 	{
 		return BigDecimal.name
 	}
+	
+	def dispatch compileEntityAttributeDescriptor(DecimalEntityAttribute entityAttribute, Entity entity) '''
+	public static «BigDecimalAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BigDecimalAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
+	'''
 
 	//-----------------
 	// float
@@ -335,6 +340,35 @@ class TypeUtils {
 	{
 		String.name
 	}
+	
+	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
+	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.minLength», «entityAttribute.maxLength», «entityAttribute.naturalKeyOrder»);
+	'''
+	
+	def getMaxLength(StringEntityAttribute stringEntityAttribute) 
+	{
+		if (stringEntityAttribute.type != null && stringEntityAttribute.type.maxLength > 0)
+		{
+			return stringEntityAttribute.type.maxLength
+		}
+		else
+		{
+			return StringAttributeDescriptor.NO_LENGTH_LIMIT
+		}
+	}
+
+	def getMinLength(StringEntityAttribute stringEntityAttribute) 
+	{
+		if (stringEntityAttribute.type != null && stringEntityAttribute.type.minLength > 0)
+		{
+			return stringEntityAttribute.type.minLength
+		}
+		else
+		{
+			return StringAttributeDescriptor.NO_LENGTH_LIMIT
+		}
+	}
+	
 
 	//-----------------
 	// integer
@@ -391,35 +425,6 @@ class TypeUtils {
 		entityAttribute.type.type
 	}
 	
-	//-----------------
-	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
-	public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.minLength», «entityAttribute.maxLength», «entityAttribute.naturalKeyOrder»);
-	'''
-	
-	def getMaxLength(StringEntityAttribute stringEntityAttribute) 
-	{
-		if (stringEntityAttribute.type != null && stringEntityAttribute.type.maxLength > 0)
-		{
-			return stringEntityAttribute.type.maxLength
-		}
-		else
-		{
-			return StringAttributeDescriptor.NO_LENGTH_LIMIT
-		}
-	}
-
-	def getMinLength(StringEntityAttribute stringEntityAttribute) 
-	{
-		if (stringEntityAttribute.type != null && stringEntityAttribute.type.minLength > 0)
-		{
-			return stringEntityAttribute.type.minLength
-		}
-		else
-		{
-			return StringAttributeDescriptor.NO_LENGTH_LIMIT
-		}
-	}
-
 	//-----------------
 	// EntityEntityAttribute
 	//-----------------
