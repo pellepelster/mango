@@ -2,6 +2,8 @@ package io.pelle.mango.dsl.generator.util
 
 import com.google.inject.Inject
 import io.pelle.mango.client.base.vo.AttributeDescriptor
+import io.pelle.mango.client.base.vo.BigDecimalAttributeDescriptor
+import io.pelle.mango.client.base.vo.BooleanAttributeDescriptor
 import io.pelle.mango.client.base.vo.ChangeTrackingArrayList
 import io.pelle.mango.client.base.vo.EntityAttributeDescriptor
 import io.pelle.mango.client.base.vo.EnumerationAttributeDescriptor
@@ -46,7 +48,6 @@ import java.math.BigDecimal
 import java.util.ArrayList
 import java.util.Date
 import java.util.List
-import io.pelle.mango.client.base.vo.BigDecimalAttributeDescriptor
 
 class TypeUtils {
 
@@ -260,6 +261,10 @@ class TypeUtils {
 	{
 		return typeof(Boolean).name
 	}
+	
+	def dispatch compileEntityAttributeDescriptor(BooleanEntityAttribute entityAttribute, Entity entity) '''
+	public static «BooleanAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BooleanAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
+	'''
 	
 	//-----------------
 	// decimal

@@ -140,6 +140,30 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testFilterBooleanEquals() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("aaa");
+		entity1VO.setBooleanDatatype1(true);
+		baseEntityService.validateAndSave(entity1VO);
+
+		entity1VO = new Entity1VO();
+		entity1VO.setStringDatatype1("bbb");
+		entity1VO.setBooleanDatatype1(false);
+		baseEntityService.validateAndSave(entity1VO);
+
+		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.BOOLEANDATATYPE1.eq(true)));
+		assertEquals(1, filterResult.size());
+		assertEquals("aaa", filterResult.get(0).getStringDatatype1());
+		
+		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.BOOLEANDATATYPE1.eq(false)));
+		assertEquals(1, filterResult.size());
+		assertEquals("bbb", filterResult.get(0).getStringDatatype1());
+	}
+
+	@Test
 	public void testFilterLongGreaterLess() {
 
 		baseVODAO.deleteAll(Entity1VO.class);

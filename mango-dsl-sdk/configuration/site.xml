@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/io.pelle.mango.dsl.sdk_0.0.0.qualifier" id="io.pelle.mango.dsl.sdk" version="0.0.0.qualifier" os="linux,macosx,win32" ws="carbon,cocoa,gtk,win32" arch="x86,x86_64">
-      <category name="Mango SDK"/>
+      <category name="mango_sdk"/>
    </feature>
-   <category-def name="Mango SDK" label="Mango SDK"/>
+   <category-def name="mango_sdk" label="Mango SDK"/>
 </site>

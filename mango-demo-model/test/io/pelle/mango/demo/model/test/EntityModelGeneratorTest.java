@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.vo.BigDecimalAttributeDescriptor;
+import io.pelle.mango.client.base.vo.BooleanAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
@@ -119,13 +120,15 @@ public class EntityModelGeneratorTest {
 		assertEquals(Boolean.class, Entity1.BOOLEANDATATYPE1.getAttributeType());
 		assertEquals(Boolean.class, Entity1.BOOLEANDATATYPE1.getListAttributeType());
 		assertEquals("booleanDatatype1", Entity1.BOOLEANDATATYPE1.getAttributeName());
+		assertTrue(Entity1.BOOLEANDATATYPE1 instanceof BooleanAttributeDescriptor);
 	}
 
 	@Test
 	public void testEntity1VOBooleanDatatype1() {
 		assertEquals(Boolean.class, Entity1VO.BOOLEANDATATYPE1.getAttributeType());
 		assertEquals(Boolean.class, Entity1VO.BOOLEANDATATYPE1.getListAttributeType());
-		assertEquals("booleanDatatype1", Entity1.BOOLEANDATATYPE1.getAttributeName());
+		assertEquals("booleanDatatype1", Entity1VO.BOOLEANDATATYPE1.getAttributeName());
+		assertTrue(Entity1VO.BOOLEANDATATYPE1 instanceof BooleanAttributeDescriptor);
 	}
 
 	// -------------------------------------------------------------------------

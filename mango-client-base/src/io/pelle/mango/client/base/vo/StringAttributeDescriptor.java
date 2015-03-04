@@ -6,6 +6,7 @@ import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
 import io.pelle.mango.client.base.vo.query.expressions.LikeExpression;
 import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 
+@SuppressWarnings("serial")
 public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor<String> {
 
 	private final int maxLength;
