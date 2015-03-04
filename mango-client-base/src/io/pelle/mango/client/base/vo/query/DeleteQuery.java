@@ -23,7 +23,7 @@ public class DeleteQuery<T extends IVOEntity> extends BaseQuery<T, DeleteQuery<T
 	}
 
 	@Override
-	protected DeleteQuery<T> getQuery() {
+	public DeleteQuery<T> getQuery() {
 		return this;
 	}
 

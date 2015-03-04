@@ -1,10 +1,12 @@
 package io.pelle.mango.demo.server;
 
+import static io.pelle.mango.client.base.vo.query.AggregateQuery.aggregateFrom;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import io.pelle.mango.client.base.vo.query.AggregateQuery;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
@@ -163,16 +165,23 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 
 	}
 
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
+	@Test
+	public void testSumAggregateQuery() {
 
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+		Entity1VO newVO1 = new Entity1VO();
+		newVO1.setStringDatatype1("xxx");
+		newVO1.setIntegerDatatype1(3);
+		baseVODAO.create(newVO1);
 
-	public void setBaseVODao(IBaseVODAO baseVODao) {
-		this.baseVODAO = baseVODao;
+		newVO1 = new Entity1VO();
+		newVO1.setStringDatatype1("yyy");
+		newVO1.setIntegerDatatype1(4);
+		baseVODAO.create(newVO1);
+
+		AggregateQuery<Entity1VO> query = aggregateFrom(Entity1VO.class).sum(Entity1VO.INTEGERDATATYPE1);
+
+		long result = baseVODAO.aggregate(query);
+		assertEquals(7, result);
 	}
 
 }

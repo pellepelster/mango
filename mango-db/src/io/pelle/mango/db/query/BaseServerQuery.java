@@ -13,17 +13,17 @@ import java.util.Collection;
 
 public class BaseServerQuery<T extends IVOEntity, Q> {
 
-	private BaseQuery<T, Q> selectQuery;
+	private BaseQuery<T, Q> baseQuery;
 
-	protected BaseServerQuery(BaseQuery<T, Q> selectQuery) {
-		this.selectQuery = selectQuery;
+	protected BaseServerQuery(BaseQuery<T, Q> baseQuery) {
+		this.baseQuery = baseQuery;
 	}
 
 	protected String getSelectClause() {
 		String result = "";
 		String delimiter = "";
 
-		for (IEntity entity : selectQuery.getFroms()) {
+		for (IEntity entity : baseQuery.getFroms()) {
 			result += delimiter + entity.getAlias();
 			delimiter = ", ";
 		}
@@ -35,7 +35,7 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 		String result = "";
 		String delimiter = "";
 
-		for (Entity entity : selectQuery.getFroms()) {
+		for (Entity entity : baseQuery.getFroms()) {
 			result += delimiter + "" + entityVOMapper.getEntityClass(DBUtil.getClassOrDie(entity.getClassName())).getSimpleName() + " " + entity.getAlias();
 			delimiter = ", ";
 		}
@@ -47,20 +47,20 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 
 		StringBuilder result = new StringBuilder();
 
-		if (!selectQuery.getOrderBys().isEmpty()) {
+		if (!baseQuery.getOrderBys().isEmpty()) {
 			result.append("ORDER BY ");
 		}
 
 		String delimiter = "";
-		for (IAttributeDescriptor<?> orderBy : selectQuery.getOrderBys()) {
+		for (IAttributeDescriptor<?> orderBy : baseQuery.getOrderBys()) {
 
 			result.append(delimiter);
 			result.append(orderBy.getAttributeName());
 			delimiter = ", ";
 		}
 
-		if (!selectQuery.getOrderBys().isEmpty()) {
-			result.append(" " + selectQuery.getSortOrder());
+		if (!baseQuery.getOrderBys().isEmpty()) {
+			result.append(" " + baseQuery.getSortOrder());
 		}
 
 		return result.toString();
@@ -79,19 +79,23 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 
 		StringBuilder result = new StringBuilder();
 
-		if (selectQuery.getWhereExpression().isPresent()) {
+		if (baseQuery.getWhereExpression().isPresent()) {
 			result.append("WHERE ");
-			result.append(selectQuery.getWhereExpression().get().getJPQL(selectQuery.getAliasProvider()));
+			result.append(baseQuery.getWhereExpression().get().getJPQL(baseQuery.getAliasProvider()));
 		}
 
 		return result.toString();
 	}
 
+	public BaseQuery<T, Q> getBaseQuery() {
+		return baseQuery;
+	}
+	
 	protected String getJoinClause() {
 
 		StringBuilder result = new StringBuilder();
 
-		for (Entity entity : selectQuery.getFroms()) {
+		for (Entity entity : baseQuery.getFroms()) {
 			addJoins(result, entity.getAlias(), entity.getJoins());
 		}
 

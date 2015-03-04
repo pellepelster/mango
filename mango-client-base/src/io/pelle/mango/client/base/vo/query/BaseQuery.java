@@ -89,7 +89,7 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 		return getQuery();
 	}
 
-	protected abstract Q getQuery();
+	public abstract Q getQuery();
 
 	public Optional<IBooleanExpression> getWhereExpression() {
 		return whereExpression;

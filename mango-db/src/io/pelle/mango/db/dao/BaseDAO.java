@@ -2,8 +2,10 @@ package io.pelle.mango.db.dao;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.query.AggregateQuery;
 import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.db.query.ServerAggregateQuery;
 import io.pelle.mango.db.query.ServerDeleteQuery;
 import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.db.util.EntityVOMapper;
@@ -38,6 +40,20 @@ public class BaseDAO<VOENTITYTYPE extends IVOEntity> {
 		} catch (Exception e) {
 			throw new RuntimeException(String.format("error executing jpql '%s'", jpql), e);
 		}
+	}
+
+	public <T extends VOENTITYTYPE> long aggregate(AggregateQuery<T> query) {
+
+		ServerAggregateQuery<T> serverQuery = ServerAggregateQuery.adapt(query);
+
+		Object result = entityManager.createQuery(serverQuery.getJPQL(EntityVOMapper.getInstance())).getSingleResult();
+
+		if (result instanceof Long) {
+			return (long) result;
+		}
+
+		throw new RuntimeException(String.format("unsupported query result '%s'", result));
+
 	}
 
 	public <T extends VOENTITYTYPE> void deleteQuery(DeleteQuery<T> deleteQuery) {

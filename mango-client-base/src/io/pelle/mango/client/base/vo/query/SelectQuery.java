@@ -37,7 +37,7 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 	}
 
 	@Override
-	protected SelectQuery<T> getQuery() {
+	public SelectQuery<T> getQuery() {
 		return this;
 	}
 

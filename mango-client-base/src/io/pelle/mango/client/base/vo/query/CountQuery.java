@@ -23,7 +23,7 @@ public class CountQuery<T extends IVOEntity> extends BaseQuery<T, CountQuery<T>>
 	}
 
 	@Override
-	protected CountQuery<T> getQuery() {
+	public CountQuery<T> getQuery() {
 		return this;
 	}
 
