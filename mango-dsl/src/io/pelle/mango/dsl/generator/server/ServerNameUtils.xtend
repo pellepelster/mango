@@ -25,6 +25,74 @@ class ServerNameUtils extends NameUtils {
 		return entityFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
 	}
 
+	//-------------------------------------------------------------------------
+	// entity DAO
+	//-------------------------------------------------------------------------
+	def entityDAOName(Entity entity) {
+		return "Base" + entity.name.toFirstUpper + "EntityDAO";
+	}
+
+	def entityDAOSpringId(Entity entity) {
+		return entity.entityDAOName.toFirstLower;
+	}
+
+	def entityDAOFullQualifiedName(Entity entity) {
+		return getPackageName(entity) + "." + entityDAOName(entity);
+	}
+
+	def entityDAOFullQualifiedFileName(Entity entity) {
+		return entityDAOFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
+	}
+
+	//-------------------------------------------------------------------------
+	// entity DAO interface
+	//-------------------------------------------------------------------------
+	def entityDAOInterfaceName(Entity entity) {
+		return "I" + entity.name.toFirstUpper + "EntityDAO";
+	}
+
+	def entityDAOInterfaceFullQualifiedName(Entity entity) {
+		return getPackageName(entity) + "." + entityDAOInterfaceName(entity);
+	}
+
+	def entityDAOInterfaceFullQualifiedFileName(Entity entity) {
+		return entityDAOInterfaceFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
+	}
+
+	//-------------------------------------------------------------------------
+	// VO DAO
+	//-------------------------------------------------------------------------
+	def voDAOName(Entity entity) {
+		return "Base" + entity.name.toFirstUpper + "VODAO";
+	}
+
+	def voDAOSpringId(Entity entity) {
+		return entity.voDAOName.toFirstLower;
+	}
+
+	def voDAOFullQualifiedName(Entity entity) {
+		return getPackageName(entity) + "." + voDAOName(entity);
+	}
+
+	def voDAOFullQualifiedFileName(Entity entity) {
+		return voDAOFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
+	}
+
+	//-------------------------------------------------------------------------
+	// vo DAO interface
+	//-------------------------------------------------------------------------
+	def voDAOInterfaceName(Entity entity) {
+		return "I" + entity.name.toFirstUpper + "VODAO";
+	}
+
+	def voDAOInterfaceFullQualifiedName(Entity entity) {
+		return getPackageName(entity) + "." + voDAOInterfaceName(entity);
+	}
+
+	def voDAOInterfaceFullQualifiedFileName(Entity entity) {
+		return voDAOInterfaceFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
+	}
+
 	
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
 		

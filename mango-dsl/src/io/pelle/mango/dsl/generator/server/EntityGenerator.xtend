@@ -6,6 +6,7 @@ import io.pelle.mango.client.base.vo.IEntityDescriptor
 import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
+import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
@@ -33,8 +34,50 @@ class EntityGenerator extends BaseEntityGenerator {
 	extension ServerNameUtils
 
 	@Inject
+	ClientNameUtils clientNameUtils
+
+	@Inject
 	extension TypeUtils
 
+	def compileVODAO(Entity entity) '''
+		package «entity.packageName»;
+		
+		public class «entity.voDAOName» extends io.pelle.mango.db.dao.AbstractVODAO<«clientNameUtils.voFullQualifiedName(entity)»> implements «entity.voDAOInterfaceFullQualifiedName» {
+			
+			public «entity.voDAOName»() {
+				super(«clientNameUtils.voFullQualifiedName(entity)».class);
+			}
+			
+		}
+	'''
+	
+	def compileVODAOInterface(Entity entity) '''
+		package «entity.packageName»;
+		
+		public interface «entity.voDAOInterfaceName» extends io.pelle.mango.db.dao.IVOEntityDAO<«clientNameUtils.voFullQualifiedName(entity)»> {
+		}
+	'''
+	
+	
+	def compileEntityDAO(Entity entity) '''
+		package «entity.packageName»;
+		
+		public class «entity.entityDAOName» extends io.pelle.mango.db.dao.AbstractEntityDAO<«entity.type»> implements «entity.entityDAOInterfaceFullQualifiedName» {
+			
+			public «entity.entityDAOName»() {
+				super(«entity.typeClass»);
+			}
+			
+		}
+	'''
+
+	def compileEntityDAOInterface(Entity entity) '''
+		package «entity.packageName»;
+		
+		public interface «entity.entityDAOInterfaceName» extends io.pelle.mango.db.dao.IVOEntityDAO<«entity.type»> {
+		}
+	'''
+	
 	def compileEntity(Entity entity) '''
 		«System.out.println(String.format("generating entity '%s' (entityDisableIdField: %s", entity.entityName, entity.entityDisableIdField))»
 		package «entity.packageName»;

@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.entity;
 
 import static io.pelle.mango.client.base.vo.query.CountQuery.countFrom;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
@@ -9,6 +9,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
+import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.demo.server.test.Entity1;
 import io.pelle.mango.demo.server.test.Entity2;
 import io.pelle.mango.demo.server.test.Entity3;
@@ -450,17 +451,5 @@ public class DemoBaseEntityDAOTest extends BaseDemoTest {
 	// assertEquals(1, entity1s.size());
 	// assertNull(entity1s.get(0).getEntity2());
 	// }
-
-	public void setBaseEntityDao(IBaseEntityDAO baseEntityDao) {
-		this.baseEntityDAO = baseEntityDao;
-	}
-
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
 
 }

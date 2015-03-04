@@ -58,6 +58,10 @@ class ServerGenerator implements IGenerator {
 
 		for (entity : resource.allContents.toIterable.filter(Entity)) {
 			fsa.generateFile(entity.entityFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntity)
+			fsa.generateFile(entity.entityDAOFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntityDAO)
+			fsa.generateFile(entity.voDAOFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileVODAO)
+			fsa.generateFile(entity.entityDAOInterfaceFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntityDAOInterface)
+			fsa.generateFile(entity.voDAOInterfaceFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileVODAOInterface)
 		}
 
 		for (service : resource.allContents.toIterable.filter(Service)) {

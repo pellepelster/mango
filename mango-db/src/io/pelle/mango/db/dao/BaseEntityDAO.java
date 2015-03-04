@@ -92,6 +92,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 			fireOnCreateCallbacks(result);
 
 			return result;
+
 		} finally {
 			if (context.isPresent()) {
 				context.get().stop();
@@ -104,7 +105,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 			daoCallback.onDelete(entity);
 		}
 	}
-	
+
 	private <T extends IBaseEntity> void fireOnCreateCallbacks(T entity) {
 		for (IDAOCallback daoCallback : callbacks) {
 			daoCallback.onCreate(entity);
@@ -115,9 +116,9 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 		LOG.debug(String.format("deleting entity '%s' with id '%d'", entity.getClass().getName(), entity.getId()));
 
 		T entityToDelete = this.entityManager.merge(entity);
-		
+
 		this.entityManager.remove(entityToDelete);
-		
+
 		fireOnDeleteCallbacks(entityToDelete);
 	}
 
