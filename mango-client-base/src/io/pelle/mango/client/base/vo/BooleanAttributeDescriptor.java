@@ -1,6 +1,6 @@
 package io.pelle.mango.client.base.vo;
 
-
+@SuppressWarnings("serial")
 public class BooleanAttributeDescriptor extends BaseExpressionAttributeDescriptor<String> {
 
 	public BooleanAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<?> collectionType) {

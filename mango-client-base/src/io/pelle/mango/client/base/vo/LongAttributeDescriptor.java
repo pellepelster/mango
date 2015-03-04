@@ -1,5 +1,6 @@
 package io.pelle.mango.client.base.vo;
 
+@SuppressWarnings("serial")
 public class LongAttributeDescriptor extends BaseNumberAttributeDescriptor<Long> {
 
 	public LongAttributeDescriptor(IMetaDescriptor metaDescriptor, String attributeName) {

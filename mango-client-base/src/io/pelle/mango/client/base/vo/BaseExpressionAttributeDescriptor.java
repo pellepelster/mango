@@ -2,6 +2,7 @@ package io.pelle.mango.client.base.vo;
 
 import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
 
+@SuppressWarnings("serial")
 public abstract class BaseExpressionAttributeDescriptor<T> extends AttributeDescriptor<T> {
 
 	protected final PathExpression entityFieldExpression;

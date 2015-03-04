@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
 import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 
+@SuppressWarnings("serial")
 public class EnumerationAttributeDescriptor<ENUM_TYPE> extends BaseExpressionAttributeDescriptor<String> implements IAttributeDescriptor<String> {
 
 	public EnumerationAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> collectionType, int naturalKeyOrder) {

@@ -1,5 +1,6 @@
 package io.pelle.mango.client.base.vo;
 
+@SuppressWarnings("serial")
 public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<AttributeType> {
 
 	private final IMetaDescriptor parent;

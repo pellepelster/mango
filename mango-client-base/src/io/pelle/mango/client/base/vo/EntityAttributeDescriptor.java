@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.vo.query.EntityCompareExpression;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.expressions.NumberExpression;
 
+@SuppressWarnings("serial")
 public class EntityAttributeDescriptor<T extends IVOEntity> extends BaseExpressionAttributeDescriptor<T> {
 
 	public EntityAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<T> entityType) {
