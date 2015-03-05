@@ -9,8 +9,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoApplicationContext.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/DBBaseApplicationContext.xml",
-		"classpath:/MangoDemoDB-gen.xml", "classpath:/MangoDemoSpringServices-gen.xml", "classpath:/MangoLoggerApplicationContext.xml", "classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoSpringServices-gen.xml",
+@ContextConfiguration(locations = { "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoApplicationContext.xml", "classpath:/DBBaseApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml",
+		"classpath:/MangoDemoSpringServices-gen.xml", "classpath:/MangoLoggerApplicationContext.xml", "classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoSpringServices-gen.xml",
 		"classpath:/MangoDemoWebservices-gen.xml", "classpath:/MangoTestApplicationContext.xml" })
 @Transactional
 public abstract class BaseDemoTest extends AbstractTransactionalJUnit4SpringContextTests {

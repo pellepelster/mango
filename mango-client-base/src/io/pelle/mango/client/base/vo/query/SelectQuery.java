@@ -35,7 +35,7 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 		getFroms().add(new Entity(aliasProvider, from.getName()));
 		return this;
 	}
-
+	
 	@Override
 	public SelectQuery<T> getQuery() {
 		return this;

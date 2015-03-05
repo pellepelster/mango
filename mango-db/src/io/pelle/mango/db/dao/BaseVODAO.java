@@ -23,7 +23,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 
 @Component
-public class BaseVODAO extends BaseDAO<IBaseVO> implements IBaseVODAO {
+public class BaseVODAO extends BaseDAO<IBaseVO> {
 
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;

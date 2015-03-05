@@ -77,8 +77,10 @@ class SpringGenerator {
 			<bean class="«model.voMapperFullQualifiedName»" />
 			
 			«FOR entity : model.eAllContents.toIterable.filter(Entity)»
+				<!--
 				<bean id="«entity.entityDAOSpringId»" class="«entity.entityDAOFullQualifiedName»" />
 				<bean id="«entity.voDAOSpringId»" class="«entity.voDAOFullQualifiedName»" />
+				-->
 			«ENDFOR»
 		
 		</beans>

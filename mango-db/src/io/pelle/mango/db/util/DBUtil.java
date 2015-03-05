@@ -4,6 +4,7 @@ import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.query.BaseQuery;
 import io.pelle.mango.client.base.vo.query.Entity;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.Join;
@@ -25,6 +26,14 @@ import com.google.common.base.Optional;
  * 
  */
 public final class DBUtil {
+
+	public static Class<?> getQueryClass(BaseQuery<?, ?> baseQuery) {
+		try {
+			return Class.forName(baseQuery.getFroms().get(0).getClassName());
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	public static Class<? extends IVOEntity> getClassOrDie(String className) {

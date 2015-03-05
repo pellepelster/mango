@@ -26,4 +26,8 @@
 		<task:scheduled ref="logTask" method="createLogEntries" fixed-delay="2500"/>
 	</task:scheduled-tasks>
 	
+	<bean class="io.pelle.mango.demo.server.test.CountryEntityDAO" />
+
+	<bean class="io.pelle.mango.demo.server.test.CurrencyVODAO" />
+	
 </beans>

@@ -17,6 +17,4 @@
 		<property name="url" value="jdbc:hsqldb:mem:example" />
 	</bean>
 
-	<bean id="baseCountryEntityDAO" class="io.pelle.mango.demo.server.test.CountryEntityDAO" />
-
 </beans>

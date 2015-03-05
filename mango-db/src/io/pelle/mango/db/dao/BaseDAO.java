@@ -17,7 +17,7 @@ import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
 
-public class BaseDAO<VOENTITYTYPE extends IVOEntity> {
+public abstract class BaseDAO<VOENTITYTYPE extends IVOEntity> implements IBaseVOEntityDAO<VOENTITYTYPE> {
 
 	private static Logger LOG = Logger.getLogger(BaseDAO.class);
 

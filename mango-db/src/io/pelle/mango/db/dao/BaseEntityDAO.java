@@ -31,8 +31,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
@@ -54,6 +52,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 	private Optional<Timer> createTimer = Optional.absent();
 
+	@Override
 	public <T extends IBaseEntity> T create(T entity) {
 
 		Optional<Timer.Context> context = Optional.absent();
@@ -112,6 +111,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		}
 	}
 
+	@Override
 	public <T extends IBaseEntity> void delete(T entity) {
 		LOG.debug(String.format("deleting entity '%s' with id '%d'", entity.getClass().getName(), entity.getId()));
 
@@ -122,6 +122,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		fireOnDeleteCallbacks(entityToDelete);
 	}
 
+	@Override
 	public <T extends IBaseEntity> void deleteAll(Class<T> entityClass) {
 		LOG.debug(String.format("deleting all '%s' entities", entityClass.getName()));
 
@@ -206,6 +207,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		}
 	}
 
+	@Override
 	public <T extends IBaseEntity> T read(long id, Class<T> entityClass) {
 
 		T entity = this.entityManager.find(entityClass, id);
@@ -228,6 +230,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		}
 	}
 
+	@Override
 	public <T extends IBaseEntity> T save(T entity) {
 
 		if (entity instanceof IBaseClientEntity) {
@@ -262,7 +265,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	}
 
 	private <T extends IBaseEntity> T mergeRecursive(T entity) {
-
 		return mergeRecursive(entity, "/");
 	}
 
@@ -308,14 +310,13 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 	}
 
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
+	@SuppressWarnings("unchecked")
+	@Override
 	public <T extends IBaseEntity> List<T> filter(SelectQuery<T> selectQuery) {
 		return (List<T>) getResultList(selectQuery, entityManager);
 	}
 
+	@Override
 	public <T extends IBaseEntity> Optional<T> read(SelectQuery<T> selectQuery) {
 		List<T> result = filter(selectQuery);
 
@@ -326,6 +327,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		}
 	}
 
+	@Override
 	public <T extends IBaseEntity> long count(CountQuery<T> countQuery) {
 		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}
@@ -335,6 +337,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		createTimer = Optional.fromNullable(metricRegistry.timer(name(BaseEntityDAO.class, "create")));
 	}
 
+	@Override
 	public <T extends IBaseEntity> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey) {
 		List<T> result = filter(DBUtil.getNaturalKeyQuery(entityClass, naturalKey));
 
