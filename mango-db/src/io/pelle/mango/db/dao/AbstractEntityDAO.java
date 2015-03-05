@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractEntityDAO<ENTITYTYPE extends IBaseEntity> implements IVOEntityDAO<ENTITYTYPE> {
 
 	@Autowired
-	private IBaseEntityDAO baseEntityDAO;
+	private BaseEntityDAO baseEntityDAO;
 
 	private final Class<ENTITYTYPE> voEntityClass;
 

@@ -132,4 +132,5 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 	public <DeleteVOType extends IBaseVO> void deleteQuery(DeleteQuery<DeleteVOType> deleteQuery) {
 		baseVODAO.deleteQuery(deleteQuery);
 	}
+
 }

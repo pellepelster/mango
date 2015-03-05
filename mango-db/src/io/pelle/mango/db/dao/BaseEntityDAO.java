@@ -46,7 +46,7 @@ import com.codahale.metrics.Timer;
 import com.google.common.base.Optional;
 
 @Component
-public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDAO {
+public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 	private List<IDAOCallback> callbacks = new ArrayList<IDAOCallback>();
 
@@ -122,7 +122,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 		fireOnDeleteCallbacks(entityToDelete);
 	}
 
-	@Override
 	public <T extends IBaseEntity> void deleteAll(Class<T> entityClass) {
 		LOG.debug(String.format("deleting all '%s' entities", entityClass.getName()));
 
@@ -313,12 +312,10 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 		this.entityManager = entityManager;
 	}
 
-	@Override
 	public <T extends IBaseEntity> List<T> filter(SelectQuery<T> selectQuery) {
 		return (List<T>) getResultList(selectQuery, entityManager);
 	}
 
-	@Override
 	public <T extends IBaseEntity> Optional<T> read(SelectQuery<T> selectQuery) {
 		List<T> result = filter(selectQuery);
 
@@ -329,7 +326,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 		}
 	}
 
-	@Override
 	public <T extends IBaseEntity> long count(CountQuery<T> countQuery) {
 		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}
@@ -339,7 +335,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 		createTimer = Optional.fromNullable(metricRegistry.timer(name(BaseEntityDAO.class, "create")));
 	}
 
-	@Override
 	public <T extends IBaseEntity> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey) {
 		List<T> result = filter(DBUtil.getNaturalKeyQuery(entityClass, naturalKey));
 
@@ -350,7 +345,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> implements IBaseEntityDA
 		}
 	}
 
-	@Override
 	public void registerCallback(IDAOCallback callback) {
 		callbacks.add(callback);
 	}
