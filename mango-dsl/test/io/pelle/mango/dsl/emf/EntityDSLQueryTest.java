@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class EntityQueryTest {
+public class EntityDSLQueryTest {
 
 	private static Entity entity1;
 

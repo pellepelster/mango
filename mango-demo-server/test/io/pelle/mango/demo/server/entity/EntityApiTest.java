@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.server.entity;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -8,9 +9,11 @@ import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.server.BaseDemoTest;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -66,17 +69,41 @@ public class EntityApiTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testGetEntitiesByQuery() throws Exception {
+	public void testGetEntitiesByQueryGet() throws Exception {
 
 		baseEntityService.deleteAll(CountryVO.class.getName());
 
 		CountryVO countryVO = new CountryVO();
 		countryVO.setCountryIsoCode2("AA");
 		countryVO.setCountryIsoCode3("AA");
-
 		countryVO = baseEntityService.create(countryVO);
 
-		mockMvc.perform(get("/api/entity/country/query", "countryIsoCode2 == 'AA'")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.[0]countryIsoCode2").value("AA"));
+		countryVO = new CountryVO();
+		countryVO.setCountryIsoCode2("BB");
+		countryVO.setCountryIsoCode3("BB");
+		countryVO = baseEntityService.create(countryVO);
+
+		mockMvc.perform(get("/api/entity/country/query").param("query", "countryIsoCode2 == 'AA'")).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.[0]countryIsoCode2").value("AA"))
+				.andExpect(jsonPath("$").value(Matchers.hasSize(1)));
+	}
+
+	@Test
+	public void testGetEntitiesByQueryPost() throws Exception {
+
+		baseEntityService.deleteAll(CountryVO.class.getName());
+
+		CountryVO countryVO = new CountryVO();
+		countryVO.setCountryIsoCode2("AA");
+		countryVO.setCountryIsoCode3("AA");
+		countryVO = baseEntityService.create(countryVO);
+
+		countryVO = new CountryVO();
+		countryVO.setCountryIsoCode2("BB");
+		countryVO.setCountryIsoCode3("BB");
+		countryVO = baseEntityService.create(countryVO);
+
+		mockMvc.perform(post("/api/entity/country/query").content("{ \"query\": \"countryIsoCode2 == 'AA'\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.[0]countryIsoCode2").value("AA")).andExpect(jsonPath("$").value(Matchers.hasSize(1)));
 	}
 
 }

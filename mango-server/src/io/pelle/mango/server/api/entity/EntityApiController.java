@@ -8,10 +8,11 @@ import io.pelle.mango.server.entity.EntityUtils;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,25 +24,35 @@ public class EntityApiController extends BaseEntityApiController {
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
 
-	@RequestMapping("api/entity/{entityName}/query")
+	@RequestMapping(value = "api/entity/{entityName}/query", method = RequestMethod.GET)
 	@SuppressWarnings("unchecked")
-	public <T extends IBaseEntity> List<T> query(@PathVariable String entityName, @RequestParam(required = false) String query) {
-
-		String expressionString = "";
-
-		if (!StringUtils.isEmpty(query)) {
-			expressionString = query;
-		}
+	public <T extends IBaseEntity> List<T> queryGet(@PathVariable String entityName, @RequestParam String query) {
 
 		Class<T> entityClass = (Class<T>) getEntityClassByNameOrExplode(entityName);
 
 		try {
-			SelectQuery<T> selectQuery = EntityUtils.createSelectQuery(entityClass, expressionString);
+			SelectQuery<T> selectQuery = EntityUtils.createSelectQuery(entityClass, query);
 			List<T> result = baseEntityDAO.filter(selectQuery);
 
 			return result;
 		} catch (Exception e) {
-			throw new RuntimeException(String.format("'%s' is not an valid expression", expressionString));
+			throw new RuntimeException(String.format("'%s' is not an valid expression", query));
+		}
+	}
+
+	@RequestMapping(value = "api/entity/{entityName}/query", method = RequestMethod.POST)
+	@SuppressWarnings("unchecked")
+	public <T extends IBaseEntity> List<T> queryPost(@PathVariable String entityName, @RequestBody QueryRequest queryRequest) {
+
+		Class<T> entityClass = (Class<T>) getEntityClassByNameOrExplode(entityName);
+
+		try {
+			SelectQuery<T> selectQuery = EntityUtils.createSelectQuery(entityClass, queryRequest.getQuery());
+			List<T> result = baseEntityDAO.filter(selectQuery);
+
+			return result;
+		} catch (Exception e) {
+			throw new RuntimeException(String.format("'%s' is not an valid expression", queryRequest.getQuery()));
 		}
 	}
 
