@@ -27,7 +27,7 @@ public interface IBaseVO extends Serializable, IVOEntity {
 
 	public static final IEntityDescriptor<IBaseVO> ENTITY_DESCRIPTOR = new EntityDescriptor<IBaseVO>(IBaseVO.class, null, null, null);
 
-	public static final IAttributeDescriptor<Long> FIELD_ID = new AttributeDescriptor<Long>(ENTITY_DESCRIPTOR, "id", Long.class, Long.class);
+	public static final LongAttributeDescriptor FIELD_ID = new LongAttributeDescriptor(ENTITY_DESCRIPTOR, ID_FIELD_NAME);
 
 	Object get(String name);
 

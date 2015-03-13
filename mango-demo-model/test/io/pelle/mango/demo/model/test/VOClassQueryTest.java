@@ -15,7 +15,7 @@ public class VOClassQueryTest {
 	public void testAttributesDescriptorQuery() {
 
 		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors();
-		assertEquals(20, attributesDescriptorQuery.getCount());
+		assertEquals(21, attributesDescriptorQuery.getCount());
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class VOClassQueryTest {
 
 		AttributesDescriptorQuery<StringAttributeDescriptor> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDatatype1");
 		assertEquals("stringDatatype1", attributesDescriptorQuery.getSingleResult().getAttributeName());
-		
+
 		attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDATatype1");
 		assertEquals("stringDatatype1", attributesDescriptorQuery.getSingleResult().getAttributeName());
 

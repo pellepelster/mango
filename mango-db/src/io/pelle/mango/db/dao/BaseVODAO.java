@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.EntityManager;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +29,9 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IBaseVO> T create(T baseVO) {
+
 		IBaseEntity baseEntity = DBUtil.convertVOToEntityClass(baseVO);
+
 		baseEntity = baseEntityDAO.create(baseEntity);
 
 		return (T) DBUtil.convertEntityToVO(baseEntity);
@@ -51,14 +51,6 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 	public <T extends IBaseVO> void deleteAll(Class<T> voClass) {
 		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(voClass);
 		baseEntityDAO.deleteAll(entityClass);
-	}
-
-	public void setBaseEntityDAO(IBaseEntityDAO baseEntityDAO) {
-		this.baseEntityDAO = baseEntityDAO;
-	}
-
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -86,7 +78,6 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IBaseVO> List<T> filter(SelectQuery<T> selectQuery) {
 		List<IBaseEntity> entityResult = (List<IBaseEntity>) getResultList(selectQuery, entityManager);
@@ -96,10 +87,18 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 		return new ArrayList<>(Collections2.transform(entityResult, new Function<IBaseEntity, T>() {
 			@Override
 			public T apply(IBaseEntity baseEntity) {
+				@SuppressWarnings("unchecked")
 				T baseVO = (T) DBUtil.convertEntityToVO(baseEntity, classLoadAssociations);
 				return baseVO;
 			}
 		}));
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T extends IBaseVO> List<T> getAll(Class<T> voClass) {
+		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(voClass);
+		return (List<T>) baseEntityDAO.getAll(entityClass);
 	}
 
 	@Override
@@ -117,5 +116,17 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 		} else {
 			return Optional.of(result.get(0));
 		}
+	}
+
+	@Override
+	public <T extends IBaseVO> void delete(Class<T> voClass, long id) {
+		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(voClass);
+		baseEntityDAO.delete(entityClass, id);
+	}
+
+	@Override
+	public <T extends IBaseVO> long count(Class<T> voClass) {
+		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(voClass);
+		return baseEntityDAO.count(entityClass);
 	}
 }

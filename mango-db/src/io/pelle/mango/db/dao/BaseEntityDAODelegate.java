@@ -81,7 +81,7 @@ public class BaseEntityDAODelegate implements IBaseEntityDAO {
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
 
 		if (entityDAO != null) {
-			return entityDAO.read(id, entityClass);
+			return entityDAO.read(id);
 		} else {
 			return baseEntityDAO.read(id, entityClass);
 		}
@@ -115,7 +115,7 @@ public class BaseEntityDAODelegate implements IBaseEntityDAO {
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
 
 		if (entityDAO != null) {
-			entityDAO.deleteAll(entityClass);
+			entityDAO.deleteAll();
 		} else {
 			baseEntityDAO.deleteAll(entityClass);
 		}
@@ -159,7 +159,7 @@ public class BaseEntityDAODelegate implements IBaseEntityDAO {
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
 
 		if (entityDAO != null) {
-			return entityDAO.getByNaturalKey(entityClass, naturalKey);
+			return entityDAO.getByNaturalKey(naturalKey);
 		} else {
 			return baseEntityDAO.getByNaturalKey(entityClass, naturalKey);
 		}
@@ -186,6 +186,39 @@ public class BaseEntityDAODelegate implements IBaseEntityDAO {
 		for (IVOEntityDAO<? extends IBaseEntity> voEntityDAO : entityDAOList) {
 			Class<? extends IBaseEntity> baseEntityClass = EntityVOMapper.getInstance().getEntityClass(voEntityDAO.getVOEntityClass());
 			entityDAOs.put(baseEntityClass, voEntityDAO);
+		}
+	}
+
+	@Override
+	public <T extends IBaseEntity> void delete(Class<T> entityClass, long id) {
+		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
+
+		if (entityDAO != null) {
+			entityDAO.delete(id);
+		} else {
+			baseEntityDAO.delete(entityClass, id);
+		}
+	}
+
+	@Override
+	public <T extends IBaseEntity> long count(Class<T> entityClass) {
+		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
+
+		if (entityDAO != null) {
+			return entityDAO.count();
+		} else {
+			return baseEntityDAO.count(entityClass);
+		}
+	}
+
+	@Override
+	public <T extends IBaseEntity> List<T> getAll(Class<T> entityClass) {
+		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
+
+		if (entityDAO != null) {
+			return entityDAO.getAll();
+		} else {
+			return baseEntityDAO.getAll(entityClass);
 		}
 	}
 

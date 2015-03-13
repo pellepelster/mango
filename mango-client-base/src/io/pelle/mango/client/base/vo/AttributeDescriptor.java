@@ -1,5 +1,7 @@
 package io.pelle.mango.client.base.vo;
 
+import com.google.common.base.Objects;
+
 @SuppressWarnings("serial")
 public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<AttributeType> {
 
@@ -81,6 +83,11 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 	@Override
 	public int getNaturalKeyOrder() {
 		return naturalKeyOrder;
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("attributeName", attributeName).add("attributeType", attributeType).toString();
 	}
 
 	@SuppressWarnings("unchecked")

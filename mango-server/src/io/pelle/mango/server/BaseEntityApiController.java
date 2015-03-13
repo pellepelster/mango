@@ -16,7 +16,7 @@ public class BaseEntityApiController {
 
 	@ExceptionHandler(RuntimeException.class)
 	@ResponseBody
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	public String handleException(Exception e) {
 		return e.getMessage();
 	}

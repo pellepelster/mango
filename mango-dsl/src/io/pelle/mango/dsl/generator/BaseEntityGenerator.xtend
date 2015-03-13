@@ -2,6 +2,7 @@ package io.pelle.mango.dsl.generator
 
 import com.google.inject.Inject
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
+import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.Entity
@@ -30,6 +31,8 @@ class BaseEntityGenerator {
 			return new «IAttributeDescriptor.name»[]{
 
 				«IF !EntityQuery.isExtendedByOtherEntity(entity)»
+
+						«IVOEntity.ID_FIELD_NAME.attributeConstantName»,
 						
 						«FOR attribute : entity.attributes»
 							«attribute.name.attributeConstantName»,

@@ -20,18 +20,24 @@ public interface IBaseVOEntityDAO<VOENTITYTYPE extends IVOEntity> {
 
 	<T extends VOENTITYTYPE> List<T> filter(SelectQuery<T> query);
 
-	<T extends VOENTITYTYPE> Optional<T> read(SelectQuery<T> query);
+	<T extends VOENTITYTYPE> List<T> getAll(Class<T> entityClass);
 
-	<T extends VOENTITYTYPE> void deleteAll(Class<T> entityClass);
+	<T extends VOENTITYTYPE> Optional<T> read(SelectQuery<T> query);
 
 	<T extends VOENTITYTYPE> void delete(T entity);
 
+	<T extends VOENTITYTYPE> void deleteAll(Class<T> entityClass);
+
+	<T extends VOENTITYTYPE> void delete(Class<T> entityClass, long id);
+
+	<T extends VOENTITYTYPE> void deleteQuery(DeleteQuery<T> query);
+
 	<T extends VOENTITYTYPE> long count(CountQuery<T> query);
+
+	<T extends VOENTITYTYPE> long count(Class<T> entityClass);
 
 	<T extends VOENTITYTYPE> long aggregate(AggregateQuery<T> query);
 
 	<T extends VOENTITYTYPE> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey);
-
-	<T extends VOENTITYTYPE> void deleteQuery(DeleteQuery<T> query);
 
 }

@@ -39,8 +39,8 @@ public abstract class AbstractVODAO<VOTYPE extends IBaseVO> implements IVOEntity
 	}
 
 	@Override
-	public VOTYPE read(long id, Class<VOTYPE> entityClass) {
-		return baseVODAO.read(id, entityClass);
+	public VOTYPE read(long id) {
+		return baseVODAO.read(id, getVOEntityClass());
 	}
 
 	@Override
@@ -54,8 +54,8 @@ public abstract class AbstractVODAO<VOTYPE extends IBaseVO> implements IVOEntity
 	}
 
 	@Override
-	public void deleteAll(Class<VOTYPE> entityClass) {
-		baseVODAO.deleteAll(entityClass);
+	public void deleteAll() {
+		baseVODAO.deleteAll(getVOEntityClass());
 	}
 
 	@Override
@@ -74,13 +74,28 @@ public abstract class AbstractVODAO<VOTYPE extends IBaseVO> implements IVOEntity
 	}
 
 	@Override
-	public Optional<VOTYPE> getByNaturalKey(Class<VOTYPE> entityClass, String naturalKey) {
-		return baseVODAO.getByNaturalKey(entityClass, naturalKey);
+	public Optional<VOTYPE> getByNaturalKey(String naturalKey) {
+		return baseVODAO.getByNaturalKey(getVOEntityClass(), naturalKey);
 	}
 
 	@Override
 	public void deleteQuery(DeleteQuery<VOTYPE> query) {
 		baseVODAO.deleteQuery(query);
+	}
+
+	@Override
+	public List<VOTYPE> getAll() {
+		return baseVODAO.getAll(getVOEntityClass());
+	}
+
+	@Override
+	public void delete(long id) {
+		baseVODAO.delete(getVOEntityClass(), id);
+	}
+
+	@Override
+	public long count() {
+		return baseVODAO.count(getVOEntityClass());
 	}
 
 }

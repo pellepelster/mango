@@ -30,4 +30,6 @@
 
 	<bean class="io.pelle.mango.demo.server.test.CurrencyVODAO" />
 	
+	<bean class="io.pelle.mango.demo.server.test.Entity1EntityDAO" />
+	
 </beans>

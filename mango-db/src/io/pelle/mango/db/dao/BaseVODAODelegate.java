@@ -82,7 +82,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
 
 		if (entityDAO != null) {
-			return entityDAO.read(id, entityClass);
+			return entityDAO.read(id);
 		} else {
 			return basevoDAO.read(id, entityClass);
 		}
@@ -116,7 +116,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
 
 		if (entityDAO != null) {
-			entityDAO.deleteAll(entityClass);
+			entityDAO.deleteAll();
 		} else {
 			basevoDAO.deleteAll(entityClass);
 		}
@@ -160,7 +160,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
 
 		if (entityDAO != null) {
-			return entityDAO.getByNaturalKey(entityClass, naturalKey);
+			return entityDAO.getByNaturalKey(naturalKey);
 		} else {
 			return basevoDAO.getByNaturalKey(entityClass, naturalKey);
 		}
@@ -182,6 +182,39 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		for (IVOEntityDAO<? extends IBaseEntity> voEntityDAO : entityDAOList) {
 			Class<? extends IBaseEntity> baseEntityClass = EntityVOMapper.getInstance().getEntityClass(voEntityDAO.getVOEntityClass());
 			voDAOs.put(baseEntityClass, voEntityDAO);
+		}
+	}
+
+	@Override
+	public <T extends IBaseVO> List<T> getAll(Class<T> entityClass) {
+		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
+
+		if (entityDAO != null) {
+			return entityDAO.getAll();
+		} else {
+			return basevoDAO.getAll(entityClass);
+		}
+	}
+
+	@Override
+	public <T extends IBaseVO> void delete(Class<T> entityClass, long id) {
+		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
+
+		if (entityDAO != null) {
+			entityDAO.delete(id);
+		} else {
+			basevoDAO.delete(entityClass, id);
+		}
+	}
+
+	@Override
+	public <T extends IBaseVO> long count(Class<T> entityClass) {
+		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
+
+		if (entityDAO != null) {
+			return entityDAO.count();
+		} else {
+			return basevoDAO.count(entityClass);
 		}
 	}
 

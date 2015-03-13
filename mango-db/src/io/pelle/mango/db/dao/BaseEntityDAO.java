@@ -15,7 +15,9 @@ import static com.codahale.metrics.MetricRegistry.name;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
 import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.CountQuery;
+import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.IUser;
 import io.pelle.mango.db.copy.ObjectFieldDescriptor;
@@ -129,34 +131,10 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		for (Object entity : getAll(entityClass)) {
 			this.entityManager.remove(entity);
 		}
-
-		// if (BeanUtil.hasAnnotatedAttribute1(entityClass,
-		// ElementCollection.class))
-		// {
-		// }
-		// else
-		// {
-		// DeleteQuery deleteQuery = new DeleteQuery(entityClass);
-		//
-		// if (IBaseClientEntity.class.isAssignableFrom(entityClass))
-		// {
-		// deleteQuery.addWhereCondition(getClientConditionalExpression(entityClass));
-		// }
-		//
-		// Query query = this.entityManager.createQuery(deleteQuery.getJPQL());
-		// for (NamedParameterExpressionObject namedParameter :
-		// deleteQuery.getNamedParameters())
-		// {
-		// query.setParameter(namedParameter.getName(),
-		// namedParameter.getObject());
-		// }
-		//
-		// query.executeUpdate();
-		// }
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T extends IBaseEntity> List<T> getAll(Class<T> entityClass) {
+	public <T extends IBaseEntity> List<T> getAll(Class<T> entityClass) {
 		return (List<T>) getResultList(selectFrom(entityClass), entityManager);
 	}
 
@@ -332,9 +310,20 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		return (long) entityManager.createQuery(ServerCountQuery.adapt(countQuery).getJPQL(EntityVOMapper.getInstance())).getSingleResult();
 	}
 
+	@Override
+	public <T extends IBaseEntity> long count(Class<T> entityClass) {
+		return count(CountQuery.countFrom(entityClass));
+	}
+
 	@Autowired(required = false)
 	public void setMetricRegistry(MetricRegistry metricRegistry) {
 		createTimer = Optional.fromNullable(metricRegistry.timer(name(BaseEntityDAO.class, "create")));
+	}
+
+	@Override
+	public <T extends IBaseEntity> void delete(Class<T> entityClass, long id) {
+		DeleteQuery<T> query = DeleteQuery.deleteFrom(entityClass).where(IBaseVO.FIELD_ID.eq(id));
+		deleteQuery(query);
 	}
 
 	@Override
