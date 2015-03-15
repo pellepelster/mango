@@ -97,6 +97,19 @@ public class ModelUtil {
 		});
 	}
 
+	public static Datatype getTypeDatatype(DictionaryControl dictionaryControl) {
+		return getControlAttribute(dictionaryControl, new Function<DictionaryControl, Datatype>() {
+			@Override
+			public Datatype apply(DictionaryControl dictionaryControl) {
+				if (dictionaryControl.getBaseControl() != null) {
+					return dictionaryControl.getBaseControl().getType();
+				} else {
+					return null;
+				}
+			}
+		});
+	}
+
 	public static Object getBaseControlFeature(DictionaryControl dictionaryControl, final EStructuralFeature structuralFeature) {
 		return getControlAttribute(dictionaryControl, new Function<DictionaryControl, Object>() {
 			@Override

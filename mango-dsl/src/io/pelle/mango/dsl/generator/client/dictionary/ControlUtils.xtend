@@ -1,5 +1,8 @@
 package io.pelle.mango.dsl.generator.client.dictionary
 
+import com.google.inject.Inject
+import io.pelle.mango.dsl.ModelUtil
+import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 import io.pelle.mango.dsl.mango.DictionaryControl
 import io.pelle.mango.dsl.mango.DictionaryControlGroup
 import io.pelle.mango.dsl.mango.DictionaryControlGroupOptionMultiFilterField
@@ -9,7 +12,10 @@ import io.pelle.mango.dsl.mango.DictionaryIntegerControlInputType
 import io.pelle.mango.dsl.mango.MangoPackage
 
 class ControlUtils {
-
+	
+	@Inject
+	extension ClientTypeUtils
+	
 	def hasWidth(DictionaryControl dictionaryControl) {
 		return (dictionaryControl.baseControl != null && dictionaryControl.baseControl.width > 0)
 	}
@@ -49,6 +55,17 @@ class ControlUtils {
 	def <T> mulitFilterField(DictionaryControlGroup controlGroup) {
 		return Boolean.TRUE.equals(controlGroup.getControlGroupOption(typeof(DictionaryControlGroupOptionMultiFilterField)))
 	}
+	
+	def controlType(DictionaryControl control) {
+		if (ModelUtil.getEntityAttribute(control) != null) {
+			ModelUtil.getEntityAttribute(control).type
+		} else if (ModelUtil.getTypeDatatype(control) != null) {
+			ModelUtil.getTypeDatatype(control).type
+		} else {
+			null
+		}
+	}	
+	
 
 	// control group options
 	def <T> getControlGroupOption(DictionaryControlGroupOptionsContainer controlGroupOptionsContainer, Class<T> controlGroupOptionType) {

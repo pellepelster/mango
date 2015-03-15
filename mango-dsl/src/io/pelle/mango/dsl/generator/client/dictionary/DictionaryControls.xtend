@@ -30,7 +30,6 @@ import io.pelle.mango.dsl.mango.DictionaryEnumerationControl
 import io.pelle.mango.dsl.mango.DictionaryFileControl
 import io.pelle.mango.dsl.mango.DictionaryHierarchicalControl
 import io.pelle.mango.dsl.mango.DictionaryIntegerControl
-import io.pelle.mango.dsl.mango.DictionaryIntegerControlInputType
 import io.pelle.mango.dsl.mango.DictionaryReferenceControl
 import io.pelle.mango.dsl.mango.DictionaryTextControl
 import io.pelle.mango.dsl.mango.EntityDataType
@@ -38,7 +37,6 @@ import io.pelle.mango.dsl.mango.EntityEntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationAttributeType
 import io.pelle.mango.dsl.mango.EnumerationDataType
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
-import io.pelle.mango.dsl.mango.IntegerControlInputType
 import io.pelle.mango.dsl.mango.IntegerEntityAttribute
 import io.pelle.mango.dsl.mango.Labels
 import io.pelle.mango.dsl.mango.LongEntityAttribute
@@ -61,7 +59,7 @@ class DictionaryControls {
 	extension AttributeUtils
 
 	@Inject
-	extension ControlUtils
+	extension ControlUtils	
 
 	def dictionaryControlConstant(DictionaryControl dictionaryControl) '''
 		public «dictionaryControl.dictionaryControlType» «dictionaryControl.dictionaryConstantName» = new «dictionaryControl.
@@ -303,8 +301,7 @@ class DictionaryControls {
 	// DictionaryEnumerationControl
 	//-------------------------------------------------------------------------
 	def dispatch dictionaryControlType(DictionaryEnumerationControl dictionaryControl) '''
-		«EnumerationControlModel.name»<«ModelUtil.getEntityAttribute(dictionaryControl).type»>
-		
+		«EnumerationControlModel.name»<«dictionaryControl.controlType»>
 	'''
 
 	def dispatch String datatypeSetters(DictionaryControl dictionaryControl,
@@ -324,8 +321,10 @@ class DictionaryControls {
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»
-		«dictionaryControl.dictionaryConstantName».setEnumerationName(«ModelUtil.getEntityAttribute(dictionaryControl).type».class.getName());
 		
+		«IF dictionaryControl.controlType != null»
+		«dictionaryControl.dictionaryConstantName».setEnumerationName(«dictionaryControl.controlType».class.getName());
+		«ENDIF»
 		«dictionaryControl.dictionaryControlCommonSetters»
 	'''
 

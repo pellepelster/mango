@@ -352,7 +352,7 @@ DictionaryEditableTable:
 		(containercontents+=DictionaryContainerContent)*
 
 		"entityattribute" entityattribute=[ EntityAttribute | QualifiedName ]
-		
+
 		"columncontrols" "{"
 			(columncontrols+=DictionaryControl)*
 		"}"
@@ -388,6 +388,7 @@ Labels:
 //- controls ------------------------------------------------------------------
 BaseDictionaryControl:
 		("entityattribute" entityattribute=[ EntityAttribute | QualifiedName ])?
+		("type" type=[ Datatype | QualifiedName ])?
 		labels=Labels
 		(mandatory?="mandatory")?
 		("width" width=INT)?

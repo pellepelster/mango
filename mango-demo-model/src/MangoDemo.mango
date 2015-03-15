@@ -497,6 +497,9 @@ project MangoDemo {
 						enumerationcontrol EnumerationControl1 {
 							entityattribute Entity1.enumeration1Datatype
 						}
+						enumerationcontrol EnumerationControl1WithoutAttribute {
+							type Enumeration1Datatype
+						}
 					}
 
 					dictionarysearch DemoSearch1 {
@@ -519,6 +522,8 @@ project MangoDemo {
 							integercontrol ref IntegerControl1
 							bigdecimalcontrol ref DecimalControl1
 							datecontrol ref DateControl1
+							enumerationcontrol ref EnumerationControl1WithoutAttribute
+							
 						}
 
 						dictionaryresult DemoResult1 {

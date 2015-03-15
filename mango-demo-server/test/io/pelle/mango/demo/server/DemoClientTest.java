@@ -473,6 +473,46 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testDictionary1BooleanControl12() {
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
+
+		// create true value
+		DictionaryEditorModuleTestUI<Entity1VO> editor = createTestDictionaryEditor1();
+		BooleanTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
+		control.uncheck();
+		editor.save();
+
+		// create false value
+		editor = createTestDictionaryEditor1();
+		control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
+		control.check();
+		editor.save();
+
+		// search all
+		DictionarySearchModuleTestUI<Entity1VO> search = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_SEARCH1);
+		search.execute();
+		search.assertSearchResults(2);
+
+		// search false
+		control = search.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.BOOLEAN_CONTROL1);
+		control.uncheck();
+		search.execute();
+		search.assertSearchResults(1);
+
+		// search true
+		control = search.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.BOOLEAN_CONTROL1);
+		control.check();
+		search.execute();
+		search.assertSearchResults(1);
+
+		editor = search.openEditor(0);
+		control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
+		assertEquals("true", control.getValue());
+	}
+
+	@Test
 	public void testDictionary1EnumerationControl1() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());

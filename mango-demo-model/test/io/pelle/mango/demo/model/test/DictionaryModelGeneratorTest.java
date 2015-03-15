@@ -108,6 +108,11 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testDictionary1EnumerationWithoutEntityAttribute() {
+		assertEquals("io.pelle.mango.demo.client.test.ENUMERATION1", MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getEnumerationName());
+	}
+
+	@Test
 	public void testEnumerationConverterGetEnumerationValues() {
 		Map<String, String> enumerationValues = DictionaryModelProvider.getEnumerationValues(ENUMERATION1.class.getName());
 		assertEquals(2, enumerationValues.size());
