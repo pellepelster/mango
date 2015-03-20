@@ -6,6 +6,8 @@ import io.pelle.mango.client.base.modules.dictionary.model.ColumnLayoutData;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
+import com.google.common.base.Strings;
+
 public class EditableTableModel<VOType extends IBaseVO> extends BaseTableModel<VOType> implements IEditableTableModel {
 
 	private static final long serialVersionUID = 1832725605229414533L;
@@ -44,6 +46,11 @@ public class EditableTableModel<VOType extends IBaseVO> extends BaseTableModel<V
 	@Override
 	public ColumnLayout getLayout() {
 		throw new RuntimeException("not implemented");
+	}
+
+	@Override
+	public boolean hasAttributePath() {
+		return !Strings.isNullOrEmpty(attributePath);
 	}
 
 }

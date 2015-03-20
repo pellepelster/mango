@@ -41,6 +41,7 @@ dependencies {
 	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.2.6'
 
 	compile group: "org.hsqldb", name: "hsqldb", version: "2.2.9"
+	compile group: "com.jayway.awaitility", name: "awaitility", version: "1.6.3"
 	
 	testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: '1.5.0'
 	testCompile group: 'com.jayway.restassured', name: 'rest-assured', version: '2.3.0'

@@ -95,15 +95,19 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 
 		for (BaseDictionaryControl<? extends IBaseControlModel, ?> baseControl : baseControls) {
 
-			PathExpression pathExpression = new PathExpression(getModel().getVOClass().getName(), baseControl.getModel().getAttributePath());
-			Optional<IBooleanExpression> compareExpression = baseControl.getExpression(pathExpression);
+			if (baseControl.getModel().hasAttributePath()) {
+				PathExpression pathExpression = new PathExpression(getModel().getVOClass().getName(), baseControl.getModel().getAttributePath());
+				Optional<IBooleanExpression> compareExpression = baseControl.getExpression(pathExpression);
 
-			if (compareExpression.isPresent()) {
-				if (expression.isPresent()) {
-					expression = Optional.of(expression.get().and(compareExpression.get()));
-				} else {
-					expression = compareExpression;
+				if (compareExpression.isPresent()) {
+					if (expression.isPresent()) {
+						expression = Optional.of(expression.get().and(compareExpression.get()));
+					} else {
+						expression = compareExpression;
+					}
 				}
+			} else {
+				selectQuery.getData().put(baseControl.getModel().getFullQualifiedName(), baseControl.getValue());
 			}
 		}
 
@@ -114,11 +118,11 @@ public class DictionarySearch<VOType extends IBaseVO> extends BaseDictionaryElem
 		selectQuery.setMaxResults(dictionaryResult.getMaxResults() + 1);
 
 		if (DictionaryHookRegistry.getInstance().hasSearchHook(getModel().getSearchModel())) {
-			for(ISearchHook<VOType> searchHook : DictionaryHookRegistry.getInstance().getSearchHook(getModel().getSearchModel())) {
+			for (ISearchHook<VOType> searchHook : DictionaryHookRegistry.getInstance().getSearchHook(getModel().getSearchModel())) {
 				selectQuery = searchHook.beforeSearch(selectQuery);
 			}
 		}
-		
+
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().filter(selectQuery, new BaseErrorAsyncCallback<List<VOType>>() {
 
 			@Override

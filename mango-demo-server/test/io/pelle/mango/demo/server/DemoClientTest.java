@@ -1,11 +1,14 @@
 package io.pelle.mango.demo.server;
 
+import static com.jayway.awaitility.Awaitility.await;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
+import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
@@ -34,7 +37,9 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +49,17 @@ public class DemoClientTest extends BaseDemoTest {
 	@Autowired
 	private IBaseEntityService baseEntityService;
 
+	@Before
+	public void executedBeforeEach() {
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity2VO.class.getName());
+		baseEntityService.deleteAll(CountryVO.class.getName());
+
+		DictionaryHookRegistry.getInstance().clearAll();
+	}
+
 	@Test
 	public void testBaseTableHookRowColor() {
-
-		baseEntityService.deleteAll(CountryVO.class.getName());
 
 		MangoDemoDictionaryModel.COUNTRY.COUNTRY_SEARCH.COUNTRY_RESULT.setTableHook(new BaseTableHook<CountryVO>() {
 			@Override
@@ -75,8 +87,6 @@ public class DemoClientTest extends BaseDemoTest {
 	@Test
 	public void testCountryEditorExchangeRateReadOnly() {
 
-		baseEntityService.deleteAll(CountryVO.class.getName());
-
 		DictionaryEditorModuleTestUI<CountryVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR);
 		DecimalTestControl readOnlyControl = editor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_EXCHANGE_RATE);
 		readOnlyControl.assertReadOnly();
@@ -87,13 +97,13 @@ public class DemoClientTest extends BaseDemoTest {
 	@Test
 	public void testDemoDictionary2TextControl2() {
 
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
+		final AtomicBoolean called = new AtomicBoolean(false);
 
 		MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_SEARCH2.addSearchHook(new BaseSearchHook<Entity2VO>() {
 
 			@Override
 			public SelectQuery<Entity2VO> beforeSearch(SelectQuery<Entity2VO> selectQuery) {
+				called.set(true);
 				return super.beforeSearch(selectQuery);
 			}
 		});
@@ -109,13 +119,13 @@ public class DemoClientTest extends BaseDemoTest {
 		editor2 = search2.openEditor(0);
 		textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);
 		textControl2.assertValue("abc");
+
+		await().untilAtomic(called, equalTo(true));
+
 	}
 
 	@Test
 	public void testDemoDictionary1ReferenceControl1() {
-
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleTestUI<Entity2VO> editor2 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2);
 		TextTestControl textControl2 = editor2.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY2.DEMO_EDITOR2.TEXT_CONTROL2);
@@ -184,9 +194,6 @@ public class DemoClientTest extends BaseDemoTest {
 	@Test
 	public void testDictionary1EditorMetaInformation() {
 
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
-
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
 		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
 		control.enterValue("abc");
@@ -198,9 +205,6 @@ public class DemoClientTest extends BaseDemoTest {
 
 	@Test
 	public void testDictionary1TextControl1() {
-
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
 		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
@@ -252,9 +256,6 @@ public class DemoClientTest extends BaseDemoTest {
 	@Test
 	public void testDictionary1TextControl1NaturalKey() {
 
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
-
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
 		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);
 		editor.save();
@@ -286,9 +287,6 @@ public class DemoClientTest extends BaseDemoTest {
 
 	@Test
 	public void testDictionary1DecimalControl1() {
-
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		// create 1
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createDemoDictionary1Editor1();
@@ -323,14 +321,11 @@ public class DemoClientTest extends BaseDemoTest {
 
 		editor = search.openEditor(0);
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DECIMAL_CONTROL1);
-		assertEquals("2.6", control.getValue());
+		assertEquals("2.6", control.getValueString());
 	}
 
 	@Test
 	public void testDictionary1IntegerControl1() {
-
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		// create 1
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createDemoDictionary1Editor1();
@@ -365,14 +360,11 @@ public class DemoClientTest extends BaseDemoTest {
 
 		editor = search.openEditor(0);
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.INTEGER_CONTROL1);
-		assertEquals("2", control.getValue());
+		assertEquals("2", control.getValueString());
 	}
 
 	@Test
 	public void testDictionary1DirtyHandling() {
-
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 
@@ -392,9 +384,6 @@ public class DemoClientTest extends BaseDemoTest {
 		DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
 		String date1 = df.format(new Date(2014, 8, 28));
 		String date2 = df.format(new Date(2015, 9, 29));
-
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		// create 1
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createDemoDictionary1Editor1();
@@ -429,15 +418,12 @@ public class DemoClientTest extends BaseDemoTest {
 
 		editor = search.openEditor(0);
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
-		assertEquals(date2, control.getValue());
+		assertEquals(date2, control.getValueString());
 	}
 
 	@Test
 	public void testDictionary1BooleanControl1() {
 
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
-
 		// create true value
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createTestDictionaryEditor1();
 		BooleanTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
@@ -469,54 +455,41 @@ public class DemoClientTest extends BaseDemoTest {
 
 		editor = search.openEditor(0);
 		control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
-		assertEquals("true", control.getValue());
+		assertEquals("true", control.getValueString());
 	}
 
 	@Test
-	public void testDictionary1BooleanControl12() {
+	public void testDictionary1EnumerationControlWithouEntityAttrbiute() {
 
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
+		final AtomicBoolean called = new AtomicBoolean(false);
 
-		// create true value
-		DictionaryEditorModuleTestUI<Entity1VO> editor = createTestDictionaryEditor1();
-		BooleanTestControl control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
-		control.uncheck();
-		editor.save();
+		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.addSearchHook(new BaseSearchHook<Entity1VO>() {
 
-		// create false value
-		editor = createTestDictionaryEditor1();
-		control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
-		control.check();
-		editor.save();
+			@Override
+			public SelectQuery<Entity1VO> beforeSearch(SelectQuery<Entity1VO> selectQuery) {
 
-		// search all
-		DictionarySearchModuleTestUI<Entity1VO> search = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_SEARCH1);
+				assertEquals(ENUMERATION1.ENUMERATIONVALUE1, selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
+
+				called.set(true);
+
+				return super.beforeSearch(selectQuery);
+			}
+		});
+
+		DictionarySearchModuleTestUI<Entity1VO> search = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1);
+
+		EnumerationTestControl<ENUMERATION1> control = search.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE);
+		control.setValue(ENUMERATION1.ENUMERATIONVALUE1);
+		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, control.getValue());
+
 		search.execute();
-		search.assertSearchResults(2);
 
-		// search false
-		control = search.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.BOOLEAN_CONTROL1);
-		control.uncheck();
-		search.execute();
-		search.assertSearchResults(1);
+		await().untilAtomic(called, equalTo(true));
 
-		// search true
-		control = search.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_SEARCH1.DICTIONARY_FILTER1.BOOLEAN_CONTROL1);
-		control.check();
-		search.execute();
-		search.assertSearchResults(1);
-
-		editor = search.openEditor(0);
-		control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.BOOLEAN_CONTROL1);
-		assertEquals("true", control.getValue());
 	}
 
 	@Test
 	public void testDictionary1EnumerationControl1() {
-
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createTestDictionaryEditor1();
 		EnumerationTestControl<ENUMERATION1> control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.ENUMERATIONCONTROL1);
@@ -553,14 +526,11 @@ public class DemoClientTest extends BaseDemoTest {
 
 		editor = search.openEditor(0);
 		control = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.ENUMERATIONCONTROL1);
-		assertEquals("Value2", control.getValue());
+		assertEquals("Value2", control.getValueString());
 	}
 
 	@Test
 	public void testDictionary1ControlGroup1MultiFilter() {
-
-		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity2VO.class.getName());
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
 		TextTestControl control1 = editor.getControl(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1.TEXTCONTROL1);

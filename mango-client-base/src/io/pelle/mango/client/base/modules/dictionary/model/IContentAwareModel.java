@@ -17,9 +17,10 @@ package io.pelle.mango.client.base.modules.dictionary.model;
  * @author pelle
  * 
  */
-public interface IContentAwareModel extends IBaseModel
-{
+public interface IContentAwareModel extends IBaseModel {
 
 	String getAttributePath();
+
+	boolean hasAttributePath();
 
 }

@@ -86,4 +86,11 @@ public class DictionaryHookRegistry {
 		return this.searchHooks.get(searchModel.getName());
 	}
 
+	public void clearAll() {
+		editorHooks.clear();
+		fileControlHooks.clear();
+		searchHooks.clear();
+		tableHooks.clear();
+	}
+
 }

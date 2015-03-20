@@ -17,6 +17,8 @@ public interface IBaseModel extends Serializable {
 
 	String getName();
 
+	String getFullQualifiedName();
+
 	IBaseModel getParent();
 
 	String getHelpText();

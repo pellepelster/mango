@@ -45,4 +45,9 @@ public class ResultModel<VOType extends IBaseVO> extends BaseTableModel<VOType> 
 		throw new RuntimeException("not implemented");
 	}
 
+	@Override
+	public boolean hasAttributePath() {
+		throw new RuntimeException("not implemented");
+	}
+
 }

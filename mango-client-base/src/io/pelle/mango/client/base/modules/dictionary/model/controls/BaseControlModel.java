@@ -4,8 +4,14 @@ import io.pelle.mango.client.base.modules.dictionary.model.BaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 
 public abstract class BaseControlModel<ControlElementType> extends BaseModel<ControlElementType> implements IBaseControlModel {
+
+	@Override
+	public boolean hasAttributePath() {
+		return !Strings.isNullOrEmpty(attributePath);
+	}
 
 	private static final long serialVersionUID = 6300062992351577766L;
 

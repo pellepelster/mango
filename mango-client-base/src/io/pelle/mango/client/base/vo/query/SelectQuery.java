@@ -3,6 +3,8 @@ package io.pelle.mango.client.base.vo.query;
 import io.pelle.mango.client.base.vo.IVOEntity;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("serial")
 public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T>> implements Serializable {
@@ -14,6 +16,8 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 	public static int MAX_RESULTS_DEFAULT = 50;
 
 	public static int FIRST_RESULT_DEFAULT = 0;
+
+	private Map<String, Object> data = new HashMap<String, Object>();
 
 	public SelectQuery() {
 		super();
@@ -35,7 +39,7 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 		getFroms().add(new Entity(aliasProvider, from.getName()));
 		return this;
 	}
-	
+
 	@Override
 	public SelectQuery<T> getQuery() {
 		return this;
@@ -57,6 +61,10 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 
 	public int getMaxResults() {
 		return maxResults;
+	}
+
+	public Map<String, Object> getData() {
+		return data;
 	}
 
 }

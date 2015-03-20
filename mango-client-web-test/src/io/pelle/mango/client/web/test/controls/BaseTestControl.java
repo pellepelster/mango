@@ -40,7 +40,7 @@ public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, Val
 		Assert.assertEquals(expectedValue, this.baseControl.getValue());
 	}
 
-	public ValueType getValue1() {
+	public ValueType getValue() {
 		return this.value;
 	}
 
@@ -98,7 +98,7 @@ public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, Val
 		return baseControl;
 	}
 
-	public String getValue() {
+	public String getValueString() {
 		return valueString;
 	}
 
