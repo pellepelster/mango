@@ -82,7 +82,7 @@ public class ActionBar extends HorizontalPanel {
 	}
 
 	public MangoButton addSingleButton(final IButton button) {
-		final MangoButton uiButton = addButton(UUID.uuid(), button.getImage(), button.getTitle(), button, button.getDebugId());
+		final MangoButton uiButton = addButton(UUID.uuid(), button.getImage(), button.getTitle(), button, button.getId());
 
 		button.addUpdatehandler(new IButtonUpdateHandler() {
 

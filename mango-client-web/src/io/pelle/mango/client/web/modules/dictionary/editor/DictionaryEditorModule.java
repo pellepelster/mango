@@ -28,7 +28,6 @@ import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -114,17 +113,20 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
 	}
 
 	public List<IButton> getEditorButtons() {
-		if (DictionaryHookRegistry.getInstance().hasEditorHook(getDictionaryModel().getName())) {
-			List<IButton> buttons = new ArrayList<IButton>();
 
+		List<IButton> buttons = new ArrayList<IButton>();
+
+		if (DictionaryHookRegistry.getInstance().hasEditorHook(getDictionaryModel().getName())) {
 			for (BaseEditorHook<VOType> baseEditorHook : DictionaryHookRegistry.getInstance().getEditorHook(getDictionaryModel().getName())) {
 				buttons.addAll(baseEditorHook.getEditorButtons(this.dictionaryEditor));
 			}
-
-			return buttons;
-		} else {
-			return Collections.emptyList();
 		}
+
+		if (DictionaryHookRegistry.getInstance().hasEditorButtons(dictionaryEditor.getModel().getName())) {
+			buttons.addAll(DictionaryHookRegistry.getInstance().getEditorButtons(dictionaryEditor.getModel().getName()));
+		}
+
+		return buttons;
 	}
 
 	@Override

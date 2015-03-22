@@ -9,7 +9,7 @@ public interface IButton extends ClickHandler
 
 	String getTitle();
 
-	String getDebugId();
+	String getId();
 
 	void setEnabled(boolean enabled);
 

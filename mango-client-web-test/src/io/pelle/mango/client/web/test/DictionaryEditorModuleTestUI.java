@@ -13,12 +13,19 @@ package io.pelle.mango.client.web.test;
 
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;
+import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
 import io.pelle.mango.client.web.test.util.FocusManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Assert;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 /**
  * UI for the navigation module
@@ -30,13 +37,25 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 	private DictionaryEditorModule<VOType> module;
 
+	private List<TestButton> testButtons = new ArrayList<TestButton>();
+
 	private boolean dirty = false;
+
 	private String title;;
 
 	public DictionaryEditorModuleTestUI(DictionaryEditorModule<VOType> module) {
 		super(module, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
 		this.module = module;
 		module.addUpdateListener(this);
+
+		testButtons.addAll(Collections2.transform(module.getEditorButtons(), new Function<IButton, TestButton>() {
+
+			@Override
+			public TestButton apply(IButton button) {
+				return new TestButton(button);
+			}
+		}));
+
 		onUpdate();
 	}
 
@@ -96,6 +115,10 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 	@Override
 	public String getTitle() {
 		return title;
+	}
+
+	public List<TestButton> getButtons() {
+		return testButtons;
 	}
 
 }

@@ -5,60 +5,56 @@ import java.util.List;
 
 import com.google.gwt.resources.client.ImageResource;
 
-public abstract class BaseButton implements IButton
-{
+public abstract class BaseButton implements IButton {
 
-	private final ImageResource image;
+	private ImageResource image;
 
-	private final String title;
+	private String title;
 
-	private final String debugId;
+	private final String id;
 
 	private boolean enabled = true;
 
 	private List<IButtonUpdateHandler> updateHandlers = new ArrayList<IButtonUpdateHandler>();
 
-	public BaseButton(ImageResource image, String title, String debugId)
-	{
-		super();
+	public BaseButton(ImageResource image, String title, String id) {
+		this(id);
 		this.image = image;
 		this.title = title;
-		this.debugId = debugId;
+	}
+
+	public BaseButton(String id) {
+		super();
+		this.id = id;
 	}
 
 	@Override
-	public ImageResource getImage()
-	{
+	public ImageResource getImage() {
 		return this.image;
 	}
 
 	@Override
-	public String getTitle()
-	{
+	public String getTitle() {
 		return this.title;
 	}
 
 	@Override
-	public String getDebugId()
-	{
-		return this.debugId;
+	public String getId() {
+		return this.id;
 	}
 
 	@Override
-	public void setEnabled(boolean enabled)
-	{
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 
 	@Override
-	public boolean isEnabled()
-	{
+	public boolean isEnabled() {
 		return this.enabled;
 	}
 
 	@Override
-	public void addUpdatehandler(IButtonUpdateHandler updateHandler)
-	{
+	public void addUpdatehandler(IButtonUpdateHandler updateHandler) {
 		this.updateHandlers.add(updateHandler);
 	}
 

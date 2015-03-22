@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
+import io.pelle.mango.client.base.modules.dictionary.controls.BaseButton;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
@@ -16,6 +17,7 @@ import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
 import io.pelle.mango.client.web.test.DictionarySearchModuleTestUI;
 import io.pelle.mango.client.web.test.MangoClientSyncWebTest;
+import io.pelle.mango.client.web.test.TestButton;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
 import io.pelle.mango.client.web.test.controls.DateTestControl;
@@ -44,13 +46,17 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.gwt.event.dom.client.ClickEvent;
+
 public class DemoClientTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
 
 	@Before
-	public void executedBeforeEach() {
+	public void beforeEach() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 		baseEntityService.deleteAll(Entity2VO.class.getName());
 		baseEntityService.deleteAll(CountryVO.class.getName());
@@ -283,6 +289,28 @@ public class DemoClientTest extends BaseDemoTest {
 		textControl1.enterValue(UUID.randomUUID().toString());
 
 		return editor;
+	}
+
+	@Test
+	public void testDictionary1AddEditorButton() {
+
+		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.addEditorButton(new BaseButton("id1") {
+
+			@Override
+			public void onClick(ClickEvent event) {
+			}
+		});
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+
+		assertTrue(Iterables.any(editor.getButtons(), new Predicate<TestButton>() {
+
+			@Override
+			public boolean apply(TestButton button) {
+				return button.getId().equals("id1");
+			}
+		}));
+
 	}
 
 	@Test

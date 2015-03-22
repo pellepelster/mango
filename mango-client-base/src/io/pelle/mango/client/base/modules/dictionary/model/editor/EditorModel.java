@@ -1,5 +1,6 @@
 package io.pelle.mango.client.base.modules.dictionary.model.editor;
 
+import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel;
@@ -41,6 +42,10 @@ public class EditorModel<VOType extends IBaseVO> extends BaseModel<Object> imple
 
 	public void addEditorHook(BaseEditorHook<VOType> editorHook) {
 		DictionaryHookRegistry.getInstance().addEditorHook(getName(), editorHook);
+	}
+
+	public void addEditorButton(IButton button) {
+		DictionaryHookRegistry.getInstance().addEditorButton(getName(), button);
 	}
 
 	@Override
