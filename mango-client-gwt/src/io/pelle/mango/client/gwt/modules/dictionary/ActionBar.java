@@ -12,6 +12,7 @@
 package io.pelle.mango.client.gwt.modules.dictionary;
 
 import io.pelle.mango.client.base.db.vos.UUID;
+import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButtonUpdateHandler;
 import io.pelle.mango.client.gwt.GwtStyles;
@@ -23,6 +24,7 @@ import java.util.Map;
 import org.gwtbootstrap3.client.ui.ButtonGroup;
 import org.gwtbootstrap3.client.ui.ButtonToolBar;
 
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.HasAlignment;
@@ -69,6 +71,16 @@ public class ActionBar extends HorizontalPanel {
 		return button;
 	}
 
+	private MangoButton addButton(String buttonGroupName, ImageResource imageResource, String title, String debugId, final IButton button, final DictionaryContext dictionaryContext) {
+		return addButton(buttonGroupName, imageResource, title, new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent event) {
+				button.onClick(event, dictionaryContext);
+			}
+		}, debugId);
+	}
+
 	public MangoButton addToButtonGroup(String buttonGroupName, ImageResource imageResource, String title, ClickHandler clickHandler, String debugId) {
 		return addButton(buttonGroupName, imageResource, title, clickHandler, debugId);
 	}
@@ -81,8 +93,9 @@ public class ActionBar extends HorizontalPanel {
 		return addButton(UUID.uuid(), imageResource, title, clickHandler, debugId);
 	}
 
-	public MangoButton addSingleButton(final IButton button) {
-		final MangoButton uiButton = addButton(UUID.uuid(), button.getImage(), button.getTitle(), button, button.getId());
+	public MangoButton addSingleButton(final IButton button, DictionaryContext dictionaryContext) {
+
+		final MangoButton uiButton = addButton(UUID.uuid(), button.getImage(), button.getTitle(), button.getId(), button, dictionaryContext);
 
 		button.addUpdatehandler(new IButtonUpdateHandler() {
 
@@ -93,10 +106,6 @@ public class ActionBar extends HorizontalPanel {
 		});
 
 		return uiButton;
-	}
-
-	public MangoButton addSingleButton(ImageResource imageResource, String title, String debugId) {
-		return addButton(UUID.uuid(), imageResource, title, null, debugId);
 	}
 
 }

@@ -1,6 +1,7 @@
 package io.pelle.mango.client.web.modules.hierarchical;
 
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
+import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
 import io.pelle.mango.client.base.modules.dictionary.controls.BaseButton;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.editor.IDictionaryEditor;
@@ -25,33 +26,27 @@ import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
-public class HierarchicalEditorHook<VOType extends IBaseVO> extends BaseEditorHook<VOType>
-{
+public class HierarchicalEditorHook<VOType extends IBaseVO> extends BaseEditorHook<VOType> {
 	private List<IDictionaryModel> childDictionaries;
 
 	private static final String HIERARCHY_ADD_CHILD_BUTTON_DEBUG_ID = "HIERARCHY_ADD_CHILD_BUTTON_DEBUG_ID";
 
-	public HierarchicalEditorHook(List<IDictionaryModel> childDictionaries)
-	{
+	public HierarchicalEditorHook(List<IDictionaryModel> childDictionaries) {
 		super();
 		this.childDictionaries = childDictionaries;
 	}
 
 	@Override
-	public List<IButton> getEditorButtons(final IDictionaryEditor<VOType> dictionaryEditor)
-	{
+	public List<IButton> getEditorButtons(final IDictionaryEditor<VOType> dictionaryEditor) {
 		final MenuBar hierarchicalMenuOtions = new MenuBar(true);
 
-		for (final IDictionaryModel childDictionary : this.childDictionaries)
-		{
+		for (final IDictionaryModel childDictionary : this.childDictionaries) {
 			MenuItem menuItem = new MenuItem(SafeHtmlUtils.fromSafeConstant(DictionaryUtil.getDictionaryAdd(childDictionary)));
-			menuItem.setScheduledCommand(new Command()
-			{
+			menuItem.setScheduledCommand(new Command() {
 				@Override
-				public void execute()
-				{
-					HashMap<String, Object> parameters = CollectionUtils.getMap(IHierarchicalVO.FIELD_PARENT_CLASSNAME.getAttributeName(), dictionaryEditor
-							.getVO().getClass().getName(), IHierarchicalVO.FIELD_PARENT_ID.getAttributeName(), dictionaryEditor.getVO().getOid());
+				public void execute() {
+					HashMap<String, Object> parameters = CollectionUtils.getMap(IHierarchicalVO.FIELD_PARENT_CLASSNAME.getAttributeName(), dictionaryEditor.getVO().getClass().getName(), IHierarchicalVO.FIELD_PARENT_ID.getAttributeName(),
+							dictionaryEditor.getVO().getOid());
 
 					DictionaryEditorModuleFactory.openEditor(childDictionary.getName(), parameters);
 					hierarchicalMenuOtions.closeAllChildren(false);
@@ -65,28 +60,22 @@ public class HierarchicalEditorHook<VOType extends IBaseVO> extends BaseEditorHo
 		hierarchicalMenuWrapper.setTitle(MangoClientWeb.MESSAGES.addChildren());
 		hierarchicalMenuWrapper.add(hierarchicalMenuOtions);
 
-		final IButton hierarchicalButton = new BaseButton(MangoClientWeb.RESOURCES.hierarchy(), MangoClientWeb.MESSAGES.addChildren(), HIERARCHY_ADD_CHILD_BUTTON_DEBUG_ID)
-		{
+		final IButton hierarchicalButton = new BaseButton(MangoClientWeb.RESOURCES.hierarchy(), MangoClientWeb.MESSAGES.addChildren(), HIERARCHY_ADD_CHILD_BUTTON_DEBUG_ID) {
 			@Override
-			public void onClick(final ClickEvent event)
-			{
-				hierarchicalMenuWrapper.setPopupPositionAndShow(new PositionCallback()
-				{
+			public void onClick(final ClickEvent event, DictionaryContext dictionaryContext) {
+				hierarchicalMenuWrapper.setPopupPositionAndShow(new PositionCallback() {
 					@Override
-					public void setPosition(int offsetWidth, int offsetHeight)
-					{
+					public void setPosition(int offsetWidth, int offsetHeight) {
 						hierarchicalMenuWrapper.setPopupPosition(event.getClientX(), event.getClientY());
 					}
 				});
 			}
 		};
 
-		dictionaryEditor.addUpdateListener(new IEditorUpdateListener()
-		{
+		dictionaryEditor.addUpdateListener(new IEditorUpdateListener() {
 
 			@Override
-			public void onUpdate()
-			{
+			public void onUpdate() {
 				hierarchicalButton.setEnabled(!dictionaryEditor.getVO().isNew());
 			}
 		});

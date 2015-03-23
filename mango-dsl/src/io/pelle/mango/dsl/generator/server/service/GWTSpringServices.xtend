@@ -22,7 +22,7 @@ class GWTSpringServices {
 	        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
-		<bean id="gwtUrlMapping" class="org.gwtwidgets.server.spring.GWTHandler">
+		<bean id="«model.modelName.toFirstLower»GWTUrlMapping" class="org.gwtwidgets.server.spring.GWTHandler">
 			<property name="order" value="10"/>
 			<property name="serviceExporterFactory">
 				<ref bean="rpcServiceExporterFactory" />
@@ -35,8 +35,6 @@ class GWTSpringServices {
 				</map>
 			</property>
 		</bean>
-
-		<bean id="rpcServiceExporterFactory" class="io.pelle.mango.server.gwt.MangoRPCServiceExporterFactory" />
 
 	</beans>
 	'''

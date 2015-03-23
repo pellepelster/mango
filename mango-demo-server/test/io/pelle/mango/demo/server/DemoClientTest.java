@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
+import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
 import io.pelle.mango.client.base.modules.dictionary.controls.BaseButton;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
@@ -294,23 +295,32 @@ public class DemoClientTest extends BaseDemoTest {
 	@Test
 	public void testDictionary1AddEditorButton() {
 
+		final AtomicBoolean called = new AtomicBoolean(false);
+
 		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.addEditorButton(new BaseButton("id1") {
 
 			@Override
-			public void onClick(ClickEvent event) {
+			public void onClick(ClickEvent event, DictionaryContext dictionaryContext) {
+				called.set(true);
+
+				assertTrue(dictionaryContext.hasEditor());
+				assertEquals("DemoEditor1", dictionaryContext.getDictionaryEditor().getModel().getName());
 			}
 		});
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 
-		assertTrue(Iterables.any(editor.getButtons(), new Predicate<TestButton>() {
-
+		TestButton button = Iterables.find(editor.getButtons(), new Predicate<TestButton>() {
 			@Override
 			public boolean apply(TestButton button) {
 				return button.getId().equals("id1");
 			}
-		}));
+		});
 
+		button.push();
+		// assertTrue();
+
+		await().untilAtomic(called, equalTo(true));
 	}
 
 	@Test

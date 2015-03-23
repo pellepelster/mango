@@ -83,6 +83,9 @@ class SpringGenerator {
 				-->
 			«ENDFOR»
 		
+			<bean id="rpcServiceExporterFactory" class="io.pelle.mango.server.gwt.MangoRPCServiceExporterFactory" />
+
+		
 		</beans>
 	'''
 

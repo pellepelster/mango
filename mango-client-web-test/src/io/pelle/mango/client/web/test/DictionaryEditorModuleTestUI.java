@@ -43,7 +43,7 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 	private String title;;
 
-	public DictionaryEditorModuleTestUI(DictionaryEditorModule<VOType> module) {
+	public DictionaryEditorModuleTestUI(final DictionaryEditorModule<VOType> module) {
 		super(module, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
 		this.module = module;
 		module.addUpdateListener(this);
@@ -52,7 +52,7 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 			@Override
 			public TestButton apply(IButton button) {
-				return new TestButton(button);
+				return new TestButton(module.getDictionaryEditor(), button);
 			}
 		}));
 

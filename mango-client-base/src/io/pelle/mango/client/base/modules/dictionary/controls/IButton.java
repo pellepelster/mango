@@ -1,10 +1,11 @@
 package io.pelle.mango.client.base.modules.dictionary.controls;
 
-import com.google.gwt.event.dom.client.ClickHandler;
+import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
+
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.ImageResource;
 
-public interface IButton extends ClickHandler
-{
+public interface IButton {
 	ImageResource getImage();
 
 	String getTitle();
@@ -17,4 +18,5 @@ public interface IButton extends ClickHandler
 
 	void addUpdatehandler(IButtonUpdateHandler updateHandler);
 
+	void onClick(final ClickEvent event, DictionaryContext dictionaryContext);
 }

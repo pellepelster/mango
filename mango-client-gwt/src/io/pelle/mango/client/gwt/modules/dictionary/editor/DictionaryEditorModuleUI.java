@@ -14,6 +14,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.editor;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.base.module.ModuleUtils;
+import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -144,7 +145,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 		}
 
 		for (final IButton button : getModule().getEditorButtons()) {
-			actionBar.addSingleButton(button);
+			actionBar.addSingleButton(button, new DictionaryContext(getModule().getDictionaryEditor()));
 
 		}
 
