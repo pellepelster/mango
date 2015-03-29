@@ -30,6 +30,7 @@ import io.pelle.mango.server.base.IBaseClientEntity;
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,20 +49,22 @@ import com.google.common.base.Optional;
 @Component
 public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
+	private static final String CREATE_METRIC_KEY = "create";
+
+	private static final String SAVE_METRIC_KEY = "save";
+
 	private List<IDAOCallback> callbacks = new ArrayList<IDAOCallback>();
 
 	private static Logger LOG = Logger.getLogger(BaseEntityDAO.class);
 
-	private Optional<Timer> createTimer = Optional.absent();
+	private Map<Class<? extends IBaseEntity>, Timer> createTimers = new HashMap<Class<? extends IBaseEntity>, Timer>();
+
+	private Map<Class<? extends IBaseEntity>, Timer> saveTimers = new HashMap<Class<? extends IBaseEntity>, Timer>();
 
 	@Override
 	public <T extends IBaseEntity> T create(T entity) {
 
-		Optional<Timer.Context> context = Optional.absent();
-
-		if (createTimer.isPresent()) {
-			context = Optional.of(createTimer.get().time());
-		}
+		Timer.Context context = getCreateContext(entity.getClass());
 
 		try {
 
@@ -95,8 +98,8 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 			return result;
 
 		} finally {
-			if (context.isPresent()) {
-				context.get().stop();
+			if (context != null) {
+				context.stop();
 			}
 		}
 	}
@@ -211,6 +214,8 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	@Override
 	public <T extends IBaseEntity> T save(T entity) {
 
+		Timer.Context context = getSaveContext(entity.getClass());
+
 		if (entity instanceof IBaseClientEntity) {
 			((IBaseClientEntity) entity).setClient(getCurrentUser().getClient());
 
@@ -238,6 +243,10 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		}
 
 		T result = mergeRecursive(entity);
+
+		if (context != null) {
+			context.stop();
+		}
 
 		return result;
 	}
@@ -316,8 +325,13 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	}
 
 	@Autowired(required = false)
-	public void setMetricRegistry(MetricRegistry metricRegistry) {
-		createTimer = Optional.fromNullable(metricRegistry.timer(name(BaseEntityDAO.class, "create")));
+	public void setMetricRegistry(MetricRegistry metricRegistry, EntityVOMapper entityVOMapper) {
+
+		for (Class<? extends IBaseEntity> entityClass : entityVOMapper.getEntityClasses()) {
+			createTimers.put(entityClass, metricRegistry.timer(name(entityClass, CREATE_METRIC_KEY)));
+			saveTimers.put(entityClass, metricRegistry.timer(name(entityClass, SAVE_METRIC_KEY)));
+		}
+
 	}
 
 	@Override
@@ -341,4 +355,25 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		callbacks.add(callback);
 	}
 
+	private Timer.Context getCreateContext(Class<? extends IBaseEntity> entityClass) {
+
+		Timer timer = createTimers.get(entityClass);
+
+		if (timer != null) {
+			return timer.time();
+		}
+
+		return null;
+	}
+
+	private Timer.Context getSaveContext(Class<? extends IBaseEntity> entityClass) {
+
+		Timer timer = saveTimers.get(entityClass);
+
+		if (timer != null) {
+			return timer.time();
+		}
+
+		return null;
+	}
 }
