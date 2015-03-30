@@ -1,9 +1,11 @@
 package io.pelle.mango.client.core.property;
 
+import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.PROPERTY_TYPE;
 import io.pelle.mango.client.base.property.PROPERTY_VALUE_TYPE;
 
-public class BooleanPropertyBuilder extends BasePropertyBuilder<Boolean> {
+@SuppressWarnings("serial")
+public class BooleanPropertyBuilder extends BasePropertyBuilder<Boolean, BooleanPropertyBuilder> {
 
 	public BooleanPropertyBuilder() {
 	}
@@ -11,11 +13,11 @@ public class BooleanPropertyBuilder extends BasePropertyBuilder<Boolean> {
 	public BooleanPropertyBuilder(String key, String name, PROPERTY_TYPE type) {
 		super(key, name, type);
 	}
-	
+
 	public BooleanPropertyBuilder(String key, PROPERTY_TYPE type) {
 		super(key, type);
 	}
-	
+
 	@Override
 	public Boolean parseValue(String valueString) {
 		return Boolean.parseBoolean(valueString);
@@ -24,6 +26,16 @@ public class BooleanPropertyBuilder extends BasePropertyBuilder<Boolean> {
 	@Override
 	public PROPERTY_VALUE_TYPE getValueType() {
 		return PROPERTY_VALUE_TYPE.BOOLEAN;
+	}
+
+	@Override
+	protected BooleanPropertyBuilder getBuilder() {
+		return this;
+	}
+
+	@Override
+	protected IProperty<Boolean> cloneWithNewType(PROPERTY_TYPE type) {
+		return new BooleanPropertyBuilder(getKey(), getName(), type);
 	}
 
 }

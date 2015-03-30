@@ -6,7 +6,8 @@ import io.pelle.mango.client.base.property.PROPERTY_TYPE;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class BasePropertyBuilder<VALUETYPE extends Serializable> implements IProperty<VALUETYPE>, Serializable {
+@SuppressWarnings("serial")
+public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDER_TYPE> implements IProperty<VALUETYPE>, Serializable {
 
 	private String key;
 
@@ -32,14 +33,18 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable> implem
 		this(key, null, type);
 	}
 
-	public BasePropertyBuilder<VALUETYPE> defaultValue(VALUETYPE defaultValue) {
+	public BUILDER_TYPE defaultValue(VALUETYPE defaultValue) {
 		this.defaultValue = defaultValue;
-		return this;
+		return getBuilder();
 	}
 
-	public BasePropertyBuilder<VALUETYPE> fallback(IProperty<VALUETYPE> fallback) {
+	public BUILDER_TYPE fallback(IProperty<VALUETYPE> fallback) {
 		this.fallback = fallback;
-		return this;
+		return getBuilder();
+	}
+
+	public BUILDER_TYPE fallback(PROPERTY_TYPE type) {
+		return fallback(cloneWithNewType(type));
 	}
 
 	@Override
@@ -71,5 +76,9 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable> implem
 	public String getName() {
 		return name;
 	}
+
+	protected abstract BUILDER_TYPE getBuilder();
+
+	protected abstract IProperty<VALUETYPE> cloneWithNewType(PROPERTY_TYPE type);
 
 }
