@@ -33,17 +33,17 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class DemoClient implements EntryPoint {
 
-	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.createStringDatabaseProperty("stringProperty1", "A string property");
+	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.createStringProperty("stringProperty1").database().name("A string property");
 
-	private static final IProperty<Integer> INTEGER_PROPERTY2 = PropertyBuilder.createIntegerDatabaseProperty("integerProperty2", "A integer property");
+	private static final IProperty<Integer> INTEGER_PROPERTY2 = PropertyBuilder.createIntegerProperty("integerProperty2").database().name("A integer property");
 
-	private static final IProperty<Boolean> BOOLEAN_PROPERTY3 = PropertyBuilder.createBooleanDatabaseProperty("booleanProperty3", "A boolean property");
+	private static final IProperty<Boolean> BOOLEAN_PROPERTY3 = PropertyBuilder.createBooleanProperty("booleanProperty3").database().name("A boolean property");
 
-	private static final IProperty<String> STRING_PROPERTY4 = PropertyBuilder.createStringDatabaseProperty("stringProperty4", "An example string property");
+	private static final IProperty<String> STRING_PROPERTY4 = PropertyBuilder.createStringProperty("stringProperty4").database().name("An example string property");
 
-	private static final IProperty<String> STRING_PROPERTY5 = PropertyBuilder.createStringDatabaseProperty("stringProperty5", "An example string property");
+	private static final IProperty<String> STRING_PROPERTY5 = PropertyBuilder.createStringProperty("stringProperty5").database().name("An example string property");
 
-	private static final IProperty<String> STRING_PROPERTY6 = PropertyBuilder.createStringDatabaseProperty("stringProperty6", "An example string property");
+	private static final IProperty<String> STRING_PROPERTY6 = PropertyBuilder.createStringProperty("stringProperty6").database().name("An example string property");
 
 	/** {@inheritDoc} */
 	@Override

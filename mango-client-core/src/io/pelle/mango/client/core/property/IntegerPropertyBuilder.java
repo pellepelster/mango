@@ -1,6 +1,5 @@
 package io.pelle.mango.client.core.property;
 
-import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.PROPERTY_TYPE;
 import io.pelle.mango.client.base.property.PROPERTY_VALUE_TYPE;
 
@@ -10,12 +9,12 @@ public class IntegerPropertyBuilder extends BasePropertyBuilder<Integer, Integer
 	public IntegerPropertyBuilder() {
 	}
 
-	public IntegerPropertyBuilder(String key, String name, PROPERTY_TYPE type) {
-		super(key, name, type);
+	public IntegerPropertyBuilder(String key) {
+		super(key);
 	}
 
-	public IntegerPropertyBuilder(String key, PROPERTY_TYPE type) {
-		super(key, type);
+	public IntegerPropertyBuilder(String key, String name, PROPERTY_TYPE type) {
+		super(key, name, type);
 	}
 
 	@Override
@@ -34,8 +33,8 @@ public class IntegerPropertyBuilder extends BasePropertyBuilder<Integer, Integer
 	}
 
 	@Override
-	protected IProperty<Integer> cloneWithNewType(String key, PROPERTY_TYPE type) {
-		return new IntegerPropertyBuilder((key != null) ? key :  getKey(), getName(), (type != null) ? type :  getType());
+	protected IntegerPropertyBuilder clone(String key) {
+		return new IntegerPropertyBuilder((key != null) ? key : getKey(), getName(), getType());
 	}
 
 }

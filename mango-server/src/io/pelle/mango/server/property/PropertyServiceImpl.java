@@ -13,7 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import com.google.common.base.Optional;
 

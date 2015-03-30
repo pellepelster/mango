@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @SuppressWarnings("serial")
-public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDER_TYPE> implements IProperty<VALUETYPE>, Serializable {
+public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDER_TYPE extends IProperty<VALUETYPE>> implements IProperty<VALUETYPE>, Serializable {
 
 	private String key;
 
@@ -17,12 +17,12 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 
 	private IProperty<VALUETYPE> defaultProperty;
 
-	private IProperty<VALUETYPE> fallback;
+	private BUILDER_TYPE fallback;
 
 	private PROPERTY_TYPE type;
 
 	public static String DEFAULT_VALUE_DEFAULT_POSTFIX = ".default";
-	
+
 	public BasePropertyBuilder() {
 	}
 
@@ -33,8 +33,9 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 		this.type = type;
 	}
 
-	public BasePropertyBuilder(String key, PROPERTY_TYPE type) {
-		this(key, null, type);
+	public BasePropertyBuilder(String key) {
+		super();
+		this.key = key;
 	}
 
 	public BUILDER_TYPE defaultValue(VALUETYPE defaultValue) {
@@ -47,17 +48,47 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 	}
 
 	public BUILDER_TYPE defaultValueWithPostfix(String defaultValuePostfix) {
-		defaultProperty = cloneWithNewType(key + defaultValuePostfix, getType()); 
+		defaultProperty = clone(key + defaultValuePostfix);
+		return getBuilder();
+	}
+
+	public BUILDER_TYPE database() {
+		return setType(PROPERTY_TYPE.DATABASE);
+	}
+
+	public BUILDER_TYPE spring() {
+		return setType(PROPERTY_TYPE.SPRING);
+	}
+
+	public BUILDER_TYPE system() {
+		return setType(PROPERTY_TYPE.SYSTEM);
+	}
+
+	public BUILDER_TYPE name(String name) {
+		this.name = name;
 		return getBuilder();
 	}
 
 	public BUILDER_TYPE fallback(IProperty<VALUETYPE> fallback) {
-		this.fallback = fallback;
-		return getBuilder();
+		this.fallback = (BUILDER_TYPE) fallback;
+		return (BUILDER_TYPE) fallback;
 	}
 
-	public BUILDER_TYPE fallback(PROPERTY_TYPE type) {
-		return fallback(cloneWithNewType(null, type));
+	public BUILDER_TYPE fallbackToDatabase() {
+		return clone(null).setType(PROPERTY_TYPE.DATABASE);
+	}
+
+	public BUILDER_TYPE fallbackToSpring() {
+		return clone(null).setType(PROPERTY_TYPE.SPRING);
+	}
+
+	public BUILDER_TYPE fallbackToSystem() {
+		return clone(null).setType(PROPERTY_TYPE.SYSTEM);
+	}
+
+	protected BUILDER_TYPE setType(PROPERTY_TYPE type) {
+		this.type = type;
+		return getBuilder();
 	}
 
 	@Override
@@ -95,8 +126,12 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 		return name;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	protected abstract BUILDER_TYPE getBuilder();
 
-	protected abstract IProperty<VALUETYPE> cloneWithNewType(String key, PROPERTY_TYPE type);
+	protected abstract BasePropertyBuilder<VALUETYPE, BUILDER_TYPE> clone(String key);
 
 }
