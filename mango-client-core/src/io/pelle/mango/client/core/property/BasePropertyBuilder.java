@@ -15,10 +15,14 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 
 	private VALUETYPE defaultValue;
 
+	private IProperty<VALUETYPE> defaultProperty;
+
 	private IProperty<VALUETYPE> fallback;
 
 	private PROPERTY_TYPE type;
 
+	public static String DEFAULT_VALUE_DEFAULT_POSTFIX = ".default";
+	
 	public BasePropertyBuilder() {
 	}
 
@@ -38,13 +42,22 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 		return getBuilder();
 	}
 
+	public BUILDER_TYPE defaultValueWithPostfix() {
+		return defaultValueWithPostfix(DEFAULT_VALUE_DEFAULT_POSTFIX);
+	}
+
+	public BUILDER_TYPE defaultValueWithPostfix(String defaultValuePostfix) {
+		defaultProperty = cloneWithNewType(key + defaultValuePostfix, getType()); 
+		return getBuilder();
+	}
+
 	public BUILDER_TYPE fallback(IProperty<VALUETYPE> fallback) {
 		this.fallback = fallback;
 		return getBuilder();
 	}
 
 	public BUILDER_TYPE fallback(PROPERTY_TYPE type) {
-		return fallback(cloneWithNewType(type));
+		return fallback(cloneWithNewType(null, type));
 	}
 
 	@Override
@@ -68,6 +81,11 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 	}
 
 	@Override
+	public IProperty<VALUETYPE> getDefaultProperty() {
+		return defaultProperty;
+	}
+
+	@Override
 	public String toString(VALUETYPE value) {
 		return Objects.toString(value, null);
 	}
@@ -79,6 +97,6 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 
 	protected abstract BUILDER_TYPE getBuilder();
 
-	protected abstract IProperty<VALUETYPE> cloneWithNewType(PROPERTY_TYPE type);
+	protected abstract IProperty<VALUETYPE> cloneWithNewType(String key, PROPERTY_TYPE type);
 
 }

@@ -63,8 +63,8 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 
 	private void addProperty(Table table, IProperty<?> property) {
 		table.addCell(property.getKey());
-		table.addCell(propertyService.getProperty(property).toString());
-		table.addCell(Objects.firstNonNull(property.getDefaultValue(), "").toString());
+		table.addCell(Objects.firstNonNull(propertyService.getProperty(property), "<none>").toString());
+		table.addCell(Objects.firstNonNull(propertyService.getPropertyDefault(property), "<none>").toString());
 	}
 
 }

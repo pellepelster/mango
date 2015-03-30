@@ -34,7 +34,8 @@ public class StringPropertyBuilder extends BasePropertyBuilder<String, StringPro
 	}
 
 	@Override
-	protected IProperty<String> cloneWithNewType(PROPERTY_TYPE type) {
-		return new StringPropertyBuilder(getKey(), getName(), type);
+	protected IProperty<String> cloneWithNewType(String key, PROPERTY_TYPE type) {
+		return new StringPropertyBuilder((key != null) ? key :  getKey(), getName(), (type != null) ? type :  getType());
 	}
+	
 }

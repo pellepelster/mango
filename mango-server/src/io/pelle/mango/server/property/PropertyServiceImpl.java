@@ -13,6 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import com.google.common.base.Optional;
 
@@ -43,20 +44,14 @@ public class PropertyServiceImpl implements IPropertyService {
 			// ignore non existant values
 		}
 
-		if (value != null) {
-			cache.put(key, value);
-		} else {
-			value = "<none>";
-		}
-
 		return value;
 	}
-	
+
 	@Override
 	public <VALUETYPE extends Serializable> VALUETYPE getProperty(IProperty<VALUETYPE> property) {
 
 		String valueString = null;
-		
+
 		switch (property.getType()) {
 		case SYSTEM:
 			valueString = System.getProperty(property.getKey());
@@ -77,16 +72,16 @@ public class PropertyServiceImpl implements IPropertyService {
 			throw new RuntimeException("unsupported property type '" + property.getType() + "'");
 		}
 
-		
-		if (valueString == null || valueString.trim().isEmpty()) {
-			if (property.getFallback() != null) {
-				return getProperty(property.getFallback());
-			} else if (property.getDefaultValue() != null) {
-				return property.getDefaultValue();
-			}
+		if (valueString != null && !valueString.trim().isEmpty()) {
+			return property.parseValue(valueString);
 		}
 
-		return property.parseValue(valueString);
+		if (property.getFallback() != null) {
+			return getProperty(property.getFallback());
+		} else {
+			return getPropertyDefault(property);
+		}
+
 	}
 
 	@Override
@@ -125,6 +120,18 @@ public class PropertyServiceImpl implements IPropertyService {
 		}
 
 		return result;
+	}
+
+	@Override
+	public <VALUETYPE extends Serializable> VALUETYPE getPropertyDefault(IProperty<VALUETYPE> property) {
+
+		if (property.getDefaultValue() != null) {
+			return property.getDefaultValue();
+		} else if (property.getDefaultProperty() != null) {
+			return getProperty(property.getDefaultProperty());
+		}
+
+		return null;
 	}
 
 }

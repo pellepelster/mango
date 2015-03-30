@@ -34,8 +34,8 @@ public class IntegerPropertyBuilder extends BasePropertyBuilder<Integer, Integer
 	}
 
 	@Override
-	protected IProperty<Integer> cloneWithNewType(PROPERTY_TYPE type) {
-		return new IntegerPropertyBuilder(getKey(), getName(), type);
+	protected IProperty<Integer> cloneWithNewType(String key, PROPERTY_TYPE type) {
+		return new IntegerPropertyBuilder((key != null) ? key :  getKey(), getName(), (type != null) ? type :  getType());
 	}
 
 }

@@ -34,8 +34,8 @@ public class BooleanPropertyBuilder extends BasePropertyBuilder<Boolean, Boolean
 	}
 
 	@Override
-	protected IProperty<Boolean> cloneWithNewType(PROPERTY_TYPE type) {
-		return new BooleanPropertyBuilder(getKey(), getName(), type);
+	protected IProperty<Boolean> cloneWithNewType(String key, PROPERTY_TYPE type) {
+		return new BooleanPropertyBuilder((key != null) ? key :  getKey(), getName(), (type != null) ? type :  getType());
 	}
 
 }
