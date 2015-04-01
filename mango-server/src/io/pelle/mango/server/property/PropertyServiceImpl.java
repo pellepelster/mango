@@ -75,11 +75,11 @@ public class PropertyServiceImpl implements IPropertyService {
 			return property.parseValue(valueString);
 		}
 
-		if (property.getFallback() != null) {
-			return getProperty(property.getFallback());
-		} else {
-			return getPropertyDefault(property);
-		}
+		// if (property.getFallback() != null) {
+		// return getProperty(property.getFallback());
+		// } else {
+		return getPropertyDefault(property);
+		// }
 
 	}
 

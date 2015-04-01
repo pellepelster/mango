@@ -15,7 +15,7 @@ public interface IProperty<VALUETYPE extends Serializable> {
 	VALUETYPE getDefaultValue();
 
 	IProperty<VALUETYPE> getDefaultProperty();
-		
+
 	VALUETYPE parseValue(String valueString);
 
 	String toString(VALUETYPE value);

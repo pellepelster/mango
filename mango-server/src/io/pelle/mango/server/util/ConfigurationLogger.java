@@ -24,7 +24,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 
 	@Autowired
 	private IPropertyService propertyService;
-	
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 

@@ -30,6 +30,7 @@ gwt {
     gwtVersion = versions.gwt
     modules 'io.pelle.mango.demo.DemoClient'
 	logLevel = 'ERROR'
+	maxHeapSize = "2048M";
 	src += files(project(':mango-client-base').sourceSets.main.allJava.srcDirs) + 
 			files(project(':mango-client-core').sourceSets.main.allJava.srcDirs) + 
 			files(project(':mango-client-web').sourceSets.main.allJava.srcDirs) +

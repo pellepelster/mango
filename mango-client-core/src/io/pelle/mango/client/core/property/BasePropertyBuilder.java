@@ -17,7 +17,7 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 
 	private IProperty<VALUETYPE> defaultProperty;
 
-	private BUILDER_TYPE fallback;
+	private IProperty<VALUETYPE> fallback;
 
 	private PROPERTY_TYPE type;
 
@@ -69,9 +69,9 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 		return getBuilder();
 	}
 
-	public BUILDER_TYPE fallback(IProperty<VALUETYPE> fallback) {
-		this.fallback = (BUILDER_TYPE) fallback;
-		return (BUILDER_TYPE) fallback;
+	public IProperty<VALUETYPE> fallback(IProperty<VALUETYPE> fallback) {
+		this.fallback = fallback;
+		return fallback;
 	}
 
 	public BUILDER_TYPE fallbackToDatabase() {
