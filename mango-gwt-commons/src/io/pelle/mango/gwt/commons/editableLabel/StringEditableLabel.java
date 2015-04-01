@@ -17,13 +17,11 @@ public class StringEditableLabel extends BaseEditableLabel<String, TextBox> {
 		return value;
 	}
 
-	protected TextBox createTextBox() {
-		return new TextBox();
-	}
-
 	@Override
 	protected TextBox createControl() {
-		return new TextBox();
+		TextBox textBox = new TextBox();
+		textBox.setWidth("14em");
+		return textBox;
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import io.pelle.mango.client.base.property.PROPERTY_VALUE_TYPE;
 public class IntegerPropertyBuilder extends BasePropertyBuilder<Integer, IntegerPropertyBuilder> {
 
 	public IntegerPropertyBuilder() {
+		super();
 	}
 
 	public IntegerPropertyBuilder(String key) {

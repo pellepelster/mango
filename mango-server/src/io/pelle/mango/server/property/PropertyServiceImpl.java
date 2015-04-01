@@ -11,11 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
 
 import com.google.common.base.Optional;
 
+@Transactional
 public class PropertyServiceImpl implements IPropertyService {
 
 	private final Map<String, String> cache = new ConcurrentHashMap<String, String>();
@@ -75,11 +78,11 @@ public class PropertyServiceImpl implements IPropertyService {
 			return property.parseValue(valueString);
 		}
 
-		// if (property.getFallback() != null) {
-		// return getProperty(property.getFallback());
-		// } else {
-		return getPropertyDefault(property);
-		// }
+		if (property.getFallback() != null) {
+			return getProperty(property.getFallback());
+		} else {
+			return getPropertyDefault(property);
+		}
 
 	}
 

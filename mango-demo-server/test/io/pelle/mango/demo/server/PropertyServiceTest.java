@@ -19,7 +19,6 @@ import java.util.Map;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gwt.editor.client.Editor.Ignore;
 import com.google.gwt.thirdparty.guava.common.collect.Iterables;
 
 public class PropertyServiceTest extends BaseDemoTest {
@@ -141,16 +140,6 @@ public class PropertyServiceTest extends BaseDemoTest {
 	@Test
 	public void testGetDatabasePropertyWithDefault() {
 		assertEquals("aaa", propertyService.getProperty(DB_PROPERTY_WITH_DEFAULT));
-	}
-
-	@Test
-	@Ignore
-	public void testCreateProperty() {
-
-		// PropertiesBuilder.getInstance().createCategory("zzz").createSystemProperty("uuu");
-		// List<PropertyCategory> propertyCategories =
-		// PropertiesBuilder.getInstance().getRootCategories();
-		// assertEquals("zzz", propertyCategories.get(0).getName());
 	}
 
 }

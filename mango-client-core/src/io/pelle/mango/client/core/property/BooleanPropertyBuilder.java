@@ -7,6 +7,7 @@ import io.pelle.mango.client.base.property.PROPERTY_VALUE_TYPE;
 public class BooleanPropertyBuilder extends BasePropertyBuilder<Boolean, BooleanPropertyBuilder> {
 
 	public BooleanPropertyBuilder() {
+		super();
 	}
 
 	public BooleanPropertyBuilder(String key) {

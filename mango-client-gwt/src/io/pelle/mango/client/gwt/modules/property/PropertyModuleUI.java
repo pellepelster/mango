@@ -30,11 +30,13 @@ import java.util.logging.Logger;
 
 import org.gwtbootstrap3.client.ui.constants.Styles;
 
+import com.google.gwt.dom.client.Style.Float;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TabPanel;
@@ -48,7 +50,7 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 	private VerticalPanel panel = new VerticalPanel();
 
-	private Map<IProperty<Serializable>, BaseEditableLabel<Serializable, ?>> properties2Label = new HashMap<IProperty<Serializable>, BaseEditableLabel<Serializable, ?>>();
+	private Map<String, BaseEditableLabel> properties2Label = new HashMap<String, BaseEditableLabel>();
 
 	public PropertyModuleUI(PropertyModule module) {
 		super(module, PropertyModule.UI_MODULE_ID);
@@ -63,7 +65,8 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 		categories.setWidth("70%");
 
 		for (IPropertyCategory category : getModule().getRootCategory().getCategories()) {
-			VerticalPanel categoryPanel = new VerticalPanel();
+			FlowPanel categoryPanel = new FlowPanel();
+			categoryPanel.getElement().getStyle().setMarginTop(1, Unit.EM);
 			categories.add(categoryPanel, category.getName());
 			createProperties(categoryPanel, category);
 		}
@@ -74,47 +77,11 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createProperties(Panel panel, IPropertyCategory category) {
 
 		for (final IProperty<? extends Serializable> property : category.getProperties()) {
-
-			HorizontalPanel propertyPanel = new HorizontalPanel();
-			propertyPanel.setSpacing(GwtStyles.SPACING * 2);
-
-			Label propertyLabel = new Label(property.getName());
-			propertyPanel.add(propertyLabel);
-
-			BaseEditableLabel<? extends Serializable, ?> baseEditableLabel = null;
-			switch (property.getValueType()) {
-			case BOOLEAN:
-				BooleanEditableLabel booleanEditableLabel = new BooleanEditableLabel();
-				baseEditableLabel = booleanEditableLabel;
-				break;
-			case STRING:
-				final StringEditableLabel stringEditableLabel = new StringEditableLabel();
-				stringEditableLabel.addControlStyle(Styles.FORM_CONTROL);
-				stringEditableLabel.setValue(property.getKey());
-				baseEditableLabel = stringEditableLabel;
-
-				break;
-			case INTEGER:
-				IntegerEditableLabel integerEditableLabel = new IntegerEditableLabel();
-				integerEditableLabel.addControlStyle(Styles.FORM_CONTROL);
-				// integerEditableLabel.setValue(property.getKey());
-				baseEditableLabel = integerEditableLabel;
-				break;
-
-			default:
-				throw new RuntimeException("unsupported property value type + '" + property.getValueType() + "'");
-			}
-
-			// setValuChangeCallback(baseEditableLabel, property);
-			baseEditableLabel.addButtonStyle(Styles.BTN);
-			baseEditableLabel.setErrorStyle(GwtStyles.FORM_CONTROL_ERROR);
-
-			propertyPanel.add(baseEditableLabel);
-
-			// properties2Label.put(property, baseEditableLabel);
+			FlowPanel propertyPanel = createPropertyPanel(property);
 			panel.add(propertyPanel);
 		}
 
@@ -125,8 +92,8 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 				Map<IProperty<Serializable>, Serializable> values = result;
 
 				for (Map.Entry<IProperty<Serializable>, Serializable> propertyValue : values.entrySet()) {
-					if (properties2Label.containsKey(propertyValue.getKey())) {
-						properties2Label.get(propertyValue.getKey()).setValue(propertyValue.getValue());
+					if (properties2Label.containsKey(propertyValue.getKey().getKey())) {
+						properties2Label.get(propertyValue.getKey().getKey()).setValue(propertyValue.getValue());
 					}
 				}
 			}
@@ -138,11 +105,41 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 	}
 
-	private <VALUETYPE extends Serializable> void setValuChangeCallback(BaseEditableLabel<VALUETYPE, ?> baseEditableLabel, final IProperty<VALUETYPE> property) {
+	private <V extends Serializable> FlowPanel createPropertyPanel(final IProperty<V> property) {
+		FlowPanel propertyPanel = new FlowPanel();
+		propertyPanel.getElement().getStyle().setProperty("display", "table");
+		propertyPanel.getElement().getStyle().setMarginBottom(1.5d, Unit.EM);
 
-		baseEditableLabel.addValueChangeHandler(new ValueChangeHandler<VALUETYPE>() {
+		Label propertyLabel = new Label(property.getName());
+		propertyPanel.add(propertyLabel);
+		propertyLabel.getElement().getStyle().setFloat(Float.LEFT);
+		propertyLabel.getElement().getStyle().setMarginRight(1.5d, Unit.EM);
+
+		BaseEditableLabel<V, ?> baseEditableLabel = null;
+		switch (property.getValueType()) {
+		case BOOLEAN:
+			BooleanEditableLabel booleanEditableLabel = new BooleanEditableLabel();
+			baseEditableLabel = (BaseEditableLabel<V, ?>) booleanEditableLabel;
+			break;
+		case STRING:
+			final StringEditableLabel stringEditableLabel = new StringEditableLabel();
+			stringEditableLabel.addControlStyle(Styles.FORM_CONTROL);
+			baseEditableLabel = (BaseEditableLabel<V, ?>) stringEditableLabel;
+
+			break;
+		case INTEGER:
+			IntegerEditableLabel integerEditableLabel = new IntegerEditableLabel();
+			integerEditableLabel.addControlStyle(Styles.FORM_CONTROL);
+			baseEditableLabel = (BaseEditableLabel<V, ?>) integerEditableLabel;
+			break;
+
+		default:
+			throw new RuntimeException("unsupported property value type + '" + property.getValueType() + "'");
+		}
+
+		baseEditableLabel.addValueChangeHandler(new ValueChangeHandler<V>() {
 			@Override
-			public void onValueChange(ValueChangeEvent<VALUETYPE> event) {
+			public void onValueChange(ValueChangeEvent<V> event) {
 
 				MangoClientWeb.getInstance().getRemoteServiceLocator().getPropertyService().setProperty(property, event.getValue(), new BaseErrorAsyncCallback<Void>() {
 					@Override
@@ -152,6 +149,14 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 			}
 		});
 
+		baseEditableLabel.addButtonStyle(Styles.BTN);
+		baseEditableLabel.setErrorStyle(GwtStyles.FORM_CONTROL_ERROR);
+		baseEditableLabel.getElement().getStyle().setFloat(Float.LEFT);
+
+		properties2Label.put(property.getKey(), baseEditableLabel);
+
+		propertyPanel.add(baseEditableLabel);
+		return propertyPanel;
 	}
 
 	/** {@inheritDoc} */

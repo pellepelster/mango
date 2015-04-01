@@ -2,12 +2,14 @@ package io.pelle.mango.client.core.property;
 
 import io.pelle.mango.client.base.property.IProperty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Objects;
 
-public abstract class BasePropertyContainerBuilder {
+@SuppressWarnings("serial")
+public abstract class BasePropertyContainerBuilder implements Serializable {
 
 	private String id;
 

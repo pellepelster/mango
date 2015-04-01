@@ -15,6 +15,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
+@SuppressWarnings("serial")
 public class PropertyCategoryBuilder extends BasePropertyContainerBuilder implements IPropertyCategory, Serializable {
 
 	private List<PropertyCategoryBuilder> categories = new ArrayList<PropertyCategoryBuilder>();
@@ -84,6 +85,11 @@ public class PropertyCategoryBuilder extends BasePropertyContainerBuilder implem
 				return input;
 			}
 		}));
+	}
+
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("id", getId()).add("categories", categories).toString();
 	}
 
 }

@@ -2,6 +2,8 @@ package io.pelle.mango.gwt.commons.editableLabel;
 
 import java.io.Serializable;
 
+import org.gwtbootstrap3.client.ui.Button;
+
 import com.google.common.base.Objects;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Float;
@@ -23,7 +25,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.LocalizableResource.Generate;
 import com.google.gwt.i18n.client.Messages;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -255,7 +256,7 @@ public abstract class BaseEditableLabel<VALUETYPE extends Serializable, CONTROLT
 			}
 		});
 
-		button.addFocusHandler(BUTTON_FOCUS_HANDLER);
+		button.addDomHandler(BUTTON_FOCUS_HANDLER, FocusEvent.getType());
 
 		return button;
 	}
@@ -271,7 +272,8 @@ public abstract class BaseEditableLabel<VALUETYPE extends Serializable, CONTROLT
 			}
 		});
 
-		button.addFocusHandler(BUTTON_FOCUS_HANDLER);
+		button.addDomHandler(BUTTON_FOCUS_HANDLER, FocusEvent.getType());
+
 		return button;
 	}
 

@@ -45,6 +45,10 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 			addProperty(table, ConfigurationParameters.MAIL_SENDER_FROM);
 			addProperty(table, ConfigurationParameters.HIBERNATE_SQL_SHOW);
 			addProperty(table, ConfigurationParameters.HIBERNATE_SQL_FORMAT);
+			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_ENABLED);
+			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_HOST);
+			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_PORT);
+			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_PREFIX);
 
 			String tableString = table.render();
 			int tableWidth = tableString.indexOf("\n");

@@ -7,6 +7,7 @@ import io.pelle.mango.client.base.property.PROPERTY_VALUE_TYPE;
 public class StringPropertyBuilder extends BasePropertyBuilder<String, StringPropertyBuilder> {
 
 	public StringPropertyBuilder() {
+		super();
 	}
 
 	public StringPropertyBuilder(String key) {
