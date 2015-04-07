@@ -37,8 +37,12 @@ class SpringGenerator {
 				</property>
 				<property name="defaultDataSource" ref="dataSource"/>
 			</bean>
-		
-		  	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/«jndiName(model)»"/>
+			
+			<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+				<!-- This will prepend 'java:comp/env/' for Tomcat, but still fall back to the short name for Weblogic -->
+				<property name="resourceRef" value="true" /> 
+				<property name="jndiName" value="jdbc/«jndiName(model)»" />
+			</bean>
 		
 			<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory">
 		
