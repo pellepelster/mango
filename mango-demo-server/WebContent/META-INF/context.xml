@@ -1,3 +1,3 @@
-<Context>
+<Context path="/io.pelle.mango.demo" docBase="io.pelle.mango.demo" reloadable="true" antiJARLocking="true" antiResourceLocking="true">
 	<ResourceLink name="jdbc/mangodemo" global="jdbc/mangodemo" type="javax.sql.DataSource" />
 </Context>
