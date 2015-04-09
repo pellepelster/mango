@@ -37,11 +37,8 @@ class SpringGenerator {
 				</property>
 				<property name="defaultDataSource" ref="dataSource"/>
 			</bean>
-			
-			<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-				<property name="resourceRef" value="true" /> 
-				<property name="jndiName" value="jdbc/«jndiName(model)»" />
-			</bean>
+		
+		  	<jee:jndi-lookup id="dataSource" jndi-name="java:comp/env/jdbc/«jndiName(model)»"/>
 		
 			<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory">
 		
