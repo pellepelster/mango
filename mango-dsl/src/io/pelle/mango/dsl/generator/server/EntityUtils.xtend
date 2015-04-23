@@ -7,6 +7,7 @@ import io.pelle.mango.dsl.mango.EntityOptionsContainer
 import io.pelle.mango.dsl.mango.EntityPluralLabelField
 import io.pelle.mango.dsl.mango.EntityNaturalKeyFields
 import java.util.Collections
+import io.pelle.mango.dsl.mango.EntityHierarchical
 
 class EntityUtils {
 
@@ -79,5 +80,9 @@ class EntityUtils {
 
 	def <T> entityDisableIdField(Entity entity) {
 		return Boolean.TRUE.equals(entity.getEntityOption(typeof(EntityDisableIdField)))
+	}
+
+	def <T> entityHierarchical(Entity entity) {
+		return Boolean.TRUE.equals(entity.getEntityOption(typeof(EntityHierarchical)))
 	}
 }

@@ -34,11 +34,15 @@ EnumerationValue: name=ID ("=>" value=STRING)?;
 enum IdGeneratorStrategy: TABLE | SEQUENCE;
 
 EntityOptions:
-	EntityDisableIdField | EntityLabelField | EntityPluralLabelField | EntityNaturalKeyFields;
+	EntityDisableIdField | EntityLabelField | EntityPluralLabelField | EntityNaturalKeyFields | EntityHierarchical;
 
 EntityNaturalKeyFields:
 	{EntityNaturalKeyFields}
 	"naturalkey" "{" naturalKeyAttributes+=[EntityAttribute | QualifiedName ] (", " naturalKeyAttributes+=[EntityAttribute | QualifiedName ])* "}";
+
+EntityHierarchical:
+	{EntityHierarchical}
+	"hierarchicalEntity" hierarchical?=XBooleanLiteral;
 
 	
 EntityDisableIdField:

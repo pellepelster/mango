@@ -235,6 +235,24 @@ project MangoDemo {
 			}
 
 			//--------------------------------
+			// employee
+			//--------------------------------
+			entity Employee {
+				entityoptions {
+					hierarchicalEntity true
+				}
+			}
+
+			//--------------------------------
+			// department
+			//--------------------------------
+			entity Department {
+				entityoptions {
+					hierarchicalEntity true
+				}
+			}
+
+			//--------------------------------
 			// currency
 			//--------------------------------
 			entity Currency {

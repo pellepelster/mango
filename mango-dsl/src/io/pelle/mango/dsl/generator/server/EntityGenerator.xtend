@@ -1,6 +1,7 @@
 package io.pelle.mango.dsl.generator.server
 
 import com.google.inject.Inject
+import io.pelle.mango.client.base.db.vos.IBaseHierarchical
 import io.pelle.mango.client.base.vo.EntityDescriptor
 import io.pelle.mango.client.base.vo.IEntityDescriptor
 import io.pelle.mango.client.base.vo.IVOEntity
@@ -95,7 +96,7 @@ class EntityGenerator extends BaseEntityGenerator {
 		«ELSE»
 		«ENDIF»
 		@SuppressWarnings("all")
-		public class «entity.entityName» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
+		public class «entity.entityName» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity «IF entity.entityHierarchical», «IBaseHierarchical.name»«ENDIF» {
 		
 			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
 	
@@ -123,6 +124,11 @@ class EntityGenerator extends BaseEntityGenerator {
 			«ENDFOR»
 			
 			«entity.compileNaturalKey»
+			
+			«IF entity.entityHierarchical»
+				«jpaChangeTrackingAttributeGetterSetter("parentClassName", String.name)»
+				«jpaChangeTrackingAttributeGetterSetter("parentId", Long.name)»
+			«ENDIF»
 			
 			@Override
 			public String toString() {
@@ -175,6 +181,14 @@ class EntityGenerator extends BaseEntityGenerator {
 		@OneToOne()
 		«ENDIF»
 	'''
+
+	def jpaChangeTrackingAttributeGetterSetter(String attributeName, String attributeType) '''
+		@Column(name = "«attributeName.entityTableColumnName»")
+		«attribute(attributeType, attributeName)»
+		«getter(attributeType, attributeName)»
+		«changeTrackingSetter(attributeName, attributeName)»
+	'''
+
 
 	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
 		«attribute.compileEntityAttributeJpaAnnotations»
