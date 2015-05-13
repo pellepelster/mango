@@ -27,6 +27,8 @@ public class PropertyServiceTest extends BaseDemoTest {
 
 	public static IProperty<String> DB_PROPERTY_WITH_DEFAULT = PropertyBuilder.createStringProperty("dbproperty.with.default").database().name("test property").defaultValue("aaa");
 
+	public static IProperty<Integer> DB_INTEGER_PROPERTY_WITH_DEFAULT = PropertyBuilder.createIntegerProperty("dbproperty.integer.with.default").database().defaultValue(2);
+
 	public static IProperty<String> DB_SYSTEM_PROPERTY_FALLBACK = PropertyBuilder.createStringProperty("system.property.fallback").database().name("test property");
 
 	public static IProperty<String> DB_PROPERTY_WITH_FALLBACK = PropertyBuilder.createStringProperty("db.property.with.fallback").database().name("test property").fallback(DB_SYSTEM_PROPERTY_FALLBACK);
@@ -140,6 +142,11 @@ public class PropertyServiceTest extends BaseDemoTest {
 	@Test
 	public void testGetDatabasePropertyWithDefault() {
 		assertEquals("aaa", propertyService.getProperty(DB_PROPERTY_WITH_DEFAULT));
+	}
+
+	@Test
+	public void testGetDatabaseIntegerPropertyWithDefault() {
+		assertEquals(new Integer(2), propertyService.getProperty(DB_INTEGER_PROPERTY_WITH_DEFAULT));
 	}
 
 }
