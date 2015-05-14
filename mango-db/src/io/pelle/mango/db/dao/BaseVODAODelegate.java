@@ -27,15 +27,16 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.codahale.metrics.Timer;
 import com.google.common.base.Optional;
 
 @Component
-public class BaseVODAODelegate implements IBaseVODAO {
+public class BaseVODAODelegate extends BaseEntityVODelegate implements IBaseVODAO {
 
 	private Map<Class<?>, IVOEntityDAO<? extends IBaseEntity>> voDAOs = new HashMap<Class<?>, IVOEntityDAO<? extends IBaseEntity>>();
 
 	@Autowired
-	private BaseVODAO basevoDAO;
+	private BaseVODAO baseVODAO;
 
 	@Override
 	public <T extends IBaseVO> T create(T entity) {
@@ -45,7 +46,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.create(entity);
 		} else {
-			return basevoDAO.create(entity);
+			return baseVODAO.create(entity);
 		}
 
 	}
@@ -72,7 +73,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.save(entity);
 		} else {
-			return basevoDAO.save(entity);
+			return baseVODAO.save(entity);
 		}
 
 	}
@@ -84,20 +85,31 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.read(id);
 		} else {
-			return basevoDAO.read(id, entityClass);
+			return baseVODAO.read(id, entityClass);
 		}
 	}
 
 	@Override
 	public <T extends IBaseVO> List<T> filter(SelectQuery<T> query) {
 
-		IVOEntityDAO<T> entityDAO = getVOEntityDAO(DBUtil.getQueryClass(query));
+		Timer.Context context = getFilterContext(EntityVOMapper.getInstance().getEntityClass(DBUtil.getQueryClass(query)));
 
-		if (entityDAO != null) {
-			return entityDAO.filter(query);
-		} else {
-			return basevoDAO.filter(query);
+		try {
+
+			IVOEntityDAO<T> entityDAO = getVOEntityDAO(DBUtil.getQueryClass(query));
+
+			if (entityDAO != null) {
+				return entityDAO.filter(query);
+			} else {
+				return baseVODAO.filter(query);
+			}
+
+		} finally {
+			if (context != null) {
+				context.stop();
+			}
 		}
+
 	}
 
 	@Override
@@ -107,7 +119,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.read(query);
 		} else {
-			return basevoDAO.read(query);
+			return baseVODAO.read(query);
 		}
 	}
 
@@ -118,7 +130,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			entityDAO.deleteAll();
 		} else {
-			basevoDAO.deleteAll(entityClass);
+			baseVODAO.deleteAll(entityClass);
 		}
 	}
 
@@ -129,7 +141,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			entityDAO.delete(entity);
 		} else {
-			basevoDAO.delete(entity);
+			baseVODAO.delete(entity);
 		}
 	}
 
@@ -140,7 +152,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.count(query);
 		} else {
-			return basevoDAO.count(query);
+			return baseVODAO.count(query);
 		}
 	}
 
@@ -151,7 +163,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.aggregate(query);
 		} else {
-			return basevoDAO.aggregate(query);
+			return baseVODAO.aggregate(query);
 		}
 	}
 
@@ -162,7 +174,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.getByNaturalKey(naturalKey);
 		} else {
-			return basevoDAO.getByNaturalKey(entityClass, naturalKey);
+			return baseVODAO.getByNaturalKey(entityClass, naturalKey);
 		}
 	}
 
@@ -173,7 +185,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			entityDAO.deleteQuery(query);
 		} else {
-			basevoDAO.deleteQuery(query);
+			baseVODAO.deleteQuery(query);
 		}
 	}
 
@@ -192,7 +204,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.getAll();
 		} else {
-			return basevoDAO.getAll(entityClass);
+			return baseVODAO.getAll(entityClass);
 		}
 	}
 
@@ -203,7 +215,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			entityDAO.delete(id);
 		} else {
-			basevoDAO.delete(entityClass, id);
+			baseVODAO.delete(entityClass, id);
 		}
 	}
 
@@ -214,7 +226,7 @@ public class BaseVODAODelegate implements IBaseVODAO {
 		if (entityDAO != null) {
 			return entityDAO.count();
 		} else {
-			return basevoDAO.count(entityClass);
+			return baseVODAO.count(entityClass);
 		}
 	}
 

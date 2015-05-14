@@ -30,6 +30,16 @@ class NameUtils {
 
 		return infoVOEntityAttributes
 	}
+
+	def hierarchicalEntityAttributes() {
+		
+		var Map<String, Class<?>> hierarchicalEntityAttributes = newHashMap
+		
+		hierarchicalEntityAttributes.put("parentClassName", typeof(String))
+		hierarchicalEntityAttributes.put("parentId", typeof(Date))
+
+		return hierarchicalEntityAttributes
+	}
 	
 	def String combinePackageName(String packageName1,String packageName2) {
 

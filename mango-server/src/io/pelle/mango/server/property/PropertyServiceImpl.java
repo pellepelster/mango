@@ -3,6 +3,7 @@ package io.pelle.mango.server.property;
 import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.IPropertyCategory;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.core.property.PropertyBuilder;
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 
@@ -13,13 +14,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
 
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.MetricRegistry;
 import com.google.common.base.Optional;
 
 @Transactional
-public class PropertyServiceImpl implements IPropertyService {
+public class PropertyServiceImpl implements IPropertyService, InitializingBean {
+
+	@Autowired
+	private MetricRegistry metricRegistry;
 
 	private final Map<String, String> cache = new ConcurrentHashMap<String, String>();
 
@@ -134,6 +141,27 @@ public class PropertyServiceImpl implements IPropertyService {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+
+		for (final IProperty<?> property : PropertyBuilder.getProperties()) {
+			switch (property.getValueType()) {
+			case INTEGER:
+
+				Gauge<Integer> gauge = metricRegistry.register(MetricRegistry.name(PropertyServiceImpl.class.getPackage().getName(), property.getKey(), "value"), new Gauge<Integer>() {
+					@Override
+					public Integer getValue() {
+						return (Integer) getProperty(property);
+					}
+				});
+
+				break;
+
+			}
+		}
+
 	}
 
 }

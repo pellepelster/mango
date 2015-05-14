@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.db.dao;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.query.AggregateQuery;
 import io.pelle.mango.client.base.vo.query.CountQuery;
@@ -26,10 +27,24 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Optional;
 
 @Component
-public class BaseEntityDAODelegate implements IBaseEntityDAO {
+public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBaseEntityDAO {
+
+	private static final String CREATE_METRIC_KEY = "create";
+
+	private static final String SAVE_METRIC_KEY = "save";
+
+	private static final String READ_METRIC_KEY = "read";
+
+	private Map<Class<? extends IBaseEntity>, Timer> createTimers = new HashMap<Class<? extends IBaseEntity>, Timer>();
+
+	private Map<Class<? extends IBaseEntity>, Timer> saveTimers = new HashMap<Class<? extends IBaseEntity>, Timer>();
+
+	private Map<Class<? extends IBaseEntity>, Timer> readTimers = new HashMap<Class<? extends IBaseEntity>, Timer>();
 
 	private Map<Class<?>, IVOEntityDAO<? extends IBaseEntity>> entityDAOs = new HashMap<Class<?>, IVOEntityDAO<? extends IBaseEntity>>();
 
@@ -39,14 +54,23 @@ public class BaseEntityDAODelegate implements IBaseEntityDAO {
 	@Override
 	public <T extends IBaseEntity> T create(T entity) {
 
-		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entity);
+		Timer.Context context = getCreateContext(entity.getClass());
 
-		if (entityDAO != null) {
-			return entityDAO.create(entity);
-		} else {
-			return baseEntityDAO.create(entity);
+		try {
+
+			IVOEntityDAO<T> entityDAO = getVOEntityDAO(entity);
+
+			if (entityDAO != null) {
+				return entityDAO.create(entity);
+			} else {
+				return baseEntityDAO.create(entity);
+			}
+
+		} finally {
+			if (context != null) {
+				context.stop();
+			}
 		}
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -66,37 +90,68 @@ public class BaseEntityDAODelegate implements IBaseEntityDAO {
 	@Override
 	public <T extends IBaseEntity> T save(T entity) {
 
+		Timer.Context context = getSaveContext(entity.getClass());
+
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entity);
 
+		T result = null;
+
 		if (entityDAO != null) {
-			return entityDAO.save(entity);
+			result = entityDAO.save(entity);
 		} else {
-			return baseEntityDAO.save(entity);
+			result = baseEntityDAO.save(entity);
 		}
 
+		if (context != null) {
+			context.stop();
+		}
+
+		return result;
 	}
 
 	@Override
 	public <T extends IBaseEntity> T read(long id, Class<T> entityClass) {
-		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
 
-		if (entityDAO != null) {
-			return entityDAO.read(id);
-		} else {
-			return baseEntityDAO.read(id, entityClass);
+		Timer.Context context = getReadTimerContext(entityClass);
+
+		try {
+
+			IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
+
+			if (entityDAO != null) {
+				return entityDAO.read(id);
+			} else {
+				return baseEntityDAO.read(id, entityClass);
+			}
+		} finally {
+			if (context != null) {
+				context.stop();
+			}
 		}
+
 	}
 
 	@Override
 	public <T extends IBaseEntity> List<T> filter(SelectQuery<T> query) {
 
-		IVOEntityDAO<T> entityDAO = getVOEntityDAO(DBUtil.getQueryClass(query));
+		Timer.Context context = getFilterContext(EntityVOMapper.getInstance().getEntityClass(DBUtil.getQueryClass(query)));
 
-		if (entityDAO != null) {
-			return entityDAO.filter(query);
-		} else {
-			return baseEntityDAO.filter(query);
+		try {
+
+			IVOEntityDAO<T> entityDAO = getVOEntityDAO(DBUtil.getQueryClass(query));
+
+			if (entityDAO != null) {
+				return entityDAO.filter(query);
+			} else {
+				return baseEntityDAO.filter(query);
+			}
+
+		} finally {
+			if (context != null) {
+				context.stop();
+			}
 		}
+
 	}
 
 	@Override
@@ -220,6 +275,50 @@ public class BaseEntityDAODelegate implements IBaseEntityDAO {
 		} else {
 			return baseEntityDAO.getAll(entityClass);
 		}
+	}
+
+	private Timer.Context getReadTimerContext(Class<? extends IBaseEntity> entityClass) {
+
+		Timer timer = readTimers.get(entityClass);
+
+		if (timer != null) {
+			return timer.time();
+		}
+
+		return null;
+	}
+
+	private Timer.Context getCreateContext(Class<? extends IBaseEntity> entityClass) {
+
+		Timer timer = createTimers.get(entityClass);
+
+		if (timer != null) {
+			return timer.time();
+		}
+
+		return null;
+	}
+
+	private Timer.Context getSaveContext(Class<? extends IBaseEntity> entityClass) {
+
+		Timer timer = saveTimers.get(entityClass);
+
+		if (timer != null) {
+			return timer.time();
+		}
+
+		return null;
+	}
+
+	@Autowired(required = false)
+	public void setMetricRegistry(MetricRegistry metricRegistry, EntityVOMapper entityVOMapper) {
+
+		for (Class<? extends IBaseEntity> entityClass : entityVOMapper.getEntityClasses()) {
+			createTimers.put(entityClass, metricRegistry.timer(name(entityClass, CREATE_METRIC_KEY)));
+			saveTimers.put(entityClass, metricRegistry.timer(name(entityClass, SAVE_METRIC_KEY)));
+			readTimers.put(entityClass, metricRegistry.timer(name(entityClass, READ_METRIC_KEY)));
+		}
+
 	}
 
 }

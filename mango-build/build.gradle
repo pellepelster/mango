@@ -27,7 +27,7 @@ ext {
 		gwt: "2.6.1",
 		guava: "17.0",
 		xtext: "2.7.0",
-		metrics: "3.0.2"
+		metrics: "3.1.2"
 	]
 }
 

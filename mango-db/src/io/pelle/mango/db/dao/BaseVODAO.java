@@ -80,7 +80,8 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 
 	@Override
 	public <T extends IBaseVO> List<T> filter(SelectQuery<T> selectQuery) {
-		List<IBaseEntity> entityResult = (List<IBaseEntity>) getResultList(selectQuery, entityManager);
+
+		List<IBaseEntity> entityResult = (List<IBaseEntity>) getResultListInternal(selectQuery, entityManager);
 
 		final Map<Class<?>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(selectQuery);
 

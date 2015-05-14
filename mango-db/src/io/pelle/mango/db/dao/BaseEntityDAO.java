@@ -11,7 +11,6 @@
  */
 package io.pelle.mango.db.dao;
 
-import static com.codahale.metrics.MetricRegistry.name;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
 import io.pelle.mango.client.base.vo.IBaseEntity;
@@ -30,78 +29,57 @@ import io.pelle.mango.server.base.IBaseClientEntity;
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
 import com.google.common.base.Optional;
 
 @Component
 public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
-	private static final String CREATE_METRIC_KEY = "create";
-
-	private static final String SAVE_METRIC_KEY = "save";
-
 	private List<IDAOCallback> callbacks = new ArrayList<IDAOCallback>();
 
 	private static Logger LOG = Logger.getLogger(BaseEntityDAO.class);
 
-	private Map<Class<? extends IBaseEntity>, Timer> createTimers = new HashMap<Class<? extends IBaseEntity>, Timer>();
-
-	private Map<Class<? extends IBaseEntity>, Timer> saveTimers = new HashMap<Class<? extends IBaseEntity>, Timer>();
-
 	@Override
 	public <T extends IBaseEntity> T create(T entity) {
 
-		Timer.Context context = getCreateContext(entity.getClass());
+		if (entity instanceof IBaseClientEntity) {
 
-		try {
+			populateClients(((IBaseClientEntity) entity), new ArrayList<IBaseClientEntity>());
 
-			if (entity instanceof IBaseClientEntity) {
-
-				populateClients(((IBaseClientEntity) entity), new ArrayList<IBaseClientEntity>());
-
-				LOG.debug(String.format("creating entity '%s' for client '%s'", entity.getClass().getName(), getCurrentUser().getClient()));
-			} else {
-				LOG.debug(String.format("creating entity '%s'", entity.getClass().getName()));
-			}
-
-			if (entity instanceof IInfoVOEntity) {
-
-				IInfoVOEntity infoEntity = (IInfoVOEntity) entity;
-
-				if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
-					infoEntity.setUpdateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-					infoEntity.setCreateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-				}
-
-				Date now = new Date();
-				infoEntity.setCreateDate(now);
-				infoEntity.setUpdateDate(now);
-			}
-
-			T result = mergeRecursive(entity);
-
-			fireOnCreateCallbacks(result);
-
-			return result;
-
-		} finally {
-			if (context != null) {
-				context.stop();
-			}
+			LOG.debug(String.format("creating entity '%s' for client '%s'", entity.getClass().getName(), getCurrentUser().getClient()));
+		} else {
+			LOG.debug(String.format("creating entity '%s'", entity.getClass().getName()));
 		}
+
+		if (entity instanceof IInfoVOEntity) {
+
+			IInfoVOEntity infoEntity = (IInfoVOEntity) entity;
+
+			if (SecurityContextHolder.getContext().getAuthentication() != null && SecurityContextHolder.getContext().getAuthentication().getPrincipal() != null) {
+				infoEntity.setUpdateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+				infoEntity.setCreateUser(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+			}
+
+			Date now = new Date();
+			infoEntity.setCreateDate(now);
+			infoEntity.setUpdateDate(now);
+		}
+
+		T result = mergeRecursive(entity);
+
+		fireOnCreateCallbacks(result);
+
+		return result;
+
 	}
 
 	private <T extends IBaseEntity> void fireOnDeleteCallbacks(T entity) {
@@ -138,7 +116,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 	@SuppressWarnings("unchecked")
 	public <T extends IBaseEntity> List<T> getAll(Class<T> entityClass) {
-		return (List<T>) getResultList(selectFrom(entityClass), entityManager);
+		return (List<T>) getResultListInternal(selectFrom(entityClass), entityManager);
 	}
 
 	private IUser getCurrentUser() {
@@ -209,12 +187,11 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 			return entity;
 		}
+
 	}
 
 	@Override
 	public <T extends IBaseEntity> T save(T entity) {
-
-		Timer.Context context = getSaveContext(entity.getClass());
 
 		if (entity instanceof IBaseClientEntity) {
 			((IBaseClientEntity) entity).setClient(getCurrentUser().getClient());
@@ -243,10 +220,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		}
 
 		T result = mergeRecursive(entity);
-
-		if (context != null) {
-			context.stop();
-		}
 
 		return result;
 	}
@@ -300,7 +273,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends IBaseEntity> List<T> filter(SelectQuery<T> selectQuery) {
-		return (List<T>) getResultList(selectQuery, entityManager);
+		return (List<T>) getResultListInternal(selectQuery, entityManager);
 	}
 
 	@Override
@@ -324,16 +297,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		return count(CountQuery.countFrom(entityClass));
 	}
 
-	@Autowired(required = false)
-	public void setMetricRegistry(MetricRegistry metricRegistry, EntityVOMapper entityVOMapper) {
-
-		for (Class<? extends IBaseEntity> entityClass : entityVOMapper.getEntityClasses()) {
-			createTimers.put(entityClass, metricRegistry.timer(name(entityClass, CREATE_METRIC_KEY)));
-			saveTimers.put(entityClass, metricRegistry.timer(name(entityClass, SAVE_METRIC_KEY)));
-		}
-
-	}
-
 	@Override
 	public <T extends IBaseEntity> void delete(Class<T> entityClass, long id) {
 		DeleteQuery<T> query = DeleteQuery.deleteFrom(entityClass).where(IBaseVO.FIELD_ID.eq(id));
@@ -355,25 +318,4 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		callbacks.add(callback);
 	}
 
-	private Timer.Context getCreateContext(Class<? extends IBaseEntity> entityClass) {
-
-		Timer timer = createTimers.get(entityClass);
-
-		if (timer != null) {
-			return timer.time();
-		}
-
-		return null;
-	}
-
-	private Timer.Context getSaveContext(Class<? extends IBaseEntity> entityClass) {
-
-		Timer timer = saveTimers.get(entityClass);
-
-		if (timer != null) {
-			return timer.time();
-		}
-
-		return null;
-	}
 }

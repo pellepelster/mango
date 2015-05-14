@@ -124,10 +124,11 @@ class EntityGenerator extends BaseEntityGenerator {
 			«ENDFOR»
 			
 			«entity.compileNaturalKey»
-			
+
 			«IF entity.entityHierarchical»
-				«jpaChangeTrackingAttributeGetterSetter("parentClassName", String.name)»
-				«jpaChangeTrackingAttributeGetterSetter("parentId", Long.name)»
+				«FOR hierarchicalEntityAttribute : hierarchicalEntityAttributes().entrySet»
+					«changeTrackingAttributeGetterSetter(hierarchicalEntityAttribute.value, hierarchicalEntityAttribute.key, entity)»
+				«ENDFOR»
 			«ENDIF»
 			
 			@Override

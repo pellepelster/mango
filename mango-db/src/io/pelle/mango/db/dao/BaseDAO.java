@@ -25,12 +25,12 @@ public abstract class BaseDAO<VOENTITYTYPE extends IVOEntity> implements IBaseVO
 	protected EntityManager entityManager;
 
 	@SuppressWarnings("unchecked")
-	public List<IBaseEntity> getResultList(SelectQuery<?> selectQuery, EntityManager entityManager) {
-		return getResultList(selectQuery, entityManager, selectQuery.getFirstResult(), selectQuery.getMaxResults());
+	protected List<IBaseEntity> getResultListInternal(SelectQuery<?> selectQuery, EntityManager entityManager) {
+		return getResultListInternal(selectQuery, entityManager, selectQuery.getFirstResult(), selectQuery.getMaxResults());
 	}
 
 	@SuppressWarnings("rawtypes")
-	public List getResultList(SelectQuery<?> selectQuery, EntityManager entityManager, int firstResult, int maxResults) {
+	protected List getResultListInternal(SelectQuery<?> selectQuery, EntityManager entityManager, int firstResult, int maxResults) {
 
 		String jpql = ServerSelectQuery.adapt(selectQuery).getJPQL(EntityVOMapper.getInstance());
 		LOG.debug(jpql);
