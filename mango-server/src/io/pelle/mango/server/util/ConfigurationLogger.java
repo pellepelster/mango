@@ -46,8 +46,10 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 			addProperty(table, ConfigurationParameters.HIBERNATE_SQL_SHOW);
 			addProperty(table, ConfigurationParameters.HIBERNATE_SQL_FORMAT);
 			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_ENABLED);
-			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_HOST);
-			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_PORT);
+			addProperty(table, ConfigurationParameters.GRAPHITE_CARBON_HOST);
+			addProperty(table, ConfigurationParameters.GRAPHITE_CARBON_PORT);
+			addProperty(table, ConfigurationParameters.GRAPHITE_EVENTSAPI_HOST);
+			addProperty(table, ConfigurationParameters.GRAPHITE_EVENTSAPI_PORT);
 			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_PREFIX);
 
 			String tableString = table.render();

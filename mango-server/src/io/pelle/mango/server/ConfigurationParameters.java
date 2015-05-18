@@ -5,28 +5,32 @@ import io.pelle.mango.client.core.property.PropertyBuilder;
 
 public interface ConfigurationParameters {
 
-	public static IProperty<String> MANGO_CONFIG_FILE = PropertyBuilder.createStringProperty("mango.config.file").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<String> MANGO_CONFIG_FILE = PropertyBuilder.getInstance().createStringProperty("mango.config.file").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<String> MAIL_SENDER_HOST = PropertyBuilder.createStringProperty("mail.sender.host").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<String> MAIL_SENDER_HOST = PropertyBuilder.getInstance().createStringProperty("mail.sender.host").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<String> MAIL_SENDER_PORT = PropertyBuilder.createStringProperty("mail.sender.port").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<String> MAIL_SENDER_PORT = PropertyBuilder.getInstance().createStringProperty("mail.sender.port").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<String> MAIL_SENDER_USERNAME = PropertyBuilder.createStringProperty("mail.sender.username").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<String> MAIL_SENDER_USERNAME = PropertyBuilder.getInstance().createStringProperty("mail.sender.username").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<String> MAIL_SENDER_PASSWORD = PropertyBuilder.createStringProperty("mail.sender.password").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<String> MAIL_SENDER_PASSWORD = PropertyBuilder.getInstance().createStringProperty("mail.sender.password").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<String> MAIL_SENDER_FROM = PropertyBuilder.createStringProperty("mail.sender.from").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<String> MAIL_SENDER_FROM = PropertyBuilder.getInstance().createStringProperty("mail.sender.from").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<Boolean> HIBERNATE_SQL_SHOW = PropertyBuilder.createBooleanProperty("hibernate.sql.show").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<Boolean> HIBERNATE_SQL_SHOW = PropertyBuilder.getInstance().createBooleanProperty("hibernate.sql.show").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<Boolean> HIBERNATE_SQL_FORMAT = PropertyBuilder.createBooleanProperty("hibernate.sql.format").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<Boolean> HIBERNATE_SQL_FORMAT = PropertyBuilder.getInstance().createBooleanProperty("hibernate.sql.format").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<Boolean> GRAPHITE_METRICS_ENABLED = PropertyBuilder.createBooleanProperty("graphite.metrics.enabled").system().fallbackToSpring().defaultValue(false);
+	public static IProperty<Boolean> GRAPHITE_METRICS_ENABLED = PropertyBuilder.getInstance().createBooleanProperty("graphite.metrics.enabled").system().fallbackToSpring().defaultValue(false);
 
-	public static IProperty<String> GRAPHITE_METRICS_HOST = PropertyBuilder.createStringProperty("graphite.metrics.host").system().fallbackToSpring().defaultValue("localhost");
+	public static IProperty<String> GRAPHITE_CARBON_HOST = PropertyBuilder.getInstance().createStringProperty("graphite.carbon.host").system().fallbackToSpring().defaultValue("localhost");
 
-	public static IProperty<Integer> GRAPHITE_METRICS_PORT = PropertyBuilder.createIntegerProperty("graphite.metrics.port").system().fallbackToSpring().defaultValue(2003);
+	public static IProperty<Integer> GRAPHITE_CARBON_PORT = PropertyBuilder.getInstance().createIntegerProperty("graphite.carbon.port").system().fallbackToSpring().defaultValue(2003);
 
-	public static IProperty<String> GRAPHITE_METRICS_PREFIX = PropertyBuilder.createStringProperty("graphite.metrics.prefix").system().fallbackToSpring();
+	public static IProperty<String> GRAPHITE_EVENTSAPI_HOST = PropertyBuilder.getInstance().createStringProperty("graphite.eventsapi.host").system().fallbackToSpring().defaultValue("localhost");
+
+	public static IProperty<Integer> GRAPHITE_EVENTSAPI_PORT = PropertyBuilder.getInstance().createIntegerProperty("graphite.eventsapi.port").system().fallbackToSpring().defaultValue(80);
+
+	public static IProperty<String> GRAPHITE_METRICS_PREFIX = PropertyBuilder.getInstance().createStringProperty("graphite.metrics.prefix").system().fallbackToSpring();
 
 }

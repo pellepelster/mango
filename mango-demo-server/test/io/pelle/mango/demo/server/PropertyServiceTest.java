@@ -23,19 +23,19 @@ import com.google.gwt.thirdparty.guava.common.collect.Iterables;
 
 public class PropertyServiceTest extends BaseDemoTest {
 
-	public static IProperty<String> DB_PROPERTY = PropertyBuilder.createStringProperty("dbproperty").database().name("test property");
+	public static IProperty<String> DB_PROPERTY = PropertyBuilder.getInstance().createStringProperty("dbproperty").database().name("test property");
 
-	public static IProperty<String> DB_PROPERTY_WITH_DEFAULT = PropertyBuilder.createStringProperty("dbproperty.with.default").database().name("test property").defaultValue("aaa");
+	public static IProperty<String> DB_PROPERTY_WITH_DEFAULT = PropertyBuilder.getInstance().createStringProperty("dbproperty.with.default").database().name("test property").defaultValue("aaa");
 
-	public static IProperty<Integer> DB_INTEGER_PROPERTY_WITH_DEFAULT = PropertyBuilder.createIntegerProperty("dbproperty.integer.with.default").database().defaultValue(2);
+	public static IProperty<Integer> DB_INTEGER_PROPERTY_WITH_DEFAULT = PropertyBuilder.getInstance().createIntegerProperty("dbproperty.integer.with.default").database().defaultValue(2);
 
-	public static IProperty<String> DB_SYSTEM_PROPERTY_FALLBACK = PropertyBuilder.createStringProperty("system.property.fallback").database().name("test property");
+	public static IProperty<String> DB_SYSTEM_PROPERTY_FALLBACK = PropertyBuilder.getInstance().createStringProperty("system.property.fallback").database().name("test property");
 
-	public static IProperty<String> DB_PROPERTY_WITH_FALLBACK = PropertyBuilder.createStringProperty("db.property.with.fallback").database().name("test property").fallback(DB_SYSTEM_PROPERTY_FALLBACK);
+	public static IProperty<String> DB_PROPERTY_WITH_FALLBACK = PropertyBuilder.getInstance().createStringProperty("db.property.with.fallback").database().name("test property").fallback(DB_SYSTEM_PROPERTY_FALLBACK);
 
-	public static IProperty<String> SYSTEM_PROPERTY = PropertyBuilder.createStringProperty("systemproperty").system().name("test property");
+	public static IProperty<String> SYSTEM_PROPERTY = PropertyBuilder.getInstance().createStringProperty("systemproperty").system().name("test property");
 
-	public static IProperty<String> SYSTEM_PROPERTY_WITH_DEFAULT = PropertyBuilder.createStringProperty("systemproperty.with.default").system().name("test property").defaultValue("ddd");
+	public static IProperty<String> SYSTEM_PROPERTY_WITH_DEFAULT = PropertyBuilder.getInstance().createStringProperty("systemproperty.with.default").system().name("test property").defaultValue("ddd");
 
 	@Autowired
 	private BaseEntityDAO baseEntityDAO;
@@ -66,10 +66,10 @@ public class PropertyServiceTest extends BaseDemoTest {
 	@Test
 	public void testGetPropertyValues() {
 
-		IProperty<String> property1 = PropertyBuilder.createStringProperty("property1").database().name("test property");
-		IProperty<String> property2 = PropertyBuilder.createStringProperty("property2").database().name("test property");
-		IProperty<String> property3 = PropertyBuilder.createStringProperty("property3").database().name("test property");
-		IProperty<String> property4 = PropertyBuilder.createStringProperty("property4").database().name("test property");
+		IProperty<String> property1 = PropertyBuilder.getInstance().createStringProperty("property1").database().name("test property");
+		IProperty<String> property2 = PropertyBuilder.getInstance().createStringProperty("property2").database().name("test property");
+		IProperty<String> property3 = PropertyBuilder.getInstance().createStringProperty("property3").database().name("test property");
+		IProperty<String> property4 = PropertyBuilder.getInstance().createStringProperty("property4").database().name("test property");
 
 		baseEntityDAO.deleteAll(PropertyValue.class);
 		propertyService.setProperty(property1, "abc");

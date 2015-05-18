@@ -33,17 +33,17 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class DemoClient implements EntryPoint {
 
-	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.createStringProperty("stringProperty1").database().name("A string property");
+	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.getInstance().createStringProperty("stringProperty1").database().name("A string property");
 
-	private static final IProperty<Integer> INTEGER_PROPERTY2 = PropertyBuilder.createIntegerProperty("integerProperty2").database().name("A integer property");
+	private static final IProperty<Integer> INTEGER_PROPERTY2 = PropertyBuilder.getInstance().createIntegerProperty("integerProperty2").database().name("A integer property");
 
-	private static final IProperty<Boolean> BOOLEAN_PROPERTY3 = PropertyBuilder.createBooleanProperty("booleanProperty3").database().name("A boolean property");
+	private static final IProperty<Boolean> BOOLEAN_PROPERTY3 = PropertyBuilder.getInstance().createBooleanProperty("booleanProperty3").database().name("A boolean property");
 
-	private static final IProperty<String> STRING_PROPERTY4 = PropertyBuilder.createStringProperty("stringProperty4").database().name("An example string property");
+	private static final IProperty<String> STRING_PROPERTY4 = PropertyBuilder.getInstance().createStringProperty("stringProperty4").database().name("An example string property");
 
-	private static final IProperty<String> STRING_PROPERTY5 = PropertyBuilder.createStringProperty("stringProperty5").database().name("An example string property");
+	private static final IProperty<String> STRING_PROPERTY5 = PropertyBuilder.getInstance().createStringProperty("stringProperty5").database().name("An example string property");
 
-	private static final IProperty<String> STRING_PROPERTY6 = PropertyBuilder.createStringProperty("stringProperty6").database().name("An example string property");
+	private static final IProperty<String> STRING_PROPERTY6 = PropertyBuilder.getInstance().createStringProperty("stringProperty6").database().name("An example string property");
 
 	/** {@inheritDoc} */
 	@Override

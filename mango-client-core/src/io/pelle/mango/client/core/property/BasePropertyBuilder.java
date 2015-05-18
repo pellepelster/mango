@@ -75,15 +75,15 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 	}
 
 	public BUILDER_TYPE fallbackToDatabase() {
-		return clone(null).setType(PROPERTY_TYPE.DATABASE);
+		return (BUILDER_TYPE) fallback(clone(null).setType(PROPERTY_TYPE.DATABASE));
 	}
 
 	public BUILDER_TYPE fallbackToSpring() {
-		return clone(null).setType(PROPERTY_TYPE.SPRING);
+		return (BUILDER_TYPE) fallback(clone(null).setType(PROPERTY_TYPE.SPRING));
 	}
 
 	public BUILDER_TYPE fallbackToSystem() {
-		return clone(null).setType(PROPERTY_TYPE.SYSTEM);
+		return (BUILDER_TYPE) fallback(clone(null).setType(PROPERTY_TYPE.SYSTEM));
 	}
 
 	protected BUILDER_TYPE setType(PROPERTY_TYPE type) {
@@ -124,6 +124,16 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 	@Override
 	public String getName() {
 		return name;
+	}
+
+	@Override
+	public String getHumanName() {
+		if (getName() != null) {
+			return name + " (" + getKey() + ")";
+		}
+
+		return getKey();
+
 	}
 
 	public void setName(String name) {

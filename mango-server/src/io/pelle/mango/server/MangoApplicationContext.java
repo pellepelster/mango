@@ -31,7 +31,7 @@ public class MangoApplicationContext implements InitializingBean {
 
 		if (propertyService.getProperty(ConfigurationParameters.GRAPHITE_METRICS_ENABLED)) {
 
-			Graphite graphite = new Graphite(new InetSocketAddress(propertyService.getProperty(ConfigurationParameters.GRAPHITE_METRICS_HOST), propertyService.getProperty(ConfigurationParameters.GRAPHITE_METRICS_PORT)));
+			Graphite graphite = new Graphite(new InetSocketAddress(propertyService.getProperty(ConfigurationParameters.GRAPHITE_CARBON_HOST), propertyService.getProperty(ConfigurationParameters.GRAPHITE_CARBON_PORT)));
 
 			Builder builder = GraphiteReporter.forRegistry(metricRegistry).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).filter(MetricFilter.ALL);
 

@@ -3,12 +3,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 						http://www.springframework.org/schema/beans/spring-beans.xsd
            				http://www.springframework.org/schema/context 
            				http://www.springframework.org/schema/context/spring-context.xsd
            				http://www.springframework.org/schema/mvc
-        				http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+        				http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        				http://www.springframework.org/schema/task
+        				http://www.springframework.org/schema/task/spring-task.xsd">
 
 	<import resource="classpath:/MangoBaseApplicationContext.xml" />
 
@@ -45,6 +48,12 @@
 
 	<bean class="io.pelle.mango.server.api.webhook.WebhookApiController" />
 	<bean class="io.pelle.mango.server.api.webhook.EntityWebhookRegistry" />
+
+	<task:annotation-driven executor="mangoDefaultExecutor" scheduler="mangoDefaultScheduler"/>
+	
+	<task:executor id="mangoDefaultExecutor" pool-size="5"/>
+	
+	<task:scheduler id="mangoDefaultScheduler" pool-size="10"/>
 
 	<!-- jackson mapper configuration -->
 	<bean id="objectMapper" class="io.pelle.mango.server.xml.MangoObjectMapper" />

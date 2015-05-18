@@ -22,4 +22,5 @@ public interface IProperty<VALUETYPE extends Serializable> {
 
 	String getName();
 
+	String getHumanName();
 }
