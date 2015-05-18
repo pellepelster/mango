@@ -35,9 +35,9 @@ public class DemoClient implements EntryPoint {
 
 	private static final IProperty<String> STRING_PROPERTY1 = PropertyBuilder.getInstance().createStringProperty("stringProperty1").database().name("A string property");
 
-	private static final IProperty<Integer> INTEGER_PROPERTY2 = PropertyBuilder.getInstance().createIntegerProperty("integerProperty2").database().name("A integer property");
+	public static final IProperty<Integer> ENTITY1_CREATE_FEATURE_WAIT_TIME = PropertyBuilder.getInstance().createIntegerProperty("entity1CreateWaitTime").database().name("entity1 create wait time").defaultValue(250);
 
-	private static final IProperty<Boolean> BOOLEAN_PROPERTY3 = PropertyBuilder.getInstance().createBooleanProperty("booleanProperty3").database().name("A boolean property");
+	public static final IProperty<Boolean> ACTIVATE_ENTITY1_CREATE_FEATURE = PropertyBuilder.getInstance().createBooleanProperty("activateEntity1CreateWaitTime").database().name("activate entity1 create wait").defaultValue(false);
 
 	private static final IProperty<String> STRING_PROPERTY4 = PropertyBuilder.getInstance().createStringProperty("stringProperty4").database().name("An example string property");
 
@@ -96,8 +96,8 @@ public class DemoClient implements EntryPoint {
 
 		IPropertyCategory category1 = PropertyProvider.getInstance().createCategory("category1");
 		category1.addProperty(STRING_PROPERTY1);
-		category1.addProperty(INTEGER_PROPERTY2);
-		category1.addProperty(BOOLEAN_PROPERTY3);
+		category1.addProperty(ACTIVATE_ENTITY1_CREATE_FEATURE);
+		category1.addProperty(ENTITY1_CREATE_FEATURE_WAIT_TIME);
 
 		IPropertyCategory category2 = PropertyProvider.getInstance().createCategory("category2");
 		category2.addProperty(STRING_PROPERTY4);

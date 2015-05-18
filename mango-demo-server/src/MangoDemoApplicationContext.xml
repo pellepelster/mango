@@ -22,14 +22,17 @@
 	
 	<bean id="logTask" class="io.pelle.mango.demo.server.test.LogTask" />
 
+	<bean id="entity4Task" class="io.pelle.mango.demo.server.test.Entity4Task" />
+
 	<task:scheduled-tasks>
 		<task:scheduled ref="logTask" method="createLogEntries" fixed-delay="2500"/>
+		<task:scheduled ref="entity4Task" method="createEntity4" fixed-delay="1000"/>
 	</task:scheduled-tasks>
 	
 	<bean class="io.pelle.mango.demo.server.test.CountryEntityDAO" />
 
 	<bean class="io.pelle.mango.demo.server.test.CurrencyVODAO" />
 	
-	<bean class="io.pelle.mango.demo.server.test.Entity1EntityDAO" />
+	<bean class="io.pelle.mango.demo.server.test.Entity4EntityDAO" />
 	
 </beans>
