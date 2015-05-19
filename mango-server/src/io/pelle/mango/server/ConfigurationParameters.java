@@ -27,9 +27,7 @@ public interface ConfigurationParameters {
 
 	public static IProperty<Integer> GRAPHITE_CARBON_PORT = PropertyBuilder.getInstance().createIntegerProperty("graphite.carbon.port").system().fallbackToSpring().defaultValue(2003);
 
-	public static IProperty<String> GRAPHITE_EVENTSAPI_HOST = PropertyBuilder.getInstance().createStringProperty("graphite.eventsapi.host").system().fallbackToSpring().defaultValue("localhost");
-
-	public static IProperty<Integer> GRAPHITE_EVENTSAPI_PORT = PropertyBuilder.getInstance().createIntegerProperty("graphite.eventsapi.port").system().fallbackToSpring().defaultValue(80);
+	public static IProperty<String> GRAPHITE_EVENTSAPI_URL = PropertyBuilder.getInstance().createStringProperty("graphite.eventsapi.url").system().fallbackToSpring();
 
 	public static IProperty<String> GRAPHITE_METRICS_PREFIX = PropertyBuilder.getInstance().createStringProperty("graphite.metrics.prefix").system().fallbackToSpring();
 

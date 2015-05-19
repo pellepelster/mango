@@ -238,21 +238,23 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 	@Async
 	private void sendGraphiteEvent(GraphiteEvent graphiteEvent) {
 
-		ObjectMapper mapper = new ObjectMapper();
+		if (getProperty(ConfigurationParameters.GRAPHITE_EVENTSAPI_URL) != null) {
+			ObjectMapper mapper = new ObjectMapper();
 
-		String graphiteUrl = String.format("http://%s:%d/events/", getProperty(ConfigurationParameters.GRAPHITE_EVENTSAPI_HOST), getProperty(ConfigurationParameters.GRAPHITE_EVENTSAPI_PORT));
-		String graphiteEventString = null;
-		try {
-			graphiteEventString = mapper.writeValueAsString(graphiteEvent);
+			String graphiteUrl = getProperty(ConfigurationParameters.GRAPHITE_EVENTSAPI_URL);
+			String graphiteEventString = null;
+			try {
+				graphiteEventString = mapper.writeValueAsString(graphiteEvent);
 
-			HttpResponse response = Request.Post(graphiteUrl).connectTimeout(TIMEOUT).socketTimeout(TIMEOUT).bodyString(graphiteEventString, ContentType.TEXT_PLAIN).execute().returnResponse();
+				HttpResponse response = Request.Post(graphiteUrl).connectTimeout(TIMEOUT).socketTimeout(TIMEOUT).bodyString(graphiteEventString, ContentType.TEXT_PLAIN).execute().returnResponse();
 
-			if (response.getStatusLine().getStatusCode() != 200) {
-				LOG.error("error sending property change event to graphite (" + IOUtils.toString(response.getEntity().getContent()) + ")");
+				if (response.getStatusLine().getStatusCode() != 200) {
+					LOG.error("error sending property change event to graphite (" + IOUtils.toString(response.getEntity().getContent()) + ")");
+				}
+
+			} catch (Exception e) {
+				LOG.error("error sending property change event to graphite (" + graphiteEventString + ")", e);
 			}
-
-		} catch (Exception e) {
-			LOG.error("error sending property change event to graphite (" + graphiteEventString + ")", e);
 		}
 	}
 
