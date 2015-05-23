@@ -26,6 +26,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.AbstractBeanFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 
 import com.codahale.metrics.Gauge;
@@ -122,6 +124,7 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 	}
 
 	@Override
+	@Cacheable(value = "properties", key = "#property.key")
 	public <VALUETYPE extends Serializable> VALUETYPE getProperty(IProperty<VALUETYPE> property) {
 
 		String valueString = null;
@@ -159,6 +162,7 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 	}
 
 	@Override
+	@CacheEvict(value = "properties", key="#property.key")
 	public <VALUETYPE extends Serializable> void setProperty(IProperty<VALUETYPE> property, VALUETYPE value) {
 
 		VALUETYPE oldValue = getProperty(property);
@@ -186,7 +190,8 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 			throw new RuntimeException("unsupported property type '" + property.getType() + "'");
 		}
 
-		String message = MessageFormat.format(Messages.getString(PROPERTY_CHANGED_MESSAGE), CollectionUtils.getMap(PROPERTY_HUMAN_NAME_KEY, property.getHumanName(), PROPERTY_OLD_VALUE_KEY, oldValue, PROPERTY_NEW_VALUE_KEY, value));
+		String message = MessageFormat.format(Messages.getString(PROPERTY_CHANGED_MESSAGE),
+				CollectionUtils.getMap(PROPERTY_HUMAN_NAME_KEY, property.getHumanName(), PROPERTY_OLD_VALUE_KEY, oldValue, PROPERTY_NEW_VALUE_KEY, value));
 		GraphiteEvent graphiteEvent = new GraphiteEvent(message, new String[] { PROPERTY_CHANGED_TAG, PROPERTY_TAG });
 		sendGraphiteEvent(graphiteEvent);
 	}
@@ -246,7 +251,8 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 			try {
 				graphiteEventString = mapper.writeValueAsString(graphiteEvent);
 
-				HttpResponse response = Request.Post(graphiteUrl).connectTimeout(TIMEOUT).socketTimeout(TIMEOUT).bodyString(graphiteEventString, ContentType.TEXT_PLAIN).execute().returnResponse();
+				HttpResponse response = Request.Post(graphiteUrl).connectTimeout(TIMEOUT).socketTimeout(TIMEOUT)
+						.bodyString(graphiteEventString, ContentType.TEXT_PLAIN).execute().returnResponse();
 
 				if (response.getStatusLine().getStatusCode() != 200) {
 					LOG.error("error sending property change event to graphite (" + IOUtils.toString(response.getEntity().getContent()) + ")");

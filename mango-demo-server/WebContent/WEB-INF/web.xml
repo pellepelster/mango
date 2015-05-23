@@ -14,18 +14,13 @@
 	</resource-ref>
 
 	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			classpath:/MangoDemoApplicationContext.xml,
-            classpath:/DBBaseApplicationContext.xml,
-            classpath:/MangoDemoDB-gen.xml,
-            classpath:/MangoDemoBaseApplicationContext-gen.xml,
-            classpath:/MangoDemoSpringServices-gen.xml,
-            classpath:/MangoApplicationContext.xml,
-            classpath:/MangoSpringServices-gen.xml,
-            classpath:/MangoDemoRestRemoteServices-gen.xml,
-            classpath:/MangoLoggerApplicationContext.xml
-		</param-value>
+		<param-value>io.pelle.mango.demo.server.test.MangoDemoApplicationContext</param-value>
 	</context-param>
 
 	<listener>
@@ -35,12 +30,12 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
+
 	<context-param>
 		<param-name>log4jConfigLocation</param-name>
 		<param-value>/WEB-INF/log4j.properties</param-value>
 	</context-param>
-	
+
 	<listener>
 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
