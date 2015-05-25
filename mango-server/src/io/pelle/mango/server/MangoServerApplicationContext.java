@@ -1,6 +1,7 @@
 package io.pelle.mango.server;
 
 import io.pelle.mango.client.property.IPropertyService;
+import io.pelle.mango.db.MangoDBApplicationContext;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +28,7 @@ import com.codahale.metrics.graphite.GraphiteReporter.Builder;
 
 @Configuration
 @ImportResource({ "classpath:/MangoServerApplicationContext.xml" })
-public class MangoServerApplicationContext implements ApplicationListener {
+public class MangoServerApplicationContext extends MangoDBApplicationContext implements ApplicationListener {
 
 	@Autowired
 	private IPropertyService propertyService;

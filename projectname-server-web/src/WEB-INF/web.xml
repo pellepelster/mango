@@ -14,18 +14,13 @@
     </resource-ref>
 
 	<context-param>
+		<param-name>contextClass</param-name>
+		<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
+	</context-param>
+
+	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>
-			classpath:/ProjectNameApplicationContext.xml,
-			classpath:/ProjectNameWebApplicationContext.xml,
-            classpath:/DBBaseApplicationContext.xml,
-            classpath:/ProjectNameDB-gen.xml,
-            classpath:/ProjectNameBaseApplicationContext-gen.xml,
-            classpath:/MangoSpringServices-gen.xml,
-            classpath:/MangoApplicationContext.xml,
-            classpath:/MangoLoggerApplicationContext.xml,
-            classpath:/ProjectNameSpringServices-gen.xml
-		</param-value>
+		<param-value>packagename.projectname.server.ProjectNameApplicationContext</param-value>
 	</context-param>
 
 	<listener>

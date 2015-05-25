@@ -19,7 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @WebAppConfiguration
-@ContextConfiguration(locations = { "classpath:/ProjectNameSpringServices-gen.xml", "classpath:/ProjectNameRestRemoteServices-gen.xml", "classpath:/MangoLoggerApplicationContext.xml", "classpath:/MangoApplicationContext.xml", "classpath:/MangoSpringServices-gen.xml", "classpath:/ProjectNameApplicationContext.xml", "classpath:/ProjectNameDB-gen.xml", "classpath:/ProjectNameBaseApplicationContext-gen.xml" })
+@ContextConfiguration( classes = { packagename.projectname.server.ProjectNameApplicationContext.class  })
 public class ProjectNameServiceRestTest extends BaseDBTest {
 
 	private MockMvc mockMvc;

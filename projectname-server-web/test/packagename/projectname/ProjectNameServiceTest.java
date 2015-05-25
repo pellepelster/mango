@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-@ContextConfiguration(locations = { "classpath:/ProjectNameSpringServices-gen.xml", "classpath:/MangoLoggerApplicationContext.xml", "classpath:/MangoApplicationContext.xml", "classpath:/MangoSpringServices-gen.xml", "classpath:/ProjectNameApplicationContext.xml", "classpath:/ProjectNameDB-gen.xml", "classpath:/ProjectNameBaseApplicationContext-gen.xml" })
+@ContextConfiguration( classes = { packagename.projectname.server.ProjectNameApplicationContext.class  })
 public class ProjectNameServiceTest extends BaseDBTest {
 
 	public ProjectNameServiceTest() {
