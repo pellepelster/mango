@@ -1,5 +1,6 @@
 package io.pelle.mango.dsl.generator.util
 
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.mango.Dictionary
 import io.pelle.mango.dsl.mango.DictionaryEditor
@@ -36,9 +37,21 @@ class NameUtils {
 		var Map<String, Class<?>> hierarchicalEntityAttributes = newHashMap
 		
 		hierarchicalEntityAttributes.put("parentClassName", typeof(String))
-		hierarchicalEntityAttributes.put("parentId", typeof(Date))
+		hierarchicalEntityAttributes.put("parentId", typeof(Long))
 
 		return hierarchicalEntityAttributes
+	}
+
+	def hierarchicalVOAttributes() {
+		
+		var Map<String, Class<?>> hierarchicalVOAttributes = newHashMap
+
+		hierarchicalVOAttributes.put("parentClassName", typeof(String))
+		hierarchicalVOAttributes.put("parentId", typeof(Long))
+		hierarchicalVOAttributes.put("parent", typeof(IHierarchicalVO))
+		hierarchicalVOAttributes.put("hasChildren", typeof(Boolean))
+
+		return hierarchicalVOAttributes
 	}
 	
 	def String combinePackageName(String packageName1,String packageName2) {

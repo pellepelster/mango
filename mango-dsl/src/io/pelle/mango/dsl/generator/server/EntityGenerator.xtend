@@ -127,7 +127,7 @@ class EntityGenerator extends BaseEntityGenerator {
 
 			«IF entity.entityHierarchical»
 				«FOR hierarchicalEntityAttribute : hierarchicalEntityAttributes().entrySet»
-					«changeTrackingAttributeGetterSetter(hierarchicalEntityAttribute.value, hierarchicalEntityAttribute.key, entity)»
+					«changeTrackingAttributeGetterSetterJpa(hierarchicalEntityAttribute.value, hierarchicalEntityAttribute.key, entity)»
 				«ENDFOR»
 			«ENDIF»
 			

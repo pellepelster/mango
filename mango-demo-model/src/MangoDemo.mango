@@ -5,9 +5,9 @@ project MangoDemo {
 
 		package showcase {
 
-		//--------------------------------
-		// customer
-		//--------------------------------
+			//--------------------------------
+			// customer
+			//--------------------------------
 			stringdatatype CustomerFirstName {
 				label "First Name"
 			}
@@ -234,6 +234,77 @@ project MangoDemo {
 				}
 			}
 
+			stringdatatype Name1 { }
+
+			//--------------------------------
+			// company
+			//--------------------------------
+			entity Company {
+				entityoptions {
+					hierarchicalEntity true
+				}
+				
+				string Name1 name
+			}
+
+			dictionary Company {
+				
+				entity Company
+				
+				dictionarycontrols {
+					textcontrol Name1 {
+						entityattribute name
+					}
+				}
+
+				dictionarysearch CompanySearch {
+					dictionaryfilter CompanyFilter {
+						textcontrol ref Name1
+					} 
+
+					dictionaryresult CompanyResult {
+						textcontrol ref Name1
+					}					
+				}
+				dictionaryeditor CompanyEditor {
+						textcontrol ref Name1
+				}				
+			}
+
+			//--------------------------------
+			// manager
+			//--------------------------------
+			entity Manager {
+				entityoptions {
+					hierarchicalEntity true
+				}
+				string Name1 name
+			}
+			
+			dictionary Manager {
+				
+				entity Manager
+				
+				dictionarycontrols {
+					textcontrol Name1 {
+						entityattribute name
+					}
+				}
+
+				dictionarysearch ManagerSearch {
+					dictionaryfilter ManagerFilter {
+						textcontrol ref Name1
+					} 
+
+					dictionaryresult ManagerResult {
+						textcontrol ref Name1
+					}					
+				}
+				dictionaryeditor ManagerEditor {
+						textcontrol ref Name1
+				}				
+			}
+			
 			//--------------------------------
 			// employee
 			//--------------------------------
@@ -241,6 +312,31 @@ project MangoDemo {
 				entityoptions {
 					hierarchicalEntity true
 				}
+				string Name1 name
+			}
+
+			dictionary Employee {
+				
+				entity Employee
+				
+				dictionarycontrols {
+					textcontrol Name1 {
+						entityattribute name
+					}
+				}
+
+				dictionarysearch EmployeeSearch {
+					dictionaryfilter EmployeeFilter {
+						textcontrol ref Name1
+					} 
+
+					dictionaryresult EmployeeResult {
+						textcontrol ref Name1
+					}					
+				}
+				dictionaryeditor EmployeeEditor {
+						textcontrol ref Name1
+				}				
 			}
 
 			//--------------------------------
@@ -250,8 +346,34 @@ project MangoDemo {
 				entityoptions {
 					hierarchicalEntity true
 				}
+				string Name1 name
 			}
 
+			dictionary Department {
+				
+				entity Department
+				
+				dictionarycontrols {
+					textcontrol Name1 {
+						entityattribute name
+					}
+				}
+
+				dictionarysearch DepartmentSearch {
+					dictionaryfilter DepartmentFilter {
+						textcontrol ref Name1
+					} 
+
+					dictionaryresult DepartmentResult {
+						textcontrol ref Name1
+					}					
+				}
+				dictionaryeditor DepartmentEditor {
+						textcontrol ref Name1
+				}				
+			}
+
+			
 			//--------------------------------
 			// currency
 			//--------------------------------

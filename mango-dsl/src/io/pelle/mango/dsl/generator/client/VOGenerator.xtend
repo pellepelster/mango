@@ -17,6 +17,7 @@ import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
 import java.io.Serializable
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -36,7 +37,7 @@ class VOGenerator extends BaseEntityGenerator {
 		package «getPackageName(entity)»;
 		
 		@SuppressWarnings("all")
-		public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity {
+		public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity «IF entity.entityHierarchical», «IHierarchicalVO.name»«ENDIF» {
 		
 			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
 
@@ -59,6 +60,13 @@ class VOGenerator extends BaseEntityGenerator {
 			«entity.genericVOSetter»
 			
 			«entity.compileNaturalKey»
+
+			«IF entity.entityHierarchical»
+				«FOR hierarchicalVOAttribute : hierarchicalVOAttributes().entrySet»
+					«changeTrackingAttributeGetterSetter(hierarchicalVOAttribute.value, hierarchicalVOAttribute.key, entity)»
+				«ENDFOR»
+			«ENDIF»
+
 
 			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
 				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»

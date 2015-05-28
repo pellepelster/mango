@@ -82,7 +82,8 @@ class EntityUtils {
 		return Boolean.TRUE.equals(entity.getEntityOption(typeof(EntityDisableIdField)))
 	}
 
-	def <T> entityHierarchical(Entity entity) {
-		return Boolean.TRUE.equals(entity.getEntityOption(typeof(EntityHierarchical)))
+	def boolean entityHierarchical(Entity entity) {
+		var entityHierarchical = entity.getEntityOption(typeof(EntityHierarchical))
+		return  entityHierarchical != null && entityHierarchical.hierarchical
 	}
 }

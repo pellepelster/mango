@@ -16,6 +16,8 @@ import io.pelle.mango.client.base.vo.EntityDescriptor;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
+import io.pelle.mango.client.base.vo.LongAttributeDescriptor;
+import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 
 /**
  * Interface for nodes in trees
@@ -29,23 +31,23 @@ public interface IHierarchicalVO extends IBaseHierarchical, IBaseVO {
 
 	public static final IAttributeDescriptor<IHierarchicalVO> FIELD_PARENT = new AttributeDescriptor<IHierarchicalVO>(ENTITY_DESCRIPTOR, "parent", IHierarchicalVO.class);
 
-	public static final IAttributeDescriptor<String> FIELD_PARENT_CLASSNAME = new AttributeDescriptor<String>(ENTITY_DESCRIPTOR, "parentClassName", String.class);
+	public static final StringAttributeDescriptor FIELD_PARENT_CLASSNAME = new StringAttributeDescriptor(ENTITY_DESCRIPTOR, "parentClassName");
 
-	public static final IAttributeDescriptor<Long> FIELD_PARENT_ID = new AttributeDescriptor<Long>(ENTITY_DESCRIPTOR, "parentId", Long.class);
+	public static final LongAttributeDescriptor FIELD_PARENT_ID = new LongAttributeDescriptor(ENTITY_DESCRIPTOR, "parentId");
 
 	/**
 	 * Returns whether this node has children
 	 * 
 	 * @return
 	 */
-	boolean getHasChildren();
+	Boolean getHasChildren();
 
 	/**
 	 * Sets the children for this node
 	 * 
 	 * @param hasChildren
 	 */
-	void setHasChildren(boolean hasChildren);
+	void setHasChildren(Boolean hasChildren);
 
 	/**
 	 * Sets the parent
