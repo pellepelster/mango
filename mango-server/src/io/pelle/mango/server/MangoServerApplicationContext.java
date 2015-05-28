@@ -2,6 +2,7 @@ package io.pelle.mango.server;
 
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
+import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +50,11 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext imp
 		bean.setConfigLocation(new ClassPathResource("ehcache.xml"));
 		bean.setShared(true);
 		return bean;
+	}
+
+	@Bean
+	public HierarchicalVODecorator hierarchicalVODecorator() {
+		return new HierarchicalVODecorator();
 	}
 
 	@Bean(name = "cacheManager")

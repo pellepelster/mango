@@ -67,7 +67,6 @@ class VOGenerator extends BaseEntityGenerator {
 				«ENDFOR»
 			«ENDIF»
 
-
 			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
 				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»
 			«ENDFOR»

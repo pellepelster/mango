@@ -37,6 +37,14 @@ public final class EntityVOMapper implements IEntityVOMapper {
 		return null;
 	}
 
+	public Class<? extends IBaseVO> getVOClass(String className) {
+		try {
+			return (Class<? extends IBaseVO>) Class.forName(className);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(String.format("class '%s' not found", className));
+		}
+	}
+
 	public Class<?> getMappedClass(String className) {
 		try {
 			return getMappedClass(Class.forName(className));

@@ -2,6 +2,7 @@ package io.pelle.mango.demo.server;
 
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.hierarchy.IHierachicalService;
@@ -18,7 +19,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public final class DemoHierarchicalTest extends BaseDemoTest {
+public class DemoHierarchicalTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
@@ -121,7 +122,7 @@ public final class DemoHierarchicalTest extends BaseDemoTest {
 		managerVO.setParent(companyVO1);
 		Result<ManagerVO> savedManagerVO = baseEntityService.validateAndCreate(managerVO);
 
-		Assert.assertEquals(managerVO.getParent().getOid(), savedManagerVO.getVO().getParent().getOid());
+		Assert.assertEquals(managerVO.getParent().getOid(), savedManagerVO.getValue().getParent().getOid());
 	}
 
 	@Test
@@ -139,7 +140,7 @@ public final class DemoHierarchicalTest extends BaseDemoTest {
 
 		Result<ManagerVO> savedManagerVO = baseEntityService.validateAndSave(managerVO);
 
-		Assert.assertEquals(managerVO.getParent().getOid(), savedManagerVO.getVO().getParent().getOid());
+		Assert.assertEquals(managerVO.getParent().getOid(), savedManagerVO.getValue().getParent().getOid());
 	}
 
 	@Test
@@ -151,16 +152,15 @@ public final class DemoHierarchicalTest extends BaseDemoTest {
 
 		Assert.assertEquals(1, childNodes.size());
 
-		List<ManagerVO> managers = this.baseVODAO.filter(ClientGenericFilterBuilder.createGenericFilter(ManagerVO.class).addCriteria(ManagerVO.FIELD_ID, childNodes.get(0).getVoId()).getGenericFilter());
+		List<ManagerVO> managers = this.baseVODAO.filter(SelectQuery.selectFrom(ManagerVO.class).where(ManagerVO.FIELD_ID.eq(childNodes.get(0).getVoId())));
 		Assert.assertEquals(1, managers.size());
 		Assert.assertEquals("xxx", managers.get(0).getParent().get("companyName"));
 		Assert.assertEquals(false, managers.get(0).getHasChildren());
 
-		List<CompanyVO> companies = this.baseVODAO.filter(ClientGenericFilterBuilder.createGenericFilter(CompanyVO.class).getGenericFilter());
+		List<CompanyVO> companies = this.baseVODAO.filter(SelectQuery.selectFrom(CompanyVO.class));
 		Assert.assertEquals(2, companies.size());
 		Assert.assertEquals(true, companies.get(0).getHasChildren());
 		Assert.assertEquals(true, companies.get(1).getHasChildren());
 
 	}
-
 }

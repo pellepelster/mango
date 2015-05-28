@@ -101,8 +101,14 @@ class EntityGenerator extends BaseEntityGenerator {
 			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
 	
 			«entity.attributeDescriptorsFromExtends»
+
+			Map<String, Class<?>> extraAttributes
+				
+			«IF entity.entityHierarchical»
+			«ENDIF»
+
 	
-			«entity.compileGetAttributeDescriptors»
+			«entity.compileGetAttributeDescriptors()»
 		
 			«IF entity.extends == null && !entity.entityDisableIdField»
 			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");

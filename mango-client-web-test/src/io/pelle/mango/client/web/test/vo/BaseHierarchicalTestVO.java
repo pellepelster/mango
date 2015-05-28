@@ -106,12 +106,12 @@ public abstract class BaseHierarchicalTestVO extends BaseVO implements IHierarch
 	}
 
 	@Override
-	public boolean getHasChildren() {
+	public Boolean getHasChildren() {
 		return this.hasChildren;
 	}
 
 	@Override
-	public void setHasChildren(boolean hasChildren) {
+	public void setHasChildren(Boolean hasChildren) {
 		this.hasChildren = hasChildren;
 	}
 

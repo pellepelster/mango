@@ -23,6 +23,9 @@ import com.google.common.collect.Collections2;
 @Component
 public class BaseVODAO extends BaseDAO<IBaseVO> {
 
+	@Autowired(required = false)
+	private List<IVODAODecorator> voDaoDecorators = new ArrayList<IVODAODecorator>();
+
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
 
@@ -33,6 +36,8 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 		IBaseEntity baseEntity = DBUtil.convertVOToEntityClass(baseVO);
 
 		baseEntity = baseEntityDAO.create(baseEntity);
+
+		decorateVO(baseVO);
 
 		return (T) DBUtil.convertEntityToVO(baseEntity);
 	}
@@ -57,6 +62,9 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 	@Override
 	public <T extends IBaseVO> T save(T baseVO) {
 		IBaseEntity baseEntity = DBUtil.convertVOToEntityClass(baseVO);
+
+		decorateVO(baseVO);
+
 		baseEntity = baseEntityDAO.save(baseEntity);
 		return (T) DBUtil.convertEntityToVO(baseEntity);
 	}
@@ -130,4 +138,13 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(voClass);
 		return baseEntityDAO.count(entityClass);
 	}
+
+	private void decorateVO(IBaseVO vo) {
+		for (IVODAODecorator voDaoDecorator : this.voDaoDecorators) {
+			if (voDaoDecorator.supports(vo.getClass())) {
+				voDaoDecorator.decorateVO(vo);
+			}
+		}
+	}
+
 }

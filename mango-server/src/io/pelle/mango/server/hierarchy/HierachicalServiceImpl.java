@@ -6,6 +6,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.hierarchical.BaseHierarchicalConfiguration;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
 import io.pelle.mango.client.base.modules.hierarchical.VOHierarchy;
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
@@ -13,6 +14,7 @@ import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.hierarchy.IHierachicalService;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.db.dao.IBaseVODAO;
+import io.pelle.mango.db.util.EntityVOMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,9 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class HierachicalServiceImpl implements IHierachicalService {
+public class HierachicalServiceImpl implements IHierachicalService, InitializingBean {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
@@ -198,7 +201,7 @@ public class HierachicalServiceImpl implements IHierachicalService {
 
 		List<DictionaryHierarchicalNodeVO> result = new ArrayList<DictionaryHierarchicalNodeVO>();
 
-		@SuppressWarnings({ "rawtypes", "unchecked" })
+		@SuppressWarnings({ "unchecked" })
 		SelectQuery<IHierarchicalVO> query = (SelectQuery<IHierarchicalVO>) SelectQuery.selectFrom(voHierarchy.getClazz());
 
 		query.addWhereAnd(IHierarchicalVO.FIELD_PARENT_CLASSNAME.eq(parentClassName));
@@ -220,4 +223,15 @@ public class HierachicalServiceImpl implements IHierachicalService {
 		return result;
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		this.hierarchicalClasses = new ArrayList<Class<? extends IHierarchicalVO>>();
+
+		for (Class<? extends IBaseVO> voClass : EntityVOMapper.getInstance().getVOClasses()) {
+			if (IHierarchicalVO.class.isAssignableFrom(voClass)) {
+				this.hierarchicalClasses.add((Class<? extends IHierarchicalVO>) voClass);
+			}
+		}
+	}
 }
