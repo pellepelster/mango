@@ -22,6 +22,7 @@ import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.dsl.query.datatype.StringDatatypeQuery
 import io.pelle.mango.server.base.BaseEntity
+import java.util.HashMap
 
 class EntityGenerator extends BaseEntityGenerator {
 
@@ -99,15 +100,7 @@ class EntityGenerator extends BaseEntityGenerator {
 		public class «entity.entityName» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»«BaseEntity.name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity «IF entity.entityHierarchical», «IBaseHierarchical.name»«ENDIF» {
 		
 			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
-	
-			«entity.attributeDescriptorsFromExtends»
 
-			Map<String, Class<?>> extraAttributes
-				
-			«IF entity.entityHierarchical»
-			«ENDIF»
-
-	
 			«entity.compileGetAttributeDescriptors()»
 		
 			«IF entity.extends == null && !entity.entityDisableIdField»
@@ -204,5 +197,16 @@ class EntityGenerator extends BaseEntityGenerator {
 		«getter(getType(attribute), attribute.name.attributeName)»
 		«changeTrackingSetter(getType(attribute), attribute.name.attributeName)»
 	'''
+
+	def compileGetAttributeDescriptors(Entity entity) {
+		
+		var extraAttributes = new HashMap<String, Class<?>>
+		 
+		if (entity.entityHierarchical) {
+			extraAttributes.putAll(hierarchicalEntityAttributes())
+		}
+
+		compileGetAttributeDescriptors(entity, extraAttributes)
+	}
 
 }

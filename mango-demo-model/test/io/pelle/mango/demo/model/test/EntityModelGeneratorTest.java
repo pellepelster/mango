@@ -18,6 +18,7 @@ import io.pelle.mango.demo.client.test.ValueObject1;
 import io.pelle.mango.demo.client.test.ValueObject2;
 import io.pelle.mango.demo.client.test.ValueObject3;
 import io.pelle.mango.demo.client.test.ValueObject4;
+import io.pelle.mango.demo.server.showcase.Company;
 import io.pelle.mango.demo.server.showcase.Country;
 import io.pelle.mango.demo.server.test.Entity1;
 import io.pelle.mango.demo.server.test.Entity2;
@@ -431,6 +432,12 @@ public class EntityModelGeneratorTest {
 
 		ValueObject3 valueObject3 = new ValueObject3(valueObject2);
 		assertEquals("zzz", valueObject3.getString2());
+	}
+
+	@Test
+	public void testCompanyHierarchicalAttributeDescriptors() {
+		assertEquals(Company.PARENTCLASSNAME.getAttributeName(), "parentClassName");
+		assertEquals(Company.PARENTID.getAttributeName(), "parentId");
 	}
 
 	@Test

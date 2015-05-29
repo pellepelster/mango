@@ -1,6 +1,7 @@
 package io.pelle.mango.dsl.generator.client
 
 import com.google.inject.Inject
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO
 import io.pelle.mango.client.base.vo.BaseVO
 import io.pelle.mango.client.base.vo.EntityDescriptor
 import io.pelle.mango.client.base.vo.IEntityDescriptor
@@ -15,9 +16,9 @@ import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
-import java.util.List
 import java.io.Serializable
-import io.pelle.mango.client.base.db.vos.IHierarchicalVO
+import java.util.HashMap
+import java.util.List
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -216,4 +217,15 @@ class VOGenerator extends BaseEntityGenerator {
 		}
 	'''
 
+
+	def compileGetAttributeDescriptors(Entity entity) {
+		
+		var extraAttributes = new HashMap<String, Class<?>>
+		 
+		if (entity.entityHierarchical) {
+			extraAttributes.putAll(hierarchicalVOAttributes())
+		}
+
+		compileGetAttributeDescriptors(entity, extraAttributes)
+	}
 }

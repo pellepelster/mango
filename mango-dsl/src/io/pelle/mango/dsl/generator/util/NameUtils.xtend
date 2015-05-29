@@ -42,18 +42,6 @@ class NameUtils {
 		return hierarchicalEntityAttributes
 	}
 
-	def hierarchicalVOAttributes() {
-		
-		var Map<String, Class<?>> hierarchicalVOAttributes = newHashMap
-
-		hierarchicalVOAttributes.put("parentClassName", typeof(String))
-		hierarchicalVOAttributes.put("parentId", typeof(Long))
-		hierarchicalVOAttributes.put("parent", typeof(IHierarchicalVO))
-		hierarchicalVOAttributes.put("hasChildren", typeof(Boolean))
-
-		return hierarchicalVOAttributes
-	}
-	
 	def String combinePackageName(String packageName1,String packageName2) {
 
 		if (packageName1 != null && !packageName1.empty)

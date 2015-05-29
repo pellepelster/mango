@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
+import io.pelle.mango.demo.client.showcase.CompanyVO;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
@@ -46,6 +47,14 @@ public class ValueObjectModelGeneratorTest {
 
 		assertEquals(entity2VO.getNaturalKey(), entity2VO.toString());
 		assertFalse(entity2VO.hasNaturalKey());
+	}
+
+	@Test
+	public void testCompanyHierarchicalAttributeDescriptors() {
+		assertEquals(CompanyVO.PARENTCLASSNAME.getAttributeName(), "parentClassName");
+		assertEquals(CompanyVO.PARENTID.getAttributeName(), "parentId");
+		assertEquals(CompanyVO.PARENT.getAttributeName(), "parent");
+		assertEquals(CompanyVO.HASCHILDREN.getAttributeName(), "hasChildren");
 	}
 
 	@Test

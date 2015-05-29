@@ -1,5 +1,6 @@
 package io.pelle.mango.dsl.generator.client
 
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.util.NameUtils
@@ -7,11 +8,24 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Enumeration
 import io.pelle.mango.dsl.mango.EnumerationDataType
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
+import io.pelle.mango.dsl.mango.EnumerationValue
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.PackageDeclaration
-import io.pelle.mango.dsl.mango.EnumerationValue
+import java.util.Map
 
 class ClientNameUtils extends NameUtils {
+	
+	def hierarchicalVOAttributes() {
+		
+		var Map<String, Class<?>> hierarchicalVOAttributes = newHashMap
+
+		hierarchicalVOAttributes.put("parentClassName", typeof(String))
+		hierarchicalVOAttributes.put("parentId", typeof(Long))
+		hierarchicalVOAttributes.put("parent", typeof(IHierarchicalVO))
+		hierarchicalVOAttributes.put("hasChildren", typeof(Boolean))
+
+		return hierarchicalVOAttributes
+	}	
 	
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
 		if (packageDeclaration.eContainer instanceof Model)

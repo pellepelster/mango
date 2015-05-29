@@ -100,7 +100,7 @@ public class VOMetaDataService {
 			Set<Class<? extends IBaseVO>> referencedClasses = BeanUtils.getReferencedVOs(voClass);
 
 			for (Class<? extends IBaseVO> referencedClass : referencedClasses) {
-				if (!voClass.equals(referencedClass)) {
+				if (!voClass.equals(referencedClass) && !referencedClass.isInterface()) {
 					directedGraph.addEdge(voClass, referencedClass);
 				}
 			}
