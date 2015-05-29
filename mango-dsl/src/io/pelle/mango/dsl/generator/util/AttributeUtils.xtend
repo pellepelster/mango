@@ -118,4 +118,5 @@ class AttributeUtils {
 		«getter(attributeType, attributeName)»
 		«changeTrackingSetter(attributeType, attributeName)»
 	'''
+	
 }

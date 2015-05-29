@@ -1,7 +1,11 @@
 package io.pelle.mango.server.entity;
 
+import io.pelle.mango.client.base.vo.EntityDescriptor;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.LongAttributeDescriptor;
+import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.IExpression;
@@ -171,5 +175,13 @@ public class EntityUtils {
 		}
 
 		return ComparisonOperator.EQUALS_NO_CASE;
+	}
+	
+	public static StringAttributeDescriptor createStringAttributeDescriptor(Class<? extends  IBaseVO> voClass, String attributeName) {
+		return new StringAttributeDescriptor(new EntityDescriptor<IBaseVO>(voClass, null, null, null), attributeName);
+	}
+
+	public static LongAttributeDescriptor createLongAttributeDescriptor(Class<? extends  IBaseVO> voClass, String attributeName) {
+		return new LongAttributeDescriptor(new EntityDescriptor<IBaseVO>(voClass, null, null, null), attributeName);
 	}
 }

@@ -120,7 +120,7 @@ public class HierarchicalTreeModule extends BaseModuleHierarchicalTreeModule {
 
 	public static void openModuleForNode(DictionaryHierarchicalNodeVO hierarchicalNodeVO) {
 		if (hierarchicalNodeVO.getVoId() == null) {
-			HashMap<String, Object> parameters = CollectionUtils.getMap(IHierarchicalVO.FIELD_PARENT_CLASSNAME.getAttributeName(), hierarchicalNodeVO.getParentClassName(), IHierarchicalVO.FIELD_PARENT_ID.getAttributeName(),
+			HashMap<String, Object> parameters = CollectionUtils.getMap(IHierarchicalVO.PARENT_CLASS_FIELD_NAME, hierarchicalNodeVO.getParentClassName(), IHierarchicalVO.PARENT_ID_FIELD_NAME,
 					hierarchicalNodeVO.getParentVOId());
 
 			DictionaryEditorModuleFactory.openEditor(hierarchicalNodeVO.getDictionaryName(), parameters);

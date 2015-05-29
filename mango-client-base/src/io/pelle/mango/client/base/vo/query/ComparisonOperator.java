@@ -2,7 +2,7 @@ package io.pelle.mango.client.base.vo.query;
 
 public enum ComparisonOperator {
 
-	GREATER(">", null), GREATER_EQUALS(">=", null), LESS("<", null), LESS_EQUALS("<=", null), EQUALS("=", null), NOT_EQUALS("!=", null), EQUALS_NO_CASE("=", "LOWER"), LIKE_NO_CASE("LIKE", "LOWER");
+	GREATER(">", null), GREATER_EQUALS(">=", null), LESS("<", null), LESS_EQUALS("<=", null), EQUALS("=", null), NOT_EQUALS("!=", null), EQUALS_NO_CASE("=", "LOWER"), LIKE_NO_CASE("LIKE", "LOWER"), IS_NULL("IS NULL", null), NOT_NULL("IS NOT NULL", null);
 
 	private String function;
 

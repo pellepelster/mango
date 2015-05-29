@@ -8,6 +8,7 @@ import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
+import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
 import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
@@ -22,7 +23,7 @@ import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.dsl.query.datatype.StringDatatypeQuery
 import io.pelle.mango.server.base.BaseEntity
-import java.util.HashMap
+import java.util.ArrayList
 
 class EntityGenerator extends BaseEntityGenerator {
 
@@ -118,15 +119,15 @@ class EntityGenerator extends BaseEntityGenerator {
 			«attribute.changeTrackingAttributeGetterSetter»
 			«ENDFOR»
 			
-			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
-				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»
+			«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
+				«infoVOEntityAttribute.generate(entity)»
 			«ENDFOR»
 			
 			«entity.compileNaturalKey»
 
 			«IF entity.entityHierarchical»
-				«FOR hierarchicalEntityAttribute : hierarchicalEntityAttributes().entrySet»
-					«changeTrackingAttributeGetterSetterJpa(hierarchicalEntityAttribute.value, hierarchicalEntityAttribute.key, entity)»
+				«FOR hierarchicalEntityAttribute : hierarchicalEntityAttributes()»
+					«hierarchicalEntityAttribute.generate(entity)»
 				«ENDFOR»
 			«ENDIF»
 			
@@ -200,10 +201,10 @@ class EntityGenerator extends BaseEntityGenerator {
 
 	def compileGetAttributeDescriptors(Entity entity) {
 		
-		var extraAttributes = new HashMap<String, Class<?>>
+		var extraAttributes = new ArrayList<AttributeGeneratorFactory.AttributeGenerator>
 		 
 		if (entity.entityHierarchical) {
-			extraAttributes.putAll(hierarchicalEntityAttributes())
+			extraAttributes.addAll(hierarchicalEntityAttributes())
 		}
 
 		compileGetAttributeDescriptors(entity, extraAttributes)

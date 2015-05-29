@@ -36,7 +36,7 @@ public class StringExpression implements IExpression, Serializable {
 
 	@Override
 	public String getJPQL(IAliasProvider aliasProvider) {
-		return "'" + value + "'";
+		return (value != null) ?  "'" + value + "'" : null;
 	}
 
 }

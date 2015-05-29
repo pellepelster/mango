@@ -45,7 +45,7 @@ public class HierarchicalEditorHook<VOType extends IBaseVO> extends BaseEditorHo
 			menuItem.setScheduledCommand(new Command() {
 				@Override
 				public void execute() {
-					HashMap<String, Object> parameters = CollectionUtils.getMap(IHierarchicalVO.FIELD_PARENT_CLASSNAME.getAttributeName(), dictionaryEditor.getVO().getClass().getName(), IHierarchicalVO.FIELD_PARENT_ID.getAttributeName(),
+					HashMap<String, Object> parameters = CollectionUtils.getMap(IHierarchicalVO.PARENT_CLASS_FIELD_NAME, dictionaryEditor.getVO().getClass().getName(), IHierarchicalVO.PARENT_ID_FIELD_NAME,
 							dictionaryEditor.getVO().getOid());
 
 					DictionaryEditorModuleFactory.openEditor(childDictionary.getName(), parameters);

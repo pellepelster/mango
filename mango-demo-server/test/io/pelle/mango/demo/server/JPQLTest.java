@@ -27,4 +27,40 @@ public class JPQLTest extends BaseDemoTest {
 		assertEquals("SELECT SUM(x0.integerDatatype1) FROM Entity1 x0", ServerAggregateQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
 	}
 
+	@Test
+	public void testStringEqualsNull() {
+		SelectQuery<Entity1VO> query = selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.eq(null));
+		assertEquals("SELECT x0 FROM Entity1 x0 WHERE x0.stringDatatype1 IS NULL", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
+	}
+
+	@Test
+	public void testStringIsNull() {
+		SelectQuery<Entity1VO> query = selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.isNull());
+		assertEquals("SELECT x0 FROM Entity1 x0 WHERE x0.stringDatatype1 IS NULL", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
+	}
+
+	@Test
+	public void testStringIsNotNull() {
+		SelectQuery<Entity1VO> query = selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.notNull());
+		assertEquals("SELECT x0 FROM Entity1 x0 WHERE x0.stringDatatype1 IS NOT NULL", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
+	}
+
+	@Test
+	public void testIntegerEqualsNull() {
+		SelectQuery<Entity1VO> query = selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.eq(null));
+		assertEquals("SELECT x0 FROM Entity1 x0 WHERE x0.integerDatatype1 IS NULL", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
+	}
+
+	@Test
+	public void testIntegerIsNull() {
+		SelectQuery<Entity1VO> query = selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.isNull());
+		assertEquals("SELECT x0 FROM Entity1 x0 WHERE x0.integerDatatype1 IS NULL", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
+	}
+
+	@Test
+	public void testIntegerStringIsNotNull() {
+		SelectQuery<Entity1VO> query = selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.notNull());
+		assertEquals("SELECT x0 FROM Entity1 x0 WHERE x0.integerDatatype1 IS NOT NULL", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
+	}
+
 }

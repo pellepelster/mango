@@ -6,7 +6,9 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.hierarchy.IHierachicalService;
+import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.db.dao.IBaseVODAO;
+import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.TestClientHierarchicalConfiguration;
 import io.pelle.mango.demo.client.showcase.CompanyVO;
@@ -32,6 +34,8 @@ public class DemoHierarchicalTest extends BaseDemoTest {
 
 	@Before
 	public void init() {
+		
+		MangoDemoClientConfiguration.registerAll();
 
 		baseEntityService.deleteAll(CompanyVO.class.getName());
 

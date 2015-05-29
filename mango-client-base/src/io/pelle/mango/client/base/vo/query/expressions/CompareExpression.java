@@ -29,8 +29,19 @@ public class CompareExpression extends BaseBooleanExpression implements Serializ
 
 	@Override
 	public String getJPQL(IAliasProvider aliasProvider) {
-		return (comparisonOperator.operand1Function(expression1.getJPQL(aliasProvider)) + " " + comparisonOperator.toString() + " " + comparisonOperator.operand2Function(expression2.getJPQL(aliasProvider)) + " " + super
-				.getJPQL(aliasProvider)).trim();
+		
+		String expression1JPQL = expression1.getJPQL(aliasProvider);
+		if (expression1JPQL == null) {
+			expression1JPQL = "";
+		}
+		
+		String expression2JPQL = expression2.getJPQL(aliasProvider);
+		if (expression2JPQL == null) {
+			expression2JPQL = "";
+		}
+		
+		return (comparisonOperator.operand1Function(expression1JPQL + " " + comparisonOperator.toString() + " " + comparisonOperator.operand2Function(expression2JPQL) + " " + super
+				.getJPQL(aliasProvider)).trim());
 	}
 
 	@Override

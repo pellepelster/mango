@@ -17,8 +17,9 @@ import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.query.EntityQuery
 import java.io.Serializable
-import java.util.HashMap
+import java.util.ArrayList
 import java.util.List
+import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -63,13 +64,13 @@ class VOGenerator extends BaseEntityGenerator {
 			«entity.compileNaturalKey»
 
 			«IF entity.entityHierarchical»
-				«FOR hierarchicalVOAttribute : hierarchicalVOAttributes().entrySet»
-					«changeTrackingAttributeGetterSetter(hierarchicalVOAttribute.value, hierarchicalVOAttribute.key, entity)»
+				«FOR hierarchicalVOAttribute : hierarchicalVOAttributes()»
+					«hierarchicalVOAttribute.generate(entity)»
 				«ENDFOR»
 			«ENDIF»
 
-			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
-				«changeTrackingAttributeGetterSetter(infoVOEntityAttribute.value, infoVOEntityAttribute.key, entity)»
+			«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
+				«infoVOEntityAttribute.generate(entity)»
 			«ENDFOR»
 		}
 	'''
@@ -151,10 +152,10 @@ class VOGenerator extends BaseEntityGenerator {
 			}
 			«ENDFOR»
 
-			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
-				if ("«infoVOEntityAttribute.key.attributeName»".equals(name))
+			«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
+				if ("«infoVOEntityAttribute.attributeName.attributeName»".equals(name))
 				{
-					return this.«infoVOEntityAttribute.key.attributeName»;
+					return this.«infoVOEntityAttribute.attributeName.attributeName»;
 				}
 			«ENDFOR»
 		
@@ -205,10 +206,10 @@ class VOGenerator extends BaseEntityGenerator {
 			}
 			«ENDFOR»
 		
-			«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
-				if ("«infoVOEntityAttribute.key.attributeName»".equals(name))
+			«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
+				if ("«infoVOEntityAttribute.attributeName.attributeName»".equals(name))
 				{
-					«infoVOEntityAttribute.key.setterName»(«infoVOEntityAttribute.key.attributeName»);
+					«infoVOEntityAttribute.attributeName.setterName»(«infoVOEntityAttribute.attributeName.attributeName»);
 					return;
 				}
 			«ENDFOR»
@@ -220,10 +221,10 @@ class VOGenerator extends BaseEntityGenerator {
 
 	def compileGetAttributeDescriptors(Entity entity) {
 		
-		var extraAttributes = new HashMap<String, Class<?>>
+		var extraAttributes = new ArrayList<AttributeGeneratorFactory.AttributeGenerator>
 		 
 		if (entity.entityHierarchical) {
-			extraAttributes.putAll(hierarchicalVOAttributes())
+			extraAttributes.addAll(hierarchicalVOAttributes())
 		}
 
 		compileGetAttributeDescriptors(entity, extraAttributes)

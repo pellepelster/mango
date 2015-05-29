@@ -13,7 +13,11 @@ public class BaseNumberAttributeDescriptor<T extends Number> extends BaseExpress
 	}
 
 	public IBooleanExpression eq(T value) {
-		return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new NumberExpression(value));
+		if (value != null) {
+			return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new NumberExpression(value));
+		} else {
+			return new CompareExpression(entityFieldExpression, ComparisonOperator.IS_NULL, new NumberExpression(value));
+		}
 	}
 
 	public IBooleanExpression lessThan(T value) {

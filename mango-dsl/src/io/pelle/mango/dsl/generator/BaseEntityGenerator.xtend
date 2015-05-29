@@ -7,7 +7,8 @@ import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.query.EntityQuery
-import java.util.Map
+import java.util.List
+import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
 
 class BaseEntityGenerator {
 
@@ -25,7 +26,7 @@ class BaseEntityGenerator {
 		«ENDIF»
 	'''
 
-	def compileGetAttributeDescriptors(Entity entity, Map<String, Class<?>> extraAttributes) '''
+	def compileGetAttributeDescriptors(Entity entity, List<AttributeGeneratorFactory.AttributeGenerator> extraAttributes) '''
 		
 		public static «IAttributeDescriptor.name»<?>[] getAttributeDescriptors() {
 			
@@ -45,12 +46,12 @@ class BaseEntityGenerator {
 							«ENDFOR»
 						«ENDIF»
 						
-						«FOR infoVOEntityAttribute : infoVOEntityAttributes().entrySet»
-							«infoVOEntityAttribute.key.attributeDescriptorConstantName»,
+						«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
+							«infoVOEntityAttribute.attributeName.attributeDescriptorConstantName»,
 						«ENDFOR»
 						
-						«FOR extraAttribute : extraAttributes.entrySet»
-							«extraAttribute.key.attributeDescriptorConstantName»,
+						«FOR extraAttribute : extraAttributes»
+							«extraAttribute.attributeName.attributeDescriptorConstantName»,
 						«ENDFOR»
 				«ENDIF»
 			};

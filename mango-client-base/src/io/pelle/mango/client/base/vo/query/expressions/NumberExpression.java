@@ -21,7 +21,7 @@ public class NumberExpression implements IExpression, Serializable {
 
 	@Override
 	public String getJPQL(IAliasProvider aliasProvider) {
-		return value.toString();
+		return (value != null) ? value.toString() : null;
 	}
 
 	@Override

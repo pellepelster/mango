@@ -20,8 +20,8 @@ public class DemoEntityMetaInformationTest extends BaseDemoTest {
 
 	@Test
 	public void testGetVOClasses() {
-		assertEquals(18, metaDataService.getVOClasses().size());
-		assertEquals(18, metaDataService.getEntityClasses().size());
+		assertEquals(20, metaDataService.getVOClasses().size());
+		assertEquals(20, metaDataService.getEntityClasses().size());
 	}
 
 	@Test

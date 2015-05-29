@@ -15,6 +15,7 @@ import io.pelle.mango.client.hierarchy.IHierachicalService;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.util.EntityVOMapper;
+import io.pelle.mango.server.entity.EntityUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -73,8 +74,8 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 		for (Class<? extends IHierarchicalVO> hierarchicalClass : this.hierarchicalClasses) {
 
 			CountQuery<? extends IHierarchicalVO> query = CountQuery.countFrom(hierarchicalClass);
-			query.addWhereAnd(IHierarchicalVO.FIELD_PARENT_CLASSNAME.eq(voClassName));
-			query.addWhereAnd(IHierarchicalVO.FIELD_PARENT_ID.eq(voId));
+			query.addWhereAnd(EntityUtils.createStringAttributeDescriptor(hierarchicalClass, IHierarchicalVO.PARENT_CLASS_FIELD_NAME).eq(voClassName));
+			query.addWhereAnd(EntityUtils.createLongAttributeDescriptor(hierarchicalClass, IHierarchicalVO.PARENT_ID_FIELD_NAME).eq(voId));
 
 			count += this.baseVODAO.count(query);
 
@@ -204,8 +205,8 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 		@SuppressWarnings({ "unchecked" })
 		SelectQuery<IHierarchicalVO> query = (SelectQuery<IHierarchicalVO>) SelectQuery.selectFrom(voHierarchy.getClazz());
 
-		query.addWhereAnd(IHierarchicalVO.FIELD_PARENT_CLASSNAME.eq(parentClassName));
-		query.addWhereAnd(IHierarchicalVO.FIELD_PARENT_ID.eq(parentId));
+		query.addWhereAnd(EntityUtils.createStringAttributeDescriptor(voHierarchy.getClazz(), IHierarchicalVO.PARENT_CLASS_FIELD_NAME).eq(parentClassName));
+		query.addWhereAnd(EntityUtils.createLongAttributeDescriptor(voHierarchy.getClazz(), IHierarchicalVO.PARENT_ID_FIELD_NAME).eq(parentId));
 
 		for (IHierarchicalVO vo : this.baseEntityService.filter(query)) {
 

@@ -34,8 +34,13 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 	}
 
 	public IBooleanExpression eq(String value) {
-		return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new StringExpression(value));
+		if (value == null) {
+			return new CompareExpression(entityFieldExpression, ComparisonOperator.IS_NULL, new StringExpression(value));
+		} else {
+			return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new StringExpression(value));
+		}
 	}
+		
 
 	public IBooleanExpression eqIgnoreCase(String value) {
 		return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS_NO_CASE, new StringExpression(value));

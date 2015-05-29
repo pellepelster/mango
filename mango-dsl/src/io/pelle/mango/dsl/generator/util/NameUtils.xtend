@@ -1,6 +1,6 @@
 package io.pelle.mango.dsl.generator.util
 
-import io.pelle.mango.client.base.db.vos.IHierarchicalVO
+import com.google.inject.Inject
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.mango.Dictionary
 import io.pelle.mango.dsl.mango.DictionaryEditor
@@ -14,42 +14,42 @@ import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
 import java.util.Date
-import java.util.Map
+import java.util.List
 import org.eclipse.emf.ecore.EObject
 
 class NameUtils {
 
+	@Inject
+	extension AttributeGeneratorFactory attributeGeneratorFactory
+	
 	def infoVOEntityAttributes() {
-		
-		var Map<String, Class<?>> infoVOEntityAttributes = newHashMap
-		
-		infoVOEntityAttributes.put("createDate", typeof(Date))
-		infoVOEntityAttributes.put("updateDate", typeof(Date))
 
-		infoVOEntityAttributes.put("createUser", typeof(String))
-		infoVOEntityAttributes.put("updateUser", typeof(String))
+		var List<AttributeGeneratorFactory.AttributeGenerator> infoVOEntityAttributes = newArrayList()
+
+		infoVOEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("createDate", typeof(Date)))
+		infoVOEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("updateDate", typeof(Date)))
+
+		infoVOEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("createUser", typeof(String)))
+		infoVOEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("updateUser", typeof(String)))
 
 		return infoVOEntityAttributes
 	}
 
 	def hierarchicalEntityAttributes() {
-		
-		var Map<String, Class<?>> hierarchicalEntityAttributes = newHashMap
-		
-		hierarchicalEntityAttributes.put("parentClassName", typeof(String))
-		hierarchicalEntityAttributes.put("parentId", typeof(Long))
+
+		var List<AttributeGeneratorFactory.AttributeGenerator> hierarchicalEntityAttributes = newArrayList()
+
+		hierarchicalEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("parentClassName",  typeof(String)))
+		hierarchicalEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("parentId", typeof(Long)))
 
 		return hierarchicalEntityAttributes
 	}
 
-	def String combinePackageName(String packageName1,String packageName2) {
+	def String combinePackageName(String packageName1, String packageName2) {
 
-		if (packageName1 != null && !packageName1.empty)
-		{
+		if (packageName1 != null && !packageName1.empty) {
 			return packageName1 + "." + packageName2
-		}
-		else
-		{
+		} else {
 			return packageName2
 		}
 	}
@@ -57,7 +57,7 @@ class NameUtils {
 	def dispatch String getPackageName(String packageName) {
 		return packageName.toLowerCase.replaceAll("\\^", "");
 	}
-	
+
 	def dispatch String getPackageName(Dictionary dictionary) {
 		return combinePackageName(getPackageName(dictionary.eContainer), dictionary.name.packageName)
 	}
@@ -71,33 +71,23 @@ class NameUtils {
 	}
 
 	def dispatch String getPackageName(PackageDeclaration packageDeclaration) {
-		return combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.packageName.packageName)
+		return combinePackageName(getPackageName(packageDeclaration.eContainer),
+			packageDeclaration.packageName.packageName)
 	}
 
 	def dispatch String getPackageName(EObject eObject) {
-		if (eObject.eContainer == null)
-		{
+		if (eObject.eContainer == null) {
 			return ""
-		}
-		else
-		{
+		} else {
 			return getPackageName(eObject.eContainer)
 		}
 	}
-
+	
 	def dispatch String getPackageName(Service service) {
 		return getPackageName(service.eContainer)
 	}
 
 	// entity
-	def attributeName(String attribute) {
-		return attribute.toFirstLower
-	}
-
-	def attributeName(EntityAttribute entityAttribute) {
-		return entityAttribute.name.attributeName
-	}
-
 	def attributeConstantName(String attribute) {
 		return attribute.toUpperCase
 	}
@@ -110,17 +100,16 @@ class NameUtils {
 		return name.toUpperCase;
 	}
 
-	var String[] SQL_KEYWORDS = newArrayList( "order", "where", "select" )
+	var String[] SQL_KEYWORDS = newArrayList("order", "where", "select")
 
 	def entityTableName(Entity entity) {
-		
+
 		var entityTableName = entity.name.toLowerCase
-		
-		if (SQL_KEYWORDS.contains(entityTableName))
-		{
+
+		if (SQL_KEYWORDS.contains(entityTableName)) {
 			entityTableName = ModelUtil.getRootModel(entity).modelName.toLowerCase + '_' + entityTableName
 		}
-		
+
 		return entityTableName
 	}
 
@@ -128,30 +117,40 @@ class NameUtils {
 		return entity.name.toLowerCase + "_id"
 	}
 
-	def entityTableColumnName(EntityAttribute entityAttribute) {
-		return GeneratorUtil.getParentEntity(entityAttribute).entityTableName + "_" + entityAttribute.name.entityTableColumnName
-	}
-
 	def String entityTableColumnName(Entity entity, String attributeName) {
 		return entity.entityTableName + "_" + attributeName.entityTableColumnName
-	}
-
-	def entityTableColumnName(String attribute) {
-		return attribute.toLowerCase
 	}
 
 	def entityTableIdSequenceName(Entity entity) {
 		return entity.name.toLowerCase + "_id_seq"
 	}
-	
+
 	def gwtClientGeneratedModuleDefinitionFileName(Model model) {
-		return model.modelName.toFirstUpper() + "Generated.gwt.xml";	
-	}	
+		return model.modelName.toFirstUpper() + "Generated.gwt.xml";
+	}
 
 	def gwtClientModuleFullQualifiedFileName(Model model) {
 		var nameUtils = new NameUtils
-		nameUtils.modelPackageName(model).replaceAll("\\.", "/") + "/" + gwtClientGeneratedModuleDefinitionFileName(model);
-	} 
+		nameUtils.modelPackageName(model).replaceAll("\\.", "/") + "/" +
+			gwtClientGeneratedModuleDefinitionFileName(model);
+	}
+	
+			def attributeName(String attribute) {
+		return attribute.toFirstLower
+	}
+
+	def attributeName(EntityAttribute entityAttribute) {
+		return entityAttribute.name.attributeName
+	}
+	
+	def entityTableColumnName(EntityAttribute entityAttribute) {
+		return GeneratorUtil.getParentEntity(entityAttribute).entityTableName + "_" +
+			entityAttribute.name.entityTableColumnName
+	}
+
+	def entityTableColumnName(String attribute) {
+		return attribute.toLowerCase
+	}
 
 	//-------------------------------------------------------------------------
 	// value object
@@ -165,7 +164,7 @@ class NameUtils {
 	}
 
 	def voFullQualifiedFileName(ValueObject valueObject) {
-		return voFullQualifiedName(valueObject).replaceAll("\\.", "/")  + ".java";
+		return voFullQualifiedName(valueObject).replaceAll("\\.", "/") + ".java";
 	}
 
 	//-------------------------------------------------------------------------
@@ -178,7 +177,7 @@ class NameUtils {
 	def serviceAttributeName(Service service) {
 		return service.name.toFirstLower;
 	}
-	
+
 	def serviceSpringName(Service service) {
 		return service.serviceName.toFirstLower
 	}
@@ -186,7 +185,6 @@ class NameUtils {
 	def methodName(ServiceMethod serviceMethod) {
 		return serviceMethod.name.toFirstLower;
 	}
-	
 
 	//-------------------------------------------------------------------------
 	// client configuration  
@@ -200,9 +198,9 @@ class NameUtils {
 	}
 
 	def gwtClientconfigurationFullQualifiedNameFileName(Model model) {
-		return gwtClientconfigurationFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+		return gwtClientconfigurationFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
-	
+
 	//-------------------------------------------------------------------------
 	// service interface  
 	//-------------------------------------------------------------------------
@@ -215,7 +213,7 @@ class NameUtils {
 	}
 
 	def serviceInterfaceFullQualifiedFileName(Service service) {
-		return serviceInterfaceFullQualifiedName(service).replaceAll("\\.", "/")  + ".java";
+		return serviceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
 
 	//-------------------------------------------------------------------------
@@ -230,9 +228,9 @@ class NameUtils {
 	}
 
 	def gwtServiceInterfaceFullQualifiedFileName(Service service) {
-		return gwtServiceInterfaceFullQualifiedName(service).replaceAll("\\.", "/")  + ".java";
+		return gwtServiceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
-	
+
 	//-------------------------------------------------------------------------
 	// GWT Async interface  
 	//-------------------------------------------------------------------------
@@ -245,7 +243,7 @@ class NameUtils {
 	}
 
 	def gwtAsyncServiceInterfaceFullQualifiedFileName(Service service) {
-		return gwtAsyncServiceInterfaceFullQualifiedName(service).replaceAll("\\.", "/")  + ".java";
+		return gwtAsyncServiceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
 
 	//-------------------------------------------------------------------------
@@ -264,9 +262,9 @@ class NameUtils {
 	}
 
 	def gwtAsyncAdapterFullQualifiedFileName(Service service) {
-		return gwtAsyncAdapterFullQualifiedName(service).replaceAll("\\.", "/")  + ".java";
+		return gwtAsyncAdapterFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
-	
+
 	//-------------------------------------------------------------------------
 	// GWT remote service locator 
 	//-------------------------------------------------------------------------
@@ -279,7 +277,7 @@ class NameUtils {
 	}
 
 	def gwtRemoteServiceLocatorFullQualifiedFileName(Model model) {
-		return gwtRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+		return gwtRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
 	//-------------------------------------------------------------------------
@@ -294,9 +292,9 @@ class NameUtils {
 	}
 
 	def gwtAsyncAdapterRemoteServiceLocatorFullQualifiedFileName(Model model) {
-		return gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+		return gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
-	 
+
 	//-------------------------------------------------------------------------
 	// GWT remote service locator interface 
 	//-------------------------------------------------------------------------
@@ -309,7 +307,7 @@ class NameUtils {
 	}
 
 	def gwtRemoteServiceLocatorInterfaceFullQualifiedFileName(Model model) {
-		return gwtRemoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+		return gwtRemoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
 	//-------------------------------------------------------------------------
@@ -324,9 +322,9 @@ class NameUtils {
 	}
 
 	def remoteServiceLocatorFullQualifiedFileName(Model model) {
-		return remoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+		return remoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
-	 
+
 	//-------------------------------------------------------------------------
 	// GWT remote service locator interface 
 	//-------------------------------------------------------------------------
@@ -339,9 +337,9 @@ class NameUtils {
 	}
 
 	def remoteServiceLocatorInterfaceFullQualifiedFileName(Model model) {
-		return remoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+		return remoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
-	
+
 	//-------------------------------------------------------------------------
 	// module definition
 	//-------------------------------------------------------------------------
@@ -354,9 +352,9 @@ class NameUtils {
 	}
 
 	def baseModuleDefinitionFullQualifiedFileName(ModuleDefinition moduleDefinition) {
-		return baseModuleDefinitionFullQualifiedName(moduleDefinition).replaceAll("\\.", "/")  + ".java";
+		return baseModuleDefinitionFullQualifiedName(moduleDefinition).replaceAll("\\.", "/") + ".java";
 	}
-	
+
 	def modelPackageName(Model model) {
 		return ModelUtil.getSingleRootPackage(model).packageName.packageName
 	}
@@ -373,7 +371,7 @@ class NameUtils {
 	}
 
 	def voMapperFullQualifiedFileName(Model model) {
-		return voMapperFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
+		return voMapperFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
 	def springDBApplicationContextFullQualifiedFileName(Model model) {
