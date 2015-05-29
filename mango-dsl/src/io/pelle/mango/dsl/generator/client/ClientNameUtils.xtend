@@ -30,8 +30,14 @@ class ClientNameUtils extends NameUtils {
 		override changeTrackingSetter() '''
 			public void set«attributeName.toFirstUpper»(«attributeType.name» «attributeName») {
 				getChangeTracker().addChange("«attributeName»", «attributeName»);
-				setParentClassName(«attributeName».getClass().getName());
-				setParentId(«attributeName».getId());
+				
+				if (parent == null) {
+					setParentClassName(null);
+					setParentId(null);
+				} else {
+					setParentClassName(«attributeName».getClass().getName());
+					setParentId(«attributeName».getId());
+				}
 				this.«attributeName» = «attributeName»;
 			}
 		'''

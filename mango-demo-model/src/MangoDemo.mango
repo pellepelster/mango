@@ -242,6 +242,9 @@ project MangoDemo {
 			entity Company {
 				entityoptions {
 					hierarchicalEntity true
+					naturalkey {
+						name
+					}
 				}
 				
 				string Name1 name
@@ -277,6 +280,9 @@ project MangoDemo {
 			entity Manager {
 				entityoptions {
 					hierarchicalEntity true
+					naturalkey {
+						name
+					}
 				}
 				string Name1 name
 			}
@@ -311,6 +317,9 @@ project MangoDemo {
 			entity Employee {
 				entityoptions {
 					hierarchicalEntity true
+					naturalkey {
+						name
+					}
 				}
 				string Name1 name
 			}
@@ -345,6 +354,9 @@ project MangoDemo {
 			entity Department {
 				entityoptions {
 					hierarchicalEntity true
+					naturalkey {
+						name
+					}
 				}
 				string Name1 name
 			}

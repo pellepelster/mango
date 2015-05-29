@@ -11,6 +11,8 @@ import io.pelle.mango.server.entity.EntityUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Optional;
+
 public class HierarchicalVODecorator implements IVODAODecorator {
 
 	@Autowired
@@ -32,9 +34,11 @@ public class HierarchicalVODecorator implements IVODAODecorator {
 			Class<? extends IBaseVO> parentVOClass = EntityVOMapper.getInstance().getVOClass(hierarchicalVO.getParentClassName());
 
 			SelectQuery<? extends IBaseVO> query = SelectQuery.selectFrom(parentVOClass).where(EntityUtils.createLongAttributeDescriptor(parentVOClass, IBaseVO.FIELD_ID.getAttributeName()).eq(hierarchicalVO.getParentId()));
-			IHierarchicalVO parent = (IHierarchicalVO) this.baseVODAO.read(query);
+			Optional<IHierarchicalVO> parent = (Optional<IHierarchicalVO>) this.baseVODAO.read(query);
 
-			hierarchicalVO.setParent(parent);
+			if (parent.isPresent()) {
+				hierarchicalVO.setParent(parent.get());
+			}
 		}
 
 		hierarchicalVO.setHasChildren(this.hierachicalService.hasChildren(vo.getClass().getName(), vo.getId()));

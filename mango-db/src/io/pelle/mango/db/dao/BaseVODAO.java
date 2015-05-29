@@ -37,9 +37,10 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 
 		baseEntity = baseEntityDAO.create(baseEntity);
 
-		decorateVO(baseVO);
+		T result = (T) DBUtil.convertEntityToVO(baseEntity);
+		decorateVO(result);
 
-		return (T) DBUtil.convertEntityToVO(baseEntity);
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -63,10 +64,13 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 	public <T extends IBaseVO> T save(T baseVO) {
 		IBaseEntity baseEntity = DBUtil.convertVOToEntityClass(baseVO);
 
-		decorateVO(baseVO);
-
 		baseEntity = baseEntityDAO.save(baseEntity);
-		return (T) DBUtil.convertEntityToVO(baseEntity);
+
+		T result = (T) DBUtil.convertEntityToVO(baseEntity);
+		decorateVO(result);
+
+		return result;
+
 	}
 
 	@Override
@@ -98,6 +102,7 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 			public T apply(IBaseEntity baseEntity) {
 				@SuppressWarnings("unchecked")
 				T baseVO = (T) DBUtil.convertEntityToVO(baseEntity, classLoadAssociations);
+				decorateVO(baseVO);
 				return baseVO;
 			}
 		}));

@@ -6,7 +6,6 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.hierarchy.IHierachicalService;
-import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
@@ -34,7 +33,7 @@ public class DemoHierarchicalTest extends BaseDemoTest {
 
 	@Before
 	public void init() {
-		
+
 		MangoDemoClientConfiguration.registerAll();
 
 		baseEntityService.deleteAll(CompanyVO.class.getName());
@@ -131,6 +130,7 @@ public class DemoHierarchicalTest extends BaseDemoTest {
 
 	@Test
 	public void testSave() {
+
 		CompanyVO companyVO1 = new CompanyVO();
 		companyVO1.setName("kkk");
 		companyVO1 = baseEntityService.create(companyVO1);
@@ -149,6 +149,7 @@ public class DemoHierarchicalTest extends BaseDemoTest {
 
 	@Test
 	public void testVODecorator() {
+
 		List<DictionaryHierarchicalNodeVO> rootNodes = this.hierachicalService.getRootNodes(TestClientHierarchicalConfiguration.ID);
 		DictionaryHierarchicalNodeVO rootNode1 = rootNodes.get(0);
 
@@ -156,9 +157,9 @@ public class DemoHierarchicalTest extends BaseDemoTest {
 
 		Assert.assertEquals(1, childNodes.size());
 
-		List<ManagerVO> managers = this.baseVODAO.filter(SelectQuery.selectFrom(ManagerVO.class).where(ManagerVO.FIELD_ID.eq(childNodes.get(0).getVoId())));
+		List<ManagerVO> managers = this.baseVODAO.filter(SelectQuery.selectFrom(ManagerVO.class).where(ManagerVO.ID.eq(childNodes.get(0).getVoId())));
 		Assert.assertEquals(1, managers.size());
-		Assert.assertEquals("xxx", managers.get(0).getParent().get("companyName"));
+		Assert.assertEquals("xxx", managers.get(0).getParent().get("name"));
 		Assert.assertEquals(false, managers.get(0).getHasChildren());
 
 		List<CompanyVO> companies = this.baseVODAO.filter(SelectQuery.selectFrom(CompanyVO.class));
