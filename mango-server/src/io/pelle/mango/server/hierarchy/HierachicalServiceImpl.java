@@ -23,10 +23,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class HierachicalServiceImpl implements IHierachicalService, InitializingBean {
+
+	private static Logger LOG = Logger.getLogger(HierachicalServiceImpl.class);
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
@@ -59,7 +62,7 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 			}
 		}
 
-		throw new RuntimeException(String.format("unknown hierarchical configuration '%s'", id));
+		throw new RuntimeException(String.format("unknown hierarchical configuration '%s'", id)); //$NON-NLS-1$
 	}
 
 	@Override
@@ -95,12 +98,19 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 	}
 
 	private Map<String, List<VOHierarchy>> getAndInitVOHierarchies() {
+
 		if (this.voHierarchies == null) {
+
 			this.voHierarchies = new HashMap<String, List<VOHierarchy>>();
+
+			if (hierarchicalConfigurations.isEmpty()) {
+				LOG.error("no hierarchical configurations found, maybe you forgot to register the hierarchical configuration bean(s)"); //$NON-NLS-1$
+			}
 
 			for (HierarchicalConfigurationVO hierarchicalConfiguration : this.hierarchicalConfigurations) {
 
 				for (Map.Entry<String, List<String>> dictionaryHierarchy : hierarchicalConfiguration.getDictionaryHierarchy().entrySet()) {
+
 					IDictionaryModel dictionaryModel = DictionaryModelProvider.getDictionary(dictionaryHierarchy.getKey());
 
 					Class<? extends IHierarchicalVO> voClass = getHierarchicalClass(dictionaryModel.getVOClass().getName());
@@ -163,7 +173,7 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 		if (IHierarchicalVO.class.isAssignableFrom(clazz)) {
 			return (Class<? extends IHierarchicalVO>) clazz;
 		} else {
-			throw new RuntimeException(String.format("'%s' ist not an IHierarchicalVO", className));
+			throw new RuntimeException(String.format("'%s' ist not an IHierarchicalVO", className)); //$NON-NLS-1$
 		}
 	}
 

@@ -1,5 +1,6 @@
 package io.pelle.mango.demo.server.test;
 
+import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.server.MangoServerApplicationContext;
 
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,12 @@ public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 	@Bean
 	public TestHierarchicalConfiguration testHierarchicalConfiguration() {
 		return new TestHierarchicalConfiguration();
+	}
+
+	// TODO: this should be in a generated base class
+	@Bean
+	public MangoDemoClientConfiguration mangoDemoClientConfiguration() {
+		return MangoDemoClientConfiguration.registerAll();
 	}
 
 }

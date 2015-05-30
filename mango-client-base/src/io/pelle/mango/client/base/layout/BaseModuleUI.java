@@ -20,15 +20,13 @@ import io.pelle.mango.client.base.module.ModuleUtils;
  * @author pelle
  * 
  */
-public abstract class BaseModuleUI<ContainerType, ModuleType extends IModule> implements IModuleUI<ContainerType, ModuleType>
-{
+public abstract class BaseModuleUI<ContainerType, ModuleType extends IModule> implements IModuleUI<ContainerType, ModuleType> {
 
 	private final ModuleType module;
 
 	private final String uiModuleId;
 
-	public BaseModuleUI(ModuleType module, String uiModuleId)
-	{
+	public BaseModuleUI(ModuleType module, String uiModuleId) {
 		super();
 		this.module = module;
 		this.uiModuleId = uiModuleId;
@@ -36,39 +34,33 @@ public abstract class BaseModuleUI<ContainerType, ModuleType extends IModule> im
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean close()
-	{
+	public boolean close() {
 		return true;
 	}
 
 	@Override
-	public boolean contributesToBreadCrumbs()
-	{
+	public boolean contributesToBreadCrumbs() {
 		return false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public ModuleType getModule()
-	{
+	public ModuleType getModule() {
 		return this.module;
 	}
 
 	@Override
-	public int getOrder()
-	{
+	public int getOrder() {
 		return this.module.getOrder();
 	}
 
 	@Override
-	public boolean isInstanceOf(String moduleUrl)
-	{
-		return this.uiModuleId.equals(ModuleUtils.getUIModuleId(moduleUrl));
+	public boolean isInstanceOf(String moduleUrl) {
+		return this.uiModuleId.equals(ModuleUtils.getUIModuleId(moduleUrl)) && getModule().isInstanceOf(moduleUrl);
 	}
 
 	@Override
-	public void updateUrl(String moduleUrl)
-	{
+	public void updateUrl(String moduleUrl) {
 		this.module.updateUrl(moduleUrl);
 	}
 

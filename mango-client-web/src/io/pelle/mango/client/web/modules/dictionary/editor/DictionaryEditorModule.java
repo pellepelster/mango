@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Objects;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
@@ -131,7 +132,18 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
 
 	@Override
 	public boolean isInstanceOf(String moduleUrl) {
-		return getModuleUrl().equals(moduleUrl);
+
+		boolean sameEditorDictionary = Objects.equal(getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
+
+		boolean hasIdParameter = ModuleUtils.hasLongUrlParameter(moduleUrl, DictionaryEditorModule.ID_PARAMETER_ID);
+
+		boolean sameId = false;
+
+		if (hasIdParameter) {
+			sameId = Objects.equal(getDictionaryEditor().getVO().getId(), ModuleUtils.getLongUrlParameter(moduleUrl, DictionaryEditorModule.ID_PARAMETER_ID));
+		}
+
+		return super.isInstanceOf(moduleUrl) && sameEditorDictionary && (hasIdParameter && sameId || !hasIdParameter);
 	}
 
 	@Override

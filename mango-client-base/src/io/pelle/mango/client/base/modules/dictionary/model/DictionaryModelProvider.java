@@ -18,6 +18,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DictionaryModelProvider {
 
@@ -25,7 +27,14 @@ public class DictionaryModelProvider {
 
 	private static List<IEnumerationConverter> enumerationConverters = new ArrayList<IEnumerationConverter>();
 
+	private static Logger LOG = Logger.getLogger(DictionaryModelProvider.class.getName());
+
 	public static IDictionaryModel getDictionary(String dictionaryName) {
+
+		if (dictionaries.isEmpty()) {
+			LOG.log(Level.SEVERE, "no dictionary models found, maybe you forgot to register client/dictionary configuration"); //$NON-NLS-1$
+		}
+
 		if (dictionaries.containsKey(dictionaryName)) {
 			return dictionaries.get(dictionaryName);
 		} else {

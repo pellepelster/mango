@@ -32,7 +32,6 @@ class GWTClient extends BaseServices {
 		
 			<source path="«GeneratorConstants.CLIENT_PACKAGE_POSTFIX»" />
 		
-		
 		</module>
 	'''
 
@@ -44,16 +43,23 @@ class GWTClient extends BaseServices {
 		
 			private «model.gwtClientconfigurationName()»() {
 			}
+			
+			private static «model.gwtClientconfigurationName()» instance;
 		
-			public static void registerAll()
+			public static «model.gwtClientconfigurationName()» registerAll()
 			{
-				registerDictionaries();
-				registerEnumerationValueParser();
-				registerValueObjectEntityDescriptors();
-				«IF !model.eAllContents.filter(NavigationNode).isEmpty»
-					registerNavigation();
-				«ENDIF»
+				if (instance == null) {
+					registerDictionaries();
+					registerEnumerationValueParser();
+					registerValueObjectEntityDescriptors();
+					«IF !model.eAllContents.filter(NavigationNode).isEmpty»
+						registerNavigation();
+					«ENDIF»
+					
+					instance = new «model.gwtClientconfigurationName()»();
+				}
 				
+				return instance;
 			}
 
 			public static void registerEnumerationValueParser()

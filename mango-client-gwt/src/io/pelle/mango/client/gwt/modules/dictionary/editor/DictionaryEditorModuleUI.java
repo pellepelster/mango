@@ -13,7 +13,6 @@ package io.pelle.mango.client.gwt.modules.dictionary.editor;
 
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;
-import io.pelle.mango.client.base.module.ModuleUtils;
 import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
@@ -31,7 +30,6 @@ import io.pelle.mango.gwt.commons.toastr.Toastr;
 
 import org.gwtbootstrap3.client.ui.Button;
 
-import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -183,11 +181,6 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 	@Override
 	public boolean contributesToBreadCrumbs() {
 		return true;
-	}
-
-	@Override
-	public boolean isInstanceOf(String moduleUrl) {
-		return super.isInstanceOf(moduleUrl) && Objects.equal(getModule().getEditorDictionaryName(), ModuleUtils.getUrlParameter(moduleUrl, DictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID));
 	}
 
 	/** {@inheritDoc} */

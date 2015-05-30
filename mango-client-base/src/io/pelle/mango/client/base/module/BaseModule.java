@@ -20,6 +20,8 @@ public abstract class BaseModule implements IModule {
 
 	private String moduleUrl;
 
+	private String moduleId;
+
 	protected AsyncCallback<IModule> getModuleCallback() {
 		return this.moduleCallback;
 	}
@@ -28,7 +30,8 @@ public abstract class BaseModule implements IModule {
 	public void onClose() {
 	}
 
-	public BaseModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
+	public BaseModule(String moduleId, String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
+		this.moduleId = moduleId;
 		this.moduleUrl = moduleUrl;
 		this.moduleCallback = moduleCallback;
 		this.parameters = parameters;
@@ -102,6 +105,11 @@ public abstract class BaseModule implements IModule {
 		for (IModuleUpdateListener updateListener : this.updateListeners) {
 			updateListener.onUpdate();
 		}
+	}
+
+	@Override
+	public boolean isInstanceOf(String moduleUrl) {
+		return this.moduleId.equals(ModuleUtils.getModuleId(moduleUrl));
 	}
 
 	@Override

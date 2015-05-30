@@ -9,6 +9,7 @@ import io.pelle.mango.client.core.property.PropertyProvider;
 import io.pelle.mango.client.gwt.GWTLayoutFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
+import io.pelle.mango.client.web.modules.hierarchical.HierarchicalTreeModule;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.test.Entity1VO;
@@ -48,9 +49,11 @@ public class DemoClient implements EntryPoint {
 	/** {@inheritDoc} */
 	@Override
 	public void onModuleLoad() {
+
 		MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
 		init();
 		ModuleHandler.getInstance().startUIModule(ModuleNavigationModule.NAVIGATION_UI_MODULE_LOCATOR, Direction.WEST.toString());
+		ModuleHandler.getInstance().startUIModule(HierarchicalTreeModule.getUIModuleLocator(TestClientHierarchicalConfiguration.ID), Direction.WEST.toString());
 
 		String greetingText = "";
 		greetingText += "<h2>Mango Showcase</h2><br/>";

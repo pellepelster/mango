@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -75,6 +76,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		}
 
 		public void addModuleUI(IModuleUI<Panel, ?> moduleUI) {
+
 			if (widget instanceof StackLayoutPanel) {
 
 				StackLayoutPanel stackLayoutPanel = (StackLayoutPanel) widget;
@@ -89,8 +91,8 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 				List<IModuleUI<Panel, ?>> moduleUIs = stackLayoutPanelMappings.get(stackLayoutPanel);
 				moduleUIs.add(moduleUI);
-				Collections.sort(moduleUIs, new Comparator<IModuleUI<Panel, ?>>() {
 
+				Collections.sort(moduleUIs, new Comparator<IModuleUI<Panel, ?>>() {
 					@Override
 					public int compare(IModuleUI<Panel, ?> moduleUI1, IModuleUI<Panel, ?> moduleUI2) {
 						Integer order1 = moduleUI1.getOrder();
@@ -100,7 +102,8 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 				});
 				beforeIndex = moduleUIs.indexOf(moduleUI);
 
-				stackLayoutPanel.insert(panel, new SimplePanel(title), 3, beforeIndex);
+				GWT.log(Integer.toString(stackLayoutPanel.getWidgetCount()));
+				stackLayoutPanel.insert(panel, new SimplePanel(title), 3, 0);
 				stackLayoutPanel.showWidget(0);
 
 			} else if (widget instanceof Panel) {
@@ -268,7 +271,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 	@Override
 	public void closeModuleUI(IModuleUI<Panel, ?> moduleUI) {
 
-		LOG.info("closing module ui '" + moduleUI + "'");
+		LOG.info("closing module ui '" + moduleUI.getModule().getModuleUrl() + "'");
 
 		Direction direction = getDirection(moduleUI);
 

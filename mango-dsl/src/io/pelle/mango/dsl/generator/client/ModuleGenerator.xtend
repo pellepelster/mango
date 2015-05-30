@@ -20,7 +20,7 @@ public abstract class «moduleDefinition.baseModuleDefinitionName» extends «Ba
 	public static final String MODULE_ID = "«moduleDefinition.name»";
 
 	public «moduleDefinition.baseModuleDefinitionName»(String moduleUrl, «AsyncCallback.name»<«IModule.name»> moduleCallback, java.util.Map<String, Object> parameters) {
-		super(moduleUrl, moduleCallback, parameters);
+		super(MODULE_ID, moduleUrl, moduleCallback, parameters);
 	}
 
 	«FOR moduleDefinitionParameter : moduleDefinition.moduleDefinitionParameters»
