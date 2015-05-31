@@ -199,11 +199,11 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 		// if (!this.dataBindingContext.hasErrors())
 		// {
-		if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getName())) {
-			final Stack<BaseEditorHook<IBaseVO>> runningHooks = new Stack<BaseEditorHook<IBaseVO>>();
+		if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent().getName())) {
+			final Stack<BaseEditorHook<VOType>> runningHooks = new Stack<BaseEditorHook<VOType>>();
 			final Stack<Boolean> hookResults = new Stack<Boolean>();
 
-			for (final BaseEditorHook<IBaseVO> baseEditorHook : DictionaryHookRegistry.getInstance().getEditorHook(getModel().getName())) {
+			for (final BaseEditorHook<VOType> baseEditorHook : DictionaryHookRegistry.getInstance().getEditorHook(getModel().getParent().getName())) {
 				runningHooks.add(baseEditorHook);
 
 				baseEditorHook.onSave(new BaseErrorAsyncCallback<Boolean>() {
@@ -216,7 +216,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 							internalSave(callback);
 						}
 					}
-				}, this.voWrapper.getVO());
+				}, this);
 			}
 		} else {
 			internalSave(callback);
@@ -257,6 +257,11 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 		for (IEditorUpdateListener updateListener : this.updateListeners) {
 			updateListener.onUpdate();
 		}
+	}
+
+	@Override
+	public Map<String, Object> getContext() {
+		return context;
 	}
 
 }

@@ -12,7 +12,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public abstract class BaseEditorHook<VOType extends IBaseVO> implements IEditorHook<VOType> {
 
 	@Override
-	public void onSave(AsyncCallback<Boolean> asyncCallback, VOType vo) {
+	public void onSave(AsyncCallback<Boolean> asyncCallback, IDictionaryEditor<VOType> dictionaryEditor) {
 		asyncCallback.onSuccess(true);
 	}
 

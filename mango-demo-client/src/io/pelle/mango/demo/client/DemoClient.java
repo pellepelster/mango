@@ -1,5 +1,6 @@
 package io.pelle.mango.demo.client;
 
+import io.pelle.mango.client.base.modules.dictionary.editor.IDictionaryEditor;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
 import io.pelle.mango.client.base.property.IProperty;
@@ -170,9 +171,9 @@ public class DemoClient implements EntryPoint {
 		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.addEditorHook(new BaseEditorHook<Entity1VO>() {
 
 			@Override
-			public void onSave(AsyncCallback<Boolean> asyncCallback, Entity1VO vo) {
+			public void onSave(AsyncCallback<Boolean> asyncCallback, IDictionaryEditor<Entity1VO> dictionaryEditor) {
 
-				vo.setDateDatype1(new Date());
+				dictionaryEditor.getVO().setDateDatype1(new Date());
 				asyncCallback.onSuccess(true);
 			}
 		});
@@ -186,9 +187,9 @@ public class DemoClient implements EntryPoint {
 		MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.addEditorHook(new BaseEditorHook<CountryVO>() {
 
 			@Override
-			public void onSave(AsyncCallback<Boolean> asyncCallback, CountryVO vo) {
+			public void onSave(AsyncCallback<Boolean> asyncCallback, IDictionaryEditor<CountryVO> dictionaryEditor) {
 
-				vo.setCountryExchangeRate(new BigDecimal(1.56));
+				dictionaryEditor.getVO().setCountryExchangeRate(new BigDecimal(1.56));
 				asyncCallback.onSuccess(true);
 			}
 		});

@@ -12,6 +12,6 @@ public interface IEditorHook<VOType extends IBaseVO> {
 
 	List<IButton> getEditorButtons(IDictionaryEditor<VOType> dictionaryEditor);
 
-	void onSave(AsyncCallback<Boolean> asyncCallback, VOType vo);
+	void onSave(AsyncCallback<Boolean> asyncCallback, IDictionaryEditor<VOType> dictionaryEditor);
 
 }

@@ -20,7 +20,6 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
 import io.pelle.mango.client.base.util.CollectionUtils;
 import io.pelle.mango.client.base.util.SimpleCallback;
-import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.hierarchy.IHierachicalServiceGWTAsync;
 import io.pelle.mango.client.modules.BaseModuleHierarchicalTreeModule;
@@ -28,6 +27,7 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 import io.pelle.mango.client.web.modules.hierarchical.hooks.HierarchicalHookRegistry;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -79,24 +79,26 @@ public class HierarchicalTreeModule extends BaseModuleHierarchicalTreeModule {
 			public void onSuccess(HierarchicalConfigurationVO result) {
 				HierarchicalTreeModule.this.hierarchicalConfiguration = result;
 
-				Set<String> dictionaryNames = new HashSet<String>();
+				Set<String> allDictionaryNames = new HashSet<String>();
 				for (Map.Entry<String, List<String>> entry : HierarchicalTreeModule.this.hierarchicalConfiguration.getDictionaryHierarchy().entrySet()) {
-					dictionaryNames.add(entry.getKey());
+					allDictionaryNames.add(entry.getKey());
 
 					for (String dictionaryName : entry.getValue()) {
 						if (dictionaryName != null) {
-							dictionaryNames.addAll(entry.getValue());
+							allDictionaryNames.addAll(entry.getValue());
 						}
 					}
 				}
 
-				for (String dictionaryId : HierarchicalTreeModule.this.hierarchicalConfiguration.getDictionaryIds()) {
+				for (String dictionaryId : allDictionaryNames) {
 					List<String> childDictionaryIds = HierarchicalTreeModule.this.hierarchicalConfiguration.getChildDictionaryIds(dictionaryId);
 
+					List<IDictionaryModel> childDictionaries = Collections.emptyList();
 					if (!childDictionaryIds.isEmpty()) {
-						List<IDictionaryModel> childDictionaries = DictionaryModelProvider.getDictionaries(childDictionaryIds);
-						DictionaryHookRegistry.getInstance().addEditorHook(dictionaryId, new HierarchicalEditorHook<IBaseVO>(childDictionaries));
+						childDictionaries = DictionaryModelProvider.getDictionaries(childDictionaryIds);
 					}
+
+					DictionaryHookRegistry.getInstance().addEditorHook(dictionaryId, new HierarchicalEditorHook<IHierarchicalVO>(childDictionaries));
 				}
 
 				getModuleCallback().onSuccess(HierarchicalTreeModule.this);
@@ -120,8 +122,7 @@ public class HierarchicalTreeModule extends BaseModuleHierarchicalTreeModule {
 
 	public static void openModuleForNode(DictionaryHierarchicalNodeVO hierarchicalNodeVO) {
 		if (hierarchicalNodeVO.getVoId() == null) {
-			HashMap<String, Object> parameters = CollectionUtils.getMap(IHierarchicalVO.PARENT_CLASS_FIELD_NAME, hierarchicalNodeVO.getParentClassName(), IHierarchicalVO.PARENT_ID_FIELD_NAME,
-					hierarchicalNodeVO.getParentVOId());
+			HashMap<String, Object> parameters = CollectionUtils.getMap(IHierarchicalVO.PARENT_CLASS_FIELD_NAME, hierarchicalNodeVO.getParentClassName(), IHierarchicalVO.PARENT_ID_FIELD_NAME, hierarchicalNodeVO.getParentVOId());
 
 			DictionaryEditorModuleFactory.openEditor(hierarchicalNodeVO.getDictionaryName(), parameters);
 		} else {
