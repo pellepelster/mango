@@ -131,8 +131,9 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 				panelCollapse.add(panel);
 				containerPanel.add(panelCollapse);
 
-				panelGroup.add(containerPanel);
-				// stackLayoutPanel.showWidget(0);
+				panelGroup.insert(containerPanel, beforeIndex);
+
+				panelCollapse.setIn(true);
 
 			} else if (widget instanceof Panel) {
 				Panel panel = (Panel) widget;
