@@ -122,4 +122,8 @@ public abstract class BaseModule implements IModule {
 		return this.moduleUrl;
 	}
 
+	@Override
+	public String getModuleId() {
+		return moduleId;
+	}
 }

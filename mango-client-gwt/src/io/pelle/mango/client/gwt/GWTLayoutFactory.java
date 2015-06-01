@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.gwt;
 
+import io.pelle.mango.client.base.db.vos.UUID;
 import io.pelle.mango.client.base.layout.ILayoutFactory;
 import io.pelle.mango.client.base.layout.IModuleUI;
 import io.pelle.mango.client.gwt.modules.dictionary.editor.DictionaryEditorModuleUIFactory;
@@ -20,8 +21,6 @@ import io.pelle.mango.client.gwt.modules.log.LogModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.navigation.NavigationModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.property.PropertyModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.webhook.WebhookModuleUIFactory;
-import io.pelle.mango.client.gwt.utils.HtmlWithHelp;
-import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleUIFactoryRegistry;
 
 import java.util.ArrayList;
@@ -33,7 +32,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.google.gwt.core.shared.GWT;
+import org.gwtbootstrap3.client.ui.Anchor;
+import org.gwtbootstrap3.client.ui.Heading;
+import org.gwtbootstrap3.client.ui.PanelCollapse;
+import org.gwtbootstrap3.client.ui.PanelGroup;
+import org.gwtbootstrap3.client.ui.PanelHeader;
+import org.gwtbootstrap3.client.ui.constants.HeadingSize;
+import org.gwtbootstrap3.client.ui.constants.PanelType;
+import org.gwtbootstrap3.client.ui.constants.Toggle;
+
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
@@ -43,8 +50,6 @@ import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.StackLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -54,6 +59,7 @@ import com.google.gwt.user.client.ui.Widget;
  * 
  */
 public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
+
 	final static Logger LOG = Logger.getLogger("GWTLayoutFactory");
 
 	private class PanelLayoutInfo {
@@ -77,19 +83,37 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 		public void addModuleUI(IModuleUI<Panel, ?> moduleUI) {
 
-			if (widget instanceof StackLayoutPanel) {
+			if (widget instanceof PanelGroup) {
 
-				StackLayoutPanel stackLayoutPanel = (StackLayoutPanel) widget;
-				Panel panel = moduleUI.getContainer();
-				panel.setWidth("100%");
+				String containerId = moduleUI.getModule().getModuleId();
+				PanelGroup panelGroup = (PanelGroup) widget;
+				PanelCollapse panelCollapse = new PanelCollapse();
+				panelCollapse.setId(containerId);
 
-				Widget title = new HtmlWithHelp(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()), moduleUI.getModule().getHelpText());
-				title.getElement().getStyle().setProperty("transform", "translateY(40%");
-				title.setStylePrimaryName(GwtStyles.H4_CLASS);
+				org.gwtbootstrap3.client.ui.Panel containerPanel = new org.gwtbootstrap3.client.ui.Panel(PanelType.DEFAULT);
+
+				// create header
+				PanelHeader panelHeader = new PanelHeader();
+				Heading heading = new Heading(HeadingSize.H4);
+				Anchor anchor = new Anchor();
+				anchor.setText(moduleUI.getTitle());
+				anchor.setDataTarget("#" + containerId);
+				anchor.setDataParent("#" + panelGroup.getId());
+				anchor.setDataToggle(Toggle.COLLAPSE);
+				heading.add(anchor);
+				panelHeader.add(heading);
+				containerPanel.add(panelHeader);
+
+				// Widget title = new
+				// HtmlWithHelp(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()),
+				// moduleUI.getModule().getHelpText());
+				// title.getElement().getStyle().setProperty("transform",
+				// "translateY(40%");
+				// title.setStylePrimaryName(GwtStyles.H4_CLASS);
 
 				int beforeIndex = 0;
 
-				List<IModuleUI<Panel, ?>> moduleUIs = stackLayoutPanelMappings.get(stackLayoutPanel);
+				List<IModuleUI<Panel, ?>> moduleUIs = panelGroupMappings.get(panelGroup);
 				moduleUIs.add(moduleUI);
 
 				Collections.sort(moduleUIs, new Comparator<IModuleUI<Panel, ?>>() {
@@ -102,9 +126,13 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 				});
 				beforeIndex = moduleUIs.indexOf(moduleUI);
 
-				GWT.log(Integer.toString(stackLayoutPanel.getWidgetCount()));
-				stackLayoutPanel.insert(panel, new SimplePanel(title), 3, 0);
-				stackLayoutPanel.showWidget(0);
+				Panel panel = moduleUI.getContainer();
+				panel.setWidth("100%");
+				panelCollapse.add(panel);
+				containerPanel.add(panelCollapse);
+
+				panelGroup.add(containerPanel);
+				// stackLayoutPanel.showWidget(0);
 
 			} else if (widget instanceof Panel) {
 				Panel panel = (Panel) widget;
@@ -127,9 +155,9 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		}
 
 		public void removeModuleUI(IModuleUI<Panel, ?> moduleUI) {
-			if (widget instanceof StackLayoutPanel) {
-				StackLayoutPanel stackLayoutPanel = (StackLayoutPanel) widget;
-				stackLayoutPanel.remove(moduleUI.getContainer());
+			if (widget instanceof PanelGroup) {
+				PanelGroup panelGroup = (PanelGroup) widget;
+				panelGroup.remove(moduleUI.getContainer());
 			} else if (widget instanceof Panel) {
 				Panel panel = (Panel) widget;
 				panel.remove(moduleUI.getContainer());
@@ -181,7 +209,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		});
 	}
 
-	private Map<StackLayoutPanel, List<IModuleUI<Panel, ?>>> stackLayoutPanelMappings = new HashMap<StackLayoutPanel, List<IModuleUI<Panel, ?>>>();
+	private Map<PanelGroup, List<IModuleUI<Panel, ?>>> panelGroupMappings = new HashMap<PanelGroup, List<IModuleUI<Panel, ?>>>();
 
 	private Direction getDirection(String location) {
 		try {
@@ -192,13 +220,15 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 	}
 
 	private void initializePanelLayout(Direction direction, int size, boolean supportsMultipleChildren) {
+
 		Widget panel = null;
 
 		if (supportsMultipleChildren) {
-			StackLayoutPanel stackLayoutPanel = new StackLayoutPanel(Unit.EM);
-			stackLayoutPanelMappings.put(stackLayoutPanel, new ArrayList<IModuleUI<Panel, ?>>());
-			stackLayoutPanel.setHeight("100%");
-			panel = stackLayoutPanel;
+			PanelGroup panelGroup = new PanelGroup();
+			panelGroup.setId(UUID.uuid());
+			panelGroupMappings.put(panelGroup, new ArrayList<IModuleUI<Panel, ?>>());
+			panelGroup.setHeight("100%");
+			panel = panelGroup;
 		} else {
 			panel = new HorizontalPanel();
 		}

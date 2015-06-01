@@ -38,4 +38,7 @@ public interface IModule {
 	void onClose();
 
 	String getHelpText();
+
+	String getModuleId();
+
 }
