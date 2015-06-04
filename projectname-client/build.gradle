@@ -18,8 +18,12 @@ buildscript {
 apply plugin: 'gwt'
 
 configurations {
-	gwt
-	gwtTest
+	gwt {
+		extendsFrom compile
+	}
+	gwtTest {
+		extendsFrom gwt
+	}
 }
 
 dependencies {
@@ -34,7 +38,7 @@ gwt {
 	logLevel = 'ERROR'
 }
 
-ext.gwtTestLibDir = new File('lib-gwt-test')
+ext.gwtTestLibDir = project.file(new File('lib-gwt-test'))
 
 task copyGwtTestLibs(type: Copy) {
 	gwtTestLibDir.mkdirs()

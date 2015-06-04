@@ -14,8 +14,12 @@ buildscript {
 apply plugin: 'gwt'
 
 configurations {
-	gwt
-	gwtTest
+	gwt {
+		extendsFrom compile
+	}
+	gwtTest {
+		extendsFrom gwt
+	}
 }
 
 dependencies {
@@ -37,9 +41,9 @@ gwt {
 			files(project(':mango-client-gwt').sourceSets.main.allJava.srcDirs)
 }
 
+ext.gwtTestLibDir = project.file(new File('lib-gwt-test'))
 
 task copyGwtTestLibs(type: Copy) {
-	ext.gwtTestLibDir = new File('lib-gwt-test')
 	gwtTestLibDir.mkdirs()
 	into gwtTestLibDir
 	from configurations.gwtTest
