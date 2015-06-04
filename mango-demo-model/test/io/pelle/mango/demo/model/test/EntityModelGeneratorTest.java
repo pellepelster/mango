@@ -55,7 +55,7 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
-	public void testGetNaturalKey() {
+	public void testGetCountryNaturalKey() {
 
 		Country country = new Country();
 		country.setCountryIsoCode2("DE");
@@ -65,7 +65,21 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
-	public void testHasNaturalKey() {
+	public void testGetEntity5VOComposedNaturalKey() {
+
+		Entity4 entity4 = new Entity4();
+		entity4.setStringDatatype4("def");
+
+		Entity5 entity5 = new Entity5();
+		entity5.setString1("abc");
+		entity5.setEntity4(entity4);
+
+		assertTrue(entity5.hasNaturalKey());
+		assertEquals("abc, def", entity5.getNaturalKey());
+	}
+
+	@Test
+	public void testEntity2HasNoNaturalKey() {
 		Entity2 entity2 = new Entity2();
 
 		assertEquals(entity2.getNaturalKey(), entity2.toString());

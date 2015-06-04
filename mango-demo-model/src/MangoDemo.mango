@@ -536,10 +536,21 @@ project MangoDemo {
 			}
 
 			entity Entity4 extends Entity3 {
+				entityoptions {
+					naturalkey {
+						stringDatatype4
+					}
+				}
 				string StringDatatype4 stringDatatype4
 			}
 
 			entity Entity5 {
+				entityoptions {
+					naturalkey {
+						string1, entity4
+					}
+				}
+			
 				entity Entity4 entity4
 				entity Entity4 0..n entity4s
 				string string1

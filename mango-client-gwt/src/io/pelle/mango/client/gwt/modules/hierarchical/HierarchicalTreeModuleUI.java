@@ -18,33 +18,29 @@ import com.google.common.base.Optional;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class HierarchicalTreeModuleUI extends BaseGwtModuleUI<HierarchicalTreeModule>
-{
+public class HierarchicalTreeModuleUI extends BaseGwtModuleUI<HierarchicalTreeModule> {
 
 	private final VerticalPanel verticalPanel;
 
-	public HierarchicalTreeModuleUI(HierarchicalTreeModule module)
-	{
+	public HierarchicalTreeModuleUI(HierarchicalTreeModule module) {
 		super(module, HierarchicalTreeModule.MODULE_ID);
 
 		verticalPanel = new VerticalPanel();
 
-		HierarchicalTree hierarchicalTree = new HierarchicalTree(module.getHierarchicalConfiguration(), Optional.fromNullable(getModule().getShowAddNodes())
-				.or(true), getModule().getNodeActivatedHandler());
+		HierarchicalTree hierarchicalTree = new HierarchicalTree(module.getHierarchicalConfiguration(), Optional.fromNullable(getModule().getShowAddNodes()).or(true), getModule().getNodeActivatedHandler());
+		hierarchicalTree.setWidth("100%");
 		verticalPanel.add(hierarchicalTree);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Panel getContainer()
-	{
+	public Panel getContainer() {
 		return verticalPanel;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String getTitle()
-	{
+	public String getTitle() {
 		return getModule().getHierarchicalConfiguration().getTitle();
 	}
 

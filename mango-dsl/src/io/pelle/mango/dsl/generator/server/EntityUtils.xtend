@@ -8,6 +8,7 @@ import io.pelle.mango.dsl.mango.EntityPluralLabelField
 import io.pelle.mango.dsl.mango.EntityNaturalKeyFields
 import java.util.Collections
 import io.pelle.mango.dsl.mango.EntityHierarchical
+import io.pelle.mango.dsl.mango.EntityEntityAttribute
 
 class EntityUtils {
 
@@ -18,7 +19,11 @@ class EntityUtils {
 			{
 				java.lang.StringBuffer sb = new java.lang.StringBuffer();
 				«FOR naturalKeyAttribute : entity.naturalKeyFields SEPARATOR "sb.append(\", \");"»
+				«IF naturalKeyAttribute instanceof EntityEntityAttribute»
+				sb.append(this.get«naturalKeyAttribute.name.toFirstUpper()»().getNaturalKey());
+				«ELSE»
 				sb.append(this.get«naturalKeyAttribute.name.toFirstUpper()»());
+				«ENDIF»
 				«ENDFOR»
 				return sb.toString();
 			}

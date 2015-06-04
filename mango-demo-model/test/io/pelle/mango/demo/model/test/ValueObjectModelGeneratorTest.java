@@ -9,6 +9,7 @@ import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.showcase.CompanyVO;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.test.Entity2VO;
+import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
 import io.pelle.mango.demo.client.test.ValueObject1;
 
@@ -32,7 +33,7 @@ public class ValueObjectModelGeneratorTest {
 	}
 
 	@Test
-	public void testGetNaturalKey() {
+	public void testGetCountryNaturalKey() {
 
 		CountryVO countryVO = new CountryVO();
 		countryVO.setCountryIsoCode2("DE");
@@ -42,7 +43,21 @@ public class ValueObjectModelGeneratorTest {
 	}
 
 	@Test
-	public void testHasNaturalKey() {
+	public void testGetEntity5VOComposedNaturalKey() {
+
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype4("def");
+
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setString1("abc");
+		entity5.setEntity4(entity4);
+
+		assertTrue(entity5.hasNaturalKey());
+		assertEquals("abc, def", entity5.getNaturalKey());
+	}
+
+	@Test
+	public void testEntity2VOHasNoNaturalKey() {
 		Entity2VO entity2VO = new Entity2VO();
 
 		assertEquals(entity2VO.getNaturalKey(), entity2VO.toString());
