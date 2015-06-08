@@ -9,6 +9,8 @@ import io.pelle.mango.db.query.ServerAggregateQuery;
 import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity4VO;
+import io.pelle.mango.demo.server.test.Entity4;
 
 import org.junit.Test;
 
@@ -49,6 +51,18 @@ public class JPQLTest extends BaseDemoTest {
 	public void testIntegerEqualsNull() {
 		SelectQuery<Entity1VO> query = selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.eq(null));
 		assertEquals("SELECT x0 FROM Entity1 x0 WHERE x0.integerDatatype1 IS NULL", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
+	}
+
+	@Test
+	public void testAttributeFromExtendedEntity() {
+		SelectQuery<Entity4> query = selectFrom(Entity4.class).where(Entity4.STRINGDATATYPE3.eq("abc"));
+		assertEquals("SELECT x0 FROM Entity4 x0 WHERE x0.stringDatatype3 = 'abc'", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
+	}
+
+	@Test
+	public void testAttributeFromExtendedVO() {
+		SelectQuery<Entity4VO> query = selectFrom(Entity4VO.class).where(Entity4VO.STRINGDATATYPE3.eq("abc"));
+		assertEquals("SELECT x0 FROM Entity4 x0 WHERE x0.stringDatatype3 = 'abc'", ServerSelectQuery.adapt(query).getJPQL(EntityVOMapper.getInstance()));
 	}
 
 	@Test

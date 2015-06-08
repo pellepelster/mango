@@ -45,6 +45,13 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
+	public void testEntity4InheritedAttributeDescriptors() {
+		assertEquals("stringDatatype3", Entity4.STRINGDATATYPE3.getAttributeName());
+		assertEquals(Entity4.ENTITY4, Entity4.STRINGDATATYPE3.getParent());
+	}
+
+	
+	@Test
 	public void testStringAttributeDescriptor() {
 		assertEquals(StringAttributeDescriptor.class, Entity1.STRINGDATATYPE1.getClass());
 	}

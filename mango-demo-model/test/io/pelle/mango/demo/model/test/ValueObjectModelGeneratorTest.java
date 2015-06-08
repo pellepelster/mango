@@ -23,6 +23,12 @@ public class ValueObjectModelGeneratorTest {
 		valueObject1.setString1("xxx");
 		assertEquals("xxx", valueObject1.getString1());
 	}
+	
+	@Test
+	public void testEntity4VOInheritedAttributeDescriptors() {
+		assertEquals("stringDatatype3", Entity4VO.STRINGDATATYPE3.getAttributeName());
+		assertEquals(Entity4VO.ENTITY4, Entity4VO.STRINGDATATYPE3.getParent());
+	}
 
 	@Test
 	public void testValueObject1Entity5() {

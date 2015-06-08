@@ -133,7 +133,7 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testEntityInheritance1() {
+	public void testEntityVOInheritance() {
 
 		Entity4VO newVO4 = new Entity4VO();
 		newVO4.setStringDatatype3("inheritance3");
@@ -153,7 +153,7 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testEntityInheritance2() {
+	public void testEntity3VOInheritance() {
 
 		Entity3VO newVO3 = new Entity3VO();
 		newVO3.setStringDatatype3("inheritance3");
