@@ -2,14 +2,14 @@ package io.pelle.mango.db.dao;
 
 import io.pelle.mango.client.base.vo.IVOEntity;
 
-public interface IDAOCallback {
+public interface IDAOCallback<VOType extends IVOEntity> {
 
-	<VOType extends IVOEntity> void onCreate(VOType voEntity);
+	void onCreate(VOType voEntity);
 
-	<VOType extends IVOEntity> void onUpdate(VOType voEntity);
+	void onUpdate(VOType voEntity);
 
 	void onDeleteAll(Class<? extends IVOEntity> voEntityClass);
 
-	<VOType extends IVOEntity> void onDelete(VOType voEntity);
+	void onDelete(VOType voEntity);
 
 }

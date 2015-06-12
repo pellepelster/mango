@@ -44,8 +44,6 @@ import com.google.common.base.Optional;
 @Component
 public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
-	private List<IDAOCallback> callbacks = new ArrayList<IDAOCallback>();
-
 	private static Logger LOG = Logger.getLogger(BaseEntityDAO.class);
 
 	@Override
@@ -76,22 +74,8 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 		T result = mergeRecursive(entity);
 
-		fireOnCreateCallbacks(result);
-
 		return result;
 
-	}
-
-	private <T extends IBaseEntity> void fireOnDeleteCallbacks(T entity) {
-		for (IDAOCallback daoCallback : callbacks) {
-			daoCallback.onDelete(entity);
-		}
-	}
-
-	private <T extends IBaseEntity> void fireOnCreateCallbacks(T entity) {
-		for (IDAOCallback daoCallback : callbacks) {
-			daoCallback.onCreate(entity);
-		}
 	}
 
 	@Override
@@ -102,7 +86,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 		this.entityManager.remove(entityToDelete);
 
-		fireOnDeleteCallbacks(entityToDelete);
 	}
 
 	@Override
@@ -312,10 +295,6 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		} else {
 			return Optional.of(result.get(0));
 		}
-	}
-
-	public void registerCallback(IDAOCallback callback) {
-		callbacks.add(callback);
 	}
 
 }

@@ -67,7 +67,24 @@ project Mango {
 				method <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
 			}
 		}
+		
+		package search {
 
+			moduledefinition Search {
+				parameters {
+				}
+			}
+			
+			valueobject SearchResultItem {
+			}
+		
+			service SearchService {
+				method List<LogEntryVO> search(String searchId, String search)
+			}
+			
+			
+		}
+		
 		package property {
 
 			moduledefinition Property {
@@ -153,9 +170,6 @@ project Mango {
 				method Boolean hasChildren ( String voClassName, Long voId )
 				method List<DictionaryHierarchicalNodeVO> getChildNodes ( String id, Long voId, String voClassName )
 			}
-		}
-		
-		valueobject SearchResultItem {
 		}
 		
 		entity DictionaryLabelSearchIndex {

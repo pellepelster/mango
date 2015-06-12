@@ -162,22 +162,22 @@ public class EntityWebhookRegistry implements InitializingBean {
 		baseEntityDAO.registerCallback(new IDAOCallback() {
 
 			@Override
-			public <VOType extends IVOEntity> void onUpdate(VOType voEntity) {
+			public void onUpdate(IVOEntity voEntity) {
 			}
 
 			@Override
-			public void onDeleteAll(Class<? extends IVOEntity> voEntityClass) {
+			public void onDeleteAll(Class voEntityClass) {
 			}
 
 			@Override
-			public <VOType extends IVOEntity> void onDelete(VOType voEntity) {
+			public void onDelete(IVOEntity voEntity) {
 				if (voEntity.getClass().equals(Webhook.class)) {
 					hooks.invalidateAll();
 				}
 			}
 
 			@Override
-			public <VOType extends IVOEntity> void onCreate(VOType voEntity) {
+			public void onCreate(IVOEntity voEntity) {
 				callEntityWebHooks(EntityWebHookEvents.ON_CREATE, hooks.getUnchecked(getCacheKey(voEntity.getClass())), voEntity);
 			}
 		});

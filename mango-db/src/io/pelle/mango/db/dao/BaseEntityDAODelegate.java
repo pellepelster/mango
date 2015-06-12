@@ -20,6 +20,7 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.util.DBUtil;
 import io.pelle.mango.db.util.EntityVOMapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,8 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 
 	private Map<Class<?>, IVOEntityDAO<? extends IBaseEntity>> entityDAOs = new HashMap<Class<?>, IVOEntityDAO<? extends IBaseEntity>>();
 
+	private List<IDAOCallback> callbacks = new ArrayList<IDAOCallback>();
+
 	@Autowired
 	private BaseEntityDAO baseEntityDAO;
 
@@ -55,6 +58,8 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 	public <T extends IBaseEntity> T create(T entity) {
 
 		Timer.Context context = getCreateContext(entity.getClass());
+
+		fireOnCreateCallbacks(entity);
 
 		try {
 
@@ -71,6 +76,7 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 				context.stop();
 			}
 		}
+
 	}
 
 	@SuppressWarnings("unchecked")
@@ -178,13 +184,17 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 
 	@Override
 	public <T extends IBaseEntity> void delete(T entity) {
+
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entity);
+
+		fireOnDeleteCallbacks(entity);
 
 		if (entityDAO != null) {
 			entityDAO.delete(entity);
 		} else {
 			baseEntityDAO.delete(entity);
 		}
+
 	}
 
 	@Override
@@ -229,11 +239,6 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 		} else {
 			baseEntityDAO.deleteQuery(query);
 		}
-	}
-
-	@Override
-	public void registerCallback(IDAOCallback callback) {
-		baseEntityDAO.registerCallback(callback);
 	}
 
 	@Autowired(required = false)
@@ -321,4 +326,15 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 
 	}
 
+	private <T extends IBaseEntity> void fireOnDeleteCallbacks(T entity) {
+		for (IDAOCallback daoCallback : callbacks) {
+			daoCallback.onDelete(entity);
+		}
+	}
+
+	private <T extends IBaseEntity> void fireOnCreateCallbacks(T entity) {
+		for (IDAOCallback daoCallback : callbacks) {
+			daoCallback.onCreate(entity);
+		}
+	}
 }

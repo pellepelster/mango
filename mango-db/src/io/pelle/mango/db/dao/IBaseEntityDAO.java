@@ -4,6 +4,6 @@ import io.pelle.mango.client.base.vo.IBaseEntity;
 
 public interface IBaseEntityDAO extends IBaseVOEntityDAO<IBaseEntity> {
 
-	void registerCallback(IDAOCallback callback);
+	void registerCallback(IDAOCallback<?> callback);
 
 }

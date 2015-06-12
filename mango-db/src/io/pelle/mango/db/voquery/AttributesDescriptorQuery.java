@@ -3,6 +3,7 @@ package io.pelle.mango.db.voquery;
 import io.pelle.mango.client.base.vo.AttributeDescriptor;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.db.util.BeanUtils;
 import io.pelle.mango.server.base.query.BaseCollectionQuery;
 
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ import com.google.common.collect.Collections2;
 public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> extends BaseCollectionQuery<T> {
 
 	private Class<? extends IVOEntity> voEntityClass;
+
+	public static AttributesDescriptorQuery<?> createQuery(Class<? extends IVOEntity> voEntityClass) {
+		return new AttributesDescriptorQuery(voEntityClass, (Collection<T>) Arrays.asList(BeanUtils.getAttributeDescriptors(voEntityClass)));
+	}
 
 	public AttributesDescriptorQuery(Class<? extends IVOEntity> voEntityClass, Collection<T> attributeDescriptors) {
 		super(attributeDescriptors);
@@ -37,8 +42,7 @@ public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> extend
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <C extends IAttributeDescriptor<?>> AttributesDescriptorQuery<C> byName(final String attributeName) {
-		return new AttributesDescriptorQuery(voEntityClass, Collections2.filter(getCollection(),
-				io.pelle.mango.db.voquery.Predicates.attributeDescriptorByName(attributeName)));
+		return new AttributesDescriptorQuery(voEntityClass, Collections2.filter(getCollection(), io.pelle.mango.db.voquery.Predicates.attributeDescriptorByName(attributeName)));
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -59,6 +63,10 @@ public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> extend
 		});
 
 		return new AttributesDescriptorQuery(voEntityClass, naturalKeyAttributeDescriptors);
+	}
+
+	public boolean has(IAttributeDescriptor<?> attributeDescriptor) {
+		return getCollection().contains(attributeDescriptor);
 	}
 
 }
