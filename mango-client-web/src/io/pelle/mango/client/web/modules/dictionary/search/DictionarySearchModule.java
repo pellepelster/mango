@@ -11,7 +11,6 @@
  */
 package io.pelle.mango.client.web.modules.dictionary.search;
 
-import io.pelle.mango.client.SearchResultItem;
 import io.pelle.mango.client.base.module.IModule;
 import io.pelle.mango.client.base.module.ModuleUtils;
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel;
@@ -90,11 +89,9 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 		}
 	}
 
-	public void search(String query, AsyncCallback<List<SearchResultItem>> callback) {
+	public void search(String query, AsyncCallback<List<io.pelle.mango.client.search.SearchResultItem>> callback) {
 		this.title = MangoClientWeb.MESSAGES.dictionarySearchResults(query);
-		// Mango.getInstance().getRemoteServiceLocator().getDictionarySearchService().search(query,
-		// callback);
-		throw new RuntimeException("not implemented");
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getSearchService().search(null, query, callback);
 	}
 
 	public DictionarySearch<VOType> getDictionarySearch() {
