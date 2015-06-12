@@ -14,6 +14,7 @@ import io.pelle.mango.client.api.webhook.WebhookVO
 import io.pelle.mango.client.base.property.IProperty
 import io.pelle.mango.client.base.property.IPropertyCategory
 import java.io.Serializable
+import io.pelle.mango.client.search.SearchResultItem
 
 project Mango {
 
@@ -76,10 +77,13 @@ project Mango {
 			}
 			
 			valueobject SearchResultItem {
+				string dictionaryId
+				long id
+				string resultText
 			}
 		
 			service SearchService {
-				method List<LogEntryVO> search(String searchId, String search)
+				method List<SearchResultItem> search(String indexId, String searchText)
 			}
 			
 			

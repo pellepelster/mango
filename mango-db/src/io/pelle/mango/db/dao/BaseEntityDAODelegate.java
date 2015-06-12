@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.google.common.base.Optional;
+import com.google.common.collect.Iterables;
 
 @Component
 public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBaseEntityDAO {
@@ -49,7 +50,9 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 
 	private Map<Class<?>, IVOEntityDAO<? extends IBaseEntity>> entityDAOs = new HashMap<Class<?>, IVOEntityDAO<? extends IBaseEntity>>();
 
-	private List<IDAOCallback> callbacks = new ArrayList<IDAOCallback>();
+	private List<IDAOCallback<?>> genericCallbacks = new ArrayList<IDAOCallback<?>>();
+
+	private Map<Class<? extends IBaseEntity>, List<IDAOCallback<?>>> entityCallbacks = new HashMap<Class<? extends IBaseEntity>, List<IDAOCallback<?>>>();
 
 	@Autowired
 	private BaseEntityDAO baseEntityDAO;
@@ -326,15 +329,33 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 
 	}
 
+	private <T extends IBaseEntity> Iterable<IDAOCallback<?>> getEntityCallbacks(T entity) {
+		if (entityCallbacks.get(entity.getClass()) == null) {
+			entityCallbacks.put(entity.getClass(), new ArrayList<IDAOCallback<?>>());
+		}
+		
+		return entityCallbacks.get(entity.getClass());
+	}
+		
+
+	private <T extends IBaseEntity> Iterable<IDAOCallback<?>> getCallbacks(T entity) {
+		return Iterables.concat(genericCallbacks, getEntityCallbacks(entity));
+	}
+	
 	private <T extends IBaseEntity> void fireOnDeleteCallbacks(T entity) {
-		for (IDAOCallback daoCallback : callbacks) {
+		for (IDAOCallback daoCallback : getCallbacks(entity)) {
 			daoCallback.onDelete(entity);
 		}
 	}
 
 	private <T extends IBaseEntity> void fireOnCreateCallbacks(T entity) {
-		for (IDAOCallback daoCallback : callbacks) {
+		for (IDAOCallback daoCallback : getCallbacks(entity)) {
 			daoCallback.onCreate(entity);
 		}
+	}
+
+	@Override
+	public void registerCallback(IDAOCallback<?> callback) {
+		genericCallbacks.add(callback);
 	}
 }

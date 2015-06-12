@@ -1,4 +1,4 @@
-#Mon Jun 08 14:17:33 CEST 2015
+#Fri Jun 12 21:54:24 CEST 2015
 outlet.DEFAULT_OUTPUT.sourceFolder.test.directory=build/xtend-gen/test
 outlet.DEFAULT_OUTPUT.userOutputPerSourceFolder=true
 outlet.DEFAULT_OUTPUT.installDslAsPrimarySource=true

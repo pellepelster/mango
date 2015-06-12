@@ -22,7 +22,7 @@ public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> extend
 	private Class<? extends IVOEntity> voEntityClass;
 
 	public static AttributesDescriptorQuery<?> createQuery(Class<? extends IVOEntity> voEntityClass) {
-		return new AttributesDescriptorQuery(voEntityClass, (Collection<T>) Arrays.asList(BeanUtils.getAttributeDescriptors(voEntityClass)));
+		return new AttributesDescriptorQuery(voEntityClass, (Collection) Arrays.asList(BeanUtils.getAttributeDescriptors(voEntityClass)));
 	}
 
 	public AttributesDescriptorQuery(Class<? extends IVOEntity> voEntityClass, Collection<T> attributeDescriptors) {
