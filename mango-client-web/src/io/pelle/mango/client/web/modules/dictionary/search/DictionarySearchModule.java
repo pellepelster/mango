@@ -47,7 +47,7 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 
 	public static final String SEARCH_QUERY_RESULT_UI_MODULE_ID = SEARCH_QUERY_UI_MODULE_ID + "Result";
 
-	public static final String geSearchModuleLocator(String dictionaryName) {
+	public static final String getSearchModuleLocator(String dictionaryName) {
 		return ModuleUtils.getBaseUIModuleUrl(SEARCH_UI_MODULE_ID) + "&" + SEARCHDICTIONARYNAME_PARAMETER_ID + "=" + dictionaryName;
 	}
 

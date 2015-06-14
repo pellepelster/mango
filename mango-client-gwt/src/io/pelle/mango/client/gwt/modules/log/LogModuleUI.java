@@ -17,14 +17,13 @@ import io.pelle.mango.client.web.modules.log.LogModule;
 
 import java.util.logging.Logger;
 
-import com.google.gwt.core.client.GWT;
+import org.gwtbootstrap3.client.ui.html.Div;
+
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.user.cellview.client.SimplePager;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * UI for the navigation module
@@ -36,13 +35,13 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 
 	final static Logger LOG = Logger.getLogger("LogModuleUI");
 
-	private final FlowPanel panel;
+	private final Div container;
 
 	private HTML title;
 
 	private EndlessLogDataGrid logDataGrid;
 
-	private VerticalPanel headerPanel;
+	private Div headerContainer;
 
 	/**
 	 * @param module
@@ -50,27 +49,25 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 	public LogModuleUI(LogModule module) {
 		super(module, LogModule.UI_MODULE_ID);
 
-		panel = new FlowPanel();
-		panel.ensureDebugId(LogModule.UI_MODULE_ID);
-		panel.setWidth("100%");
-		panel.setHeight("100%");
+		container = new Div();
+		container.ensureDebugId(LogModule.UI_MODULE_ID);
 
-		headerPanel = new VerticalPanel();
+		headerContainer = new Div();
 
 		// - title -------------------------------------------------------------
 		title = new HTML(module.getTitle());
 		title.addStyleName(GwtStyles.TITLE);
-		headerPanel.add(title);
-		panel.add(headerPanel);
+		headerContainer.add(title);
+		container.add(headerContainer);
 
 		logDataGrid = new EndlessLogDataGrid();
 		logDataGrid.setWidth("98%");
-		panel.add(logDataGrid);
+		container.add(logDataGrid);
 
 		final SimplePager pager = new SimplePager();
 		pager.setDisplay(logDataGrid);
 
-		panel.addAttachHandler(new Handler() {
+		container.addAttachHandler(new Handler() {
 
 			@Override
 			public void onAttachOrDetach(AttachEvent event) {
@@ -83,14 +80,14 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 	@Override
 	public void onResize() {
 
-		if (headerPanel != null && panel != null) {
-			
-			int totalHeight = panel.getParent().getOffsetHeight();
-			int headerHeight = headerPanel.getOffsetHeight() + headerPanel.getAbsoluteTop();
+		if (headerContainer != null && container != null) {
+
+			int totalHeight = container.getParent().getOffsetHeight();
+			int headerHeight = headerContainer.getOffsetHeight() + headerContainer.getAbsoluteTop();
 
 			int tableHeight = totalHeight - (headerHeight);
 			logDataGrid.setHeight(tableHeight + "px");
-			//GWT.log(tableHeight + "px");
+			// GWT.log(tableHeight + "px");
 		}
 
 	}
@@ -98,7 +95,7 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 	/** {@inheritDoc} */
 	@Override
 	public Panel getContainer() {
-		return panel;
+		return container;
 	}
 
 	@Override

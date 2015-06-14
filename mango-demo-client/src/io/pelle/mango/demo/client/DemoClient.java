@@ -7,9 +7,10 @@ import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.IPropertyCategory;
 import io.pelle.mango.client.core.property.PropertyBuilder;
 import io.pelle.mango.client.core.property.PropertyProvider;
-import io.pelle.mango.client.gwt.GWTLayoutFactory;
+import io.pelle.mango.client.gwt.MangoBootstrapLayoutFactory;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
+import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
 import io.pelle.mango.client.web.modules.hierarchical.HierarchicalTreeModule;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 import io.pelle.mango.demo.client.showcase.CountryVO;
@@ -22,7 +23,6 @@ import org.gwtbootstrap3.client.ui.Button;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.dom.client.Style.Overflow;
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.regexp.shared.RegExp;
@@ -51,8 +51,9 @@ public class DemoClient implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 
-		MangoClientWeb.getInstance().setLayoutFactory(new GWTLayoutFactory(Unit.PX));
+		MangoClientWeb.getInstance().setLayoutFactory(new MangoBootstrapLayoutFactory());
 		init();
+		ModuleHandler.getInstance().startUIModule(DictionarySearchModule.SEARCH_QUERY_UI_MODULE_LOCATOR, Direction.WEST.toString());
 		ModuleHandler.getInstance().startUIModule(ModuleNavigationModule.NAVIGATION_UI_MODULE_LOCATOR, Direction.WEST.toString());
 		ModuleHandler.getInstance().startUIModule(HierarchicalTreeModule.getUIModuleLocator(TestClientHierarchicalConfiguration.ID), Direction.WEST.toString());
 

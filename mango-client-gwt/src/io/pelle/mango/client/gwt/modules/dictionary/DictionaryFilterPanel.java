@@ -16,7 +16,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ColumnLayoutStrategy;
 import io.pelle.mango.client.web.modules.dictionary.filter.DictionaryFilter;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
+import org.gwtbootstrap3.client.ui.html.Div;
 
 /**
  * Generic dictionary model based implementation of {@link IDictionaryFilterUI}
@@ -26,10 +26,9 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * 
  * @param <VOType>
  */
-public class DictionaryFilterPanel<VOType extends IBaseVO> extends VerticalPanel {
+public class DictionaryFilterPanel<VOType extends IBaseVO> extends Div {
 
 	private final ColumnLayoutStrategy layoutStrategy = new ColumnLayoutStrategy(LAYOUT_TYPE.FILTER);
-
 
 	/**
 	 * Constructor for {@link DictionaryFilterPanel}

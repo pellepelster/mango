@@ -25,7 +25,7 @@ public interface GwtStyles {
 
 	String DEBUG_BORDER = "ydebug-border";
 
-	String MODULE = "module";
+	String MODULE = "mango-module";
 
 	String FORM = "form";
 

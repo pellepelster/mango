@@ -20,23 +20,23 @@ public class SearchIndexBuilder {
 		public DictionaryIndex(IDictionaryModel dictionaryModel) {
 			this.dictionaryModel = dictionaryModel;
 		}
-		
+
 		public DictionaryIndex addAttributes(IBaseControlModel... baseControlModels) {
-			
+
 			for (IBaseControlModel baseControlModel : baseControlModels) {
-				
-				AttributesDescriptorQuery< ? extends IAttributeDescriptor<?>> query = AttributesDescriptorQuery.createQuery(dictionaryModel.getVOClass()).byName(baseControlModel.getAttributePath());
-				
+
+				AttributesDescriptorQuery<? extends IAttributeDescriptor<?>> query = AttributesDescriptorQuery.createQuery(dictionaryModel.getVOClass()).byName(baseControlModel.getAttributePath());
+
 				if (query.hasExactlyOne()) {
 					this.attributeDescriptors.add(query.getSingleResult());
 				} else {
 					throw new RuntimeException(String.format("entity vo class '%s' has no attribute descriptor for path '%s'", dictionaryModel.getVOClass(), baseControlModel.getAttributePath()));
 				}
 			}
-			
+
 			return this;
 		}
-		
+
 		public DictionaryIndex addAttributes(IAttributeDescriptor<?>... attributeDescriptors) {
 
 			for (IAttributeDescriptor<?> attributeDescriptor : attributeDescriptors) {
@@ -53,7 +53,7 @@ public class SearchIndexBuilder {
 		public Class<? extends IVOEntity> getVOEntityClass() {
 			return dictionaryModel.getVOClass();
 		}
-		
+
 		public List<IAttributeDescriptor<?>> getAttributeDescriptors() {
 			return attributeDescriptors;
 		}
@@ -62,12 +62,12 @@ public class SearchIndexBuilder {
 			return dictionaryModel.getName();
 		}
 	}
-	
-	
+
 	private String indexId;
 
-	private List<DictionaryIndex> voEntities = new ArrayList<DictionaryIndex>();
+	private boolean isDefault = false;
 
+	private List<DictionaryIndex> voEntities = new ArrayList<DictionaryIndex>();
 
 	public SearchIndexBuilder(String searchIndexId) {
 		super();
@@ -79,8 +79,8 @@ public class SearchIndexBuilder {
 	}
 
 	public DictionaryIndex forDictionary(IDictionaryModel dictionaryModel) {
-		
-		DictionaryIndex searchIndexBuilderEntity = new DictionaryIndex(dictionaryModel); 
+
+		DictionaryIndex searchIndexBuilderEntity = new DictionaryIndex(dictionaryModel);
 		voEntities.add(searchIndexBuilderEntity);
 		return searchIndexBuilderEntity;
 	}
@@ -88,8 +88,18 @@ public class SearchIndexBuilder {
 	public String getIndexId() {
 		return indexId;
 	}
-	
+
 	public List<DictionaryIndex> getVOEntities() {
 		return voEntities;
 	}
+
+	public SearchIndexBuilder setDefault() {
+		isDefault = true;
+		return this;
+	}
+
+	public boolean isDefault() {
+		return isDefault;
+	}
+
 }

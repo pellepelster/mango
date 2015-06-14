@@ -52,7 +52,7 @@ public class MangoClientSyncWebTest {
 
 	public <VOTYPE extends IBaseVO> DictionarySearchModuleTestUI<VOTYPE> openSearch(final SearchModel searchModel) {
 		final AsyncCallbackFuture<IModuleUI> future = AsyncCallbackFuture.create();
-		ModuleHandler.getInstance().startUIModule(DictionarySearchModule.geSearchModuleLocator(searchModel.getParent().getName()), null, new HashMap<String, Object>(), Optional.of(future.getCallback()));
+		ModuleHandler.getInstance().startUIModule(DictionarySearchModule.getSearchModuleLocator(searchModel.getParent().getName()), null, new HashMap<String, Object>(), Optional.of(future.getCallback()));
 		return (DictionarySearchModuleTestUI<VOTYPE>) future.get();
 	}
 

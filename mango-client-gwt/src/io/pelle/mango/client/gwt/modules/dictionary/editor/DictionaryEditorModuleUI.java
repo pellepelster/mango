@@ -29,13 +29,13 @@ import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.gwt.commons.toastr.Toastr;
 
 import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.html.Div;
 
 import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * UI for the navigation module
@@ -45,7 +45,7 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  */
 public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionaryEditorModule<VOType>> implements IEditorUpdateListener {
 
-	private final VerticalPanel verticalPanel;
+	private final Div container;
 
 	private static final String DICTIONARY_SAVE_BUTTON_DEBUG_ID = "DictionarySaveButton";
 
@@ -63,22 +63,22 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 	public DictionaryEditorModuleUI(DictionaryEditorModule<VOType> module, final Optional<IModuleUI> previousModuleUI) {
 		super(module, DictionaryEditorModule.EDITOR_UI_MODULE_ID);
 
-		verticalPanel = new VerticalPanel();
+		container = new Div();
 
-		verticalPanel.addStyleName(GwtStyles.DEBUG_BORDER);
-		verticalPanel.setWidth("100%");
+		container.addStyleName(GwtStyles.DEBUG_BORDER);
+		container.setWidth("100%");
 
 		// - action panel ------------------------------------------------------
 		ActionBar actionBar = new ActionBar();
-		verticalPanel.add(actionBar);
+		container.add(actionBar);
 
 		// - title -------------------------------------------------------------
 		editorTitle = new HtmlWithHelp(module.getTitle(), module.getHelpText());
 		editorTitle.addStyleName(GwtStyles.TITLE);
-		verticalPanel.add(editorTitle);
+		container.add(editorTitle);
 
 		DictionaryEditorPanel<VOType> dictionaryEditorPanel = new DictionaryEditorPanel<VOType>(getModule());
-		verticalPanel.add(dictionaryEditorPanel);
+		container.add(dictionaryEditorPanel);
 
 		if (previousModuleUI.isPresent()) {
 
@@ -186,7 +186,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 	/** {@inheritDoc} */
 	@Override
 	public Panel getContainer() {
-		return verticalPanel;
+		return container;
 	}
 
 	@Override

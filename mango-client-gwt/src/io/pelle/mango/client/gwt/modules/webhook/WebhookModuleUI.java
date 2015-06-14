@@ -33,12 +33,12 @@ import org.gwtbootstrap3.client.ui.DropDownMenu;
 import org.gwtbootstrap3.client.ui.Heading;
 import org.gwtbootstrap3.client.ui.constants.HeadingSize;
 import org.gwtbootstrap3.client.ui.constants.Toggle;
+import org.gwtbootstrap3.client.ui.html.Div;
 
 import com.google.common.base.Optional;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Panel;
 
 /**
@@ -51,11 +51,11 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 
 	final static Logger LOG = Logger.getLogger("LogModuleUI");
 
-	private final FlowPanel panel;
+	private final Div container;
 
 	private Heading title;
 
-	private FlowPanel panelBody;
+	private Div panelBody;
 
 	/**
 	 * @param module
@@ -63,17 +63,17 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 	public WebhookModuleUI(WebHookModule module) {
 		super(module, WebHookModule.UI_MODULE_ID);
 
-		panel = new FlowPanel();
-		panel.ensureDebugId(WebHookModule.UI_MODULE_ID);
-		panel.setWidth("80%");
+		container = new Div();
+		container.setWidth("100%");
+		container.ensureDebugId(WebHookModule.UI_MODULE_ID);
 
 		// - title -------------------------------------------------------------
 		title = new Heading(HeadingSize.H2);
 		title.setText(getModule().getTitle());
-		panel.add(title);
+		container.add(title);
 
 		ButtonGroup addWebhookButtonGroup = new ButtonGroup();
-		panel.add(addWebhookButtonGroup);
+		container.add(addWebhookButtonGroup);
 
 		Button addWebhookButton = new Button(MangoClientWeb.MESSAGES.webHooksAdd());
 		addWebhookButton.setDataToggle(Toggle.DROPDOWN);
@@ -82,8 +82,8 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 		DropDownMenu downMenu = new DropDownMenu();
 		addWebhookButtonGroup.add(downMenu);
 
-		panelBody = new FlowPanel();
-		panel.add(panelBody);
+		panelBody = new Div();
+		container.add(panelBody);
 
 		for (final WebhookDefinition webhookDefinition : getModule().getWebHookDefinitions()) {
 			AnchorListItem anchorListItem = new AnchorListItem(webhookDefinition.getName());
@@ -124,7 +124,7 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 
 	@Override
 	public Panel getContainer() {
-		return panel;
+		return container;
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 
 	@Override
 	public void onDelete(final WebhookPanel webhookPanel) {
-		
+
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getWebhookService().removeWebhook(webhookPanel.getWebhook(), new AsyncCallback<Boolean>() {
 
 			@Override

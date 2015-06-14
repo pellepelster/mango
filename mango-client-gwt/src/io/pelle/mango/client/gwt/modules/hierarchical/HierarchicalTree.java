@@ -15,11 +15,12 @@ import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfiguration
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 
+import org.gwtbootstrap3.client.ui.html.Div;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTree;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class HierarchicalTree extends VerticalPanel {
+public class HierarchicalTree extends Div {
 
 	public HierarchicalTree(HierarchicalConfigurationVO hierarchicalConfiguration, boolean showAddnodes, SimpleCallback<DictionaryHierarchicalNodeVO> nodeSelectionHandler) {
 		CellTree.Resources treeResources = GWT.create(CellTree.BasicResources.class);

@@ -15,8 +15,9 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.IComposite
 import io.pelle.mango.client.web.modules.dictionary.container.Composite;
 import io.pelle.mango.client.web.modules.dictionary.container.IContainer;
 
+import org.gwtbootstrap3.client.ui.html.Div;
+
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * GWT {@link ICompositeModel} implementation
@@ -24,18 +25,15 @@ import com.google.gwt.user.client.ui.VerticalPanel;
  * @author pelle
  * 
  */
-public class GwtComposite extends VerticalPanel implements IContainer<Panel>
-{
+public class GwtComposite extends Div implements IContainer<Panel> {
 
-	public GwtComposite(Composite composite)
-	{
+	public GwtComposite(Composite composite) {
 		setWidth("100%");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public Panel getContainer()
-	{
+	public Panel getContainer() {
 		return this;
 	}
 

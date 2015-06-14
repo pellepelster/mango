@@ -9,32 +9,16 @@
 .top-spacer {
   margin-top: 1.5em;
 }
-.docklayoutpanel-center {
-  margin: 1em;
+.mango-bootstrap-layout-container {
+  padding-right: 0px;
+  padding-left: 0px;
 }
-.docklayoutpanel-east {
-  margin-left: 1em;
-}
-.docklayoutpanel-north {
-  margin-bottom: 1em;
-}
-.docklayoutpanel-south {
-  margin-top: 1em;
-}
-.docklayoutpanel-west {
-  margin-right: 1em;
-}
-.docklayoutpanel-line_end {
-  margin-top: 1em;
-}
-.docklayoutpanel-line_start {
-  margin-bottom: 1em;
+.mango-module {
+  padding-right: 1em;
+  padding-top: 1em;
 }
 .debug-border {
   border: 1px solid #FF0000;
-}
-.module {
-  padding: 1em;
 }
 /*  when changing the error styles don't forget to also change the following styles:
 	 - .dateBoxFormatError

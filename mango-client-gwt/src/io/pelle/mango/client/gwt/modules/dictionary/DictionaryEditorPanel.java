@@ -16,10 +16,9 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ColumnLayoutStrategy;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
+import org.gwtbootstrap3.client.ui.html.Div;
 
-public class DictionaryEditorPanel<VOType extends IBaseVO> extends VerticalPanel
-{
+public class DictionaryEditorPanel<VOType extends IBaseVO> extends Div {
 
 	private final ColumnLayoutStrategy layoutStrategy = new ColumnLayoutStrategy(LAYOUT_TYPE.EDITOR);
 
@@ -28,8 +27,7 @@ public class DictionaryEditorPanel<VOType extends IBaseVO> extends VerticalPanel
 	 * 
 	 * @param dictionaryEditorModule
 	 */
-	public DictionaryEditorPanel(DictionaryEditorModule<VOType> dictionaryEditorModule)
-	{
+	public DictionaryEditorPanel(DictionaryEditorModule<VOType> dictionaryEditorModule) {
 		setWidth("100%");
 		layoutStrategy.createLayout(this, dictionaryEditorModule.getDictionaryEditor().getRootComposite());
 	}

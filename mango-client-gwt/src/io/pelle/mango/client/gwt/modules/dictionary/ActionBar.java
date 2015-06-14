@@ -27,8 +27,6 @@ import org.gwtbootstrap3.client.ui.ButtonToolBar;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.HasAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 
 /**
  * Gmail style button bar
@@ -36,7 +34,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
  * @author pelle
  * 
  */
-public class ActionBar extends HorizontalPanel {
+public class ActionBar extends ButtonGroup {
 
 	private final ButtonToolBar buttonToolbar = new ButtonToolBar();
 
@@ -44,7 +42,6 @@ public class ActionBar extends HorizontalPanel {
 
 	public ActionBar() {
 		setWidth("100%");
-		setHorizontalAlignment(HasAlignment.ALIGN_LEFT);
 		addStyleName(GwtStyles.DEBUG_BORDER);
 		add(buttonToolbar);
 

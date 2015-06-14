@@ -33,21 +33,23 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.gwtbootstrap3.client.ui.Anchor;
+import org.gwtbootstrap3.client.ui.Column;
+import org.gwtbootstrap3.client.ui.Container;
 import org.gwtbootstrap3.client.ui.Heading;
 import org.gwtbootstrap3.client.ui.PanelCollapse;
 import org.gwtbootstrap3.client.ui.PanelGroup;
 import org.gwtbootstrap3.client.ui.PanelHeader;
+import org.gwtbootstrap3.client.ui.Row;
+import org.gwtbootstrap3.client.ui.constants.ColumnSize;
 import org.gwtbootstrap3.client.ui.constants.HeadingSize;
 import org.gwtbootstrap3.client.ui.constants.PanelType;
 import org.gwtbootstrap3.client.ui.constants.Toggle;
 
-import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -58,9 +60,13 @@ import com.google.gwt.user.client.ui.Widget;
  * @author pelle
  * 
  */
-public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
+public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
-	final static Logger LOG = Logger.getLogger("GWTLayoutFactory");
+	public static final String ROOT_CONTAINER_CSS_ID = "mango-bootstrap-layout";
+
+	public static final String CONTAINER_CSS_ID = "mango-bootstrap-layout-container";
+
+	final static Logger LOG = Logger.getLogger("MangoBootstrapLayoutFactory");
 
 	private class PanelLayoutInfo {
 
@@ -68,7 +74,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 		private List<IModuleUI<Panel, ?>> moduleUIs = new ArrayList<IModuleUI<Panel, ?>>();
 
-		public PanelLayoutInfo(int size, boolean supportsMultipleChildren, Widget widget) {
+		public PanelLayoutInfo(boolean supportsMultipleChildren, Widget widget) {
 			super();
 			this.widget = widget;
 		}
@@ -82,6 +88,9 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		}
 
 		public void addModuleUI(IModuleUI<Panel, ?> moduleUI) {
+
+			Panel moduleContainer = moduleUI.getContainer();
+			moduleContainer.addStyleName(GwtStyles.MODULE);
 
 			if (widget instanceof PanelGroup) {
 
@@ -126,9 +135,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 				});
 				beforeIndex = moduleUIs.indexOf(moduleUI);
 
-				Panel panel = moduleUI.getContainer();
-				panel.setWidth("100%");
-				panelCollapse.add(panel);
+				panelCollapse.add(moduleContainer);
 				containerPanel.add(panelCollapse);
 
 				panelGroup.insert(containerPanel, beforeIndex);
@@ -138,7 +145,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 			} else if (widget instanceof Panel) {
 				Panel panel = (Panel) widget;
 				removeAllChildren(panel);
-				panel.add(moduleUI.getContainer());
+				panel.add(moduleContainer);
 			} else {
 				throw new RuntimeException("unsupported panel type");
 			}
@@ -168,16 +175,17 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		}
 	}
 
-	private final Map<Direction, PanelLayoutInfo> panels = new HashMap<DockLayoutPanel.Direction, PanelLayoutInfo>();
+	private final Map<Direction, PanelLayoutInfo> containers = new HashMap<DockLayoutPanel.Direction, PanelLayoutInfo>();
 
-	private final DockLayoutPanel rootPanel;
+	private final Container rootContainer;
 
 	/**
-	 * Constructor for {@link GWTLayoutFactory}
+	 * Constructor for {@link MangoBootstrapLayoutFactory}
 	 * 
 	 * @param unit
 	 */
-	public GWTLayoutFactory(Unit unit) {
+	public MangoBootstrapLayoutFactory() {
+
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new NavigationModuleUIFactory());
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionarySearchModuleUIFactory());
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new DictionaryEditorModuleUIFactory());
@@ -186,21 +194,24 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new WebhookModuleUIFactory());
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new PropertyModuleUIFactory());
 
-		rootPanel = new DockLayoutPanel(Unit.PCT);
-		rootPanel.setWidth("100%");
-		rootPanel.setHeight("100%");
+		rootContainer = new Container();
+		rootContainer.setId(ROOT_CONTAINER_CSS_ID);
+		rootContainer.setFluid(true);
 
-		initializePanelLayout(Direction.WEST, 15, true);
-		initializePanelLayout(Direction.CENTER, 85, false);
+		row = new Row();
+		rootContainer.add(row);
 
-		RootLayoutPanel.get().add(rootPanel);
+		initializePanelLayout(Direction.WEST, true);
+		initializePanelLayout(Direction.CENTER, false);
+
+		RootLayoutPanel.get().add(rootContainer);
 
 		Window.addResizeHandler(new ResizeHandler() {
 
 			@Override
 			public void onResize(ResizeEvent event) {
 
-				for (Map.Entry<Direction, PanelLayoutInfo> panelEntry : panels.entrySet()) {
+				for (Map.Entry<Direction, PanelLayoutInfo> panelEntry : containers.entrySet()) {
 					for (IModuleUI<Panel, ?> moduleUI : panelEntry.getValue().getModuleUIs()) {
 						moduleUI.onResize();
 					}
@@ -212,6 +223,8 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 	private Map<PanelGroup, List<IModuleUI<Panel, ?>>> panelGroupMappings = new HashMap<PanelGroup, List<IModuleUI<Panel, ?>>>();
 
+	private Row row;
+
 	private Direction getDirection(String location) {
 		try {
 			return Direction.valueOf(location);
@@ -220,57 +233,44 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 		}
 	}
 
-	private void initializePanelLayout(Direction direction, int size, boolean supportsMultipleChildren) {
+	private void initializePanelLayout(Direction direction, boolean supportsMultipleChildren) {
 
-		Widget panel = null;
-
-		if (supportsMultipleChildren) {
-			PanelGroup panelGroup = new PanelGroup();
-			panelGroup.setId(UUID.uuid());
-			panelGroupMappings.put(panelGroup, new ArrayList<IModuleUI<Panel, ?>>());
-			panelGroup.setHeight("100%");
-			panel = panelGroup;
-		} else {
-			panel = new HorizontalPanel();
-		}
-
-		panel.setHeight("100%");
-		panel.setWidth("100%");
-
-		panel.setStyleName("docklayoutpanel-" + direction.toString().toLowerCase(), true);
-
-		panels.put(direction, new PanelLayoutInfo(size, supportsMultipleChildren, panel));
+		Panel container = null;
 
 		switch (direction) {
 		case CENTER:
-			rootPanel.add(panel);
-			break;
-		case EAST:
-			rootPanel.addEast(panel, size);
-			break;
-		case NORTH:
-			rootPanel.addNorth(panel, size);
-			break;
-		case SOUTH:
-			rootPanel.addSouth(panel, size);
+			container = new Column(ColumnSize.MD_10);
 			break;
 		case WEST:
-			rootPanel.addWest(panel, size);
-			break;
-		case LINE_END:
-			rootPanel.addLineEnd(panel, size);
-			break;
-		case LINE_START:
-			rootPanel.addLineStart(panel, size);
+			container = new Column(ColumnSize.MD_2);
 			break;
 		default:
 			throw new RuntimeException("unsupported direction '" + direction.toString() + "'");
 		}
+
+		container.getElement().setId(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase());
+
+		container.setStyleName(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase(), true);
+		container.setStyleName(CONTAINER_CSS_ID, true);
+		row.add(container);
+
+		if (supportsMultipleChildren) {
+			PanelGroup panelGroup = new PanelGroup();
+			panelGroup.setWidth("100%");
+			panelGroup.setId(UUID.uuid());
+			panelGroupMappings.put(panelGroup, new ArrayList<IModuleUI<Panel, ?>>());
+			container.add(panelGroup);
+			container = panelGroup;
+		}
+
+		containers.put(direction, new PanelLayoutInfo(supportsMultipleChildren, container));
+
 	}
 
 	private void showModuleUIInternal(IModuleUI<Panel, ?> moduleUI, DockLayoutPanel.Direction direction) {
-		if (panels.containsKey(direction)) {
-			PanelLayoutInfo panelLayoutInfo = panels.get(direction);
+
+		if (containers.containsKey(direction)) {
+			PanelLayoutInfo panelLayoutInfo = containers.get(direction);
 			panelLayoutInfo.addModuleUI(moduleUI);
 		} else {
 			throw new RuntimeException("no panel layout info found for direction '" + direction + "'");
@@ -289,7 +289,7 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 	}
 
 	private Direction getDirection(IModuleUI<Panel, ?> moduleUI) {
-		for (Map.Entry<Direction, PanelLayoutInfo> panelEntry : panels.entrySet()) {
+		for (Map.Entry<Direction, PanelLayoutInfo> panelEntry : containers.entrySet()) {
 			if (panelEntry.getValue().conainsModuleUI(moduleUI)) {
 				return panelEntry.getKey();
 			}
@@ -306,8 +306,8 @@ public class GWTLayoutFactory implements ILayoutFactory<Panel, Widget> {
 
 		Direction direction = getDirection(moduleUI);
 
-		if (panels.containsKey(direction)) {
-			PanelLayoutInfo panelLayoutInfo = panels.get(direction);
+		if (containers.containsKey(direction)) {
+			PanelLayoutInfo panelLayoutInfo = containers.get(direction);
 			panelLayoutInfo.removeModuleUI(moduleUI);
 		} else {
 			throw new RuntimeException("no panel layout info found for direction '" + direction + "'");

@@ -22,7 +22,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class DictionarySearchModuleFactory extends BaseModuleFactory {
 	public static void openSearch(String dictionaryName) {
-		ModuleHandler.getInstance().startUIModule(DictionarySearchModule.geSearchModuleLocator(dictionaryName));
+		ModuleHandler.getInstance().startUIModule(DictionarySearchModule.getSearchModuleLocator(dictionaryName));
 	}
 
 	/** {@inheritDoc} */

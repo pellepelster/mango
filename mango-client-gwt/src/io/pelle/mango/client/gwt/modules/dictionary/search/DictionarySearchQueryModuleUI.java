@@ -18,31 +18,31 @@ import io.pelle.mango.client.web.module.ModuleHandler;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
 import io.pelle.mango.client.web.modules.dictionary.search.ISearchUpdateListener;
 
+import org.gwtbootstrap3.client.ui.TextBox;
+import org.gwtbootstrap3.client.ui.html.Div;
+
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements ISearchUpdateListener, IGwtModuleUI<DictionarySearchModule<VOType>> {
 
 	public static final String DICTIONARY_SEARCH_INPUT_PANEL_STYLE = "dictionarySearchInputPanel";
 
-	private final VerticalPanel verticalPanel;
+	private final Div container;
 
 	public DictionarySearchQueryModuleUI(final DictionarySearchModule<VOType> module) {
 		super(module, DictionarySearchModule.SEARCH_QUERY_UI_MODULE_ID);
 
-		verticalPanel = new VerticalPanel();
-		verticalPanel.addStyleName(DICTIONARY_SEARCH_INPUT_PANEL_STYLE);
+		container = new Div();
+		container.addStyleName(DICTIONARY_SEARCH_INPUT_PANEL_STYLE);
 
 		HorizontalPanel searchTextPanel = new HorizontalPanel();
-		verticalPanel.add(searchTextPanel);
+		container.add(searchTextPanel);
 
 		final TextBox searchTextBox = new TextBox();
-		searchTextBox.setWidth("95%");
 		searchTextPanel.add(searchTextBox);
 		searchTextBox.addKeyDownHandler(new KeyDownHandler() {
 
@@ -57,7 +57,7 @@ public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseD
 	/** {@inheritDoc} */
 	@Override
 	public Panel getContainer() {
-		return verticalPanel;
+		return container;
 	}
 
 	@Override

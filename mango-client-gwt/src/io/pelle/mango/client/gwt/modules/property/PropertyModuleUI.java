@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.gwtbootstrap3.client.ui.constants.Styles;
+import org.gwtbootstrap3.client.ui.html.Div;
 
 import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.dom.client.Style.Unit;
@@ -40,7 +41,6 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
@@ -48,18 +48,16 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 	private HTML title;
 
-	private VerticalPanel panel = new VerticalPanel();
+	private Div container = new Div();
 
 	private Map<String, BaseEditableLabel> properties2Label = new HashMap<String, BaseEditableLabel>();
 
 	public PropertyModuleUI(PropertyModule module) {
 		super(module, PropertyModule.UI_MODULE_ID);
-		panel.setSpacing(GwtStyles.SPACING);
-		panel.setWidth("100%");
 
 		title = new HTML(MangoClientWeb.MESSAGES.properties());
 		title.addStyleName(GwtStyles.TITLE);
-		panel.add(title);
+		container.add(title);
 
 		TabPanel categories = new TabPanel();
 		categories.setWidth("70%");
@@ -73,7 +71,7 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 
 		if (categories.getWidgetCount() > 0) {
 			categories.selectTab(0);
-			panel.add(categories);
+			container.add(categories);
 		}
 	}
 
@@ -162,7 +160,7 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 	/** {@inheritDoc} */
 	@Override
 	public Panel getContainer() {
-		return panel;
+		return container;
 	}
 
 	@Override

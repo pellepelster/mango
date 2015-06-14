@@ -16,9 +16,9 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
 
-import com.google.gwt.user.client.ui.VerticalPanel;
+import org.gwtbootstrap3.client.ui.html.Div;
 
-public class DictionaryResultPanel<VOType extends IBaseVO> extends VerticalPanel {
+public class DictionaryResultPanel<VOType extends IBaseVO> extends Div {
 
 	private final ResultCellTable<VOType> resultCellTable;
 

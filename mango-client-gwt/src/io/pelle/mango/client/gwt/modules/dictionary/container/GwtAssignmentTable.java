@@ -30,13 +30,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.gwtbootstrap3.client.ui.Container;
+import org.gwtbootstrap3.client.ui.html.Div;
+
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextHeader;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 
 /**
@@ -49,7 +51,7 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 
 	private final AssignmentTable<VOType> assignmentTable;
 
-	private final VerticalPanel verticalPanel = new VerticalPanel();
+	private final Div container = new Div();
 
 	private final ListDataProvider<IBaseTable.ITableRow<VOType>> dataProvider = new ListDataProvider<IBaseTable.ITableRow<VOType>>();
 
@@ -67,12 +69,12 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 		simpleLayoutPanel.setWidth(WidthCalculationStrategy.getInstance().getTableWidthCss(assignmentTable.getModel()));
 		simpleLayoutPanel.setHeight(BaseCellTable.DEFAULT_TABLE_HEIGHT);
 
-		verticalPanel.add(simpleLayoutPanel);
-		verticalPanel.setWidth("100%");
+		container.add(simpleLayoutPanel);
+		container.setWidth("100%");
 
-		VerticalPanel buttonPanel = new VerticalPanel();
+		Container buttonPanel = new Container();
 		buttonPanel.setWidth("1px");
-		verticalPanel.add(buttonPanel);
+		container.add(buttonPanel);
 
 		createAddButton(buttonPanel);
 
@@ -104,7 +106,7 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 	/** {@inheritDoc} */
 	@Override
 	public Panel getContainer() {
-		return verticalPanel;
+		return container;
 	}
 
 	public void setContent(Object content) {
@@ -116,7 +118,7 @@ public class GwtAssignmentTable<VOType extends IBaseVO> extends BaseCellTable<VO
 		}
 	}
 
-	private void createAddButton(VerticalPanel buttonPanel) {
+	private void createAddButton(Div buttonPanel) {
 		ImageButton addButton = new ImageButton(MangoClientWeb.RESOURCES.add());
 		addButton.addClickHandler(new ClickHandler() {
 			@Override

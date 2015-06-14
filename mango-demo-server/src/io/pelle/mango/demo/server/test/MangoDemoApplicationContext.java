@@ -1,7 +1,9 @@
 package io.pelle.mango.demo.server.test;
 
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
+import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.server.MangoServerApplicationContext;
+import io.pelle.mango.server.search.SearchIndexBuilder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,4 +25,12 @@ public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 		return MangoDemoClientConfiguration.registerAll();
 	}
 
+	@Bean
+	public SearchIndexBuilder createEntity1Index() {
+		SearchIndexBuilder result = SearchIndexBuilder.createBuilder("index1").setDefault();
+
+		result.forDictionary(MangoDemoDictionaryModel.COMPANY).addAttributes(MangoDemoDictionaryModel.COMPANY.COMPANY_EDITOR.NAME1);
+
+		return result;
+	}
 }

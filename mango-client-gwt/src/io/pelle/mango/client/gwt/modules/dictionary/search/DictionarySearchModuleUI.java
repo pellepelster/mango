@@ -24,11 +24,12 @@ import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModul
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
 import io.pelle.mango.client.web.modules.dictionary.search.ISearchUpdateListener;
 
+import org.gwtbootstrap3.client.ui.html.Div;
+
 import com.google.common.base.Objects;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 
 /**
  * UI for the navigation module
@@ -42,7 +43,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	private static final String DICTIONARY_SEARCH_BUTTON_DEBUG_ID = "DictionarySearchButton";
 
-	private final VerticalPanel verticalPanel;
+	private final Div container;
 
 	private final HtmlWithHelp searchTitle;
 
@@ -52,19 +53,19 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 	public DictionarySearchModuleUI(final DictionarySearchModule<VOType> module) {
 		super(module, DictionarySearchModule.SEARCH_UI_MODULE_ID);
 
-		verticalPanel = new VerticalPanel();
-		verticalPanel.addStyleName(GwtStyles.DEBUG_BORDER);
-		verticalPanel.ensureDebugId(DictionarySearchModule.MODULE_ID + "-" + module.getDictionaryModel().getName());
-		verticalPanel.setWidth("100%");
+		container = new Div();
+		container.addStyleName(GwtStyles.DEBUG_BORDER);
+		container.ensureDebugId(DictionarySearchModule.MODULE_ID + "-" + module.getDictionaryModel().getName());
+		container.setWidth("100%");
 
 		// - action panel ------------------------------------------------------
 		ActionBar actionBar = new ActionBar();
-		verticalPanel.add(actionBar);
+		container.add(actionBar);
 
 		// - title -------------------------------------------------------------
 		searchTitle = new HtmlWithHelp(module.getTitle(), module.getHelpText());
 		searchTitle.addStyleName(GwtStyles.TITLE);
-		verticalPanel.add(searchTitle);
+		container.add(searchTitle);
 
 		// searchModel.getResultModel()
 		final DictionaryResultPanel<VOType> dictionaryResultPanel = new DictionaryResultPanel<VOType>(getModule().getDictionaryModel(), getModule().getDictionarySearch().getDictionaryResult());
@@ -73,7 +74,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 			@SuppressWarnings("unchecked")
 			final DictionaryFilterPanel<VOType> dictionaryFilter = new DictionaryFilterPanel<VOType>(getModule().getDictionarySearch().getActiveFilter(), (Class<VOType>) module.getDictionaryModel().getVOClass());
 
-			verticalPanel.add(dictionaryFilter);
+			container.add(dictionaryFilter);
 
 			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.searchSearch(), MangoClientWeb.MESSAGES.searchSearch(), new ClickHandler() {
 				/** {@inheritDoc} */
@@ -105,7 +106,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 		dictionaryResultPanel.addStyleName(GwtStyles.TOP_SPACER);
 		dictionaryResultPanel.setWidth("100%");
-		verticalPanel.add(dictionaryResultPanel);
+		container.add(dictionaryResultPanel);
 
 		getModule().getDictionarySearch().addUpdateListener(this);
 	}
@@ -113,7 +114,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 	/** {@inheritDoc} */
 	@Override
 	public Panel getContainer() {
-		return verticalPanel;
+		return container;
 	}
 
 	@Override

@@ -26,17 +26,16 @@ public class SearchServiceImpl implements ISearchService {
 	@Autowired
 	private IBaseEntityService baseEntityService;
 
-	@Autowired(required = false)
 	private List<SearchIndexBuilder> searchIndexBuilders = new ArrayList<SearchIndexBuilder>();
 
-	private SelectQuery<? extends IBaseVO> getSelectQuery(
-			DictionaryIndex voEntityIndex, String value) {
+	private SearchIndexBuilder defaultSearchIndexBuilder = null;
 
-		SelectQuery<? extends IBaseVO> query = (SelectQuery<? extends IBaseVO>) SelectQuery.selectFrom(voEntityIndex
-				.getVOEntityClass());
+	private SelectQuery<? extends IBaseVO> getSelectQuery(DictionaryIndex voEntityIndex, String value) {
 
-		for (IAttributeDescriptor<?> attributeDescriptor : voEntityIndex
-				.getAttributeDescriptors()) {
+		@SuppressWarnings("unchecked")
+		SelectQuery<? extends IBaseVO> query = (SelectQuery<? extends IBaseVO>) SelectQuery.selectFrom(voEntityIndex.getVOEntityClass());
+
+		for (IAttributeDescriptor<?> attributeDescriptor : voEntityIndex.getAttributeDescriptors()) {
 
 			if (attributeDescriptor instanceof StringAttributeDescriptor) {
 				StringAttributeDescriptor stringAttributeDescriptor = (StringAttributeDescriptor) attributeDescriptor;
@@ -50,20 +49,27 @@ public class SearchServiceImpl implements ISearchService {
 
 	private SearchIndexBuilder getSearchIndexBuilder(final String indexId) {
 
-		Optional<SearchIndexBuilder> result = Iterables.tryFind(
-				searchIndexBuilders, new Predicate<SearchIndexBuilder>() {
+		Optional<SearchIndexBuilder> result = Iterables.tryFind(searchIndexBuilders, new Predicate<SearchIndexBuilder>() {
 
-					@Override
-					public boolean apply(SearchIndexBuilder input) {
-						return input.getIndexId().equals(indexId);
-					}
-				});
+			@Override
+			public boolean apply(SearchIndexBuilder input) {
+				return input.getIndexId().equals(indexId);
+			}
+		});
 
 		if (result.isPresent()) {
 			return result.get();
 		} else {
-			throw new RuntimeException(String.format(
-					"search index with id '%s' not found", indexId));
+
+			if (indexId == null) {
+				if (defaultSearchIndexBuilder != null) {
+					return defaultSearchIndexBuilder;
+				} else {
+					throw new RuntimeException(String.format("no default search not found", indexId));
+				}
+			} else {
+				throw new RuntimeException(String.format("search index with id '%s' not found", indexId));
+			}
 		}
 	}
 
@@ -72,30 +78,38 @@ public class SearchServiceImpl implements ISearchService {
 
 		List<SearchResultItem> searchResults = new ArrayList<SearchResultItem>();
 
-		for (final DictionaryIndex dictionaryIndex : getSearchIndexBuilder(
-				indexId).getVOEntities()) {
+		for (final DictionaryIndex dictionaryIndex : getSearchIndexBuilder(indexId).getVOEntities()) {
 
 			SelectQuery<? extends IBaseVO> selectQuery = getSelectQuery(dictionaryIndex, search);
 
 			List<? extends IBaseVO> result = baseEntityService.filter(selectQuery);
 
-			searchResults.addAll(Collections2.transform(result,
-					new Function<IVOEntity, SearchResultItem>() {
+			searchResults.addAll(Collections2.transform(result, new Function<IVOEntity, SearchResultItem>() {
 
-						@Override
-						public SearchResultItem apply(IVOEntity input) {
-							SearchResultItem searchResultItem = new SearchResultItem();
+				@Override
+				public SearchResultItem apply(IVOEntity input) {
+					SearchResultItem searchResultItem = new SearchResultItem();
 
-							searchResultItem.setDictionaryId(dictionaryIndex
-									.getDictionaryId());
-							searchResultItem.setId(input.getId());
-							return searchResultItem;
-						}
-					}));
+					searchResultItem.setDictionaryId(dictionaryIndex.getDictionaryId());
+					searchResultItem.setId(input.getId());
+					return searchResultItem;
+				}
+			}));
 
 		}
 
 		return searchResults;
+	}
+
+	@Autowired(required = false)
+	public void setSearchIndexBuilders(List<SearchIndexBuilder> searchIndexBuilders) {
+		this.searchIndexBuilders = searchIndexBuilders;
+
+		for (SearchIndexBuilder searchIndexBuilder : searchIndexBuilders) {
+			if (searchIndexBuilder.isDefault()) {
+				defaultSearchIndexBuilder = searchIndexBuilder;
+			}
+		}
 	}
 
 }
