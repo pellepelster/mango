@@ -24,7 +24,6 @@ import org.gwtbootstrap3.client.ui.html.Div;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Panel;
 
 public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements ISearchUpdateListener, IGwtModuleUI<DictionarySearchModule<VOType>> {
@@ -38,12 +37,10 @@ public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseD
 
 		container = new Div();
 		container.addStyleName(DICTIONARY_SEARCH_INPUT_PANEL_STYLE);
-
-		HorizontalPanel searchTextPanel = new HorizontalPanel();
-		container.add(searchTextPanel);
+		container.setWidth("100%");
 
 		final TextBox searchTextBox = new TextBox();
-		searchTextPanel.add(searchTextBox);
+		container.add(searchTextBox);
 		searchTextBox.addKeyDownHandler(new KeyDownHandler() {
 
 			@Override
