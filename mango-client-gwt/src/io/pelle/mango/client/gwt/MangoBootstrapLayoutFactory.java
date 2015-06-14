@@ -66,6 +66,8 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 
 	public static final String CONTAINER_CSS_ID = "mango-bootstrap-layout-container";
 
+	public static final String CONTAINER_MULTIPLE_CSS_ID = "mango-bootstrap-layout-multiple-container";
+
 	final static Logger LOG = Logger.getLogger("MangoBootstrapLayoutFactory");
 
 	private class PanelLayoutInfo {
@@ -249,15 +251,22 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 		}
 
 		container.getElement().setId(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase());
-
 		container.setStyleName(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase(), true);
 		container.setStyleName(CONTAINER_CSS_ID, true);
+
 		row.add(container);
 
 		if (supportsMultipleChildren) {
 			PanelGroup panelGroup = new PanelGroup();
 			panelGroup.setWidth("100%");
 			panelGroup.setId(UUID.uuid());
+
+			panelGroup.getElement().setId(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase());
+			panelGroup.setStyleName(CONTAINER_MULTIPLE_CSS_ID + "-" + direction.toString().toLowerCase(), true);
+			panelGroup.setStyleName(CONTAINER_MULTIPLE_CSS_ID, true);
+			panelGroup.setStyleName(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase(), true);
+			panelGroup.setStyleName(CONTAINER_CSS_ID, true);
+
 			panelGroupMappings.put(panelGroup, new ArrayList<IModuleUI<Panel, ?>>());
 			container.add(panelGroup);
 			container = panelGroup;

@@ -19,12 +19,13 @@ import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModule;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gwtbootstrap3.client.ui.html.Div;
+
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
@@ -110,7 +111,7 @@ public class NavigationModuleTreeUI extends BaseGwtModuleUI<ModuleNavigationModu
 
 	}
 
-	private final VerticalPanel verticalPanel;
+	private final Div container;
 
 	/**
 	 * @param module
@@ -118,13 +119,14 @@ public class NavigationModuleTreeUI extends BaseGwtModuleUI<ModuleNavigationModu
 	public NavigationModuleTreeUI(ModuleNavigationModule module) {
 		super(module, ModuleNavigationModule.NAVIGATION_UI_MODULE_ID);
 
-		verticalPanel = new VerticalPanel();
-		verticalPanel.ensureDebugId(ModuleNavigationModule.NAVIGATION_UI_MODULE_ID);
+		container = new Div();
+		container.setWidth("100%");
+		container.ensureDebugId(ModuleNavigationModule.NAVIGATION_UI_MODULE_ID);
 
 		final NavigationTreeModel navigationTreeModel = new NavigationTreeModel();
 		CellTree cellTree = new CellTree(navigationTreeModel, null);
 
-		verticalPanel.add(cellTree);
+		container.add(cellTree);
 
 		navigationTreeModel.setNavigationTreeModel(module.getNavigationTreeRoots());
 	}
@@ -132,7 +134,7 @@ public class NavigationModuleTreeUI extends BaseGwtModuleUI<ModuleNavigationModu
 	/** {@inheritDoc} */
 	@Override
 	public Panel getContainer() {
-		return verticalPanel;
+		return container;
 	}
 
 	@Override

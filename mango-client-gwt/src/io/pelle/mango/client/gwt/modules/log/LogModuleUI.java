@@ -62,6 +62,7 @@ public class LogModuleUI extends BaseGwtModuleUI<LogModule> {
 
 		logDataGrid = new EndlessLogDataGrid();
 		logDataGrid.setWidth("98%");
+		logDataGrid.setHeight("30em");
 		container.add(logDataGrid);
 
 		final SimplePager pager = new SimplePager();
