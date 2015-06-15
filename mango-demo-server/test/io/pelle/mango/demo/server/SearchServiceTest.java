@@ -24,7 +24,8 @@ public class SearchServiceTest extends BaseDemoTest {
 	public void testSearchIndex1() {
 
 		baseEntityService.deleteAll(CompanyVO.class.getName());
-		
+		baseEntityService.deleteAll(CountryVO.class.getName());
+
 		CountryVO country1 = new CountryVO();
 		country1.setCountryName("aa country");
 		country1 = baseEntityService.create(country1);
@@ -40,24 +41,24 @@ public class SearchServiceTest extends BaseDemoTest {
 		CompanyVO company2 = new CompanyVO();
 		company2.setName("bb company");
 		company2 = baseEntityService.create(company2);
-		
+
 		List<SearchResultItem> result = searchService.search("index1", "bb");
 		assertEquals(2, result.size());
-		
-		assertEquals((Long)company2.getId(), result.get(0).getId());
-		
-//		SearchResultItem company2SearchResult = result.get(0);
-//		company2SearchResult.toString();
-		
-		assertEquals((Long)country2.getId(), result.get(0).getId());
+
+		assertEquals((Long) company2.getId(), result.get(0).getId());
+
+		// SearchResultItem company2SearchResult = result.get(0);
+		// company2SearchResult.toString();
+
+		assertEquals((Long) country2.getId(), result.get(0).getId());
 	}
-	
-	
+
 	@Test
 	public void testSearchDefaultIndex() {
 
 		baseEntityService.deleteAll(CompanyVO.class.getName());
-		
+		baseEntityService.deleteAll(CountryVO.class.getName());
+
 		CompanyVO company1 = new CompanyVO();
 		company1.setName("aaa");
 		company1 = baseEntityService.create(company1);
@@ -65,9 +66,9 @@ public class SearchServiceTest extends BaseDemoTest {
 		CompanyVO company2 = new CompanyVO();
 		company2.setName("bbb");
 		company2 = baseEntityService.create(company2);
-		
+
 		List<SearchResultItem> result = searchService.searchDefaultIndex("bbb");
 		assertEquals(1, result.size());
-		assertEquals((Long)company2.getId(), result.get(0).getId());
+		assertEquals((Long) company2.getId(), result.get(0).getId());
 	}
 }
