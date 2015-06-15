@@ -2,8 +2,8 @@
 */xtend-gen
 */build
 */bin
-*/.classpath
-*/.project
+#*/.classpath
+#*/.project
 */.settings
 .gradle
 *~
