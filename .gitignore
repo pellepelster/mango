@@ -3,6 +3,8 @@
 */build
 */bin
 */.classpath
+*/.project
+*/.settings
 .gradle
 *~
 *derby.log
