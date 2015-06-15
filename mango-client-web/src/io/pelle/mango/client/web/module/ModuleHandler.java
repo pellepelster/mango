@@ -127,7 +127,7 @@ public final class ModuleHandler {
 				callback.get().onSuccess(moduleUI.get());
 			}
 
-			closeCurrentAndShow(moduleUI.get(), location);
+			MangoClientWeb.getInstance().getLayoutFactory().showModuleUI(moduleUI.get(), location);
 
 		} else {
 

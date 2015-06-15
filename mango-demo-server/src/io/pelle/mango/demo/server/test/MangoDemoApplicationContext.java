@@ -27,6 +27,7 @@ public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 
 	@Bean
 	public SearchIndexBuilder createEntity1Index() {
+		
 		SearchIndexBuilder result = SearchIndexBuilder.createBuilder("index1").setDefault();
 
 		result.forDictionary(MangoDemoDictionaryModel.COMPANY).addAttributes(MangoDemoDictionaryModel.COMPANY.COMPANY_EDITOR.NAME1);

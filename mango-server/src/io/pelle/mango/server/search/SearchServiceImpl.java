@@ -39,7 +39,7 @@ public class SearchServiceImpl implements ISearchService {
 
 			if (attributeDescriptor instanceof StringAttributeDescriptor) {
 				StringAttributeDescriptor stringAttributeDescriptor = (StringAttributeDescriptor) attributeDescriptor;
-				query.addWhereOr(stringAttributeDescriptor.eq(value));
+				query.addWhereOr(stringAttributeDescriptor.like(value));
 			}
 
 		}

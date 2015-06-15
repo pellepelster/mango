@@ -32,6 +32,10 @@ public abstract class BaseModuleUI<ContainerType, ModuleType extends IModule> im
 		this.uiModuleId = uiModuleId;
 	}
 
+	public String getUiModuleId() {
+		return uiModuleId;
+	}
+	
 	/** {@inheritDoc} */
 	@Override
 	public boolean close() {

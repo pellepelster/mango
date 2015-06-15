@@ -15,9 +15,11 @@ public class MangoDemoTestApplicationContext extends MangoDemoApplicationContext
 
 	@Bean
 	public SearchIndexBuilder createEntity1Index() {
-		SearchIndexBuilder result = SearchIndexBuilder.createBuilder("index1");
+		
+		SearchIndexBuilder result = SearchIndexBuilder.createBuilder("index1").setDefault();
 		
 		result.forDictionary(MangoDemoDictionaryModel.COMPANY).addAttributes(MangoDemoDictionaryModel.COMPANY.COMPANY_EDITOR.NAME1);
+		result.forDictionary(MangoDemoDictionaryModel.COUNTRY).addAttributes(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2);
 		
 		return result;
 	}

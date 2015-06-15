@@ -5,6 +5,7 @@ import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.search.ISearchService;
 import io.pelle.mango.client.search.SearchResultItem;
 import io.pelle.mango.demo.client.showcase.CompanyVO;
+import io.pelle.mango.demo.client.showcase.CountryVO;
 
 import java.util.List;
 
@@ -20,8 +21,38 @@ public class SearchServiceTest extends BaseDemoTest {
 	private ISearchService searchService;
 
 	@Test
-	public void testSearchEntity1() {
+	public void testSearchIndex1() {
 
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+		
+		CountryVO country1 = new CountryVO();
+		country1.setCountryName("aa country");
+		country1 = baseEntityService.create(country1);
+
+		CountryVO country2 = new CountryVO();
+		country2.setCountryName("bb country");
+		country2 = baseEntityService.create(country2);
+
+		CompanyVO company1 = new CompanyVO();
+		company1.setName("aa company");
+		company1 = baseEntityService.create(company1);
+
+		CompanyVO company2 = new CompanyVO();
+		company2.setName("bb company");
+		company2 = baseEntityService.create(company2);
+		
+		List<SearchResultItem> result = searchService.search("index1", "bb");
+		assertEquals(2, result.size());
+		assertEquals((Long)company2.getId(), result.get(0).getId());
+		assertEquals((Long)country2.getId(), result.get(0).getId());
+	}
+	
+	
+	@Test
+	public void testSearchDefaultIndex() {
+
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+		
 		CompanyVO company1 = new CompanyVO();
 		company1.setName("aaa");
 		company1 = baseEntityService.create(company1);
@@ -30,7 +61,7 @@ public class SearchServiceTest extends BaseDemoTest {
 		company2.setName("bbb");
 		company2 = baseEntityService.create(company2);
 		
-		List<SearchResultItem> result = searchService.search("index1", "bbb");
+		List<SearchResultItem> result = searchService.search(null, "bbb");
 		assertEquals(1, result.size());
 		assertEquals((Long)company2.getId(), result.get(0).getId());
 	}

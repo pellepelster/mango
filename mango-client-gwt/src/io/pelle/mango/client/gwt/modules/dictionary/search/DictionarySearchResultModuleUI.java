@@ -12,6 +12,7 @@
 package io.pelle.mango.client.gwt.modules.dictionary.search;
 
 import io.pelle.mango.client.base.module.IModule.IModuleUpdateListener;
+import io.pelle.mango.client.base.module.ModuleUtils;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseDictionaryModuleUI;
@@ -27,7 +28,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements IModuleUpdateListener {
+public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements
+		IModuleUpdateListener {
 
 	private static final String DICTIONARY_SEARCH_RESULT_PANEL_STYLE = "dictionarySearchResultPanel";
 
@@ -101,6 +103,11 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 
 			}
 		});
-
 	}
+
+	@Override
+	public boolean isInstanceOf(String moduleUrl) {
+		return this.getUiModuleId().equals(ModuleUtils.getUIModuleId(moduleUrl));
+	}
+	
 }
