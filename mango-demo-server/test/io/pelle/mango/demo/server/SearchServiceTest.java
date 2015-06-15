@@ -34,18 +34,18 @@ public class SearchServiceTest extends BaseDemoTest {
 		country2.setCountryName("bb country");
 		country2 = baseEntityService.create(country2);
 
-		CompanyVO company1 = new CompanyVO();
-		company1.setName("aa company");
-		company1 = baseEntityService.create(company1);
-
-		CompanyVO company2 = new CompanyVO();
-		company2.setName("bb company");
-		company2 = baseEntityService.create(company2);
+		// CompanyVO company1 = new CompanyVO();
+		// company1.setName("aa company");
+		// company1 = baseEntityService.create(company1);
+		//
+		// CompanyVO company2 = new CompanyVO();
+		// company2.setName("bb company");
+		// company2 = baseEntityService.create(company2);
 
 		List<SearchResultItem> result = searchService.search("index1", "bb");
-		assertEquals(2, result.size());
+		assertEquals(1, result.size());
 
-		assertEquals((Long) company2.getId(), result.get(0).getId());
+		// assertEquals((Long) company2.getId(), result.get(0).getId());
 
 		// SearchResultItem company2SearchResult = result.get(0);
 		// company2SearchResult.toString();
