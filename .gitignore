@@ -2,8 +2,10 @@
 */xtend-gen
 */build
 */bin
-#*/.classpath
-#*/.project
+*/.classpath
+*/.project
+!mango-dsl*/.classpath
+!mango-dsl*/.project
 */.settings
 .gradle
 *~
