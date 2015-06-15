@@ -1,6 +1,6 @@
 package packagename.projectname.client;
 
-import io.pelle.mango.client.gwt.GWTLayoutFactory;
+import io.pelle.mango.client.gwt.MangoBootstrapLayoutFactory;
 
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.module.ModuleHandler;
@@ -19,7 +19,7 @@ public class ProjectNameAdminClient implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		
-		GWTLayoutFactory gwtLayoutFactory = new GWTLayoutFactory(Unit.PX);
+		MangoBootstrapLayoutFactory gwtLayoutFactory = new MangoBootstrapLayoutFactory();
 		MangoClientWeb.getInstance().setLayoutFactory(gwtLayoutFactory);
 		
 		init();
