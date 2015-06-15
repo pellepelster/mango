@@ -23,7 +23,7 @@ public class ValueObjectModelGeneratorTest {
 		valueObject1.setString1("xxx");
 		assertEquals("xxx", valueObject1.getString1());
 	}
-	
+
 	@Test
 	public void testEntity4VOInheritedAttributeDescriptors() {
 		assertEquals("stringDatatype3", Entity4VO.STRINGDATATYPE3.getAttributeName());
@@ -49,6 +49,16 @@ public class ValueObjectModelGeneratorTest {
 	}
 
 	@Test
+	public void testGetCountryNaturalKeyNull() {
+
+		CountryVO countryVO = new CountryVO();
+		countryVO.setCountryIsoCode2(null);
+
+		assertTrue(countryVO.hasNaturalKey());
+		assertEquals("-", countryVO.getNaturalKey());
+	}
+
+	@Test
 	public void testGetEntity5VOComposedNaturalKey() {
 
 		Entity4VO entity4 = new Entity4VO();
@@ -60,6 +70,17 @@ public class ValueObjectModelGeneratorTest {
 
 		assertTrue(entity5.hasNaturalKey());
 		assertEquals("abc, def", entity5.getNaturalKey());
+	}
+
+	@Test
+	public void testGetEntity5VOComposedNaturalKeyNull() {
+
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setString1("abc");
+		entity5.setEntity4(null);
+
+		assertTrue(entity5.hasNaturalKey());
+		assertEquals("abc, -", entity5.getNaturalKey());
 	}
 
 	@Test
