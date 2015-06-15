@@ -61,7 +61,7 @@ public class SearchServiceTest extends BaseDemoTest {
 		company2.setName("bbb");
 		company2 = baseEntityService.create(company2);
 		
-		List<SearchResultItem> result = searchService.search(null, "bbb");
+		List<SearchResultItem> result = searchService.searchDefaultIndex("bbb");
 		assertEquals(1, result.size());
 		assertEquals((Long)company2.getId(), result.get(0).getId());
 	}

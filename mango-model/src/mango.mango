@@ -79,11 +79,12 @@ project Mango {
 			valueobject SearchResultItem {
 				string dictionaryId
 				long id
-				string resultText
+				map string string config
 			}
 		
 			service SearchService {
 				method List<SearchResultItem> search(String indexId, String searchText)
+				method List<SearchResultItem> searchDefaultIndex(String searchText)
 			}
 			
 			

@@ -92,6 +92,7 @@ public class SearchServiceImpl implements ISearchService {
 
 					searchResultItem.setDictionaryId(dictionaryIndex.getDictionaryId());
 					searchResultItem.setId(input.getId());
+					
 					return searchResultItem;
 				}
 			}));
@@ -110,6 +111,11 @@ public class SearchServiceImpl implements ISearchService {
 				defaultSearchIndexBuilder = searchIndexBuilder;
 			}
 		}
+	}
+
+	@Override
+	public List<SearchResultItem> searchDefaultIndex(String searchText) {
+		return search(null, searchText);
 	}
 
 }
