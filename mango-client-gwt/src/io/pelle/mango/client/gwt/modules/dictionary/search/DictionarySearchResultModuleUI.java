@@ -25,17 +25,22 @@ import io.pelle.mango.client.gwt.utils.HtmlUtils;
 import io.pelle.mango.client.search.SearchResultItem;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
+import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import org.gwtbootstrap3.client.ui.html.Div;
 
 import com.google.common.base.Optional;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Panel;
 
 public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements
@@ -71,6 +76,7 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 		resultContainer.addStyleName(DICTIONARY_SEARCH_RESULT_PANEL_STYLE);
 
 		module.addUpdateListener(this);
+		showResults(Collections.<SearchResultItem> emptyList());
 	}
 
 	/** {@inheritDoc} */
@@ -84,62 +90,74 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 		return getModule().getTitle();
 	}
 
-	@Override
-	public void onUpdate() {
+	public void showResults(List<SearchResultItem> result) {
 
-		getModule().search(getModule().getSearchText(), new BaseErrorAsyncCallback<List<SearchResultItem>>() {
+		for (int i = 0; i < resultContainer.getWidgetCount(); i++) {
+			resultContainer.remove(i);
+		}
 
-			@Override
-			public void onSuccess(List<SearchResultItem> result) {
+		if (result.size() == 0) {
+			Div noSearchResults = new Div();
+			noSearchResults.add(new HTML(MangoClientWeb.MESSAGES.noSearchResults()));
+			resultContainer.add(noSearchResults);
+		} else {
+			for (final SearchResultItem searchResultItem : result) {
 
-				for (int i = 0; i < resultContainer.getWidgetCount(); i++) {
-					resultContainer.remove(i);
-				}
+				IDictionaryModel dictionaryModel = DictionaryModelProvider.getDictionary(searchResultItem.getDictionaryId());
 
-				if (result.size() == 0) {
-					Div noSearchResults = new Div();
-					noSearchResults.add(new HTML(MangoClientWeb.MESSAGES.noSearchResults()));
-					resultContainer.add(noSearchResults);
-				} else {
-					for (SearchResultItem searchResultItem : result) {
+				Div resultItemContainer = new Div();
+				resultItemContainer.addStyleName(DICTIONARY_SEARCH_RESULT_ITEM_PANEL_STYLE);
 
-						IDictionaryModel dictionaryModel = DictionaryModelProvider.getDictionary(searchResultItem.getDictionaryId());
+				Hyperlink title = new Hyperlink();
+				title.setText(DictionaryUtil.getLabel(dictionaryModel) + ": " + searchResultItem.getLabel());
+				
+				title.addHandler(new ClickHandler() {
 
-						Div resultItemContainer = new Div();
-						resultItemContainer.addStyleName(DICTIONARY_SEARCH_RESULT_ITEM_PANEL_STYLE);
+					@Override
+					public void onClick(ClickEvent event) {
+						DictionaryEditorModuleFactory.openEditorForId(searchResultItem.getDictionaryId(), searchResultItem.getId());
+					}
+				}, ClickEvent.getType());
 
-						HTML title = new HTML(DictionaryUtil.getLabel(dictionaryModel) + ": " + searchResultItem.getLabel());
-						title.addStyleName(DICTIONARY_SEARCH_RESULT_ITEM_TITLE_STYLE);
-						resultItemContainer.add(title);
+				title.addStyleName(DICTIONARY_SEARCH_RESULT_ITEM_TITLE_STYLE);
+				resultItemContainer.add(title);
 
-						SafeHtmlBuilder sb = new SafeHtmlBuilder();
-						boolean first = true;
-						
-						for (Map.Entry<String, String> attributeEntry : searchResultItem.getAttributes().entrySet()) {
-							
-							Optional<IBaseControlModel> baseControlModel = DictionaryModelQuery.create(dictionaryModel).getControls()
-									.getControlModelByAttributePath(attributeEntry.getKey());
+				SafeHtmlBuilder sb = new SafeHtmlBuilder();
+				boolean first = true;
 
-							if (baseControlModel.isPresent()) {
+				for (Map.Entry<String, String> attributeEntry : searchResultItem.getAttributes().entrySet()) {
 
-								if (!first) {
-									sb.appendHtmlConstant(", ");
-								}
-								first = false;
+					Optional<IBaseControlModel> baseControlModel = DictionaryModelQuery.create(dictionaryModel).getControls()
+							.getControlModelByAttributePath(attributeEntry.getKey());
 
-								sb.appendHtmlConstant(DictionaryModelUtil.getColumnLabel(baseControlModel.get()));
-								sb.appendHtmlConstant(": ");
-								HtmlUtils.highlightTexts(getModule().getSearchText(), attributeEntry.getValue(), sb);
-							}
+					if (baseControlModel.isPresent()) {
+
+						if (!first) {
+							sb.appendHtmlConstant(", ");
 						}
+						first = false;
 
-						HTML text = new HTML(sb.toSafeHtml());
-						text.addStyleName(DICTIONARY_SEARCH_RESULT_ITEM_TEXT_STYLE);
-						resultItemContainer.add(text);
-
-						resultContainer.add(resultItemContainer);
+						sb.appendHtmlConstant(DictionaryModelUtil.getColumnLabel(baseControlModel.get()));
+						sb.appendHtmlConstant(": ");
+						HtmlUtils.highlightTexts(getModule().getSearchText(), attributeEntry.getValue(), sb);
 					}
 				}
+
+				HTML text = new HTML(sb.toSafeHtml());
+				text.addStyleName(DICTIONARY_SEARCH_RESULT_ITEM_TEXT_STYLE);
+				resultItemContainer.add(text);
+
+				resultContainer.add(resultItemContainer);
+			}
+		}
+	}
+
+	@Override
+	public void onUpdate() {
+		getModule().search(getModule().getSearchText(), new BaseErrorAsyncCallback<List<SearchResultItem>>() {
+			@Override
+			public void onSuccess(List<SearchResultItem> results) {
+				showResults(results);
 			}
 		});
 	}

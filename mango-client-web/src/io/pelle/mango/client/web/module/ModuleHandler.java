@@ -29,6 +29,7 @@ import com.google.common.collect.Iterables;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 
 /**
  * Handler for module loading
@@ -48,7 +49,7 @@ public final class ModuleHandler {
 
 	private static ModuleHandler instance;
 
-	public static String DEFAULT_LOCATION = "default";
+	public static String DEFAULT_LOCATION = DockLayoutPanel.Direction.CENTER.toString();
 
 	private final LinkedHashMap<String, Stack<IModuleUI>> currentModules = new LinkedHashMap<String, Stack<IModuleUI>>();
 
