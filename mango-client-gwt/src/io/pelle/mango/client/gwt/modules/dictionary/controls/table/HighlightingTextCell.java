@@ -25,7 +25,7 @@ public class HighlightingTextCell extends TextCell {
 
 			if (!mangoCellTable.getHighlightedTexts().isEmpty()) {
 				for (String highlightedText : mangoCellTable.getHighlightedTexts()) {
-					HtmlUtils.strong(highlightedText, valueToRender, sb);
+					HtmlUtils.highlightTexts(highlightedText, valueToRender, sb);
 				}
 			} else {
 				sb.appendEscaped(valueToRender);

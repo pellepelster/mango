@@ -202,4 +202,7 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("Cancel")
 	String webHookCancel();
 
+	@DefaultMessage("No search results")
+	String noSearchResults();
+
 }

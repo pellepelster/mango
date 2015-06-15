@@ -2,17 +2,20 @@ package io.pelle.mango.server.search;
 
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.search.ISearchService;
 import io.pelle.mango.client.search.SearchResultItem;
+import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.server.search.SearchIndexBuilder.DictionaryIndex;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Function;
@@ -32,7 +35,6 @@ public class SearchServiceImpl implements ISearchService {
 
 	private SelectQuery<? extends IBaseVO> getSelectQuery(DictionaryIndex voEntityIndex, String value) {
 
-		@SuppressWarnings("unchecked")
 		SelectQuery<? extends IBaseVO> query = (SelectQuery<? extends IBaseVO>) SelectQuery.selectFrom(voEntityIndex.getVOEntityClass());
 
 		for (IAttributeDescriptor<?> attributeDescriptor : voEntityIndex.getAttributeDescriptors()) {
@@ -76,6 +78,10 @@ public class SearchServiceImpl implements ISearchService {
 	@Override
 	public List<SearchResultItem> search(String indexId, String search) {
 
+		if (StringUtils.isEmpty(search)) {
+			return Collections.emptyList();
+		}
+		
 		List<SearchResultItem> searchResults = new ArrayList<SearchResultItem>();
 
 		for (final DictionaryIndex dictionaryIndex : getSearchIndexBuilder(indexId).getVOEntities()) {
@@ -84,14 +90,20 @@ public class SearchServiceImpl implements ISearchService {
 
 			List<? extends IBaseVO> result = baseEntityService.filter(selectQuery);
 
-			searchResults.addAll(Collections2.transform(result, new Function<IVOEntity, SearchResultItem>() {
+			searchResults.addAll(Collections2.transform(result, new Function<IBaseVO, SearchResultItem>() {
 
 				@Override
-				public SearchResultItem apply(IVOEntity input) {
+				public SearchResultItem apply(IBaseVO baseVO) {
 					SearchResultItem searchResultItem = new SearchResultItem();
 
 					searchResultItem.setDictionaryId(dictionaryIndex.getDictionaryId());
-					searchResultItem.setId(input.getId());
+					searchResultItem.setId(baseVO.getId());
+					searchResultItem.setLabel(DictionaryUtil.getLabel(dictionaryIndex.getDictionaryModel(), baseVO));
+					
+					for(IAttributeDescriptor<?> attributeDescriptor : dictionaryIndex.getAttributeDescriptors()) {
+						String attributeName = attributeDescriptor.getAttributeName();
+						searchResultItem.getAttributes().put(attributeName, Objects.toString(baseVO.get(attributeName)));
+					}
 					
 					return searchResultItem;
 				}

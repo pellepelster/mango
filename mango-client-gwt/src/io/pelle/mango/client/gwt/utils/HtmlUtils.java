@@ -5,7 +5,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 
 public class HtmlUtils {
 
-	public static void strong(String strongText, String text, SafeHtmlBuilder sb) {
+	public static void highlightTexts(String strongText, String text, SafeHtmlBuilder sb) {
 
 		if (strongText == null || text == null) {
 			return;

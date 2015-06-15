@@ -43,7 +43,12 @@ public class SearchServiceTest extends BaseDemoTest {
 		
 		List<SearchResultItem> result = searchService.search("index1", "bb");
 		assertEquals(2, result.size());
+		
 		assertEquals((Long)company2.getId(), result.get(0).getId());
+		
+//		SearchResultItem company2SearchResult = result.get(0);
+//		company2SearchResult.toString();
+		
 		assertEquals((Long)country2.getId(), result.get(0).getId());
 	}
 	

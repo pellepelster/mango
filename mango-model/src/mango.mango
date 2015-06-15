@@ -79,7 +79,8 @@ project Mango {
 			valueobject SearchResultItem {
 				string dictionaryId
 				long id
-				map string string config
+				string ^label
+				map string string attributes
 			}
 		
 			service SearchService {

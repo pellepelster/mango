@@ -3,7 +3,7 @@ package io.pelle.mango.server.search;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.db.voquery.AttributesDescriptorQuery;
 
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class SearchIndexBuilder {
 			return this;
 		}
 
-		public Class<? extends IVOEntity> getVOEntityClass() {
+		public Class<? extends IBaseVO> getVOEntityClass() {
 			return dictionaryModel.getVOClass();
 		}
 
@@ -60,6 +60,10 @@ public class SearchIndexBuilder {
 
 		public String getDictionaryId() {
 			return dictionaryModel.getName();
+		}
+		
+		public IDictionaryModel getDictionaryModel() {
+			return dictionaryModel;
 		}
 	}
 
@@ -101,5 +105,6 @@ public class SearchIndexBuilder {
 	public boolean isDefault() {
 		return isDefault;
 	}
+
 
 }

@@ -13,35 +13,35 @@ public class HtmlUtilsTest {
 	public void testStrong() {
 
 		SafeHtmlBuilder sb = new SafeHtmlBuilder();
-		HtmlUtils.strong("aa", "bb", sb);
+		HtmlUtils.highlightTexts("aa", "bb", sb);
 		assertEquals("bb", sb.toSafeHtml().asString());
 
 		sb = new SafeHtmlBuilder();
-		HtmlUtils.strong("aa", "aa", sb);
+		HtmlUtils.highlightTexts("aa", "aa", sb);
 		assertEquals("<strong>aa</strong>", sb.toSafeHtml().asString());
 
 		sb = new SafeHtmlBuilder();
-		HtmlUtils.strong("aa", "aabb", sb);
+		HtmlUtils.highlightTexts("aa", "aabb", sb);
 		assertEquals("<strong>aa</strong>bb", sb.toSafeHtml().asString());
 
 		sb = new SafeHtmlBuilder();
-		HtmlUtils.strong("aa", "aabbaa", sb);
+		HtmlUtils.highlightTexts("aa", "aabbaa", sb);
 		assertEquals("<strong>aa</strong>bbaa", sb.toSafeHtml().asString());
 
 		sb = new SafeHtmlBuilder();
-		HtmlUtils.strong("aa", "bbaa", sb);
+		HtmlUtils.highlightTexts("aa", "bbaa", sb);
 		assertEquals("bb<strong>aa</strong>", sb.toSafeHtml().asString());
 
 		sb = new SafeHtmlBuilder();
-		HtmlUtils.strong("aa", "", sb);
+		HtmlUtils.highlightTexts("aa", "", sb);
 		assertEquals("", sb.toSafeHtml().asString());
 
 		sb = new SafeHtmlBuilder();
-		HtmlUtils.strong("aa", null, sb);
+		HtmlUtils.highlightTexts("aa", null, sb);
 		assertEquals("", sb.toSafeHtml().asString());
 
 		sb = new SafeHtmlBuilder();
-		HtmlUtils.strong("aa", "Aabb", sb);
+		HtmlUtils.highlightTexts("aa", "Aabb", sb);
 		assertEquals("<strong>Aa</strong>bb", sb.toSafeHtml().asString());
 
 	}

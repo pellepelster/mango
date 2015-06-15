@@ -21,8 +21,8 @@ import io.pelle.mango.client.web.modules.dictionary.search.ISearchUpdateListener
 import org.gwtbootstrap3.client.ui.TextBox;
 import org.gwtbootstrap3.client.ui.html.Div;
 
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.DockLayoutPanel.Direction;
 import com.google.gwt.user.client.ui.Panel;
 
@@ -41,14 +41,13 @@ public class DictionarySearchQueryModuleUI<VOType extends IBaseVO> extends BaseD
 
 		final TextBox searchTextBox = new TextBox();
 		container.add(searchTextBox);
-		searchTextBox.addKeyDownHandler(new KeyDownHandler() {
-
+		searchTextBox.addKeyUpHandler(new KeyUpHandler() {
+			
 			@Override
-			public void onKeyDown(KeyDownEvent event) {
+			public void onKeyUp(KeyUpEvent event) {
 				ModuleHandler.getInstance().startUIModule(DictionarySearchModule.getSearchQueryResultModuleLocator(searchTextBox.getText()), Direction.CENTER.toString());
 			}
 		});
-
 	}
 
 	/** {@inheritDoc} */

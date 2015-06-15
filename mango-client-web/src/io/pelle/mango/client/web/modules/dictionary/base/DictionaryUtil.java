@@ -74,6 +74,10 @@ public final class DictionaryUtil {
 
 	public static String getLabel(IDictionaryModel dictionaryModel) {
 		return Objects.firstNonNull(dictionaryModel.getLabel(), dictionaryModel.getName());
+	}
+
+	public static String getLabel(IDictionaryModel dictionaryModel, IBaseVO vo) {
+		return getLabel(dictionaryModel.getLabelControls(), vo);
 	};
 
 	public static String getLabel(IHierarchicalControlModel hierarchicalControlModel, IHierarchicalVO vo, String defaultLabel) {
