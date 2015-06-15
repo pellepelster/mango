@@ -2,6 +2,7 @@
 */xtend-gen
 */build
 */bin
+*/.classpath
 .gradle
 *~
 *derby.log
