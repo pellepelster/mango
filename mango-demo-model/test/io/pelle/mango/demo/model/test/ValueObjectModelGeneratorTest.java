@@ -6,8 +6,9 @@ import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
-import io.pelle.mango.demo.client.showcase.CompanyVO;
 import io.pelle.mango.demo.client.showcase.CountryVO;
+import io.pelle.mango.demo.client.showcase.EmployeeVO;
+import io.pelle.mango.demo.client.showcase.ManagerVO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
@@ -92,13 +93,17 @@ public class ValueObjectModelGeneratorTest {
 	}
 
 	@Test
-	public void testCompanyHierarchicalAttributeDescriptors() {
-		assertEquals(CompanyVO.PARENTCLASSNAME.getAttributeName(), "parentClassName");
-		assertEquals(CompanyVO.PARENTID.getAttributeName(), "parentId");
-		assertEquals(CompanyVO.PARENT.getAttributeName(), "parent");
-		assertEquals(CompanyVO.HASCHILDREN.getAttributeName(), "hasChildren");
-	}
+	public void testEmployeGenericGetterSetterSetParent() {
 
+		ManagerVO manager = new ManagerVO();
+		
+		EmployeeVO employee = new EmployeeVO();
+		employee.set("parent", manager);
+		
+		assertEquals(manager, employee.get("parent"));
+
+	}
+	
 	@Test
 	public void testValueObjectMetaModelProvider() {
 
