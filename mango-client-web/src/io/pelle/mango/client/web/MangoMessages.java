@@ -113,7 +113,7 @@ public interface MangoMessages extends Messages {
 	String buttonCancel();
 
 	@DefaultMessage("Select {0}")
-	String voSelectionHeader(String message);
+	String voSelectionTitle(String message);
 
 	@DefaultMessage("Add children")
 	String addChildren();
@@ -204,5 +204,8 @@ public interface MangoMessages extends Messages {
 
 	@DefaultMessage("No search results")
 	String noSearchResults();
+
+	@DefaultMessage("parent")
+	String hierarchicalParent();
 
 }
