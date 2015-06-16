@@ -361,7 +361,7 @@ class DictionaryControls {
 	// DictionaryHierarchicalControl
 	//-------------------------------------------------------------------------
 	def dispatch dictionaryControlType(DictionaryHierarchicalControl dictionaryControl) '''
-		«HierarchicalControlModel.name»<«IBaseControl.name»>
+		«HierarchicalControlModel.name»
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryHierarchicalControl dictionaryControl) '''
