@@ -275,8 +275,7 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 			@Override
 			public void onNewInstance(IBaseEntity voEntity, Map<String, String> properties) {
 
-				if (voEntity instanceof IBaseHierarchical && !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME))
-						&& !StringUtils.isEmpty(properties.get(properties.containsKey(IHierarchicalVO.PARENT_ID_FIELD_NAME)))) {
+				if (voEntity instanceof IBaseHierarchical && !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME)) && !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME))) {
 
 					String parentClassName = properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME);
 					long parentId = Long.parseLong(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME));
