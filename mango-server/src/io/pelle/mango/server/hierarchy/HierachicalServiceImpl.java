@@ -244,7 +244,7 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 	/** {@inheritDoc} */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		
+
 		this.hierarchicalClasses = new ArrayList<Class<? extends IHierarchicalVO>>();
 
 		for (Class<? extends IBaseVO> voClass : EntityVOMapper.getInstance().getVOClasses()) {
@@ -273,17 +273,16 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 
 			@Override
 			public void onNewInstance(IBaseEntity voEntity, Map<String, String> properties) {
-				
-				if (voEntity instanceof IBaseHierarchical && properties.containsKey(IHierarchicalVO.PARENT_CLASS_FIELD_NAME) && properties.containsKey(IHierarchicalVO.PARENT_ID_FIELD_NAME));
-				{
+
+				if (voEntity instanceof IBaseHierarchical && properties.containsKey(IHierarchicalVO.PARENT_CLASS_FIELD_NAME) && properties.containsKey(IHierarchicalVO.PARENT_ID_FIELD_NAME)) {
 					String parentClassName = properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME);
 					long parentId = Long.parseLong(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME));
-					
+
 					IBaseHierarchical baseHierarchical = (IBaseHierarchical) voEntity;
 					baseHierarchical.setParentClassName(parentClassName);
 					baseHierarchical.setParentId(parentId);
 				}
-				
+
 			}
 		});
 

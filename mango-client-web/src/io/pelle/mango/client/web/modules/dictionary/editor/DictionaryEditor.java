@@ -58,33 +58,31 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 				fireUpdateListeners();
 			}
 		});
-		
-		
+
 		/*
-		
-		if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent().getName())) {
-			
-			final Stack<BaseEditorHook<VOType>> runningHooks = new Stack<BaseEditorHook<VOType>>();
-
-			for (final BaseEditorHook<VOType> baseEditorHook : DictionaryHookRegistry.getInstance().getEditorHook(getModel().getParent().getName())) {
-				runningHooks.add(baseEditorHook);
-
-				baseEditorHook.onInit(new BaseErrorAsyncCallback<Boolean>() {
-					@Override
-					public void onSuccess(Boolean doSave) {
-						
-						runningHooks.remove(baseEditorHook);
-
-						if (runningHooks.isEmpty()) {
-							callback.onSuccess(DictionaryEditor.this);
-						}
-					}
-				}, this);
-			}
-		} else {
-			callback.onSuccess(this);
-		}
-		*/
+		 * 
+		 * if
+		 * (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent
+		 * ().getName())) {
+		 * 
+		 * final Stack<BaseEditorHook<VOType>> runningHooks = new
+		 * Stack<BaseEditorHook<VOType>>();
+		 * 
+		 * for (final BaseEditorHook<VOType> baseEditorHook :
+		 * DictionaryHookRegistry
+		 * .getInstance().getEditorHook(getModel().getParent().getName())) {
+		 * runningHooks.add(baseEditorHook);
+		 * 
+		 * baseEditorHook.onInit(new BaseErrorAsyncCallback<Boolean>() {
+		 * 
+		 * @Override public void onSuccess(Boolean doSave) {
+		 * 
+		 * runningHooks.remove(baseEditorHook);
+		 * 
+		 * if (runningHooks.isEmpty()) {
+		 * callback.onSuccess(DictionaryEditor.this); } } }, this); } } else {
+		 * callback.onSuccess(this); }
+		 */
 	}
 
 	@Override
