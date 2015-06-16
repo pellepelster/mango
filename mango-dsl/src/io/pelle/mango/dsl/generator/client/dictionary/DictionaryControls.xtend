@@ -323,7 +323,7 @@ class DictionaryControls {
 		«ENDIF»
 		
 		«IF dictionaryControl.controlType != null»
-		«dictionaryControl.dictionaryConstantName».setEnumerationName(«dictionaryControl.controlType».class.getName());
+			«dictionaryControl.dictionaryConstantName».setEnumerationName(«dictionaryControl.controlType».class.getName());
 		«ENDIF»
 		«dictionaryControl.dictionaryControlCommonSetters»
 	'''
@@ -367,6 +367,10 @@ class DictionaryControls {
 	def dispatch String dictionaryControlConstantSetters(DictionaryHierarchicalControl dictionaryControl) '''
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«IF dictionaryControl.hierarchicalId != null»
+			«dictionaryControl.dictionaryConstantName».setHierarchicalId("«dictionaryControl.hierarchicalId»");
 		«ENDIF»
 		
 		«dictionaryControl.dictionaryControlCommonSetters»

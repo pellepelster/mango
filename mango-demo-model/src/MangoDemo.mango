@@ -333,7 +333,6 @@ project MangoDemo {
 						entityattribute name
 					}
 					hierarchicalcontrol Parent {
-						entityattribute name
 						hierarchicalId "test"
 					} 
 				}

@@ -108,6 +108,11 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testEmployeParentHierachicalControlHierarchicalId() {
+		assertEquals("test", MangoDemoDictionaryModel.EMPLOYEE.EMPLOYEE_EDITOR.PARENT.getHierarchicalId());
+	}
+
+	@Test
 	public void testDictionary1EnumerationWithoutEntityAttribute() {
 		assertEquals("io.pelle.mango.demo.client.test.ENUMERATION1", MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getEnumerationName());
 	}
