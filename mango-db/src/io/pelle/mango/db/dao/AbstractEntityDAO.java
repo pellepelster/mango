@@ -10,6 +10,7 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.voquery.VOClassQuery;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +27,11 @@ public abstract class AbstractEntityDAO<T extends IBaseEntity> implements IVOEnt
 		this.voEntityClass = voEntityClass;
 	}
 
+	@Override
+	public T getNewEntity(String className, Map<String, String> properties) {
+		return baseEntityDAO.getNewVO(className, properties);
+	}
+	
 	@Override
 	public Class<T> getVOEntityClass() {
 		return voEntityClass;

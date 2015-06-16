@@ -7,10 +7,13 @@ import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Optional;
 
 public interface IBaseVOEntityDAO<VOENTITYTYPE extends IVOEntity> {
+
+	<T extends VOENTITYTYPE> T getNewVO(String className, Map<String, String> properties);
 
 	<T extends VOENTITYTYPE> T create(T entity);
 

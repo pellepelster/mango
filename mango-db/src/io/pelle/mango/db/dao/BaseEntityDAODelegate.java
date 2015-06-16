@@ -333,15 +333,14 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 		if (entityCallbacks.get(entity.getClass()) == null) {
 			entityCallbacks.put(entity.getClass(), new ArrayList<IDAOCallback<?>>());
 		}
-		
+
 		return entityCallbacks.get(entity.getClass());
 	}
-		
 
 	private <T extends IBaseEntity> Iterable<IDAOCallback<?>> getCallbacks(T entity) {
 		return Iterables.concat(genericCallbacks, getEntityCallbacks(entity));
 	}
-	
+
 	private <T extends IBaseEntity> void fireOnDeleteCallbacks(T entity) {
 		for (IDAOCallback daoCallback : getCallbacks(entity)) {
 			daoCallback.onDelete(entity);
@@ -354,8 +353,32 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 		}
 	}
 
+	private <T extends IBaseEntity> void fireNewInstanceCallbacks(T entity, Map<String, String> properties) {
+		for (IDAOCallback daoCallback : getCallbacks(entity)) {
+			daoCallback.onNewInstance(entity, properties);
+		}
+	}
+
 	@Override
 	public void registerCallback(IDAOCallback<?> callback) {
 		genericCallbacks.add(callback);
+	}
+
+	@Override
+	public <T extends IBaseEntity> T getNewVO(String className, Map<String, String> properties) {
+
+		T result = null;
+		
+		IVOEntityDAO<T> entityDAO = getVOEntityDAO(EntityVOMapper.getInstance().getEntityClass(className));
+
+		if (entityDAO != null) {
+			result = entityDAO.getNewEntity(className, properties);
+		} else {
+			result = baseEntityDAO.getNewVO(className, properties);
+		}
+		
+		fireNewInstanceCallbacks(result, properties);
+		
+		return result;
 	}
 }

@@ -7,6 +7,7 @@ import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Optional;
 
@@ -41,5 +42,7 @@ public interface IVOEntityDAO<T extends IVOEntity> {
 	long aggregate(AggregateQuery<T> query);
 
 	Optional<T> getByNaturalKey(String naturalKey);
+
+	T getNewEntity(String className, Map<String, String> properties);
 
 }

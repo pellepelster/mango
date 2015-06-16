@@ -1,5 +1,6 @@
 package io.pelle.mango.demo.server;
 
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
@@ -14,7 +15,9 @@ import io.pelle.mango.demo.client.showcase.CompanyVO;
 import io.pelle.mango.demo.client.showcase.ManagerVO;
 
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -116,6 +119,9 @@ public class DemoHierarchicalTest extends BaseDemoTest {
 
 	@Test
 	public void testCreate() {
+		
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+		
 		CompanyVO companyVO1 = new CompanyVO();
 		companyVO1.setName("kkk");
 		companyVO1 = baseEntityService.create(companyVO1);
@@ -126,6 +132,24 @@ public class DemoHierarchicalTest extends BaseDemoTest {
 		Result<ManagerVO> savedManagerVO = baseEntityService.validateAndCreate(managerVO);
 
 		Assert.assertEquals(managerVO.getParent().getOid(), savedManagerVO.getValue().getParent().getOid());
+	}
+
+	@Test
+	public void testGetNewVO() {
+
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+
+		CompanyVO companyVO1 = new CompanyVO();
+		companyVO1.setName("kkk");
+		companyVO1 = baseEntityService.create(companyVO1);
+
+		Map<String, String> properties = new HashedMap<String, String>();
+		properties.put(IHierarchicalVO.PARENT_CLASS_FIELD_NAME, companyVO1.getClass().getName());
+		properties.put(IHierarchicalVO.PARENT_ID_FIELD_NAME, Long.toString(companyVO1.getOid()));
+		
+		ManagerVO managerVO = baseEntityService.getNewVO(ManagerVO.class.getName(), properties);
+				
+		Assert.assertEquals(companyVO1, managerVO.getParent());
 	}
 
 	@Test

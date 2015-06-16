@@ -39,7 +39,27 @@ public final class EntityVOMapper implements IEntityVOMapper {
 
 	public Class<? extends IBaseVO> getVOClass(String className) {
 		try {
-			return (Class<? extends IBaseVO>) Class.forName(className);
+			Class<?> clazz = Class.forName(className);
+			
+			if (IBaseEntity.class.equals(clazz)) {
+				return getVOClass(clazz);
+			}
+			
+			return (Class<? extends IBaseVO>) clazz;
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(String.format("class '%s' not found", className));
+		}
+	}
+
+	public Class<? extends IBaseEntity> getEntityClass(String className) {
+		try {
+			Class<?> clazz = Class.forName(className);
+			
+			if (IBaseVO.class.equals(clazz)) {
+				return getEntityClass(clazz);
+			}
+			
+			return (Class<? extends IBaseEntity>) clazz;
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(String.format("class '%s' not found", className));
 		}

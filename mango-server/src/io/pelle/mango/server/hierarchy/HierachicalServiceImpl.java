@@ -1,11 +1,13 @@
 package io.pelle.mango.server.hierarchy;
 
+import io.pelle.mango.client.base.db.vos.IBaseHierarchical;
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.hierarchical.BaseHierarchicalConfiguration;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
 import io.pelle.mango.client.base.modules.hierarchical.VOHierarchy;
+import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
@@ -13,7 +15,9 @@ import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
 import io.pelle.mango.client.hierarchy.IHierachicalService;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
+import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.db.dao.IBaseVODAO;
+import io.pelle.mango.db.dao.IDAOCallback;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.entity.EntityUtils;
 
@@ -30,6 +34,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class HierachicalServiceImpl implements IHierachicalService, InitializingBean {
 
 	private static Logger LOG = Logger.getLogger(HierachicalServiceImpl.class);
+
+	@Autowired
+	private IBaseEntityDAO baseEntityDAO;
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
@@ -237,6 +244,7 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 	/** {@inheritDoc} */
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		
 		this.hierarchicalClasses = new ArrayList<Class<? extends IHierarchicalVO>>();
 
 		for (Class<? extends IBaseVO> voClass : EntityVOMapper.getInstance().getVOClasses()) {
@@ -244,5 +252,40 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 				this.hierarchicalClasses.add((Class<? extends IHierarchicalVO>) voClass);
 			}
 		}
+
+		baseEntityDAO.registerCallback(new IDAOCallback<IBaseEntity>() {
+
+			@Override
+			public void onUpdate(IBaseEntity voEntity) {
+			}
+
+			@Override
+			public void onDeleteAll(Class voEntityClass) {
+			}
+
+			@Override
+			public void onDelete(IBaseEntity voEntity) {
+			}
+
+			@Override
+			public void onCreate(IBaseEntity voEntity) {
+			}
+
+			@Override
+			public void onNewInstance(IBaseEntity voEntity, Map<String, String> properties) {
+				
+				if (voEntity instanceof IBaseHierarchical && properties.containsKey(IHierarchicalVO.PARENT_CLASS_FIELD_NAME) && properties.containsKey(IHierarchicalVO.PARENT_ID_FIELD_NAME));
+				{
+					String parentClassName = properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME);
+					long parentId = Long.parseLong(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME));
+					
+					IBaseHierarchical baseHierarchical = (IBaseHierarchical) voEntity;
+					baseHierarchical.setParentClassName(parentClassName);
+					baseHierarchical.setParentId(parentId);
+				}
+				
+			}
+		});
+
 	}
 }

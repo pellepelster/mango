@@ -7,6 +7,7 @@ import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -98,4 +99,8 @@ public abstract class AbstractVODAO<VOTYPE extends IBaseVO> implements IVOEntity
 		return baseVODAO.count(getVOEntityClass());
 	}
 
+	@Override
+	public VOTYPE getNewEntity(String className, Map<String, String> properties) {
+		return baseVODAO.getNewVO(className, properties);
+	}
 }

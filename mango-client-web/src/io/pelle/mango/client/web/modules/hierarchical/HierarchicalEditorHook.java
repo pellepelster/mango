@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
 
 public class HierarchicalEditorHook<VOType extends IHierarchicalVO> extends BaseEditorHook<VOType> {
+	
 	private List<IDictionaryModel> childDictionaries;
 
 	private static final String HIERARCHY_ADD_CHILD_BUTTON_DEBUG_ID = "HIERARCHY_ADD_CHILD_BUTTON_DEBUG_ID";
@@ -37,6 +38,19 @@ public class HierarchicalEditorHook<VOType extends IHierarchicalVO> extends Base
 		this.childDictionaries = childDictionaries;
 	}
 
+	@Override
+	public void onInit(AsyncCallback<Boolean> asyncCallback, IDictionaryEditor<VOType> editor) {
+
+		if (editor.getContext().containsKey(IHierarchicalVO.PARENT_CLASS_FIELD_NAME) && editor.getContext().containsKey(IHierarchicalVO.PARENT_ID_FIELD_NAME)) {
+			
+			//MangoClientWeb.getInstance().getRemoteServiceLocator().getHierachicalService().g
+			
+			editor.getVO().setParentClassName((String) editor.getContext().get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME));
+			editor.getVO().setParentId((Long) editor.getContext().get(IHierarchicalVO.PARENT_ID_FIELD_NAME));
+		}
+		
+	}
+	
 	@Override
 	public void onSave(AsyncCallback<Boolean> asyncCallback, IDictionaryEditor<VOType> editor) {
 
