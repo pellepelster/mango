@@ -14,7 +14,7 @@ public class HierarchicalControl extends BaseDictionaryControl<IHierarchicalCont
 	{
 		super(hierarchicalControlModel, parent);
 	}
-
+	
 	@Override
 	protected ParseResult parseValueInternal(String valueString)
 	{
