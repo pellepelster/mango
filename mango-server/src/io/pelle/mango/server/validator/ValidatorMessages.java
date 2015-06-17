@@ -26,6 +26,10 @@ public class ValidatorMessages {
 	
 	public static final String HIERARCHICAL_PARENT_MANDATORY_MESSAGE_HUMAN = "hierarchical.parent.mandatory.message.human";
 	
+	public static final String HIERARCHICAL_PARENT_NOT_ALLOWED_MESSAGE = "hierarchical.parent.notallowed.message";
+	
+	public static final String HIERARCHICAL_PARENT_NOT_ALLOWED_MESSAGE_HUMAN = "hierarchical.parent.notallowed.message.human";
+
 	
 	public static final IMessage NATURAL_KEY = new Message(IMessage.SEVERITY.ERROR, "NATURAL_KEY", Messages.getString(VALIDATOR_NATURALKEY_MESSAGE), Messages.getString(VALIDATOR_NATURALKEY_MESSAGE_HUMAN));
 
@@ -54,5 +58,8 @@ public class ValidatorMessages {
 
 	public static final IMessage HIERARCHICAL_PARENT_MANDATORY = new Message(IMessage.SEVERITY.ERROR, "HIERARCHICAL_PARENT_MANDATORY", Messages.getString(HIERARCHICAL_PARENT_MANDATORY_MESSAGE),
 			Messages.getString(HIERARCHICAL_PARENT_MANDATORY_MESSAGE_HUMAN));
+
+	public static final IMessage HIERARCHICAL_PARENT_NOT_ALLOWED = new Message(IMessage.SEVERITY.ERROR, "HIERARCHICAL_PARENT_MANDATORY", Messages.getString(HIERARCHICAL_PARENT_NOT_ALLOWED_MESSAGE),
+			Messages.getString(HIERARCHICAL_PARENT_NOT_ALLOWED_MESSAGE_HUMAN));
 
 }

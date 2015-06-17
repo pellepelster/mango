@@ -13,6 +13,7 @@ import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.TestClientHierarchicalConfiguration;
 import io.pelle.mango.demo.client.showcase.CompanyVO;
+import io.pelle.mango.demo.client.showcase.EmployeeVO;
 import io.pelle.mango.demo.client.showcase.ManagerVO;
 
 import java.util.List;
@@ -65,27 +66,49 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 		baseEntityService.deleteAll(CompanyVO.class.getName());
 		baseEntityService.deleteAll(ManagerVO.class.getName());
 
-		CompanyVO companyVO1 = new CompanyVO();
-		companyVO1.setName("xxx");
-		companyVO1 = baseEntityService.create(companyVO1);
+		CompanyVO company = new CompanyVO();
+		company.setName("xxx");
+		company = baseEntityService.create(company);
 
-		ManagerVO managerVO1 = new ManagerVO();
-		managerVO1.setName("aaa");
-		managerVO1.setParent(companyVO1);
+		ManagerVO manager = new ManagerVO();
+		manager.setName("aaa");
+		manager.setParent(company);
 
-		managerVO1 = baseEntityService.create(managerVO1);
+		manager = baseEntityService.create(manager);
 
-		assertNotNull(managerVO1.getParent());
+		assertNotNull(manager.getParent());
 
-		managerVO1.setParent(null);
+		manager.setParent(null);
 
-		Result<ManagerVO> managerVO1SaveResult = baseEntityService.validateAndSave(managerVO1);
+		Result<ManagerVO> managerSaveResult = baseEntityService.validateAndSave(manager);
 
-		assertEquals(1, managerVO1SaveResult.getValidationMessages().size());
-		assertEquals("io.pelle.mango.demo.client.showcase.ManagerVO needs a parent", managerVO1SaveResult.getValidationMessages().get(0).getMessage());
-		assertEquals("Manager needs a parent", managerVO1SaveResult.getValidationMessages().get(0).getHumanMessage());
+		assertEquals(1, managerSaveResult.getValidationMessages().size());
+		assertEquals("io.pelle.mango.demo.client.showcase.ManagerVO needs a parent", managerSaveResult.getValidationMessages().get(0).getMessage());
+		assertEquals("Manager needs a parent", managerSaveResult.getValidationMessages().get(0).getHumanMessage());
 	}
 
+	@Test
+	public void testInvalidParent() {
+
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+		baseEntityService.deleteAll(EmployeeVO.class.getName());
+
+		CompanyVO company = new CompanyVO();
+		company.setName("xxx");
+		company = baseEntityService.create(company);
+
+		EmployeeVO employeeVO = new EmployeeVO();
+		employeeVO.setName("aaa");
+		employeeVO.setParent(company);
+
+		Result<EmployeeVO> employeeSaveResult = baseEntityService.validateAndSave(employeeVO);
+
+		assertEquals(1, employeeSaveResult.getValidationMessages().size());
+		assertEquals("io.pelle.mango.demo.client.showcase.CompanyVO not allowed as parent for io.pelle.mango.demo.client.showcase.EmployeeVO", employeeSaveResult.getValidationMessages().get(0).getMessage());
+		assertEquals("Company not allowed as parent for Employee", employeeSaveResult.getValidationMessages().get(0).getHumanMessage());
+	}
+
+	
 	@Test
 	public void testGetChildren() {
 		List<DictionaryHierarchicalNodeVO> rootNodes = this.hierarchicalService.getRootNodes(TestClientHierarchicalConfiguration.ID);
