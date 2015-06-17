@@ -3,6 +3,10 @@ package io.pelle.mango.server;
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
+import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
+import io.pelle.mango.server.validator.LengthValidator;
+import io.pelle.mango.server.validator.MandatoryValidator;
+import io.pelle.mango.server.validator.NaturalKeyValidator;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
@@ -70,6 +74,26 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 		}
 	}
 
+	@Bean
+	public NaturalKeyValidator naturalKeyValidator() {
+		return new NaturalKeyValidator();
+	}
+
+	@Bean
+	public LengthValidator lengthValidator() {
+		return new LengthValidator();
+	}
+
+	@Bean
+	public MandatoryValidator mandatoryValidator() {
+		return new MandatoryValidator();
+	}
+
+	@Bean
+	public HierarchyParentValidator hierarchyParentValidator() {
+		return new HierarchyParentValidator();
+	}
+	
 	@Bean
 	public JmxReporter jmxReporter() {
 

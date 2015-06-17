@@ -22,6 +22,11 @@ public class ValidatorMessages {
 
 	public static final String VALIDATOR_MANDATORY_LIST_MESSAGE_HUMAN = "validator.mandatory.LIST.message.human";
 
+	public static final String HIERARCHICAL_PARENT_MANDATORY_MESSAGE = "hierarchical.parent.mandatory.message";
+	
+	public static final String HIERARCHICAL_PARENT_MANDATORY_MESSAGE_HUMAN = "hierarchical.parent.mandatory.message.human";
+	
+	
 	public static final IMessage NATURAL_KEY = new Message(IMessage.SEVERITY.ERROR, "NATURAL_KEY", Messages.getString(VALIDATOR_NATURALKEY_MESSAGE), Messages.getString(VALIDATOR_NATURALKEY_MESSAGE_HUMAN));
 
 	public static final IMessage NATURAL_KEY_MANDATORY = new Message(IMessage.SEVERITY.ERROR, "NATURAL_KEY_MANDATORY", Messages.getString(VALIDATOR_NATURALKEY_MANTATORY_MESSAGE),
@@ -46,5 +51,8 @@ public class ValidatorMessages {
 
 	public static final IMessage STRING_ATTRIBUTE_MIN_LENGTH = new Message(IMessage.SEVERITY.ERROR, "ATTRIBUTE_MIN_LENGTH", Messages.getString(VALIDATOR_ATTRIBUTE_MIN_LENGTH_MESSAGE),
 			Messages.getString(VALIDATOR_ATTRIBUTE_MIN_LENGTH_MESSAGE_HUMAN));
+
+	public static final IMessage HIERARCHICAL_PARENT_MANDATORY = new Message(IMessage.SEVERITY.ERROR, "HIERARCHICAL_PARENT_MANDATORY", Messages.getString(HIERARCHICAL_PARENT_MANDATORY_MESSAGE),
+			Messages.getString(HIERARCHICAL_PARENT_MANDATORY_MESSAGE_HUMAN));
 
 }

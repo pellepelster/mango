@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.apache.commons.collections4.map.HashedMap;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -61,31 +60,11 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 	}
 
 	@Test
-	@Ignore
-	public void testRemoveParent1() {
-
-		CompanyVO companyVO1 = new CompanyVO();
-		companyVO1.setName("xxx");
-		companyVO1 = baseEntityService.create(companyVO1);
-
-		ManagerVO managerVO1 = new ManagerVO();
-		managerVO1.setName("aaa");
-		managerVO1.setParent(companyVO1);
-
-		managerVO1 = baseEntityService.create(managerVO1);
-
-		assertNotNull(managerVO1.getParent());
-
-		managerVO1.setParent(null);
-		managerVO1 = baseEntityService.save(managerVO1);
-
-		assertEquals(companyVO1, managerVO1.getParent());
-	}
-	
-	@Test
-	@Ignore
 	public void testRemoveParentNotAllowed() {
 
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+		baseEntityService.deleteAll(ManagerVO.class.getName());
+
 		CompanyVO companyVO1 = new CompanyVO();
 		companyVO1.setName("xxx");
 		companyVO1 = baseEntityService.create(companyVO1);
@@ -99,9 +78,12 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 		assertNotNull(managerVO1.getParent());
 
 		managerVO1.setParent(null);
-		managerVO1 = baseEntityService.save(managerVO1);
 
-		assertEquals(companyVO1, managerVO1.getParent());
+		Result<ManagerVO> managerVO1SaveResult = baseEntityService.validateAndSave(managerVO1);
+
+		assertEquals(1, managerVO1SaveResult.getValidationMessages().size());
+		assertEquals("io.pelle.mango.demo.client.showcase.ManagerVO needs a parent", managerVO1SaveResult.getValidationMessages().get(0).getMessage());
+		assertEquals("Manager needs a parent", managerVO1SaveResult.getValidationMessages().get(0).getHumanMessage());
 	}
 
 	@Test
