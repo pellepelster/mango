@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.springframework.security.access.AccessDeniedException;
@@ -294,6 +295,20 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 			return Optional.absent();
 		} else {
 			return Optional.of(result.get(0));
+		}
+	}
+
+	@Override
+	public <T extends IBaseEntity> T getNewVO(String className, Map<String, String> properties) {
+
+		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getEntityClass(className);
+
+		try {
+			T entity = (T) ConstructorUtils.invokeConstructor(entityClass, new Object[0]);
+
+			return entity;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.ConstructorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,16 +100,7 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 
 	@Override
 	public <NewVOType extends IBaseVO> NewVOType getNewVO(String voClassName, Map<String, String> properties) {
-
-		try {
-			Class<?> voClass = Class.forName(voClassName);
-			@SuppressWarnings("unchecked")
-			NewVOType vo = (NewVOType) ConstructorUtils.invokeConstructor(voClass, new Object[0]);
-
-			return vo;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return baseVODAO.getNewVO(voClassName, properties);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -15,6 +15,7 @@ import io.pelle.mango.client.base.property.IProperty
 import io.pelle.mango.client.base.property.IPropertyCategory
 import java.io.Serializable
 import io.pelle.mango.client.search.SearchResultItem
+import com.google.common.base.Optional
 
 project Mango {
 
@@ -169,9 +170,10 @@ project Mango {
 				entity DictionaryHierarchicalNode 0..n children
 			}
 			
-			service HierachicalService {
+			service HierarchicalService {
 				method List<DictionaryHierarchicalNodeVO> getRootNodes ( String id )
 				method HierarchicalConfigurationVO getConfigurationById  ( String id )
+				method HierarchicalConfigurationVO getConfigurationByDictionaryId  ( String dictionaryId )
 				method List<HierarchicalConfigurationVO> getConfigurations ()
 				method Boolean hasChildren ( String voClassName, Long voId )
 				method List<DictionaryHierarchicalNodeVO> getChildNodes ( String id, Long voId, String voClassName )

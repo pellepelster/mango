@@ -21,7 +21,7 @@ import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfiguration
 import io.pelle.mango.client.base.util.CollectionUtils;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
-import io.pelle.mango.client.hierarchy.IHierachicalServiceGWTAsync;
+import io.pelle.mango.client.hierarchy.IHierarchicalServiceGWTAsync;
 import io.pelle.mango.client.modules.BaseModuleHierarchicalTreeModule;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
@@ -65,9 +65,9 @@ public class HierarchicalTreeModule extends BaseModuleHierarchicalTreeModule {
 	public HierarchicalTreeModule(String moduleUrl, final AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
 		super(moduleUrl, moduleCallback, parameters);
 
-		final IHierachicalServiceGWTAsync hierachicalService = MangoClientWeb.getInstance().getRemoteServiceLocator().getHierachicalService();
+		final IHierarchicalServiceGWTAsync hierarchicalService = MangoClientWeb.getInstance().getRemoteServiceLocator().getHierarchicalService();
 
-		hierachicalService.getConfigurationById(getHierarchicalTreeId(), new AsyncCallback<HierarchicalConfigurationVO>() {
+		hierarchicalService.getConfigurationById(getHierarchicalTreeId(), new AsyncCallback<HierarchicalConfigurationVO>() {
 
 			/** {@inheritDoc} */
 			@Override

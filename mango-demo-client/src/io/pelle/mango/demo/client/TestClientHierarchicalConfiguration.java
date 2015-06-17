@@ -3,6 +3,7 @@ package io.pelle.mango.demo.client;
 import io.pelle.mango.client.base.modules.hierarchical.BaseHierarchicalConfiguration;
 
 public class TestClientHierarchicalConfiguration extends BaseHierarchicalConfiguration {
+	
 	public static final String ID = "test";
 
 	public TestClientHierarchicalConfiguration() {
@@ -10,6 +11,6 @@ public class TestClientHierarchicalConfiguration extends BaseHierarchicalConfigu
 
 		addHierarchy(MangoDemoDictionaryModel.COMPANY);
 		addHierarchy(MangoDemoDictionaryModel.MANAGER, MangoDemoDictionaryModel.COMPANY);
-		addHierarchy(MangoDemoDictionaryModel.EMPLOYEE, MangoDemoDictionaryModel.COMPANY, MangoDemoDictionaryModel.MANAGER);
+		addHierarchy(MangoDemoDictionaryModel.EMPLOYEE, MangoDemoDictionaryModel.MANAGER);
 	}
 }

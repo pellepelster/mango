@@ -50,7 +50,6 @@ public class EntityModelGeneratorTest {
 		assertEquals(Entity4.ENTITY4, Entity4.STRINGDATATYPE3.getParent());
 	}
 
-	
 	@Test
 	public void testStringAttributeDescriptor() {
 		assertEquals(StringAttributeDescriptor.class, Entity1.STRINGDATATYPE1.getClass());
@@ -72,6 +71,16 @@ public class EntityModelGeneratorTest {
 	}
 
 	@Test
+	public void testGetCountryNaturalKeyNull() {
+
+		Country country = new Country();
+		country.setCountryIsoCode2(null);
+
+		assertTrue(country.hasNaturalKey());
+		assertEquals("-", country.getNaturalKey());
+	}
+
+	@Test
 	public void testGetEntity5VOComposedNaturalKey() {
 
 		Entity4 entity4 = new Entity4();
@@ -83,6 +92,17 @@ public class EntityModelGeneratorTest {
 
 		assertTrue(entity5.hasNaturalKey());
 		assertEquals("abc, def", entity5.getNaturalKey());
+	}
+
+	@Test
+	public void testGetEntity5VOComposedNaturalKeyNull() {
+
+		Entity5 entity5 = new Entity5();
+		entity5.setString1("abc");
+		entity5.setEntity4(null);
+
+		assertTrue(entity5.hasNaturalKey());
+		assertEquals("abc, -", entity5.getNaturalKey());
 	}
 
 	@Test

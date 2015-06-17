@@ -1,19 +1,23 @@
 package io.pelle.mango.server.validator;
 
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.util.CollectionUtils;
 import io.pelle.mango.client.base.util.XPathUtil;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.db.util.BeanUtils;
-import io.pelle.mango.db.voquery.VOClassQuery;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MandatoryValidator implements IValidator {
+
+	private List<String> doNotValidateFiledNames = Arrays.asList(new String[] { IHierarchicalVO.PARENT_CLASS_FIELD_NAME,
+			IHierarchicalVO.PARENT_ID_FIELD_NAME, IBaseVO.ID_FIELD_NAME, "hasChildren" });
+
 	/** {@inheritDoc} */
 	@Override
 	public boolean canValidate(Object o) {
@@ -26,39 +30,30 @@ public class MandatoryValidator implements IValidator {
 	}
 
 	public List<IValidationMessage> validateInternal(Object o, String parentPath) {
+
 		IBaseVO vo = (IBaseVO) o;
 
 		List<IValidationMessage> result = new ArrayList<IValidationMessage>();
 
-		for (StringAttributeDescriptor stringAttributeDescriptor : VOClassQuery.createQuery(vo.getClass()).attributesDescriptors().byType(StringAttributeDescriptor.class)) {
-
-			String fullAttributePath = XPathUtil.combine(parentPath, stringAttributeDescriptor.getAttributeName());
-
-			if (stringAttributeDescriptor.getListAttributeType() == null) {
-				if (vo.get(stringAttributeDescriptor.getAttributeName()) == null) {
-					result.add(new ValidationMessage(ValidatorMessages.MANDATORY_ATTRIBUTE, CollectionUtils.getMap(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, fullAttributePath, IValidationMessage.VOCLASS_CONTEXT_KEY, vo.getClass()
-							.getSimpleName())));
-				}
-			} else {
-				@SuppressWarnings("unchecked")
-				List<IBaseVO> list = (List<IBaseVO>) vo.get(stringAttributeDescriptor.getAttributeName());
-
-				if (list.isEmpty()) {
-					result.add(new ValidationMessage(ValidatorMessages.MANDATORY_LIST, CollectionUtils.getMap(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, fullAttributePath, IValidationMessage.VOCLASS_CONTEXT_KEY, vo.getClass()
-							.getSimpleName())));
-				}
-			}
-		}
-
 		for (IAttributeDescriptor<?> attributeDescriptor : BeanUtils.getAttributeDescriptors(vo.getClass())) {
 
-			if (attributeDescriptor.getListAttributeType() != null) {
+			if (attributeDescriptor.isMandatory() && !doNotValidateFiledNames.contains(attributeDescriptor.getAttributeName())) {
+				
+				String fullAttributePath = XPathUtil.combine(parentPath, attributeDescriptor.getAttributeName());
 
-				@SuppressWarnings("unchecked")
-				List<IBaseVO> list = (List<IBaseVO>) vo.get(attributeDescriptor.getAttributeName());
+				if (attributeDescriptor.getListAttributeType() == attributeDescriptor.getAttributeType()) {
+					if (vo.get(attributeDescriptor.getAttributeName()) == null) {
+						result.add(new ValidationMessage(ValidatorMessages.MANDATORY_ATTRIBUTE, CollectionUtils.getMap(IValidationMessage.ATTRIBUTE_CONTEXT_KEY,
+								fullAttributePath, IValidationMessage.VOCLASS_CONTEXT_KEY, vo.getClass().getSimpleName())));
+					}
+				} else {
+					@SuppressWarnings("rawtypes")
+					List list = (List) vo.get(attributeDescriptor.getAttributeName());
 
-				for (IBaseVO listItem : list) {
-					result.addAll(validateInternal(listItem, XPathUtil.combine(parentPath, attributeDescriptor.getAttributeName()) + String.format("[oid=%d]", listItem.getOid())));
+					if (list.isEmpty()) {
+						result.add(new ValidationMessage(ValidatorMessages.MANDATORY_LIST, CollectionUtils.getMap(IValidationMessage.ATTRIBUTE_CONTEXT_KEY,
+								fullAttributePath, IValidationMessage.VOCLASS_CONTEXT_KEY, vo.getClass().getSimpleName())));
+					}
 				}
 			}
 		}

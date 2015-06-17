@@ -230,4 +230,16 @@ public class BaseVODAODelegate extends BaseEntityVODelegate implements IBaseVODA
 		}
 	}
 
+	@Override
+	public <T extends IBaseVO> T getNewVO(String className, Map<String, String> properties) {
+		
+		IVOEntityDAO<T> entityDAO = getVOEntityDAO(EntityVOMapper.getInstance().getVOClass(className));
+
+		if (entityDAO != null) {
+			return entityDAO.getNewEntity(className, properties);
+		} else {
+			return baseVODAO.getNewVO(className, properties);
+		}
+	}
+
 }

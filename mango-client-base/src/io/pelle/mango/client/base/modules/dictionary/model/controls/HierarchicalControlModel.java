@@ -1,5 +1,6 @@
 package io.pelle.mango.client.base.modules.dictionary.model.controls;
 
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.modules.dictionary.controls.IHierarchicalControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 
@@ -26,4 +27,8 @@ public class HierarchicalControlModel extends BaseControlModel<IHierarchicalCont
 		this.hierarchicalId = hierarchicalId;
 	}
 
+	@Override
+	public String getAttributePath() {
+		return IHierarchicalVO.FIELD_PARENT.getAttributeName();
+	}
 }

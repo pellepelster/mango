@@ -19,11 +19,15 @@ class EntityUtils {
 			{
 				java.lang.StringBuffer sb = new java.lang.StringBuffer();
 				«FOR naturalKeyAttribute : entity.naturalKeyFields SEPARATOR "sb.append(\", \");"»
-				«IF naturalKeyAttribute instanceof EntityEntityAttribute»
-				sb.append(this.get«naturalKeyAttribute.name.toFirstUpper()»().getNaturalKey());
-				«ELSE»
-				sb.append(this.get«naturalKeyAttribute.name.toFirstUpper()»());
-				«ENDIF»
+					if (this.get«naturalKeyAttribute.name.toFirstUpper()»() == null) {
+						sb.append("-");
+					} else {
+						«IF naturalKeyAttribute instanceof EntityEntityAttribute»
+						sb.append(this.get«naturalKeyAttribute.name.toFirstUpper()»().getNaturalKey());
+						«ELSE»
+						sb.append(this.get«naturalKeyAttribute.name.toFirstUpper()»());
+						«ENDIF»
+					}
 				«ENDFOR»
 				return sb.toString();
 			}

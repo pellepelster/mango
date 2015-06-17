@@ -2,6 +2,8 @@ package io.pelle.mango.db.dao;
 
 import io.pelle.mango.client.base.vo.IVOEntity;
 
+import java.util.Map;
+
 public interface IDAOCallback<VOType extends IVOEntity> {
 
 	void onCreate(VOType voEntity);
@@ -12,4 +14,5 @@ public interface IDAOCallback<VOType extends IVOEntity> {
 
 	void onDelete(VOType voEntity);
 
+	void onNewInstance(VOType voEntity, Map<String, String> properties);
 }

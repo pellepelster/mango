@@ -56,7 +56,7 @@ public class HierarchicalDataProvider extends AsyncDataProvider<DictionaryHierar
 			parentId = parentHierarchicalNode.getVoId();
 			parentClassname = parentHierarchicalNode.getVoClassName();
 
-			if (showAddNodes || isRootProvider) {
+			if (showAddNodes && isRootProvider) {
 				for (Map.Entry<String, List<String>> entry : hierarchicalConfiguration.getDictionaryHierarchy().entrySet()) {
 					if (entry.getValue().contains(parentHierarchicalNode.getDictionaryName())) {
 						DictionaryHierarchicalNodeVO addHierarchicalNode = new DictionaryHierarchicalNodeVO();
@@ -71,7 +71,7 @@ public class HierarchicalDataProvider extends AsyncDataProvider<DictionaryHierar
 				}
 			}
 		} else {
-			if (showAddNodes || isRootProvider) {
+			if (showAddNodes && isRootProvider) {
 				for (Map.Entry<String, List<String>> entry : hierarchicalConfiguration.getDictionaryHierarchy().entrySet()) {
 					if (entry.getValue().isEmpty()) {
 						DictionaryHierarchicalNodeVO addHierarchicalNode = new DictionaryHierarchicalNodeVO();
@@ -85,7 +85,7 @@ public class HierarchicalDataProvider extends AsyncDataProvider<DictionaryHierar
 			}
 		}
 
-		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierachicalService().getChildNodes(hierarchicalConfiguration.getId(), parentId, parentClassname, new AsyncCallback<List<DictionaryHierarchicalNodeVO>>() {
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierarchicalService().getChildNodes(hierarchicalConfiguration.getId(), parentId, parentClassname, new AsyncCallback<List<DictionaryHierarchicalNodeVO>>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				throw new RuntimeException(caught);

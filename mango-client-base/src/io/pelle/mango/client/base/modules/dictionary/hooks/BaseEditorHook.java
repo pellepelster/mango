@@ -15,6 +15,12 @@ public abstract class BaseEditorHook<VOType extends IBaseVO> implements IEditorH
 	public void onSave(AsyncCallback<Boolean> asyncCallback, IDictionaryEditor<VOType> dictionaryEditor) {
 		asyncCallback.onSuccess(true);
 	}
+	
+
+	@Override
+	public void onInit(AsyncCallback<Boolean> asyncCallback, IDictionaryEditor<VOType> dictionaryEditor) {
+		asyncCallback.onSuccess(true);
+	}
 
 	@Override
 	public List<IButton> getEditorButtons(IDictionaryEditor<VOType> dictionaryEditor) {

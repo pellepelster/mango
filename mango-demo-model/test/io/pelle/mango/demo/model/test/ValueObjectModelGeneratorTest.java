@@ -6,8 +6,9 @@ import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
-import io.pelle.mango.demo.client.showcase.CompanyVO;
 import io.pelle.mango.demo.client.showcase.CountryVO;
+import io.pelle.mango.demo.client.showcase.EmployeeVO;
+import io.pelle.mango.demo.client.showcase.ManagerVO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
@@ -23,7 +24,7 @@ public class ValueObjectModelGeneratorTest {
 		valueObject1.setString1("xxx");
 		assertEquals("xxx", valueObject1.getString1());
 	}
-	
+
 	@Test
 	public void testEntity4VOInheritedAttributeDescriptors() {
 		assertEquals("stringDatatype3", Entity4VO.STRINGDATATYPE3.getAttributeName());
@@ -49,6 +50,16 @@ public class ValueObjectModelGeneratorTest {
 	}
 
 	@Test
+	public void testGetCountryNaturalKeyNull() {
+
+		CountryVO countryVO = new CountryVO();
+		countryVO.setCountryIsoCode2(null);
+
+		assertTrue(countryVO.hasNaturalKey());
+		assertEquals("-", countryVO.getNaturalKey());
+	}
+
+	@Test
 	public void testGetEntity5VOComposedNaturalKey() {
 
 		Entity4VO entity4 = new Entity4VO();
@@ -63,6 +74,17 @@ public class ValueObjectModelGeneratorTest {
 	}
 
 	@Test
+	public void testGetEntity5VOComposedNaturalKeyNull() {
+
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setString1("abc");
+		entity5.setEntity4(null);
+
+		assertTrue(entity5.hasNaturalKey());
+		assertEquals("abc, -", entity5.getNaturalKey());
+	}
+
+	@Test
 	public void testEntity2VOHasNoNaturalKey() {
 		Entity2VO entity2VO = new Entity2VO();
 
@@ -71,13 +93,17 @@ public class ValueObjectModelGeneratorTest {
 	}
 
 	@Test
-	public void testCompanyHierarchicalAttributeDescriptors() {
-		assertEquals(CompanyVO.PARENTCLASSNAME.getAttributeName(), "parentClassName");
-		assertEquals(CompanyVO.PARENTID.getAttributeName(), "parentId");
-		assertEquals(CompanyVO.PARENT.getAttributeName(), "parent");
-		assertEquals(CompanyVO.HASCHILDREN.getAttributeName(), "hasChildren");
-	}
+	public void testEmployeGenericGetterSetterSetParent() {
 
+		ManagerVO manager = new ManagerVO();
+		
+		EmployeeVO employee = new EmployeeVO();
+		employee.set("parent", manager);
+		
+		assertEquals(manager, employee.get("parent"));
+
+	}
+	
 	@Test
 	public void testValueObjectMetaModelProvider() {
 

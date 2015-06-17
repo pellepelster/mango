@@ -332,6 +332,9 @@ project MangoDemo {
 					textcontrol Name1 {
 						entityattribute name
 					}
+					hierarchicalcontrol Parent {
+						hierarchicalId "test"
+					} 
 				}
 
 				dictionarysearch EmployeeSearch {
@@ -344,6 +347,7 @@ project MangoDemo {
 					}					
 				}
 				dictionaryeditor EmployeeEditor {
+						hierarchicalcontrol ref Parent
 						textcontrol ref Name1
 				}				
 			}

@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class HierarchicalVOSelectionPopup extends BaseVOSelectionPopup<IHierarchicalVO> {
+
 	private HierarchicalTree hierarchicalTree;
 
 	private HierarchicalConfigurationVO hierarchicalConfiguration;
@@ -22,13 +23,13 @@ public class HierarchicalVOSelectionPopup extends BaseVOSelectionPopup<IHierarch
 	private DictionaryHierarchicalNodeVO dictionaryHierarchicalNodeVO;
 
 	private HierarchicalVOSelectionPopup(HierarchicalConfigurationVO hierarchicalConfiguration, IHierarchicalControlModel hierarchicalControlModel) {
-		super("<none>", null);
+		super(MangoClientWeb.MESSAGES.hierarchicalParent(), null);
 
 		this.hierarchicalConfiguration = hierarchicalConfiguration;
 	}
 
 	public static void create(final IHierarchicalControlModel hierarchicalControlModel, final AsyncCallback<HierarchicalVOSelectionPopup> asyncCallback) {
-		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierachicalService().getConfigurationById(hierarchicalControlModel.getHierarchicalId(), new AsyncCallback<HierarchicalConfigurationVO>() {
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierarchicalService().getConfigurationById(hierarchicalControlModel.getHierarchicalId(), new AsyncCallback<HierarchicalConfigurationVO>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -45,6 +46,7 @@ public class HierarchicalVOSelectionPopup extends BaseVOSelectionPopup<IHierarch
 
 	@Override
 	protected Widget createDialogBoxContent() {
+
 		ScrollPanel scrollPanel = new ScrollPanel();
 		scrollPanel.setHeight(BaseCellTable.DEFAULT_TABLE_HEIGHT);
 		scrollPanel.setWidth("100%");
@@ -64,33 +66,6 @@ public class HierarchicalVOSelectionPopup extends BaseVOSelectionPopup<IHierarch
 
 		return scrollPanel;
 	}
-
-	// public void show()
-	// {
-	// // if (dialogBox == null)
-	// // {
-	// //
-	// MyAdmin.getInstance().getRemoteServiceLocator().getHierachicalService()
-	// // .getConfigurationById(hierarchicalControlModel.getHierarchicalId(),
-	// // new AsyncCallback<HierarchicalConfiguration>()
-	// // {
-	// //
-	// // @Override
-	// // public void onFailure(Throwable caught)
-	// // {
-	// // throw new RuntimeException(caught);
-	// // }
-	// //
-	// // @Override
-	// // public void onSuccess(HierarchicalConfiguration result)
-	// // {
-	// // initDialogBox();
-	// // }
-	// // });
-	// // }
-	// //
-	//
-	// }
 
 	@Override
 	protected void getCurrentSelection(final AsyncCallback<IHierarchicalVO> asyncCallback) {

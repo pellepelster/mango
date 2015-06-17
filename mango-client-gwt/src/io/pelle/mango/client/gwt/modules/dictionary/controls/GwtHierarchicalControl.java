@@ -24,9 +24,9 @@ import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Hyperlink;
 
-public class GwtHierarchicalControl extends Anchor implements IGwtControl {
+public class GwtHierarchicalControl extends Hyperlink implements IGwtControl {
 	private final HierarchicalControl hierarchicalControl;
 
 	private IHierarchicalVO hierarchicalVO;
@@ -35,7 +35,7 @@ public class GwtHierarchicalControl extends Anchor implements IGwtControl {
 		this.hierarchicalControl = hierarchicalControl;
 		new ControlHelper(this, hierarchicalControl, this, true);
 
-		addClickHandler(new ClickHandler() {
+		addHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				HierarchicalVOSelectionPopup.create(hierarchicalControl.getModel(), new AsyncCallback<HierarchicalVOSelectionPopup>() {
@@ -58,7 +58,7 @@ public class GwtHierarchicalControl extends Anchor implements IGwtControl {
 					}
 				});
 			}
-		});
+		}, ClickEvent.getType());
 
 		ensureDebugId(DictionaryModelUtil.getDebugId(hierarchicalControl.getModel()));
 	}

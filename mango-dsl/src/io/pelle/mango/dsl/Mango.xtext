@@ -425,7 +425,7 @@ DictionaryControlGroup:
 
 DictionaryHierarchicalControl:
 	{DictionaryHierarchicalControl}
-	"hierarchicalcontrol" (name=ID)? ("ref" ref=[ DictionaryTextControl | QualifiedName ])? ("{"
+	"hierarchicalcontrol" (name=ID)? ("ref" ref=[ DictionaryHierarchicalControl | QualifiedName ])? ("{"
 		baseControl=BaseDictionaryControl
 		"hierarchicalId" hierarchicalId=STRING
 	"}")?;

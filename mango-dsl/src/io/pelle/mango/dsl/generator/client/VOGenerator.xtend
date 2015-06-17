@@ -152,6 +152,13 @@ class VOGenerator extends BaseEntityGenerator {
 			}
 			«ENDFOR»
 
+			«IF entity.entityHierarchical»
+			if («typeof(IHierarchicalVO).name».FIELD_PARENT.getAttributeName().equals(name))
+			{
+				return getParent();
+			}
+			«ENDIF»
+
 			«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
 				if ("«infoVOEntityAttribute.attributeName.attributeName»".equals(name))
 				{
@@ -205,6 +212,14 @@ class VOGenerator extends BaseEntityGenerator {
 				return;
 			}
 			«ENDFOR»
+			
+			«IF entity.entityHierarchical»
+			if («typeof(IHierarchicalVO).name».FIELD_PARENT.getAttributeName().equals(name))
+			{
+				setParent((«typeof(IHierarchicalVO).name») value);
+				return;
+			}
+			«ENDIF»
 		
 			«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
 				if ("«infoVOEntityAttribute.attributeName.attributeName»".equals(name))

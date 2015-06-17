@@ -152,4 +152,19 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 		}
 	}
 
+	@Override
+	public <T extends IBaseVO> T getNewVO(String className, Map<String, String> properties) {
+		
+		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getVOClass(className);
+		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(voClass);
+
+		IBaseEntity entity =  baseEntityDAO.getNewVO(entityClass.getName(), properties);
+		
+		T result = (T) DBUtil.convertEntityToVO(entity);
+
+		decorateVO(result);
+		
+		return result;
+	}
+
 }

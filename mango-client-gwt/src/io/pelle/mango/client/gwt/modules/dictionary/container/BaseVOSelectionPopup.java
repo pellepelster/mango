@@ -2,23 +2,26 @@ package io.pelle.mango.client.gwt.modules.dictionary.container;
 
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.gwt.GwtStyles;
-import io.pelle.mango.client.gwt.ImageButton;
-import io.pelle.mango.client.gwt.modules.dictionary.BaseCellTable;
 import io.pelle.mango.client.web.MangoClientWeb;
+
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.Modal;
+import org.gwtbootstrap3.client.ui.ModalBody;
+import org.gwtbootstrap3.client.ui.ModalFooter;
+import org.gwtbootstrap3.client.ui.constants.ButtonType;
+import org.gwtbootstrap3.client.ui.constants.IconType;
+import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.DialogBox;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public abstract class BaseVOSelectionPopup<VOType extends IBaseVO> {
+
 	private final String message;
 
-	private DialogBox dialogBox;
+	private Modal modal;
 
 	private SimpleCallback<VOType> voSelectHandler;
 
@@ -27,10 +30,12 @@ public abstract class BaseVOSelectionPopup<VOType extends IBaseVO> {
 		this.voSelectHandler = voSelectHandler;
 	}
 
-	private void createOkButton(HorizontalPanel buttonPanel) {
-		ImageButton okButton = new ImageButton(MangoClientWeb.RESOURCES.ok());
-		buttonPanel.add(okButton);
-		okButton.addClickHandler(new ClickHandler() {
+	private void createOkButton(FlowPanel panel) {
+		Button button = new Button(MangoClientWeb.MESSAGES.buttonOk());
+		button.setType(ButtonType.PRIMARY);
+		button.setIcon(IconType.CHECK);
+		panel.add(button);
+		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
 				getCurrentSelection(new AsyncCallback<VOType>() {
@@ -51,50 +56,45 @@ public abstract class BaseVOSelectionPopup<VOType extends IBaseVO> {
 
 	protected void closeDialogWithSelection(VOType selection) {
 		voSelectHandler.onCallback(selection);
-		dialogBox.hide();
+		modal.hide();
 	}
 
-	private void createCancelButton(HorizontalPanel buttonPanel) {
-		ImageButton cancelButton = new ImageButton(MangoClientWeb.RESOURCES.cancel());
-		cancelButton.addClickHandler(new ClickHandler() {
+	private void createCancelButton(FlowPanel panel) {
+
+		Button button = new Button(MangoClientWeb.MESSAGES.buttonCancel());
+		button.setType(ButtonType.DEFAULT);
+		button.setIcon(IconType.CLOSE);
+
+		button.addClickHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				dialogBox.hide();
+				modal.hide();
 			}
 		});
-		buttonPanel.add(cancelButton);
+		panel.add(button);
 	}
 
 	public void show() {
-		if (dialogBox == null) {
+		if (modal == null) {
 			initDialogBox();
 		}
 
-		dialogBox.show();
+		modal.show();
 	}
 
 	protected void initDialogBox() {
-		dialogBox = new DialogBox(false, true);
-		dialogBox.setGlassEnabled(true);
-		dialogBox.setWidth(BaseCellTable.DEFAULT_TABLE_WIDTH);
-		dialogBox.center();
-		dialogBox.setTitle(MangoClientWeb.MESSAGES.voSelectionHeader(message));
-		dialogBox.setText(MangoClientWeb.MESSAGES.voSelectionHeader(message));
+		modal = new Modal();
+		modal.setTitle(MangoClientWeb.MESSAGES.voSelectionTitle(message));
 
-		VerticalPanel verticalPanel = new VerticalPanel();
-		dialogBox.add(verticalPanel);
-		verticalPanel.setSpacing(GwtStyles.SPACING);
+		ModalBody modalBody = new ModalBody();
+		modalBody.add(createDialogBoxContent());
+		modal.add(modalBody);
 
-		Widget dialogBoxContent = createDialogBoxContent();
-		verticalPanel.add(dialogBoxContent);
+		ModalFooter modalFooter = new ModalFooter();
+		createOkButton(modalFooter);
+		createCancelButton(modalFooter);
 
-		// buttons
-		HorizontalPanel buttonPanel = new HorizontalPanel();
-		verticalPanel.add(buttonPanel);
-		buttonPanel.setSpacing(GwtStyles.SPACING);
-
-		createOkButton(buttonPanel);
-		createCancelButton(buttonPanel);
+		modal.add(modalFooter);
 	}
 
 	public void setVoSelectHandler(SimpleCallback<VOType> voSelectHandler) {

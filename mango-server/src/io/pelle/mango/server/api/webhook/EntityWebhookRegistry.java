@@ -15,6 +15,7 @@ import io.pelle.mango.server.api.entity.EntityWebHookCall;
 import io.pelle.mango.server.log.IMangoLogger;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -179,6 +180,10 @@ public class EntityWebhookRegistry implements InitializingBean {
 			@Override
 			public void onCreate(IVOEntity voEntity) {
 				callEntityWebHooks(EntityWebHookEvents.ON_CREATE, hooks.getUnchecked(getCacheKey(voEntity.getClass())), voEntity);
+			}
+
+			@Override
+			public void onNewInstance(IVOEntity voEntity, Map properties) {
 			}
 		});
 	}

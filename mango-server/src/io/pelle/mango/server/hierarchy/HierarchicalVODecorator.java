@@ -3,7 +3,7 @@ package io.pelle.mango.server.hierarchy;
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.hierarchy.IHierachicalService;
+import io.pelle.mango.client.hierarchy.IHierarchicalService;
 import io.pelle.mango.db.dao.BaseVODAO;
 import io.pelle.mango.db.dao.IVODAODecorator;
 import io.pelle.mango.db.util.EntityVOMapper;
@@ -19,7 +19,7 @@ public class HierarchicalVODecorator implements IVODAODecorator {
 	private BaseVODAO baseVODAO;
 
 	@Autowired
-	private IHierachicalService hierachicalService;
+	private IHierarchicalService hierarchicalService;
 
 	/** {@inheritDoc} */
 	@Override
@@ -41,7 +41,7 @@ public class HierarchicalVODecorator implements IVODAODecorator {
 			}
 		}
 
-		hierarchicalVO.setHasChildren(this.hierachicalService.hasChildren(vo.getClass().getName(), vo.getId()));
+		hierarchicalVO.setHasChildren(this.hierarchicalService.hasChildren(vo.getClass().getName(), vo.getId()));
 	}
 
 	@Override

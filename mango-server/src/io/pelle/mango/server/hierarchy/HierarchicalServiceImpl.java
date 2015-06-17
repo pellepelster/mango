@@ -1,19 +1,23 @@
 package io.pelle.mango.server.hierarchy;
 
+import io.pelle.mango.client.base.db.vos.IBaseHierarchical;
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.hierarchical.BaseHierarchicalConfiguration;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
 import io.pelle.mango.client.base.modules.hierarchical.VOHierarchy;
+import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO;
-import io.pelle.mango.client.hierarchy.IHierachicalService;
+import io.pelle.mango.client.hierarchy.IHierarchicalService;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
+import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.db.dao.IBaseVODAO;
+import io.pelle.mango.db.dao.IDAOCallback;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.entity.EntityUtils;
 
@@ -23,13 +27,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class HierachicalServiceImpl implements IHierachicalService, InitializingBean {
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 
-	private static Logger LOG = Logger.getLogger(HierachicalServiceImpl.class);
+public class HierarchicalServiceImpl implements IHierarchicalService, InitializingBean {
+
+	private static Logger LOG = Logger.getLogger(HierarchicalServiceImpl.class);
+
+	@Autowired
+	private IBaseEntityDAO baseEntityDAO;
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
@@ -45,6 +58,7 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 
 	@Override
 	public List<DictionaryHierarchicalNodeVO> getRootNodes(String id) {
+
 		List<DictionaryHierarchicalNodeVO> result = new ArrayList<DictionaryHierarchicalNodeVO>();
 
 		for (VOHierarchy voHierarchy : getRootHierarchies(id)) {
@@ -55,14 +69,21 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 	}
 
 	@Override
-	public HierarchicalConfigurationVO getConfigurationById(String id) {
-		for (HierarchicalConfigurationVO hierarchicalConfiguration : this.hierarchicalConfigurations) {
-			if (hierarchicalConfiguration.getId().equals(id)) {
-				return hierarchicalConfiguration;
-			}
-		}
+	public HierarchicalConfigurationVO getConfigurationById(final String id) {
+		
+		Optional<HierarchicalConfigurationVO> hierarchicalConfiguration = Iterables.tryFind(hierarchicalConfigurations, new Predicate<HierarchicalConfigurationVO>() {
 
-		throw new RuntimeException(String.format("unknown hierarchical configuration '%s'", id)); //$NON-NLS-1$
+			@Override
+			public boolean apply(HierarchicalConfigurationVO hierarchicalConfiguration) {
+				return hierarchicalConfiguration.getId().equals(id);
+			}
+		});
+		
+		if (hierarchicalConfiguration.isPresent()) {
+			return hierarchicalConfiguration.get();
+		} else {
+			throw new RuntimeException(String.format("no hierarchical configuration found for id '%s'", id));
+		}
 	}
 
 	@Override
@@ -237,12 +258,67 @@ public class HierachicalServiceImpl implements IHierachicalService, Initializing
 	/** {@inheritDoc} */
 	@Override
 	public void afterPropertiesSet() throws Exception {
+
 		this.hierarchicalClasses = new ArrayList<Class<? extends IHierarchicalVO>>();
 
 		for (Class<? extends IBaseVO> voClass : EntityVOMapper.getInstance().getVOClasses()) {
 			if (IHierarchicalVO.class.isAssignableFrom(voClass)) {
 				this.hierarchicalClasses.add((Class<? extends IHierarchicalVO>) voClass);
 			}
+		}
+
+		baseEntityDAO.registerCallback(new IDAOCallback<IBaseEntity>() {
+
+			@Override
+			public void onUpdate(IBaseEntity voEntity) {
+			}
+
+			@Override
+			public void onDeleteAll(Class voEntityClass) {
+			}
+
+			@Override
+			public void onDelete(IBaseEntity voEntity) {
+			}
+
+			@Override
+			public void onCreate(IBaseEntity voEntity) {
+			}
+
+			@Override
+			public void onNewInstance(IBaseEntity voEntity, Map<String, String> properties) {
+
+				if (voEntity instanceof IBaseHierarchical && !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME))
+						&& !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME))) {
+
+					String parentClassName = properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME);
+					long parentId = Long.parseLong(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME));
+
+					IBaseHierarchical baseHierarchical = (IBaseHierarchical) voEntity;
+					baseHierarchical.setParentClassName(parentClassName);
+					baseHierarchical.setParentId(parentId);
+				}
+
+			}
+		});
+
+	}
+
+	@Override
+	public HierarchicalConfigurationVO getConfigurationByDictionaryId(final String dictionaryId) {
+
+		Optional<HierarchicalConfigurationVO> hierarchicalConfiguration = Iterables.tryFind(hierarchicalConfigurations,
+				new Predicate<HierarchicalConfigurationVO>() {
+					@Override
+					public boolean apply(HierarchicalConfigurationVO input) {
+						return Iterables.any(input.getDictionaryHierarchy().keySet(), Predicates.equalTo(dictionaryId));
+					}
+				});
+		
+		if (hierarchicalConfiguration.isPresent()) {
+			return hierarchicalConfiguration.get();
+		} else {
+			throw new RuntimeException(String.format("no hierarchical configuration found for dictionary id '%s'", dictionaryId));
 		}
 	}
 }
