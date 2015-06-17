@@ -29,7 +29,7 @@ public class HierarchicalVOSelectionPopup extends BaseVOSelectionPopup<IHierarch
 	}
 
 	public static void create(final IHierarchicalControlModel hierarchicalControlModel, final AsyncCallback<HierarchicalVOSelectionPopup> asyncCallback) {
-		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierachicalService().getConfigurationById(hierarchicalControlModel.getHierarchicalId(), new AsyncCallback<HierarchicalConfigurationVO>() {
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierarchicalService().getConfigurationById(hierarchicalControlModel.getHierarchicalId(), new AsyncCallback<HierarchicalConfigurationVO>() {
 
 			@Override
 			public void onFailure(Throwable caught) {

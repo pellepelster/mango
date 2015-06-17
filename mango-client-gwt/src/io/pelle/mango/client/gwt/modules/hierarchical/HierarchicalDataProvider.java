@@ -85,7 +85,7 @@ public class HierarchicalDataProvider extends AsyncDataProvider<DictionaryHierar
 			}
 		}
 
-		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierachicalService().getChildNodes(hierarchicalConfiguration.getId(), parentId, parentClassname, new AsyncCallback<List<DictionaryHierarchicalNodeVO>>() {
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierarchicalService().getChildNodes(hierarchicalConfiguration.getId(), parentId, parentClassname, new AsyncCallback<List<DictionaryHierarchicalNodeVO>>() {
 			@Override
 			public void onFailure(Throwable caught) {
 				throw new RuntimeException(caught);

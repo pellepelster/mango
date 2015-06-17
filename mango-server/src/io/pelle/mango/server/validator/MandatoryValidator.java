@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MandatoryValidator implements IValidator {
+	
 	/** {@inheritDoc} */
 	@Override
 	public boolean canValidate(Object o) {

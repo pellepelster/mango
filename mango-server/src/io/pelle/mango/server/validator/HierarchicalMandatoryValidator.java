@@ -5,7 +5,7 @@ import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
 import io.pelle.mango.client.base.util.CollectionUtils;
-import io.pelle.mango.client.hierarchy.IHierachicalService;
+import io.pelle.mango.client.hierarchy.IHierarchicalService;
 import io.pelle.mango.client.modules.BaseDictionaryEditorModule;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class HierarchicalMandatoryValidator implements IValidator {
 
 	@Autowired
-	private IHierachicalService hierachicalService;
+	private IHierarchicalService hierarchicalService;
 
 	/** {@inheritDoc} */
 	@Override
@@ -33,7 +33,7 @@ public class HierarchicalMandatoryValidator implements IValidator {
 		if (hierarchicalVO.getData().containsKey(BaseDictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID)) {
 			String dictionaryId = (String) hierarchicalVO.getData().get(BaseDictionaryEditorModule.EDITORDICTIONARYNAME_PARAMETER_ID);
 
-			if (hierarchicalVO.getParent() == null && !HierarchicalConfigurationVO.isRootDictionary(dictionaryId, this.hierachicalService.getConfigurations())) {
+			if (hierarchicalVO.getParent() == null && !HierarchicalConfigurationVO.isRootDictionary(dictionaryId, this.hierarchicalService.getConfigurations())) {
 				result.add(new ValidationMessage(ValidatorMessages.MANDATORY_ATTRIBUTE, CollectionUtils.getMap(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, IHierarchicalVO.FIELD_PARENT.getAttributeName(),
 						IValidationMessage.VOCLASS_CONTEXT_KEY, hierarchicalVO.getClass().getSimpleName())));
 			}
@@ -42,7 +42,4 @@ public class HierarchicalMandatoryValidator implements IValidator {
 		return result;
 	}
 
-	public void setHierachicalService(IHierachicalService hierachicalService) {
-		this.hierachicalService = hierachicalService;
-	}
 }
