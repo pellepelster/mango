@@ -77,9 +77,9 @@ Workflow {
 			}
 
 			// java-based API for validation 
-//			fragment = validation.JavaValidatorFragment {
+			fragment = org.eclipse.xtext.generator.validation.JavaValidatorFragment {
 //				composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
-//			}
+			}
 
 			// scoping API 
 			fragment = scoping.ImportNamespacesScopingFragment {
