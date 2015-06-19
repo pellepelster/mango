@@ -1,11 +1,7 @@
 package io.pelle.mango.dsl.generator.client
 
-import com.google.inject.Inject
-import com.google.inject.Injector
-import io.pelle.mango.client.base.db.vos.IHierarchicalVO
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.GeneratorConstants
-import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Enumeration
@@ -14,50 +10,8 @@ import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationValue
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.PackageDeclaration
-import java.util.List
 
 class ClientNameUtils extends NameUtils {
-
-	@Inject
-	Injector injector
-
-	static class HierachyParentAttributeGenerator extends AttributeGeneratorFactory.AttributeGenerator {
-	
-		private new(String attributeName, Class<?> attributeType, Injector injector) {
-			super(attributeName, attributeType, injector)
-		}
-	
-		override changeTrackingSetter() '''
-			public void set«attributeName.toFirstUpper»(«attributeType.name» «attributeName») {
-				getChangeTracker().addChange("«attributeName»", «attributeName»);
-				
-				if (parent == null) {
-					setParentClassName(null);
-					setParentId(null);
-				} else {
-					setParentClassName(«attributeName».getClass().getName());
-					setParentId(«attributeName».getId());
-				}
-				this.«attributeName» = «attributeName»;
-			}
-		'''
-	
-	}
-	
-	@Inject
-	extension AttributeGeneratorFactory attributeGeneratorFactory
-	
-	def hierarchicalVOAttributes() {
-		
-		var List<AttributeGeneratorFactory.AttributeGenerator> hierarchicalVOAttributes = newArrayList
-
-		hierarchicalVOAttributes.add(attributeGeneratorFactory.createAttributeGenerator("parentClassName", typeof(String)))
-		hierarchicalVOAttributes.add(attributeGeneratorFactory.createAttributeGenerator("parentId", typeof(Long)))
-		hierarchicalVOAttributes.add(new HierachyParentAttributeGenerator("parent", typeof(IHierarchicalVO), injector))
-		hierarchicalVOAttributes.add(attributeGeneratorFactory.createAttributeGenerator("hasChildren", typeof(Boolean)))
-
-		return hierarchicalVOAttributes
-	}	
 	
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
 		if (packageDeclaration.eContainer instanceof Model)

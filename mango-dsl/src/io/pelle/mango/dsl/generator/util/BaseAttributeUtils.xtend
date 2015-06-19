@@ -8,17 +8,16 @@ import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.generator.server.EntityUtils
 
-class AttributeUtils {
+abstract class BaseAttributeUtils {
 
 	@Inject
 	extension NameUtils
 
 	@Inject
-	extension TypeUtils
-
-	@Inject
 	extension EntityUtils
 
+	def TypeUtils getTypeUtils()
+	
 	//-------------------------------------------------------------------------
 	// natural key
 	//-------------------------------------------------------------------------
@@ -105,7 +104,7 @@ class AttributeUtils {
 	'''
 	
 	def changeTrackingAttributeGetterSetterJpa(Class<?> attributeType, String attributeName, Entity entity) '''
-		«compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
+		«typeUtils.compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
 		@Column(name = "«entity.entityTableColumnName(attributeName)»")
 		«attribute(attributeType, attributeName)»
 		«getter(attributeType, attributeName)»
@@ -113,7 +112,7 @@ class AttributeUtils {
 	'''
 
 	def changeTrackingAttributeGetterSetter(Class<?> attributeType, String attributeName, Entity entity) '''
-		«compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
+		«typeUtils.compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
 		«attribute(attributeType, attributeName)»
 		«getter(attributeType, attributeName)»
 		«changeTrackingSetter(attributeType, attributeName)»

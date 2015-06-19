@@ -9,17 +9,15 @@ import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.server.EntityUtils
-import io.pelle.mango.dsl.generator.util.AttributeUtils
+import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
 import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
 import io.pelle.mango.dsl.mango.EnumerationEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
-import io.pelle.mango.dsl.query.EntityQuery
 import java.io.Serializable
 import java.util.ArrayList
 import java.util.List
-import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -27,13 +25,13 @@ class VOGenerator extends BaseEntityGenerator {
 	extension EntityUtils
 	
 	@Inject
-	extension AttributeUtils
+	extension ClientAttributeUtils
 
 	@Inject
 	extension ClientNameUtils
 
 	@Inject
-	extension ClientTypeUtils
+	extension ClientTypeUtils typeUtils
 	
 	def compileVO(Entity entity) '''
 		package «getPackageName(entity)»;
@@ -54,7 +52,7 @@ class VOGenerator extends BaseEntityGenerator {
 			«getterSetter("long", IVOEntity.ID_FIELD_NAME)»
 			
 			«FOR attribute : entity.attributes»
-				«attribute.changeTrackingAttributeGetterSetter»
+				«attribute.changeTrackingAttributeGetterSetter(entity)»
 			«ENDFOR»
 			
 			«entity.genericVOGetter»
@@ -132,11 +130,9 @@ class VOGenerator extends BaseEntityGenerator {
 		«setter(getType(entityAttribute), entityAttribute.name.attributeName)»
 	'''
 
-	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
+	def changeTrackingAttributeGetterSetter(EntityAttribute attribute, Entity entity) '''
 		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
-		«IF !EntityQuery.isExtendedByOtherEntity(attribute.parentEntity)»
-		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
-		«ENDIF»
+		«attribute.compileEntityAttributeDescriptor(entity)»
 		«getter(getType(attribute), attribute.name.attributeName)»
 		«changeTrackingSetter(getType(attribute), attribute.name.attributeName)»
 	'''
@@ -244,4 +240,10 @@ class VOGenerator extends BaseEntityGenerator {
 
 		compileGetAttributeDescriptors(entity, extraAttributes)
 	}
+	
+	override getTypeUtils() {
+		typeUtils
+	}
+	
+	
 }
