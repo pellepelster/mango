@@ -8,12 +8,20 @@ import io.pelle.mango.client.base.vo.query.expressions.NumberExpression;
 @SuppressWarnings("serial")
 public class EntityAttributeDescriptor<T extends IVOEntity> extends BaseExpressionAttributeDescriptor<T> {
 
+	public EntityAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<T> entityType, int naturalKeyOrder) {
+		super(entityDescriptor, attributeName, entityType, entityType, naturalKeyOrder);
+	}
+
 	public EntityAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, Class<T> entityType) {
 		super(entityDescriptor, attributeName, entityType, entityType, AttributeDescriptor.NO_NATURAL_KEY);
 	}
 
 	public EntityAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName) {
 		super(entityDescriptor, attributeName, String.class, AttributeDescriptor.NO_NATURAL_KEY);
+	}
+
+	public EntityAttributeDescriptor(IEntityDescriptor<?> entityDescriptor, String attributeName, int naturalKeyOrder) {
+		super(entityDescriptor, attributeName, String.class, naturalKeyOrder);
 	}
 
 	public IBooleanExpression eq(T value) {

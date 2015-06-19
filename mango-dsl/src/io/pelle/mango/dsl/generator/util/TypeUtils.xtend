@@ -421,7 +421,7 @@ abstract class TypeUtils {
 		«ELSE»
 			«log.info("compileEntityAttributeDescriptor for " + entityAttribute.name)»
 			public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»> «entityAttribute.name.attributeConstantName» = new «EntityAttributeDescriptor.name»<«getRawType(
-			entityAttribute.type)»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)»);
+			entityAttribute.type)»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «attributeUtils.naturalKeyOrder(entityAttribute)»);
 		«ENDIF»
 	'''
 

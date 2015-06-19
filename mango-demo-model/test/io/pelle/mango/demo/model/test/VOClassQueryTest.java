@@ -6,6 +6,10 @@ import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.db.voquery.AttributesDescriptorQuery;
 import io.pelle.mango.db.voquery.VOClassQuery;
 import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity4VO;
+import io.pelle.mango.demo.client.test.Entity5VO;
+
+import java.util.Iterator;
 
 import org.junit.Test;
 
@@ -36,6 +40,25 @@ public class VOClassQueryTest {
 
 		attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDATatype1");
 		assertEquals("stringDatatype1", attributesDescriptorQuery.getSingleResult().getAttributeName());
+
+	}
+
+	@Test
+	public void testEntity5VOAttributesDescriptorQueryNaturalKeys() {
+
+		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity5VO.class).attributesDescriptors().naturalKeys();
+
+		assertEquals(2, attributesDescriptorQuery.getCount());
+
+		Iterator<IAttributeDescriptor> iterator = (Iterator<IAttributeDescriptor>) attributesDescriptorQuery.iterator();
+
+		IAttributeDescriptor<?> attributeDescriptor1 = iterator.next();
+		assertEquals(String.class, attributeDescriptor1.getAttributeType());
+		assertEquals("string1", attributeDescriptor1.getAttributeName());
+
+		IAttributeDescriptor<?> attributeDescriptor2 = iterator.next();
+		assertEquals(Entity4VO.class, attributeDescriptor2.getAttributeType());
+		assertEquals("entity4", attributeDescriptor2.getAttributeName());
 
 	}
 

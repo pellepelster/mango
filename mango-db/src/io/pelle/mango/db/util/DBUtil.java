@@ -94,8 +94,24 @@ public final class DBUtil {
 		for (IAttributeDescriptor<?> attributeDescriptor : BeanUtils.getAttributeDescriptors(voEntityClass)) {
 			if (IVOEntity.class.isAssignableFrom(attributeDescriptor.getListAttributeType())) {
 				associations.add(attributeDescriptor.getAttributeName());
+
+				addNaturalKeyAttributes((Class<? extends IVOEntity>) attributeDescriptor.getListAttributeType(), classLoadAssociations);
+
 			}
 		}
+
+	}
+
+	public static void addNaturalKeyAttributes(Class<? extends IVOEntity> voEntityClass, Map<Class<?>, Set<String>> classLoadAssociations) {
+
+		// Set<String> associations = getAssociations(voEntityClass,
+		// classLoadAssociations);
+		//
+		// for (IAttributeDescriptor<?> attributeDescriptor :
+		// VOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys())
+		// {
+		// associations.add(attributeDescriptor.getAttributeName());
+		// }
 
 	}
 

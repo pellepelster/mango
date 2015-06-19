@@ -280,6 +280,8 @@ public class DemoBaseEntityDAOTest extends BaseDemoTest {
 	@Test
 	public void testFilterFirstLevelAttributesNotNull() {
 
+		baseEntityDAO.deleteAll(Entity1.class);
+
 		Entity1 newEntity1 = new Entity1();
 		newEntity1.setStringDatatype1("xxx");
 

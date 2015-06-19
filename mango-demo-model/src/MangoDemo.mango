@@ -565,6 +565,7 @@ project MangoDemo {
 
 			entity Entity6 {
 				string string1
+				entity Entity5 entity5
 			}
 
 			entity Entity7 extends Entity6 {
