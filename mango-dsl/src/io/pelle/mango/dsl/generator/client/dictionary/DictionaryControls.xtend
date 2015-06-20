@@ -13,9 +13,9 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.IntegerContr
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel
 import io.pelle.mango.dsl.ModelUtil
+import io.pelle.mango.dsl.generator.client.ClientAttributeUtils
 import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 import io.pelle.mango.dsl.generator.client.DatatypeUtils
-import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.mango.BaseDataType
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.BooleanEntityAttribute
@@ -56,7 +56,7 @@ class DictionaryControls {
 	extension ClientTypeUtils
 
 	@Inject
-	extension AttributeUtils
+	extension ClientAttributeUtils
 
 	@Inject
 	extension ControlUtils	

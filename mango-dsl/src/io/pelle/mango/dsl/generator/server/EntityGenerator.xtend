@@ -9,8 +9,6 @@ import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
-import io.pelle.mango.dsl.generator.util.AttributeUtils
-import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.DateEntityAttribute
@@ -31,7 +29,7 @@ class EntityGenerator extends BaseEntityGenerator {
 	extension EntityUtils
 	
 	@Inject
-	extension AttributeUtils
+	extension ServerAttributeUtils
 
 	@Inject
 	extension ServerNameUtils
@@ -40,8 +38,8 @@ class EntityGenerator extends BaseEntityGenerator {
 	ClientNameUtils clientNameUtils
 
 	@Inject
-	extension TypeUtils
-
+	extension ServerTypeUtils typeUtils
+	
 	def compileVODAO(Entity entity) '''
 		package «entity.packageName»;
 		
@@ -211,5 +209,9 @@ class EntityGenerator extends BaseEntityGenerator {
 
 		compileGetAttributeDescriptors(entity, extraAttributes)
 	}
-
+	
+	override getTypeUtils() {
+		typeUtils
+	}
+	
 }

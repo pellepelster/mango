@@ -1,7 +1,9 @@
 package io.pelle.mango.dsl;
 
 import io.pelle.mango.dsl.mango.Datatype;
+import io.pelle.mango.dsl.mango.Dictionary;
 import io.pelle.mango.dsl.mango.DictionaryControl;
+import io.pelle.mango.dsl.mango.DictionaryReferenceControl;
 import io.pelle.mango.dsl.mango.Entity;
 import io.pelle.mango.dsl.mango.EntityAttribute;
 import io.pelle.mango.dsl.mango.Model;
@@ -75,6 +77,15 @@ public class ModelUtil {
 		return null;
 	}
 
+	public static Dictionary getReferenceControlDictionary(DictionaryReferenceControl dictionaryControl) {
+		return getControlAttribute(dictionaryControl, new Function<DictionaryReferenceControl, Dictionary>() {
+			@Override
+			public Dictionary apply(DictionaryReferenceControl dictionaryControl) {
+				return dictionaryControl.getDictionary();
+			}
+		});
+	}
+
 	public static String getControlName(DictionaryControl dictionaryControl) {
 		return getControlAttribute(dictionaryControl, new Function<DictionaryControl, String>() {
 			@Override
@@ -123,8 +134,8 @@ public class ModelUtil {
 		});
 	}
 
-	public static <T> T getControlAttribute(DictionaryControl dictionaryControl, Function<DictionaryControl, T> function) {
-		ArrayList<DictionaryControl> controlHierarchy = getControlHierarchy(dictionaryControl);
+	public static <T, ControlyType extends DictionaryControl> T getControlAttribute(ControlyType dictionaryControl, Function<ControlyType, T> function) {
+		ArrayList<ControlyType> controlHierarchy = getControlHierarchy(dictionaryControl);
 
 		return Iterables.getFirst(Iterables.filter(Iterables.transform(controlHierarchy, function), Predicates.notNull()), null);
 	}

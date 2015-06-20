@@ -2,6 +2,7 @@ package io.pelle.mango.dsl.generator.xml
 
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.server.EntityUtils
+import io.pelle.mango.dsl.generator.server.ServerAttributeUtils
 import io.pelle.mango.dsl.mango.BinaryEntityAttribute
 import io.pelle.mango.dsl.mango.BooleanEntityAttribute
 import io.pelle.mango.dsl.mango.Cardinality
@@ -18,7 +19,6 @@ import io.pelle.mango.dsl.mango.LongEntityAttribute
 import io.pelle.mango.dsl.mango.MapEntityAttribute
 import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
-import io.pelle.mango.dsl.generator.util.AttributeUtils
 
 class XmlSchema {
 
@@ -29,7 +29,7 @@ class XmlSchema {
 	extension EntityUtils
 
 	@Inject
-	extension AttributeUtils
+	extension ServerAttributeUtils
 
 	def xmlSchema(Entity entity, boolean generateImports) '''
 	<xsd:schema

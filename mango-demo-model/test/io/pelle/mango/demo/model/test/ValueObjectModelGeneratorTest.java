@@ -26,6 +26,20 @@ public class ValueObjectModelGeneratorTest {
 	}
 
 	@Test
+	public void testEntity4VOGenericGetterInheritedAttributes() {
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype3("xxx");
+		assertEquals("xxx", entity4.get("stringDatatype3"));
+	}
+
+	@Test
+	public void testEntity4VOGenericSetterInheritedAttributes() {
+		Entity4VO entity4 = new Entity4VO();
+		entity4.set("stringDatatype3", "xxx");
+		assertEquals("xxx", entity4.getStringDatatype3());
+	}
+
+	@Test
 	public void testEntity4VOInheritedAttributeDescriptors() {
 		assertEquals("stringDatatype3", Entity4VO.STRINGDATATYPE3.getAttributeName());
 		assertEquals(Entity4VO.ENTITY4, Entity4VO.STRINGDATATYPE3.getParent());
@@ -96,14 +110,14 @@ public class ValueObjectModelGeneratorTest {
 	public void testEmployeGenericGetterSetterSetParent() {
 
 		ManagerVO manager = new ManagerVO();
-		
+
 		EmployeeVO employee = new EmployeeVO();
 		employee.set("parent", manager);
-		
+
 		assertEquals(manager, employee.get("parent"));
 
 	}
-	
+
 	@Test
 	public void testValueObjectMetaModelProvider() {
 

@@ -1,5 +1,7 @@
 package io.pelle.mango.client.base.vo;
 
+import io.pelle.mango.client.base.vo.query.IBooleanExpression;
+
 import com.google.common.base.Objects;
 
 @SuppressWarnings("serial")
@@ -107,5 +109,10 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 
 		throw new RuntimeException("unsupported attribute descriptor type '" + attributeDescriptor.getClass() + "'");
 
+	}
+
+	@Override
+	public IBooleanExpression eq(AttributeType value) {
+		return null;
 	}
 }

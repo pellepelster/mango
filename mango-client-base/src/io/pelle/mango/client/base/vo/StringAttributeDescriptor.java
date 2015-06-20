@@ -33,6 +33,7 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 		this(parent, attributeName, String.class, NO_LENGTH_LIMIT, maxLength, NO_NATURAL_KEY);
 	}
 
+	@Override
 	public IBooleanExpression eq(String value) {
 		if (value == null) {
 			return new CompareExpression(entityFieldExpression, ComparisonOperator.IS_NULL, new StringExpression(value));
@@ -40,7 +41,6 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 			return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new StringExpression(value));
 		}
 	}
-		
 
 	public IBooleanExpression eqIgnoreCase(String value) {
 		return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS_NO_CASE, new StringExpression(value));

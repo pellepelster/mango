@@ -1,6 +1,5 @@
 package io.pelle.mango.dsl.generator.util
 
-import com.google.inject.Inject
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.mango.Dictionary
 import io.pelle.mango.dsl.mango.DictionaryEditor
@@ -13,37 +12,9 @@ import io.pelle.mango.dsl.mango.PackageDeclaration
 import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
-import java.util.Date
-import java.util.List
 import org.eclipse.emf.ecore.EObject
 
 class NameUtils {
-
-	@Inject
-	extension AttributeGeneratorFactory attributeGeneratorFactory
-	
-	def infoVOEntityAttributes() {
-
-		var List<AttributeGeneratorFactory.AttributeGenerator> infoVOEntityAttributes = newArrayList()
-
-		infoVOEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("createDate", typeof(Date)))
-		infoVOEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("updateDate", typeof(Date)))
-
-		infoVOEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("createUser", typeof(String)))
-		infoVOEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("updateUser", typeof(String)))
-
-		return infoVOEntityAttributes
-	}
-
-	def hierarchicalEntityAttributes() {
-
-		var List<AttributeGeneratorFactory.AttributeGenerator> hierarchicalEntityAttributes = newArrayList()
-
-		hierarchicalEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("parentClassName",  typeof(String)))
-		hierarchicalEntityAttributes.add(attributeGeneratorFactory.createAttributeGenerator("parentId", typeof(Long)))
-
-		return hierarchicalEntityAttributes
-	}
 
 	def String combinePackageName(String packageName1, String packageName2) {
 

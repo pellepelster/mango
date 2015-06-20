@@ -1,5 +1,6 @@
 package io.pelle.mango.db.util;
 
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -44,9 +45,9 @@ public final class DBUtil {
 		}
 	}
 
-	public static Map<Class<?>, Set<String>> getClassLoadAssociations(SelectQuery<?> selectQuery) {
+	public static Map<Class<? extends IVOEntity>, Set<String>> getClassLoadAssociations(SelectQuery<?> selectQuery) {
 
-		Map<Class<?>, Set<String>> classLoadAssociations = new HashMap<>();
+		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = new HashMap<>();
 
 		for (Entity entity : selectQuery.getFroms()) {
 
@@ -62,23 +63,27 @@ public final class DBUtil {
 
 		}
 
+		if (selectQuery.isLoadNaturalKeyReferences()) {
+			addNaturalKeyAttributes(classLoadAssociations);
+		}
+
 		return classLoadAssociations;
 	}
 
-	public static void addJoinAssociations(Join join, Class<?> parentClass, Map<Class<?>, Set<String>> classLoadAssociations) {
+	public static void addJoinAssociations(Join join, Class<?> parentClass, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
 
 		IAttributeDescriptor<?> attributeDescriptor = BeanUtils.getAttributeDescriptor(parentClass, join.getField());
 
 		for (Join join1 : join.getJoins()) {
 
-			getAssociations(attributeDescriptor.getListAttributeType(), classLoadAssociations).add(join1.getField());
+			getAssociations((Class<? extends IVOEntity>) attributeDescriptor.getListAttributeType(), classLoadAssociations).add(join1.getField());
 
 			addJoinAssociations(join1, attributeDescriptor.getListAttributeType(), classLoadAssociations);
 		}
 
 	}
 
-	public static Set<String> getAssociations(Class<?> clazz, Map<Class<?>, Set<String>> classLoadAssociations) {
+	public static Set<String> getAssociations(Class<? extends IVOEntity> clazz, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
 
 		if (!classLoadAssociations.containsKey(clazz)) {
 			classLoadAssociations.put(clazz, new HashSet<String>());
@@ -87,14 +92,42 @@ public final class DBUtil {
 		return classLoadAssociations.get(clazz);
 	}
 
-	public static void addFirstLevelIBaseVOAttributes(Class<? extends IVOEntity> voEntityClass, Map<Class<?>, Set<String>> classLoadAssociations) {
+	public static void addFirstLevelIBaseVOAttributes(Class<? extends IVOEntity> voEntityClass, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
 
 		Set<String> associations = getAssociations(voEntityClass, classLoadAssociations);
 
 		for (IAttributeDescriptor<?> attributeDescriptor : BeanUtils.getAttributeDescriptors(voEntityClass)) {
-			if (IVOEntity.class.isAssignableFrom(attributeDescriptor.getListAttributeType())) {
+			if (!attributeDescriptor.getAttributeName().equals(IHierarchicalVO.FIELD_PARENT.getAttributeName()) && IVOEntity.class.isAssignableFrom(attributeDescriptor.getListAttributeType())) {
 				associations.add(attributeDescriptor.getAttributeName());
 			}
+		}
+
+	}
+
+	public static void addNaturalKeyAttributes(Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
+
+		for (Map.Entry<Class<? extends IVOEntity>, Set<String>> classLoadAssociation : classLoadAssociations.entrySet()) {
+
+			for (String attributeName : classLoadAssociation.getValue()) {
+
+				IAttributeDescriptor<?> attributeDescriptor = VOClassQuery.createQuery(classLoadAssociation.getKey()).attributesDescriptors().byName(attributeName).getSingleResult();
+
+				if (IBaseVO.class.isAssignableFrom(attributeDescriptor.getListAttributeType())) {
+					addNaturalKeyAttributes((Class<? extends IVOEntity>) attributeDescriptor.getListAttributeType(), classLoadAssociations);
+				}
+			}
+		}
+	}
+
+	public static void addNaturalKeyAttributes(Class<? extends IVOEntity> voEntityClass, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
+
+		for (IAttributeDescriptor<?> naturalKey : VOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys()) {
+
+			if (IBaseVO.class.isAssignableFrom(naturalKey.getListAttributeType())) {
+				getAssociations(voEntityClass, classLoadAssociations).add(naturalKey.getAttributeName());
+				addNaturalKeyAttributes((Class<? extends IVOEntity>) naturalKey.getListAttributeType(), classLoadAssociations);
+			}
+
 		}
 
 	}
@@ -109,7 +142,7 @@ public final class DBUtil {
 		return (IBaseVO) CopyBean.getInstance().copyObject(baseEntity, voClass);
 	}
 
-	public static IBaseVO convertEntityToVO(IBaseEntity baseEntity, Map<Class<?>, Set<String>> classLoadAssociations) {
+	public static IBaseVO convertEntityToVO(IBaseEntity baseEntity, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
 		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getMappedVOClass(baseEntity.getClass());
 		return (IBaseVO) CopyBean.getInstance().copyObject(baseEntity, voClass, classLoadAssociations);
 	}

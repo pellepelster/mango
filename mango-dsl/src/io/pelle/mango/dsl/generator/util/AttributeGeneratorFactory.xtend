@@ -4,9 +4,9 @@
 package io.pelle.mango.dsl.generator.util
 
 import com.google.inject.Inject
+import com.google.inject.Injector
 import io.pelle.mango.dsl.mango.Entity
 import org.eclipse.xtend.lib.annotations.Accessors
-import com.google.inject.Injector
 
 class AttributeGeneratorFactory  {
 
@@ -15,43 +15,43 @@ class AttributeGeneratorFactory  {
 
 	static class AttributeGenerator  {
 	
-		@Inject
-		extension TypeUtils
-	
-		@Inject
-		extension AttributeUtils
-	
 		@Accessors
 		private Class<?> attributeType
 	
 		@Accessors
 		private String attributeName
 	
-		protected new (String attributeName, Class<?> attributeType, Injector injector) {
+		private TypeUtils typeUtils
+	
+		private BaseAttributeUtils attributeUtils
+	
+		protected new (String attributeName, Class<?> attributeType, Injector injector, TypeUtils typeUtils, BaseAttributeUtils attributeUtils) {
 			this.attributeName = attributeName
 			this.attributeType = attributeType
+			this.typeUtils = typeUtils
+			this.attributeUtils = attributeUtils
 			injector.injectMembers(this)
 		}
 
 		def changeTrackingSetter() {
-			changeTrackingSetter(attributeType.name, attributeName)
+			attributeUtils.changeTrackingSetter(attributeType.name, attributeName)
 		}
 
 		def generate(Entity entity) '''
 	
-			«compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
+			«typeUtils.compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
 	
-			«attribute(attributeType, attributeName)»
+			«attributeUtils.attribute(attributeType, attributeName)»
 			
-			«getter(attributeType, attributeName)»
+			«attributeUtils.getter(attributeType, attributeName)»
 			
 			«changeTrackingSetter()»
 		'''
 	}
 
 	
-	def AttributeGenerator createAttributeGenerator(String attributeName, Class<?> attributeType) {
-		var attributeGenerator = new AttributeGenerator(attributeName, attributeType, injector);
+	def AttributeGenerator createAttributeGenerator(String attributeName, Class<?> attributeType, TypeUtils typeUtils, BaseAttributeUtils attributeUtils) {
+		var attributeGenerator = new AttributeGenerator(attributeName, attributeType, injector, typeUtils, attributeUtils);
 		return attributeGenerator
 	}
 

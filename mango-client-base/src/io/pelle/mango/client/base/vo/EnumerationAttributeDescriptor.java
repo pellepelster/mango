@@ -6,12 +6,13 @@ import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
 import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 
 @SuppressWarnings("serial")
-public class EnumerationAttributeDescriptor<ENUM_TYPE> extends BaseExpressionAttributeDescriptor<String> implements IAttributeDescriptor<String> {
+public class EnumerationAttributeDescriptor<ENUM_TYPE> extends BaseExpressionAttributeDescriptor<ENUM_TYPE> implements IAttributeDescriptor<ENUM_TYPE> {
 
 	public EnumerationAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> collectionType, int naturalKeyOrder) {
 		super(parent, attributeName, collectionType, attributeType, naturalKeyOrder);
 	}
 
+	@Override
 	public IBooleanExpression eq(ENUM_TYPE value) {
 		return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new StringExpression(value.toString()));
 	}

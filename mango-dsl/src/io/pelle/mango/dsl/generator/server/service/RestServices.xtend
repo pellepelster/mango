@@ -6,8 +6,8 @@ package io.pelle.mango.dsl.generator.server.service
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.generator.client.web.BaseServices
+import io.pelle.mango.dsl.generator.server.ServerAttributeUtils
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
-import io.pelle.mango.dsl.generator.util.AttributeUtils
 import io.pelle.mango.dsl.generator.util.JvmTypeUtils
 import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
@@ -17,7 +17,7 @@ import org.eclipse.xtext.xbase.compiler.ImportManager
 class RestServices extends BaseServices {
 
 	@Inject
-	extension AttributeUtils
+	extension ServerAttributeUtils
 
 	@Inject
 	extension JvmTypeUtils

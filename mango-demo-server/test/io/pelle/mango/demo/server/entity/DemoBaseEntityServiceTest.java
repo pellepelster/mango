@@ -16,6 +16,10 @@ import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity3VO;
+import io.pelle.mango.demo.client.test.Entity4VO;
+import io.pelle.mango.demo.client.test.Entity5VO;
+import io.pelle.mango.demo.client.test.Entity6VO;
+import io.pelle.mango.demo.client.test.Entity7VO;
 import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.server.api.webhook.Webhook;
 
@@ -25,6 +29,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.gwt.editor.client.Editor.Ignore;
 
 public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
@@ -158,7 +164,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.BOOLEANDATATYPE1.eq(true)));
 		assertEquals(1, filterResult.size());
 		assertEquals("aaa", filterResult.get(0).getStringDatatype1());
-		
+
 		filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.BOOLEANDATATYPE1.eq(false)));
 		assertEquals(1, filterResult.size());
 		assertEquals("bbb", filterResult.get(0).getStringDatatype1());
@@ -314,6 +320,115 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	@Ignore
+	public void testAutoLoadNaturalKeyReferences() {
+
+		baseEntityService.deleteAll(Entity4VO.class.getName());
+		baseEntityService.deleteAll(Entity5VO.class.getName());
+		baseEntityService.deleteAll(Entity6VO.class.getName());
+
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype4("xxx");
+
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setEntity4(entity4);
+		entity5.setString1("yyy");
+
+		assertEquals("yyy, xxx", entity5.getNaturalKey());
+
+		Result<Entity5VO> entity5SaveResult = this.baseEntityService.validateAndCreate(entity5);
+		assertEquals(0, entity5SaveResult.getValidationMessages().size());
+
+		SelectQuery<Entity5VO> entity5Query = SelectQuery.selectFrom(Entity5VO.class);
+		List<Entity5VO> entity5Result = baseEntityService.filter(entity5Query);
+		assertEquals("yyy, xxx", entity5Result.get(0).getNaturalKey());
+
+		Entity6VO entity6 = new Entity6VO();
+		entity6.setEntity5(entity5SaveResult.getValue());
+
+		Result<Entity6VO> entity6SaveResult = this.baseEntityService.validateAndCreate(entity6);
+		assertEquals(0, entity6SaveResult.getValidationMessages().size());
+		assertNotNull(entity6SaveResult.getValue().getEntity5());
+
+		SelectQuery<Entity6VO> entity6Query = SelectQuery.selectFrom(Entity6VO.class).loadNaturalKeyReferences(true);
+		List<Entity6VO> entity6Result = baseEntityService.filter(entity6Query);
+		assertEquals("yyy, xxx", entity6Result.get(0).getEntity5().getNaturalKey());
+
+	}
+
+	@Test
+	public void testAutoLoadFirstLevelInherited() {
+
+		baseEntityService.deleteAll(Entity7VO.class.getName());
+		baseEntityService.deleteAll(Entity5VO.class.getName());
+
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setString1("xxx");
+
+		Entity7VO entity7 = new Entity7VO();
+		entity7.setEntity5(entity5);
+		entity7.setString1("yyy");
+
+		Result<Entity7VO> entity7SaveResult = this.baseEntityService.validateAndCreate(entity7);
+		assertEquals(0, entity7SaveResult.getValidationMessages().size());
+
+		SelectQuery<Entity7VO> entity7Query = SelectQuery.selectFrom(Entity7VO.class);
+		List<Entity7VO> entity7Result = baseEntityService.filter(entity7Query);
+		assertNotNull(entity7Result.get(0).getEntity5());
+
+	}
+
+	@Test
+	public void testAutoLoadFirstLevel() {
+
+		baseEntityService.deleteAll(Entity4VO.class.getName());
+		baseEntityService.deleteAll(Entity5VO.class.getName());
+
+		Entity4VO entity4VO = new Entity4VO();
+		entity4VO.setStringDatatype4("xxx");
+
+		Entity5VO entity5VO = new Entity5VO();
+		entity5VO.setEntity4(entity4VO);
+		entity5VO.setString1("yyy");
+
+		Result<Entity5VO> entity5VOSaveResult = this.baseEntityService.validateAndCreate(entity5VO);
+		assertEquals(0, entity5VOSaveResult.getValidationMessages().size());
+
+		SelectQuery<Entity5VO> entity5VOQuery = SelectQuery.selectFrom(Entity5VO.class);
+		List<Entity5VO> entity5Result = baseEntityService.filter(entity5VOQuery);
+		assertNotNull(entity5Result.get(0).getEntity4());
+
+	}
+
+	@Test
+	public void testValidateAndCreateComposedNaturalKey() {
+
+		baseEntityService.deleteAll(Entity4VO.class.getName());
+		baseEntityService.deleteAll(Entity5VO.class.getName());
+
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setString1("aaa");
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype4("bbb");
+		entity5.setEntity4(entity4);
+
+		Result<Entity5VO> result1 = this.baseEntityService.validateAndCreate(entity5);
+		assertEquals(0, result1.getValidationMessages().size());
+
+		entity5 = new Entity5VO();
+		entity5.setString1("aaa");
+		entity4 = new Entity4VO();
+		entity4.setStringDatatype4("bbb");
+		entity5.setEntity4(entity4);
+
+		Result<Entity5VO> result2 = this.baseEntityService.validateAndCreate(entity5);
+		assertEquals(1, result2.getValidationMessages().size());
+		assertEquals("An entity with the natural key 'aaa, bbb' already exists", result2.getValidationMessages().get(0).getMessage());
+		// assertEquals("stringDatatype1",
+		// result2.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
+	}
+
+	@Test
 	public void testValidateAndCreateDuplicateNaturalKey() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -329,6 +444,20 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals(1, result2.getValidationMessages().size());
 		assertEquals("An entity with the natural key 'aaa' already exists", result2.getValidationMessages().get(0).getMessage());
 		assertEquals("stringDatatype1", result2.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
+	}
+
+	@Test
+	public void testValidateAndCreateEntityWihtoutNaturalKey() {
+
+		baseEntityService.deleteAll(Entity2VO.class.getName());
+
+		Entity2VO entity2 = new Entity2VO();
+		entity2.setStringDatatype2("aaa");
+		assertTrue(this.baseEntityService.validateAndCreate(entity2).isOk());
+
+		entity2 = new Entity2VO();
+		entity2.setStringDatatype2("aaa");
+		assertTrue(this.baseEntityService.validateAndCreate(entity2).isOk());
 	}
 
 	@Test

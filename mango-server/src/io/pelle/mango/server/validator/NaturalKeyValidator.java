@@ -4,9 +4,7 @@ import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
 import io.pelle.mango.db.dao.BaseVODAO;
 import io.pelle.mango.db.voquery.VOClassQuery;
 
@@ -15,9 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
-import com.google.common.base.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Checks all {@link IBaseVO} derived Vo's whether they contain values in
@@ -28,7 +24,8 @@ import com.google.common.base.Optional;
  * 
  */
 public class NaturalKeyValidator implements IValidator {
-	@Resource
+
+	@Autowired
 	private BaseVODAO baseVODAO;
 
 	public NaturalKeyValidator() {
@@ -45,7 +42,39 @@ public class NaturalKeyValidator implements IValidator {
 		this.baseVODAO = baseVODAO;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings("rawtypes")
+	public boolean populateNaturalKeyQuery(IBaseVO vo, IAttributeDescriptor<?> parentAttribute, SelectQuery<IBaseVO> selectQuery, List<IValidationMessage> messages, Map<String, Object> contextMap) {
+
+		boolean hasNaturalKeys = false;
+
+		for (IAttributeDescriptor naturalKeyAttributeDescriptor : VOClassQuery.createQuery(vo.getClass()).attributesDescriptors().naturalKeys()) {
+
+			hasNaturalKeys = true;
+			Object naturalKeyValue = vo.get(naturalKeyAttributeDescriptor.getAttributeName());
+
+			if (!contextMap.containsKey(IValidationMessage.ATTRIBUTE_CONTEXT_KEY)) {
+				contextMap.put(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, naturalKeyAttributeDescriptor.getAttributeName());
+			}
+
+			if (naturalKeyValue == null) {
+				messages.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY_MANDATORY, contextMap));
+			} else {
+
+				if (IBaseVO.class.isAssignableFrom(naturalKeyAttributeDescriptor.getListAttributeType())) {
+					populateNaturalKeyQuery((IBaseVO) naturalKeyValue, naturalKeyAttributeDescriptor, selectQuery, messages, contextMap);
+				} else {
+					if (parentAttribute == null) {
+						selectQuery.addWhereAnd(naturalKeyAttributeDescriptor.eq(naturalKeyValue));
+					} else {
+						selectQuery.addWhereAnd(parentAttribute.path(naturalKeyAttributeDescriptor).eq(naturalKeyValue));
+					}
+				}
+			}
+		}
+
+		return hasNaturalKeys;
+	}
+
 	@Override
 	public List<IValidationMessage> validate(Object o) {
 
@@ -55,45 +84,14 @@ public class NaturalKeyValidator implements IValidator {
 		List<IValidationMessage> result = new ArrayList<IValidationMessage>();
 
 		SelectQuery<IBaseVO> selectQuery = (SelectQuery<IBaseVO>) SelectQuery.selectFrom(vo.getClass());
-		Optional<IBooleanExpression> expression = Optional.absent();
-		Optional<IAttributeDescriptor> naturalKeyAttributeDescriptor = Optional.absent();
 
-		for (IAttributeDescriptor attributeDescriptor : VOClassQuery.createQuery(vo.getClass()).attributesDescriptors().naturalKeys()) {
+		contextMap.put(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, vo.getNaturalKey());
+		contextMap.put(IValidationMessage.VOCLASS_CONTEXT_KEY, vo.getClass().getName());
 
-			naturalKeyAttributeDescriptor = Optional.of(attributeDescriptor);
+		boolean doQuery = populateNaturalKeyQuery(vo, null, selectQuery, result, contextMap);
 
-			Optional<Object> naturalKey = Optional.fromNullable(vo.get(attributeDescriptor.getAttributeName()));
-
-			if (naturalKey.isPresent() && !naturalKey.get().toString().isEmpty()) {
-
-				contextMap.put(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, naturalKey.get().toString());
-
-				Optional<IBooleanExpression> compareExpression = ExpressionFactory.createStringEqualsExpression(vo.getClass(), attributeDescriptor.getAttributeName(),
-						vo.get(attributeDescriptor.getAttributeName()).toString());
-
-				if (compareExpression.isPresent()) {
-					if (expression.isPresent()) {
-						expression = Optional.of(expression.get().and(compareExpression.get()));
-					} else {
-						expression = compareExpression;
-					}
-				}
-			} else {
-				contextMap.put(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, attributeDescriptor.getAttributeName());
-				contextMap.put(IValidationMessage.VOCLASS_CONTEXT_KEY, vo.getClass().getName());
-
-				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY_MANDATORY, contextMap));
-			}
-		}
-
-		if (expression.isPresent()) {
-			selectQuery.where(expression.get());
-
+		if (doQuery) {
 			List<IBaseVO> filterResult = this.baseVODAO.filter(selectQuery);
-
-			if (naturalKeyAttributeDescriptor.isPresent()) {
-				contextMap.put(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, naturalKeyAttributeDescriptor.get().getAttributeName());
-			}
 
 			if (filterResult.size() > 1 || (filterResult.size() == 1 && filterResult.get(0).getOid() != vo.getOid())) {
 				result.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY, contextMap));
