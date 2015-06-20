@@ -12,6 +12,7 @@ public class BaseNumberAttributeDescriptor<T extends Number> extends BaseExpress
 		super(parent, attributeName, numberClass, AttributeDescriptor.NO_NATURAL_KEY);
 	}
 
+	@Override
 	public IBooleanExpression eq(T value) {
 		if (value != null) {
 			return new CompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new NumberExpression(value));

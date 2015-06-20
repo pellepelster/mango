@@ -13,6 +13,7 @@ package io.pelle.mango.client.web.test;
 
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;
+import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -26,6 +27,7 @@ import org.junit.Assert;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.google.gwt.thirdparty.guava.common.base.Joiner;
 
 /**
  * UI for the navigation module
@@ -89,7 +91,13 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 		AsyncCallbackFuture<Result<VOType>> future = AsyncCallbackFuture.create();
 		this.module.getDictionaryEditor().save(future.getCallback());
-		// assertTrue(future.get().getValidationMessages().isEmpty());
+
+		String messages = Joiner.on(", ").join(Collections2.transform(future.get().getValidationMessages(), new Function<IValidationMessage, String>() {
+			@Override
+			public String apply(IValidationMessage input) {
+				return input.getMessage();
+			}
+		}));
 
 	}
 

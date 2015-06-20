@@ -2,6 +2,7 @@ package io.pelle.mango.db.dao;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.query.ServerCountQuery;
@@ -95,7 +96,7 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 
 		List<IBaseEntity> entityResult = (List<IBaseEntity>) getResultListInternal(selectQuery, entityManager);
 
-		final Map<Class<?>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(selectQuery);
+		final Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(selectQuery);
 
 		return new ArrayList<>(Collections2.transform(entityResult, new Function<IBaseEntity, T>() {
 			@Override
@@ -154,16 +155,16 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 
 	@Override
 	public <T extends IBaseVO> T getNewVO(String className, Map<String, String> properties) {
-		
+
 		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getVOClass(className);
 		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(voClass);
 
-		IBaseEntity entity =  baseEntityDAO.getNewVO(entityClass.getName(), properties);
-		
+		IBaseEntity entity = baseEntityDAO.getNewVO(entityClass.getName(), properties);
+
 		T result = (T) DBUtil.convertEntityToVO(entity);
 
 		decorateVO(result);
-		
+
 		return result;
 	}
 

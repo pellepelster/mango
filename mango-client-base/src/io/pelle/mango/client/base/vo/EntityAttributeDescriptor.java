@@ -24,6 +24,7 @@ public class EntityAttributeDescriptor<T extends IVOEntity> extends BaseExpressi
 		super(entityDescriptor, attributeName, String.class, naturalKeyOrder);
 	}
 
+	@Override
 	public IBooleanExpression eq(T value) {
 		return new EntityCompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new NumberExpression(value.getId()));
 	}

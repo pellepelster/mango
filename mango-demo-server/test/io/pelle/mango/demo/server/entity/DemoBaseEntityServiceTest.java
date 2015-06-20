@@ -401,6 +401,34 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testValidateAndCreateComposedNaturalKey() {
+
+		baseEntityService.deleteAll(Entity4VO.class.getName());
+		baseEntityService.deleteAll(Entity5VO.class.getName());
+
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setString1("aaa");
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype4("bbb");
+		entity5.setEntity4(entity4);
+
+		Result<Entity5VO> result1 = this.baseEntityService.validateAndCreate(entity5);
+		assertEquals(0, result1.getValidationMessages().size());
+
+		entity5 = new Entity5VO();
+		entity5.setString1("aaa");
+		entity4 = new Entity4VO();
+		entity4.setStringDatatype4("bbb");
+		entity5.setEntity4(entity4);
+
+		Result<Entity5VO> result2 = this.baseEntityService.validateAndCreate(entity5);
+		assertEquals(1, result2.getValidationMessages().size());
+		assertEquals("An entity with the natural key 'aaa, bbb' already exists", result2.getValidationMessages().get(0).getMessage());
+		// assertEquals("stringDatatype1",
+		// result2.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
+	}
+
+	@Test
 	public void testValidateAndCreateDuplicateNaturalKey() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
@@ -416,6 +444,20 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals(1, result2.getValidationMessages().size());
 		assertEquals("An entity with the natural key 'aaa' already exists", result2.getValidationMessages().get(0).getMessage());
 		assertEquals("stringDatatype1", result2.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
+	}
+
+	@Test
+	public void testValidateAndCreateEntityWihtoutNaturalKey() {
+
+		baseEntityService.deleteAll(Entity2VO.class.getName());
+
+		Entity2VO entity2 = new Entity2VO();
+		entity2.setStringDatatype2("aaa");
+		assertTrue(this.baseEntityService.validateAndCreate(entity2).isOk());
+
+		entity2 = new Entity2VO();
+		entity2.setStringDatatype2("aaa");
+		assertTrue(this.baseEntityService.validateAndCreate(entity2).isOk());
 	}
 
 	@Test

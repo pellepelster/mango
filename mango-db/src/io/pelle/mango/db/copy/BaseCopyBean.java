@@ -2,6 +2,7 @@ package io.pelle.mango.db.copy;
 
 import io.pelle.mango.client.base.vo.IChangeTracker;
 import io.pelle.mango.client.base.vo.IHasChangeTracker;
+import io.pelle.mango.client.base.vo.IVOEntity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -59,11 +60,11 @@ public abstract class BaseCopyBean {
 		return copyObject(sourceObject, destClass, new HashMap<Object, Object>(), null, Arrays.asList(attributesToOmit));
 	}
 
-	public Object copyObject(Object sourceObject, Class<?> destClass, Map<Class<?>, Set<String>> classLoadAssociations) {
+	public Object copyObject(Object sourceObject, Class<?> destClass, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
 		return copyObject(sourceObject, destClass, classLoadAssociations, false, new String[0]);
 	}
 
-	public Object copyObject(Object sourceObject, Class<?> destClass, Map<Class<?>, Set<String>> classLoadAssociations, boolean clearChanges, String[] attributesToOmit) {
+	public Object copyObject(Object sourceObject, Class<?> destClass, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations, boolean clearChanges, String[] attributesToOmit) {
 		return copyObject(sourceObject, destClass, new HashMap<Object, Object>(), classLoadAssociations, Arrays.asList(attributesToOmit), clearChanges);
 	}
 
@@ -75,11 +76,11 @@ public abstract class BaseCopyBean {
 		this.fieldCopyHandlers.add(fieldCopyHandler);
 	}
 
-	private Object copyObject(Object sourceObject, Class<?> destClass, Map<Object, Object> visited, Map<Class<?>, Set<String>> classLoadAssociations, List<String> attributesToOmit) {
+	private Object copyObject(Object sourceObject, Class<?> destClass, Map<Object, Object> visited, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations, List<String> attributesToOmit) {
 		return copyObject(sourceObject, destClass, visited, classLoadAssociations, attributesToOmit, false);
 	}
 
-	private Object copyObject(Object sourceObject, Class<?> destClass, Map<Object, Object> visited, Map<Class<?>, Set<String>> classLoadAssociations, List<String> attributesToOmit, boolean clearChanges) {
+	private Object copyObject(Object sourceObject, Class<?> destClass, Map<Object, Object> visited, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations, List<String> attributesToOmit, boolean clearChanges) {
 
 		Set<String> loadAssociations = null;
 
@@ -201,7 +202,7 @@ public abstract class BaseCopyBean {
 		return null;
 	}
 
-	public Object copyObject(Object sourceObject, Map<Class<?>, Set<String>> classLoadAssociations) {
+	public Object copyObject(Object sourceObject, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
 		return copyObject(sourceObject, getMappedTargetType(sourceObject.getClass()), new HashMap<Object, Object>(), classLoadAssociations, new ArrayList<String>());
 	}
 
