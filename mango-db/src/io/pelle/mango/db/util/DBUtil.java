@@ -53,8 +53,6 @@ public final class DBUtil {
 
 			addFirstLevelIBaseVOAttributes(getClassOrDie(entity.getClassName()), classLoadAssociations);
 
-			addNaturalKeyAttributes(classLoadAssociations);
-
 			Set<String> associations = getAssociations(getClassOrDie(entity.getClassName()), classLoadAssociations);
 
 			for (Join join : entity.getJoins()) {
@@ -64,6 +62,8 @@ public final class DBUtil {
 			}
 
 		}
+
+		addNaturalKeyAttributes(classLoadAssociations);
 
 		return classLoadAssociations;
 	}
