@@ -19,6 +19,8 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 
 	private Map<String, Object> data = new HashMap<String, Object>();
 
+	private boolean loadNaturalKeyReferences;
+
 	public SelectQuery() {
 		super();
 	}
@@ -55,12 +57,21 @@ public class SelectQuery<T extends IVOEntity> extends BaseQuery<T, SelectQuery<T
 		return this;
 	}
 
+	public SelectQuery<T> loadNaturalKeyReferences(boolean loadNaturalKeyReferences) {
+		this.loadNaturalKeyReferences = loadNaturalKeyReferences;
+		return this;
+	}
+
 	public int getFirstResult() {
 		return firstResult;
 	}
 
 	public int getMaxResults() {
 		return maxResults;
+	}
+
+	public boolean isLoadNaturalKeyReferences() {
+		return loadNaturalKeyReferences;
 	}
 
 	public Map<String, Object> getData() {

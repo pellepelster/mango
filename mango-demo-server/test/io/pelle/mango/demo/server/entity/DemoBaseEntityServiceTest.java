@@ -327,31 +327,31 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		baseEntityService.deleteAll(Entity5VO.class.getName());
 		baseEntityService.deleteAll(Entity6VO.class.getName());
 
-		Entity4VO entity4VO = new Entity4VO();
-		entity4VO.setStringDatatype4("xxx");
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype4("xxx");
 
-		Entity5VO entity5VO = new Entity5VO();
-		entity5VO.setEntity4(entity4VO);
-		entity5VO.setString1("yyy");
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setEntity4(entity4);
+		entity5.setString1("yyy");
 
-		assertEquals("yyy, xxx", entity5VO.getNaturalKey());
+		assertEquals("yyy, xxx", entity5.getNaturalKey());
 
-		Result<Entity5VO> entity5VOSaveResult = this.baseEntityService.validateAndCreate(entity5VO);
-		assertEquals(0, entity5VOSaveResult.getValidationMessages().size());
+		Result<Entity5VO> entity5SaveResult = this.baseEntityService.validateAndCreate(entity5);
+		assertEquals(0, entity5SaveResult.getValidationMessages().size());
 
-		SelectQuery<Entity5VO> entity5VOQuery = SelectQuery.selectFrom(Entity5VO.class);
-		List<Entity5VO> entity5Result = baseEntityService.filter(entity5VOQuery);
+		SelectQuery<Entity5VO> entity5Query = SelectQuery.selectFrom(Entity5VO.class);
+		List<Entity5VO> entity5Result = baseEntityService.filter(entity5Query);
 		assertEquals("yyy, xxx", entity5Result.get(0).getNaturalKey());
 
-		Entity6VO entity6VO = new Entity6VO();
-		entity6VO.setEntity5(entity5VOSaveResult.getValue());
+		Entity6VO entity6 = new Entity6VO();
+		entity6.setEntity5(entity5SaveResult.getValue());
 
-		Result<Entity6VO> entity6VOSaveResult = this.baseEntityService.validateAndCreate(entity6VO);
-		assertEquals(0, entity6VOSaveResult.getValidationMessages().size());
-		assertNotNull(entity6VOSaveResult.getValue().getEntity5());
+		Result<Entity6VO> entity6SaveResult = this.baseEntityService.validateAndCreate(entity6);
+		assertEquals(0, entity6SaveResult.getValidationMessages().size());
+		assertNotNull(entity6SaveResult.getValue().getEntity5());
 
-		SelectQuery<Entity6VO> entity6VOQuery = SelectQuery.selectFrom(Entity6VO.class);
-		List<Entity6VO> entity6Result = baseEntityService.filter(entity6VOQuery);
+		SelectQuery<Entity6VO> entity6Query = SelectQuery.selectFrom(Entity6VO.class).loadNaturalKeyReferences(true);
+		List<Entity6VO> entity6Result = baseEntityService.filter(entity6Query);
 		assertEquals("yyy, xxx", entity6Result.get(0).getEntity5().getNaturalKey());
 
 	}

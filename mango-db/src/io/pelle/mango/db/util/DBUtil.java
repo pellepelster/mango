@@ -63,7 +63,9 @@ public final class DBUtil {
 
 		}
 
-		addNaturalKeyAttributes(classLoadAssociations);
+		if (selectQuery.isLoadNaturalKeyReferences()) {
+			addNaturalKeyAttributes(classLoadAssociations);
+		}
 
 		return classLoadAssociations;
 	}

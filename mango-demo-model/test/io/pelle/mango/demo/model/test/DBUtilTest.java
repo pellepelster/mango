@@ -44,7 +44,7 @@ public class DBUtilTest extends TestCase {
 	@Test
 	public void testGetClassLoadAssociationsFirstLevelWihtNaturalKey() {
 
-		SelectQuery<Entity6VO> query = selectFrom(Entity6VO.class);
+		SelectQuery<Entity6VO> query = selectFrom(Entity6VO.class).loadNaturalKeyReferences(true);
 
 		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(query);
 
