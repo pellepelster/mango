@@ -161,7 +161,7 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 
 		IBaseEntity entity = baseEntityDAO.getNewVO(entityClass.getName(), properties);
 
-		T result = (T) DBUtil.convertEntityToVO(entity);
+		T result = DBUtil.<T> convertEntityToVO(entity);
 
 		decorateVO(result);
 

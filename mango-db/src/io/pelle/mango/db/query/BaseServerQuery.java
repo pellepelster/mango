@@ -7,7 +7,7 @@ import io.pelle.mango.client.base.vo.query.BaseQuery;
 import io.pelle.mango.client.base.vo.query.Entity;
 import io.pelle.mango.client.base.vo.query.IEntity;
 import io.pelle.mango.client.base.vo.query.Join;
-import io.pelle.mango.db.util.DBUtil;
+import io.pelle.mango.db.util.EntityVOMapper;
 
 import java.util.Collection;
 
@@ -36,7 +36,7 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 		String delimiter = "";
 
 		for (Entity entity : baseQuery.getFroms()) {
-			result += delimiter + "" + entityVOMapper.getEntityClass(DBUtil.getClassOrDie(entity.getClassName())).getSimpleName() + " " + entity.getAlias();
+			result += delimiter + "" + entityVOMapper.getEntityClass(EntityVOMapper.getInstance().getVOClass(entity.getClassName())).getSimpleName() + " " + entity.getAlias();
 			delimiter = ", ";
 		}
 
@@ -90,7 +90,7 @@ public class BaseServerQuery<T extends IVOEntity, Q> {
 	public BaseQuery<T, Q> getBaseQuery() {
 		return baseQuery;
 	}
-	
+
 	protected String getJoinClause() {
 
 		StringBuilder result = new StringBuilder();

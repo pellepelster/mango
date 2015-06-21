@@ -13,6 +13,7 @@ import javax.persistence.Transient;
 import org.apache.commons.beanutils.PropertyUtils;
 
 public class ObjectFieldIterator implements Iterable<ObjectFieldDescriptor> {
+
 	private final List<ObjectFieldDescriptor> properties = new ArrayList<ObjectFieldDescriptor>();
 
 	private final List<String> attributesToOmit = new ArrayList<String>();

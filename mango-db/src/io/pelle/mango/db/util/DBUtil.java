@@ -36,29 +36,20 @@ public final class DBUtil {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static Class<? extends IVOEntity> getClassOrDie(String className) {
-		try {
-			return (Class<? extends IVOEntity>) Class.forName(className);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public static Map<Class<? extends IVOEntity>, Set<String>> getClassLoadAssociations(SelectQuery<?> selectQuery) {
 
 		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = new HashMap<>();
 
 		for (Entity entity : selectQuery.getFroms()) {
 
-			addFirstLevelIBaseVOAttributes(getClassOrDie(entity.getClassName()), classLoadAssociations);
+			addFirstLevelIBaseVOAttributes(EntityVOMapper.getInstance().getVOClass(entity.getClassName()), classLoadAssociations);
 
-			Set<String> associations = getAssociations(getClassOrDie(entity.getClassName()), classLoadAssociations);
+			Set<String> associations = getAssociations(EntityVOMapper.getInstance().getVOClass(entity.getClassName()), classLoadAssociations);
 
 			for (Join join : entity.getJoins()) {
 				associations.add(join.getField());
 
-				addJoinAssociations(join, getClassOrDie(entity.getClassName()), classLoadAssociations);
+				addJoinAssociations(join, EntityVOMapper.getInstance().getVOClass(entity.getClassName()), classLoadAssociations);
 			}
 
 		}
@@ -137,9 +128,10 @@ public final class DBUtil {
 		return (IBaseEntity) CopyBean.getInstance().copyObject(baseVO, entityClass);
 	}
 
-	public static IBaseVO convertEntityToVO(IBaseEntity baseEntity) {
+	@SuppressWarnings("unchecked")
+	public static <T extends IBaseVO> T convertEntityToVO(IBaseEntity baseEntity) {
 		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getMappedVOClass(baseEntity.getClass());
-		return (IBaseVO) CopyBean.getInstance().copyObject(baseEntity, voClass);
+		return (T) CopyBean.getInstance().copyObject(baseEntity, voClass);
 	}
 
 	public static IBaseVO convertEntityToVO(IBaseEntity baseEntity, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
