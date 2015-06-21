@@ -1,7 +1,9 @@
 package io.pelle.mango.client.base.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ChangeTracker implements IChangeTracker, Serializable {
@@ -10,7 +12,15 @@ public class ChangeTracker implements IChangeTracker, Serializable {
 
 	private Map<String, Object> changes = new HashMap<String, Object>();
 
-	public ChangeTracker() {
+	private List<String> loadedAttributes = new ArrayList<String>();
+
+	private IVOEntity voEntity;
+
+	private ChangeTracker() {
+	}
+
+	public ChangeTracker(IVOEntity voEntity) {
+		this.voEntity = voEntity;
 	}
 
 	public Map<String, Object> getChanges() {
@@ -27,6 +37,13 @@ public class ChangeTracker implements IChangeTracker, Serializable {
 
 	@Override
 	public void setLoaded(String attributeName) {
+		loadedAttributes.add(attributeName);
+	}
+
+	public void checkLoaded(String attributeName) {
+		if (loadedAttributes != null && !voEntity.isNew() && !loadedAttributes.contains(attributeName)) {
+			throw new RuntimeException("attribute '" + attributeName + "' is not loaded for class '" + voEntity.getClass() + "'");
+		}
 	}
 
 	@Override
@@ -42,6 +59,11 @@ public class ChangeTracker implements IChangeTracker, Serializable {
 	@Override
 	public void copyChanges(IChangeTracker source) {
 		this.changes = new HashMap<String, Object>(((ChangeTracker) source).changes);
+	}
+
+	@Override
+	public void disableLoadChecking() {
+		loadedAttributes = null;
 	}
 
 }

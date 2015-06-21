@@ -18,6 +18,7 @@ import io.pelle.mango.dsl.mango.ValueObject
 import java.io.Serializable
 import java.util.ArrayList
 import java.util.List
+import io.pelle.mango.dsl.mango.EntityEntityAttribute
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -131,10 +132,24 @@ class VOGenerator extends BaseEntityGenerator {
 	'''
 
 	def changeTrackingAttributeGetterSetter(EntityAttribute attribute, Entity entity) '''
-		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
 		«attribute.compileEntityAttributeDescriptor(entity)»
+		
+		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
+		
+		«IF attribute instanceof EntityEntityAttribute»
+		«checkLoadedGetter(getType(attribute), attribute.name.attributeName)»
+		«ELSE»
 		«getter(getType(attribute), attribute.name.attributeName)»
+		«ENDIF»
+		
 		«changeTrackingSetter(getType(attribute), attribute.name.attributeName)»
+	'''
+
+	def checkLoadedGetter(String attributeType, String attributeName) '''
+		public «attributeType» «attributeName.getterName»() {
+			getChangeTracker().checkLoaded("«attributeName»");
+			return this.«attributeName»;
+		}
 	'''
 
 	//- genericVOGetter -----------------------------------------------------------

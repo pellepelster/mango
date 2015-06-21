@@ -6,9 +6,14 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 
 public abstract class BaseEntity implements IBaseEntity {
 
-	private ChangeTracker changeTracker = new ChangeTracker();
+	private ChangeTracker changeTracker;
 
 	private long oid;
+
+	public BaseEntity() {
+		super();
+		changeTracker = new ChangeTracker(this);
+	}
 
 	@Override
 	public boolean isNew() {

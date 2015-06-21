@@ -103,4 +103,8 @@ public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IChangeT
 
 	}
 
+	@Override
+	public void disableLoadChecking() {
+	}
+
 }

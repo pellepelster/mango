@@ -103,7 +103,16 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 		List<Entity1VO> entity1s = baseVODAO.filter(selectFrom(Entity1VO.class));
 		assertEquals(1, entity1s.size());
 		assertNotNull(entity1s.get(0).getEntity2Datatype());
-		assertTrue(entity1s.get(0).getEntity2Datatype().getEntity3Datatypes().isEmpty());
+
+		boolean thrown = false;
+
+		try {
+			entity1s.get(0).getEntity2Datatype().getEntity3Datatypes();
+		} catch (RuntimeException e) {
+			thrown = true;
+		}
+
+		assertTrue(thrown);
 	}
 
 	@Test
@@ -126,7 +135,16 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 
 		assertEquals(1, entity1s.size());
 		assertNotNull(entity1s.get(0).getEntity2Datatype());
-		assertTrue(entity1s.get(0).getEntity2Datatype().getEntity3Datatypes().isEmpty());
+
+		boolean thrown = false;
+
+		try {
+			entity1s.get(0).getEntity2Datatype().getEntity3Datatypes();
+		} catch (RuntimeException e) {
+			thrown = true;
+		}
+
+		assertTrue(thrown);
 
 		entity1s = baseVODAO.filter(selectFrom(Entity1VO.class).join(Entity1VO.ENTITY2DATATYPE, Entity2VO.ENTITY3DATATYPES));
 		assertEquals(1, entity1s.get(0).getEntity2Datatype().getEntity3Datatypes().size());

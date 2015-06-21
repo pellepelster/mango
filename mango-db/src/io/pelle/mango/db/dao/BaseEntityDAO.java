@@ -216,7 +216,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	private <T extends IBaseEntity> T mergeRecursive(T entity, String currentPath) {
 
 		// TODO use dirty paths?
-		for (ObjectFieldDescriptor fieldDescriptor : new ObjectFieldIterator(entity)) {
+		for (ObjectFieldDescriptor fieldDescriptor : new ObjectFieldIterator(entity, true)) {
 
 			if (fieldDescriptor.isNonNullSourceType(IBaseEntity.class)) {
 

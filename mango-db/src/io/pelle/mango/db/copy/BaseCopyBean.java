@@ -109,7 +109,7 @@ public abstract class BaseCopyBean {
 
 		visited.put(sourceObject, targetObject);
 
-		for (ObjectFieldDescriptor fieldDescriptor : new ObjectFieldIterator(sourceObject, targetObject)) {
+		for (ObjectFieldDescriptor fieldDescriptor : new ObjectFieldIterator(sourceObject, targetObject, true)) {
 
 			if (fieldDescriptor.getSourceType() == null || fieldDescriptor.getTargetType() == null) {
 				continue;
@@ -127,7 +127,7 @@ public abstract class BaseCopyBean {
 				continue;
 			}
 
-			if (targetObject instanceof IHasChangeTracker) {
+			if (fieldDescriptor.sourceTypeIsReference() && targetObject instanceof IHasChangeTracker) {
 				((IHasChangeTracker) targetObject).getChangeTracker().setLoaded(fieldDescriptor.getFieldName());
 			}
 

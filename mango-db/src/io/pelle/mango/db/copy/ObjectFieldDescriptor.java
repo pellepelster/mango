@@ -1,6 +1,6 @@
 package io.pelle.mango.db.copy;
 
-import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IVOEntity;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
@@ -22,11 +22,14 @@ public class ObjectFieldDescriptor {
 	private Method targetReadMethod;
 	private Method targetWriteMethod;
 
-	public ObjectFieldDescriptor(String fieldName, PropertyDescriptor sourcePropertyDescriptor, Object sourceValue, PropertyDescriptor targetPropertyDescriptor, Object targetValue) {
+	private boolean hasValues;
+
+	public ObjectFieldDescriptor(String fieldName, PropertyDescriptor sourcePropertyDescriptor, Object sourceValue, PropertyDescriptor targetPropertyDescriptor, Object targetValue, boolean hasValues) {
 		super();
 		this.fieldName = fieldName;
 		this.sourceValue = sourceValue;
 		this.targetValue = targetValue;
+		this.hasValues = hasValues;
 
 		this.sourceReadMethod = sourcePropertyDescriptor.getReadMethod();
 		this.sourceType = sourcePropertyDescriptor.getPropertyType();
@@ -44,10 +47,17 @@ public class ObjectFieldDescriptor {
 	}
 
 	public Object getTargetValue() {
+
+		if (!hasValues) {
+			throw new RuntimeException("no target value set");
+		}
 		return this.targetValue;
 	}
 
 	public Object getSourceValue() {
+		if (!hasValues) {
+			throw new RuntimeException("no source value set");
+		}
 		return this.sourceValue;
 	}
 
@@ -87,7 +97,7 @@ public class ObjectFieldDescriptor {
 	}
 
 	public boolean sourceTypeIsReference() {
-		return IBaseVO.class.isAssignableFrom(sourceType) || List.class.isAssignableFrom(sourceType);
+		return IVOEntity.class.isAssignableFrom(sourceType) || List.class.isAssignableFrom(sourceType);
 	}
 
 }
