@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IChangeTracker {
+
 	private boolean hasChanged = false;
 
 	private static final long serialVersionUID = 1394709596650118025L;
@@ -95,6 +96,11 @@ public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IChangeT
 	public void copyChanges(IChangeTracker source) {
 		assert source instanceof IChangeTracker;
 		this.hasChanged = ((ChangeTrackingArrayList) source).hasChanged;
+	}
+
+	@Override
+	public void setLoaded(String attributeName) {
+
 	}
 
 }

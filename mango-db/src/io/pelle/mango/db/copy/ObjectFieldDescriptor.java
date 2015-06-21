@@ -1,7 +1,10 @@
 package io.pelle.mango.db.copy;
 
+import io.pelle.mango.client.base.vo.IBaseVO;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import com.google.common.base.Objects;
 
@@ -81,6 +84,10 @@ public class ObjectFieldDescriptor {
 
 	public boolean isNonNullSourceType(Class<?> type) {
 		return getSourceValue() != null && type.isAssignableFrom(getSourceType());
+	}
+
+	public boolean sourceTypeIsReference() {
+		return IBaseVO.class.isAssignableFrom(sourceType) || List.class.isAssignableFrom(sourceType);
 	}
 
 }

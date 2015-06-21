@@ -36,7 +36,7 @@ public final class DBUtil {
 		}
 	}
 
-	public static Map<Class<? extends IVOEntity>, Set<String>> getClassLoadAssociations(SelectQuery<?> selectQuery) {
+	public static Map<Class<? extends IVOEntity>, Set<String>> getLoadAssociations(SelectQuery<?> selectQuery) {
 
 		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = new HashMap<>();
 
@@ -134,9 +134,9 @@ public final class DBUtil {
 		return (T) CopyBean.getInstance().copyObject(baseEntity, voClass);
 	}
 
-	public static IBaseVO convertEntityToVO(IBaseEntity baseEntity, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
+	public static IBaseVO convertEntityToVO(IBaseEntity baseEntity, Map<Class<? extends IVOEntity>, Set<String>> loadAssociations) {
 		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getMappedVOClass(baseEntity.getClass());
-		return (IBaseVO) CopyBean.getInstance().copyObject(baseEntity, voClass, classLoadAssociations);
+		return (IBaseVO) CopyBean.getInstance().copyObject(baseEntity, voClass, loadAssociations);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -25,7 +25,7 @@ public class DBUtilTest extends TestCase {
 
 		SelectQuery<Entity1> query = selectFrom(Entity1.class).join(Entity1.ENTITY2DATATYPE, Entity2.ENTITY3DATATYPES);
 
-		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(query);
+		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getLoadAssociations(query);
 
 		assertThat(classLoadAssociations.get(Entity1.class), hasItem("entity2Datatype"));
 		assertThat(classLoadAssociations.get(Entity2.class), hasItem("entity3Datatypes"));
@@ -36,7 +36,7 @@ public class DBUtilTest extends TestCase {
 
 		SelectQuery<Entity1> query = selectFrom(Entity1.class);
 
-		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(query);
+		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getLoadAssociations(query);
 
 		assertThat(classLoadAssociations.get(Entity1.class), hasItem("entity2Datatype"));
 	}
@@ -46,7 +46,7 @@ public class DBUtilTest extends TestCase {
 
 		SelectQuery<Entity6VO> query = selectFrom(Entity6VO.class).loadNaturalKeyReferences(true);
 
-		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(query);
+		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getLoadAssociations(query);
 
 		assertThat(classLoadAssociations.get(Entity6VO.class), hasItem("entity5"));
 		assertThat(classLoadAssociations.get(Entity5VO.class), hasItem("entity4"));

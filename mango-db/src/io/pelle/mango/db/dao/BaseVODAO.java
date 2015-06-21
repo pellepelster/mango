@@ -96,13 +96,13 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 
 		List<IBaseEntity> entityResult = (List<IBaseEntity>) getResultListInternal(selectQuery, entityManager);
 
-		final Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getClassLoadAssociations(selectQuery);
+		final Map<Class<? extends IVOEntity>, Set<String>> loadAssociations = DBUtil.getLoadAssociations(selectQuery);
 
 		return new ArrayList<>(Collections2.transform(entityResult, new Function<IBaseEntity, T>() {
 			@Override
 			public T apply(IBaseEntity baseEntity) {
 				@SuppressWarnings("unchecked")
-				T baseVO = (T) DBUtil.convertEntityToVO(baseEntity, classLoadAssociations);
+				T baseVO = (T) DBUtil.convertEntityToVO(baseEntity, loadAssociations);
 				decorateVO(baseVO);
 				return baseVO;
 			}

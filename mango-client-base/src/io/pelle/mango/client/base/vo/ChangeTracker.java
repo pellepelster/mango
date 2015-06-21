@@ -26,6 +26,10 @@ public class ChangeTracker implements IChangeTracker, Serializable {
 	}
 
 	@Override
+	public void setLoaded(String attributeName) {
+	}
+
+	@Override
 	public boolean hasChanges() {
 		return !this.changes.isEmpty();
 	}

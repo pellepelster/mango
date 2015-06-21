@@ -109,20 +109,21 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 	@Test
 	public void testSimpleFilterSecondLevel() {
 
-		Entity1VO newVO1 = new Entity1VO();
-		newVO1.setStringDatatype1("xxx");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("xxx");
 
-		Entity2VO newVO2 = new Entity2VO();
-		newVO2.setStringDatatype2("xxx");
-		newVO1.setEntity2Datatype(newVO2);
+		Entity2VO entity2 = new Entity2VO();
+		entity2.setStringDatatype2("xxx");
+		entity1.setEntity2Datatype(entity2);
 
-		Entity3VO newVO3 = new Entity3VO();
-		newVO3.setStringDatatype3("xxx");
-		newVO2.getEntity3Datatypes().add(newVO3);
+		Entity3VO entity3 = new Entity3VO();
+		entity3.setStringDatatype3("xxx");
+		entity2.getEntity3Datatypes().add(entity3);
 
-		baseVODAO.create(newVO1);
+		baseVODAO.create(entity1);
 
 		List<Entity1VO> entity1s = baseVODAO.filter(selectFrom(Entity1VO.class));
+
 		assertEquals(1, entity1s.size());
 		assertNotNull(entity1s.get(0).getEntity2Datatype());
 		assertTrue(entity1s.get(0).getEntity2Datatype().getEntity3Datatypes().isEmpty());

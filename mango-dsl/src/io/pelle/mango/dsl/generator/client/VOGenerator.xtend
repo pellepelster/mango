@@ -144,7 +144,7 @@ class VOGenerator extends BaseEntityGenerator {
 			«FOR attribute : entity.attributes»
 			if ("«attribute.name»".equals(name))
 			{
-				return this.«attribute.name»;
+				return this.«attribute.getterName»();
 			}
 			«ENDFOR»
 
@@ -156,10 +156,10 @@ class VOGenerator extends BaseEntityGenerator {
 			«ENDIF»
 
 			«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
-				if ("«infoVOEntityAttribute.attributeName.attributeName»".equals(name))
-				{
-					return this.«infoVOEntityAttribute.attributeName.attributeName»;
-				}
+			if ("«infoVOEntityAttribute.attributeName.attributeName»".equals(name))
+			{
+				return this.«infoVOEntityAttribute.attributeName.attributeName»;
+			}
 			«ENDFOR»
 		
 			return super.get(name);
