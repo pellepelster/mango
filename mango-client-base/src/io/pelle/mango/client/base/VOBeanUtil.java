@@ -12,7 +12,7 @@
 package io.pelle.mango.client.base;
 
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.IChangeTracker;
+import io.pelle.mango.client.base.vo.IVOEntityMetadata;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,7 +85,7 @@ public class VOBeanUtil {
 		}
 
 		@Override
-		public IChangeTracker getChangeTracker() {
+		public IVOEntityMetadata getMetadata() {
 			return null;
 		}
 

@@ -1,12 +1,12 @@
 package io.pelle.mango.client.base.vo;
 
-public interface IChangeTracker {
+public interface IVOEntityMetadata {
 
 	boolean hasChanges();
 
 	void clearChanges();
 
-	void copyChanges(IChangeTracker sourceChangeTracker);
+	void copyChanges(IVOEntityMetadata sourceChangeTracker);
 
 	void setLoaded(String attributeName);
 

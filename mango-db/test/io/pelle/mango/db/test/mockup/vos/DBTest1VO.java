@@ -95,7 +95,7 @@ public class DBTest1VO extends BaseVO {
 	/** {@inheritDoc} */
 	@Override
 	public void setId(long id) {
-		getChangeTracker().addChange("id", id);
+		getMetadata().addChange("id", id);
 
 		this.id = id;
 	}
@@ -105,25 +105,25 @@ public class DBTest1VO extends BaseVO {
 	}
 
 	public void setMap(Map<String, String> map) {
-		getChangeTracker().addChange("map", map);
+		getMetadata().addChange("map", map);
 
 		this.map = map;
 	}
 
 	public void setTestEnum(TEST_ENUM_VO testEnum) {
-		getChangeTracker().addChange("testEnum", testEnum);
+		getMetadata().addChange("testEnum", testEnum);
 
 		this.testEnum = testEnum;
 	}
 
 	public void setTestInteger(int testInteger) {
-		getChangeTracker().addChange("testInteger", testInteger);
+		getMetadata().addChange("testInteger", testInteger);
 
 		this.testInteger = testInteger;
 	}
 
 	public void setTestString(String testString) {
-		getChangeTracker().addChange("testString", testString);
+		getMetadata().addChange("testString", testString);
 
 		this.testString = testString;
 	}

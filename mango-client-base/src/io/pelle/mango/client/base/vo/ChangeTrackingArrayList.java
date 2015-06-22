@@ -3,7 +3,7 @@ package io.pelle.mango.client.base.vo;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IChangeTracker {
+public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IVOEntityMetadata {
 
 	private boolean hasChanged = false;
 
@@ -93,8 +93,8 @@ public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IChangeT
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void copyChanges(IChangeTracker source) {
-		assert source instanceof IChangeTracker;
+	public void copyChanges(IVOEntityMetadata source) {
+		assert source instanceof IVOEntityMetadata;
 		this.hasChanged = ((ChangeTrackingArrayList) source).hasChanged;
 	}
 

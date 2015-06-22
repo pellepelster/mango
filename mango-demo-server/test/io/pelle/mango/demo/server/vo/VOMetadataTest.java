@@ -22,7 +22,7 @@ public class VOMetadataTest extends BaseDemoTest {
 	@Test
 	public void testValueObjectMetadataCleanAfterConstruct() {
 		Entity1VO entity1 = new Entity1VO();
-		assertFalse(entity1.getChangeTracker().hasChanges());
+		assertFalse(entity1.getMetadata().hasChanges());
 	}
 
 	@Test
@@ -32,36 +32,36 @@ public class VOMetadataTest extends BaseDemoTest {
 
 		List<Entity1VO> result = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
 
-		assertTrue(result.get(0).getChangeTracker().isLoaded(Entity1VO.ENTITY2DATATYPE.getAttributeName()));
+		assertTrue(result.get(0).getMetadata().isLoaded(Entity1VO.ENTITY2DATATYPE.getAttributeName()));
 	}
 
 	@Test
 	public void testValueObjectMetadataSimpleTypeSetter() {
 		Entity1VO entity1 = new Entity1VO();
-		assertFalse(entity1.getChangeTracker().hasChanges());
+		assertFalse(entity1.getMetadata().hasChanges());
 
 		entity1.setStringDatatype1("xxx");
-		assertTrue(entity1.getChangeTracker().hasChanges());
+		assertTrue(entity1.getMetadata().hasChanges());
 	}
 
 	@Test
 	public void testValueObjectMetadataSimpleTypeGenericSetter() {
 
 		Entity1VO entity1 = new Entity1VO();
-		assertFalse(entity1.getChangeTracker().hasChanges());
+		assertFalse(entity1.getMetadata().hasChanges());
 
 		entity1.set("stringDatatype1", "xxx");
-		assertTrue(entity1.getChangeTracker().hasChanges());
+		assertTrue(entity1.getMetadata().hasChanges());
 
 	}
 
 	@Test
 	public void testValueObjectMetadataIBaseVOSetter() {
 		Entity1VO entity1 = new Entity1VO();
-		assertFalse(entity1.getChangeTracker().hasChanges());
+		assertFalse(entity1.getMetadata().hasChanges());
 
 		entity1.setEntity2Datatype(new Entity2VO());
-		assertTrue(entity1.getChangeTracker().hasChanges());
+		assertTrue(entity1.getMetadata().hasChanges());
 
 	}
 
@@ -69,10 +69,10 @@ public class VOMetadataTest extends BaseDemoTest {
 	public void testValueObjectMetadataIBaseVOGenericSetter() {
 
 		Entity1VO entity1 = new Entity1VO();
-		assertFalse(entity1.getChangeTracker().hasChanges());
+		assertFalse(entity1.getMetadata().hasChanges());
 
 		entity1.set("entity2Datatype", new Entity2VO());
-		assertTrue(entity1.getChangeTracker().hasChanges());
+		assertTrue(entity1.getMetadata().hasChanges());
 
 	}
 
@@ -81,11 +81,11 @@ public class VOMetadataTest extends BaseDemoTest {
 
 		Entity1VO entity1 = new Entity1VO();
 
-		assertFalse(entity1.getChangeTracker().hasChanges());
+		assertFalse(entity1.getMetadata().hasChanges());
 
 		entity1.getStringDatatype1List().add("xxx");
 
-		assertTrue(entity1.getChangeTracker().hasChanges());
+		assertTrue(entity1.getMetadata().hasChanges());
 	}
 
 	@Test
@@ -93,10 +93,10 @@ public class VOMetadataTest extends BaseDemoTest {
 
 		Entity2VO entity2 = new Entity2VO();
 
-		assertFalse(entity2.getChangeTracker().hasChanges());
+		assertFalse(entity2.getMetadata().hasChanges());
 
 		entity2.getEntity3Datatypes().add(new Entity3VO());
 
-		assertTrue(entity2.getChangeTracker().hasChanges());
+		assertTrue(entity2.getMetadata().hasChanges());
 	}
 }

@@ -1,8 +1,8 @@
 package io.pelle.mango.db.copy;
 
-import io.pelle.mango.client.base.vo.IChangeTracker;
-import io.pelle.mango.client.base.vo.IHasChangeTracker;
+import io.pelle.mango.client.base.vo.IHasMetadata;
 import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.IVOEntityMetadata;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -127,8 +127,8 @@ public abstract class BaseCopyBean {
 				continue;
 			}
 
-			if (fieldDescriptor.sourceTypeIsReference() && targetObject instanceof IHasChangeTracker) {
-				((IHasChangeTracker) targetObject).getChangeTracker().setLoaded(fieldDescriptor.getFieldName());
+			if (fieldDescriptor.sourceTypeIsReference() && targetObject instanceof IHasMetadata) {
+				((IHasMetadata) targetObject).getMetadata().setLoaded(fieldDescriptor.getFieldName());
 			}
 
 			if (fieldDescriptor.getSourceValue() == null) {
@@ -158,8 +158,8 @@ public abstract class BaseCopyBean {
 					}
 				}
 
-				if (targetList instanceof IChangeTracker) {
-					((IChangeTracker) targetList).clearChanges();
+				if (targetList instanceof IVOEntityMetadata) {
+					((IVOEntityMetadata) targetList).clearChanges();
 				}
 
 				continue;
@@ -199,8 +199,8 @@ public abstract class BaseCopyBean {
 			}
 		}
 
-		if (clearChanges && targetObject instanceof IHasChangeTracker) {
-			((IHasChangeTracker) targetObject).getChangeTracker().clearChanges();
+		if (clearChanges && targetObject instanceof IHasMetadata) {
+			((IHasMetadata) targetObject).getMetadata().clearChanges();
 		}
 
 		return targetObject;

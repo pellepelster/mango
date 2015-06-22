@@ -75,25 +75,25 @@ public class DBTest2VO extends BaseVO {
 	/** {@inheritDoc} */
 	@Override
 	public void setId(long id) {
-		getChangeTracker().addChange("id", id);
+		getMetadata().addChange("id", id);
 
 		this.id = id;
 	}
 
 	public void setTest1(DBTest1VO test1) {
-		getChangeTracker().addChange("test1", test1);
+		getMetadata().addChange("test1", test1);
 
 		this.test1 = test1;
 	}
 
 	public void setTestString(String testString) {
-		getChangeTracker().addChange("testString", testString);
+		getMetadata().addChange("testString", testString);
 
 		this.testString = testString;
 	}
 
 	public void setTest3(DBTest3VO test3) {
-		getChangeTracker().addChange("test3", test3);
+		getMetadata().addChange("test3", test3);
 
 		this.test3 = test3;
 	}

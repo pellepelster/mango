@@ -1,18 +1,18 @@
 package io.pelle.mango.server.base;
 
-import io.pelle.mango.client.base.vo.ChangeTracker;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.VOEntityMetadata;
 
 public abstract class BaseEntity implements IBaseEntity {
 
-	private ChangeTracker changeTracker;
+	private VOEntityMetadata metadata;
 
 	private long oid;
 
 	public BaseEntity() {
 		super();
-		changeTracker = new ChangeTracker(this, false);
+		metadata = new VOEntityMetadata(this, false);
 	}
 
 	@Override
@@ -35,8 +35,8 @@ public abstract class BaseEntity implements IBaseEntity {
 	}
 
 	@Override
-	public ChangeTracker getChangeTracker() {
-		return changeTracker;
+	public VOEntityMetadata getMetadata() {
+		return metadata;
 	}
 
 	@Override

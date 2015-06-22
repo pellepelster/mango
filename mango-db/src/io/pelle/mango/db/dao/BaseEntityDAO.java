@@ -258,7 +258,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	}
 
 	private <T extends IBaseEntity> void checkLoaded(T entity, ObjectFieldDescriptor fieldDescriptor) {
-		if (!entity.isNew() && !entity.getChangeTracker().isLoaded(fieldDescriptor.getFieldName()) && entity.getChangeTracker().hasChanges()) {
+		if (!entity.isNew() && !entity.getMetadata().isLoaded(fieldDescriptor.getFieldName()) && entity.getMetadata().hasChanges()) {
 			throw new RuntimeException(String.format("entity '%s' is dirty but has unloaded attribute '%s'", entity.getClass(), fieldDescriptor.getFieldName()));
 		}
 	}

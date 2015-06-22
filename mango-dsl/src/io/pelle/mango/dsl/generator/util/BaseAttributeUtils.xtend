@@ -103,14 +103,14 @@ abstract class BaseAttributeUtils {
 
 	def changeTrackingSetter(String attributeType, String attributeName) '''
 		public void set«attributeName.toFirstUpper»(«attributeType» «attributeName») {
-			getChangeTracker().addChange("«attributeName»", «attributeName»);
+			getMetadata().addChange("«attributeName»", «attributeName»);
 			this.«attributeName» = «attributeName»;
 		}
 	'''
 
 	def changeTrackingListSetter(String attributeType, String attributeName) '''
 		public void set«attributeName.toFirstUpper»(«attributeType» «attributeName») {
-			getChangeTracker().addChange("«attributeName»", «attributeName»);
+			getMetadata().addChange("«attributeName»", «attributeName»);
 			this.«attributeName».clear();
 			this.«attributeName».addAll(«attributeName»);
 		}

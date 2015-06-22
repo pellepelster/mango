@@ -2,7 +2,7 @@ package io.pelle.mango.client.base.vo;
 
 import java.io.Serializable;
 
-public interface IVOEntity extends IHasChangeTracker, Serializable {
+public interface IVOEntity extends IHasMetadata, Serializable {
 
 	public static final String ID_FIELD_NAME = "id";
 

@@ -46,7 +46,7 @@ class VOGenerator extends BaseEntityGenerator {
 			public «entity.voName»() {
 			«FOR attribute : entity.attributes»
 			«IF attribute.hasCardinality && attribute.cardinality != Cardinality::ONETOONE»
-				getChangeTracker().addListChangeTracker(«attribute.attributeName»);
+				getMetadata().addListChangeTracker(«attribute.attributeName»);
 			«ENDIF»
 			«ENDFOR»
 			}
@@ -159,7 +159,7 @@ class VOGenerator extends BaseEntityGenerator {
 
 	def checkLoadedGetter(String attributeType, String attributeName) '''
 		public «attributeType» «attributeName.getterName»() {
-			getChangeTracker().checkLoaded("«attributeName»");
+			getMetadata().checkLoaded("«attributeName»");
 			return this.«attributeName»;
 		}
 	'''
@@ -226,7 +226,7 @@ class VOGenerator extends BaseEntityGenerator {
 	def genericVOSetter(Entity entity) '''
 		public void set(java.lang.String name, java.lang.Object value) {
 		
-			getChangeTracker().addChange(name, value);
+			getMetadata().addChange(name, value);
 		
 			«FOR attribute : entity.attributes»
 			if ("«attribute.name»".equals(name))

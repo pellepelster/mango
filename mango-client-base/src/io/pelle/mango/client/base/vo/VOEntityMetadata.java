@@ -9,11 +9,11 @@ import java.util.Map;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
-public class ChangeTracker implements IChangeTracker, Serializable {
+public class VOEntityMetadata implements IVOEntityMetadata, Serializable {
 
 	private static final long serialVersionUID = -7165340661545211047L;
 
-	private List<IChangeTracker> listChangeTrackers = new ArrayList<IChangeTracker>();
+	private List<IVOEntityMetadata> listChangeTrackers = new ArrayList<IVOEntityMetadata>();
 
 	private Map<String, Object> changes = new HashMap<String, Object>();
 
@@ -24,10 +24,10 @@ public class ChangeTracker implements IChangeTracker, Serializable {
 	private IVOEntity voEntity;
 
 	@SuppressWarnings("unused")
-	private ChangeTracker() {
+	private VOEntityMetadata() {
 	}
 
-	public ChangeTracker(IVOEntity voEntity, boolean trackLoadedAttributes) {
+	public VOEntityMetadata(IVOEntity voEntity, boolean trackLoadedAttributes) {
 		this.voEntity = voEntity;
 		this.trackLoadedAttributes = trackLoadedAttributes;
 	}
@@ -58,10 +58,10 @@ public class ChangeTracker implements IChangeTracker, Serializable {
 
 	@Override
 	public boolean hasChanges() {
-		return !this.changes.isEmpty() || Iterables.any(listChangeTrackers, new Predicate<IChangeTracker>() {
+		return !this.changes.isEmpty() || Iterables.any(listChangeTrackers, new Predicate<IVOEntityMetadata>() {
 
 			@Override
-			public boolean apply(IChangeTracker input) {
+			public boolean apply(IVOEntityMetadata input) {
 				return input.hasChanges();
 			}
 		});
@@ -73,8 +73,8 @@ public class ChangeTracker implements IChangeTracker, Serializable {
 	}
 
 	@Override
-	public void copyChanges(IChangeTracker source) {
-		this.changes = new HashMap<String, Object>(((ChangeTracker) source).changes);
+	public void copyChanges(IVOEntityMetadata source) {
+		this.changes = new HashMap<String, Object>(((VOEntityMetadata) source).changes);
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class ChangeTracker implements IChangeTracker, Serializable {
 		loadedAttributes = null;
 	}
 
-	public void addListChangeTracker(IChangeTracker listChangeTracker) {
+	public void addListChangeTracker(IVOEntityMetadata listChangeTracker) {
 		listChangeTrackers.add(listChangeTracker);
 	}
 

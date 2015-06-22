@@ -33,7 +33,7 @@ class ClientTypeUtils extends TypeUtils {
 	
 		override changeTrackingSetter() '''
 			public void set«attributeName.toFirstUpper»(«attributeType.name» «attributeName») {
-				getChangeTracker().addChange("«attributeName»", «attributeName»);
+				getMetadata().addChange("«attributeName»", «attributeName»);
 				
 				if (parent == null) {
 					setParentClassName(null);

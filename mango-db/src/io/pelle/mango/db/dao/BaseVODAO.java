@@ -2,7 +2,7 @@ package io.pelle.mango.db.dao;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.IHasChangeTracker;
+import io.pelle.mango.client.base.vo.IHasMetadata;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
@@ -35,8 +35,8 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 	@Override
 	public <T extends IBaseVO> T create(T baseVO) {
 
-		if (baseVO instanceof IHasChangeTracker) {
-			((IHasChangeTracker) baseVO).getChangeTracker().disableLoadChecking();
+		if (baseVO instanceof IHasMetadata) {
+			((IHasMetadata) baseVO).getMetadata().disableLoadChecking();
 		}
 
 		IBaseEntity baseEntity = DBUtil.convertVOToEntityClass(baseVO);

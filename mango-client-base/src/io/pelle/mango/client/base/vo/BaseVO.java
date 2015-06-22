@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public abstract class BaseVO implements IBaseVO {
 
-	private ChangeTracker changeTracker;
+	private VOEntityMetadata metadata;
 
 	private static final long serialVersionUID = -3339163131084690483L;
 
@@ -15,7 +15,7 @@ public abstract class BaseVO implements IBaseVO {
 	public BaseVO() {
 		super();
 		this.oid = UUID.uuid().hashCode();
-		changeTracker = new ChangeTracker(this, true);
+		metadata = new VOEntityMetadata(this, true);
 	}
 
 	private HashMap<String, Object> data = new HashMap<String, Object>();
@@ -83,8 +83,8 @@ public abstract class BaseVO implements IBaseVO {
 	}
 
 	@Override
-	public ChangeTracker getChangeTracker() {
-		return this.changeTracker;
+	public VOEntityMetadata getMetadata() {
+		return this.metadata;
 	}
 
 	@Override
