@@ -52,10 +52,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		Date start = new Date();
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
 
-		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
+		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1);
 		assertEquals(0, result1.getValidationMessages().size());
 		Date end = new Date();
 
@@ -70,10 +70,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
 
-		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
+		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1);
 
 		assertEquals("aaa", result.getValue().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());
@@ -83,15 +83,38 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testReadyByQuery() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		assertTrue(baseEntityService.validateAndSave(entity1).isOk());
+
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("bbb");
+		assertTrue(baseEntityService.validateAndSave(entity1).isOk());
+
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("ccc");
+		assertTrue(baseEntityService.validateAndSave(entity1).isOk());
+
+		assertNull(baseEntityService.read(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.eq("zzz"))));
+		assertNull(baseEntityService.read(SelectQuery.selectFrom(Entity1VO.class)));
+		assertNotNull(baseEntityService.read(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.STRINGDATATYPE1.eq("aaa"))));
+
+	}
+
+	@Test
 	public void testEntity1Enumeration1List() {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		entity1VO.getEnumeration1Datatypes().add(ENUMERATION1.ENUMERATIONVALUE1);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		entity1.getEnumeration1Datatypes().add(ENUMERATION1.ENUMERATIONVALUE1);
 
-		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
+		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1);
 
 		Entity1VO result1 = baseEntityService.read(result.getValue().getId(), Entity1VO.class.getName());
 		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, result.getValue().getEnumeration1Datatypes().get(0));
@@ -103,15 +126,15 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		entity1VO.setIntegerDatatype1(3);
-		baseEntityService.validateAndSave(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		entity1.setIntegerDatatype1(3);
+		baseEntityService.validateAndSave(entity1);
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("AAA");
-		entity1VO.setIntegerDatatype1(6);
-		baseEntityService.validateAndSave(entity1VO);
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("AAA");
+		entity1.setIntegerDatatype1(6);
+		baseEntityService.validateAndSave(entity1);
 
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.greaterThan(3)));
 		assertEquals(1, filterResult.size());
@@ -125,15 +148,15 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		entity1VO.setIntegerDatatype1(3);
-		baseEntityService.validateAndSave(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		entity1.setIntegerDatatype1(3);
+		baseEntityService.validateAndSave(entity1);
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("AAA");
-		entity1VO.setIntegerDatatype1(6);
-		baseEntityService.validateAndSave(entity1VO);
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("AAA");
+		entity1.setIntegerDatatype1(6);
+		baseEntityService.validateAndSave(entity1);
 
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.lessThan(6)));
 		assertEquals(1, filterResult.size());
@@ -147,15 +170,15 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		entity1VO.setBooleanDatatype1(true);
-		baseEntityService.validateAndSave(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		entity1.setBooleanDatatype1(true);
+		baseEntityService.validateAndSave(entity1);
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("bbb");
-		entity1VO.setBooleanDatatype1(false);
-		baseEntityService.validateAndSave(entity1VO);
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("bbb");
+		entity1.setBooleanDatatype1(false);
+		baseEntityService.validateAndSave(entity1);
 
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.BOOLEANDATATYPE1.eq(true)));
 		assertEquals(1, filterResult.size());
@@ -171,15 +194,15 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		entity1VO.setIntegerDatatype1(3);
-		baseEntityService.validateAndSave(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		entity1.setIntegerDatatype1(3);
+		baseEntityService.validateAndSave(entity1);
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("AAA");
-		entity1VO.setIntegerDatatype1(6);
-		baseEntityService.validateAndSave(entity1VO);
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("AAA");
+		entity1.setIntegerDatatype1(6);
+		baseEntityService.validateAndSave(entity1);
 
 		List<Entity1VO> filterResult = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class).where(Entity1VO.INTEGERDATATYPE1.lessThan(5)));
 		assertEquals(1, filterResult.size());
@@ -195,9 +218,9 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		baseEntityService.validateAndSave(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		baseEntityService.validateAndSave(entity1);
 
 		Entity1VO entity2VO = new Entity1VO();
 		entity2VO.setStringDatatype1("AAA");
@@ -218,24 +241,24 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("zzz1");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("zzz1");
 
 		Entity2VO entity2VO = new Entity2VO();
 		entity2VO.setStringDatatype2("xxx1");
-		entity1VO.setEntity2Datatype(entity2VO);
+		entity1.setEntity2Datatype(entity2VO);
 
-		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
+		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1);
 		assertTrue(result.getValidationMessages().isEmpty());
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("zzz2");
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("zzz2");
 
 		entity2VO = new Entity2VO();
 		entity2VO.setStringDatatype2("xxx2");
-		entity1VO.setEntity2Datatype(entity2VO);
+		entity1.setEntity2Datatype(entity2VO);
 
-		result = baseEntityService.validateAndSave(entity1VO);
+		result = baseEntityService.validateAndSave(entity1);
 		assertTrue(result.getValidationMessages().isEmpty());
 		assertNotNull(result.getValue().getEntity2Datatype());
 
@@ -256,10 +279,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseVODAO.deleteAll(Entity1VO.class);
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("zzz");
-		entity1VO.setEnumeration1Datatype(ENUMERATION1.ENUMERATIONVALUE1);
-		baseEntityService.validateAndSave(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("zzz");
+		entity1.setEnumeration1Datatype(ENUMERATION1.ENUMERATIONVALUE1);
+		baseEntityService.validateAndSave(entity1);
 
 		Entity1VO entity2VO = new Entity1VO();
 		entity2VO.setStringDatatype1("uuu");
@@ -279,10 +302,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	@Test
 	public void testValidateAndSave() {
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
 
-		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1VO);
+		Result<Entity1VO> result = baseEntityService.validateAndSave(entity1);
 
 		assertEquals("aaa", result.getValue().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());
@@ -293,10 +316,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
 
-		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
+		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1);
 
 		assertEquals("aaa", result.getValue().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());
@@ -380,18 +403,18 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		baseEntityService.deleteAll(Entity4VO.class.getName());
 		baseEntityService.deleteAll(Entity5VO.class.getName());
 
-		Entity4VO entity4VO = new Entity4VO();
-		entity4VO.setStringDatatype4("xxx");
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype4("xxx");
 
 		Entity5VO entity5VO = new Entity5VO();
-		entity5VO.setEntity4(entity4VO);
+		entity5VO.setEntity4(entity4);
 		entity5VO.setString1("yyy");
 
 		Result<Entity5VO> entity5VOSaveResult = this.baseEntityService.validateAndCreate(entity5VO);
 		assertEquals(0, entity5VOSaveResult.getValidationMessages().size());
 
-		SelectQuery<Entity5VO> entity5VOQuery = SelectQuery.selectFrom(Entity5VO.class);
-		List<Entity5VO> entity5Result = baseEntityService.filter(entity5VOQuery);
+		SelectQuery<Entity5VO> entity5Query = SelectQuery.selectFrom(Entity5VO.class);
+		List<Entity5VO> entity5Result = baseEntityService.filter(entity5Query);
 		assertNotNull(entity5Result.get(0).getEntity4());
 
 	}
@@ -428,15 +451,15 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	public void testValidateAndCreateDuplicateNaturalKey() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1);
 		assertEquals(0, result1.getValidationMessages().size());
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
 
-		Result<Entity1VO> result2 = this.baseEntityService.validateAndCreate(entity1VO);
+		Result<Entity1VO> result2 = this.baseEntityService.validateAndCreate(entity1);
 		assertEquals(1, result2.getValidationMessages().size());
 		assertEquals("An entity with the natural key 'aaa' already exists", result2.getValidationMessages().get(0).getMessage());
 		assertEquals("stringDatatype1", result2.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
@@ -461,16 +484,16 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		Result<Entity1VO> result1 = this.baseEntityService.validateAndCreate(entity1);
 		assertEquals(0, result1.getValidationMessages().size());
 
-		entity1VO = result1.getValue();
-		assertEquals("aaa", entity1VO.getStringDatatype1());
-		entity1VO.setBooleanDatatype1(true);
+		entity1 = result1.getValue();
+		assertEquals("aaa", entity1.getStringDatatype1());
+		entity1.setBooleanDatatype1(true);
 
-		Result<Entity1VO> result2 = this.baseEntityService.validateAndSave(entity1VO);
+		Result<Entity1VO> result2 = this.baseEntityService.validateAndSave(entity1);
 		assertEquals(0, result2.getValidationMessages().size());
 	}
 
@@ -479,10 +502,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
-		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
+		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1);
 
 		assertEquals(1, result.getValidationMessages().size());
 		assertEquals("Attribute 'stringDatatype1' is longer than 42", result.getValidationMessages().get(0).getMessage());
@@ -493,10 +516,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("a");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("a");
 
-		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
+		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1);
 
 		assertEquals(1, result.getValidationMessages().size());
 		assertEquals("Attribute 'stringDatatype1' is shorter than 2", result.getValidationMessages().get(0).getMessage());
@@ -507,17 +530,17 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		baseEntityService.create(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		baseEntityService.create(entity1);
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("bbb");
-		baseEntityService.create(entity1VO);
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("bbb");
+		baseEntityService.create(entity1);
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("ccc");
-		baseEntityService.create(entity1VO);
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("ccc");
+		baseEntityService.create(entity1);
 
 		SelectQuery<Entity1VO> selectQuery = SelectQuery.selectFrom(Entity1VO.class).orderBy(Entity1VO.STRINGDATATYPE1);
 
@@ -540,12 +563,12 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity3VO.class.getName());
 
-		Entity3VO entity3VO = new Entity3VO();
-		entity3VO.setBinaryDatatype1(data);
+		Entity3VO entity3 = new Entity3VO();
+		entity3.setBinaryDatatype1(data);
 
-		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3VO);
-		entity3VO = this.baseEntityService.read(result1.getValue().getId(), Entity3VO.class.getName());
-		assertArrayEquals(data, entity3VO.getBinaryDatatype1());
+		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3);
+		entity3 = this.baseEntityService.read(result1.getValue().getId(), Entity3VO.class.getName());
+		assertArrayEquals(data, entity3.getBinaryDatatype1());
 	}
 
 	@Test
@@ -560,12 +583,12 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity3VO.class.getName());
 
-		Entity3VO entity3VO = new Entity3VO();
-		entity3VO.setBinaryDatatype1(data);
+		Entity3VO entity3 = new Entity3VO();
+		entity3.setBinaryDatatype1(data);
 
-		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3VO);
-		entity3VO = this.baseEntityService.read(result1.getValue().getId(), Entity3VO.class.getName());
-		assertArrayEquals(data, entity3VO.getBinaryDatatype1());
+		Result<Entity3VO> result1 = this.baseEntityService.validateAndCreate(entity3);
+		entity3 = this.baseEntityService.read(result1.getValue().getId(), Entity3VO.class.getName());
+		assertArrayEquals(data, entity3.getBinaryDatatype1());
 	}
 
 	@Test
@@ -573,13 +596,13 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
-		baseEntityService.validateAndCreate(entity1VO);
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		baseEntityService.validateAndCreate(entity1);
 
-		entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("bbb");
-		baseEntityService.validateAndCreate(entity1VO);
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("bbb");
+		baseEntityService.validateAndCreate(entity1);
 
 		assertEquals(2, baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class)).size());
 
@@ -612,10 +635,10 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 
-		Entity1VO entity1VO = new Entity1VO();
-		entity1VO.setStringDatatype1("aaa");
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
 
-		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1VO);
+		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1);
 
 		assertEquals("aaa", result.getValue().getStringDatatype1());
 		assertEquals(0, result.getValidationMessages().size());

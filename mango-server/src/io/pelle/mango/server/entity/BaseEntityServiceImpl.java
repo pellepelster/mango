@@ -123,4 +123,15 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 		baseVODAO.deleteQuery(deleteQuery);
 	}
 
+	@Override
+	public <ReadVOType extends IBaseVO> ReadVOType read(SelectQuery<ReadVOType> selectQuery) {
+		List<ReadVOType> result = filter(selectQuery);
+
+		if (result.size() == 1) {
+			return result.get(0);
+		}
+
+		return null;
+	}
+
 }

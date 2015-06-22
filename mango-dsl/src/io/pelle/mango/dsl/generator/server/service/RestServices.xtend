@@ -13,6 +13,7 @@ import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
 import org.eclipse.xtext.xbase.compiler.ImportManager
+import com.google.common.collect.Iterables
 
 class RestServices extends BaseServices {
 
@@ -83,11 +84,11 @@ class RestServices extends BaseServices {
 				@ResponseBody
 				@Transactional
 				«IF method.params.size == 1 && method.params.hasOnlyType(typeof(ValueObject))»
-					public «method.methodReturn» «method.methodName»PostRequestBody(@RequestBody «method.params.get(0).parameterType.qualifiedName» requestBody, javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
+					public «method.methodReturn» «uniqueMethodName(service, method)»PostRequestBody(@RequestBody «method.params.get(0).parameterType.qualifiedName» requestBody, javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
 						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF»«method.methodName»(requestBody, httpServletResponse, httpServletRequest);
 					}
 				«ELSE»
-					public «method.methodReturn» «method.methodName»PostRequestBody(«IF !method.params.isEmpty»@RequestBody «restControllerRequestVOName(service, method)» requestBody, «ENDIF»javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
+					public «method.methodReturn» «uniqueMethodName(service, method)»PostRequestBody(«IF !method.params.isEmpty»@RequestBody «restControllerRequestVOName(service, method)» requestBody, «ENDIF»javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
 						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF» «method.methodName»(«FOR parameter : method.params SEPARATOR ","»requestBody.«parameter.name.getterName»()«ENDFOR»«IF !method.params.isEmpty», «ENDIF»httpServletResponse, httpServletRequest);
 					}
 				«ENDIF»

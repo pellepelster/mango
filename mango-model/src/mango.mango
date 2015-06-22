@@ -63,6 +63,7 @@ project Mango {
 				method <ValidateAndCreateVOType extends IBaseVO> Result<ValidateAndCreateVOType> validateAndCreate ( ValidateAndCreateVOType vo )
 				method <SaveVOType extends IBaseVO> SaveVOType save ( SaveVOType vo )
 				method <FilterVOType extends IBaseVO> List<FilterVOType> filter ( SelectQuery<FilterVOType> selectQuery )
+				method <ReadVOType extends IBaseVO> ReadVOType read ( SelectQuery<ReadVOType> selectQuery )
 				method void deleteAll ( String voClassName )
 				method <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
 				method <DeleteVOType extends IBaseVO> void deleteQuery ( DeleteQuery<DeleteVOType> deleteQuery )
