@@ -162,7 +162,15 @@ class ServerNameUtils extends NameUtils {
 
 	// rest controller request vo
 	def restControllerRequestVOName(Service service, ServiceMethod method) {
-		return service.restControllerName + method.name.toFirstUpper + "Request"
+		return service.restControllerName + uniqueMethodName(service, method).toFirstUpper + "Request"
+	}
+
+	def uniqueMethodName(Service service, ServiceMethod method) {
+		if (service.remoteMethods.filter[e|e.name.equals(method.name)].size > 1) {
+			return method.name + service.remoteMethods.indexOf(method)
+		} else {
+			return method.name
+		}
 	}
 
 	def restControllerRequestVOFullQualifiedName(Service service, ServiceMethod method) {
