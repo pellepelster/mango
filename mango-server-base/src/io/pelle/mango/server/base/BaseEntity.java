@@ -12,7 +12,7 @@ public abstract class BaseEntity implements IBaseEntity {
 
 	public BaseEntity() {
 		super();
-		changeTracker = new ChangeTracker(this);
+		changeTracker = new ChangeTracker(this, false);
 	}
 
 	@Override

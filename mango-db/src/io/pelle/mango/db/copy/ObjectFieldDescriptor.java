@@ -18,6 +18,7 @@ public class ObjectFieldDescriptor {
 	private Class<?> targetType;
 
 	private final Method sourceReadMethod;
+	private final Method sourceWriteMethod;
 
 	private Method targetReadMethod;
 	private Method targetWriteMethod;
@@ -32,6 +33,7 @@ public class ObjectFieldDescriptor {
 		this.hasValues = hasValues;
 
 		this.sourceReadMethod = sourcePropertyDescriptor.getReadMethod();
+		this.sourceWriteMethod = sourcePropertyDescriptor.getWriteMethod();
 		this.sourceType = sourcePropertyDescriptor.getPropertyType();
 
 		if (targetPropertyDescriptor != null) {
@@ -73,6 +75,10 @@ public class ObjectFieldDescriptor {
 
 	public boolean sourceHasReadMethod() {
 		return this.sourceReadMethod != null;
+	}
+
+	public Method getSourceWriteMethod() {
+		return sourceWriteMethod;
 	}
 
 	public boolean targetHasWriteMethod() {

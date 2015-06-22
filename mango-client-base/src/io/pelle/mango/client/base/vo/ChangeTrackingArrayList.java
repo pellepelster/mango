@@ -100,11 +100,18 @@ public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IChangeT
 
 	@Override
 	public void setLoaded(String attributeName) {
+		throw new RuntimeException("not implemented");
 
 	}
 
 	@Override
 	public void disableLoadChecking() {
+		throw new RuntimeException("not implemented");
+	}
+
+	@Override
+	public boolean isLoaded(String attributeName) {
+		throw new RuntimeException("not implemented");
 	}
 
 }

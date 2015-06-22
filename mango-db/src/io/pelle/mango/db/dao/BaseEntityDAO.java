@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
@@ -220,21 +219,25 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 			if (fieldDescriptor.isNonNullSourceType(IBaseEntity.class)) {
 
-				IBaseEntity entityAttribute = (IBaseEntity) fieldDescriptor.getSourceValue();
+				checkLoaded(entity, fieldDescriptor);
 
+				IBaseEntity entityAttribute = (IBaseEntity) fieldDescriptor.getSourceValue();
 				IBaseEntity mergedEntityAttribute = mergeRecursive(entityAttribute, currentPath);
 
 				try {
-					BeanUtils.setProperty(entity, fieldDescriptor.getFieldName(), mergedEntityAttribute);
+					fieldDescriptor.getSourceWriteMethod().invoke(entity, mergedEntityAttribute);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
 
 			} else if (fieldDescriptor.isNonNullSourceType(List.class)) {
 
+				checkLoaded(entity, fieldDescriptor);
+
 				List<Object> sourceList = (List<Object>) fieldDescriptor.getSourceValue();
 
 				for (int i = 0; i < sourceList.size(); i++) {
+
 					Object listItem = sourceList.get(i);
 
 					if (listItem instanceof IBaseEntity) {
@@ -252,6 +255,12 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 		return this.entityManager.merge(entity);
 
+	}
+
+	private <T extends IBaseEntity> void checkLoaded(T entity, ObjectFieldDescriptor fieldDescriptor) {
+		if (!entity.isNew() && !entity.getChangeTracker().isLoaded(fieldDescriptor.getFieldName()) && entity.getChangeTracker().hasChanges()) {
+			throw new RuntimeException(String.format("entity '%s' is dirty but has unloaded attribute '%s'", entity.getClass(), fieldDescriptor.getFieldName()));
+		}
 	}
 
 	@SuppressWarnings("unchecked")

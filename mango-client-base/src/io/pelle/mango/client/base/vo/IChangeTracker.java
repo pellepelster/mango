@@ -10,6 +10,8 @@ public interface IChangeTracker {
 
 	void setLoaded(String attributeName);
 
+	boolean isLoaded(String attributeName);
+
 	void disableLoadChecking();
 
 }

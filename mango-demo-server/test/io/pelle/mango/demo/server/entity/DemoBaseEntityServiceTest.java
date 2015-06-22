@@ -40,10 +40,6 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	@Autowired
 	private IBaseVODAO baseVODAO;
 
-	public void setBaseEntityService(IBaseEntityService baseEntityService) {
-		this.baseEntityService = baseEntityService;
-	}
-
 	@Test
 	public void testGetNewVO() {
 		assertNotNull(baseEntityService.getNewVO(Entity1VO.class.getName(), null));

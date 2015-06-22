@@ -47,11 +47,8 @@ import java.math.BigDecimal
 import java.util.ArrayList
 import java.util.Date
 import java.util.List
-import java.util.logging.Logger
 
 abstract class TypeUtils {
-
-	Logger log = Logger.getLogger("generator")
 
 	@Inject
 	extension NameUtils
@@ -96,9 +93,17 @@ abstract class TypeUtils {
 		}
 	}
 
+	def String getMemberTypeWithCardinality(Cardinality cardinality, String type) {
+		switch cardinality {
+			case Cardinality.ONETOMANY:
+				ChangeTrackingArrayList.name + "<" + type + ">"
+			default:
+				type
+		}
+	}
+
 	def compileEntityAttributeDescriptor(Class<?> attributeType, String attributeName, Entity parentEntity) '''
-		public static «AttributeDescriptor.name»<«attributeType.name»> «attributeName.attributeDescriptorConstantName» = new «AttributeDescriptor.name»<«attributeType.name»>(«parentEntity.
-			entityConstantName», "«attributeName»", «attributeType.name».class);
+		public static «AttributeDescriptor.name»<«attributeType.name»> «attributeName.attributeDescriptorConstantName» = new «AttributeDescriptor.name»<«attributeType.name»>(«parentEntity.entityConstantName», "«attributeName»", «attributeType.name».class);
 	'''
 
 	//-----------------
@@ -127,6 +132,10 @@ abstract class TypeUtils {
 		}
 	}
 
+	def dispatch String getMemberType(SimpleTypes simpleTypes) {
+		return getType(simpleTypes)
+	}
+
 	def dispatch String getType(SimpleTypeType simpleTypeType) {
 		simpleTypeType.type.type
 	}
@@ -138,6 +147,10 @@ abstract class TypeUtils {
 		throw new RuntimeException(String.format("Datatype '%s' not supported", dataType.typeClass))
 	}
 
+	def dispatch String getMemberType(Datatype valueObjectType) {
+		return getType(valueObjectType)
+	}
+	
 	def dispatch String getTypeClass(Datatype dataType) {
 		getType(dataType) + ".class"
 	}
@@ -154,8 +167,11 @@ abstract class TypeUtils {
 	// entity
 	//-----------------
 	def dispatch String getType(Entity entity) {
-		log.info("getType for " + entity + "(" + entity.entityVOFullQualifiedName + ")")
 		entity.entityVOFullQualifiedName
+	}
+
+	def dispatch String getMemberType(Entity entity) {
+		return getType(entity)
 	}
 
 	def dispatch String getTypeClass(Entity entity) {
@@ -167,8 +183,7 @@ abstract class TypeUtils {
 	}
 
 	def compileEntityAttributeDescriptorCommon(EntityAttribute entityAttribute, Entity entity) '''
-		public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«entity.
-			entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)», false, «attributeUtils.naturalKeyOrder(entityAttribute)»);
+		public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)», false, «attributeUtils.naturalKeyOrder(entityAttribute)»);
 	'''
 
 	def dispatch compileEntityAttributeDescriptor(EntityAttribute entityAttribute, Entity entity) {
@@ -177,6 +192,10 @@ abstract class TypeUtils {
 
 	def dispatch String getType(EntityAttribute entityAttribute) {
 		throw new RuntimeException(String.format("EntityAttribute '%s' not supported", entityAttribute.typeClass))
+	}
+
+	def dispatch String getMemberType(EntityAttribute entityAttribute) {
+		return getType(entityAttribute)
 	}
 
 	def dispatch String getRawType(EntityAttribute entityAttribute) {
@@ -198,6 +217,10 @@ abstract class TypeUtils {
 		return "java.util.Map<" + entityAttribute.keyType.type + ", " + entityAttribute.valueType.type + ">"
 	}
 
+	def dispatch String getMemberType(MapEntityAttribute entityAttribute) {
+		return getType(entityAttribute)
+	}
+	
 	def dispatch String getRawTypeClass(MapEntityAttribute entityAttribute) {
 		return "java.util.Map.class"
 	}
@@ -216,6 +239,10 @@ abstract class TypeUtils {
 	def dispatch String getType(EnumerationDataType dataType) {
 		return getType(dataType.enumeration)
 	}
+	
+	def dispatch String getMemberType(EnumerationDataType entityAttribute) {
+		return getType(entityAttribute)
+	}
 
 	def dispatch String getType(Enumeration enumeration) {
 		var ClientNameUtils clientNameUtils = new ClientNameUtils
@@ -223,8 +250,7 @@ abstract class TypeUtils {
 	}
 
 	def dispatch compileEntityAttributeDescriptor(EnumerationEntityAttribute entityAttribute, Entity entity) '''
-		public static «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»> «entityAttribute.name.attributeConstantName» = new «EnumerationAttributeDescriptor.name»<«entityAttribute.
-			type.type»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «entityAttribute.typeClass», «entityAttribute.typeClass», «attributeUtils.naturalKeyOrder(entityAttribute)»);
+		public static «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»> «entityAttribute.name.attributeConstantName» = new «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «entityAttribute.typeClass», «entityAttribute.typeClass», «attributeUtils.naturalKeyOrder(entityAttribute)»);
 	'''
 
 	//-----------------
@@ -234,6 +260,10 @@ abstract class TypeUtils {
 		return "byte[]"
 	}
 
+	def dispatch String getMemberType(BinaryDataType dataType) {
+		return getType(dataType)
+	}
+	
 	def dispatch String getType(BinaryEntityAttribute entityAttribute) {
 		return "byte[]"
 	}
@@ -244,14 +274,17 @@ abstract class TypeUtils {
 	def dispatch String getType(BooleanDataType dataType) {
 		return typeof(Boolean).name
 	}
+	
+	def dispatch String getMemberType(BooleanDataType dataType) {
+		return getType(dataType)
+	}
 
 	def dispatch String getType(BooleanEntityAttribute entityAttribute) {
 		return typeof(Boolean).name
 	}
 
 	def dispatch compileEntityAttributeDescriptor(BooleanEntityAttribute entityAttribute, Entity entity) '''
-		public static «BooleanAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BooleanAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.
-			name.attributeName»");
+		public static «BooleanAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BooleanAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
 	'''
 
 	//-----------------
@@ -261,13 +294,16 @@ abstract class TypeUtils {
 		return typeof(BigDecimal).name
 	}
 
+	def dispatch String getMemberType(DecimalDataType dataType) {
+		return getType(dataType)
+	}
+
 	def dispatch String getType(DecimalEntityAttribute entityAttribute) {
 		return BigDecimal.name
 	}
 
 	def dispatch compileEntityAttributeDescriptor(DecimalEntityAttribute entityAttribute, Entity entity) '''
-		public static «BigDecimalAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BigDecimalAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.
-			name.attributeName»");
+		public static «BigDecimalAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BigDecimalAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
 	'''
 
 	//-----------------
@@ -277,6 +313,10 @@ abstract class TypeUtils {
 		return typeof(Float).name
 	}
 
+	def dispatch String getMemberType(FloatDataType dataType) {
+		return getType(dataType)
+	}
+	
 	def dispatch String getType(FloatEntityAttribute entityAttribute) {
 		return Float.name
 	}
@@ -286,6 +326,10 @@ abstract class TypeUtils {
 	//-----------------
 	def dispatch String getType(DoubleDataType dataType) {
 		return typeof(Double).name
+	}
+	
+	def dispatch String getMemberType(DoubleDataType dataType) {
+		return getType(dataType)
 	}
 
 	def dispatch String getType(DoubleEntityAttribute entityAttribute) {
@@ -299,6 +343,10 @@ abstract class TypeUtils {
 		return typeof(Date).name
 	}
 
+	def dispatch String getMemberType(DateDataType dataType) {
+		return getType(dataType)
+	}
+	
 	def dispatch String getType(DateEntityAttribute entityAttribute) {
 		return Date.name
 	}
@@ -310,8 +358,16 @@ abstract class TypeUtils {
 		return typeof(String).name
 	}
 
+	def dispatch String getMemberType(StringDataType dataType) {
+		return getType(dataType)
+	}
+	
 	def dispatch String getType(StringEntityAttribute entityAttribute) {
 		getTypeWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
+	}
+
+	def dispatch String getMemberType(StringEntityAttribute entityAttribute) {
+		getMemberTypeWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
 	}
 
 	def dispatch String getTypeClass(StringEntityAttribute entityAttribute) {
@@ -323,8 +379,7 @@ abstract class TypeUtils {
 	}
 
 	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
-		public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.
-			name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.minLength», «entityAttribute.maxLength», «attributeUtils.naturalKeyOrder(entityAttribute)»);
+		public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.minLength», «entityAttribute.maxLength», «attributeUtils.naturalKeyOrder(entityAttribute)»);
 	'''
 
 	def getMaxLength(StringEntityAttribute stringEntityAttribute) {
@@ -347,10 +402,13 @@ abstract class TypeUtils {
 	// integer
 	//-----------------
 	def dispatch compileEntityAttributeDescriptor(IntegerEntityAttribute entityAttribute, Entity entity) '''
-		public static «IntegerAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «IntegerAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.
-			name.attributeName»");
+		public static «IntegerAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «IntegerAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
 	'''
 
+	def dispatch String getMemberType(IntegerDataType dataType) {
+		return getType(dataType)
+	}
+	
 	def dispatch String getType(IntegerDataType dataType) {
 		return typeof(Integer).name
 	}
@@ -363,9 +421,12 @@ abstract class TypeUtils {
 	// long
 	//-----------------
 	def dispatch compileEntityAttributeDescriptor(LongEntityAttribute entityAttribute, Entity entity) '''
-		public static «LongAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.
-			name.attributeName»");
+		public static «LongAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
 	'''
+	
+	def dispatch String getMemberType(LongDataType dataType) {
+		return getType(dataType)
+	}
 
 	def dispatch String getType(LongDataType dataType) {
 		return typeof(Long).name
@@ -379,8 +440,11 @@ abstract class TypeUtils {
 	// EntityDataType
 	//-----------------
 	def dispatch String getType(EntityDataType dataType) {
-		log.info("getType for " + dataType.name)
 		return entityVOFullQualifiedName(dataType.entity)
+	}
+	
+	def dispatch String getMemberType(EntityDataType dataType) {
+		return getType(dataType)
 	}
 
 	//-----------------
@@ -388,6 +452,10 @@ abstract class TypeUtils {
 	//-----------------
 	def dispatch String getType(ValueObjectEntityAttribute entityAttribute) {
 		getTypeWithCardinality(entityAttribute.cardinality, getRawType(entityAttribute))
+	}
+	
+	def dispatch String getMemberType(ValueObjectEntityAttribute entityAttribute) {
+		return getType(entityAttribute)
 	}
 
 	def dispatch String getRawType(ValueObjectEntityAttribute entityAttribute) {
@@ -398,8 +466,11 @@ abstract class TypeUtils {
 	// EntityEntityAttribute
 	//-----------------
 	def dispatch String getType(EntityEntityAttribute entityAttribute) {
-		log.info("getType for " + entityAttribute.name + "(" + getType(entityAttribute.type) + ")")
 		getTypeWithCardinality(entityAttribute.cardinality, getType(entityAttribute.type))
+	}
+
+	def dispatch String getMemberType(EntityEntityAttribute entityAttribute) {
+		getMemberTypeWithCardinality(entityAttribute.cardinality, getType(entityAttribute.type))
 	}
 
 	def dispatch String getTypeClass(EntityEntityAttribute entityAttribute) {
@@ -407,7 +478,6 @@ abstract class TypeUtils {
 	}
 
 	def dispatch String getRawType(EntityEntityAttribute entityAttribute) {
-		log.info("getRawType for " + entityAttribute.name)
 		getType(entityAttribute.type)
 	}
 
@@ -419,9 +489,7 @@ abstract class TypeUtils {
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
 			«entityAttribute.compileEntityAttributeDescriptorCommon(entity)»
 		«ELSE»
-			«log.info("compileEntityAttributeDescriptor for " + entityAttribute.name)»
-			public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»> «entityAttribute.name.attributeConstantName» = new «EntityAttributeDescriptor.name»<«getRawType(
-			entityAttribute.type)»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «attributeUtils.naturalKeyOrder(entityAttribute)»);
+			public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»> «entityAttribute.name.attributeConstantName» = new «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «attributeUtils.naturalKeyOrder(entityAttribute)»);
 		«ENDIF»
 	'''
 
@@ -430,6 +498,10 @@ abstract class TypeUtils {
 	//-----------------
 	def dispatch String getType(EnumerationEntityAttribute entityAttribute) {
 		getTypeWithCardinality(entityAttribute.cardinality, getType(entityAttribute.type))
+	}
+	
+	def dispatch String getMemberType(EnumerationEntityAttribute entityAttribute) {
+		return getType(entityAttribute)
 	}
 
 	def dispatch String getRawType(EnumerationEntityAttribute entityAttribute) {

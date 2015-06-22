@@ -3,10 +3,13 @@ package io.pelle.mango.dsl.generator.util
 import com.google.inject.Inject
 import io.pelle.mango.client.base.vo.AttributeDescriptor
 import io.pelle.mango.dsl.emf.EmfModelQuery
+import io.pelle.mango.dsl.generator.server.EntityUtils
+import io.pelle.mango.dsl.mango.Cardinality
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.EntityAttribute
+import io.pelle.mango.dsl.mango.EntityEntityAttribute
+import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.mango.ValueObject
-import io.pelle.mango.dsl.generator.server.EntityUtils
 
 abstract class BaseAttributeUtils {
 
@@ -17,14 +20,14 @@ abstract class BaseAttributeUtils {
 	extension EntityUtils
 
 	def TypeUtils getTypeUtils()
-	
-	//-------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
 	// natural key
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def boolean hasNaturalKeyAttribute(EntityAttribute entityAttribute) {
 		return entityAttribute.parentEntity.naturalKeyFields.contains(entityAttribute)
 	}
-	
+
 	def naturalKeyOrder(EntityAttribute entityAttribute) {
 		if (entityAttribute.hasNaturalKeyAttribute) {
 			return EmfModelQuery.createEObjectQuery(entityAttribute).getParentByType(Entity).match.naturalKeyFields.
@@ -60,7 +63,9 @@ abstract class BaseAttributeUtils {
 		«attribute(attributeType, attributeName, null)»
 	'''
 
-	def attribute(String attributeType, String attributeName, String attributeInitializer) '''
+	def attribute(String attributeType, String attributeName,
+		String attributeInitializer
+	) '''
 		private «attributeType» «attributeName.attributeName»«IF attributeInitializer != null» = «attributeInitializer»«ENDIF»;
 	'''
 
@@ -71,7 +76,7 @@ abstract class BaseAttributeUtils {
 	def getterName(EntityAttribute entityAttribute) '''«entityAttribute.name.getterName»'''
 
 	def getter(Class<?> attributeType, String attributeName) {
-		getter(attributeType.name, attributeName);		
+		getter(attributeType.name, attributeName);
 	}
 
 	def getter(String attributeType, String attributeName) '''
@@ -83,7 +88,7 @@ abstract class BaseAttributeUtils {
 	def setterName(EntityAttribute entityAttribute) '''«entityAttribute.name.setterName»'''
 
 	def setter(Class<?> attributeType, String attributeName) {
-		setter(attributeType.name, attributeName);		
+		setter(attributeType.name, attributeName);
 	}
 
 	def setter(String attributeType, String attributeName) '''
@@ -102,7 +107,15 @@ abstract class BaseAttributeUtils {
 			this.«attributeName» = «attributeName»;
 		}
 	'''
-	
+
+	def changeTrackingListSetter(String attributeType, String attributeName) '''
+		public void set«attributeName.toFirstUpper»(«attributeType» «attributeName») {
+			getChangeTracker().addChange("«attributeName»", «attributeName»);
+			this.«attributeName».clear();
+			this.«attributeName».addAll(«attributeName»);
+		}
+	'''
+
 	def changeTrackingAttributeGetterSetterJpa(Class<?> attributeType, String attributeName, Entity entity) '''
 		«typeUtils.compileEntityAttributeDescriptor(attributeType, attributeName, entity)»
 		@Column(name = "«entity.entityTableColumnName(attributeName)»")
@@ -117,5 +130,28 @@ abstract class BaseAttributeUtils {
 		«getter(attributeType, attributeName)»
 		«changeTrackingSetter(attributeType, attributeName)»
 	'''
-	
+
+	def isEntityReference(EntityAttribute entityAttribute) {
+		return entityAttribute instanceof EntityEntityAttribute
+	}
+
+	def isString(EntityAttribute entityAttribute) {
+		return entityAttribute instanceof StringEntityAttribute
+	}
+
+	def Cardinality getCardinality(EntityAttribute entityAttribute) {
+
+		if (entityAttribute instanceof EntityEntityAttribute) {
+			return (entityAttribute as EntityEntityAttribute).cardinality
+		} else if (entityAttribute instanceof StringEntityAttribute) {
+			return (entityAttribute as StringEntityAttribute).cardinality
+		} else {
+			return null
+		}
+	}
+
+	def hasCardinality(EntityAttribute entityAttribute) {
+		getCardinality(entityAttribute) != null
+	}
+
 }

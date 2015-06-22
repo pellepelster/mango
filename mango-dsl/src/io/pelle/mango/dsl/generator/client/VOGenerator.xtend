@@ -18,7 +18,6 @@ import io.pelle.mango.dsl.mango.ValueObject
 import java.io.Serializable
 import java.util.ArrayList
 import java.util.List
-import io.pelle.mango.dsl.mango.EntityEntityAttribute
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -43,6 +42,14 @@ class VOGenerator extends BaseEntityGenerator {
 			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
 
 			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
+
+			public «entity.voName»() {
+			«FOR attribute : entity.attributes»
+			«IF attribute.hasCardinality && attribute.cardinality != Cardinality::ONETOONE»
+				getChangeTracker().addListChangeTracker(«attribute.attributeName»);
+			«ENDIF»
+			«ENDFOR»
+			}
 
 			«entity.attributeDescriptorsFromExtends»
 
@@ -134,15 +141,20 @@ class VOGenerator extends BaseEntityGenerator {
 	def changeTrackingAttributeGetterSetter(EntityAttribute attribute, Entity entity) '''
 		«attribute.compileEntityAttributeDescriptor(entity)»
 		
-		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
+		«attribute(getMemberType(attribute), attribute.name, getInitializer(attribute))»
 		
-		«IF attribute instanceof EntityEntityAttribute»
+		«IF attribute.isEntityReference»
 		«checkLoadedGetter(getType(attribute), attribute.name.attributeName)»
 		«ELSE»
 		«getter(getType(attribute), attribute.name.attributeName)»
 		«ENDIF»
-		
+
+		«IF attribute.hasCardinality && attribute.cardinality != Cardinality::ONETOONE»
+		«changeTrackingListSetter(getType(attribute), attribute.name.attributeName)»
+		«ELSE»
 		«changeTrackingSetter(getType(attribute), attribute.name.attributeName)»
+		«ENDIF»
+		
 	'''
 
 	def checkLoadedGetter(String attributeType, String attributeName) '''

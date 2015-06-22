@@ -15,7 +15,7 @@ public abstract class BaseVO implements IBaseVO {
 	public BaseVO() {
 		super();
 		this.oid = UUID.uuid().hashCode();
-		changeTracker = new ChangeTracker(this);
+		changeTracker = new ChangeTracker(this, true);
 	}
 
 	private HashMap<String, Object> data = new HashMap<String, Object>();
