@@ -137,17 +137,45 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 		assertNotNull(entity1s.get(0).getEntity2Datatype());
 
 		boolean thrown = false;
-
 		try {
 			entity1s.get(0).getEntity2Datatype().getEntity3Datatypes();
 		} catch (RuntimeException e) {
 			thrown = true;
 		}
-
 		assertTrue(thrown);
 
 		entity1s = baseVODAO.filter(selectFrom(Entity1VO.class).join(Entity1VO.ENTITY2DATATYPE, Entity2VO.ENTITY3DATATYPES));
 		assertEquals(1, entity1s.get(0).getEntity2Datatype().getEntity3Datatypes().size());
+
+	}
+
+	@Test
+	public void testCheckForUnloadedAttributesBeforeSave() {
+
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("xxx");
+
+		Entity2VO entity2 = new Entity2VO();
+		entity2.setStringDatatype2("xxx");
+		entity1.setEntity2Datatype(entity2);
+
+		baseVODAO.create(entity1);
+
+		List<Entity1VO> entity1s = baseVODAO.filter(selectFrom(Entity1VO.class));
+
+		assertEquals(1, entity1s.size());
+		assertNotNull(entity1s.get(0).getEntity2Datatype());
+
+		entity1s = baseVODAO.filter(selectFrom(Entity1VO.class));
+		entity1s.get(0).getEntity2Datatype().setStringDatatype2("ttt");
+
+		boolean thrown = false;
+		try {
+			baseVODAO.create(entity1s.get(0));
+		} catch (RuntimeException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
 
 	}
 
