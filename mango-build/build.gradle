@@ -54,6 +54,9 @@ allprojects {
 
 	eclipse {
 		pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir
+		project {
+			natures = [ 'org.springsource.ide.eclipse.gradle.core.nature' ]
+		}
 	}
 
 	dependencies {
