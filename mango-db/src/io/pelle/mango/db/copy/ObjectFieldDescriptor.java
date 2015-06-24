@@ -1,5 +1,6 @@
 package io.pelle.mango.db.copy;
 
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IVOEntity;
 
 import java.beans.PropertyDescriptor;
@@ -9,10 +10,8 @@ import java.util.List;
 import com.google.common.base.Objects;
 
 public class ObjectFieldDescriptor {
+	
 	private final String fieldName;
-
-	private final Object sourceValue;
-	private final Object targetValue;
 
 	private final Class<?> sourceType;
 	private Class<?> targetType;
@@ -23,14 +22,9 @@ public class ObjectFieldDescriptor {
 	private Method targetReadMethod;
 	private Method targetWriteMethod;
 
-	private boolean hasValues;
-
-	public ObjectFieldDescriptor(String fieldName, PropertyDescriptor sourcePropertyDescriptor, Object sourceValue, PropertyDescriptor targetPropertyDescriptor, Object targetValue, boolean hasValues) {
+	public ObjectFieldDescriptor(String fieldName, PropertyDescriptor sourcePropertyDescriptor, PropertyDescriptor targetPropertyDescriptor) {
 		super();
 		this.fieldName = fieldName;
-		this.sourceValue = sourceValue;
-		this.targetValue = targetValue;
-		this.hasValues = hasValues;
 
 		this.sourceReadMethod = sourcePropertyDescriptor.getReadMethod();
 		this.sourceWriteMethod = sourcePropertyDescriptor.getWriteMethod();
@@ -48,21 +42,6 @@ public class ObjectFieldDescriptor {
 		return this.fieldName;
 	}
 
-	public Object getTargetValue() {
-
-		if (!hasValues) {
-			throw new RuntimeException("no target value set");
-		}
-		return this.targetValue;
-	}
-
-	public Object getSourceValue() {
-		if (!hasValues) {
-			throw new RuntimeException("no source value set");
-		}
-		return this.sourceValue;
-	}
-
 	@SuppressWarnings("rawtypes")
 	public Class getSourceType() {
 		return this.sourceType;
@@ -77,6 +56,22 @@ public class ObjectFieldDescriptor {
 		return this.sourceReadMethod != null;
 	}
 
+	public Object getSourceValue(Object object) {
+		try {
+			return sourceReadMethod.invoke(object, new Object[0]);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public Object getTargetValue(Object object) {
+		try {
+			return targetReadMethod.invoke(object, new Object[0]);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	public Method getSourceWriteMethod() {
 		return sourceWriteMethod;
 	}
@@ -92,14 +87,14 @@ public class ObjectFieldDescriptor {
 	public boolean targetHasReadMethod() {
 		return this.targetReadMethod != null;
 	}
-
+//
+//	public boolean sourceIsReference() {
+//		return IBaseVO.class.asSubclass(sourceType) ||
+//	}
+	
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("fieldName", this.fieldName).toString();
-	}
-
-	public boolean isNonNullSourceType(Class<?> type) {
-		return getSourceValue() != null && type.isAssignableFrom(getSourceType());
 	}
 
 	public boolean sourceTypeIsReference() {

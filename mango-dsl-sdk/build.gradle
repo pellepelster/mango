@@ -21,6 +21,8 @@ task(pdeBuild) <<
 
 pdeBuild.onlyIf { !project.hasProperty('skipPdeBuild') }
 
+uploadLocalDevelopment.onlyIf { !project.hasProperty('skipPdeBuild') }
+
 task zipUpdateSite(dependsOn: pdeBuild, type: Zip) {
 	from buildDir.name + '/updatesite'
 }

@@ -8,6 +8,7 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.util.BeanUtils;
+import io.pelle.mango.db.voquery.VOClassQuery;
 import io.pelle.mango.server.base.xml.IXmlVOImporter;
 import io.pelle.mango.server.base.xml.XmlElementDescriptor;
 
@@ -133,7 +134,6 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 							}
 
 							if (IBaseVO.class.isAssignableFrom(attributeDescriptor.getAttributeType())) {
-
 								resolveVOReference(eventReader, event, (Class<IBaseVO>) attributeDescriptor.getAttributeType(), new VOAttributeSetteCallback(vo, attributeDescriptor.getAttributeName()));
 							} else if (List.class.isAssignableFrom(attributeDescriptor.getAttributeType())) {
 								if (event.isStartElement()) {
@@ -144,6 +144,7 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 									String fileId = event.asCharacters().getData();
 									byte[] content = binaryFileReadCallback.readBinaryFile(fileId);
 									vo.set(attributeDescriptor.getAttributeName(), content);
+
 								}
 								continue;
 							} else {
@@ -158,6 +159,11 @@ public class XmlVOImporter extends BaseXmlVOHandler implements IXmlVOImporter {
 							continue;
 						}
 					}
+					
+					for(IAttributeDescriptor<?> tmp : VOClassQuery.createQuery(vo).attributesDescriptors()) {
+						vo.getMetadata().setLoaded(tmp.getAttributeName());
+					}
+					
 					this.baseEntityService.create(vo);
 				}
 			}

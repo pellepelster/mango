@@ -18,7 +18,7 @@ public class BigIntegerToLongCopyHandler implements IFieldCopyHandler
 	@Override
 	public void copy(ObjectFieldDescriptor fieldDescriptor, Object sourceObject, Object targetObject) throws Exception
 	{
-		PropertyUtils.setProperty(targetObject, fieldDescriptor.getFieldName(), Long.parseLong(((BigInteger) fieldDescriptor.getSourceValue()).toString()));
+		PropertyUtils.setProperty(targetObject, fieldDescriptor.getFieldName(), Long.parseLong(((BigInteger) fieldDescriptor.getSourceValue(sourceObject)).toString()));
 	}
 
 }

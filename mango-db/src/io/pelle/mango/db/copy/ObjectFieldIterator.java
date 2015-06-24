@@ -17,11 +17,11 @@ public class ObjectFieldIterator implements Iterable<ObjectFieldDescriptor> {
 
 	private final List<String> attributesToOmit = new ArrayList<String>();
 
-	public ObjectFieldIterator(Object sourceObject, boolean doGetValues) {
-		this(sourceObject, null, doGetValues);
+	public ObjectFieldIterator(Object sourceObject) {
+		this(sourceObject, null);
 	}
 
-	public ObjectFieldIterator(Object sourceObject, Object targetObject, boolean doGetValues) {
+	public ObjectFieldIterator(Object sourceObject, Object targetObject) {
 		this.attributesToOmit.add("class");
 
 		try {
@@ -40,18 +40,7 @@ public class ObjectFieldIterator implements Iterable<ObjectFieldDescriptor> {
 					targetPropertyDescriptor = PropertyUtils.getPropertyDescriptor(targetObject, propertyName);
 				}
 
-				Object sourceValue = null;
-
-				if (doGetValues && sourcePropertyDescriptor != null) {
-					sourceValue = PropertyUtils.getSimpleProperty(sourceObject, propertyName);
-				}
-
-				Object targetValue = null;
-				if (doGetValues && targetPropertyDescriptor != null) {
-					targetValue = PropertyUtils.getSimpleProperty(targetObject, propertyName);
-				}
-
-				ObjectFieldDescriptor fieldDescriptor = new ObjectFieldDescriptor(propertyName, sourcePropertyDescriptor, sourceValue, targetPropertyDescriptor, targetValue, doGetValues);
+				ObjectFieldDescriptor fieldDescriptor = new ObjectFieldDescriptor(propertyName, sourcePropertyDescriptor, targetPropertyDescriptor);
 
 				this.properties.add(fieldDescriptor);
 			}

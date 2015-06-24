@@ -215,13 +215,14 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	private <T extends IBaseEntity> T mergeRecursive(T entity, String currentPath) {
 
 		// TODO use dirty paths?
-		for (ObjectFieldDescriptor fieldDescriptor : new ObjectFieldIterator(entity, true)) {
+		for (ObjectFieldDescriptor fieldDescriptor : new ObjectFieldIterator(entity)) {
 
-			if (fieldDescriptor.isNonNullSourceType(IBaseEntity.class)) {
+			Object sourceValue = fieldDescriptor.getSourceValue(entity);
+			if (sourceValue instanceof IBaseEntity) {
 
 				checkLoaded(entity, fieldDescriptor);
 
-				IBaseEntity entityAttribute = (IBaseEntity) fieldDescriptor.getSourceValue();
+				IBaseEntity entityAttribute = (IBaseEntity) sourceValue;
 				IBaseEntity mergedEntityAttribute = mergeRecursive(entityAttribute, currentPath);
 
 				try {
@@ -230,11 +231,11 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 					throw new RuntimeException(e);
 				}
 
-			} else if (fieldDescriptor.isNonNullSourceType(List.class)) {
+			} else if (sourceValue instanceof List) {
 
 				checkLoaded(entity, fieldDescriptor);
 
-				List<Object> sourceList = (List<Object>) fieldDescriptor.getSourceValue();
+				List<Object> sourceList = (List<Object>) sourceValue;
 
 				for (int i = 0; i < sourceList.size(); i++) {
 

@@ -61,7 +61,14 @@ public class NaturalKeyValidator implements IValidator {
 			} else {
 
 				if (IBaseVO.class.isAssignableFrom(naturalKeyAttributeDescriptor.getListAttributeType())) {
-					populateNaturalKeyQuery((IBaseVO) naturalKeyValue, naturalKeyAttributeDescriptor, selectQuery, messages, contextMap);
+					IAttributeDescriptor<?> a = null;
+
+					if (parentAttribute != null) {
+						a = parentAttribute.path(naturalKeyAttributeDescriptor);
+					} else {
+						a = naturalKeyAttributeDescriptor;
+					}
+					populateNaturalKeyQuery((IBaseVO) naturalKeyValue, a, selectQuery, messages, contextMap);
 				} else {
 					if (parentAttribute == null) {
 						selectQuery.addWhereAnd(naturalKeyAttributeDescriptor.eq(naturalKeyValue));

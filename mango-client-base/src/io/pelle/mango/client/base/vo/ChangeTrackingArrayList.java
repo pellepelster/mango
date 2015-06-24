@@ -3,7 +3,7 @@ package io.pelle.mango.client.base.vo;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IVOEntityMetadata {
+public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IChangeTracker {
 
 	private boolean hasChanged = false;
 
@@ -93,25 +93,9 @@ public class ChangeTrackingArrayList<T> extends ArrayList<T> implements IVOEntit
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public void copyChanges(IVOEntityMetadata source) {
+	public void copyChanges(IChangeTracker source) {
 		assert source instanceof IVOEntityMetadata;
 		this.hasChanged = ((ChangeTrackingArrayList) source).hasChanged;
-	}
-
-	@Override
-	public void setLoaded(String attributeName) {
-		throw new RuntimeException("not implemented");
-
-	}
-
-	@Override
-	public void disableLoadChecking() {
-		throw new RuntimeException("not implemented");
-	}
-
-	@Override
-	public boolean isLoaded(String attributeName) {
-		throw new RuntimeException("not implemented");
 	}
 
 }

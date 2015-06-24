@@ -35,9 +35,9 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 	@Override
 	public <T extends IBaseVO> T create(T baseVO) {
 
-		if (baseVO instanceof IHasMetadata) {
-			((IHasMetadata) baseVO).getMetadata().disableLoadChecking();
-		}
+//		if (baseVO instanceof IHasMetadata) {
+//			((IHasMetadata) baseVO).getMetadata().disableLoadChecking();
+//		}
 
 		IBaseEntity baseEntity = DBUtil.convertVOToEntityClass(baseVO);
 

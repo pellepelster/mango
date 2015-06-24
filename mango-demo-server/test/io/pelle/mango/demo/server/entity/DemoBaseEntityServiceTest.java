@@ -214,6 +214,37 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void test() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+		baseVODAO.deleteAll(Entity2VO.class);
+
+		Entity2VO entity2VO = new Entity2VO();
+		entity2VO.setStringDatatype2("bbb");
+		assertTrue(baseEntityService.validateAndCreate(entity2VO).isOk());
+
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		entity1.setEntity2Datatype(entity2VO);
+
+		assertTrue(baseEntityService.validateAndCreate(entity1).isOk());
+
+	}
+
+	@Test
+	public void test1() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+
+		assertTrue(baseEntityService.validateAndCreate(entity1).isOk());
+
+		assertTrue(baseEntityService.read(SelectQuery.selectFrom(Entity1VO.class)).getMetadata().isLoaded(Entity1VO.ENTITY2DATATYPE.getAttributeName()));
+	}
+
+	@Test
 	public void testFilterStringIgnoreCase() {
 
 		baseVODAO.deleteAll(Entity1VO.class);
@@ -420,19 +451,19 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testValidateAndCreateComposedNaturalKey() {
+	public void testValidateAndCreateComposedNaturalKey1Level() {
 
 		baseEntityService.deleteAll(Entity4VO.class.getName());
 		baseEntityService.deleteAll(Entity5VO.class.getName());
 
 		Entity5VO entity5 = new Entity5VO();
 		entity5.setString1("aaa");
+
 		Entity4VO entity4 = new Entity4VO();
 		entity4.setStringDatatype4("bbb");
 		entity5.setEntity4(entity4);
 
-		Result<Entity5VO> result1 = this.baseEntityService.validateAndCreate(entity5);
-		assertEquals(0, result1.getValidationMessages().size());
+		assertTrue(this.baseEntityService.validateAndCreate(entity5).isOk());
 
 		entity5 = new Entity5VO();
 		entity5.setString1("aaa");
@@ -443,8 +474,37 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		Result<Entity5VO> result2 = this.baseEntityService.validateAndCreate(entity5);
 		assertEquals(1, result2.getValidationMessages().size());
 		assertEquals("An entity with the natural key 'aaa, bbb' already exists", result2.getValidationMessages().get(0).getMessage());
+
 		// assertEquals("stringDatatype1",
 		// result2.getValidationMessages().get(0).getContext().get(IValidationMessage.ATTRIBUTE_CONTEXT_KEY));
+	}
+
+	@Test
+	public void testValidateAndCreateComposedNaturalKey2Levels() {
+
+		baseEntityService.deleteAll(Entity4VO.class.getName());
+		baseEntityService.deleteAll(Entity5VO.class.getName());
+		baseEntityService.deleteAll(Entity6VO.class.getName());
+
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype4("xxx");
+
+		Entity5VO entity5 = new Entity5VO();
+		entity5.setEntity4(entity4);
+		entity5.setString1("yyy");
+
+		assertTrue(this.baseEntityService.validateAndCreate(entity5).isOk());
+
+		entity5 = baseEntityService.read(SelectQuery.selectFrom(Entity5VO.class));
+
+		assertNotNull(entity5);
+
+		Entity6VO entity6 = new Entity6VO();
+		entity6.setString1("xxx");
+		entity6.setEntity5(entity5);
+
+		assertTrue(this.baseEntityService.validateAndCreate(entity6).isOk());
+
 	}
 
 	@Test

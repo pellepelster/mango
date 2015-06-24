@@ -14,7 +14,7 @@ public class TypeEqualsCopyHandler implements IFieldCopyHandler {
 
 	@Override
 	public void copy(ObjectFieldDescriptor fieldDescriptor, Object sourceObject, Object targetObject) throws Exception {
-		fieldDescriptor.getTargetWriteMethod().invoke(targetObject, fieldDescriptor.getSourceValue());
+		fieldDescriptor.getTargetWriteMethod().invoke(targetObject, fieldDescriptor.getSourceValue(sourceObject));
 	}
 
 }

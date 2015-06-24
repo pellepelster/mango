@@ -1,5 +1,7 @@
 package io.pelle.mango.db.copy;
 
+import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IChangeTracker;
 import io.pelle.mango.client.base.vo.IHasMetadata;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.IVOEntityMetadata;
@@ -59,8 +61,8 @@ public abstract class BaseCopyBean {
 		return copyObject(sourceObject, destClass, new HashMap<Object, Object>(), null, Arrays.asList(attributesToOmit));
 	}
 
-	public Object copyObject(Object sourceObject, Class<?> destClass, Map<Class<? extends IVOEntity>, Set<String>> loadAssociations) {
-		return copyObject(sourceObject, destClass, loadAssociations, false, new String[0]);
+	public Object copyObject(Object sourceObject, Class<?> destClass, Map<Class<? extends IVOEntity>, Set<String>> loadAssociations, boolean clearChanges) {
+		return copyObject(sourceObject, destClass, loadAssociations, clearChanges, new String[0]);
 	}
 
 	public Object copyObject(Object sourceObject, Class<?> destClass, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations, boolean clearChanges, String[] attributesToOmit) {
@@ -109,7 +111,18 @@ public abstract class BaseCopyBean {
 
 		visited.put(sourceObject, targetObject);
 
-		for (ObjectFieldDescriptor fieldDescriptor : new ObjectFieldIterator(sourceObject, targetObject, true)) {
+		IVOEntityMetadata targetMetadata = null;
+		IChangeTracker sourceMetadata = null;
+
+		if (targetObject instanceof IHasMetadata) {
+			targetMetadata = ((IHasMetadata) targetObject).getMetadata();
+		}
+
+		if (sourceObject instanceof IHasMetadata) {
+			sourceMetadata = ((IHasMetadata) sourceObject).getMetadata();
+		}
+
+		for (ObjectFieldDescriptor fieldDescriptor : new ObjectFieldIterator(sourceObject, targetObject)) {
 
 			if (fieldDescriptor.getSourceType() == null || fieldDescriptor.getTargetType() == null) {
 				continue;
@@ -127,20 +140,40 @@ public abstract class BaseCopyBean {
 				continue;
 			}
 
-			if (fieldDescriptor.sourceTypeIsReference() && targetObject instanceof IHasMetadata) {
-				((IHasMetadata) targetObject).getMetadata().setLoaded(fieldDescriptor.getFieldName());
+			Object sourceValue = null;
+			Object targetValue = null;
+
+			if (sourceObject instanceof IBaseVO) {
+
+				IBaseVO voEntity = (IBaseVO) sourceObject;
+
+				// boolean isReference = fieldDescriptor.;
+				boolean isLoaded = voEntity.getMetadata().isLoaded(fieldDescriptor.getFieldName());
+
+				if (voEntity.isNew() || isLoaded) {
+					sourceValue = fieldDescriptor.getSourceValue(sourceObject);
+					targetValue = fieldDescriptor.getTargetValue(targetObject);
+				}
+			} else {
+
+				if (targetMetadata != null) {
+					targetMetadata.setLoaded(fieldDescriptor.getFieldName());
+				}
+
+				sourceValue = fieldDescriptor.getSourceValue(sourceObject);
+				targetValue = fieldDescriptor.getTargetValue(targetObject);
 			}
 
-			if (fieldDescriptor.getSourceValue() == null) {
+			if (sourceValue == null) {
 				continue;
 			}
 
 			// collection
 			if (List.class.isAssignableFrom(fieldDescriptor.getSourceType()) && List.class.isAssignableFrom(fieldDescriptor.getTargetType())) {
 
-				List<?> sourceList = (List<?>) fieldDescriptor.getSourceValue();
+				List<?> sourceList = (List<?>) sourceValue;
 				@SuppressWarnings("unchecked")
-				List<Object> targetList = (List<Object>) fieldDescriptor.getTargetValue();
+				List<Object> targetList = (List<Object>) targetValue;
 
 				for (Object sourceListObject : sourceList) {
 					if (sourceListObject != null && sourceListObject.getClass().isEnum()) {
@@ -172,11 +205,11 @@ public abstract class BaseCopyBean {
 
 				Object object;
 
-				if (visited.containsKey(fieldDescriptor.getSourceValue())) {
-					object = visited.get(fieldDescriptor.getSourceValue());
+				if (visited.containsKey(sourceValue)) {
+					object = visited.get(sourceValue);
 				} else {
-					object = copyObject(fieldDescriptor.getSourceValue(), fieldDescriptor.getTargetType(), visited, classLoadAssociations, attributesToOmit, clearChanges);
-					visited.put(fieldDescriptor.getSourceValue(), object);
+					object = copyObject(sourceValue, fieldDescriptor.getTargetType(), visited, classLoadAssociations, attributesToOmit, clearChanges);
+					visited.put(sourceValue, object);
 				}
 
 				try {
@@ -199,8 +232,12 @@ public abstract class BaseCopyBean {
 			}
 		}
 
-		if (clearChanges && targetObject instanceof IHasMetadata) {
-			((IHasMetadata) targetObject).getMetadata().clearChanges();
+		if (targetMetadata != null && sourceMetadata != null) {
+			if (clearChanges) {
+				targetMetadata.clearChanges();
+			} else {
+				targetMetadata.copyChanges(sourceMetadata);
+			}
 		}
 
 		return targetObject;

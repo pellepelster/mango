@@ -17,7 +17,7 @@ public class EnumCopyHandler implements IFieldCopyHandler
 	public void copy(ObjectFieldDescriptor fieldDescriptor, Object sourceObject, Object targetObject) throws Exception
 	{
 		@SuppressWarnings("unchecked")
-		Object enumValue = Enum.valueOf(fieldDescriptor.getTargetType(), fieldDescriptor.getSourceValue().toString());
+		Object enumValue = Enum.valueOf(fieldDescriptor.getTargetType(), fieldDescriptor.getSourceValue(sourceObject).toString());
 		PropertyUtils.setProperty(targetObject, fieldDescriptor.getFieldName(), enumValue);
 	}
 

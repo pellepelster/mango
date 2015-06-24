@@ -564,6 +564,11 @@ project MangoDemo {
 			}
 
 			entity Entity6 {
+				entityoptions {
+					naturalkey {
+						string1, entity5
+					}
+				}
 				string string1
 				entity Entity5 entity5
 			}

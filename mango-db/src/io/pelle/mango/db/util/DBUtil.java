@@ -15,6 +15,7 @@ import io.pelle.mango.db.voquery.VOClassQuery;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -88,7 +89,8 @@ public final class DBUtil {
 		Set<String> associations = getAssociations(voEntityClass, classLoadAssociations);
 
 		for (IAttributeDescriptor<?> attributeDescriptor : BeanUtils.getAttributeDescriptors(voEntityClass)) {
-			if (!attributeDescriptor.getAttributeName().equals(IHierarchicalVO.FIELD_PARENT.getAttributeName()) && IVOEntity.class.isAssignableFrom(attributeDescriptor.getListAttributeType())) {
+			if (!attributeDescriptor.getAttributeName().equals(IHierarchicalVO.FIELD_PARENT.getAttributeName())
+					&& (IVOEntity.class.isAssignableFrom(attributeDescriptor.getListAttributeType()) || List.class.isAssignableFrom(attributeDescriptor.getAttributeType()))) {
 				associations.add(attributeDescriptor.getAttributeName());
 			}
 		}
@@ -125,7 +127,7 @@ public final class DBUtil {
 
 	public static IBaseEntity convertVOToEntityClass(IBaseVO baseVO) {
 		Class<? extends IBaseEntity> entityClass = EntityVOMapper.getInstance().getMappedEntityClass(baseVO.getClass());
-		return (IBaseEntity) CopyBean.getInstance().copyObject(baseVO, entityClass);
+		return (IBaseEntity) CopyBean.getInstance().copyObject(baseVO, entityClass, false);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -136,7 +138,7 @@ public final class DBUtil {
 
 	public static IBaseVO convertEntityToVO(IBaseEntity baseEntity, Map<Class<? extends IVOEntity>, Set<String>> loadAssociations) {
 		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getMappedVOClass(baseEntity.getClass());
-		return (IBaseVO) CopyBean.getInstance().copyObject(baseEntity, voClass, loadAssociations);
+		return (IBaseVO) CopyBean.getInstance().copyObject(baseEntity, voClass, loadAssociations, true);
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

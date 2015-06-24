@@ -24,6 +24,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Optional;
+
 public class DemoBaseVODAOTest extends BaseDemoTest {
 
 	@Autowired
@@ -150,6 +152,47 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testVOMetataCleanAfterFilter() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+		
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("xxx");
+
+		baseVODAO.create(entity1);
+
+		Optional<Entity1VO> entity1Result = baseVODAO.read(selectFrom(Entity1VO.class));
+
+		assertFalse(entity1Result.get().getMetadata().hasChanges());
+	}
+
+	
+	@Test
+	public void testVOMetataFistLevelIsLoadedNull() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+		
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setEntity2Datatype(null);
+		baseVODAO.create(entity1);
+
+		Optional<Entity1VO> entity1Result = baseVODAO.read(selectFrom(Entity1VO.class));
+
+		assertTrue(entity1Result.get().getMetadata().isLoaded(Entity1VO.ENTITY2DATATYPE.getAttributeName()));
+		assertTrue(entity1Result.get().getMetadata().isLoaded(Entity1VO.STRINGDATATYPE1LIST.getAttributeName()));
+	}
+	@Test
+	public void testVOMetataCleanAfterCreate() {
+
+		baseVODAO.deleteAll(Entity1VO.class);
+		
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("xxx");
+
+		assertFalse(baseVODAO.create(entity1).getMetadata().hasChanges());
+	}
+
+	@Test
 	public void testCheckForUnloadedAttributesBeforeSave() {
 
 		Entity1VO entity1 = new Entity1VO();
@@ -161,18 +204,16 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 
 		baseVODAO.create(entity1);
 
-		List<Entity1VO> entity1s = baseVODAO.filter(selectFrom(Entity1VO.class));
+		Optional<Entity1VO> entity1Result = baseVODAO.read(selectFrom(Entity1VO.class));
 
-		assertEquals(1, entity1s.size());
-		assertNotNull(entity1s.get(0).getEntity2Datatype());
-
-		entity1s = baseVODAO.filter(selectFrom(Entity1VO.class));
-		entity1s.get(0).getEntity2Datatype().setStringDatatype2("ttt");
+		assertNotNull(entity1Result.get().getEntity2Datatype());
+		entity1Result.get().getEntity2Datatype().setStringDatatype2("ttt");
 
 		boolean thrown = false;
 		try {
-			baseVODAO.create(entity1s.get(0));
+			baseVODAO.save(entity1Result.get());
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			thrown = true;
 		}
 		assertTrue(thrown);

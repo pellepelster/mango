@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Objects;
+
 @SuppressWarnings("serial")
 public class Entity implements IEntity, Serializable {
 
@@ -84,6 +86,10 @@ public class Entity implements IEntity, Serializable {
 		return new ArrayList<Join>(joins.values());
 	}
 
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("entity", className).toString();
+	}
 
 	/** {@inheritDoc} */
 	@Override

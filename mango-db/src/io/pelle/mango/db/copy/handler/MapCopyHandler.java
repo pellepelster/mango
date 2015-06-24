@@ -22,7 +22,7 @@ public class MapCopyHandler implements IFieldCopyHandler
 	{
 		HashMap<Object, Object> targetMap = new HashMap<Object, Object>();
 
-		for (Map.Entry<Object, Object> entry1 : ((Map<Object, Object>) fieldDescriptor.getSourceValue()).entrySet())
+		for (Map.Entry<Object, Object> entry1 : ((Map<Object, Object>) fieldDescriptor.getSourceValue(sourceObject)).entrySet())
 		{
 			targetMap.put(entry1.getKey(), entry1.getValue());
 		}

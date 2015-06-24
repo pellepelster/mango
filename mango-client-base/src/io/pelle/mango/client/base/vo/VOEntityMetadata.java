@@ -13,7 +13,7 @@ public class VOEntityMetadata implements IVOEntityMetadata, Serializable {
 
 	private static final long serialVersionUID = -7165340661545211047L;
 
-	private List<IVOEntityMetadata> listChangeTrackers = new ArrayList<IVOEntityMetadata>();
+	private List<IChangeTracker> listChangeTrackers = new ArrayList<IChangeTracker>();
 
 	private Map<String, Object> changes = new HashMap<String, Object>();
 
@@ -58,10 +58,10 @@ public class VOEntityMetadata implements IVOEntityMetadata, Serializable {
 
 	@Override
 	public boolean hasChanges() {
-		return !this.changes.isEmpty() || Iterables.any(listChangeTrackers, new Predicate<IVOEntityMetadata>() {
+		return !this.changes.isEmpty() || Iterables.any(listChangeTrackers, new Predicate<IChangeTracker>() {
 
 			@Override
-			public boolean apply(IVOEntityMetadata input) {
+			public boolean apply(IChangeTracker input) {
 				return input.hasChanges();
 			}
 		});
@@ -73,16 +73,13 @@ public class VOEntityMetadata implements IVOEntityMetadata, Serializable {
 	}
 
 	@Override
-	public void copyChanges(IVOEntityMetadata source) {
+	public void copyChanges(IChangeTracker source) {
 		this.changes = new HashMap<String, Object>(((VOEntityMetadata) source).changes);
+		this.loadedAttributes = new ArrayList<String>(((VOEntityMetadata) source).loadedAttributes);
+		this.trackLoadedAttributes = ((VOEntityMetadata) source).trackLoadedAttributes;
 	}
 
-	@Override
-	public void disableLoadChecking() {
-		loadedAttributes = null;
-	}
-
-	public void addListChangeTracker(IVOEntityMetadata listChangeTracker) {
+	public void addListChangeTracker(IChangeTracker listChangeTracker) {
 		listChangeTrackers.add(listChangeTracker);
 	}
 
