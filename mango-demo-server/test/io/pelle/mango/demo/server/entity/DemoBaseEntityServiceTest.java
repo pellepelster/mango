@@ -394,6 +394,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertEquals("yyy, xxx", entity5Result.get(0).getNaturalKey());
 
 		Entity6VO entity6 = new Entity6VO();
+		entity6.setString1("xxx");
 		entity6.setEntity5(entity5SaveResult.getValue());
 
 		Result<Entity6VO> entity6SaveResult = this.baseEntityService.validateAndCreate(entity6);
@@ -412,8 +413,12 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		baseEntityService.deleteAll(Entity7VO.class.getName());
 		baseEntityService.deleteAll(Entity5VO.class.getName());
 
+		Entity4VO entity4 = new Entity4VO();
+		entity4.setStringDatatype4("xxx");
+
 		Entity5VO entity5 = new Entity5VO();
 		entity5.setString1("xxx");
+		entity5.setEntity4(entity4);
 
 		Entity7VO entity7 = new Entity7VO();
 		entity7.setEntity5(entity5);

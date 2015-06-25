@@ -236,6 +236,8 @@ public class HierarchicalServiceImpl implements IHierarchicalService, Initializi
 		@SuppressWarnings({ "unchecked" })
 		SelectQuery<IHierarchicalVO> query = (SelectQuery<IHierarchicalVO>) SelectQuery.selectFrom(voHierarchy.getClazz());
 
+		query.loadNaturalKeyReferences(true);
+		
 		query.addWhereAnd(EntityUtils.createStringAttributeDescriptor(voHierarchy.getClazz(), IHierarchicalVO.PARENT_CLASS_FIELD_NAME).eq(parentClassName));
 		query.addWhereAnd(EntityUtils.createLongAttributeDescriptor(voHierarchy.getClazz(), IHierarchicalVO.PARENT_ID_FIELD_NAME).eq(parentId));
 
