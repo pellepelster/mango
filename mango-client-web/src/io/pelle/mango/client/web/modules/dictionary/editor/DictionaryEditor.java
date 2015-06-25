@@ -129,6 +129,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 	public void load(long id, final AsyncCallback<Void> callback) {
 
 		SelectQuery<VOType> selectQuery = new SelectQuery<VOType>(dictionaryModel.getVOClass());
+		selectQuery.loadNaturalKeyReferences(true);
 		IBooleanExpression expression = ExpressionFactory.createLongExpression(dictionaryModel.getVOClass(), IBaseVO.ID_FIELD_NAME, id);
 		selectQuery.where(expression);
 
