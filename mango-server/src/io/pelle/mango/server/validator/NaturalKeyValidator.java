@@ -52,11 +52,11 @@ public class NaturalKeyValidator implements IValidator {
 			hasNaturalKeys = true;
 			Object naturalKeyValue = vo.get(naturalKeyAttributeDescriptor.getAttributeName());
 
+			if (!contextMap.containsKey(IValidationMessage.ATTRIBUTE_CONTEXT_KEY)) {
+				contextMap.put(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, naturalKeyAttributeDescriptor.getAttributeName());
+			}
+
 			if (naturalKeyValue == null) {
-				
-				if (!contextMap.containsKey(IValidationMessage.ATTRIBUTE_CONTEXT_KEY)) {
-					contextMap.put(IValidationMessage.ATTRIBUTE_CONTEXT_KEY, naturalKeyAttributeDescriptor.getAttributeName());
-				}
 
 				messages.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY_MANDATORY, contextMap));
 			} else {
