@@ -141,5 +141,42 @@ class SpringServices {
 			<bean id="«model.gwtAsyncAdapterRemoteServiceLocatorName.toFirstLower»" class="«model.gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName»" />
 	</beans>
 	'''
+
+	def springHttpInvokerServices(Model model) '''
+	<?xml version="1.0" encoding="UTF-8"?>
 	
+	<beans xmlns="http://www.springframework.org/schema/beans"
+	        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	        xmlns:context="http://www.springframework.org/schema/context"
+	        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+			«FOR service: model.eAllContents.toIterable.filter(Service)»
+			<bean name="/«service.serviceSpringInvokerName»" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+				<property name="service" ref="«service.serviceSpringName»" />
+				<property name="serviceInterface" value="«clientNameUtils.serviceInterfaceFullQualifiedName(service)»" />
+			</bean>
+			«ENDFOR»
+
+	</beans>
+	'''
+	
+	def springHttpInvokerServicesClient(Model model) '''
+	<?xml version="1.0" encoding="UTF-8"?>
+	
+	<beans xmlns="http://www.springframework.org/schema/beans"
+	        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	        xmlns:context="http://www.springframework.org/schema/context"
+	        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+			«FOR service: model.eAllContents.toIterable.filter(Service)»
+			<bean name="«service.serviceSpringInvokerProxyName»" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+				<property name="serviceUrl" value="${mango.base.remote.url}/remote/«service.serviceSpringInvokerName»" />
+				<property name="serviceInterface" value="«clientNameUtils.serviceInterfaceFullQualifiedName(service)»" />
+			</bean>
+			«ENDFOR»
+
+	</beans>
+	'''
 }

@@ -48,7 +48,9 @@ class ServerGenerator implements IGenerator {
 			fsa.generateFile(model.remoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.remoteServiceLocatorInterface)
 			fsa.generateFile(model.gwtRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtRemoteServicesApplicationContext)
 			fsa.generateFile(model.restRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.restRemoteServicesApplicationContext)
-			fsa.generateFile(model.serviceSpringNameApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springServices)
+			fsa.generateFile(model.serviceSpringServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springServices)
+			fsa.generateFile(model.serviceSpringServicesInvokerApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springHttpInvokerServices)
+			fsa.generateFile(model.serviceSpringServicesInvokerClientApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springHttpInvokerServicesClient)
 			fsa.generateFile(model.xmlVOMapperFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.xmlVOMapper)
 		}
 

@@ -115,8 +115,16 @@ class ServerNameUtils extends NameUtils {
 		return model.modelName.toFirstUpper + "GWTRemoteServices-gen.xml"
 	}
 
-	def serviceSpringNameApplicationContextFullQualifiedFileName(Model model) {
+	def serviceSpringServicesApplicationContextFullQualifiedFileName(Model model) {
 		return model.modelName.toFirstUpper + "SpringServices-gen.xml"
+	}
+
+	def serviceSpringServicesInvokerApplicationContextFullQualifiedFileName(Model model) {
+		return model.modelName.toFirstUpper + "SpringInvokerServices-gen.xml"
+	}
+
+	def serviceSpringServicesInvokerClientApplicationContextFullQualifiedFileName(Model model) {
+		return model.modelName.toFirstUpper + "SpringInvokerClientServices-gen.xml"
 	}
 	
 	def serviceImplFullQualifiedName(Service service) {

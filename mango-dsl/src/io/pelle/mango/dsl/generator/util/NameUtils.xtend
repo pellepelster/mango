@@ -153,6 +153,14 @@ class NameUtils {
 		return service.serviceName.toFirstLower
 	}
 
+	def serviceSpringInvokerProxyName(Service service) {
+		return service.serviceName.toFirstLower + "InvokerProxy"
+	}
+
+	def serviceSpringInvokerName(Service service) {
+		return service.serviceName.toFirstLower + "Invoker"
+	}
+
 	def methodName(ServiceMethod serviceMethod) {
 		return serviceMethod.name.toFirstLower;
 	}

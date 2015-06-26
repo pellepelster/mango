@@ -6,3 +6,4 @@
 * title for navigation nodes
 * attribute error messages for multipart natural keys
 * check for dictionary label and natural key usage and alter filter for reference lookups, etc
+* constant for mango.base.remote.url

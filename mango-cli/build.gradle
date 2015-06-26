@@ -1,2 +1,8 @@
 dependencies {
+	compile group: "org.springframework", name: "spring-expression", version: versions.spring
+	compile group: "org.springframework", name: "spring-web", version: versions.spring
+	compile group: "org.springframework", name: "spring-webmvc", version: versions.spring
+	compile project(':mango-model')
+	compile project(path: ":mango-model", configuration: "generatedServer")
+	compile group: 'com.beust', name: 'jcommander', version: '1.48'
 }

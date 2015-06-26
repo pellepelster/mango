@@ -11,7 +11,7 @@ import org.springframework.context.annotation.ImportResource;
 
 @Configuration
 @ImportResource({ "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml", "classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoDemoSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml",
-		"classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoLoggerApplicationContext.xml" })
+		"classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoLoggerApplicationContext.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
 public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 
 	@Bean
