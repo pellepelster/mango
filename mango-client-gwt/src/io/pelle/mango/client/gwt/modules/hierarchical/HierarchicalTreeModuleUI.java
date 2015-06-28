@@ -14,29 +14,30 @@ package io.pelle.mango.client.gwt.modules.hierarchical;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseGwtModuleUI;
 import io.pelle.mango.client.web.modules.hierarchical.HierarchicalTreeModule;
 
-import org.gwtbootstrap3.client.ui.html.Div;
-
 import com.google.common.base.Optional;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 
 public class HierarchicalTreeModuleUI extends BaseGwtModuleUI<HierarchicalTreeModule> {
 
-	private final Div container;
+	private ScrollPanel scrollPanel = new ScrollPanel();
 
 	public HierarchicalTreeModuleUI(HierarchicalTreeModule module) {
 		super(module, HierarchicalTreeModule.MODULE_ID);
 
-		container = new Div();
+		scrollPanel.setHeight(Window.getClientHeight() / 2 + "px");
+		scrollPanel.setWidth("100%");
 
 		HierarchicalTree hierarchicalTree = new HierarchicalTree(module.getHierarchicalConfiguration(), Optional.fromNullable(getModule().getShowAddNodes()).or(true), getModule().getNodeActivatedHandler());
 		hierarchicalTree.setWidth("100%");
-		container.add(hierarchicalTree);
+		scrollPanel.add(hierarchicalTree);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Panel getContainer() {
-		return container;
+		return scrollPanel;
 	}
 
 	/** {@inheritDoc} */

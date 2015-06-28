@@ -1,6 +1,5 @@
 dependencies {
 	compile project(':mango-cli')
-	compile 'org.postgresql:postgresql:9.4-1201-jdbc41'
 	compile 'org.apache.tomcat:dbcp:6.0.44'
 }
 

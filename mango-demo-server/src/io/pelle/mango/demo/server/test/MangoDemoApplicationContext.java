@@ -1,10 +1,13 @@
 package io.pelle.mango.demo.server.test;
 
+import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
+import io.pelle.mango.demo.client.test.IDemoDataGenerator;
 import io.pelle.mango.server.MangoServerApplicationContext;
 import io.pelle.mango.server.search.SearchIndexBuilder;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
@@ -13,6 +16,12 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource({ "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml", "classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoDemoSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml",
 		"classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoLoggerApplicationContext.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
 public class MangoDemoApplicationContext extends MangoServerApplicationContext {
+
+	@Autowired
+	private IBaseVODAO baseVODAO;
+
+	@Autowired
+	private IDemoDataGenerator demoDataGenerator;
 
 	@Bean
 	public TestHierarchicalConfiguration testHierarchicalConfiguration() {
@@ -27,12 +36,13 @@ public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 
 	@Bean
 	public SearchIndexBuilder createEntity1Index() {
-		
+
 		SearchIndexBuilder result = SearchIndexBuilder.createBuilder("index1").setDefault();
-		
+
 		result.forDictionary(MangoDemoDictionaryModel.COMPANY).addAttributes(MangoDemoDictionaryModel.COMPANY.COMPANY_EDITOR.NAME1);
-		result.forDictionary(MangoDemoDictionaryModel.COUNTRY).addAttributes(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2);
-		
+		result.forDictionary(MangoDemoDictionaryModel.COUNTRY).addAttributes(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3,
+				MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2);
+
 		return result;
 	}
 

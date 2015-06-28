@@ -2,18 +2,23 @@ package io.pelle.mango.demo.server.test;
 
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CUSTOMERTITLE;
+import io.pelle.mango.demo.client.showcase.CompanyVO;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.showcase.CurrencyVO;
 import io.pelle.mango.demo.client.showcase.CustomerVO;
+import io.pelle.mango.demo.client.showcase.DepartmentVO;
+import io.pelle.mango.demo.client.showcase.EmployeeVO;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.IDemoDataGenerator;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +27,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 
@@ -92,13 +98,24 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 	}
 
 	@Override
+	@Transactional
 	public void generate() {
-		Map<String, CurrencyVO> currencies = createCurrencies();
-		List<CountryVO> countries = createCountries(currencies);
-		createCustomers(countries);
 
-		List<Entity2VO> entity2s = initDemoDictionary2Data();
-		initDemoDictionary1Data(entity2s);
+		try {
+
+			Map<String, CurrencyVO> currencies = createCurrencies();
+			List<CountryVO> countries = createCountries(currencies);
+
+			createCustomers(countries);
+
+			List<Entity2VO> entity2s = initDemoDictionary2Data();
+			initDemoDictionary1Data(entity2s);
+
+			List<CompanyVO> companies = createCompanies();
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 
 	}
 
@@ -131,6 +148,101 @@ public class DemoDataGeneratorImpl implements IDemoDataGenerator {
 		}
 
 		return currencies;
+	}
+
+	private List<CompanyVO> createCompanies() throws IOException {
+
+		List<CompanyVO> companies = new ArrayList<>();
+
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("companies.csv");
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String line;
+
+		while ((line = br.readLine()) != null) {
+			String[] columns = line.split(",");
+			CompanyVO company = new CompanyVO();
+			company.setName(columns[0]);
+			companies.add(company);
+		}
+		br.close();
+
+		Collections.shuffle(companies);
+
+		List<CompanyVO> result = new ArrayList<>();
+
+		for (int i = 0; i < 10; i++) {
+
+			CompanyVO company = baseEntityService.create(companies.get(i));
+			result.add(company);
+
+			createDepartments(company);
+
+		}
+
+		return companies;
+	}
+
+	private List<DepartmentVO> createDepartments(CompanyVO company) throws IOException {
+
+		List<DepartmentVO> departments = new ArrayList<>();
+
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("departments.csv");
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String line;
+
+		while ((line = br.readLine()) != null) {
+
+			String[] columns = line.split(",");
+
+			DepartmentVO department = new DepartmentVO();
+			department.setName(columns[0]);
+			departments.add(department);
+			department.setParent(company);
+		}
+		br.close();
+
+		Collections.shuffle(departments);
+
+		for (int i = 0; i < 5; i++) {
+
+			DepartmentVO department = baseEntityService.create(departments.get(i));
+			createEmployees(department);
+
+		}
+
+		return departments;
+	}
+
+	private void createEmployees(DepartmentVO department) throws IOException {
+
+		List<EmployeeVO> employees = new ArrayList<>();
+
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("names.csv");
+
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String line;
+
+		while ((line = br.readLine()) != null) {
+
+			// firstname;lastname;birthdate;email;city;email;iban
+			String[] columns = line.split(";");
+
+			EmployeeVO employee = new EmployeeVO();
+			employee.setName(columns[0] + " " + columns[1]);
+			employee.setParent(department);
+			employees.add(employee);
+		}
+		br.close();
+
+		Collections.shuffle(employees);
+
+		for (int i = 0; i < 10; i++) {
+
+			EmployeeVO employee = baseEntityService.create(employees.get(i));
+
+		}
+
 	}
 
 	private List<CountryVO> createCountries(Map<String, CurrencyVO> currencies) {
