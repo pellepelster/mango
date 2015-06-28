@@ -104,7 +104,7 @@ public class DictionaryModelGeneratorTest {
 
 	@Test
 	public void testDictionary1TextControl4DefaultWidth() {
-		assertEquals(16, MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL4.getWidth());
+		assertEquals(32, MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL4.getWidth());
 	}
 
 	@Test

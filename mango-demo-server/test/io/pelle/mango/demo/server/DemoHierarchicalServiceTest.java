@@ -13,6 +13,7 @@ import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.TestClientHierarchicalConfiguration;
 import io.pelle.mango.demo.client.showcase.CompanyVO;
+import io.pelle.mango.demo.client.showcase.DepartmentVO;
 import io.pelle.mango.demo.client.showcase.EmployeeVO;
 import io.pelle.mango.demo.client.showcase.ManagerVO;
 
@@ -108,7 +109,6 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 		assertEquals("Company not allowed as parent for Employee", employeeSaveResult.getValidationMessages().get(0).getHumanMessage());
 	}
 
-	
 	@Test
 	public void testGetChildren() {
 		List<DictionaryHierarchicalNodeVO> rootNodes = this.hierarchicalService.getRootNodes(TestClientHierarchicalConfiguration.ID);
@@ -130,7 +130,7 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 		assertEquals(TestClientHierarchicalConfiguration.ID, hierarchicalConfiguration.getId());
 	}
 
-	@Test(expected = RuntimeException.class )
+	@Test(expected = RuntimeException.class)
 	public void testGetHierarchicalConfigurationByInvalidId() {
 		this.hierarchicalService.getConfigurationById("xxx");
 	}
@@ -141,7 +141,7 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 		assertEquals(TestClientHierarchicalConfiguration.ID, hierarchicalConfiguration.getId());
 	}
 
-	@Test(expected = RuntimeException.class )
+	@Test(expected = RuntimeException.class)
 	public void testGetConfigurationByInvalidDictionaryId() {
 		this.hierarchicalService.getConfigurationByDictionaryId("xxx");
 	}
@@ -160,9 +160,9 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 
 	@Test
 	public void testCreate() {
-		
+
 		baseEntityService.deleteAll(CompanyVO.class.getName());
-		
+
 		CompanyVO companyVO1 = new CompanyVO();
 		companyVO1.setName("kkk");
 		companyVO1 = baseEntityService.create(companyVO1);
@@ -187,9 +187,9 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 		Map<String, String> properties = new HashedMap<String, String>();
 		properties.put(IHierarchicalVO.PARENT_CLASS_FIELD_NAME, companyVO1.getClass().getName());
 		properties.put(IHierarchicalVO.PARENT_ID_FIELD_NAME, Long.toString(companyVO1.getOid()));
-		
+
 		ManagerVO managerVO = baseEntityService.getNewVO(ManagerVO.class.getName(), properties);
-				
+
 		assertEquals(companyVO1, managerVO.getParent());
 	}
 
@@ -233,4 +233,37 @@ public class DemoHierarchicalServiceTest extends BaseDemoTest {
 		assertEquals(true, companies.get(1).getHasChildren());
 
 	}
+
+	@Test
+	public void testGetParentNodes() {
+
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+		baseEntityService.deleteAll(ManagerVO.class.getName());
+
+		CompanyVO company = new CompanyVO();
+		company.setName("xxx");
+		company = baseEntityService.create(company);
+
+		DepartmentVO department = new DepartmentVO();
+		department.setParent(company);
+		department.setName("yyy");
+		department = baseEntityService.create(department);
+
+		ManagerVO manager = new ManagerVO();
+		manager.setName("zzz");
+		manager.setParent(department);
+		manager = baseEntityService.create(manager);
+
+		List<DictionaryHierarchicalNodeVO> parentNodes = hierarchicalService.getParentNodes(TestClientHierarchicalConfiguration.ID, manager);
+
+		assertEquals(2, parentNodes.size());
+
+		assertEquals(department.getClass().getName(), parentNodes.get(0).getVoClassName());
+		assertEquals((Long) department.getId(), parentNodes.get(0).getVoId());
+
+		assertEquals(company.getClass().getName(), parentNodes.get(1).getVoClassName());
+		assertEquals((Long) company.getId(), parentNodes.get(1).getVoId());
+
+	}
+
 }

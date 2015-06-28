@@ -17,8 +17,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import java.io.Serializable;
 import java.util.List;
 
-public class VOHierarchy implements Serializable
-{
+public class VOHierarchy implements Serializable {
 	private static final long serialVersionUID = 2205436841248608738L;
 
 	private Class<? extends IHierarchicalVO> clazz;
@@ -27,46 +26,38 @@ public class VOHierarchy implements Serializable
 
 	private IDictionaryModel dictionaryModel;
 
-	public VOHierarchy()
-	{
+	public VOHierarchy() {
 		super();
 	}
 
-	public VOHierarchy(IDictionaryModel dictionaryModel, Class<? extends IHierarchicalVO> clazz, List<Class<? extends IHierarchicalVO>> parents)
-	{
+	public VOHierarchy(IDictionaryModel dictionaryModel, Class<? extends IHierarchicalVO> clazz, List<Class<? extends IHierarchicalVO>> parents) {
 		super();
 		this.dictionaryModel = dictionaryModel;
 		this.clazz = clazz;
 		this.parents = parents;
 	}
 
-	public Class<? extends IHierarchicalVO> getClazz()
-	{
+	public Class<? extends IHierarchicalVO> getClazz() {
 		return clazz;
 	}
 
-	public IDictionaryModel getDictionaryModel()
-	{
+	public IDictionaryModel getDictionaryModel() {
 		return dictionaryModel;
 	}
 
-	public List<Class<? extends IHierarchicalVO>> getParents()
-	{
+	public List<Class<? extends IHierarchicalVO>> getParents() {
 		return parents;
 	}
 
-	public void setClazz(Class<? extends IHierarchicalVO> clazz)
-	{
+	public void setClazz(Class<? extends IHierarchicalVO> clazz) {
 		this.clazz = clazz;
 	}
 
-	public void setDictionaryModel(IDictionaryModel dictionaryModel)
-	{
+	public void setDictionaryModel(IDictionaryModel dictionaryModel) {
 		this.dictionaryModel = dictionaryModel;
 	}
 
-	public void setParents(List<Class<? extends IHierarchicalVO>> parents)
-	{
+	public void setParents(List<Class<? extends IHierarchicalVO>> parents) {
 		this.parents = parents;
 	}
 

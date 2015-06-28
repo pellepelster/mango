@@ -38,7 +38,7 @@ public class GwtHierarchicalControl extends Hyperlink implements IGwtControl {
 		addHandler(new ClickHandler() {
 			@Override
 			public void onClick(ClickEvent event) {
-				HierarchicalVOSelectionPopup.create(hierarchicalControl.getModel(), new AsyncCallback<HierarchicalVOSelectionPopup>() {
+				HierarchicalVOSelectionPopup.create(hierarchicalControl.getModel(), hierarchicalControl.getValue(), new AsyncCallback<HierarchicalVOSelectionPopup>() {
 					@Override
 					public void onSuccess(HierarchicalVOSelectionPopup result) {
 

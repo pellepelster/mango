@@ -65,14 +65,14 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 		return cacheManager;
 	}
 
-	private void initEHCacheJMX() {
-
-		if (mBeanServer == null) {
-			// mBeanServer = ManagementFactory.getPlatformMBeanServer();
-			// ManagementService.registerMBeans(cacheManagerFactory().getObject(),
-			// mBeanServer, false, false, false, true);
-		}
-	}
+	// private void initEHCacheJMX() {
+	//
+	// if (mBeanServer == null) {
+	// // mBeanServer = ManagementFactory.getPlatformMBeanServer();
+	// // ManagementService.registerMBeans(cacheManagerFactory().getObject(),
+	// // mBeanServer, false, false, false, true);
+	// }
+	// }
 
 	@Bean
 	public NaturalKeyValidator naturalKeyValidator() {
@@ -93,7 +93,7 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 	public HierarchyParentValidator hierarchyParentValidator() {
 		return new HierarchyParentValidator();
 	}
-	
+
 	@Bean
 	public JmxReporter jmxReporter() {
 

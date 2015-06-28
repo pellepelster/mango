@@ -42,7 +42,7 @@ public class NaturalKeyValidator implements IValidator {
 		this.baseVODAO = baseVODAO;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public boolean populateNaturalKeyQuery(IBaseVO vo, IAttributeDescriptor<?> parentAttribute, SelectQuery<IBaseVO> selectQuery, List<IValidationMessage> messages, Map<String, Object> contextMap) {
 
 		boolean hasNaturalKeys = false;
@@ -91,6 +91,7 @@ public class NaturalKeyValidator implements IValidator {
 
 		List<IValidationMessage> result = new ArrayList<IValidationMessage>();
 
+		@SuppressWarnings("unchecked")
 		SelectQuery<IBaseVO> selectQuery = (SelectQuery<IBaseVO>) SelectQuery.selectFrom(vo.getClass());
 
 		contextMap.put(IValidationMessage.NATURAL_KEY_CONTEXT_KEY, vo.getNaturalKey());

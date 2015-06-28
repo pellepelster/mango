@@ -32,9 +32,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 
 public class HierarchicalServiceImpl implements IHierarchicalService, InitializingBean {
@@ -56,6 +58,44 @@ public class HierarchicalServiceImpl implements IHierarchicalService, Initializi
 
 	private Map<String, List<VOHierarchy>> voHierarchies = null;
 
+	private class VOHierarchialNodeFunction implements Function<IBaseVO, DictionaryHierarchicalNodeVO> {
+
+		private final VOHierarchy voHierarchy;
+
+		public VOHierarchialNodeFunction(VOHierarchy voHierarchy) {
+			super();
+			this.voHierarchy = voHierarchy;
+		}
+
+		@Override
+		public DictionaryHierarchicalNodeVO apply(IBaseVO vo) {
+			DictionaryHierarchicalNodeVO result = new DictionaryHierarchicalNodeVO();
+
+			result.setLabel(DictionaryUtil.getLabel(voHierarchy.getDictionaryModel().getLabelControls(), vo));
+			result.setDictionaryName(voHierarchy.getDictionaryModel().getName());
+			result.setVoId(vo.getId());
+			result.setVoClassName(vo.getClass().getName());
+			result.setHasChildren(hasChildren(vo.getClass().getName(), vo.getId()));
+			return result;
+		}
+
+	}
+
+	private class VOHierarchyByClass implements Predicate<VOHierarchy> {
+
+		private Class<? extends IHierarchicalVO> hierarchicalClass;
+
+		public VOHierarchyByClass(Class<? extends IHierarchicalVO> hierarchicalClass) {
+			super();
+			this.hierarchicalClass = hierarchicalClass;
+		}
+
+		@Override
+		public boolean apply(VOHierarchy input) {
+			return input.getClazz().equals(hierarchicalClass);
+		}
+	}
+
 	@Override
 	public List<DictionaryHierarchicalNodeVO> getRootNodes(String id) {
 
@@ -70,7 +110,7 @@ public class HierarchicalServiceImpl implements IHierarchicalService, Initializi
 
 	@Override
 	public HierarchicalConfigurationVO getConfigurationById(final String id) {
-		
+
 		Optional<HierarchicalConfigurationVO> hierarchicalConfiguration = Iterables.tryFind(hierarchicalConfigurations, new Predicate<HierarchicalConfigurationVO>() {
 
 			@Override
@@ -78,7 +118,7 @@ public class HierarchicalServiceImpl implements IHierarchicalService, Initializi
 				return hierarchicalConfiguration.getId().equals(id);
 			}
 		});
-		
+
 		if (hierarchicalConfiguration.isPresent()) {
 			return hierarchicalConfiguration.get();
 		} else {
@@ -231,30 +271,14 @@ public class HierarchicalServiceImpl implements IHierarchicalService, Initializi
 
 	private List<DictionaryHierarchicalNodeVO> getChildNodes(VOHierarchy voHierarchy, Long parentId, String parentClassName) {
 
-		List<DictionaryHierarchicalNodeVO> result = new ArrayList<DictionaryHierarchicalNodeVO>();
-
 		@SuppressWarnings({ "unchecked" })
 		SelectQuery<IHierarchicalVO> query = (SelectQuery<IHierarchicalVO>) SelectQuery.selectFrom(voHierarchy.getClazz());
 
 		query.loadNaturalKeyReferences(true);
-		
 		query.addWhereAnd(EntityUtils.createStringAttributeDescriptor(voHierarchy.getClazz(), IHierarchicalVO.PARENT_CLASS_FIELD_NAME).eq(parentClassName));
 		query.addWhereAnd(EntityUtils.createLongAttributeDescriptor(voHierarchy.getClazz(), IHierarchicalVO.PARENT_ID_FIELD_NAME).eq(parentId));
 
-		for (IHierarchicalVO vo : this.baseEntityService.filter(query)) {
-
-			DictionaryHierarchicalNodeVO hierarchicalNode = new DictionaryHierarchicalNodeVO();
-
-			hierarchicalNode.setLabel(DictionaryUtil.getLabel(voHierarchy.getDictionaryModel().getLabelControls(), vo));
-			hierarchicalNode.setDictionaryName(voHierarchy.getDictionaryModel().getName());
-			hierarchicalNode.setVoId(vo.getId());
-			hierarchicalNode.setVoClassName(vo.getClass().getName());
-			hierarchicalNode.setHasChildren(hasChildren(vo.getClass().getName(), vo.getId()));
-
-			result.add(hierarchicalNode);
-		}
-
-		return result;
+		return new ArrayList<DictionaryHierarchicalNodeVO>(Collections2.transform(this.baseEntityService.filter(query), new VOHierarchialNodeFunction(voHierarchy)));
 	}
 
 	/** {@inheritDoc} */
@@ -290,8 +314,7 @@ public class HierarchicalServiceImpl implements IHierarchicalService, Initializi
 			@Override
 			public void onNewInstance(IBaseEntity voEntity, Map<String, String> properties) {
 
-				if (voEntity instanceof IBaseHierarchical && !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME))
-						&& !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME))) {
+				if (voEntity instanceof IBaseHierarchical && !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME)) && !StringUtils.isEmpty(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME))) {
 
 					String parentClassName = properties.get(IHierarchicalVO.PARENT_CLASS_FIELD_NAME);
 					long parentId = Long.parseLong(properties.get(IHierarchicalVO.PARENT_ID_FIELD_NAME));
@@ -309,18 +332,44 @@ public class HierarchicalServiceImpl implements IHierarchicalService, Initializi
 	@Override
 	public HierarchicalConfigurationVO getConfigurationByDictionaryId(final String dictionaryId) {
 
-		Optional<HierarchicalConfigurationVO> hierarchicalConfiguration = Iterables.tryFind(hierarchicalConfigurations,
-				new Predicate<HierarchicalConfigurationVO>() {
-					@Override
-					public boolean apply(HierarchicalConfigurationVO input) {
-						return Iterables.any(input.getDictionaryHierarchy().keySet(), Predicates.equalTo(dictionaryId));
-					}
-				});
-		
+		Optional<HierarchicalConfigurationVO> hierarchicalConfiguration = Iterables.tryFind(hierarchicalConfigurations, new Predicate<HierarchicalConfigurationVO>() {
+			@Override
+			public boolean apply(HierarchicalConfigurationVO input) {
+				return Iterables.any(input.getDictionaryHierarchy().keySet(), Predicates.equalTo(dictionaryId));
+			}
+		});
+
 		if (hierarchicalConfiguration.isPresent()) {
 			return hierarchicalConfiguration.get();
 		} else {
 			throw new RuntimeException(String.format("no hierarchical configuration found for dictionary id '%s'", dictionaryId));
 		}
+	}
+
+	@Override
+	public List<DictionaryHierarchicalNodeVO> getParentNodes(String id, IHierarchicalVO hierarchicalVO) {
+
+		List<DictionaryHierarchicalNodeVO> parentNodes = new ArrayList<DictionaryHierarchicalNodeVO>();
+		List<VOHierarchy> voHierarchies = getVOHierarchy(id);
+
+		IHierarchicalVO currentVO = hierarchicalVO;
+
+		while (currentVO.getParent() != null) {
+
+			@SuppressWarnings({ "unchecked" })
+			SelectQuery<IHierarchicalVO> query = (SelectQuery<IHierarchicalVO>) SelectQuery.selectFrom(currentVO.getParent().getClass());
+
+			query.loadNaturalKeyReferences(true);
+			query.addWhereAnd(EntityUtils.createLongAttributeDescriptor(currentVO.getParent().getClass(), IBaseVO.FIELD_ID.getAttributeName()).eq(currentVO.getParent().getId()));
+
+			IHierarchicalVO baseVO = baseEntityService.read(query);
+			VOHierarchy voHierarchy = Iterables.find(voHierarchies, new VOHierarchyByClass(currentVO.getParent().getClass()));
+
+			parentNodes.add(new VOHierarchialNodeFunction(voHierarchy).apply(baseVO));
+
+			currentVO = baseVO;
+		}
+
+		return parentNodes;
 	}
 }

@@ -4,6 +4,7 @@ import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.VOEntityMetadata;
 
+@SuppressWarnings("serial")
 public abstract class BaseEntity implements IBaseEntity {
 
 	private VOEntityMetadata metadata;

@@ -14,6 +14,7 @@ import io.pelle.mango.client.api.webhook.WebhookVO
 import io.pelle.mango.client.base.property.IProperty
 import io.pelle.mango.client.base.property.IPropertyCategory
 import java.io.Serializable
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.search.SearchResultItem
 import com.google.common.base.Optional
 
@@ -178,6 +179,7 @@ project Mango {
 				method List<HierarchicalConfigurationVO> getConfigurations ()
 				method Boolean hasChildren ( String voClassName, Long voId )
 				method List<DictionaryHierarchicalNodeVO> getChildNodes ( String id, Long voId, String voClassName )
+				method List<DictionaryHierarchicalNodeVO> getParentNodes ( String id, IHierarchicalVO hierarchicalVO )
 			}
 		}
 		

@@ -11,6 +11,7 @@ public class TestClientHierarchicalConfiguration extends BaseHierarchicalConfigu
 
 		addHierarchy(MangoDemoDictionaryModel.COMPANY);
 		addHierarchy(MangoDemoDictionaryModel.DEPARTMENT, MangoDemoDictionaryModel.COMPANY);
+		addHierarchy(MangoDemoDictionaryModel.MANAGER, MangoDemoDictionaryModel.COMPANY);
 		addHierarchy(MangoDemoDictionaryModel.EMPLOYEE, MangoDemoDictionaryModel.DEPARTMENT);
 	}
 }

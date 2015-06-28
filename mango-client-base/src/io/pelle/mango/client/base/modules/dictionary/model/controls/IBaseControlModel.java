@@ -25,7 +25,7 @@ public interface IBaseControlModel extends IBaseModel, IContentAwareModel {
 
 	static final String EDITOR_LABEL_MESSAGE_KEY = "dictionaryControlEditorLabel";
 
-	static final int DEFAULT_WIDTH = 16;
+	static final int DEFAULT_WIDTH = 32;
 
 	static final int MAX_LENGTH_DEFAULT = DEFAULT_WIDTH;
 

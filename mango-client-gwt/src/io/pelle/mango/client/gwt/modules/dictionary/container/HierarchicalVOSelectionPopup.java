@@ -22,13 +22,12 @@ public class HierarchicalVOSelectionPopup extends BaseVOSelectionPopup<IHierarch
 
 	private DictionaryHierarchicalNodeVO dictionaryHierarchicalNodeVO;
 
-	private HierarchicalVOSelectionPopup(HierarchicalConfigurationVO hierarchicalConfiguration, IHierarchicalControlModel hierarchicalControlModel) {
+	private HierarchicalVOSelectionPopup(HierarchicalConfigurationVO hierarchicalConfiguration, IHierarchicalVO currentParent, IHierarchicalControlModel hierarchicalControlModel) {
 		super(MangoClientWeb.MESSAGES.hierarchicalParent(), null);
-
 		this.hierarchicalConfiguration = hierarchicalConfiguration;
 	}
 
-	public static void create(final IHierarchicalControlModel hierarchicalControlModel, final AsyncCallback<HierarchicalVOSelectionPopup> asyncCallback) {
+	public static void create(final IHierarchicalControlModel hierarchicalControlModel, final IHierarchicalVO currentParent, final AsyncCallback<HierarchicalVOSelectionPopup> asyncCallback) {
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getHierarchicalService().getConfigurationById(hierarchicalControlModel.getHierarchicalId(), new AsyncCallback<HierarchicalConfigurationVO>() {
 
 			@Override
@@ -38,7 +37,7 @@ public class HierarchicalVOSelectionPopup extends BaseVOSelectionPopup<IHierarch
 
 			@Override
 			public void onSuccess(HierarchicalConfigurationVO result) {
-				asyncCallback.onSuccess(new HierarchicalVOSelectionPopup(result, hierarchicalControlModel));
+				asyncCallback.onSuccess(new HierarchicalVOSelectionPopup(result, currentParent, hierarchicalControlModel));
 			}
 		});
 

@@ -27,6 +27,7 @@ public class HierarchicalTree extends Div {
 
 		HierarchicalTreeModel hierarchicalTreeModel = new HierarchicalTreeModel(hierarchicalConfiguration, showAddnodes, nodeSelectionHandler);
 		CellTree cellTree = new CellTree(hierarchicalTreeModel, null, treeResources);
+
 		add(cellTree);
 
 	}

@@ -133,7 +133,9 @@ public class HierarchicalTreeModel implements TreeViewModel {
 
 	@Override
 	public <T> NodeInfo<?> getNodeInfo(T value) {
+
 		if (value == null || value instanceof DictionaryHierarchicalNodeVO) {
+
 			final DictionaryHierarchicalNodeVO hierarchicalNodeVO = (DictionaryHierarchicalNodeVO) value;
 			HierarchicalDataProvider dataProvider = new HierarchicalDataProvider(hierarchicalConfiguration, hierarchicalNodeVO, showAddnodes, value == null);
 			dataProvider.addDataDisplay(cellList);
