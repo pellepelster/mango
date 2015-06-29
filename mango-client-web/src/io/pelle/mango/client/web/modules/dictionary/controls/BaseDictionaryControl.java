@@ -116,6 +116,10 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 	}
 
 	protected void setValueInternal(ValueType value) {
+		setValueInternal(value, true);
+	}
+
+	protected void setValueInternal(ValueType value, boolean fireDirtyListeners) {
 
 		if (!isReadonly()) {
 			getRootElement().clearValidationMessages(this);
@@ -123,12 +127,11 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 			validate(value);
 
 			if (getRootElement().getValidationMessages(this).hasErrors()) {
-				getVOWrapper().set(getAttributePathInternal(), null);
+				getVOWrapper().set(getAttributePathInternal(), null, fireDirtyListeners);
 			} else {
-				getVOWrapper().set(getAttributePathInternal(), value);
+				getVOWrapper().set(getAttributePathInternal(), value, fireDirtyListeners);
 			}
 		}
-
 	}
 
 	private void validate(ValueType value) {

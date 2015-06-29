@@ -12,7 +12,7 @@ public class SearchVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 
 	@Override
 	public void set(String attribute, Object value) {
-		this.filterValues.put(attribute, value);
+		set(attribute, value, true);
 	}
 
 	@Override
@@ -27,6 +27,11 @@ public class SearchVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 	@Override
 	public VOType getContent() {
 		throw new RuntimeException("not implemented");
+	}
+
+	@Override
+	public void set(String attribute, Object value, boolean fireDirtyListeners) {
+		this.filterValues.put(attribute, value);
 	}
 
 }

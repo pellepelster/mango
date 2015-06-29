@@ -26,6 +26,8 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 
 	private String valueString;
 
+	private boolean changed = false;
+
 	public ReferenceControl(IReferenceControlModel referenceControlModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(referenceControlModel, parent);
 	}
@@ -41,8 +43,9 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 
 	@Override
 	public void parseValue(String valueString) {
+		changed = true;
 		this.valueString = valueString;
-		setValueInternal(null);
+		setValueInternal(null, false);
 	}
 
 	@Override
@@ -67,23 +70,31 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 
 	}
 
+	public void setValue(VOTYPE value) {
+		super.setValue(value);
+		changed = false;
+	}
+
 	@Override
 	public void endEdit() {
 
-		if (valueString != null && !valueString.trim().isEmpty()) {
-			DictionaryUtil.getEntitiesByDictionaryLabel(getModel(), valueString, new BaseErrorAsyncCallback<List<VOTYPE>>() {
+		if (changed) {
 
-				@Override
-				public void onSuccess(List<VOTYPE> result) {
-					if (result.size() == 1) {
-						setValue(result.get(0));
-					} else if (result.size() == 0) {
-						addValidationMessage(new ValidationMessage(IMessage.SEVERITY.ERROR, ReferenceControl.class.getName(), MangoClientWeb.MESSAGES.referenceParseError(valueString)));
+			if (valueString == null || valueString.trim().isEmpty()) {
+				setValue(null);
+			} else {
+				DictionaryUtil.getEntitiesByDictionaryLabel(getModel(), valueString, new BaseErrorAsyncCallback<List<VOTYPE>>() {
+
+					@Override
+					public void onSuccess(List<VOTYPE> result) {
+						if (result.size() == 1) {
+							setValue(result.get(0));
+						} else if (result.size() == 0) {
+							addValidationMessage(new ValidationMessage(IMessage.SEVERITY.ERROR, ReferenceControl.class.getName(), MangoClientWeb.MESSAGES.referenceParseError(valueString)));
+						}
 					}
-				}
-			});
-		} else {
-			setValue(null);
+				});
+			}
 		}
 	}
 
