@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.base.Optional;
-
 @RestController
 public class EntityApiController extends BaseEntityApiController {
 
@@ -78,10 +76,10 @@ public class EntityApiController extends BaseEntityApiController {
 
 		Class<? extends IBaseEntity> entityClass = getEntityClassByNameOrExplode(entityName);
 
-		Optional<T> result = (Optional<T>) baseEntityDAO.searchByNaturalKey(entityClass, naturalKey);
+		List<T> result = (List<T>) baseEntityDAO.searchByNaturalKey(entityClass, naturalKey);
 
-		if (result.isPresent()) {
-			return result.get();
+		if (result.size() == 1) {
+			return result.get(0);
 		} else {
 			throw new RuntimeException(String.format("no entity found for natural key '%s'", naturalKey));
 		}

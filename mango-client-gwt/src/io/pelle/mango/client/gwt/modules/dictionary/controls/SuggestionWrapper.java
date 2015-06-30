@@ -14,19 +14,27 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 import io.pelle.mango.client.base.modules.dictionary.controls.IReferenceControl;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.table.SuggestCellControl.SuggestCellSuggestion;
+import io.pelle.mango.client.gwt.utils.HtmlUtils;
+
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 public class SuggestionWrapper<VOTYPE extends IBaseVO> implements SuggestCellSuggestion<VOTYPE> {
-	
+
 	private final IReferenceControl.Suggestion<VOTYPE> suggestion;
 
-	public SuggestionWrapper(IReferenceControl.Suggestion<VOTYPE> suggestion) {
+	private final String text;
+
+	public SuggestionWrapper(IReferenceControl.Suggestion<VOTYPE> suggestion, String text) {
 		super();
 		this.suggestion = suggestion;
+		this.text = text;
 	}
 
 	@Override
 	public String getDisplayString() {
-		return suggestion.getLabel();
+		SafeHtmlBuilder sb = new SafeHtmlBuilder();
+		HtmlUtils.highlightTexts(text, suggestion.getLabel(), sb);
+		return sb.toSafeHtml().asString();
 	}
 
 	@Override

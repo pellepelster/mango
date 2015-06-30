@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.MultiWordSuggestOracle;
 
-public class MangoSuggestOracle<VOTYPE extends IBaseVO> extends SuggestOracle {
+public class MangoSuggestOracle<VOTYPE extends IBaseVO> extends MultiWordSuggestOracle {
 
 	private IReferenceControl<VOTYPE> referenceControl;
 
@@ -44,7 +44,7 @@ public class MangoSuggestOracle<VOTYPE extends IBaseVO> extends SuggestOracle {
 				Collection<SuggestionWrapper<VOTYPE>> voSuggestions = new ArrayList<SuggestionWrapper<VOTYPE>>();
 
 				for (IReferenceControl.Suggestion<VOTYPE> suggestion : result) {
-					voSuggestions.add(new SuggestionWrapper<VOTYPE>(suggestion));
+					voSuggestions.add(new SuggestionWrapper<VOTYPE>(suggestion, request.getQuery()));
 				}
 
 				response.setSuggestions(voSuggestions);

@@ -17,11 +17,12 @@ import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.ReferenceControl;
 
+import org.gwtbootstrap3.client.ui.SuggestBox;
+
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 
 public class GwtReferenceTextControl<VOTYPE extends IBaseVO> extends BaseControlWithHelp<SuggestBox> implements IGwtControl {
