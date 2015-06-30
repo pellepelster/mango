@@ -41,6 +41,6 @@ public interface IBaseVOEntityDAO<VOENTITYTYPE extends IVOEntity> {
 
 	<T extends VOENTITYTYPE> long aggregate(AggregateQuery<T> query);
 
-	<T extends VOENTITYTYPE> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey);
+	<T extends VOENTITYTYPE> List<T> searchByNaturalKey(Class<T> entityClass, String naturalKey);
 
 }

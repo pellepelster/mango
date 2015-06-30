@@ -8,6 +8,7 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.util.BeanUtils;
+import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.validator.IValidator;
 
 import java.util.ArrayList;
@@ -132,6 +133,11 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 		}
 
 		return null;
+	}
+
+	@Override
+	public <NatKeyVOType extends IBaseVO> List<NatKeyVOType> searchByNaturalKey(String voClassName, String naturalKey) {
+		return (List<NatKeyVOType>) baseVODAO.searchByNaturalKey(EntityVOMapper.getInstance().getVOClass(voClassName), naturalKey);
 	}
 
 }

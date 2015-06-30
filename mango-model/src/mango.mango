@@ -69,6 +69,8 @@ project Mango {
 				method <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
 				method <DeleteVOType extends IBaseVO> void deleteQuery ( DeleteQuery<DeleteVOType> deleteQuery )
 				method <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
+				method <NatKeyVOType extends IBaseVO> List<NatKeyVOType> searchByNaturalKey ( String voClassName, String naturalKey )
+				
 			}
 		}
 		

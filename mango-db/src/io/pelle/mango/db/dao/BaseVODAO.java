@@ -126,15 +126,8 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 	}
 
 	@Override
-	public <T extends IBaseVO> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey) {
-
-		List<T> result = filter(DBUtil.getNaturalKeyQuery(entityClass, naturalKey));
-
-		if (result.size() > 1 || result.isEmpty()) {
-			return Optional.absent();
-		} else {
-			return Optional.of(result.get(0));
-		}
+	public <T extends IBaseVO> List<T> searchByNaturalKey(Class<T> entityClass, String naturalKey) {
+		return filter(DBUtil.getNaturalKeyQuery(entityClass, naturalKey));
 	}
 
 	@Override

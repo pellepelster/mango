@@ -57,19 +57,18 @@ public class NaturalKeyValidator implements IValidator {
 			}
 
 			if (naturalKeyValue == null) {
-
 				messages.add(new ValidationMessage(ValidatorMessages.NATURAL_KEY_MANDATORY, contextMap));
 			} else {
 
 				if (IBaseVO.class.isAssignableFrom(naturalKeyAttributeDescriptor.getListAttributeType())) {
-					IAttributeDescriptor<?> a = null;
+					IAttributeDescriptor<?> attributeDescriptor = null;
 
 					if (parentAttribute != null) {
-						a = parentAttribute.path(naturalKeyAttributeDescriptor);
+						attributeDescriptor = parentAttribute.path(naturalKeyAttributeDescriptor);
 					} else {
-						a = naturalKeyAttributeDescriptor;
+						attributeDescriptor = naturalKeyAttributeDescriptor;
 					}
-					populateNaturalKeyQuery((IBaseVO) naturalKeyValue, a, selectQuery, messages, contextMap);
+					populateNaturalKeyQuery((IBaseVO) naturalKeyValue, attributeDescriptor, selectQuery, messages, contextMap);
 				} else {
 					if (parentAttribute == null) {
 						selectQuery.addWhereAnd(naturalKeyAttributeDescriptor.eq(naturalKeyValue));

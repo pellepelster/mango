@@ -31,6 +31,7 @@ import io.pelle.mango.client.web.util.I18NProxy;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.showcase.CountryVO;
+import io.pelle.mango.demo.client.showcase.CurrencyVO;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
@@ -622,6 +623,39 @@ public class DemoClientTest extends BaseDemoTest {
 
 	}
 
+	@Test
+	public void testCountryReferenceControl() {
+
+		baseEntityService.deleteAll(CountryVO.class.getName());
+		baseEntityService.deleteAll(CurrencyVO.class.getName());
+		
+		DictionaryEditorModuleTestUI<CurrencyVO> currencyEditor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR);
+		currencyEditor.getControl(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR.CURRENCY_NAME).setValue("AA");
+		currencyEditor.getControl(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR.CURRENCY_ISO_CODE).setValue("AAA");
+		currencyEditor.save();
+		currencyEditor.assertHasNoErrors();
+
+		currencyEditor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR);
+		currencyEditor.getControl(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR.CURRENCY_NAME).setValue("AB");
+		currencyEditor.getControl(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR.CURRENCY_ISO_CODE).setValue("ABB");
+		currencyEditor.save();
+		currencyEditor.assertHasNoErrors();
+
+		DictionaryEditorModuleTestUI<CountryVO> countryEditor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR);
+		countryEditor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2).setValue("BB");
+		countryEditor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3).setValue("BBB");
+		countryEditor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME).setValue("BBBB");
+		
+		ReferenceTestControl<CurrencyVO> currencyControl = countryEditor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_CURRENCY);
+		currencyControl.enterValue("a");
+		currencyControl.assertHasSuggestions(2);
+
+		currencyControl.enterValue("aa");
+		currencyControl.assertHasSuggestions(1);
+
+	}
+	
+	
 	@Autowired
 	public void setMangoGwtAsyncAdapterRemoteServiceLocator(MangoGwtAsyncAdapterRemoteServiceLocator mangoGwtAsyncAdapterRemoteServiceLocator) {
 		MangoClientWeb.getInstance().setMyAdminGWTRemoteServiceLocator(mangoGwtAsyncAdapterRemoteServiceLocator);

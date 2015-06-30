@@ -4,6 +4,7 @@ import io.pelle.mango.client.base.messages.IMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.modules.dictionary.controls.IReferenceControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
+import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
@@ -51,7 +52,10 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 	@Override
 	public void parseValue(String valueString, final AsyncCallback<List<ReferenceControl.Suggestion<VOTYPE>>> callback) {
 		parseValue(valueString);
-		DictionaryUtil.getEntitiesByDictionaryLabel(getModel(), valueString, new BaseErrorAsyncCallback<List<VOTYPE>>() {
+
+		IDictionaryModel dictionaryModel = DictionaryUtil.getDictionaryModel(getModel());
+				
+		AsyncCallback<List<VOTYPE>> resultCallback = new BaseErrorAsyncCallback<List<VOTYPE>>() {
 
 			@Override
 			public void onSuccess(List<VOTYPE> result) {
@@ -66,7 +70,13 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 
 				callback.onSuccess(suggestions);
 			}
-		});
+		};
+
+		if (dictionaryModel.getLabelControls().isEmpty()) {
+			MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().searchByNaturalKey(dictionaryModel.getVOClass().getName(), valueString, resultCallback);
+		} else {
+			DictionaryUtil.getEntitiesByDictionaryLabel(getModel(), valueString, resultCallback);
+		}
 
 	}
 

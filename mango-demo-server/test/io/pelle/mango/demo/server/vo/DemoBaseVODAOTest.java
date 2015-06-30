@@ -59,22 +59,6 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testGetByNaturalKey() {
-
-		Entity1VO newVO = new Entity1VO();
-		newVO.setStringDatatype1("xxx");
-		baseVODAO.create(newVO);
-
-		newVO = new Entity1VO();
-		newVO.setStringDatatype1("yyy");
-		baseVODAO.create(newVO);
-
-		assertFalse(baseVODAO.getByNaturalKey(Entity1VO.class, "aaa").isPresent());
-		assertEquals("xxx", baseVODAO.getByNaturalKey(Entity1VO.class, "xxx").get().getStringDatatype1());
-
-	}
-
-	@Test
 	public void testSimpleSave() {
 
 		Entity1VO newVO = new Entity1VO();
@@ -271,6 +255,34 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 
 		long result = baseVODAO.aggregate(query);
 		assertEquals(7, result);
+	}
+	
+	@Test
+	public void testGetByNaturalKey() {
+
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		baseVODAO.create(entity1);
+
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aab");
+		baseVODAO.create(entity1);
+
+		entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aac");
+		baseVODAO.create(entity1);
+
+		List<Entity1VO> result = baseVODAO.searchByNaturalKey(Entity1VO.class, "aaa");
+		assertEquals(1, result.size());
+
+		result = baseVODAO.searchByNaturalKey(Entity1VO.class, "aa");
+		assertEquals(3, result.size());
+		
+		result = baseVODAO.searchByNaturalKey(Entity1VO.class, "aab");
+		assertEquals(1, result.size());
+
+		result = baseVODAO.searchByNaturalKey(Entity1VO.class, "xxx");
+		assertEquals(0, result.size());
 	}
 
 }

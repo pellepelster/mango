@@ -2,6 +2,8 @@ package io.pelle.mango.client.base.vo;
 
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 
+import com.google.common.base.Optional;
+
 public interface IAttributeDescriptor<AttributeType> extends IMetaDescriptor {
 
 	String getAttributeName();
@@ -18,4 +20,5 @@ public interface IAttributeDescriptor<AttributeType> extends IMetaDescriptor {
 
 	IBooleanExpression eq(AttributeType value);
 
+	Optional<IBooleanExpression> search(String value);
 }

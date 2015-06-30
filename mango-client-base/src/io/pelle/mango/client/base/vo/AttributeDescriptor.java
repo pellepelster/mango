@@ -3,6 +3,7 @@ package io.pelle.mango.client.base.vo;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Optional;
 
 @SuppressWarnings("serial")
 public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<AttributeType> {
@@ -118,4 +119,10 @@ public class AttributeDescriptor<AttributeType> implements IAttributeDescriptor<
 	public IBooleanExpression eq(AttributeType value) {
 		return null;
 	}
+
+	@Override
+	public Optional<IBooleanExpression> search(String value) {
+		return Optional.absent();
+	}
+
 }

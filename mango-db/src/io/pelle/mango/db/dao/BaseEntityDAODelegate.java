@@ -223,13 +223,13 @@ public class BaseEntityDAODelegate extends BaseEntityVODelegate implements IBase
 	}
 
 	@Override
-	public <T extends IBaseEntity> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey) {
+	public <T extends IBaseEntity> List<T> searchByNaturalKey(Class<T> entityClass, String naturalKey) {
 		IVOEntityDAO<T> entityDAO = getVOEntityDAO(entityClass);
 
 		if (entityDAO != null) {
 			return entityDAO.getByNaturalKey(naturalKey);
 		} else {
-			return baseEntityDAO.getByNaturalKey(entityClass, naturalKey);
+			return baseEntityDAO.searchByNaturalKey(entityClass, naturalKey);
 		}
 	}
 

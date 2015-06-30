@@ -156,8 +156,12 @@ public final class DictionaryUtil {
 		super();
 	}
 
+	public static IDictionaryModel getDictionaryModel(IReferenceControlModel controlModel) {
+		return DictionaryModelProvider.getDictionary(controlModel.getDictionaryName());
+	}
+
 	public static <VOTYPE extends IBaseVO> void getEntitiesByDictionaryLabel(IReferenceControlModel controlModel, String text, final AsyncCallback<List<VOTYPE>> resultCallback) {
-		IDictionaryModel dictionaryModel = DictionaryModelProvider.getDictionary(controlModel.getDictionaryName());
+		IDictionaryModel dictionaryModel = getDictionaryModel(controlModel);
 		getEntitiesByDictionaryLabel(dictionaryModel, text, controlModel.getSuggestionsLimit(), resultCallback);
 	}
 

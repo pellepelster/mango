@@ -298,14 +298,9 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	}
 
 	@Override
-	public <T extends IBaseEntity> Optional<T> getByNaturalKey(Class<T> entityClass, String naturalKey) {
+	public <T extends IBaseEntity> List<T> searchByNaturalKey(Class<T> entityClass, String naturalKey) {
 		List<T> result = filter(DBUtil.getNaturalKeyQuery(entityClass, naturalKey));
-
-		if (result.size() > 1 || result.isEmpty()) {
-			return Optional.absent();
-		} else {
-			return Optional.of(result.get(0));
-		}
+		return result;
 	}
 
 	@Override

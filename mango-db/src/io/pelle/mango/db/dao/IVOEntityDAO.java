@@ -41,7 +41,7 @@ public interface IVOEntityDAO<T extends IVOEntity> {
 
 	long aggregate(AggregateQuery<T> query);
 
-	Optional<T> getByNaturalKey(String naturalKey);
+	List<T> getByNaturalKey(String naturalKey);
 
 	T getNewEntity(String className, Map<String, String> properties);
 

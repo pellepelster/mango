@@ -75,8 +75,8 @@ public abstract class AbstractVODAO<VOTYPE extends IBaseVO> implements IVOEntity
 	}
 
 	@Override
-	public Optional<VOTYPE> getByNaturalKey(String naturalKey) {
-		return baseVODAO.getByNaturalKey(getVOEntityClass(), naturalKey);
+	public List<VOTYPE> getByNaturalKey(String naturalKey) {
+		return baseVODAO.searchByNaturalKey(getVOEntityClass(), naturalKey);
 	}
 
 	@Override

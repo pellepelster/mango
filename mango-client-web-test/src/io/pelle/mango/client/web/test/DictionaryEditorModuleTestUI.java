@@ -27,6 +27,7 @@ import org.junit.Assert;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
 import com.google.gwt.thirdparty.guava.common.base.Joiner;
 
 /**
@@ -92,13 +93,6 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 		AsyncCallbackFuture<Result<VOType>> future = AsyncCallbackFuture.create();
 		this.module.getDictionaryEditor().save(future.getCallback());
 
-		String messages = Joiner.on(", ").join(Collections2.transform(future.get().getValidationMessages(), new Function<IValidationMessage, String>() {
-			@Override
-			public String apply(IValidationMessage input) {
-				return input.getMessage();
-			}
-		}));
-
 	}
 
 	@Override
@@ -127,6 +121,18 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 
 	public List<TestButton> getButtons() {
 		return testButtons;
+	}
+
+	public void assertHasNoErrors() {
+		
+		String messages = Joiner.on(", ").join(Iterables.transform(module.getDictionaryEditor().getValidationMessages(), new Function<IValidationMessage, String>() {
+			@Override
+			public String apply(IValidationMessage input) {
+				return input.getMessage();
+			}
+		}));
+		
+		Assert.assertEquals(messages, 0, module.getDictionaryEditor().getValidationMessages().count());
 	}
 
 }

@@ -1,5 +1,7 @@
 package io.pelle.mango.client.base.vo;
 
+import com.google.common.base.Optional;
+
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.expressions.CompareExpression;
@@ -66,5 +68,9 @@ public class StringAttributeDescriptor extends BaseExpressionAttributeDescriptor
 	public int getMinLength() {
 		return minLength;
 	}
-
+	
+	@Override
+	public Optional<IBooleanExpression> search(String value) {
+		return Optional.of(caseInsensitiveLike(value));
+	}
 }

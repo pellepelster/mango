@@ -3,8 +3,8 @@ package io.pelle.mango.client.web.test.controls;
 import io.pelle.mango.client.base.modules.dictionary.controls.IReferenceControl;
 import io.pelle.mango.client.base.modules.dictionary.controls.IReferenceControl.Suggestion;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.web.test.AsyncCallbackFuture;
 import io.pelle.mango.client.web.test.util.FocusManager;
-import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +22,12 @@ public class ReferenceTestControl<VOType extends IBaseVO> extends BaseTestContro
 	public void enterValue(String valueString) {
 		FocusManager.getInstance().setCurrentWidget(this);
 
-		getBaseControl().parseValue(valueString, new BaseErrorAsyncCallback<List<Suggestion<VOType>>>() {
-
-			@Override
-			public void onSuccess(List<Suggestion<VOType>> result) {
-				suggestions.clear();
-				suggestions.addAll(result);
-			}
-		});
+		AsyncCallbackFuture<List<Suggestion<VOType>>> future = AsyncCallbackFuture.create();
+		
+		getBaseControl().parseValue(valueString, future);
+		
+		suggestions.clear();
+		suggestions.addAll(future.get());
 	}
 
 	public void assertHasSuggestions(int count) {

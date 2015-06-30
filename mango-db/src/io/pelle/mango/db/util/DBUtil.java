@@ -10,7 +10,6 @@ import io.pelle.mango.client.base.vo.query.Entity;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.Join;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
 import io.pelle.mango.db.voquery.VOClassQuery;
 
 import java.util.HashMap;
@@ -169,34 +168,45 @@ public final class DBUtil {
 		return stringBuffer.toString();
 	}
 
-	@SuppressWarnings("rawtypes")
 	public static <T extends IVOEntity> SelectQuery<T> getNaturalKeyQuery(Class<T> voEntityClass, String naturalKey) {
 
 		SelectQuery<T> selectQuery = SelectQuery.selectFrom(voEntityClass);
 
-		Optional<IBooleanExpression> expression = Optional.absent();
-
-		for (IAttributeDescriptor attributeDescriptor : VOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys()) {
-
-			Optional<IBooleanExpression> compareExpression = ExpressionFactory.createStringEqualsExpression(voEntityClass, attributeDescriptor.getAttributeName(), naturalKey);
-
-			if (compareExpression.isPresent()) {
-				if (expression.isPresent()) {
-					expression = Optional.of(expression.get().and(compareExpression.get()));
-				} else {
-					expression = compareExpression;
-				}
-			}
-
-			// TODO support composed natural keys
-			break;
-		}
-
-		if (expression.isPresent()) {
-			selectQuery.where(expression.get());
-		}
+		populateNaturalKeyQuery(voEntityClass, selectQuery, null, naturalKey);
 
 		return selectQuery;
+	}
+
+	public static <T extends IVOEntity> void populateNaturalKeyQuery(Class<T> voEntityClass, SelectQuery selectQuery, IAttributeDescriptor<?> parentAttribute, String naturalKey) {
+
+		for (IAttributeDescriptor naturalKeyAttributeDescriptor : VOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys()) {
+
+			if (IBaseVO.class.isAssignableFrom(naturalKeyAttributeDescriptor.getListAttributeType())) {
+
+				IAttributeDescriptor<?> attributeDescriptor = null;
+
+				if (parentAttribute != null) {
+					attributeDescriptor = parentAttribute.path(naturalKeyAttributeDescriptor);
+				} else {
+					attributeDescriptor = naturalKeyAttributeDescriptor;
+				}
+				populateNaturalKeyQuery(naturalKeyAttributeDescriptor.getListAttributeType(), selectQuery, attributeDescriptor, naturalKey);
+			} else {
+				
+				Optional<IBooleanExpression> expression = null;
+				
+				if (parentAttribute == null) {
+					expression = naturalKeyAttributeDescriptor.search(naturalKey);
+				} else {
+					expression = parentAttribute.path(naturalKeyAttributeDescriptor).search(naturalKey);
+				}
+				
+				if (expression.isPresent()) {
+					selectQuery.addWhereOr(expression.get());
+				}
+			}
+		}
+
 	}
 
 	private DBUtil() {

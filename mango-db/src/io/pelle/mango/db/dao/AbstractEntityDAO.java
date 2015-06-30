@@ -83,8 +83,8 @@ public abstract class AbstractEntityDAO<T extends IBaseEntity> implements IVOEnt
 	}
 
 	@Override
-	public Optional<T> getByNaturalKey(String naturalKey) {
-		return baseEntityDAO.getByNaturalKey(voEntityClass, naturalKey);
+	public List<T> getByNaturalKey(String naturalKey) {
+		return baseEntityDAO.searchByNaturalKey(voEntityClass, naturalKey);
 	}
 
 	@Override

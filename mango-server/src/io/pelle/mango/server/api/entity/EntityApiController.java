@@ -78,7 +78,7 @@ public class EntityApiController extends BaseEntityApiController {
 
 		Class<? extends IBaseEntity> entityClass = getEntityClassByNameOrExplode(entityName);
 
-		Optional<T> result = (Optional<T>) baseEntityDAO.getByNaturalKey(entityClass, naturalKey);
+		Optional<T> result = (Optional<T>) baseEntityDAO.searchByNaturalKey(entityClass, naturalKey);
 
 		if (result.isPresent()) {
 			return result.get();
