@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.TextBox;
 public class GwtTextControl extends BaseControlWithHelp<TextBox> implements IGwtControl {
 
 	public GwtTextControl(final TextControl textControl) {
+		
 		super(new TextBox(), textControl.getModel());
 
 		new ControlHelper(getWidget(), textControl, this, true);

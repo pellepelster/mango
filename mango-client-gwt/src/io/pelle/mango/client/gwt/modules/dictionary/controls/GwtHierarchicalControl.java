@@ -12,6 +12,7 @@
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.gwt.ControlHelper;
@@ -82,6 +83,10 @@ public class GwtHierarchicalControl extends Hyperlink implements IGwtControl {
 			hierarchicalVO = null;
 			setText(MangoClientWeb.MESSAGES.hierarchicalNone());
 		}
+	}
+
+	@Override
+	public void showMessages(IValidationMessages validationMessages) {
 	}
 
 }

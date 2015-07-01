@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.controls.IEnumerationControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
@@ -94,5 +95,10 @@ public class GwtEnumerationControl extends ListBox implements IGwtControl, ICont
 	public void onUpdate() {
 		setContent(control.getValue());
 	}
+	
+	@Override
+	public void showMessages(IValidationMessages validationMessages) {
+	}
+
 
 }

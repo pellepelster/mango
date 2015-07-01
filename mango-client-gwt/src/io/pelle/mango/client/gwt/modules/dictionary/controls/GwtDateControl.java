@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.util.GwtUtils;
 import io.pelle.mango.client.gwt.ControlHelper;
@@ -66,5 +67,10 @@ public class GwtDateControl extends DateBox implements IGwtControl {
 			// super.setValue(null);
 		}
 	}
+	
+	@Override
+	public void showMessages(IValidationMessages validationMessages) {
+	}
+
 
 }

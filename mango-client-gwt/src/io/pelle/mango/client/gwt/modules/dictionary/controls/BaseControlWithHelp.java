@@ -11,11 +11,17 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.utils.FadeAnimation;
 import io.pelle.mango.client.web.MangoClientWeb;
 
+import org.gwtbootstrap3.client.ui.Popover;
+import org.gwtbootstrap3.client.ui.constants.Placement;
+import org.gwtbootstrap3.client.ui.constants.Trigger;
+
+import com.google.common.collect.Iterables;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -37,6 +43,8 @@ public class BaseControlWithHelp<CONTROL_TYPE extends Widget> extends Composite 
 
 	private CONTROL_TYPE widget;
 
+	private Popover popover;
+
 	public BaseControlWithHelp(final CONTROL_TYPE widget, IBaseControlModel baseControlModel) {
 		super();
 		this.widget = widget;
@@ -45,6 +53,11 @@ public class BaseControlWithHelp<CONTROL_TYPE extends Widget> extends Composite 
 		parent.addStyleName(GwtStyles.CONTROL_HAS_FEEDBACK_STYLE);
 		parent.add(widget);
 
+		popover = new Popover(parent);
+		popover.setPlacement(Placement.RIGHT);
+		popover.setTrigger(Trigger.FOCUS);
+		popover.setIsHtml(true);
+		
 		if (baseControlModel.getHelpText() != null) {
 
 			helpLabel = new Label(MangoClientWeb.MESSAGES.helpShort());
@@ -71,7 +84,17 @@ public class BaseControlWithHelp<CONTROL_TYPE extends Widget> extends Composite 
 		initWidget(parent);
 	}
 
+	public void showMessages(IValidationMessages validationMessages) {
+		
+		if (validationMessages.count() > 0) {
+			popover.setContent(validationMessages.asHtml());
+			popover.reconfigure();
+		}
+		
+	}
+
 	public CONTROL_TYPE getWidget() {
 		return widget;
 	}
+
 }

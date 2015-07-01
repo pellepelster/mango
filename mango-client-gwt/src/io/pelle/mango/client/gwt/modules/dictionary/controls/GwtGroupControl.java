@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.ControlGroup;
@@ -29,4 +30,9 @@ public class GwtGroupControl extends TextBox implements IGwtControl {
 	@Override
 	public void setContent(Object content) {
 	}
+	
+	@Override
+	public void showMessages(IValidationMessages validationMessages) {
+	}
+
 }

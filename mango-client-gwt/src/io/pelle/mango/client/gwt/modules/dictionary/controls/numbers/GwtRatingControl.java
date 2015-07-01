@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls.numbers;
 
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
@@ -49,5 +50,10 @@ public class GwtRatingControl extends FullRatingWidget implements IGwtControl {
 			super.setValue(null);
 		}
 	}
+	
+	@Override
+	public void showMessages(IValidationMessages validationMessages) {
+	}
+
 
 }

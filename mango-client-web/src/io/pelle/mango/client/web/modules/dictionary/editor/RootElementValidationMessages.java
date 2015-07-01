@@ -92,4 +92,9 @@ public class RootElementValidationMessages extends BaseValidationMessages implem
 		throw new RuntimeException("not implemented");
 	}
 
+	@Override
+	public void clearValidationMessage() {
+		throw new RuntimeException("not implemented");
+	}
+
 }

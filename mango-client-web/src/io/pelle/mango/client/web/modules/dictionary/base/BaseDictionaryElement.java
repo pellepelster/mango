@@ -71,6 +71,12 @@ public abstract class BaseDictionaryElement<ModelType extends IBaseModel> implem
 		return getRootElement().getValidationMessages(this);
 	}
 
+	public void clearValidationMessages() {
+		getRootElement().getValidationMessages(this).clearValidationMessage();
+		update();
+	}
+
+	
 	public void addValidationMessage(IValidationMessage validationMessage) {
 		getRootElement().getValidationMessages(this).addValidationMessage(validationMessage);
 		update();

@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
@@ -80,5 +81,10 @@ public class GwtBooleanFilterControl extends ListBox implements IGwtControl, ICo
 	public void onUpdate() {
 		setContent(control.getValue());
 	}
+	
+	@Override
+	public void showMessages(IValidationMessages validationMessages) {
+	}
+
 
 }

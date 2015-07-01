@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IEnumerationControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -83,6 +84,11 @@ public class ReferenceDropdownControl<VOType extends IBaseVO> extends ListBox im
 		} else {
 			super.setSelectedIndex(0);
 		}
+	}
+
+	
+	@Override
+	public void showMessages(IValidationMessages validationMessages) {
 	}
 
 }

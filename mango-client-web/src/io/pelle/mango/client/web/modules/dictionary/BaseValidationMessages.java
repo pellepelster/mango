@@ -49,5 +49,21 @@ public abstract class BaseValidationMessages implements IValidationMessages
 
 		return false;
 	}
+	
+	@Override
+	public String asHtml() {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		String delimiter= "";
+		for(IValidationMessage validationMessage : this) {
+			
+			sb.append(delimiter);
+			sb.append(validationMessage.getHumanMessage());
+			delimiter = "<br />";
+		}
+		
+		return sb.toString();
+	}
 
 }

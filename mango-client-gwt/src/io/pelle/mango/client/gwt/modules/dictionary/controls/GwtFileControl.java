@@ -16,6 +16,7 @@ import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.OnFinishUploaderHandler;
 import gwtupload.client.SingleUploader;
 import io.pelle.mango.client.FileVO;
+import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
 import io.pelle.mango.client.base.modules.dictionary.hooks.IFileControlHook;
@@ -150,6 +151,11 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 		fileNameAnchor.setText(MangoClientWeb.MESSAGES.fileNone());
 		fileControl.parseValue(null);
 	}
+	
+	@Override
+	public void showMessages(IValidationMessages validationMessages) {
+	}
+
 
 	@Override
 	public void onCallback(Void t) {

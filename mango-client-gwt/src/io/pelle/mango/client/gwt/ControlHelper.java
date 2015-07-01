@@ -21,18 +21,23 @@ import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrat
 
 import java.util.Map;
 
+import org.gwtbootstrap3.client.ui.Popover;
 import org.gwtbootstrap3.client.ui.constants.Styles;
+import org.gwtbootstrap3.client.ui.constants.Trigger;
+import org.gwtbootstrap3.client.ui.html.Span;
 
 import com.google.gwt.event.dom.client.BlurEvent;
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.ui.FocusWidget;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 public class ControlHelper implements IControlUpdateListener {
+	
 	private BaseDictionaryControl<?, ?> baseControl;
 
 	private final UIObject uiObject;
@@ -40,7 +45,7 @@ public class ControlHelper implements IControlUpdateListener {
 	private final IGwtControl gwtControl;
 
 	private boolean isUpdating = false;
-
+	
 	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener) {
 		this(uiObject, baseControl, gwtControl, addValueChangeListener, true, true);
 	}
@@ -117,13 +122,14 @@ public class ControlHelper implements IControlUpdateListener {
 			gwtControl.setContent(baseControl.getValue());
 			isUpdating = false;
 		}
-
+		
 		if (baseControl.getValidationMessages().hasErrors()) {
-			uiObject.addStyleName(GwtStyles.FORM_CONTROL_ERROR);
+			uiObject.getElement().getParentElement().addClassName(GwtStyles.FORM_CONTROL_ERROR);
 			Map<String, Object> context = CollectionUtils.getMap(IBaseControlModel.EDITOR_LABEL_MESSAGE_KEY, DictionaryModelUtil.getEditorLabel(baseControl.getModel()));
+			gwtControl.showMessages(baseControl.getValidationMessages());
 			uiObject.setTitle(baseControl.getValidationMessages().getValidationMessageString(context));
 		} else {
-			uiObject.removeStyleName(GwtStyles.FORM_CONTROL_ERROR);
+			uiObject.getElement().getParentElement().removeClassName(GwtStyles.FORM_CONTROL_ERROR);
 			uiObject.setTitle("");
 		}
 

@@ -179,7 +179,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 				setVO(result.getValue());
 				MangoClientWeb.EVENT_BUS.fireEvent(new VOSavedEvent(result.getValue()));
 			} else {
-				DictionaryEditor.this.addValidationMessages(result.getValidationMessages());
+				DictionaryEditor.this.setValidationMessages(result.getValidationMessages());
 			}
 
 			DictionaryEditor.this.update();
@@ -194,7 +194,11 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 		fireUpdateListeners();
 	}
 
-	protected void addValidationMessages(List<IValidationMessage> validationMessages) {
+	protected void setValidationMessages(List<IValidationMessage> validationMessages) {
+
+		for (BaseDictionaryElement baseDictionaryElement : this.getAllChildren()) {
+			baseDictionaryElement.clearValidationMessages();
+		}
 
 		Map<String, Object> messageContext = new HashMap<String, Object>();
 		messageContext.put(IValidationMessage.DICTIONARY_EDITOR_LABEL_CONTEXT_KEY, DictionaryModelUtil.getEditorLabel(dictionaryModel));
