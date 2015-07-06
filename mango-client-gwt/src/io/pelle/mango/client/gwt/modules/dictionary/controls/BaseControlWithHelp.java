@@ -21,7 +21,6 @@ import org.gwtbootstrap3.client.ui.Popover;
 import org.gwtbootstrap3.client.ui.constants.Placement;
 import org.gwtbootstrap3.client.ui.constants.Trigger;
 
-import com.google.common.collect.Iterables;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -57,7 +56,7 @@ public class BaseControlWithHelp<CONTROL_TYPE extends Widget> extends Composite 
 		popover.setPlacement(Placement.RIGHT);
 		popover.setTrigger(Trigger.FOCUS);
 		popover.setIsHtml(true);
-		
+
 		if (baseControlModel.getHelpText() != null) {
 
 			helpLabel = new Label(MangoClientWeb.MESSAGES.helpShort());
@@ -85,12 +84,12 @@ public class BaseControlWithHelp<CONTROL_TYPE extends Widget> extends Composite 
 	}
 
 	public void showMessages(IValidationMessages validationMessages) {
-		
+
 		if (validationMessages.count() > 0) {
 			popover.setContent(validationMessages.asHtml());
 			popover.reconfigure();
 		}
-		
+
 	}
 
 	public CONTROL_TYPE getWidget() {
