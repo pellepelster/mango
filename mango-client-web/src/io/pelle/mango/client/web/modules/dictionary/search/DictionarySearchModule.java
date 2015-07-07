@@ -52,7 +52,7 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 	}
 
 	public static final String getSearchQueryResultModuleLocator(String searchText) {
-		return ModuleUtils.getBaseUIModuleUrl(SEARCH_QUERY_RESULT_UI_MODULE_ID) + "&" + SEARCHTEXT_PARAMETER_ID + "=" + searchText;
+		return ModuleUtils.getBaseUIModuleUrl(SEARCH_QUERY_RESULT_UI_MODULE_ID) + "&" + SEARCHTEXT_PARAMETER_ID + "=" + searchText + "&" + SEARCHTIMESTAMP_PARAMETER_ID + "=" + System.currentTimeMillis();
 	}
 
 	private IDictionaryModel dictionaryModel;

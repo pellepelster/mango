@@ -240,6 +240,9 @@ project Mango {
 					parameter SearchText {
 						type string
 					} 
+					parameter SearchTimestamp {
+						type integer
+					} 
 				}
 			}
 
