@@ -21,6 +21,46 @@ public class SearchServiceTest extends BaseDemoTest {
 	private ISearchService searchService;
 
 	@Test
+	public void testSearchIndex1Limit() {
+
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+		baseEntityService.deleteAll(CountryVO.class.getName());
+
+		for (int i = 0; i < 100; i++) {
+			CountryVO country = new CountryVO();
+			country.setCountryName("aa country" + i);
+			baseEntityService.create(country);
+		}
+
+		for (int i = 0; i < 100; i++) {
+			CompanyVO company = new CompanyVO();
+			company.setName("aa company" + i);
+			baseEntityService.create(company);
+		}
+
+		List<SearchResultItem> result = searchService.search("index1", "aa");
+		assertEquals(50, result.size());
+	}
+
+	@Test
+	public void testSearchIndex1CaseInsensivity() {
+
+		baseEntityService.deleteAll(CompanyVO.class.getName());
+		baseEntityService.deleteAll(CountryVO.class.getName());
+
+		CountryVO country1 = new CountryVO();
+		country1.setCountryName("aa country");
+		country1 = baseEntityService.create(country1);
+
+		CountryVO country2 = new CountryVO();
+		country2.setCountryName("AA country");
+		country2 = baseEntityService.create(country2);
+
+		List<SearchResultItem> result = searchService.search("index1", "aa");
+		assertEquals(2, result.size());
+	}
+
+	@Test
 	public void testSearchIndex1() {
 
 		baseEntityService.deleteAll(CompanyVO.class.getName());

@@ -43,8 +43,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Panel;
 
-public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements
-		IModuleUpdateListener {
+public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends BaseDictionaryModuleUI<DictionarySearchModule<VOType>> implements IModuleUpdateListener {
 
 	private static final String DICTIONARY_SEARCH_RESULT_PANEL_STYLE = "dictionarySearchResultPanel";
 
@@ -71,10 +70,6 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 		container.add(title);
 		container.setWidth("100%");
 
-		resultContainer = new Div();
-		container.add(resultContainer);
-		resultContainer.addStyleName(DICTIONARY_SEARCH_RESULT_PANEL_STYLE);
-
 		module.addUpdateListener(this);
 		showResults(Collections.<SearchResultItem> emptyList());
 	}
@@ -92,9 +87,13 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 
 	public void showResults(List<SearchResultItem> result) {
 
-		for (int i = 0; i < resultContainer.getWidgetCount(); i++) {
-			resultContainer.remove(i);
+		if (resultContainer != null) {
+			resultContainer.removeFromParent();
 		}
+
+		resultContainer = new Div();
+		container.add(resultContainer);
+		resultContainer.addStyleName(DICTIONARY_SEARCH_RESULT_PANEL_STYLE);
 
 		if (result.size() == 0) {
 			Div noSearchResults = new Div();
@@ -110,7 +109,7 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 
 				Hyperlink title = new Hyperlink();
 				title.setText(DictionaryUtil.getLabel(dictionaryModel) + ": " + searchResultItem.getLabel());
-				
+
 				title.addHandler(new ClickHandler() {
 
 					@Override
@@ -127,8 +126,7 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 
 				for (Map.Entry<String, String> attributeEntry : searchResultItem.getAttributes().entrySet()) {
 
-					Optional<IBaseControlModel> baseControlModel = DictionaryModelQuery.create(dictionaryModel).getControls()
-							.getControlModelByAttributePath(attributeEntry.getKey());
+					Optional<IBaseControlModel> baseControlModel = DictionaryModelQuery.create(dictionaryModel).getControls().getControlModelByAttributePath(attributeEntry.getKey());
 
 					if (baseControlModel.isPresent()) {
 

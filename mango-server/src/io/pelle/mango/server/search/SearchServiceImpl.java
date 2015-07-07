@@ -23,8 +23,11 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 public class SearchServiceImpl implements ISearchService {
+
+	private static final int MAX_SEARCH_RESULTS = 50;
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
@@ -33,7 +36,7 @@ public class SearchServiceImpl implements ISearchService {
 
 	private SearchIndexBuilder defaultSearchIndexBuilder = null;
 
-	private SelectQuery<? extends IBaseVO> getSelectQuery(DictionaryIndex voEntityIndex, String value) {
+	private Optional<SelectQuery<? extends IBaseVO>> getSelectQuery(DictionaryIndex voEntityIndex, String value) {
 
 		SelectQuery<? extends IBaseVO> query = (SelectQuery<? extends IBaseVO>) SelectQuery.selectFrom(voEntityIndex.getVOEntityClass());
 
@@ -41,12 +44,13 @@ public class SearchServiceImpl implements ISearchService {
 
 			if (attributeDescriptor instanceof StringAttributeDescriptor) {
 				StringAttributeDescriptor stringAttributeDescriptor = (StringAttributeDescriptor) attributeDescriptor;
-				query.addWhereOr(stringAttributeDescriptor.like(value));
+				query.addWhereOr(stringAttributeDescriptor.caseInsensitiveLike(value));
+			} else {
+				return Optional.absent();
 			}
-
 		}
 
-		return query;
+		return Optional.<SelectQuery<? extends IBaseVO>> of(query);
 	}
 
 	private SearchIndexBuilder getSearchIndexBuilder(final String indexId) {
@@ -81,37 +85,40 @@ public class SearchServiceImpl implements ISearchService {
 		if (StringUtils.isEmpty(search)) {
 			return Collections.emptyList();
 		}
-		
+
 		List<SearchResultItem> searchResults = new ArrayList<SearchResultItem>();
 
 		for (final DictionaryIndex dictionaryIndex : getSearchIndexBuilder(indexId).getVOEntities()) {
 
-			SelectQuery<? extends IBaseVO> selectQuery = getSelectQuery(dictionaryIndex, search);
+			Optional<SelectQuery<? extends IBaseVO>> selectQuery = getSelectQuery(dictionaryIndex, search);
 
-			List<? extends IBaseVO> result = baseEntityService.filter(selectQuery);
+			if (selectQuery.isPresent()) {
+				selectQuery.get().loadNaturalKeyReferences(true);
+				List<? extends IBaseVO> result = baseEntityService.filter(selectQuery.get());
 
-			searchResults.addAll(Collections2.transform(result, new Function<IBaseVO, SearchResultItem>() {
+				searchResults.addAll(Collections2.transform(result, new Function<IBaseVO, SearchResultItem>() {
 
-				@Override
-				public SearchResultItem apply(IBaseVO baseVO) {
-					SearchResultItem searchResultItem = new SearchResultItem();
+					@Override
+					public SearchResultItem apply(IBaseVO baseVO) {
+						SearchResultItem searchResultItem = new SearchResultItem();
 
-					searchResultItem.setDictionaryId(dictionaryIndex.getDictionaryId());
-					searchResultItem.setId(baseVO.getId());
-					searchResultItem.setLabel(DictionaryUtil.getLabel(dictionaryIndex.getDictionaryModel(), baseVO));
-					
-					for(IAttributeDescriptor<?> attributeDescriptor : dictionaryIndex.getAttributeDescriptors()) {
-						String attributeName = attributeDescriptor.getAttributeName();
-						searchResultItem.getAttributes().put(attributeName, Objects.toString(baseVO.get(attributeName)));
+						searchResultItem.setDictionaryId(dictionaryIndex.getDictionaryId());
+						searchResultItem.setId(baseVO.getId());
+						searchResultItem.setLabel(DictionaryUtil.getLabel(dictionaryIndex.getDictionaryModel(), baseVO));
+
+						for (IAttributeDescriptor<?> attributeDescriptor : dictionaryIndex.getAttributeDescriptors()) {
+							String attributeName = attributeDescriptor.getAttributeName();
+							searchResultItem.getAttributes().put(attributeName, Objects.toString(baseVO.get(attributeName)));
+						}
+
+						return searchResultItem;
 					}
-					
-					return searchResultItem;
-				}
-			}));
+				}));
+			}
 
 		}
 
-		return searchResults;
+		return Lists.newArrayList(Iterables.limit(searchResults, MAX_SEARCH_RESULTS));
 	}
 
 	@Autowired(required = false)
