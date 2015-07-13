@@ -109,7 +109,7 @@ class EntityGenerator extends BaseEntityGenerator {
 
 			@Id
 			@Column(name = "«entity.entityTableIdColumnName»")
-			@GeneratedValue(strategy = GenerationType.AUTO, generator = "«entity.entityTableIdSequenceName»")
+			@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "«entity.entityTableIdSequenceName»")
 			@SequenceGenerator(name = "«entity.entityTableIdSequenceName»", sequenceName = "«entity.entityTableIdSequenceName»", allocationSize = 1)
 			private long id;
 			«getterSetter("long", "id")»
