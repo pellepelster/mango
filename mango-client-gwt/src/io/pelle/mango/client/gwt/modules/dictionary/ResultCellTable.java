@@ -22,8 +22,10 @@ import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
 import java.util.Set;
 
 import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.client.ui.ProvidesResize;
+import com.google.gwt.user.client.ui.RequiresResize;
 
-public class ResultCellTable<VOType extends IBaseVO> extends BaseCellTable<VOType> {
+public class ResultCellTable<VOType extends IBaseVO> extends BaseCellTable<VOType> implements ProvidesResize, RequiresResize {
 
 	private DictionaryResult<VOType> dictionaryResult;
 
@@ -43,6 +45,11 @@ public class ResultCellTable<VOType extends IBaseVO> extends BaseCellTable<VOTyp
 	@Override
 	public Set<String> getHighlightedTexts() {
 		return dictionaryResult.getHighlightTexts();
+	}
+
+	@Override
+	public void onResize() {
+		int parentClientheight = getParent().getElement().getClientHeight();
 	}
 
 }

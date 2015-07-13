@@ -14,6 +14,12 @@ package io.pelle.mango.client.gwt;
 import io.pelle.mango.client.base.db.vos.UUID;
 import io.pelle.mango.client.base.layout.ILayoutFactory;
 import io.pelle.mango.client.base.layout.IModuleUI;
+import io.pelle.mango.client.gwt.elements.ResizeColumn;
+import io.pelle.mango.client.gwt.elements.ResizeContainer;
+import io.pelle.mango.client.gwt.elements.ResizePanel;
+import io.pelle.mango.client.gwt.elements.ResizePanelCollapse;
+import io.pelle.mango.client.gwt.elements.ResizePanelGroup;
+import io.pelle.mango.client.gwt.elements.ResizeRow;
 import io.pelle.mango.client.gwt.modules.dictionary.editor.DictionaryEditorModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.search.DictionarySearchModuleUIFactory;
 import io.pelle.mango.client.gwt.modules.hierarchical.HierarchicalTreeModuleUIFactory;
@@ -33,13 +39,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.gwtbootstrap3.client.ui.Anchor;
-import org.gwtbootstrap3.client.ui.Column;
-import org.gwtbootstrap3.client.ui.Container;
 import org.gwtbootstrap3.client.ui.Heading;
-import org.gwtbootstrap3.client.ui.PanelCollapse;
 import org.gwtbootstrap3.client.ui.PanelGroup;
 import org.gwtbootstrap3.client.ui.PanelHeader;
-import org.gwtbootstrap3.client.ui.Row;
 import org.gwtbootstrap3.client.ui.constants.ColumnSize;
 import org.gwtbootstrap3.client.ui.constants.HeadingSize;
 import org.gwtbootstrap3.client.ui.constants.PanelType;
@@ -94,14 +96,14 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 			Panel moduleContainer = moduleUI.getContainer();
 			moduleContainer.addStyleName(GwtStyles.MODULE);
 
-			if (widget instanceof PanelGroup) {
+			if (widget instanceof ResizePanelGroup) {
 
 				String containerId = moduleUI.getModule().getModuleId();
-				PanelGroup panelGroup = (PanelGroup) widget;
-				PanelCollapse panelCollapse = new PanelCollapse();
+				ResizePanelGroup panelGroup = (ResizePanelGroup) widget;
+				ResizePanelCollapse panelCollapse = new ResizePanelCollapse();
 				panelCollapse.setId(containerId);
 
-				org.gwtbootstrap3.client.ui.Panel containerPanel = new org.gwtbootstrap3.client.ui.Panel(PanelType.DEFAULT);
+				ResizePanel containerPanel = new ResizePanel(PanelType.DEFAULT);
 
 				// create header
 				PanelHeader panelHeader = new PanelHeader();
@@ -114,13 +116,6 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 				heading.add(anchor);
 				panelHeader.add(heading);
 				containerPanel.add(panelHeader);
-
-				// Widget title = new
-				// HtmlWithHelp(MangoClientWeb.MESSAGES.panelTitle(moduleUI.getTitle()),
-				// moduleUI.getModule().getHelpText());
-				// title.getElement().getStyle().setProperty("transform",
-				// "translateY(40%");
-				// title.setStylePrimaryName(GwtStyles.H4_CLASS);
 
 				int beforeIndex = 0;
 
@@ -179,7 +174,7 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 
 	private final Map<Direction, PanelLayoutInfo> containers = new HashMap<DockLayoutPanel.Direction, PanelLayoutInfo>();
 
-	private final Container rootContainer;
+	private final ResizeContainer rootContainer;
 
 	/**
 	 * Constructor for {@link MangoBootstrapLayoutFactory}
@@ -196,11 +191,12 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new WebhookModuleUIFactory());
 		ModuleUIFactoryRegistry.getInstance().addModuleFactory(new PropertyModuleUIFactory());
 
-		rootContainer = new Container();
+		rootContainer = new ResizeContainer();
 		rootContainer.setId(ROOT_CONTAINER_CSS_ID);
 		rootContainer.setFluid(true);
 
-		row = new Row();
+		row = new ResizeRow();
+		row.setHeight("100%");
 		rootContainer.add(row);
 
 		initializePanelLayout(Direction.WEST, true);
@@ -223,9 +219,9 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 		});
 	}
 
-	private Map<PanelGroup, List<IModuleUI<Panel, ?>>> panelGroupMappings = new HashMap<PanelGroup, List<IModuleUI<Panel, ?>>>();
+	private Map<ResizePanelGroup, List<IModuleUI<Panel, ?>>> panelGroupMappings = new HashMap<>();
 
-	private Row row;
+	private ResizeRow row;
 
 	private Direction getDirection(String location) {
 		try {
@@ -241,10 +237,10 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 
 		switch (direction) {
 		case CENTER:
-			container = new Column(ColumnSize.MD_10);
+			container = new ResizeColumn(ColumnSize.MD_10);
 			break;
 		case WEST:
-			container = new Column(ColumnSize.MD_2);
+			container = new ResizeColumn(ColumnSize.MD_2);
 			break;
 		default:
 			throw new RuntimeException("unsupported direction '" + direction.toString() + "'");
@@ -253,18 +249,16 @@ public class MangoBootstrapLayoutFactory implements ILayoutFactory<Panel, Widget
 		container.getElement().setId(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase());
 		container.setStyleName(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase(), true);
 		container.setStyleName(CONTAINER_CSS_ID, true);
+		container.setHeight("100%");
 
 		row.add(container);
 
 		if (supportsMultipleChildren) {
-			PanelGroup panelGroup = new PanelGroup();
+			ResizePanelGroup panelGroup = new ResizePanelGroup();
 			panelGroup.setWidth("100%");
 			panelGroup.setId(UUID.uuid());
 
-			panelGroup.getElement().setId(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase());
-			panelGroup.setStyleName(CONTAINER_MULTIPLE_CSS_ID + "-" + direction.toString().toLowerCase(), true);
 			panelGroup.setStyleName(CONTAINER_MULTIPLE_CSS_ID, true);
-			panelGroup.setStyleName(CONTAINER_CSS_ID + "-" + direction.toString().toLowerCase(), true);
 			panelGroup.setStyleName(CONTAINER_CSS_ID, true);
 
 			panelGroupMappings.put(panelGroup, new ArrayList<IModuleUI<Panel, ?>>());

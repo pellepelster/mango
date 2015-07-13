@@ -14,11 +14,10 @@ package io.pelle.mango.client.gwt.modules.dictionary;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.TableUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.gwt.elements.ResizeDiv;
 import io.pelle.mango.client.web.modules.dictionary.result.DictionaryResult;
 
-import org.gwtbootstrap3.client.ui.html.Div;
-
-public class DictionaryResultPanel<VOType extends IBaseVO> extends Div {
+public class DictionaryResultPanel<VOType extends IBaseVO> extends ResizeDiv {
 
 	private final ResultCellTable<VOType> resultCellTable;
 
@@ -26,6 +25,7 @@ public class DictionaryResultPanel<VOType extends IBaseVO> extends Div {
 
 		resultCellTable = new ResultCellTable<VOType>(dictionaryResult);
 		resultCellTable.setWidth("100%");
+		resultCellTable.setPageSize(resultCellTable.DEFAULT_PAGESIZE);
 
 		dictionaryResult.addTableUpdateListeners(new TableUpdateListener() {
 			@Override

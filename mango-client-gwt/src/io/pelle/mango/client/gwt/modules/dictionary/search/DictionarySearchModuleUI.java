@@ -14,6 +14,7 @@ package io.pelle.mango.client.gwt.modules.dictionary.search;
 import io.pelle.mango.client.base.module.ModuleUtils;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.GwtStyles;
+import io.pelle.mango.client.gwt.elements.ResizeDiv;
 import io.pelle.mango.client.gwt.modules.dictionary.ActionBar;
 import io.pelle.mango.client.gwt.modules.dictionary.BaseDictionaryModuleUI;
 import io.pelle.mango.client.gwt.modules.dictionary.DictionaryFilterPanel;
@@ -23,8 +24,6 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
 import io.pelle.mango.client.web.modules.dictionary.search.ISearchUpdateListener;
-
-import org.gwtbootstrap3.client.ui.html.Div;
 
 import com.google.common.base.Objects;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,7 +42,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 	private static final String DICTIONARY_SEARCH_BUTTON_DEBUG_ID = "DictionarySearchButton";
 
-	private final Div container;
+	private final ResizeDiv container;
 
 	private final HtmlWithHelp searchTitle;
 
@@ -53,10 +52,11 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 	public DictionarySearchModuleUI(final DictionarySearchModule<VOType> module) {
 		super(module, DictionarySearchModule.SEARCH_UI_MODULE_ID);
 
-		container = new Div();
+		container = new ResizeDiv();
 		container.addStyleName(GwtStyles.DEBUG_BORDER);
 		container.ensureDebugId(DictionarySearchModule.MODULE_ID + "-" + module.getDictionaryModel().getName());
 		container.setWidth("100%");
+		container.setHeight("100%");
 
 		// - action panel ------------------------------------------------------
 		ActionBar actionBar = new ActionBar();

@@ -9,9 +9,15 @@
 .top-spacer {
   margin-top: 1.5em;
 }
+.mango-bootstrap-layout-multiple-container {
+  border: 0px;
+}
 .mango-bootstrap-layout-container-west {
   padding-right: 0px;
   padding-left: 0px;
+  border-right: 1px solid #b1b3cc;
+  padding-right: 1em;
+  border-radius: 0px;
 }
 .mango-bootstrap-layout-multiple-container .mango-module {
   padding-left: 0em;
