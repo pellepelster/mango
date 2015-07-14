@@ -5,13 +5,13 @@
 
 	<New id="jdbcUrl" class="java.lang.StringBuilder">
 	 	<Call name="append">
-	      <Arg>jdbc:derby:</Arg>
+	      <Arg>jdbc:hsqldb:file:</Arg>
 	    </Call>
 	 	<Call name="append">
 			<Arg><Call class="java.lang.System" name="getProperty"><Arg>java.io.tmpdir</Arg></Call></Arg>
 	    </Call>
 	 	<Call name="append">
-	      <Arg>/mangodemo-db;create=true;</Arg>
+	      <Arg>/mangodemo-db</Arg>
 	    </Call>
  	</New>
 
@@ -20,7 +20,7 @@
 		<Arg>jdbc/mangodemo</Arg>
 		<Arg>
             <New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
-                <Set name="driverClassName">org.apache.derby.jdbc.EmbeddedDriver</Set>
+                <Set name="driverClassName">org.hsqldb.jdbcDriver</Set>
                 <Set name="url"><Ref id="jdbcUrl"><Call name="toString" /></Ref></Set>
                 <Set name="username">mangodemo</Set>
                 <Set name="password">mangodemo</Set>
