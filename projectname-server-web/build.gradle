@@ -9,7 +9,7 @@ buildscript {
 
 	dependencies {
 		classpath (group: 'com.sahlbach.gradle', name: 'gradle-jetty-eclipse-plugin', version: '1.9.+')
-		classpath "org.apache.derby:derby:10.9.1.0"
+		classpath  group: "org.hsqldb", name: "hsqldb", version: "2.3.3"
 		classpath 'commons-dbcp:commons-dbcp:1.4'
 	}
 }
