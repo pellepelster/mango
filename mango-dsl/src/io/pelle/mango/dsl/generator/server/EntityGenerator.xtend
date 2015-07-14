@@ -84,9 +84,11 @@ class EntityGenerator extends BaseEntityGenerator {
 		package «entity.packageName»;
 		
 		import javax.persistence.*;
+		import org.hibernate.annotations.GenericGenerator;
 		
 		@Entity
 		@Table(name = "«entity.entityTableName»")
+		@GenericGenerator( name="«entity.name.toLowerCase()»_generator", strategy="native")
 		«IF EntityQuery.isExtendedByOtherEntity(entity)»
 		@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.JOINED)
 		«««@javax.persistence.DiscriminatorColumn(name="discriminator", discriminatorType=DiscriminatorType.STRING)
@@ -109,8 +111,8 @@ class EntityGenerator extends BaseEntityGenerator {
 
 			@Id
 			@Column(name = "«entity.entityTableIdColumnName»")
-			@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "«entity.entityTableIdSequenceName»")
-			@SequenceGenerator(name = "«entity.entityTableIdSequenceName»", sequenceName = "«entity.entityTableIdSequenceName»", allocationSize = 1)
+			
+			@GeneratedValue(generator = "«entity.name.toLowerCase()»_generator" )
 			private long id;
 			«getterSetter("long", "id")»
 			«ENDIF»
