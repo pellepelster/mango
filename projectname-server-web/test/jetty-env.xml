@@ -1,18 +1,17 @@
 <?xml version="1.0"?>
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
-<!-- <Configure class="org.eclipse.jetty.webapp.WebAppContext">  -->
+
 <Configure class="org.eclipse.jetty.server.Server">
 	<New id="jdbc/projectname" class="org.eclipse.jetty.plus.jndi.Resource">
 		<Arg></Arg>
 		<Arg>jdbc/projectname</Arg>
 		<Arg>
-            <New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
-                <Set name="driverClassName">org.hsqldb.jdbcDriver</Set>
-                <Set name="url">jdbc:hsqldb:file:projectname</Set>
-                <Set name="username"></Set>
-                <Set name="password"></Set>
-            </New>
-		
+			<New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
+				<Set name="driverClassName">org.hsqldb.jdbcDriver</Set>
+				<Set name="url">jdbc:hsqldb:file:projectname</Set>
+				<Set name="username">projectname</Set>
+				<Set name="password">projectname</Set>
+			</New>
 		</Arg>
 	</New>
 </Configure>
