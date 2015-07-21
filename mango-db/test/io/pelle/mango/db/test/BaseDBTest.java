@@ -26,6 +26,20 @@ public abstract class BaseDBTest extends AbstractTransactionalJUnit4SpringContex
 	public BaseDBTest(String jndiName) {
 		super();
 
+		/**
+		 * BasicDataSource dataSource = new BasicDataSource();
+		 * 
+		 * dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+		 * dataSource.setUrl("jdbc:hsqldb:mem:example");
+		 * 
+		 * SimpleNamingContextBuilder builder = new
+		 * SimpleNamingContextBuilder();
+		 * builder.bind("java:comp/env/jdbc/mangodemo", dataSource); try {
+		 * builder.activate(); } catch (Exception e) { throw new
+		 * RuntimeException(e); }
+		 * 
+		 */
+
 		SimpleNamingContextBuilder builder;
 		try {
 			builder = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
@@ -35,7 +49,7 @@ public abstract class BaseDBTest extends AbstractTransactionalJUnit4SpringContex
 
 		String tempDir = System.getProperty("java.io.tmpdir");
 
-		DataSource ds = new SingleConnectionDataSource(String.format("jdbc:derby:%s/%s_%s;create=true", tempDir, jndiName, UUID.randomUUID().toString()), jndiName, "", true);
+		DataSource ds = new SingleConnectionDataSource(String.format("jdbc:hsqldb:file:%s/%s_%s", tempDir, jndiName, UUID.randomUUID().toString()), jndiName, "", true);
 		builder.bind(String.format("java:comp/env/jdbc/%s", jndiName), ds);
 
 	}

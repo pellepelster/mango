@@ -8,7 +8,7 @@
 		<Arg>
 			<New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
 				<Set name="driverClassName">org.hsqldb.jdbcDriver</Set>
-				<Set name="url">jdbc:hsqldb:file:projectname</Set>
+				<Set name="url">jdbc:hsqldb:file:./projectname-db/projectname</Set>
 				<Set name="username">projectname</Set>
 				<Set name="password">projectname</Set>
 			</New>
