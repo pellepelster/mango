@@ -51,7 +51,7 @@ dependencies {
 	testCompile group: "org.apache.tomcat", name: "dbcp", version: '6.0.39'
 	testCompile group: "com.github.tomakehurst", name: "wiremock", version: "1.53"
 	testCompile group: 'io.pelle.mango', name: 'mango-db', version: '+', configuration: 'testArtifacts'
-	 
+	  
 }
 
 jettyEclipse { 
