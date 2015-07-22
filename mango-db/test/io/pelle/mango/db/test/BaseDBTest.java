@@ -1,11 +1,7 @@
 package io.pelle.mango.db.test;
 
-import java.util.UUID;
-
-import javax.sql.DataSource;
-
+import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.junit.runner.RunWith;
-import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -24,10 +20,9 @@ public abstract class BaseDBTest extends AbstractTransactionalJUnit4SpringContex
 	public BaseDBTest(String jndiName) {
 		super();
 
-//		BasicDataSource dataSource = new BasicDataSource();
-//
-//		dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-//		dataSource.setUrl("jdbc:hsqldb:mem:example");
+		BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
+		dataSource.setUrl("jdbc:hsqldb:mem:" + jndiName);
 
 		SimpleNamingContextBuilder builder;
 		try {
@@ -36,10 +31,7 @@ public abstract class BaseDBTest extends AbstractTransactionalJUnit4SpringContex
 			throw new RuntimeException(e);
 		}
 
-		String tempDir = System.getProperty("java.io.tmpdir");
-
-		DataSource ds = new SingleConnectionDataSource(String.format("jdbc:hsqldb:mem:example"), jndiName, "", true);
-		builder.bind(String.format("java:comp/env/jdbc/%s", jndiName), ds);
+		builder.bind(String.format("java:comp/env/jdbc/%s", jndiName), dataSource);
 
 	}
 
