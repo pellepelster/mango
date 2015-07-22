@@ -8,19 +8,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.demo.server.BaseDemoTest;
-import io.pelle.mango.demo.server.test.Entity1;
-import io.pelle.mango.demo.server.test.Entity2;
-import io.pelle.mango.demo.server.test.Entity3;
-import io.pelle.mango.demo.server.test.Entity4;
-import io.pelle.mango.demo.server.test.Entity5;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.sql.DataSource;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -29,10 +21,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Optional;
 
-public class DemoBaseEntityDAOTest extends BaseDemoTest {
+import io.pelle.mango.db.dao.IBaseEntityDAO;
+import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.test.Entity1;
+import io.pelle.mango.demo.server.test.Entity2;
+import io.pelle.mango.demo.server.test.Entity3;
+import io.pelle.mango.demo.server.test.Entity4;
+import io.pelle.mango.demo.server.test.Entity5;
 
-	@Autowired
-	private DataSource dataSource;
+public class DemoBaseEntityDAOTest extends BaseDemoTest {
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -45,8 +42,8 @@ public class DemoBaseEntityDAOTest extends BaseDemoTest {
 		baseEntityDAO.deleteAll(Entity1.class);
 		baseEntityDAO.deleteAll(Entity2.class);
 		baseEntityDAO.deleteAll(Entity3.class);
-		baseEntityDAO.deleteAll(Entity4.class);
 		baseEntityDAO.deleteAll(Entity5.class);
+		baseEntityDAO.deleteAll(Entity4.class);
 	}
 
 	@Test
