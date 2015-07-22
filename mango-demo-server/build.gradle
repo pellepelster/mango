@@ -73,6 +73,6 @@ task jettyEclipseRunDaemon() {
 	} 
 }
 
-test.dependsOn(jettyEclipseRunDaemon)
-jmeterRun.dependsOn(jettyEclipseRunDaemon)
+//test.dependsOn(jettyEclipseRunDaemon)
+//jmeterRun.dependsOn(jettyEclipseRunDaemon)
 jettyEclipseRunDaemon.dependsOn(war)

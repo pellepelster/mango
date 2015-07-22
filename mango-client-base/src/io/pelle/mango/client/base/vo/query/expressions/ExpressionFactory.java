@@ -50,7 +50,7 @@ public class ExpressionFactory {
 
 	}
 
-	public static IBooleanExpression createLongExpression(Class<? extends IBaseVO> clazz, String attributePath, long value) {
+	public static IBooleanExpression createLongExpression(Class<? extends IVOEntity> clazz, String attributePath, long value) {
 
 		IBooleanExpression compareExpression = null;
 

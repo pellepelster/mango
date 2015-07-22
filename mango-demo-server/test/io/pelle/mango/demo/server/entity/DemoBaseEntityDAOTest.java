@@ -8,6 +8,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import io.pelle.mango.db.dao.IBaseEntityDAO;
+import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.test.Entity1;
+import io.pelle.mango.demo.server.test.Entity2;
+import io.pelle.mango.demo.server.test.Entity3;
+import io.pelle.mango.demo.server.test.Entity4;
+import io.pelle.mango.demo.server.test.Entity5;
+import io.pelle.mango.demo.server.test.Entity6;
+import io.pelle.mango.demo.server.test.Entity7;
 
 import java.util.List;
 
@@ -21,14 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Optional;
 
-import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.demo.server.BaseDemoTest;
-import io.pelle.mango.demo.server.test.Entity1;
-import io.pelle.mango.demo.server.test.Entity2;
-import io.pelle.mango.demo.server.test.Entity3;
-import io.pelle.mango.demo.server.test.Entity4;
-import io.pelle.mango.demo.server.test.Entity5;
-
 public class DemoBaseEntityDAOTest extends BaseDemoTest {
 
 	@PersistenceContext
@@ -39,9 +40,11 @@ public class DemoBaseEntityDAOTest extends BaseDemoTest {
 
 	@Before
 	public void initTestData() {
+		baseEntityDAO.deleteAll(Entity7.class);
 		baseEntityDAO.deleteAll(Entity1.class);
-		baseEntityDAO.deleteAll(Entity2.class);
 		baseEntityDAO.deleteAll(Entity3.class);
+		baseEntityDAO.deleteAll(Entity2.class);
+		baseEntityDAO.deleteAll(Entity6.class);
 		baseEntityDAO.deleteAll(Entity5.class);
 		baseEntityDAO.deleteAll(Entity4.class);
 	}
@@ -277,8 +280,6 @@ public class DemoBaseEntityDAOTest extends BaseDemoTest {
 	@Test
 	public void testFilterFirstLevelAttributesNotNull() {
 
-		baseEntityDAO.deleteAll(Entity1.class);
-
 		Entity1 newEntity1 = new Entity1();
 		newEntity1.setStringDatatype1("xxx");
 
@@ -294,8 +295,10 @@ public class DemoBaseEntityDAOTest extends BaseDemoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testCreateStringList() {
 
+		// TODO bulk delete for embedded collections or find something better
 		Entity1 newEntity = new Entity1();
 		newEntity.getStringDatatype1List().add("xxx");
 

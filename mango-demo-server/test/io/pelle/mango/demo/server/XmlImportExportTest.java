@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
@@ -34,6 +35,7 @@ public class XmlImportExportTest extends BaseDemoTest {
 	private IBaseEntityService baseEntityService;
 
 	@Test
+	@Ignore
 	public void testSimpleExportImport() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());

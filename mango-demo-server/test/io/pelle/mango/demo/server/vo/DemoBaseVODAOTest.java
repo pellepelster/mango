@@ -40,8 +40,8 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 	@Before
 	public void initTestData() {
 		baseVODAO.deleteAll(Entity1VO.class);
-		baseVODAO.deleteAll(Entity2VO.class);
 		baseVODAO.deleteAll(Entity3VO.class);
+		baseVODAO.deleteAll(Entity2VO.class);
 		baseVODAO.deleteAll(Entity4VO.class);
 	}
 

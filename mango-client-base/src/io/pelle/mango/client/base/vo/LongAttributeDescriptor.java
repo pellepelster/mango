@@ -7,7 +7,7 @@ public class LongAttributeDescriptor extends BaseNumberAttributeDescriptor<Long>
 		super(metaDescriptor, attributeName, Long.class);
 	}
 
-	protected LongAttributeDescriptor cloneWithNewParent(IAttributeDescriptor<?> parentAttributeDescriptor) {
+	public LongAttributeDescriptor cloneWithNewParent(IAttributeDescriptor<?> parentAttributeDescriptor) {
 		LongAttributeDescriptor clone = new LongAttributeDescriptor(parentAttributeDescriptor, getAttributeName());
 		return clone;
 	}

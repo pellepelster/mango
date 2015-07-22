@@ -92,7 +92,7 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	public <T extends IBaseEntity> void deleteAll(Class<T> entityClass) {
 		LOG.debug(String.format("deleting all '%s' entities", entityClass.getName()));
 
-		for (Object entity : getAll(entityClass)) {
+		for (IBaseEntity entity : getAll(entityClass)) {
 			this.entityManager.remove(entity);
 		}
 	}
@@ -293,8 +293,8 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 	@Override
 	public <T extends IBaseEntity> void delete(Class<T> entityClass, long id) {
-		DeleteQuery<T> query = DeleteQuery.deleteFrom(entityClass).where(IBaseVO.FIELD_ID.eq(id));
-		deleteQuery(query);
+		T entity = read(id, entityClass);
+		delete(entity);
 	}
 
 	@Override

@@ -35,6 +35,7 @@ import io.pelle.mango.demo.client.showcase.CurrencyVO;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
+import io.pelle.mango.demo.client.test.Entity3VO;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -60,6 +61,7 @@ public class DemoClientTest extends BaseDemoTest {
 	@Before
 	public void beforeEach() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
+		baseEntityService.deleteAll(Entity3VO.class.getName());
 		baseEntityService.deleteAll(Entity2VO.class.getName());
 		baseEntityService.deleteAll(CountryVO.class.getName());
 
@@ -498,6 +500,7 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testDictionary1EnumerationControlWithouEntityAttrbiute() {
 
 		final AtomicBoolean called = new AtomicBoolean(false);
@@ -528,6 +531,7 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testDictionary1EnumerationControl1() {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createTestDictionaryEditor1();

@@ -100,9 +100,7 @@ public abstract class AbstractEntityDAO<T extends IBaseEntity> implements IVOEnt
 
 	@Override
 	public void delete(long id) {
-		LongAttributeDescriptor idAttributeDescriptor = (LongAttributeDescriptor) VOClassQuery.createQuery(voEntityClass).attributesDescriptors().byName(IBaseVO.ID_FIELD_NAME).getSingleResult();
-		DeleteQuery<T> query = DeleteQuery.deleteFrom(voEntityClass).where(idAttributeDescriptor.eq(id));
-		baseEntityDAO.deleteQuery(query);
+		baseEntityDAO.delete(voEntityClass, id);
 	}
 
 	@Override
