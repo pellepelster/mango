@@ -1,5 +1,12 @@
 package io.pelle.mango.server.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -10,13 +17,6 @@ import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.db.util.BeanUtils;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.server.validator.IValidator;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class BaseEntityServiceImpl implements IBaseEntityService {
@@ -86,11 +86,13 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public <FilterVOType extends IBaseVO> List<FilterVOType> filter(SelectQuery<FilterVOType> selectQuery) {
 		return baseVODAO.filter(selectQuery);
 	}
 
 	@Override
+	@Transactional
 	public <DeleteVOType extends IBaseVO> void delete(DeleteVOType vo) {
 		baseVODAO.delete(vo);
 	}
@@ -111,6 +113,7 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteAll(String voClassName) {
 		baseVODAO.deleteAll(BeanUtils.getVOClass(voClassName));
 	}

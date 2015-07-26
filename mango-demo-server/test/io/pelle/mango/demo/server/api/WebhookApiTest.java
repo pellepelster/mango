@@ -14,13 +14,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import io.pelle.mango.client.api.webhook.WebhookVO;
-import io.pelle.mango.client.entity.IBaseEntityService;
-import io.pelle.mango.demo.client.showcase.CountryVO;
-import io.pelle.mango.demo.server.BaseDemoTest;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONCompareMode;
@@ -34,7 +31,13 @@ import org.springframework.web.context.WebApplicationContext;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 
+import io.pelle.mango.client.api.webhook.WebhookVO;
+import io.pelle.mango.client.entity.IBaseEntityService;
+import io.pelle.mango.demo.client.showcase.CountryVO;
+import io.pelle.mango.demo.server.tmp.BaseDemoTest;
+
 @WebAppConfiguration
+@Ignore
 public class WebhookApiTest extends BaseDemoTest {
 
 	@Rule

@@ -5,6 +5,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.gwt.editor.client.Editor.Ignore;
+
 import io.pelle.mango.client.api.webhook.WebhookVO;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
@@ -20,18 +31,8 @@ import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
 import io.pelle.mango.demo.client.test.Entity6VO;
 import io.pelle.mango.demo.client.test.Entity7VO;
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.tmp.BaseDemoTest;
 import io.pelle.mango.server.api.webhook.Webhook;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.gwt.editor.client.Editor.Ignore;
 
 public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
@@ -50,13 +51,12 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	@Before
 	public void initTestData() {
 		baseVODAO.deleteAll(Entity1VO.class);
-		baseVODAO.deleteAll(Entity3VO.class);
 		baseVODAO.deleteAll(Entity2VO.class);
 		baseVODAO.deleteAll(Entity6VO.class);
 		baseVODAO.deleteAll(Entity5VO.class);
 		baseVODAO.deleteAll(Entity4VO.class);
 	}
-	
+
 	@Test
 	public void testCreateInfoVOEntity() {
 
@@ -78,7 +78,6 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	@Test
 	public void testFilter() {
 
-
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setStringDatatype1("aaa");
 
@@ -93,7 +92,6 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 	@Test
 	public void testReadyByQuery() {
-
 
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setStringDatatype1("aaa");
@@ -113,11 +111,8 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 	}
 
-	// TODO delete embedded elementcolletion
 	@Test
-	@Ignore
 	public void testEntity1Enumeration1List() {
-
 
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setStringDatatype1("aaa");
@@ -132,7 +127,6 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 	@Test
 	public void testFilterLongGreaterEquals() {
-
 
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setStringDatatype1("aaa");
@@ -153,7 +147,6 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 
 	@Test
 	public void testFilterLongLessEquals() {
-
 
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setStringDatatype1("aaa");
@@ -219,7 +212,6 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	@Test
 	public void test() {
 
-
 		Entity2VO entity2VO = new Entity2VO();
 		entity2VO.setStringDatatype2("bbb");
 		assertTrue(baseEntityService.validateAndCreate(entity2VO).isOk());
@@ -241,6 +233,26 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 		assertTrue(baseEntityService.validateAndCreate(entity1).isOk());
 
 		assertTrue(baseEntityService.read(SelectQuery.selectFrom(Entity1VO.class)).getMetadata().isLoaded(Entity1VO.ENTITY2DATATYPE.getAttributeName()));
+	}
+
+	@Test
+	public void testDeleteAll() {
+
+		List<Entity1VO> entites = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
+		assertEquals(0, entites.size());
+
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1("aaa");
+		assertTrue(baseEntityService.validateAndCreate(entity1).isOk());
+
+		entites = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
+		assertEquals(1, entites.size());
+
+		baseEntityService.deleteAll(Entity1VO.class.getName());
+
+		entites = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
+		assertEquals(0, entites.size());
+
 	}
 
 	@Test
@@ -615,7 +627,6 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
-	@org.junit.Ignore
 	public void testDeleteQuery() {
 
 		Entity1VO entity1 = new Entity1VO();

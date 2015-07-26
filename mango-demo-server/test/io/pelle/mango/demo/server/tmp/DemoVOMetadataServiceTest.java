@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.tmp;
 
 import static org.junit.Assert.*;
 import io.pelle.mango.db.util.DBUtil;

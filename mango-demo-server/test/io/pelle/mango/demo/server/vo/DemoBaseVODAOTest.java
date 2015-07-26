@@ -12,7 +12,7 @@ import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity3VO;
 import io.pelle.mango.demo.client.test.Entity4VO;
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.tmp.BaseDemoTest;
 
 import java.util.List;
 

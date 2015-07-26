@@ -1,17 +1,7 @@
 package io.pelle.mango.server;
 
-import io.pelle.mango.client.property.IPropertyService;
-import io.pelle.mango.db.MangoDBApplicationContext;
-import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
-import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
-import io.pelle.mango.server.validator.LengthValidator;
-import io.pelle.mango.server.validator.MandatoryValidator;
-import io.pelle.mango.server.validator.NaturalKeyValidator;
-
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
-
-import javax.management.MBeanServer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
@@ -29,14 +19,20 @@ import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteReporter.Builder;
 
+import io.pelle.mango.client.property.IPropertyService;
+import io.pelle.mango.db.MangoDBApplicationContext;
+import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
+import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
+import io.pelle.mango.server.validator.LengthValidator;
+import io.pelle.mango.server.validator.MandatoryValidator;
+import io.pelle.mango.server.validator.NaturalKeyValidator;
+
 @Configuration
 @ImportResource({ "classpath:/MangoServerApplicationContext.xml" })
 public class MangoServerApplicationContext extends MangoDBApplicationContext {
 
 	@Autowired
 	private IPropertyService propertyService;
-
-	private MBeanServer mBeanServer;
 
 	@Bean
 	public MetricRegistry metricRegistry() {
@@ -64,15 +60,6 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 
 		return cacheManager;
 	}
-
-	// private void initEHCacheJMX() {
-	//
-	// if (mBeanServer == null) {
-	// // mBeanServer = ManagementFactory.getPlatformMBeanServer();
-	// // ManagementService.registerMBeans(cacheManagerFactory().getObject(),
-	// // mBeanServer, false, false, false, true);
-	// }
-	// }
 
 	@Bean
 	public NaturalKeyValidator naturalKeyValidator() {

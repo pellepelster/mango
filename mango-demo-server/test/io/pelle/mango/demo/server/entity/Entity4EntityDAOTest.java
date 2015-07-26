@@ -1,9 +1,10 @@
 package io.pelle.mango.demo.server.entity;
 
 import static org.junit.Assert.assertFalse;
-import io.pelle.mango.demo.server.BaseDemoTest;
+
 import io.pelle.mango.demo.server.test.Entity4;
 import io.pelle.mango.demo.server.test.IEntity4EntityDAO;
+import io.pelle.mango.demo.server.tmp.BaseDemoTest;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

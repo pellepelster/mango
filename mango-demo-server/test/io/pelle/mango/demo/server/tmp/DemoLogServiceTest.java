@@ -1,18 +1,20 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.tmp;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import io.pelle.mango.client.entity.IBaseEntityService;
-import io.pelle.mango.client.log.ILogService;
-import io.pelle.mango.client.log.LOGLEVEL;
-import io.pelle.mango.client.log.LogEntryVO;
-import io.pelle.mango.demo.client.test.Entity1VO;
-import io.pelle.mango.server.log.MangoLogger;
 
 import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.entity.IBaseEntityService;
+import io.pelle.mango.client.log.ILogService;
+import io.pelle.mango.client.log.LOGLEVEL;
+import io.pelle.mango.client.log.LogEntryVO;
+import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.server.log.IMangoLogger;
 
 public class DemoLogServiceTest extends BaseDemoTest {
 
@@ -20,7 +22,7 @@ public class DemoLogServiceTest extends BaseDemoTest {
 	private ILogService logService;
 
 	@Autowired
-	private MangoLogger mangoLogger;
+	private IMangoLogger mangoLogger;
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
@@ -49,9 +51,14 @@ public class DemoLogServiceTest extends BaseDemoTest {
 
 		Thread.sleep(5000);
 
+		for (LogEntryVO logEntry : baseEntityService.filter(SelectQuery.selectFrom(LogEntryVO.class))) {
+			System.out.println(logEntry.getReference());
+		}
+
 		List<LogEntryVO> logEntries = logService.getLog(50, entity1VO);
 		assertEquals(1, logEntries.size());
 		assertEquals("io.pelle.mango.demo.server.test.Entity1#" + entity1VO.getId(), logEntries.get(0).getReference());
+
 	}
 
 	@Test

@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.tmp;
 
 import static com.jayway.restassured.RestAssured.given;
 

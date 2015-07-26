@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.tmp;
 
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import io.pelle.mango.db.test.BaseDBTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { io.pelle.mango.demo.server.MangoDemoTestApplicationContext.class })
+@ContextConfiguration(classes = { io.pelle.mango.demo.server.tmp.MangoDemoTestApplicationContext.class })
 @Transactional
 public abstract class BaseDemoTest extends BaseDBTest {
 

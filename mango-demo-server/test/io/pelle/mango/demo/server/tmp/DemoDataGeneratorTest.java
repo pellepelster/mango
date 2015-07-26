@@ -1,10 +1,12 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.tmp;
 
-import io.pelle.mango.demo.client.test.IDemoDataGenerator;
-
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import io.pelle.mango.demo.client.test.IDemoDataGenerator;
+
+@Ignore
 public class DemoDataGeneratorTest extends BaseDemoTest {
 
 	@Autowired

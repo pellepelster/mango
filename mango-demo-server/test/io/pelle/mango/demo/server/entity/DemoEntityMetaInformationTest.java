@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.test.Entity2VO;
-import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.demo.server.showcase.Country;
 import io.pelle.mango.demo.server.test.Entity2;
+import io.pelle.mango.demo.server.tmp.BaseDemoTest;
 import io.pelle.mango.server.vo.VOMetaDataService;
 
 import org.junit.Ignore;

@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.tmp;
 
 import static io.pelle.mango.client.base.vo.query.AggregateQuery.aggregateFrom;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;

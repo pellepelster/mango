@@ -1,13 +1,13 @@
 package io.pelle.mango.demo.server.test;
 
+import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.server.log.IMangoLogger;
-
-import java.util.Random;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class LogTask {
 

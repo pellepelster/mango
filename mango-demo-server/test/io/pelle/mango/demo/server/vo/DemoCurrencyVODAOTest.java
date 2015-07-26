@@ -3,9 +3,9 @@ package io.pelle.mango.demo.server.vo;
 import static org.junit.Assert.assertEquals;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.demo.client.showcase.CurrencyVO;
-import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.demo.server.showcase.Country;
 import io.pelle.mango.demo.server.showcase.ICurrencyVODAO;
+import io.pelle.mango.demo.server.tmp.BaseDemoTest;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;

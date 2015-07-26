@@ -1,27 +1,21 @@
 package io.pelle.mango.demo.server.test;
 
-import io.pelle.mango.db.dao.IBaseVODAO;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ImportResource;
+
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
-import io.pelle.mango.demo.client.test.IDemoDataGenerator;
+import io.pelle.mango.server.MangoLoggerApplicationContext;
 import io.pelle.mango.server.MangoServerApplicationContext;
 import io.pelle.mango.server.search.SearchIndexBuilder;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-
 @Configuration
 @ImportResource({ "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml", "classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoDemoSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml",
-		"classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoLoggerApplicationContext.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
+		"classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
+@Import(MangoLoggerApplicationContext.class)
 public class MangoDemoApplicationContext extends MangoServerApplicationContext {
-
-	@Autowired
-	private IBaseVODAO baseVODAO;
-
-	@Autowired
-	private IDemoDataGenerator demoDataGenerator;
 
 	@Bean
 	public TestHierarchicalConfiguration testHierarchicalConfiguration() {

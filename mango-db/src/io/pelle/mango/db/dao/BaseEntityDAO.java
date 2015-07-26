@@ -12,19 +12,6 @@
 package io.pelle.mango.db.dao;
 
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
-import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
-import io.pelle.mango.client.base.vo.IBaseEntity;
-import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.query.CountQuery;
-import io.pelle.mango.client.base.vo.query.DeleteQuery;
-import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.db.IUser;
-import io.pelle.mango.db.copy.ObjectFieldDescriptor;
-import io.pelle.mango.db.copy.ObjectFieldIterator;
-import io.pelle.mango.db.query.ServerCountQuery;
-import io.pelle.mango.db.util.DBUtil;
-import io.pelle.mango.db.util.EntityVOMapper;
-import io.pelle.mango.server.base.IBaseClientEntity;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
@@ -40,6 +27,21 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Optional;
+
+import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
+import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.base.vo.query.CountQuery;
+import io.pelle.mango.client.base.vo.query.DeleteQuery;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.base.vo.query.expressions.ExpressionFactory;
+import io.pelle.mango.db.IUser;
+import io.pelle.mango.db.copy.ObjectFieldDescriptor;
+import io.pelle.mango.db.copy.ObjectFieldIterator;
+import io.pelle.mango.db.query.ServerCountQuery;
+import io.pelle.mango.db.util.DBUtil;
+import io.pelle.mango.db.util.EntityVOMapper;
+import io.pelle.mango.db.voquery.EntityClassQuery;
+import io.pelle.mango.server.base.IBaseClientEntity;
 
 @Component
 public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
@@ -81,20 +83,22 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	@Override
 	public <T extends IBaseEntity> void delete(T entity) {
 		LOG.debug(String.format("deleting entity '%s' with id '%d'", entity.getClass().getName(), entity.getId()));
-
-		T entityToDelete = this.entityManager.merge(entity);
-
-		this.entityManager.remove(entityToDelete);
-
+		DeleteQuery query = DeleteQuery.deleteFrom(entity.getClass()).where(ExpressionFactory.createLongExpression(entity.getClass(), IBaseEntity.ID_FIELD_NAME, entity.getId()));
+		deleteQuery(query);
 	}
 
 	@Override
 	public <T extends IBaseEntity> void deleteAll(Class<T> entityClass) {
-		LOG.debug(String.format("deleting all '%s' entities", entityClass.getName()));
 
-		for (IBaseEntity entity : getAll(entityClass)) {
-			this.entityManager.remove(entity);
+		List<String> elementCollectionTableNames = EntityClassQuery.createQuery(entityClass).getElementCollections();
+
+		for (String elementCollectionTableName : elementCollectionTableNames) {
+			String nativeDeleteQuery = String.format("delete from %s", elementCollectionTableName);
+			entityManager.createNativeQuery(nativeDeleteQuery).executeUpdate();
 		}
+
+		DeleteQuery query = DeleteQuery.deleteFrom(entityClass);
+		deleteQuery(query);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -12,9 +12,6 @@ public class LogEventBus {
 
 	private AsyncEventBus eventBus = new AsyncEventBus(Executors.newFixedThreadPool(1));
 
-	private LogEventBus() {
-	}
-
 	public void register(Object object) {
 		eventBus.register(object);
 	}

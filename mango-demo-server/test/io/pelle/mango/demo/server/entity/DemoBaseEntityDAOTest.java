@@ -8,15 +8,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.demo.server.BaseDemoTest;
-import io.pelle.mango.demo.server.test.Entity1;
-import io.pelle.mango.demo.server.test.Entity2;
-import io.pelle.mango.demo.server.test.Entity3;
-import io.pelle.mango.demo.server.test.Entity4;
-import io.pelle.mango.demo.server.test.Entity5;
-import io.pelle.mango.demo.server.test.Entity6;
-import io.pelle.mango.demo.server.test.Entity7;
 
 import java.util.List;
 
@@ -29,6 +20,16 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Optional;
+
+import io.pelle.mango.db.dao.IBaseEntityDAO;
+import io.pelle.mango.demo.server.test.Entity1;
+import io.pelle.mango.demo.server.test.Entity2;
+import io.pelle.mango.demo.server.test.Entity3;
+import io.pelle.mango.demo.server.test.Entity4;
+import io.pelle.mango.demo.server.test.Entity5;
+import io.pelle.mango.demo.server.test.Entity6;
+import io.pelle.mango.demo.server.test.Entity7;
+import io.pelle.mango.demo.server.tmp.BaseDemoTest;
 
 public class DemoBaseEntityDAOTest extends BaseDemoTest {
 
@@ -295,7 +296,6 @@ public class DemoBaseEntityDAOTest extends BaseDemoTest {
 	}
 
 	@Test
-	@Ignore
 	public void testCreateStringList() {
 
 		// TODO bulk delete for embedded collections or find something better

@@ -1,5 +1,12 @@
 package io.pelle.mango.db.dao;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.apache.log4j.Logger;
+
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.AggregateQuery;
@@ -9,13 +16,6 @@ import io.pelle.mango.db.query.ServerAggregateQuery;
 import io.pelle.mango.db.query.ServerDeleteQuery;
 import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.db.util.EntityVOMapper;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import org.apache.log4j.Logger;
 
 public abstract class BaseDAO<VOENTITYTYPE extends IVOEntity> implements IBaseVOEntityDAO<VOENTITYTYPE> {
 
@@ -59,9 +59,11 @@ public abstract class BaseDAO<VOENTITYTYPE extends IVOEntity> implements IBaseVO
 	public <T extends VOENTITYTYPE> void deleteQuery(DeleteQuery<T> deleteQuery) {
 
 		String query = ServerDeleteQuery.adapt(deleteQuery).getJPQL(EntityVOMapper.getInstance());
+
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(String.format("executing delete query '%s'", query));
 		}
+
 		entityManager.createQuery(query).executeUpdate();
 	}
 

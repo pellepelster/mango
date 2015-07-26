@@ -1,8 +1,9 @@
 package io.pelle.mango.server.log;
 
-import io.pelle.mango.client.log.LOGLEVEL;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+
+import io.pelle.mango.client.log.LOGLEVEL;
 
 public class MangoLogger implements IMangoLogger {
 
@@ -12,6 +13,8 @@ public class MangoLogger implements IMangoLogger {
 	@Autowired
 	private LogReferenceKeyMapperRegistry referenceKeyMapperRegistry;
 
+	@Async
+	@Override
 	public void log(String message, LOGLEVEL level, Object reference, long timestamp) {
 		LogEvent logEvent = null;
 

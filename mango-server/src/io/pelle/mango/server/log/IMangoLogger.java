@@ -1,5 +1,7 @@
 package io.pelle.mango.server.log;
 
+import io.pelle.mango.client.log.LOGLEVEL;
+
 public interface IMangoLogger {
 
 	void info(String message);
@@ -14,6 +16,6 @@ public interface IMangoLogger {
 
 	void error(String message, Object reference);
 
-	// void info(String message, Object reference, long timestamp);
+	void log(String message, LOGLEVEL level, Object reference, long timestamp);
 
 }

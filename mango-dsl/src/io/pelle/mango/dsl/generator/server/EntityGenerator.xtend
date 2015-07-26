@@ -91,10 +91,8 @@ class EntityGenerator extends BaseEntityGenerator {
 		@GenericGenerator( name="«entity.name.toLowerCase()»_generator", strategy="native")
 		«IF EntityQuery.isExtendedByOtherEntity(entity)»
 		@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.JOINED)
-		«««@javax.persistence.DiscriminatorColumn(name="discriminator", discriminatorType=DiscriminatorType.STRING)
 		«ENDIF»
 		«IF entity.extends != null»
-		«««@javax.persistence.DiscriminatorValue(value="«entity.entityTableName»")
 		«ELSE»
 		«ENDIF»
 		@SuppressWarnings("all")
@@ -118,7 +116,7 @@ class EntityGenerator extends BaseEntityGenerator {
 			«ENDIF»
 			
 			«FOR attribute : entity.attributes»
-			«attribute.changeTrackingAttributeGetterSetter»
+			«changeTrackingAttributeGetterSetter(entity, attribute)»
 			«ENDFOR»
 			
 			«FOR infoVOEntityAttribute : infoVOEntityAttributes()»
@@ -141,47 +139,50 @@ class EntityGenerator extends BaseEntityGenerator {
 	'''
 
 	// jpa annotations
-	def dispatch compileEntityAttributeJpaAnnotations(EntityAttribute entityAttribute) '''
+	def dispatch compileEntityAttributeJpaAnnotations(Entity entity, EntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»")
 	'''
 
-	def dispatch compileEntityAttributeJpaAnnotations(BinaryEntityAttribute entityAttribute) '''
+	def dispatch compileEntityAttributeJpaAnnotations(Entity entity, BinaryEntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»", length = 10 * 1024 * 1024)
 		@javax.persistence.Lob
 	'''
 
-	def dispatch compileEntityAttributeJpaAnnotations(EnumerationEntityAttribute entityAttribute) '''
+	def dispatch compileEntityAttributeJpaAnnotations(Entity entity, EnumerationEntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»")
 		@javax.persistence.Enumerated(javax.persistence.EnumType.STRING)
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
 		@javax.persistence.ElementCollection(fetch=javax.persistence.FetchType.EAGER)
+		@CollectionTable(name = "«entityAttribute.entityTableColumnName»", joinColumns = @JoinColumn(name = "«entityAttribute.entityTableColumnName»_id") )
 		«ENDIF»
 	'''
 
-	def dispatch compileEntityAttributeJpaAnnotations(DateEntityAttribute entityAttribute) '''
+	def dispatch compileEntityAttributeJpaAnnotations(Entity entity, DateEntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»")
 		@javax.persistence.Temporal(javax.persistence.TemporalType.TIMESTAMP)
 	'''
  
-	def dispatch compileEntityAttributeJpaAnnotations(MapEntityAttribute entityAttribute) '''
+	def dispatch compileEntityAttributeJpaAnnotations(Entity entity, MapEntityAttribute entityAttribute) '''
 		@Column(name = "«entityAttribute.entityTableColumnName»")
 		@ElementCollection(fetch = FetchType.EAGER)
 		@JoinTable(name = "«entityAttribute.parentEntity.entityTableName»_«entityAttribute.name.toLowerCase»", joinColumns = @JoinColumn(name = "id"))
 	'''
 
-	def dispatch compileEntityAttributeJpaAnnotations(StringEntityAttribute entityAttribute) '''
+	def dispatch compileEntityAttributeJpaAnnotations(Entity entity, StringEntityAttribute entityAttribute) '''
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
-			@javax.persistence.ElementCollection(fetch=javax.persistence.FetchType.EAGER)
+			@ElementCollection(fetch=javax.persistence.FetchType.EAGER)
+			@CollectionTable(name = "«entityAttribute.entityTableColumnName»", joinColumns = @JoinColumn(name = "«entityAttribute.entityTableColumnName»_id") )
 		«ELSE»
 			@Column(name = "«entityAttribute.entityTableColumnName»"«IF StringDatatypeQuery.createQuery(entityAttribute.type).hasMaxLength», length = «StringDatatypeQuery.createQuery(entityAttribute.type).maxLength»«ENDIF»)
 		«ENDIF»
 	'''
 	
-	def dispatch compileEntityAttributeJpaAnnotations(EntityEntityAttribute entityAttribute) '''
+	def dispatch compileEntityAttributeJpaAnnotations(Entity entity, EntityEntityAttribute entityAttribute) '''
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
 		@OneToMany()
 		«ELSE»
 		@OneToOne()
+		@JoinColumn( name = "«entityAttribute.attributeName»_«EntityQuery.getEntity(entityAttribute).entityTableIdColumnName»", referencedColumnName = "«EntityQuery.getRootEntity(EntityQuery.getEntity(entityAttribute)).entityTableIdColumnName»", foreignKey = @ForeignKey( name = "«entityAttribute.attributeName»_«EntityQuery.getEntity(entityAttribute).entityTableIdColumnName»") )
 		«ENDIF»
 	'''
 
@@ -193,8 +194,8 @@ class EntityGenerator extends BaseEntityGenerator {
 	'''
 
 
-	def changeTrackingAttributeGetterSetter(EntityAttribute attribute) '''
-		«attribute.compileEntityAttributeJpaAnnotations»
+	def changeTrackingAttributeGetterSetter(Entity entity, EntityAttribute attribute) '''
+		«compileEntityAttributeJpaAnnotations(entity, attribute)»
 		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
 		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
 		«getter(getType(attribute), attribute.name.attributeName)»

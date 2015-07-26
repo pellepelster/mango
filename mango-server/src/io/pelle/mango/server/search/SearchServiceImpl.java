@@ -1,5 +1,21 @@
 package io.pelle.mango.server.search;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
@@ -9,21 +25,6 @@ import io.pelle.mango.client.search.ISearchService;
 import io.pelle.mango.client.search.SearchResultItem;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.server.search.SearchIndexBuilder.DictionaryIndex;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 public class SearchServiceImpl implements ISearchService {
 
@@ -80,6 +81,7 @@ public class SearchServiceImpl implements ISearchService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<SearchResultItem> search(String indexId, String search) {
 
 		if (StringUtils.isEmpty(search)) {

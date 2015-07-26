@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CountryVO;
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.tmp.BaseDemoTest;
 
 import org.hamcrest.Matchers;
 import org.junit.Before;

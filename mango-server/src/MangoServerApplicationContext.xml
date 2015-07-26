@@ -44,12 +44,6 @@
 	<bean class="io.pelle.mango.server.api.webhook.WebhookApiController" />
 	<bean class="io.pelle.mango.server.api.webhook.EntityWebhookRegistry" />
 
-	<task:annotation-driven executor="mangoDefaultExecutor" scheduler="mangoDefaultScheduler"/>
-	
-	<task:executor id="mangoDefaultExecutor" pool-size="5"/>
-	
-	<task:scheduler id="mangoDefaultScheduler" pool-size="10"/>
-
 	<!-- jackson mapper configuration -->
 	<bean id="objectMapper" class="io.pelle.mango.server.xml.MangoObjectMapper" />
 

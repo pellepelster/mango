@@ -1,10 +1,27 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.tmp;
 
 import static com.jayway.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.gwt.event.dom.client.ClickEvent;
+
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
 import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
 import io.pelle.mango.client.base.modules.dictionary.controls.BaseButton;
@@ -37,22 +54,6 @@ import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity3VO;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.gwt.event.dom.client.ClickEvent;
-
 public class DemoClientTest extends BaseDemoTest {
 
 	@Autowired
@@ -61,8 +62,8 @@ public class DemoClientTest extends BaseDemoTest {
 	@Before
 	public void beforeEach() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
-		baseEntityService.deleteAll(Entity3VO.class.getName());
 		baseEntityService.deleteAll(Entity2VO.class.getName());
+		baseEntityService.deleteAll(Entity3VO.class.getName());
 		baseEntityService.deleteAll(CountryVO.class.getName());
 
 		DictionaryHookRegistry.getInstance().clearAll();
@@ -632,7 +633,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		baseEntityService.deleteAll(CountryVO.class.getName());
 		baseEntityService.deleteAll(CurrencyVO.class.getName());
-		
+
 		DictionaryEditorModuleTestUI<CurrencyVO> currencyEditor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR);
 		currencyEditor.getControl(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR.CURRENCY_NAME).setValue("AA");
 		currencyEditor.getControl(MangoDemoDictionaryModel.CURRENCY.CURRENCY_EDITOR.CURRENCY_ISO_CODE).setValue("AAA");
@@ -649,7 +650,7 @@ public class DemoClientTest extends BaseDemoTest {
 		countryEditor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2).setValue("BB");
 		countryEditor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3).setValue("BBB");
 		countryEditor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME).setValue("BBBB");
-		
+
 		ReferenceTestControl<CurrencyVO> currencyControl = countryEditor.getControl(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_CURRENCY);
 		currencyControl.enterValue("a");
 		currencyControl.assertHasSuggestions(2);
@@ -658,8 +659,7 @@ public class DemoClientTest extends BaseDemoTest {
 		currencyControl.assertHasSuggestions(1);
 
 	}
-	
-	
+
 	@Autowired
 	public void setMangoGwtAsyncAdapterRemoteServiceLocator(MangoGwtAsyncAdapterRemoteServiceLocator mangoGwtAsyncAdapterRemoteServiceLocator) {
 		MangoClientWeb.getInstance().setMyAdminGWTRemoteServiceLocator(mangoGwtAsyncAdapterRemoteServiceLocator);

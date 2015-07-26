@@ -1,12 +1,5 @@
 package io.pelle.mango.dsl.query;
 
-import io.pelle.mango.dsl.ModelUtil;
-import io.pelle.mango.dsl.mango.Entity;
-import io.pelle.mango.dsl.mango.EntityAttribute;
-import io.pelle.mango.dsl.mango.EntityAttributeType;
-import io.pelle.mango.dsl.mango.EntityDataType;
-import io.pelle.mango.dsl.mango.EntityEntityAttribute;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +7,13 @@ import org.eclipse.emf.ecore.EObject;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
+
+import io.pelle.mango.dsl.ModelUtil;
+import io.pelle.mango.dsl.mango.Entity;
+import io.pelle.mango.dsl.mango.EntityAttribute;
+import io.pelle.mango.dsl.mango.EntityAttributeType;
+import io.pelle.mango.dsl.mango.EntityDataType;
+import io.pelle.mango.dsl.mango.EntityEntityAttribute;
 
 public class EntityQuery {
 
@@ -65,6 +65,17 @@ public class EntityQuery {
 				return false;
 			}
 		});
+	}
+
+	public static Entity getRootEntity(final Entity entity) {
+
+		Entity result = entity;
+
+		while (result.getExtends() != null) {
+			result = entity.getExtends();
+		}
+
+		return result;
 	}
 
 	public static Entity getEntity(EntityAttributeType entityAttributeType) {
