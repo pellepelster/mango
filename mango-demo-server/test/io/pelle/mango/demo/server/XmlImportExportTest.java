@@ -1,12 +1,6 @@
 package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
-import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.entity.IBaseEntityService;
-import io.pelle.mango.demo.client.test.ENUMERATION1;
-import io.pelle.mango.demo.client.test.Entity1VO;
-import io.pelle.mango.server.xml.XmlVOExporter;
-import io.pelle.mango.server.xml.XmlVOImporter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -17,11 +11,17 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.entity.IBaseEntityService;
+import io.pelle.mango.demo.client.test.ENUMERATION1;
+import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.server.xml.XmlVOExporter;
+import io.pelle.mango.server.xml.XmlVOImporter;
 
 public class XmlImportExportTest extends BaseDemoTest {
 
@@ -35,7 +35,6 @@ public class XmlImportExportTest extends BaseDemoTest {
 	private IBaseEntityService baseEntityService;
 
 	@Test
-	@Ignore
 	public void testSimpleExportImport() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
