@@ -107,16 +107,16 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		}
 
 		List<String> elementCollections = EntityClassQuery.createQuery(entityClass).getElementCollections();
-		if (LOG.isDebugEnabled()) {
+		if (LOG.isDebugEnabled() && !elementCollections.isEmpty()) {
 			LOG.debug(String.format("deleting element collections '%s' for entity '%s'", Joiner.on(", ").join(elementCollections), entityClass.getName()));
+			deleteTables(elementCollections);
 		}
-		deleteTables(elementCollections);
 
 		List<String> oneToManyJoinTables = EntityClassQuery.createQuery(entityClass).getOneToManyJoinTables();
-		if (LOG.isDebugEnabled()) {
+		if (LOG.isDebugEnabled() && !oneToManyJoinTables.isEmpty()) {
 			LOG.debug(String.format("deleting one to many join tables '%s' for entity '%s'", Joiner.on(", ").join(oneToManyJoinTables), entityClass.getName()));
+			deleteTables(oneToManyJoinTables);
 		}
-		deleteTables(oneToManyJoinTables);
 
 		DeleteQuery query = DeleteQuery.deleteFrom(entityClass);
 		deleteQuery(query);

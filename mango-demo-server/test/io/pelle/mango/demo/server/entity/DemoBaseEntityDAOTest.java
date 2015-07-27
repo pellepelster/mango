@@ -43,8 +43,8 @@ public class DemoBaseEntityDAOTest extends BaseDemoTest {
 	public void initTestData() {
 		baseEntityDAO.deleteAll(Entity7.class);
 		baseEntityDAO.deleteAll(Entity1.class);
-		baseEntityDAO.deleteAll(Entity3.class);
 		baseEntityDAO.deleteAll(Entity2.class);
+		baseEntityDAO.deleteAll(Entity3.class);
 		baseEntityDAO.deleteAll(Entity6.class);
 		baseEntityDAO.deleteAll(Entity5.class);
 		baseEntityDAO.deleteAll(Entity4.class);
