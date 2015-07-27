@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server.tmp;
+package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

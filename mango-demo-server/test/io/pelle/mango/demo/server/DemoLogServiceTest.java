@@ -1,10 +1,14 @@
-package io.pelle.mango.demo.server.tmp;
+package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -26,6 +30,9 @@ public class DemoLogServiceTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
+
+	@PersistenceContext
+	private EntityManager entityManager;
 
 	@Test
 	public void testLogEntriesFromPingTask() throws InterruptedException {
@@ -68,9 +75,12 @@ public class DemoLogServiceTest extends BaseDemoTest {
 
 		mangoLogger.info("test1", "reference1");
 
+		entityManager.flush();
+
 		Thread.sleep(1000);
 
 		List<LogEntryVO> logEntries = logService.getLog(50, "reference1");
+
 		assertEquals(1, logEntries.size());
 		assertEquals("reference1", logEntries.get(0).getReference());
 	}
@@ -96,6 +106,7 @@ public class DemoLogServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetLogPaging() throws InterruptedException {
 
 		baseEntityService.deleteAll(LogEntryVO.class.getName());

@@ -10,5 +10,5 @@
 .gradle
 *~
 *derby.log
-Project1TestDB
+project1-db
 project1

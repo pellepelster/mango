@@ -60,6 +60,8 @@ public abstract class BaseDAO<VOENTITYTYPE extends IVOEntity> implements IBaseVO
 
 		String query = ServerDeleteQuery.adapt(deleteQuery).getJPQL(EntityVOMapper.getInstance());
 
+		// TODO warn if entities with embedded element collections are deleted
+
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(String.format("executing delete query '%s'", query));
 		}

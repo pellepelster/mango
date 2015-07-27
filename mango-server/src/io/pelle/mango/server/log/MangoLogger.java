@@ -1,17 +1,38 @@
 package io.pelle.mango.server.log;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 
+import com.google.common.base.Function;
+
+import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.log.LOGLEVEL;
+import io.pelle.mango.client.log.LogEntryVO;
 
 public class MangoLogger implements IMangoLogger {
 
-	@Autowired
-	private LogEventBus logEventBus;
+	private static final Logger LOG = Logger.getLogger(MangoLogger.class);
 
 	@Autowired
 	private LogReferenceKeyMapperRegistry referenceKeyMapperRegistry;
+
+	@Autowired
+	private IBaseEntityService baseEntityService;
+
+	private static Function<LogEvent, LogEntryVO> LOG_EVENT2LOG_ENTRY = new Function<LogEvent, LogEntryVO>() {
+
+		@Override
+		public LogEntryVO apply(LogEvent logEvent) {
+
+			LogEntryVO logEntry = new LogEntryVO();
+			logEntry.setMessage(logEvent.getMessage());
+			logEntry.setTimestamp(logEvent.getTimestamp());
+			logEntry.setReference(logEvent.getReference());
+			logEntry.setLevel(logEvent.getLevel());
+			return logEntry;
+		}
+	};
 
 	@Async
 	@Override
@@ -27,11 +48,7 @@ public class MangoLogger implements IMangoLogger {
 		String referenceKey = referenceKeyMapperRegistry.getLogReferenceKey(reference);
 		logEvent.setReference(referenceKey);
 
-		sendLogMessage(logEvent);
-	}
-
-	private void sendLogMessage(final LogEvent logEvent) {
-		logEventBus.post(logEvent);
+		baseEntityService.create(LOG_EVENT2LOG_ENTRY.apply(logEvent));
 	}
 
 	@Override

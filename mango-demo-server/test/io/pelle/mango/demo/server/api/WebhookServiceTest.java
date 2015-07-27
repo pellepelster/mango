@@ -16,7 +16,7 @@ import io.pelle.mango.client.api.webhook.WebhookVO;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
-import io.pelle.mango.demo.server.tmp.BaseDemoTest;
+import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.server.api.webhook.Webhook;
 
 @WebAppConfiguration

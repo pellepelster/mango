@@ -31,7 +31,7 @@ import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
 import io.pelle.mango.demo.client.test.Entity6VO;
 import io.pelle.mango.demo.client.test.Entity7VO;
-import io.pelle.mango.demo.server.tmp.BaseDemoTest;
+import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.server.api.webhook.Webhook;
 
 public class DemoBaseEntityServiceTest extends BaseDemoTest {

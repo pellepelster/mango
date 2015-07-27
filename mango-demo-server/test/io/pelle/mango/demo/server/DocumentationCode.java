@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server.tmp;
+package io.pelle.mango.demo.server;
 
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseEntityDAO;

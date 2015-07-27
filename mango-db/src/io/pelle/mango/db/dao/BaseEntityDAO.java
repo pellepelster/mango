@@ -83,6 +83,9 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	@Override
 	public <T extends IBaseEntity> void delete(T entity) {
 		LOG.debug(String.format("deleting entity '%s' with id '%d'", entity.getClass().getName(), entity.getId()));
+
+		// TODO warn if entities with embedded element collections are deleted
+
 		DeleteQuery query = DeleteQuery.deleteFrom(entity.getClass()).where(ExpressionFactory.createLongExpression(entity.getClass(), IBaseEntity.ID_FIELD_NAME, entity.getId()));
 		deleteQuery(query);
 	}

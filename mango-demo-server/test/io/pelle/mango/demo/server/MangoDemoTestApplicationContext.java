@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server.tmp;
+package io.pelle.mango.demo.server;
 
 import io.pelle.mango.demo.server.test.MangoDemoApplicationContext;
 

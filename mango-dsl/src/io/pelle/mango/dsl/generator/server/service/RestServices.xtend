@@ -13,7 +13,6 @@ import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
 import org.eclipse.xtext.xbase.compiler.ImportManager
-import com.google.common.collect.Iterables
 
 class RestServices extends BaseServices {
 

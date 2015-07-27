@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server.tmp;
+package io.pelle.mango.demo.server;
 
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.server.search.SearchIndexBuilder;

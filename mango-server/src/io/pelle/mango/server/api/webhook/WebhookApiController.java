@@ -1,18 +1,9 @@
 package io.pelle.mango.server.api.webhook;
 
-import io.pelle.mango.client.api.webhook.WebhookVO;
-import io.pelle.mango.client.base.db.vos.Result;
-import io.pelle.mango.client.base.vo.IBaseEntity;
-import io.pelle.mango.client.web.modules.dictionary.databinding.ValidationUtils;
-import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
-import io.pelle.mango.db.dao.IBaseVODAO;
-import io.pelle.mango.server.BaseEntityApiController;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +13,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.pelle.mango.client.api.webhook.WebhookVO;
+import io.pelle.mango.client.base.db.vos.Result;
+import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.web.modules.dictionary.databinding.ValidationUtils;
+import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
+import io.pelle.mango.db.dao.IBaseVODAO;
+import io.pelle.mango.server.BaseEntityApiController;
+
 @RestController
-@Transactional
 public class WebhookApiController extends BaseEntityApiController {
 
 	@Autowired

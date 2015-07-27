@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server.tmp;
+package io.pelle.mango.demo.server;
 
 import static com.jayway.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
@@ -501,7 +501,6 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	@Ignore
 	public void testDictionary1EnumerationControlWithouEntityAttrbiute() {
 
 		final AtomicBoolean called = new AtomicBoolean(false);
@@ -532,7 +531,6 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	@Ignore
 	public void testDictionary1EnumerationControl1() {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createTestDictionaryEditor1();
