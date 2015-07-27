@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
 
@@ -35,6 +37,21 @@ public class EntityClassQuery {
 				result.add(tableName);
 			}
 		}
+
+		return result;
+	}
+
+	public List<String> getOneToManyJoinTables() {
+
+		List<String> result = new ArrayList<>();
+
+		for (Field field : entityClass.getDeclaredFields()) {
+			if (field.isAnnotationPresent(JoinTable.class) && field.isAnnotationPresent(OneToMany.class)) {
+				String tableName = field.getAnnotation(JoinTable.class).name();
+				result.add(tableName);
+			}
+		}
+
 		return result;
 	}
 

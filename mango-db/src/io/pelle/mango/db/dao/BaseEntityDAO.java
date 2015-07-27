@@ -90,15 +90,19 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 		deleteQuery(query);
 	}
 
+	private void deleteTables(List<String> tableNames) {
+
+		for (String tableName : tableNames) {
+			String nativeDeleteQuery = String.format("delete from %s", tableName);
+			entityManager.createNativeQuery(nativeDeleteQuery).executeUpdate();
+		}
+	}
+
 	@Override
 	public <T extends IBaseEntity> void deleteAll(Class<T> entityClass) {
 
-		List<String> elementCollectionTableNames = EntityClassQuery.createQuery(entityClass).getElementCollections();
-
-		for (String elementCollectionTableName : elementCollectionTableNames) {
-			String nativeDeleteQuery = String.format("delete from %s", elementCollectionTableName);
-			entityManager.createNativeQuery(nativeDeleteQuery).executeUpdate();
-		}
+		deleteTables(EntityClassQuery.createQuery(entityClass).getElementCollections());
+		deleteTables(EntityClassQuery.createQuery(entityClass).getOneToManyJoinTables());
 
 		DeleteQuery query = DeleteQuery.deleteFrom(entityClass);
 		deleteQuery(query);

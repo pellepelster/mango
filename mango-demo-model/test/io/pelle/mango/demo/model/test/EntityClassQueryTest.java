@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import io.pelle.mango.db.voquery.EntityClassQuery;
 import io.pelle.mango.demo.server.test.Entity1;
+import io.pelle.mango.demo.server.test.Entity2;
 
 public class EntityClassQueryTest {
 
@@ -21,6 +22,16 @@ public class EntityClassQueryTest {
 		List<String> result = EntityClassQuery.createQuery(entity).getElementCollections();
 		assertEquals(2, result.size());
 		assertThat(result, containsInAnyOrder("entity1_stringdatatype1list", "entity1_enumeration1datatypes"));
+	}
+
+	@Test
+	public void testGetOneToManyJoinTables() {
+
+		Entity2 entity = new Entity2();
+
+		List<String> result = EntityClassQuery.createQuery(entity).getOneToManyJoinTables();
+		assertEquals(1, result.size());
+		assertThat(result, containsInAnyOrder("entity2_entity2_entity3datatypes_entity3"));
 	}
 
 }

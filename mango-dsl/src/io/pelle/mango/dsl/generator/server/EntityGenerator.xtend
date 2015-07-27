@@ -180,6 +180,7 @@ class EntityGenerator extends BaseEntityGenerator {
 	def dispatch compileEntityAttributeJpaAnnotations(Entity entity, EntityEntityAttribute entityAttribute) '''
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
 		@OneToMany()
+		@JoinTable(name = "«entity.entityTableName»_«entityAttribute.entityTableColumnName»_«EntityQuery.getRootEntity(EntityQuery.getEntity(entityAttribute)).entityTableName»" )
 		«ELSE»
 		@OneToOne()
 		@JoinColumn( name = "«entityAttribute.attributeName»_«EntityQuery.getEntity(entityAttribute).entityTableIdColumnName»", referencedColumnName = "«EntityQuery.getRootEntity(EntityQuery.getEntity(entityAttribute)).entityTableIdColumnName»", foreignKey = @ForeignKey( name = "«entityAttribute.attributeName»_«EntityQuery.getEntity(entityAttribute).entityTableIdColumnName»") )
