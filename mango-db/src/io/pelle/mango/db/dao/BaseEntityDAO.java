@@ -26,6 +26,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 
 import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
@@ -101,8 +102,21 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 	@Override
 	public <T extends IBaseEntity> void deleteAll(Class<T> entityClass) {
 
-		deleteTables(EntityClassQuery.createQuery(entityClass).getElementCollections());
-		deleteTables(EntityClassQuery.createQuery(entityClass).getOneToManyJoinTables());
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(String.format("deleting everything for entity '%s'", entityClass.getName()));
+		}
+
+		List<String> elementCollections = EntityClassQuery.createQuery(entityClass).getElementCollections();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(String.format("deleting element collections '%s' for entity '%s'", Joiner.on(", ").join(elementCollections), entityClass.getName()));
+		}
+		deleteTables(elementCollections);
+
+		List<String> oneToManyJoinTables = EntityClassQuery.createQuery(entityClass).getOneToManyJoinTables();
+		if (LOG.isDebugEnabled()) {
+			LOG.debug(String.format("deleting one to many join tables '%s' for entity '%s'", Joiner.on(", ").join(oneToManyJoinTables), entityClass.getName()));
+		}
+		deleteTables(oneToManyJoinTables);
 
 		DeleteQuery query = DeleteQuery.deleteFrom(entityClass);
 		deleteQuery(query);
