@@ -1,5 +1,5 @@
 apply from: '../mango-build/mangocommon.gradle'
- apply from: './version.properties'
+apply from: '../mango-build/version.properties'
  
 buildscript {
 
