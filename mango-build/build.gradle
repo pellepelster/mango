@@ -1,6 +1,5 @@
 apply from: '../mango-build/mangocommon.gradle'
-apply from: '../mango-build/version.properties'
- 
+
 buildscript {
 
 	repositories {
