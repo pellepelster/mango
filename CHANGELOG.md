@@ -1,7 +1,13 @@
 # Change Log
 
-## [Unreleased](https://github.com/pellepelster/mango/tree/HEAD)
+## [0.1.0](https://github.com/pellepelster/mango/tree/0.1.0) (2015-08-05)
+[Full Changelog](https://github.com/pellepelster/mango/compare/0.0.9...0.1.0)
 
+**Closed issues:**
+
+- version test [\#19](https://github.com/pellepelster/mango/issues/19)
+
+## [0.0.9](https://github.com/pellepelster/mango/tree/0.0.9) (2015-08-05)
 **Merged pull requests:**
 
 - added bootstrap elements with reize support [\#14](https://github.com/pellepelster/mango/pull/14) ([pellepelster](https://github.com/pellepelster))
