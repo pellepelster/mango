@@ -1,9 +1,41 @@
 #!/bin/bash
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-if [ -z "$CHANGELOG_GITHUB_TOKEN" ]; then
-    echo "CHANGELOG_GITHUB_TOKEN not set"
+OPTS=$(getopt -o t:vds: --long github-token:,verbose,dry-run,signing-password -n 'parse-options' -- "$@")
+ 
+if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+ 
+eval set -- "$OPTS"
+ 
+GITHHUB_TOKEN=""
+DRY_RUN="false"
+SIGNING_PASSWORD=""
+VERSION_QUALIFIER="FINAL"
+
+while true; do
+	case "$1" in
+		-v | --verbose ) VERBOSE=true; shift ;;
+		-s | --signing-password ) SIGNING_PASSWORD="$2"; shift ;;
+		-d | --dry-run ) DRY_RUN=true; shift ;;
+		-h | --help )    HELP=true; shift ;;
+		-t | --github-token-t | --github-token ) GITHHUB_TOKEN="$2"; shift; shift ;;
+		-- ) shift; break ;;
+		* ) break ;;
+	esac
+done
+
+if [ -z "$GITHHUB_TOKEN" ]; then
+    echo "github token for changelog generation not set (--github-token)"
     exit 1
+fi
+
+if [ -z "$SIGNING_PASSWORD" ]; then
+    echo "signing password not set (--signing-password)"
+    exit 1
+fi
+
+if [ $DRY_RUN ]; then
+    echo "performing a dry run"
 fi
 
 # Accepts a version string and prints it incremented by one.
@@ -75,19 +107,37 @@ NEXT_VERSION=$(increment_version $CURRENT_VERSION)
 
 echo "current version is ${CURRENT_VERSION}, next version will be ${NEXT_VERSION}"
 
+$DIR/gradlew --build-file=mango-build/build.gradle uploadArchives -PversionQualifier=$VERSION_QUALIFIER -Psigning.password=$SIGNING_PASSWORD
+
+if ! [ $? -eq 0 ]; then
+	echo "build failed, aborting release"
+	exit 2
+fi
+
 echo "creating tag for current version ${CURRENT_VERSION}"
-git tag -a ${CURRENT_VERSION} -m ${CURRENT_VERSION}
+if ! [ $DRY_RUN ]; then
+	git tag -a ${CURRENT_VERSION} -m ${CURRENT_VERSION}
+fi
+
 echo "pushing tags"
-git push origin --tags
+if ! [ $DRY_RUN ]; then
+	git push origin --tags
+fi
 
 echo "creating changelog"
-github_changelog_generator
-git add CHANGELOG.md
-git commit -m "changelog for version ${CURRENT_VERSION}"
+if ! [ $DRY_RUN ]; then
+	github_changelog_generator
+	git add CHANGELOG.md
+	git commit -m "changelog for version ${CURRENT_VERSION}"
+fi
 
 echo "writing new version ${NEXT_VERSION} to gradle.properties"
-sed -i.bak  -e "s/mangoVersion.*=.*/mangoVersion = ${NEXT_VERSION}/" $DIR/mango-build/gradle.properties
-git add $DIR/mango-build/gradle.properties
-git commit -m "next version ${NEXT_VERSION}"
+if ! [ $DRY_RUN ]; then
+	sed -i.bak  -e "s/mangoVersion.*=.*/mangoVersion = ${NEXT_VERSION}/" $DIR/mango-build/gradle.properties
+	git add $DIR/mango-build/gradle.properties
+	git commit -m "increment version to next version ${NEXT_VERSION}"
+fi
 
-git push
+if ! [ $DRY_RUN ]; then
+	git push
+fi

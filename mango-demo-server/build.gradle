@@ -73,6 +73,14 @@ task jettyEclipseRunDaemon() {
 	} 
 }
 
+uploadArchives { 
+   repositories.mavenDeployer { 
+        addFilter('war') {artifact, file -> 
+                artifact.type == 'war' 
+        } 
+   } 
+} 
+
 test.dependsOn(jettyEclipseRunDaemon)
 jmeterRun.dependsOn(jettyEclipseRunDaemon)
 jettyEclipseRunDaemon.dependsOn(war)
