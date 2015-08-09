@@ -15,10 +15,10 @@ VERSION_QUALIFIER="FINAL"
 while true; do
 	case "$1" in
 		-v | --verbose ) VERBOSE=true; shift ;;
-		-s | --signing-password ) SIGNING_PASSWORD="$2"; shift ;;
-		-d | --dry-run ) DRY_RUN=true; shift ;;
+		-s | --signing-password ) SIGNING_PASSWORD="$2"; shift ; shift ;;
+		-d | --dry-run ) DRY_RUN="true"; shift ;;
 		-h | --help )    HELP=true; shift ;;
-		-t | --github-token-t | --github-token ) GITHHUB_TOKEN="$2"; shift; shift ;;
+		-t | --github-token ) GITHHUB_TOKEN="$2"; shift; shift ;;
 		-- ) shift; break ;;
 		* ) break ;;
 	esac
@@ -34,7 +34,7 @@ if [ -z "$SIGNING_PASSWORD" ]; then
     exit 1
 fi
 
-if [ $DRY_RUN ]; then
+if ! [[ $DRY_RUN ]]; then
     echo "performing a dry run"
 fi
 
@@ -107,7 +107,7 @@ NEXT_VERSION=$(increment_version $CURRENT_VERSION)
 
 echo "current version is ${CURRENT_VERSION}, next version will be ${NEXT_VERSION}"
 
-$DIR/gradlew --build-file=mango-build/build.gradle uploadArchives -PversionQualifier=$VERSION_QUALIFIER -Psigning.password=$SIGNING_PASSWORD
+$DIR/gradlew --build-file=$DIR/mango-build/build.gradle uploadArchives -PversionQualifier=$VERSION_QUALIFIER -Psigning.password=$SIGNING_PASSWORD
 
 if ! [ $? -eq 0 ]; then
 	echo "build failed, aborting release"
@@ -115,29 +115,29 @@ if ! [ $? -eq 0 ]; then
 fi
 
 echo "creating tag for current version ${CURRENT_VERSION}"
-if ! [ $DRY_RUN ]; then
+if ! [[ $DRY_RUN ]]; then
 	git tag -a ${CURRENT_VERSION} -m ${CURRENT_VERSION}
 fi
 
 echo "pushing tags"
-if ! [ $DRY_RUN ]; then
+if ! [[ $DRY_RUN ]]; then
 	git push origin --tags
 fi
 
 echo "creating changelog"
-if ! [ $DRY_RUN ]; then
+if ! [[ $DRY_RUN ]]; then
 	github_changelog_generator
 	git add CHANGELOG.md
 	git commit -m "changelog for version ${CURRENT_VERSION}"
 fi
 
 echo "writing new version ${NEXT_VERSION} to gradle.properties"
-if ! [ $DRY_RUN ]; then
+if ! [[ $DRY_RUN ]]; then
 	sed -i.bak  -e "s/mangoVersion.*=.*/mangoVersion = ${NEXT_VERSION}/" $DIR/mango-build/gradle.properties
 	git add $DIR/mango-build/gradle.properties
 	git commit -m "increment version to next version ${NEXT_VERSION}"
 fi
 
-if ! [ $DRY_RUN ]; then
-	git push
+if ! [[ $DRY_RUN ]]; then
+ 	git push
 fi
