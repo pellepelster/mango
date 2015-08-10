@@ -1,5 +1,8 @@
 # Change Log
 
+## [0.0.12](https://github.com/pellepelster/mango/tree/0.0.12) (2015-08-10)
+[Full Changelog](https://github.com/pellepelster/mango/compare/0.0.11...0.0.12)
+
 ## [0.0.11](https://github.com/pellepelster/mango/tree/0.0.11) (2015-08-10)
 [Full Changelog](https://github.com/pellepelster/mango/compare/0.0.10...0.0.11)
 
