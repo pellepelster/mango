@@ -140,5 +140,5 @@ allprojects {
 		}
 	}
 
-	uploadArchives.onlyIf {  project.name != 'mango-demo-server' }
+	uploadArchives.onlyIf { ! project.name.startsWith('mango-demo') }
 }

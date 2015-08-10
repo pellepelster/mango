@@ -23,12 +23,12 @@ configurations {
 	compile.extendsFrom(generatedXml)
 	compile.extendsFrom(generatedServer)
 	
-	archives.extendsFrom(generatedServer)
-	archives.extendsFrom(generatedServerSources)
-	archives.extendsFrom(generatedClientGWT)
-	archives.extendsFrom(generatedClientGWTSources)
-	archives.extendsFrom(generatedXml)
-	archives.extendsFrom(generatedXmlSources)
+}
+
+configurations.archives {
+    extendsFrom configurations.generatedServer
+	extendsFrom configurations.generatedClientGWT
+	extendsFrom configurations.generatedXml
 }
 
 
@@ -139,6 +139,14 @@ task generatedXmlJar(type: Jar, dependsOn: project.compileGeneratedXmlJava) {
 task generatedXmlSourceJar(type: Jar, dependsOn: compileGeneratedXmlJava) {
 	classifier 'xml-generated-sources'
 	from sourceSets.generatedXml.allSource
+}
+
+signing {
+	required { 
+		isReleaseVersion
+	}
+	
+	sign generatedServerJar,  generatedServerSourceJar, generatedClientGWTJar, generatedClientGWTSourceJar, generatedXmlJar, generatedXmlSourceJar
 }
 
 compileGeneratedServerJava.dependsOn("xtextGenerate")

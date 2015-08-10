@@ -3,20 +3,23 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 OPTS=$(getopt -o t:vds: --long github-token:,verbose,dry-run,signing-password -n 'parse-options' -- "$@")
  
-if [ $? != 0 ] ; then echo "Failed parsing options." >&2 ; exit 1 ; fi
+if [ $? != 0 ] ; then 
+	echo "Failed parsing options" >&2
+	exit 1
+fi
  
 eval set -- "$OPTS"
  
 GITHHUB_TOKEN=""
-DRY_RUN="false"
+DRY_RUN=false
 SIGNING_PASSWORD=""
 VERSION_QUALIFIER="FINAL"
-
+	
 while true; do
 	case "$1" in
 		-v | --verbose ) VERBOSE=true; shift ;;
 		-s | --signing-password ) SIGNING_PASSWORD="$2"; shift ; shift ;;
-		-d | --dry-run ) DRY_RUN="true"; shift ;;
+		-d | --dry-run ) DRY_RUN=true; shift ;;
 		-h | --help )    HELP=true; shift ;;
 		-t | --github-token ) GITHHUB_TOKEN="$2"; shift; shift ;;
 		-- ) shift; break ;;
@@ -25,16 +28,24 @@ while true; do
 done
 
 if [ -z "$GITHHUB_TOKEN" ]; then
-    echo "github token for changelog generation not set (--github-token)"
+    echo "github token for changelog generation not set (--github-token)"  >&2
     exit 1
 fi
 
 if [ -z "$SIGNING_PASSWORD" ]; then
-    echo "signing password not set (--signing-password)"
+    echo "signing password not set (--signing-password)" >&2
     exit 1
 fi
 
-if ! [[ $DRY_RUN ]]; then
+git diff --exit-code --quiet
+
+if [ $? != 0 ] ; then 
+	echo "uncommited changes found " >&2
+	exit 1
+fi
+
+
+if $DRY_RUN ; then
     echo "performing a dry run"
 fi
 
@@ -115,29 +126,29 @@ if ! [ $? -eq 0 ]; then
 fi
 
 echo "creating tag for current version ${CURRENT_VERSION}"
-if ! [[ $DRY_RUN ]]; then
+if ! $DRY_RUN ; then
 	git tag -a ${CURRENT_VERSION} -m ${CURRENT_VERSION}
 fi
 
 echo "pushing tags"
-if ! [[ $DRY_RUN ]]; then
+if ! $DRY_RUN ; then
 	git push origin --tags
 fi
 
 echo "creating changelog"
-if ! [[ $DRY_RUN ]]; then
+if ! $DRY_RUN ; then
 	github_changelog_generator
 	git add CHANGELOG.md
 	git commit -m "changelog for version ${CURRENT_VERSION}"
 fi
 
 echo "writing new version ${NEXT_VERSION} to gradle.properties"
-if ! [[ $DRY_RUN ]]; then
+if ! $DRY_RUN ; then
 	sed -i.bak  -e "s/mangoVersion.*=.*/mangoVersion = ${NEXT_VERSION}/" $DIR/mango-build/gradle.properties
 	git add $DIR/mango-build/gradle.properties
 	git commit -m "increment version to next version ${NEXT_VERSION}"
 fi
 
-if ! [[ $DRY_RUN ]]; then
+if ! $DRY_RUN ; then
  	git push
 fi
