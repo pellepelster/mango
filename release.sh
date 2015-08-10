@@ -120,7 +120,7 @@ NEXT_VERSION=$(increment_version $CURRENT_VERSION)
 
 echo "current version is ${CURRENT_VERSION}, next version will be ${NEXT_VERSION}"
 
-#$DIR/gradlew --build-file=$DIR/mango-build/build.gradle uploadArchives -PversionQualifier=$VERSION_QUALIFIER -Psigning.password=$SIGNING_PASSWORD
+$DIR/gradlew --build-file=$DIR/mango-build/build.gradle uploadArchives -PversionQualifier=$VERSION_QUALIFIER -Psigning.password=$SIGNING_PASSWORD
 
 if ! [ $? -eq 0 ]; then
 	echo "build failed, aborting release"
