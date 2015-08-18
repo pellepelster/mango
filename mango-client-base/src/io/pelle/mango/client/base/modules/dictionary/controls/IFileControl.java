@@ -7,7 +7,7 @@ public interface IFileControl extends IBaseControl<Object, IFileControlModel>
 {
 	static final String FILE_DOWNLOAD_REQUEST_MAPPING = "filedownload";
 
-	static final String GWT_UPLOAD_REQUEST_MAPPING = "gwtupload";
+	static final String GWT_UPLOAD_REQUEST_MAPPING = "gwtcontrolupload";
 
 	static final String REQUEST_MAPPING_GET_FILE = "getFile";
 }

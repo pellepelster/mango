@@ -36,7 +36,7 @@ allprojects {
 	apply from: '../mango-build/mangojavacommon.gradle'
 
 	apply plugin: 'eclipse'
-	
+
 	sourceSets {
 		main {
 			java { srcDirs = ["src"] }
@@ -54,9 +54,6 @@ allprojects {
 
 	eclipse {
 		pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir
-		project {
-			natures = [ 'org.springsource.ide.eclipse.gradle.core.nature' ]
-		}
 	}
 
 	dependencies {

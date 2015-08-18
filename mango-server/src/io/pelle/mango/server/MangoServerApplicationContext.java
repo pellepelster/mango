@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricFilter;
@@ -23,6 +24,7 @@ import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
 import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
+import io.pelle.mango.server.system.FileUploadController;
 import io.pelle.mango.server.validator.LengthValidator;
 import io.pelle.mango.server.validator.MandatoryValidator;
 import io.pelle.mango.server.validator.NaturalKeyValidator;
@@ -37,6 +39,19 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 	@Bean
 	public MetricRegistry metricRegistry() {
 		MetricRegistry bean = new MetricRegistry();
+		return bean;
+	}
+	
+	@Bean 
+	public CommonsMultipartResolver multipartResolver(){
+		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+		resolver.setMaxUploadSize(5242880);
+		return resolver;
+	}
+	
+	@Bean
+	public FileUploadController fileUploadController() {
+		FileUploadController bean = new FileUploadController();
 		return bean;
 	}
 
