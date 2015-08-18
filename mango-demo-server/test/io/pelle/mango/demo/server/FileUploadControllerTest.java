@@ -1,5 +1,6 @@
 package io.pelle.mango.demo.server;
 
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
@@ -11,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 
+import org.hamcrest.text.IsEmptyString;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,8 @@ public class FileUploadControllerTest extends BaseDemoTest {
 		pw.close();
 
 		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new FileInputStream(tempFile));
-		mockMvc.perform(fileUpload("/gwtcontrolupload").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1))).andDo(MockMvcResultHandlers.print());
+		mockMvc.perform(fileUpload("/gwtcontrolupload").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
+				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test
