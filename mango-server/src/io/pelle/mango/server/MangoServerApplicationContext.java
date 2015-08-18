@@ -25,6 +25,7 @@ import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
 import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
 import io.pelle.mango.server.system.FileUploadController;
+import io.pelle.mango.server.system.FileVOEntityCallback;
 import io.pelle.mango.server.validator.LengthValidator;
 import io.pelle.mango.server.validator.MandatoryValidator;
 import io.pelle.mango.server.validator.NaturalKeyValidator;
@@ -41,14 +42,19 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 		MetricRegistry bean = new MetricRegistry();
 		return bean;
 	}
-	
-	@Bean 
-	public CommonsMultipartResolver multipartResolver(){
+
+	@Bean
+	public FileVOEntityCallback fileVOEntityCallback() {
+		return new FileVOEntityCallback();
+	}
+
+	@Bean
+	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 		resolver.setMaxUploadSize(5242880);
 		return resolver;
 	}
-	
+
 	@Bean
 	public FileUploadController fileUploadController() {
 		FileUploadController bean = new FileUploadController();

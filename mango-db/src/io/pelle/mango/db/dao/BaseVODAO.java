@@ -1,14 +1,5 @@
 package io.pelle.mango.db.dao;
 
-import io.pelle.mango.client.base.vo.IBaseEntity;
-import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.IVOEntity;
-import io.pelle.mango.client.base.vo.query.CountQuery;
-import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.db.query.ServerCountQuery;
-import io.pelle.mango.db.util.DBUtil;
-import io.pelle.mango.db.util.EntityVOMapper;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +12,20 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Collections2;
 
+import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.query.CountQuery;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.db.query.ServerCountQuery;
+import io.pelle.mango.db.util.DBUtil;
+import io.pelle.mango.db.util.EntityVOMapper;
+
 @Component
 public class BaseVODAO extends BaseDAO<IBaseVO> {
 
 	@Autowired(required = false)
-	private List<IVODAODecorator> voDaoDecorators = new ArrayList<IVODAODecorator>();
+	private List<IVOEntityDecorator> voEntityDecorators = new ArrayList<IVOEntityDecorator>();
 
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
@@ -143,9 +143,9 @@ public class BaseVODAO extends BaseDAO<IBaseVO> {
 	}
 
 	private void decorateVO(IBaseVO vo) {
-		for (IVODAODecorator voDaoDecorator : this.voDaoDecorators) {
-			if (voDaoDecorator.supports(vo.getClass())) {
-				voDaoDecorator.decorateVO(vo);
+		for (IVOEntityDecorator voEntityDecorator : this.voEntityDecorators) {
+			if (voEntityDecorator.supports(vo.getClass())) {
+				voEntityDecorator.decorateVO(vo);
 			}
 		}
 	}

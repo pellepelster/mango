@@ -1,15 +1,15 @@
 package io.pelle.mango.db.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import com.google.common.base.Optional;
+
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.AggregateQuery;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-
-import java.util.List;
-import java.util.Map;
-
-import com.google.common.base.Optional;
 
 public interface IBaseVOEntityDAO<VOENTITYTYPE extends IVOEntity> {
 

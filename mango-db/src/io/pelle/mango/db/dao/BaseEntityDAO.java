@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -49,8 +50,13 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 	private static Logger LOG = Logger.getLogger(BaseEntityDAO.class);
 
+	@Autowired(required = false)
+	private List<IEntityCallback> entityCallbacks = new ArrayList<IEntityCallback>();
+
 	@Override
 	public <T extends IBaseEntity> T create(T entity) {
+
+		beforeCreate(entity);
 
 		if (entity instanceof IBaseClientEntity) {
 
@@ -79,6 +85,22 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 		return result;
 
+	}
+
+	protected void beforeCreate(IBaseEntity entity) {
+		for (IEntityCallback entityCallback : this.entityCallbacks) {
+			if (entityCallback.supports(entity.getClass())) {
+				entityCallback.beforeCreate(entity);
+			}
+		}
+	}
+
+	protected void beforeSave(IBaseEntity entity) {
+		for (IEntityCallback entityCallback : this.entityCallbacks) {
+			if (entityCallback.supports(entity.getClass())) {
+				entityCallback.beforeSave(entity);
+			}
+		}
 	}
 
 	@Override
@@ -200,6 +222,8 @@ public class BaseEntityDAO extends BaseDAO<IBaseEntity> {
 
 	@Override
 	public <T extends IBaseEntity> T save(T entity) {
+
+		beforeSave(entity);
 
 		if (entity instanceof IBaseClientEntity) {
 			((IBaseClientEntity) entity).setClient(getCurrentUser().getClient());

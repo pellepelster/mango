@@ -1,19 +1,20 @@
 package io.pelle.mango.server.hierarchy;
 
-import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
-import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.hierarchy.IHierarchicalService;
-import io.pelle.mango.db.dao.BaseVODAO;
-import io.pelle.mango.db.dao.IVODAODecorator;
-import io.pelle.mango.db.util.EntityVOMapper;
-import io.pelle.mango.server.entity.EntityUtils;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Optional;
 
-public class HierarchicalVODecorator implements IVODAODecorator {
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
+import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.hierarchy.IHierarchicalService;
+import io.pelle.mango.db.dao.BaseVODAO;
+import io.pelle.mango.db.dao.IVOEntityDecorator;
+import io.pelle.mango.db.util.EntityVOMapper;
+import io.pelle.mango.server.entity.EntityUtils;
+
+public class HierarchicalVODecorator implements IVOEntityDecorator {
 
 	@Autowired
 	private BaseVODAO baseVODAO;
@@ -23,7 +24,7 @@ public class HierarchicalVODecorator implements IVODAODecorator {
 
 	/** {@inheritDoc} */
 	@Override
-	public void decorateVO(IBaseVO vo) {
+	public void decorateVO(IVOEntity vo) {
 
 		assert vo instanceof IHierarchicalVO : "vo has to be an IHierarchicalVO vo";
 
@@ -45,7 +46,7 @@ public class HierarchicalVODecorator implements IVODAODecorator {
 	}
 
 	@Override
-	public boolean supports(Class<? extends IBaseVO> voClass) {
+	public boolean supports(Class<? extends IVOEntity> voClass) {
 		return IHierarchicalVO.class.isAssignableFrom(voClass);
 	}
 

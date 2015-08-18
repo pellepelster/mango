@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import io.pelle.mango.client.base.db.vos.IBaseHierarchical
 import io.pelle.mango.client.base.vo.EntityDescriptor
 import io.pelle.mango.client.base.vo.IEntityDescriptor
-import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
@@ -22,6 +21,7 @@ import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.dsl.query.datatype.StringDatatypeQuery
 import io.pelle.mango.server.base.BaseEntity
 import java.util.ArrayList
+import io.pelle.mango.client.base.vo.IEntity
 
 class EntityGenerator extends BaseEntityGenerator {
 
@@ -105,7 +105,7 @@ class EntityGenerator extends BaseEntityGenerator {
 			«entity.compileGetAttributeDescriptors»
 		
 			«IF entity.extends == null && !entity.entityDisableIdField»
-			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
+			public static «LongAttributeDescriptor.name» «IEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IEntity.ID_FIELD_NAME»");
 
 			@Id
 			@Column(name = "«entity.entityTableIdColumnName»")

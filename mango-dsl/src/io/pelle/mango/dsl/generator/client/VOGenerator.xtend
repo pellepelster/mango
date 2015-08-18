@@ -5,7 +5,6 @@ import io.pelle.mango.client.base.db.vos.IHierarchicalVO
 import io.pelle.mango.client.base.vo.BaseVO
 import io.pelle.mango.client.base.vo.EntityDescriptor
 import io.pelle.mango.client.base.vo.IEntityDescriptor
-import io.pelle.mango.client.base.vo.IVOEntity
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.server.EntityUtils
@@ -18,6 +17,7 @@ import io.pelle.mango.dsl.mango.ValueObject
 import java.io.Serializable
 import java.util.ArrayList
 import java.util.List
+import io.pelle.mango.client.base.vo.IEntity
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -41,7 +41,7 @@ class VOGenerator extends BaseEntityGenerator {
 		
 			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
 
-			public static «LongAttributeDescriptor.name» «IVOEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IVOEntity.ID_FIELD_NAME»");
+			public static «LongAttributeDescriptor.name» «IEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IEntity.ID_FIELD_NAME»");
 
 			public «entity.voName»() {
 			«FOR attribute : entity.attributes»
@@ -57,7 +57,7 @@ class VOGenerator extends BaseEntityGenerator {
 		
 			private long id;
 			
-			«getterSetter("long", IVOEntity.ID_FIELD_NAME)»
+			«getterSetter("long", IEntity.ID_FIELD_NAME)»
 			
 			«FOR attribute : entity.attributes»
 				«attribute.changeTrackingAttributeGetterSetter(entity)»

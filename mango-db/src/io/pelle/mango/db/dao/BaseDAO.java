@@ -1,11 +1,13 @@
 package io.pelle.mango.db.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IVOEntity;
@@ -20,6 +22,9 @@ import io.pelle.mango.db.util.EntityVOMapper;
 public abstract class BaseDAO<VOENTITYTYPE extends IVOEntity> implements IBaseVOEntityDAO<VOENTITYTYPE> {
 
 	private static Logger LOG = Logger.getLogger(BaseDAO.class);
+
+	@Autowired(required = false)
+	private List<IVOEntityDecorator> voEntityDecorators = new ArrayList<IVOEntityDecorator>();
 
 	@PersistenceContext
 	protected EntityManager entityManager;
@@ -54,6 +59,14 @@ public abstract class BaseDAO<VOENTITYTYPE extends IVOEntity> implements IBaseVO
 
 		throw new RuntimeException(String.format("unsupported query result '%s'", result));
 
+	}
+
+	protected void decorateVOEntity(IVOEntity voEntity) {
+		for (IVOEntityDecorator voEntityDecorator : this.voEntityDecorators) {
+			if (voEntityDecorator.supports(voEntity.getClass())) {
+				voEntityDecorator.decorateVO(voEntity);
+			}
+		}
 	}
 
 	public <T extends VOENTITYTYPE> void deleteQuery(DeleteQuery<T> deleteQuery) {

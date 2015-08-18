@@ -11,6 +11,14 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+
 import gwtupload.client.IFileInput.FileInputType;
 import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.OnFinishUploaderHandler;
@@ -28,14 +36,6 @@ import io.pelle.mango.client.gwt.utils.ActionImage;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.controls.FileControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 
 public class GwtFileControl extends Composite implements IGwtControl, ClickHandler, SimpleCallback<Void> {
 	private final FileControl fileControl;
@@ -92,7 +92,7 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 			@Override
 			public void onFinish(IUploader uploader) {
 				fileControl.parseValue(uploader.getServerInfo().message);
-				setFile(uploader.getFileInput().getFilename(), uploader.getServerInfo().message);
+				setFile(uploader.getFileInput().getFilename(), uploader.getServerMessage().getMessage());
 			}
 		});
 	}
@@ -151,11 +151,10 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 		fileNameAnchor.setText(MangoClientWeb.MESSAGES.fileNone());
 		fileControl.parseValue(null);
 	}
-	
+
 	@Override
 	public void showMessages(IValidationMessages validationMessages) {
 	}
-
 
 	@Override
 	public void onCallback(Void t) {
