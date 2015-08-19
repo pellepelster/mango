@@ -335,7 +335,7 @@ ColumnLayoutData:
 //- /layout -------------------------------------------------------------------
 
 //- container -----------------------------------------------------------------
-DictionaryContainer: DictionaryComposite | DictionaryEditableTable | DictionaryAssignmentTable;
+DictionaryContainer: DictionaryComposite | DictionaryEditableTable | DictionaryAssignmentTable | DictionaryTabFolder;
 
 DictionaryComposite:
 	"composite" name=ID "{"
@@ -347,6 +347,13 @@ DictionaryComposite:
 		
 	"}";
 
+DictionaryTabFolder:
+	"tabfolder" name=ID "{"
+		
+		(tabs+=DictionaryComposite)*
+		
+	"}";
+	
 DictionaryEditableTable:
 	"editabletable" name=ID "{"
 

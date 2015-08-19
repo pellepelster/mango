@@ -713,17 +713,27 @@ project MangoDemo {
 					}
 
 					dictionaryeditor DemoEditor1 {
-						textcontrol ref TextControl1
-						textcontrol ref TextControl2
-						textcontrol ref TextControl3
-						textcontrol ref TextControl4
-						referencecontrol ref ReferenceControl1
-						booleancontrol ref BooleanControl1
-						enumerationcontrol ref EnumerationControl1
-						integercontrol ref IntegerControl1
-						integercontrol ref IntegerControl2
-						bigdecimalcontrol ref DecimalControl1
-						datecontrol ref DateControl1
+					
+						tabfolder Tabfolder1 { 
+						
+							composite Tab1 {
+								textcontrol ref TextControl1
+								referencecontrol ref ReferenceControl1
+								booleancontrol ref BooleanControl1
+								enumerationcontrol ref EnumerationControl1
+								integercontrol ref IntegerControl1
+								integercontrol ref IntegerControl2
+								bigdecimalcontrol ref DecimalControl1
+								datecontrol ref DateControl1
+							}
+						
+							composite Tab2 {
+								textcontrol ref TextControl2
+								textcontrol ref TextControl3
+								textcontrol ref TextControl4
+							}
+						}
+					
 					}
 				}
 			}

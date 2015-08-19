@@ -160,10 +160,10 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// dictionary1 (ghi)
 		DictionaryEditorModuleTestUI<Entity1VO> editor1 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
-		TextTestControl textControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
+		TextTestControl textControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1);
 		textControl1.enterValue("ghi");
 
-		ReferenceTestControl<Entity2VO> referenceControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.REFERENCE_CONTROL1);
+		ReferenceTestControl<Entity2VO> referenceControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.REFERENCE_CONTROL1);
 
 		referenceControl1.enterValue("x");
 		referenceControl1.assertHasSuggestions(2);
@@ -177,10 +177,10 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// dictionary1 (jkl)
 		editor1 = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
-		textControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
+		textControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1);
 		textControl1.enterValue("jkl");
 
-		referenceControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.REFERENCE_CONTROL1);
+		referenceControl1 = editor1.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.REFERENCE_CONTROL1);
 		referenceControl1.enterValue("def");
 		editor1.save();
 		referenceControl1.assertValueString("def");
@@ -261,7 +261,7 @@ public class DemoClientTest extends BaseDemoTest {
 	public void testDictionary1TextControl4DefaultWidth() {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.TEST_DICTIONARY1.DICTIONARY_EDITOR1);
-		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL4);
+		TextTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB2.TEXT_CONTROL4);
 	}
 
 	@Test
@@ -290,7 +290,7 @@ public class DemoClientTest extends BaseDemoTest {
 	private DictionaryEditorModuleTestUI<Entity1VO> createDemoDictionary1Editor1() {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
-		TextTestControl textControl1 = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
+		TextTestControl textControl1 = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1);
 		textControl1.enterValue(UUID.randomUUID().toString());
 
 		return editor;
@@ -332,7 +332,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// create 1
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createDemoDictionary1Editor1();
-		DecimalTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DECIMAL_CONTROL1);
+		DecimalTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.DECIMAL_CONTROL1);
 		control.enterValue("a");
 		control.assertHasErrorWithText("'a' is not a valid decimal");
 		control.enterValue("1.2");
@@ -340,7 +340,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// create 2
 		editor = createDemoDictionary1Editor1();
-		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DECIMAL_CONTROL1);
+		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.DECIMAL_CONTROL1);
 		control.enterValue("2.6");
 		editor.save();
 
@@ -362,7 +362,7 @@ public class DemoClientTest extends BaseDemoTest {
 		search.assertSearchResults(1);
 
 		editor = search.openEditor(0);
-		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DECIMAL_CONTROL1);
+		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.DECIMAL_CONTROL1);
 		assertEquals("2.6", control.getValueString());
 	}
 
@@ -371,7 +371,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// create 1
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createDemoDictionary1Editor1();
-		IntegerTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.INTEGER_CONTROL1);
+		IntegerTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.INTEGER_CONTROL1);
 		control.enterValue("a");
 		control.assertHasErrorWithText("'a' is not a valid integer");
 		control.enterValue("1");
@@ -379,7 +379,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// create 2
 		editor = createDemoDictionary1Editor1();
-		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.INTEGER_CONTROL1);
+		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.INTEGER_CONTROL1);
 		control.enterValue("2");
 		editor.save();
 
@@ -401,7 +401,7 @@ public class DemoClientTest extends BaseDemoTest {
 		search.assertSearchResults(1);
 
 		editor = search.openEditor(0);
-		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.INTEGER_CONTROL1);
+		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.INTEGER_CONTROL1);
 		assertEquals("2", control.getValueString());
 	}
 
@@ -412,7 +412,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		editor.assertNotDirty();
 
-		TextTestControl textControl1 = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1);
+		TextTestControl textControl1 = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1);
 		textControl1.enterValue(UUID.randomUUID().toString());
 		editor.assertDirty();
 
@@ -429,7 +429,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// create 1
 		DictionaryEditorModuleTestUI<Entity1VO> editor = createDemoDictionary1Editor1();
-		DateTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
+		DateTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.DATE_CONTROL1);
 		control.enterValue("a");
 		control.assertHasErrorWithText("'a' is not a valid date");
 		control.enterValue(date1);
@@ -437,7 +437,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		// create 2
 		editor = createDemoDictionary1Editor1();
-		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
+		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.DATE_CONTROL1);
 		control.enterValue(date2);
 		editor.save();
 
@@ -459,7 +459,7 @@ public class DemoClientTest extends BaseDemoTest {
 		search.assertSearchResults(1);
 
 		editor = search.openEditor(0);
-		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.DATE_CONTROL1);
+		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.DATE_CONTROL1);
 		assertEquals(date2, control.getValueString());
 	}
 

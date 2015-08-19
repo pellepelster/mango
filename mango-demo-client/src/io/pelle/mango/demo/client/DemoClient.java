@@ -136,7 +136,7 @@ public class DemoClient implements EntryPoint {
 		string1 += "}";
 		string1 += "</pre>";
 
-		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TEXT_CONTROL1.setHelpText(replaceKeywords(string1));
+		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1.setHelpText(replaceKeywords(string1));
 
 		String string2 = "";
 		string2 += "<strong>Model defining this control</strong><br/>";
@@ -167,7 +167,7 @@ public class DemoClient implements EntryPoint {
 		string2 += "}";
 		string2 += "</pre>";
 
-		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.REFERENCE_CONTROL1.setHelpText(replaceKeywords(string2));
+		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.REFERENCE_CONTROL1.setHelpText(replaceKeywords(string2));
 
 		MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.addEditorHook(new BaseEditorHook<Entity1VO>() {
 

@@ -9,14 +9,19 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTa
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.mango.ColumnLayout
 import io.pelle.mango.dsl.mango.ColumnLayoutData
+import io.pelle.mango.dsl.mango.DictionaryComposite
 import io.pelle.mango.dsl.mango.DictionaryContainer
 import io.pelle.mango.dsl.mango.DictionaryContainerContent
 import io.pelle.mango.dsl.mango.DictionaryControl
 import io.pelle.mango.dsl.mango.DictionaryControlGroup
 import io.pelle.mango.dsl.mango.DictionaryEditableTable
+import io.pelle.mango.dsl.mango.DictionaryTabFolder
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
+import com.google.common.collect.Collections2
+import com.google.common.base.Function
+import java.util.Collection
 
 class DictionaryContainerGenerator {
 
@@ -26,11 +31,19 @@ class DictionaryContainerGenerator {
 	@Inject
 	extension DictionaryControls
 
+	private Function<DictionaryComposite, DictionaryContainerContent> CONTAINER_CONTENTS = new Function<DictionaryComposite, DictionaryContainerContent>() {
+			
+			override apply(DictionaryComposite input) {
+				return input
+			}
+			
+		}
+
 	def dictionaryConstant(DictionaryContainer dictionaryContainer) '''
 		public «dictionaryContainer.dictionaryClassFullQualifiedName» «dictionaryContainer.dictionaryConstantName» = new «dictionaryContainer.dictionaryClassFullQualifiedName»(this);
 	'''
 
-	def dictionaryClass(List<DictionaryContainerContent> dictionaryContainerContents) '''
+	def dispatch dictionaryClass(List<DictionaryContainerContent> dictionaryContainerContents) '''
 		«FOR dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer)»
 			«dictionaryContainer.dictionaryConstant»
 		«ENDFOR»
@@ -40,7 +53,7 @@ class DictionaryContainerGenerator {
 		«ENDFOR»
 	'''
 
-	def dictionaryContainerContentsConstructor(List<DictionaryContainerContent> dictionaryContainerContents) '''
+	def dictionaryContainerContentsConstructor(Collection<DictionaryContainerContent> dictionaryContainerContents) '''
 		«FOR dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer)»
 			this.getChildren().add(«dictionaryContainer.dictionaryConstantName»);
 		«ENDFOR»
@@ -65,8 +78,13 @@ class DictionaryContainerGenerator {
 		«ENDFOR»
 	'''
 
-	def dictionaryGenerator(DictionaryContainer dictionaryContainer, IFileSystemAccess fsa) {
+	def dispatch dictionaryGenerator(DictionaryComposite dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+	}
+
+	def dispatch dictionaryGenerator(DictionaryTabFolder dictionaryContainer, IFileSystemAccess fsa) {
+		dictionaryContainer.tabs.dictionaryGenerator(fsa)
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
@@ -85,15 +103,19 @@ class DictionaryContainerGenerator {
 		«ENDIF»
 	'''
 
-	def dictionaryClass(DictionaryContainer dictionaryContainer) '''
+	def dispatch dictionaryClass(DictionaryContainer dictionaryContainer) {
+		throw new RuntimeException("not implemented")
+	} 
+
+	def dispatch dictionaryClass(DictionaryComposite dictionaryContainer) '''
 			package «dictionaryContainer.packageName»;
 			
 			@«SuppressWarnings.name»("all")
-			public class «dictionaryContainer.dictionaryClassName» extends de.pellepelster.myadmin.client.base.modules.dictionary.model.containers.CompositeModel {
+			public class «dictionaryContainer.dictionaryClassName» extends io.pelle.mango.client.base.modules.dictionary.model.containers.CompositeModel {
 				
 				«dictionaryContainer.containercontents.dictionaryClass»
 		
-				public «dictionaryContainer.dictionaryClassName»(de.pellepelster.myadmin.client.base.modules.dictionary.model.BaseModel<?> parent) {
+				public «dictionaryContainer.dictionaryClassName»(io.pelle.mango.client.base.modules.dictionary.model.BaseModel<?> parent) {
 					super("«dictionaryContainer.name»", parent);
 					«dictionaryContainer.containercontents.dictionaryContainerContentsConstructor»
 					
@@ -102,12 +124,30 @@ class DictionaryContainerGenerator {
 			}
 	'''
 
-	def dictionaryGenerator(DictionaryEditableTable dictionaryContainer, IFileSystemAccess fsa) {
+	def dispatch dictionaryClass(DictionaryTabFolder dictionaryContainer) '''
+			package «dictionaryContainer.packageName»;
+			
+			@«SuppressWarnings.name»("all")
+			public class «dictionaryContainer.dictionaryClassName» extends io.pelle.mango.client.base.modules.dictionary.model.containers.TabFolderModel {
+				
+				/**
+				* tabs «dictionaryContainer.tabs.length»
+				*/
+				«dictionaryContainer.tabs.dictionaryClass»
+		
+				public «dictionaryContainer.dictionaryClassName»(io.pelle.mango.client.base.modules.dictionary.model.BaseModel<?> parent) {
+					super("«dictionaryContainer.name»", parent);
+					«Collections2.transform(dictionaryContainer.tabs, CONTAINER_CONTENTS).dictionaryContainerContentsConstructor»
+				}
+			}
+	'''
+	
+	def dispatch dictionaryGenerator(DictionaryEditableTable dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
-	def dictionaryClass(DictionaryEditableTable dictionaryContainer) '''
+	def dispatch dictionaryClass(DictionaryEditableTable dictionaryContainer) '''
 			package «dictionaryContainer.packageName»;
 			
 			@«SuppressWarnings.name»("all")
@@ -132,10 +172,10 @@ class DictionaryContainerGenerator {
 			}
 	'''
 
-	def dictionaryGenerator(List<DictionaryContainerContent> dictionaryContainerContents, IFileSystemAccess fsa) {
+	def dispatch dictionaryGenerator(Collection<DictionaryContainerContent> dictionaryContainerContents, IFileSystemAccess fsa) {
 
 		for (dictionaryContainer : dictionaryContainerContents.filter(DictionaryContainer)) {
-			fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+			dictionaryContainer.dictionaryGenerator(fsa)
 		}
 
 		for (dictionaryControl : dictionaryContainerContents.filter(DictionaryControlGroup)) {
