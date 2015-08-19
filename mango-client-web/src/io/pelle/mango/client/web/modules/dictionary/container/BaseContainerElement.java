@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.common.base.Objects;
 
+import io.pelle.mango.client.base.modules.dictionary.container.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
@@ -19,6 +20,8 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 	private List<BaseDictionaryControl<?, ?>> controls = new ArrayList<BaseDictionaryControl<?, ?>>();
 
 	private List<BaseContainerElement<?>> children = new ArrayList<BaseContainerElement<?>>();
+
+	private List<IUpdateListener> updateListeners = new ArrayList<>();
 
 	@SuppressWarnings("static-access")
 	public BaseContainerElement(ModelType baseContainer, BaseDictionaryElement<? extends IBaseModel> parent) {
@@ -66,6 +69,10 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("name", getModel().getName()).toString();
+	}
+
+	public void addUpdateListener(IUpdateListener updateListener) {
+		updateListeners.add(updateListener);
 	}
 
 }

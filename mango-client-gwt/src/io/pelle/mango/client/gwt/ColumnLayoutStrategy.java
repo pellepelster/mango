@@ -11,18 +11,20 @@
  */
 package io.pelle.mango.client.gwt;
 
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.Widget;
+
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseContainerElement;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseTableElement;
 import io.pelle.mango.client.web.modules.dictionary.container.IContainer;
+import io.pelle.mango.client.web.modules.dictionary.container.TabFolder;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
-
 public class ColumnLayoutStrategy {
+
 	private final LAYOUT_TYPE layoutType;
 
 	public ColumnLayoutStrategy(LAYOUT_TYPE layoutType) {
@@ -71,10 +73,10 @@ public class ColumnLayoutStrategy {
 
 			for (BaseContainerElement<?> lBaseContainer : baseContainer.getChildren()) {
 
-				IContainer<Panel> container = ContainerFactory.createContainer(lBaseContainer);
+				IContainer<Panel> container = ContainerFactory.createContainer(lBaseContainer, this);
 				parent.add(container.getContainer());
 
-				if (container.getContainer() instanceof Panel && !(lBaseContainer instanceof BaseTableElement)) {
+				if (container.getContainer() instanceof Panel && !(lBaseContainer instanceof BaseTableElement || lBaseContainer instanceof TabFolder)) {
 					createLayout(container.getContainer(), lBaseContainer);
 				}
 			}
