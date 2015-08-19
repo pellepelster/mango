@@ -11,15 +11,6 @@
  */
 package io.pelle.mango.client.web.test;
 
-import io.pelle.mango.client.base.db.vos.Result;
-import io.pelle.mango.client.base.layout.IModuleUI;
-import io.pelle.mango.client.base.messages.IValidationMessage;
-import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
-import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
-import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
-import io.pelle.mango.client.web.test.util.FocusManager;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +20,15 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.gwt.thirdparty.guava.common.base.Joiner;
+
+import io.pelle.mango.client.base.db.vos.Result;
+import io.pelle.mango.client.base.layout.IModuleUI;
+import io.pelle.mango.client.base.messages.IValidationMessage;
+import io.pelle.mango.client.base.modules.dictionary.controls.IButton;
+import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
+import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModule;
+import io.pelle.mango.client.web.test.util.FocusManager;
 
 /**
  * UI for the navigation module
@@ -124,14 +124,14 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 	}
 
 	public void assertHasNoErrors() {
-		
+
 		String messages = Joiner.on(", ").join(Iterables.transform(module.getDictionaryEditor().getValidationMessages(), new Function<IValidationMessage, String>() {
 			@Override
 			public String apply(IValidationMessage input) {
 				return input.getMessage();
 			}
 		}));
-		
+
 		Assert.assertEquals(messages, 0, module.getDictionaryEditor().getValidationMessages().count());
 	}
 

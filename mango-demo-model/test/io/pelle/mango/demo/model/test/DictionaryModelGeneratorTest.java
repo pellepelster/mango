@@ -2,16 +2,18 @@ package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
-import io.pelle.mango.client.base.modules.dictionary.model.controls.IIntegerControlModel;
-import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
-import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
-import io.pelle.mango.demo.client.test.ENUMERATION1;
 
 import java.util.Map;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.ITabfolderModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IIntegerControlModel;
+import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
+import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
+import io.pelle.mango.demo.client.test.ENUMERATION1;
 
 public class DictionaryModelGeneratorTest {
 
@@ -90,6 +92,11 @@ public class DictionaryModelGeneratorTest {
 		assertEquals(null, DictionaryModelProvider.getEnumerationValue(ENUMERATION1.class.getName(), null));
 		assertEquals(ENUMERATION1.ENUMERATIONVALUE1, DictionaryModelProvider.getEnumerationValue(ENUMERATION1.class.getName(), "ENUMERATIONVALUE1"));
 
+	}
+
+	@Test
+	public void testDictionary1TabFolderModelType() {
+		assertTrue(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1 instanceof ITabfolderModel);
 	}
 
 	@Test

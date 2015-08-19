@@ -11,6 +11,7 @@
  */
 package io.pelle.mango.client.web.test;
 
+import io.pelle.mango.client.base.modules.dictionary.model.containers.TabFolderModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ControlGroupModel;
@@ -21,6 +22,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceCon
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
+import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
 import io.pelle.mango.client.web.test.controls.DateTestControl;
@@ -45,6 +47,10 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 	}
 
 	public void onResize() {
+	}
+
+	public TabFolderTestContainer getContainer(TabFolderModel containerModel) {
+		return new TabFolderTestContainer(baseDictionaryModule.getElement(containerModel));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -1,5 +1,10 @@
 package io.pelle.mango.client.web.modules.dictionary.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.base.Objects;
+
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
@@ -7,12 +12,8 @@ import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.ControlFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.base.Objects;
-
 public abstract class BaseContainerElement<ModelType extends IBaseContainerModel> extends BaseDictionaryElement<ModelType> {
+
 	private static final int DEFAULT_COLUMN_COUNT = 1;
 
 	private List<BaseDictionaryControl<?, ?>> controls = new ArrayList<BaseDictionaryControl<?, ?>>();
@@ -59,9 +60,9 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 		} else {
 			return DEFAULT_COLUMN_COUNT;
 		}
-		
 
 	}
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("name", getModel().getName()).toString();

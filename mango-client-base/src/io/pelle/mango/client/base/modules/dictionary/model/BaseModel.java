@@ -14,6 +14,7 @@ package io.pelle.mango.client.base.modules.dictionary.model;
 import io.pelle.mango.client.base.modules.dictionary.BaseDictionaryElementUtil;
 
 public abstract class BaseModel<ElementType> implements IBaseModel {
+
 	private static final long serialVersionUID = -564541020450388681L;
 
 	private String name;

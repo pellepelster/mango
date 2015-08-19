@@ -36,6 +36,7 @@ import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
 import io.pelle.mango.client.web.test.DictionarySearchModuleTestUI;
 import io.pelle.mango.client.web.test.MangoClientSyncWebTest;
 import io.pelle.mango.client.web.test.TestButton;
+import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
 import io.pelle.mango.client.web.test.controls.DateTestControl;
@@ -211,6 +212,15 @@ public class DemoClientTest extends BaseDemoTest {
 		assertTrue(editor.getModule().getDictionaryEditor().getMetaInformation().isPresent());
 		editor.save();
 		assertNull(editor.getModule().getDictionaryEditor().getMetaInformation().get().getCreateUser());
+
+	}
+
+	@Test
+	public void testTabFolder() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		TabFolderTestContainer container = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1);
+		container.assertTabCount(2);
 
 	}
 
