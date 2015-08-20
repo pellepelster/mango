@@ -24,7 +24,7 @@ import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
 import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
-import io.pelle.mango.server.system.FileUploadController;
+import io.pelle.mango.server.system.FileController;
 import io.pelle.mango.server.system.FileVOEntityCallback;
 import io.pelle.mango.server.validator.LengthValidator;
 import io.pelle.mango.server.validator.MandatoryValidator;
@@ -56,8 +56,8 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 	}
 
 	@Bean
-	public FileUploadController fileUploadController() {
-		FileUploadController bean = new FileUploadController();
+	public FileController fileUploadController() {
+		FileController bean = new FileController();
 		return bean;
 	}
 

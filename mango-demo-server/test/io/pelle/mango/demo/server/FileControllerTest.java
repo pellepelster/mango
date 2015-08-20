@@ -4,15 +4,20 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 
 import org.hamcrest.text.IsEmptyString;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @WebAppConfiguration
-public class FileUploadControllerTest extends BaseDemoTest {
+public class FileControllerTest extends BaseDemoTest {
 
 	private MockMvc mockMvc;
 
@@ -45,13 +50,37 @@ public class FileUploadControllerTest extends BaseDemoTest {
 		pw.close();
 
 		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new FileInputStream(tempFile));
-		mockMvc.perform(fileUpload("/gwtcontrolupload").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
+		mockMvc.perform(fileUpload("/file/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
 				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print());
+	}
+	
+	@Test
+	public void testGetFileInvalidUUID() throws Exception {
+		mockMvc.perform(get("/file/get/{fileUUID}", "xxx")).andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	public void testGetFile() throws Exception {
+
+		byte[] fileContent = new byte[] { 0xa, 0xb, 0xc };
+		
+		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new ByteArrayInputStream(fileContent));
+		String content = mockMvc.perform(fileUpload("/file/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
+				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print()).andReturn().getResponse().getContentAsString();
+		
+		JSONObject jsonObject = new JSONObject(content);  
+		JSONArray files =jsonObject.getJSONArray("files");
+		String fileUUD = ((JSONObject)files.get(0)).getString("fileUUID");
+		
+		byte[] downloadedFile = mockMvc.perform(get("/file/get/{fileUUID}", fileUUD)).andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
+		
+		Assert.assertArrayEquals(fileContent, downloadedFile);
+		
 	}
 
 	@Test
 	public void testUploadNoFile() throws Exception {
-		mockMvc.perform(fileUpload("/gwtcontrolupload")).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(false))).andDo(MockMvcResultHandlers.print());
+		mockMvc.perform(fileUpload("/file/put")).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(false))).andDo(MockMvcResultHandlers.print());
 	}
 
 }

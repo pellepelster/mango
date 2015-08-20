@@ -1,27 +1,40 @@
 package io.pelle.mango.server.system;
 
+import java.io.ByteArrayInputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.server.File;
 
 @Controller
-public class FileUploadController {
+@RequestMapping(value = "file")
+public class FileController {
+
+	private static Logger LOG = Logger.getLogger(FileController.class);
 
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
 
-	@RequestMapping(value = IFileControl.GWT_UPLOAD_REQUEST_MAPPING, method = RequestMethod.GET)
+	@RequestMapping(value = "put", method = RequestMethod.GET)
 	public @ResponseBody String provideUploadInfo() {
 		return "You can upload a file by posting to this same URL.";
 	}
@@ -68,52 +81,42 @@ public class FileUploadController {
 		};
 	}
 
-	// @RequestMapping(value = "/download", method = RequestMethod.GET)
-	// public @ResponseBody void downloadFiles(HttpServletRequest request,
-	// HttpServletResponse response) {
-	//
-	// ServletContext context = request.getServletContext();
-	//
-	// File downloadFile = new File("C:/JavaHonk/CustomJar.jar");
-	// FileInputStream inputStream = null;
-	// OutputStream outStream = null;
-	//
-	// try {
-	// inputStream = new FileInputStream(downloadFile);
-	//
-	// // MIME type of the file
-	// response.setContentType("application/octet-stream");
-	// // Response header
-	// response.setHeader("Content-Disposition", "attachment; filename=\"" +
-	// file.getName() + "\"");
-	//
-	// // response header
-	// String headerKey = "Content-Disposition";
-	// String headerValue = String.format("attachment; filename=\"%s\"",
-	// downloadFile.getName());
-	// response.setHeader(headerKey, headerValue);
-	//
-	// // Write response
-	// outStream = response.getOutputStream();
-	// IOUtils.copy(inputStream, outStream);
-	//
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// } finally {
-	// try {
-	// if (null != inputStream)
-	// inputStream.close();
-	// if (null != inputStream)
-	// outStream.close();
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	//
-	// }
-	//
-	// }
+	@SuppressWarnings("serial")
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
+	public class FileNotFoundException extends RuntimeException {
+	}
 
-	@RequestMapping(value = IFileControl.GWT_UPLOAD_REQUEST_MAPPING, method = RequestMethod.POST)
+	@RequestMapping(value = "/get/{fileUUID}", method = RequestMethod.GET)
+	public @ResponseBody void downloadFiles(@PathVariable("fileUUID") String fileUUID, HttpServletRequest request, HttpServletResponse response) {
+
+		SelectQuery<File> query = SelectQuery.selectFrom(File.class).where(File.FILEUUID.eq(fileUUID));
+
+		List<File> files = baseEntityDAO.filter(query);
+
+		if (files.isEmpty()) {
+			LOG.error(String.format("file with uuid '%s' not found", fileUUID));
+			throw new FileNotFoundException();
+		} else {
+
+			File file = files.get(0);
+
+			response.setContentType("application/octet-stream");
+			response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFileName() + "\"");
+
+			String headerKey = "Content-Disposition";
+			String headerValue = String.format("attachment; filename=\"%s\"", file.getFileName());
+			response.setHeader(headerKey, headerValue);
+
+			try (OutputStream outStream = response.getOutputStream(); ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getFileContent())) {
+				IOUtils.copy(inputStream, outStream);
+			} catch (Exception e) {
+				LOG.error(String.format("error retrieving file with uuid '%s'", fileUUID));
+				throw new FileNotFoundException();
+			}
+		}
+	}
+
+	@RequestMapping(value = "put", method = RequestMethod.POST)
 	@ResponseBody
 	public FileUploadResponse handleFileUpload(@RequestParam("files") List<MultipartFile> files) {
 

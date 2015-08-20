@@ -68,11 +68,7 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 			});
 		}
 
-		// MyAdminDictionaryIDs.MY_ADMIN_GROUP.MY_ADMIN_GROUP_EDITOR.GROUP_NAME;
-		// DictionaryHookRegistry.getInstance().
-
 		panel.add(fileNameAnchor);
-
 		panel.add(deleteAction);
 
 		panel.add(singleUploader.getForm());
@@ -82,7 +78,7 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 		singleUploader.setEnabled(true);
 
 		// TODO get base remote url from service locator
-		singleUploader.setServletPath(GWT.getModuleBaseURL() + "../remote/" + IFileControl.GWT_UPLOAD_REQUEST_MAPPING);
+		singleUploader.setServletPath(GWT.getModuleBaseURL() + "../remote/" + IFileControl.FILE_REQUEST_BASE_BASE + "/" + IFileControl.FILE_REQUEST_MAPPING_PUT);
 
 		this.fileControl = fileControl;
 		new ControlHelper(this, fileControl, this, true, false, true);
@@ -126,7 +122,7 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 	}
 
 	public static String getFileUrl(String fileUUID) {
-		return GWT.getModuleBaseURL() + "../remote/" + IFileControl.FILE_DOWNLOAD_REQUEST_MAPPING + "/" + IFileControl.REQUEST_MAPPING_GET_FILE + "/" + fileUUID;
+		return GWT.getModuleBaseURL() + "../remote/" + IFileControl.FILE_REQUEST_BASE_BASE + "/" + IFileControl.FILE_REQUEST_MAPPING_GET + "/" + fileUUID;
 	}
 
 	public String getFileName(String filePathName) {
