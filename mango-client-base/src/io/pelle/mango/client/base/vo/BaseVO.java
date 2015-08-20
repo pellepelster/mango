@@ -1,8 +1,8 @@
 package io.pelle.mango.client.base.vo;
 
-import io.pelle.mango.client.base.db.vos.UUID;
-
 import java.util.HashMap;
+
+import io.pelle.mango.client.base.db.vos.UUID;
 
 public abstract class BaseVO implements IBaseVO {
 
@@ -19,6 +19,10 @@ public abstract class BaseVO implements IBaseVO {
 	}
 
 	private HashMap<String, Object> data = new HashMap<String, Object>();
+
+	public void setData(HashMap<String, Object> data) {
+		this.data = data;
+	}
 
 	@Override
 	public HashMap<String, Object> getData() {

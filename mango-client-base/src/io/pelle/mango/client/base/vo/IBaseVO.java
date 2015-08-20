@@ -12,7 +12,6 @@
 package io.pelle.mango.client.base.vo;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 /**
  * Basic VO interface
@@ -45,12 +44,5 @@ public interface IBaseVO extends Serializable, IVOEntity {
 	 * @return
 	 */
 	void setId(long id);
-
-	/**
-	 * Generic data map
-	 * 
-	 * @return
-	 */
-	HashMap<String, Object> getData();
 
 }

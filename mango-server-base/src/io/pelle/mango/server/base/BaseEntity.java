@@ -1,5 +1,7 @@
 package io.pelle.mango.server.base;
 
+import java.util.HashMap;
+
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.VOEntityMetadata;
@@ -8,6 +10,8 @@ import io.pelle.mango.client.base.vo.VOEntityMetadata;
 public abstract class BaseEntity implements IBaseEntity {
 
 	private VOEntityMetadata metadata;
+
+	private HashMap<String, Object> data = new HashMap<String, Object>();
 
 	private long oid;
 
@@ -33,6 +37,15 @@ public abstract class BaseEntity implements IBaseEntity {
 		} else {
 			return getId();
 		}
+	}
+
+	public void setData(HashMap<String, Object> data) {
+		this.data = data;
+	}
+
+	@Override
+	public HashMap<String, Object> getData() {
+		return this.data;
 	}
 
 	@Override
