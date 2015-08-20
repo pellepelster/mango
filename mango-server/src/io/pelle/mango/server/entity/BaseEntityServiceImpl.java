@@ -81,6 +81,7 @@ public class BaseEntityServiceImpl implements IBaseEntityService {
 	}
 
 	@Override
+	@Transactional
 	public <SaveVOType extends IBaseVO> SaveVOType save(SaveVOType vo) {
 		return baseVODAO.save(vo);
 	}

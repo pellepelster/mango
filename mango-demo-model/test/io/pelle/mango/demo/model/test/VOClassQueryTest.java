@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
 
@@ -20,7 +21,7 @@ public class VOClassQueryTest {
 	public void testAttributesDescriptorQuery() {
 
 		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors();
-		assertEquals(22, attributesDescriptorQuery.getCount());
+		assertEquals(23, attributesDescriptorQuery.getCount());
 	}
 
 	@Test
@@ -41,6 +42,14 @@ public class VOClassQueryTest {
 
 		attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDATatype1");
 		assertEquals("stringDatatype1", attributesDescriptorQuery.getSingleResult().getAttributeName());
+
+	}
+
+	@Test
+	public void testQueryEntity1FileEntityDatatypes1() {
+
+		AttributesDescriptorQuery attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("fileEntityDatatypes1");
+		assertTrue(attributesDescriptorQuery.hasExactlyOne());
 
 	}
 

@@ -529,6 +529,7 @@ project MangoDemo {
 				date DateDatatype1 dateDatype1
 				date DateDatatype2 dateDatype2
 				entity FileEntityDatatype1 fileEntityDatatype1
+				entity FileEntityDatatype1 0..n fileEntityDatatypes1
 			}
 
 			entity Entity2 {

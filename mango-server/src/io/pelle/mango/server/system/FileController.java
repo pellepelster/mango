@@ -11,17 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
-import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.server.File;
 
@@ -30,6 +27,9 @@ import io.pelle.mango.server.File;
 public class FileController {
 
 	private static Logger LOG = Logger.getLogger(FileController.class);
+
+	@Autowired
+	private FileStorage fileStorage;
 
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
@@ -81,38 +81,22 @@ public class FileController {
 		};
 	}
 
-	@SuppressWarnings("serial")
-	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public class FileNotFoundException extends RuntimeException {
-	}
-
 	@RequestMapping(value = "/get/{fileUUID}", method = RequestMethod.GET)
 	public @ResponseBody void downloadFiles(@PathVariable("fileUUID") String fileUUID, HttpServletRequest request, HttpServletResponse response) {
 
-		SelectQuery<File> query = SelectQuery.selectFrom(File.class).where(File.FILEUUID.eq(fileUUID));
+		File file = fileStorage.getFile(fileUUID);
 
-		List<File> files = baseEntityDAO.filter(query);
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFileName() + "\"");
 
-		if (files.isEmpty()) {
-			LOG.error(String.format("file with uuid '%s' not found", fileUUID));
-			throw new FileNotFoundException();
-		} else {
+		String headerKey = "Content-Disposition";
+		String headerValue = String.format("attachment; filename=\"%s\"", file.getFileName());
+		response.setHeader(headerKey, headerValue);
 
-			File file = files.get(0);
-
-			response.setContentType("application/octet-stream");
-			response.setHeader("Content-Disposition", "attachment; filename=\"" + file.getFileName() + "\"");
-
-			String headerKey = "Content-Disposition";
-			String headerValue = String.format("attachment; filename=\"%s\"", file.getFileName());
-			response.setHeader(headerKey, headerValue);
-
-			try (OutputStream outStream = response.getOutputStream(); ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getFileContent())) {
-				IOUtils.copy(inputStream, outStream);
-			} catch (Exception e) {
-				LOG.error(String.format("error retrieving file with uuid '%s'", fileUUID));
-				throw new FileNotFoundException();
-			}
+		try (OutputStream outStream = response.getOutputStream(); ByteArrayInputStream inputStream = new ByteArrayInputStream(file.getFileContent())) {
+			IOUtils.copy(inputStream, outStream);
+		} catch (Exception e) {
+			throw new FileNotFoundException(String.format("error retrieving file with uuid '%s'", fileUUID));
 		}
 	}
 
