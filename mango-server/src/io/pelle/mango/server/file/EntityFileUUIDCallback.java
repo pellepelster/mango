@@ -1,4 +1,4 @@
-package io.pelle.mango.server.system;
+package io.pelle.mango.server.file;
 
 import java.util.List;
 import java.util.Map;

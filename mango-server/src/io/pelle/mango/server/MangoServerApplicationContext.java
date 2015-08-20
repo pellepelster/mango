@@ -22,12 +22,12 @@ import com.codahale.metrics.graphite.GraphiteReporter.Builder;
 
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
+import io.pelle.mango.server.file.EntityFileUUIDCallback;
+import io.pelle.mango.server.file.FileController;
+import io.pelle.mango.server.file.FileEntityCallback;
+import io.pelle.mango.server.file.FileStorage;
 import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
 import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
-import io.pelle.mango.server.system.EntityFileUUIDCallback;
-import io.pelle.mango.server.system.FileController;
-import io.pelle.mango.server.system.FileEntityCallback;
-import io.pelle.mango.server.system.FileStorage;
 import io.pelle.mango.server.validator.LengthValidator;
 import io.pelle.mango.server.validator.MandatoryValidator;
 import io.pelle.mango.server.validator.NaturalKeyValidator;
