@@ -3,6 +3,16 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.List;
+
+import javax.persistence.Column;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
 import io.pelle.mango.client.base.vo.BigDecimalAttributeDescriptor;
 import io.pelle.mango.client.base.vo.BooleanAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
@@ -27,15 +37,7 @@ import io.pelle.mango.demo.server.test.Entity4;
 import io.pelle.mango.demo.server.test.Entity5;
 import io.pelle.mango.demo.server.test.Entity6;
 import io.pelle.mango.demo.server.test.Entity7;
-
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.util.List;
-
-import javax.persistence.Column;
-
-import org.junit.Ignore;
-import org.junit.Test;
+import io.pelle.mango.server.File;
 
 public class EntityModelGeneratorTest {
 
@@ -200,6 +202,11 @@ public class EntityModelGeneratorTest {
 		assertEquals(Double.class, Entity1.DOUBLEDATATYPE1.getAttributeType());
 		assertEquals(Double.class, Entity1.DOUBLEDATATYPE1.getListAttributeType());
 		assertEquals("doubleDatatype1", Entity1.DOUBLEDATATYPE1.getAttributeName());
+	}
+
+	@Test
+	public void testEntity1MangoModelFileReference() {
+		assertEquals(File.class, Entity1.FILEENTITYDATATYPE1.getAttributeType());
 	}
 
 	@Test

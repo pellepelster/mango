@@ -3,18 +3,21 @@ package io.pelle.mango.demo.model.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import io.pelle.mango.client.FileVO;
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.showcase.EmployeeVO;
 import io.pelle.mango.demo.client.showcase.ManagerVO;
+import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
 import io.pelle.mango.demo.client.test.ValueObject1;
-
-import org.junit.Test;
 
 public class ValueObjectModelGeneratorTest {
 
@@ -71,6 +74,11 @@ public class ValueObjectModelGeneratorTest {
 
 		assertTrue(countryVO.hasNaturalKey());
 		assertEquals("-", countryVO.getNaturalKey());
+	}
+
+	@Test
+	public void testEntity1MangoModelFileReference() {
+		assertEquals(FileVO.class, Entity1VO.FILEENTITYDATATYPE1.getAttributeType());
 	}
 
 	@Test

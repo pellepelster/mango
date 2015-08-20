@@ -1,6 +1,11 @@
 package io.pelle.mango.demo.model.test;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Iterator;
+
+import org.junit.Test;
+
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.db.voquery.AttributesDescriptorQuery;
@@ -9,17 +14,13 @@ import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
 
-import java.util.Iterator;
-
-import org.junit.Test;
-
 public class VOClassQueryTest {
 
 	@Test
 	public void testAttributesDescriptorQuery() {
 
 		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors();
-		assertEquals(21, attributesDescriptorQuery.getCount());
+		assertEquals(22, attributesDescriptorQuery.getCount());
 	}
 
 	@Test

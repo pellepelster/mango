@@ -1,4 +1,5 @@
 import io.pelle.mango.demo.client.test.ValueObject2
+
 project MangoDemo {
 
 	package io.pelle.mango.demo {
@@ -500,6 +501,10 @@ project MangoDemo {
 			}
 			floatdatatype FloatDatatype1 { }
 			doubledatatype DoubleDatatype1 { }
+			
+			entitydatatype FileEntityDatatype1 {
+				entity File
+			}
 
 			entity Entity1 {
 				entityoptions {
@@ -523,6 +528,7 @@ project MangoDemo {
 				float FloatDatatype1 floatDatatype1
 				date DateDatatype1 dateDatype1
 				date DateDatatype2 dateDatype2
+				entity FileEntityDatatype1 fileEntityDatatype1
 			}
 
 			entity Entity2 {
