@@ -380,7 +380,7 @@ class DictionaryControls {
 	// DictionaryFileControl
 	//-------------------------------------------------------------------------
 	def dispatch dictionaryControlType(DictionaryFileControl dictionaryControl) '''
-		«FileControlModel.name»<«IBaseControl.name»>
+		«FileControlModel.name»
 	'''
 
 	def dispatch String datatypeSetters(DictionaryControl dictionaryControl, BinaryEntityAttribute entityAttribute) '''

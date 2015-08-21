@@ -680,6 +680,9 @@ project MangoDemo {
 						enumerationcontrol EnumerationControl1WithoutAttribute {
 							type Enumeration1Datatype
 						}
+						filecontrol FileControl1 {
+							entityattribute Entity1.fileEntityDatatype1
+						}						
 					}
 
 					dictionarysearch DemoSearch1 {
@@ -732,6 +735,7 @@ project MangoDemo {
 								integercontrol ref IntegerControl2
 								bigdecimalcontrol ref DecimalControl1
 								datecontrol ref DateControl1
+								filecontrol ref FileControl1
 							}
 						
 							composite Tab2 {
