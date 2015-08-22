@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.util.HashMap;
 
 import org.hamcrest.text.IsEmptyString;
 import org.json.JSONArray;
@@ -21,6 +23,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,6 +44,27 @@ public class FileControllerTest extends BaseDemoTest {
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+	}
+
+	@Test
+	public void testGetControlUploadServlet() throws Exception {
+
+		File tempFile = Files.createTempFile("gwtcontrolupload", "tmp").toFile();
+		PrintWriter pw = new PrintWriter(tempFile);
+		pw.write("xxx");
+		pw.close();
+
+	       HashMap<String, String> contentTypeParams = new HashMap<String, String>();
+	        contentTypeParams.put("boundary", "265001916915724");
+	        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+		
+		mockMvc.perform(post("/gwtfilecontrol/put").contentType(mediaType)).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
+	}
+	
+	@Test
+	public void testControlUploadServletNewSession() throws Exception {
+
+		mockMvc.perform(get("/gwtfilecontrol?new_session=true&random=0.35148090892471373")).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test

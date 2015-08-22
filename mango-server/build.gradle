@@ -41,4 +41,7 @@ dependencies {
 	testCompile group: "com.icegreen", name: "greenmail", version: "1.4.0"
 	//testCompile group: 'com.jayway.awaitility', name: 'awaitility', version: '1.5.0'
 	testCompile group: 'com.jayway.restassured', name: 'rest-assured', version: '2.3.3'
+	
+	compile 'com.googlecode.gwtupload:gwtupload:1.0.3'
+	
 }

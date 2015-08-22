@@ -1,6 +1,7 @@
 package io.pelle.mango.server;
 
 import java.net.InetSocketAddress;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
+import org.springframework.web.servlet.mvc.Controller;
+import org.springframework.web.servlet.mvc.ServletWrappingController;
 
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricFilter;
@@ -20,6 +25,7 @@ import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteReporter.Builder;
 
+import gwtupload.server.UploadServlet;
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.file.EntityFileUUIDCallback;
@@ -135,6 +141,28 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 		}
 
 		return reporter;
+	}
+
+	@Bean
+	public Controller uploadServlet() {
+		ServletWrappingController servletWrappingController = new ServletWrappingController();
+		servletWrappingController.setServletClass(UploadServlet.class);
+		servletWrappingController.setServletName("uploadServlet");
+		Properties params = new Properties();
+		servletWrappingController.setInitParameters(params);
+
+		return servletWrappingController;
+	}
+
+	@Bean
+	public HandlerMapping urlMapping() {
+		SimpleUrlHandlerMapping m = new SimpleUrlHandlerMapping();
+		m.setOrder(0);
+		Properties mappings = new Properties();
+		mappings.put("gwtfilecontrol", uploadServlet());
+		m.setMappings(mappings);
+
+		return m;
 	}
 
 }
