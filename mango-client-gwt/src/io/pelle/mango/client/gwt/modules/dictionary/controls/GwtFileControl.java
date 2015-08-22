@@ -78,7 +78,7 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 		singleUploader.setEnabled(true);
 
 		// TODO get base remote url from service locator
-		singleUploader.setServletPath(GWT.getModuleBaseURL() + "../remote/" + IFileControl.FILE_REQUEST_BASE_BASE + "/" + IFileControl.FILE_REQUEST_MAPPING_PUT);
+		singleUploader.setServletPath(GWT.getModuleBaseURL() + "../" + IFileControl.FILE_REQUEST_BASE_URL);
 
 		this.fileControl = fileControl;
 		new ControlHelper(this, fileControl, this, true, false, true);
@@ -122,7 +122,8 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 	}
 
 	public static String getFileUrl(String fileUUID) {
-		return GWT.getModuleBaseURL() + "../remote/" + IFileControl.FILE_REQUEST_BASE_BASE + "/" + IFileControl.FILE_REQUEST_MAPPING_GET + "/" + fileUUID;
+		// TODO mapping from controller?
+		return GWT.getModuleBaseURL() + "../remote/files/" + IFileControl.FILE_REQUEST_MAPPING_GET + "/" + fileUUID;
 	}
 
 	public String getFileName(String filePathName) {

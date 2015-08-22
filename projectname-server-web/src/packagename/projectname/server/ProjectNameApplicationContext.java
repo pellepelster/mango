@@ -10,7 +10,7 @@ import io.pelle.mango.server.MangoLoggerApplicationContext;
 
 @Configuration
 @ImportResource({ "classpath:/ProjectNameDB-gen.xml", "classpath:/ProjectNameBaseApplicationContext-gen.xml",
-		"classpath:/ProjectNameSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml", "classpath:/ProjectNameRestRemoteServices-gen.xml" })
+		"classpath:/ProjectNameSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml", "classpath:/ProjectNameRestRemoteServices-gen.xml", "classpath:/MangoGWTRemoteServices-gen.xml" })
 @ComponentScan("packagename.projectname")
 @Import(MangoLoggerApplicationContext.class)
 public class ProjectNameApplicationContext extends MangoServerApplicationContext {
