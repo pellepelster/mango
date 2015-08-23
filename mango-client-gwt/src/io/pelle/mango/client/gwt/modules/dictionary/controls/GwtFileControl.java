@@ -78,7 +78,7 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 		singleUploader.setEnabled(true);
 
 		// TODO get base remote url from service locator
-		singleUploader.setServletPath(GWT.getModuleBaseURL() + "../" + IFileControl.FILE_REQUEST_BASE_URL);
+		singleUploader.setServletPath(GWT.getModuleBaseURL() + "../" + IFileControl.FILE_REQUEST_BASE_URL + "/" + IFileControl.FILE_UPLOAD_URL);
 
 		this.fileControl = fileControl;
 		new ControlHelper(this, fileControl, this, true, false, true);
