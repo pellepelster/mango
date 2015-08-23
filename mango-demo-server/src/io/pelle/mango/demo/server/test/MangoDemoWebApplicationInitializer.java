@@ -40,7 +40,7 @@ public class MangoDemoWebApplicationInitializer extends MangoWebApplicationIniti
 
 	private AnnotationConfigWebApplicationContext getContext() {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.setConfigLocation(io.pelle.mango.demo.server.test.MangoDemoApplicationContext.class.getName());
+		context.setConfigLocation(io.pelle.mango.demo.server.test.MangoDemoWebApplicationContext.class.getName());
 		return context;
 	}
 

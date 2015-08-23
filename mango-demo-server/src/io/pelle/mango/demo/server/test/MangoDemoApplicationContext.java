@@ -13,8 +13,7 @@ import io.pelle.mango.server.search.SearchIndexBuilder;
 
 @Configuration
 @ImportResource({ "classpath:/MangoDemoWebservices-gen.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml", "classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoDemoSpringServices-gen.xml",
-		"classpath:/MangoSpringServices-gen.xml", "classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml",
-		"classpath:/MangoGWTRemoteServices-gen.xml" })
+		"classpath:/MangoSpringServices-gen.xml", "classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
 @Import(MangoLoggerApplicationContext.class)
 public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 
