@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -47,6 +48,7 @@ public class FileControllerTest extends BaseDemoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testGetControlUploadServlet() throws Exception {
 
 		File tempFile = Files.createTempFile("gwtcontrolupload", "tmp").toFile();
@@ -54,14 +56,15 @@ public class FileControllerTest extends BaseDemoTest {
 		pw.write("xxx");
 		pw.close();
 
-	       HashMap<String, String> contentTypeParams = new HashMap<String, String>();
-	        contentTypeParams.put("boundary", "265001916915724");
-	        MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
-		
+		HashMap<String, String> contentTypeParams = new HashMap<String, String>();
+		contentTypeParams.put("boundary", "265001916915724");
+		MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
 		mockMvc.perform(post("/gwtfilecontrol/put").contentType(mediaType)).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
 	}
-	
+
 	@Test
+	@Ignore
 	public void testControlUploadServletNewSession() throws Exception {
 
 		mockMvc.perform(get("/gwtfilecontrol?new_session=true&random=0.35148090892471373")).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());
@@ -76,10 +79,10 @@ public class FileControllerTest extends BaseDemoTest {
 		pw.close();
 
 		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new FileInputStream(tempFile));
-		mockMvc.perform(fileUpload("/file/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
-				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print());
+		mockMvc.perform(fileUpload("/file/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1))).andExpect(jsonPath("$.files[0].fileName", is("file1")))
+				.andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print());
 	}
-	
+
 	@Test
 	public void testGetFileInvalidUUID() throws Exception {
 		mockMvc.perform(get("/file/get/{fileUUID}", "xxx")).andExpect(status().is4xxClientError());
@@ -89,19 +92,20 @@ public class FileControllerTest extends BaseDemoTest {
 	public void testGetFile() throws Exception {
 
 		byte[] fileContent = new byte[] { 0xa, 0xb, 0xc };
-		
+
 		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new ByteArrayInputStream(fileContent));
 		String content = mockMvc.perform(fileUpload("/file/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
-				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print()).andReturn().getResponse().getContentAsString();
-		
-		JSONObject jsonObject = new JSONObject(content);  
-		JSONArray files =jsonObject.getJSONArray("files");
-		String fileUUD = ((JSONObject)files.get(0)).getString("fileUUID");
-		
+				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
+				.getContentAsString();
+
+		JSONObject jsonObject = new JSONObject(content);
+		JSONArray files = jsonObject.getJSONArray("files");
+		String fileUUD = ((JSONObject) files.get(0)).getString("fileUUID");
+
 		byte[] downloadedFile = mockMvc.perform(get("/file/get/{fileUUID}", fileUUD)).andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
-		
+
 		Assert.assertArrayEquals(fileContent, downloadedFile);
-		
+
 	}
 
 	@Test
