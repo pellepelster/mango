@@ -10,7 +10,6 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.Log4jConfigListener;
 
-import gwtupload.server.UploadServlet;
 import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 import io.pelle.mango.server.MangoWebApplicationInitializer;
 import io.pelle.mango.server.util.AwsRdsMysqlJndiInjector;
@@ -32,9 +31,9 @@ public class MangoDemoWebApplicationInitializer extends MangoWebApplicationIniti
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("/remote/*");
 
-		ServletRegistration.Dynamic gwtUpload = servletContext.addServlet("gwtUpload", new UploadServlet());
+		ServletRegistration.Dynamic gwtUpload = servletContext.addServlet("gwtUpload", new MyServlet());
 		gwtUpload.setLoadOnStartup(1);
-		gwtUpload.addMapping("/" + IFileControl.FILE_REQUEST_BASE_URL + "*");
+		gwtUpload.addMapping("/" + IFileControl.FILE_REQUEST_BASE_URL + "/*");
 
 	}
 
