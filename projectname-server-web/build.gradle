@@ -16,6 +16,7 @@ buildscript {
 
 dependencies {
 
+	compile project(path: ':projectname-client')
 	compile project(path: ':projectname-model')
 	compile project(path: ':projectname-model', configuration: 'generatedServer')
 	compile project(path: ':projectname-model', configuration: 'generatedClientGWT' )
