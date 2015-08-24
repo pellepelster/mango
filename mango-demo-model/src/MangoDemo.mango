@@ -830,6 +830,12 @@ project MangoDemo {
 				navigationnode Webhooks {
 					moduleDefinition Webhook
 				}
+				navigationnode MangoUser {
+					dictionarySearch MangoUser.MangoUserSearch
+				}
+				navigationnode MangoGroup {
+					dictionarySearch MangoGroup.MangoGroupSearch
+				}
 			}
 
 		}

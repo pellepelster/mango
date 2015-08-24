@@ -95,6 +95,82 @@ project Mango {
 			
 			
 		}
+
+		package security {
+			
+			stringdatatype MangoUserName { }
+
+			stringdatatype MangoGroupName { }
+			
+			entitydatatype MangoGroup {
+				entity MangoGroup
+			}
+			
+			entity MangoUser {
+				string MangoUserName userName
+				entity MangoGroup 0..n groups				
+			}
+
+			entity MangoGroup {
+				string MangoGroupName groupName
+			}
+			
+			dictionary MangoUser {
+				
+				entity MangoUser
+				
+				dictionarycontrols {
+					textcontrol MangoUserName {
+						entityattribute userName
+					}
+					
+				}
+				
+				dictionarysearch MangoUserSearch {
+					
+					dictionaryfilter MangoUserFilter {
+						textcontrol ref MangoUserName
+					}
+					
+					dictionaryresult MangoUserResult {
+						textcontrol ref MangoUserName
+					}
+					
+				}
+
+				dictionaryeditor MangoUserEditor {
+					textcontrol ref MangoUserName
+				}
+			}
+			
+			dictionary MangoGroup {
+				
+				entity MangoGroup
+				
+				dictionarycontrols {
+					textcontrol MangoGroupName {
+						entityattribute groupName
+					}
+					
+				}
+				
+				dictionarysearch MangoGroupSearch {
+					
+					dictionaryfilter MangoGroupFilter {
+						textcontrol ref MangoGroupName
+					}
+					
+					dictionaryresult MangoGroupResult {
+						textcontrol ref MangoGroupName
+					}
+					
+				}
+
+				dictionaryeditor MangoGroupEditor {
+					textcontrol ref MangoGroupName
+				}
+			}
+		}
 		
 		package property {
 
