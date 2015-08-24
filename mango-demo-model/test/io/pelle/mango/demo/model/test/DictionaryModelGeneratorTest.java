@@ -8,7 +8,9 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.pelle.mango.client.MangoDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.IReferenceListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ITabfolderModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IIntegerControlModel;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
@@ -35,6 +37,11 @@ public class DictionaryModelGeneratorTest {
 	@Test
 	public void testDictionary1Label() {
 		assertEquals(null, MangoDemoDictionaryModel.DEMO_DICTIONARY1.getLabel());
+	}
+
+	@Test
+	public void testReferenceListModel() {
+		assertTrue(IReferenceListModel.class.isAssignableFrom(MangoDictionaryModel.MANGO_USER.MANGO_USER_EDITOR.USER_GROUPS.getClass()));
 	}
 
 	@Test

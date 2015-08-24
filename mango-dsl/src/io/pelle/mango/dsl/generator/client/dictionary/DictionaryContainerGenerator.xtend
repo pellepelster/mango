@@ -22,6 +22,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import com.google.common.collect.Collections2
 import com.google.common.base.Function
 import java.util.Collection
+import io.pelle.mango.dsl.mango.DictionaryReferenceList
 
 class DictionaryContainerGenerator {
 
@@ -83,6 +84,10 @@ class DictionaryContainerGenerator {
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
+	def dispatch dictionaryGenerator(DictionaryReferenceList dictionaryContainer, IFileSystemAccess fsa) {
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+	}
+
 	def dispatch dictionaryGenerator(DictionaryTabFolder dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.tabs.dictionaryGenerator(fsa)
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
@@ -120,6 +125,20 @@ class DictionaryContainerGenerator {
 					«dictionaryContainer.containercontents.dictionaryContainerContentsConstructor»
 					
 					«layoutSetter(dictionaryContainer.layout, dictionaryContainer.layoutdata)»
+				}
+			}
+	'''
+	
+	def dispatch dictionaryClass(DictionaryReferenceList dictionaryContainer) '''
+			package «dictionaryContainer.packageName»;
+			
+			@«SuppressWarnings.name»("all")
+			public class «dictionaryContainer.dictionaryClassName» extends io.pelle.mango.client.base.modules.dictionary.model.containers.ReferenceListModel {
+				
+				public «dictionaryContainer.dictionaryClassName»(io.pelle.mango.client.base.modules.dictionary.model.BaseModel<?> parent) {
+					super("«dictionaryContainer.name»", parent);
+					
+					setAttributePath("«dictionaryContainer.entityattribute.name»");
 				}
 			}
 	'''

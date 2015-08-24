@@ -335,7 +335,7 @@ ColumnLayoutData:
 //- /layout -------------------------------------------------------------------
 
 //- container -----------------------------------------------------------------
-DictionaryContainer: DictionaryComposite | DictionaryEditableTable | DictionaryAssignmentTable | DictionaryTabFolder;
+DictionaryContainer: DictionaryComposite | DictionaryEditableTable | DictionaryAssignmentTable | DictionaryTabFolder | DictionaryReferenceList;
 
 DictionaryComposite:
 	"composite" name=ID "{"
@@ -345,6 +345,15 @@ DictionaryComposite:
 	
 		(containercontents+=DictionaryContainerContent)*
 		
+	"}";
+
+enum ReferenceListType: 
+	text = "assignment";
+
+DictionaryReferenceList:
+	"referencelist" name=ID "{"
+		"entityattribute" entityattribute=[ EntityAttribute | QualifiedName ]
+				
 	"}";
 
 DictionaryTabFolder:

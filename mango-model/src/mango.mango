@@ -108,7 +108,7 @@ project Mango {
 			
 			entity MangoUser {
 				string MangoUserName userName
-				entity MangoGroup 0..n groups				
+				entity MangoGroup 0..n userGroups		
 			}
 
 			entity MangoGroup {
@@ -123,7 +123,6 @@ project Mango {
 					textcontrol MangoUserName {
 						entityattribute userName
 					}
-					
 				}
 				
 				dictionarysearch MangoUserSearch {
@@ -139,7 +138,15 @@ project Mango {
 				}
 
 				dictionaryeditor MangoUserEditor {
-					textcontrol ref MangoUserName
+					
+					composite UserRootComposite {
+						textcontrol ref MangoUserName
+					}
+					
+					referencelist UserGroups {
+						entityattribute userGroups
+					}
+					
 				}
 			}
 			
