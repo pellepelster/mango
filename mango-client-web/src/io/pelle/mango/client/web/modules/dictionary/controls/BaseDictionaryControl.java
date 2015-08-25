@@ -1,8 +1,16 @@
 package io.pelle.mango.client.web.modules.dictionary.controls;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.google.common.base.Optional;
+import com.google.common.base.Strings;
+
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.IBaseDictionaryElement;
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
@@ -14,13 +22,6 @@ import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.databinding.IValidator;
 import io.pelle.mango.client.web.modules.dictionary.databinding.validator.MandatoryValidator;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearch;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import com.google.common.base.Optional;
-import com.google.common.base.Strings;
 
 public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel, ValueType> extends BaseDictionaryElement<ModelType> implements IBaseControl<ValueType, ModelType> {
 
@@ -54,7 +55,7 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 
 	}
 
-	private List<IControlUpdateListener> controlUpdateListeners = new ArrayList<IControlUpdateListener>();
+	private List<IUpdateListener> controlUpdateListeners = new ArrayList<IUpdateListener>();
 
 	private List<IValidator> validators = new ArrayList<IValidator>();
 
@@ -193,12 +194,12 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 	}
 
 	@Override
-	public void addUpdateListener(IControlUpdateListener controlUpdateListener) {
+	public void addUpdateListener(IUpdateListener controlUpdateListener) {
 		this.controlUpdateListeners.add(controlUpdateListener);
 	}
 
 	protected void fireUpdateListeners() {
-		for (IControlUpdateListener controlUpdateListener : this.controlUpdateListeners) {
+		for (IUpdateListener controlUpdateListener : this.controlUpdateListeners) {
 			controlUpdateListener.onUpdate();
 		}
 	}

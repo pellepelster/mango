@@ -11,21 +11,21 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
-import io.pelle.mango.client.base.messages.IValidationMessages;
-import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
-import io.pelle.mango.client.base.modules.dictionary.controls.IEnumerationControl;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
-import io.pelle.mango.client.gwt.ControlHelper;
-import io.pelle.mango.client.web.modules.dictionary.controls.EnumerationControl;
-import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
-
 import java.util.Map;
 
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.user.client.ui.ListBox;
 
-public class GwtEnumerationControl extends ListBox implements IGwtControl, IControlUpdateListener {
+import io.pelle.mango.client.base.messages.IValidationMessages;
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.controls.IEnumerationControl;
+import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
+import io.pelle.mango.client.gwt.ControlHelper;
+import io.pelle.mango.client.web.modules.dictionary.controls.EnumerationControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+
+public class GwtEnumerationControl extends ListBox implements IGwtControl, IUpdateListener {
 
 	private final EnumerationControl<?> control;
 

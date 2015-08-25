@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.google.common.base.Objects;
 
-import io.pelle.mango.client.base.modules.dictionary.container.IUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseContainer;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
@@ -13,7 +14,7 @@ import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.ControlFactory;
 
-public abstract class BaseContainerElement<ModelType extends IBaseContainerModel> extends BaseDictionaryElement<ModelType> {
+public abstract class BaseContainerElement<ModelType extends IBaseContainerModel> extends BaseDictionaryElement<ModelType> implements IBaseContainer {
 
 	private static final int DEFAULT_COLUMN_COUNT = 1;
 
@@ -71,8 +72,9 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 		return Objects.toStringHelper(this).add("name", getModel().getName()).toString();
 	}
 
+	@Override
 	public void addUpdateListener(IUpdateListener updateListener) {
 		updateListeners.add(updateListener);
 	}
-
+	
 }

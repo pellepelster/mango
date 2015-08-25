@@ -1,6 +1,9 @@
 package io.pelle.mango.client.base.modules.dictionary.container;
 
-public interface IBaseContainer
-{
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
+
+public interface IBaseContainer {
+	
+	void addUpdateListener(IUpdateListener controlUpdateListener);
 
 }

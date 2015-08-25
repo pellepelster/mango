@@ -23,8 +23,8 @@ import org.gwtbootstrap3.client.ui.html.Div;
 
 import com.google.gwt.user.client.ui.Panel;
 
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.container.ITab;
-import io.pelle.mango.client.base.modules.dictionary.container.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
 import io.pelle.mango.client.gwt.ColumnLayoutStrategy;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseContainerElement;

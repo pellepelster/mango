@@ -1,10 +1,10 @@
 package io.pelle.mango.client.base.modules.dictionary.model.containers;
 
-import io.pelle.mango.client.base.modules.dictionary.container.IComposite;
+import io.pelle.mango.client.base.modules.dictionary.container.IFileList;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
-public abstract class FileListModel<VOType extends IBaseVO> extends BaseContainerModel<IComposite>implements IFileListModel {
+public abstract class FileListModel<VOType extends IBaseVO> extends BaseContainerModel<IFileList> implements IFileListModel {
 
 	private static final long serialVersionUID = 1832725605229414533L;
 	

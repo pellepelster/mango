@@ -11,14 +11,6 @@
  */
 package io.pelle.mango.client.gwt;
 
-import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
-import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
-import io.pelle.mango.client.base.util.CollectionUtils;
-import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
-import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
-import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrategy;
-
 import java.util.Map;
 
 import org.gwtbootstrap3.client.ui.constants.Styles;
@@ -32,7 +24,15 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ControlHelper implements IControlUpdateListener {
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
+import io.pelle.mango.client.base.util.CollectionUtils;
+import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrategy;
+
+public class ControlHelper implements IUpdateListener {
 
 	private BaseDictionaryControl<?, ?> baseControl;
 

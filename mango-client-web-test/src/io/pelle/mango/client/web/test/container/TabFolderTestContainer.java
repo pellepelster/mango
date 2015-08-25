@@ -4,7 +4,7 @@ import org.junit.Assert;
 
 import io.pelle.mango.client.base.modules.dictionary.container.ITabFolder;
 
-public class TabFolderTestContainer {
+public class TabFolderTestContainer extends BaseTestContainer {
 
 	private ITabFolder tabFolder;
 

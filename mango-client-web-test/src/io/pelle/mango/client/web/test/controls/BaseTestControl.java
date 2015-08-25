@@ -1,11 +1,5 @@
 package io.pelle.mango.client.web.test.controls;
 
-import io.pelle.mango.client.base.messages.IValidationMessage;
-import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
-import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl.IControlUpdateListener;
-import io.pelle.mango.client.web.test.util.FocusManager;
-import io.pelle.mango.client.web.test.util.FocusableTestWidget;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +8,13 @@ import org.junit.Assert;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 
-public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, ValueType> implements IControlUpdateListener, FocusableTestWidget {
+import io.pelle.mango.client.base.messages.IValidationMessage;
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
+import io.pelle.mango.client.web.test.util.FocusManager;
+import io.pelle.mango.client.web.test.util.FocusableTestWidget;
+
+public class BaseTestControl<ElementType extends IBaseControl<ValueType, ?>, ValueType> implements IUpdateListener, FocusableTestWidget {
 
 	private ValueType value;
 
