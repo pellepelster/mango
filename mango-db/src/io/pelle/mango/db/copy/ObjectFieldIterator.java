@@ -1,7 +1,5 @@
 package io.pelle.mango.db.copy;
 
-import io.pelle.mango.db.util.CopyBean;
-
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -10,6 +8,8 @@ import java.util.List;
 import javax.persistence.Transient;
 
 import org.apache.commons.beanutils.PropertyUtils;
+
+import io.pelle.mango.db.util.CopyBean;
 
 public class ObjectFieldIterator implements Iterable<ObjectFieldDescriptor> {
 
@@ -22,11 +22,13 @@ public class ObjectFieldIterator implements Iterable<ObjectFieldDescriptor> {
 	}
 
 	public ObjectFieldIterator(Object sourceObject, Object targetObject) {
+
 		this.attributesToOmit.add("class");
 
 		try {
 
 			for (PropertyDescriptor pd : PropertyUtils.getPropertyDescriptors(sourceObject.getClass())) {
+
 				String propertyName = pd.getName();
 
 				if (this.attributesToOmit.contains(propertyName) || CopyBean.hasAnnotation(sourceObject.getClass(), propertyName, Transient.class)) {

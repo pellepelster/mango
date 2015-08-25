@@ -1,6 +1,11 @@
 package io.pelle.mango.demo.server.entity;
 
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.test.Entity2VO;
@@ -9,10 +14,6 @@ import io.pelle.mango.demo.server.showcase.Country;
 import io.pelle.mango.demo.server.test.Entity2;
 import io.pelle.mango.server.vo.VOMetaDataService;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
 public class DemoEntityMetaInformationTest extends BaseDemoTest {
 
 	@Autowired
@@ -20,8 +21,8 @@ public class DemoEntityMetaInformationTest extends BaseDemoTest {
 
 	@Test
 	public void testGetVOClasses() {
-		assertEquals(20, metaDataService.getVOClasses().size());
-		assertEquals(20, metaDataService.getEntityClasses().size());
+		assertEquals(22, metaDataService.getVOClasses().size());
+		assertEquals(22, metaDataService.getEntityClasses().size());
 	}
 
 	@Test

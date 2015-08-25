@@ -1,5 +1,8 @@
 package io.pelle.mango.server.file;
 
+import java.util.List;
+import java.util.ListIterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
@@ -25,6 +28,24 @@ public class EntityFileUUIDCallback implements IEntityCallback {
 
 				if (file != null) {
 					fieldDescriptor.setSourceValue(entity, fileStorage.getFile(file.getFileUUID()));
+				}
+			} else if (List.class.isAssignableFrom(fieldDescriptor.getSourceType())) {
+
+				List list = ((List) fieldDescriptor.getSourceValue(entity));
+
+				ListIterator it = list.listIterator();
+
+				while (it.hasNext()) {
+
+					Object fileObject = it.next();
+
+					if (File.class.isAssignableFrom(fileObject.getClass())) {
+						File file = (File) fileObject;
+
+						if (file != null) {
+							it.set(fileStorage.getFile(file.getFileUUID()));
+						}
+					}
 				}
 			}
 

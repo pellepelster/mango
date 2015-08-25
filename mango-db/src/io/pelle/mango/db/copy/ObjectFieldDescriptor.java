@@ -9,7 +9,7 @@ import com.google.common.base.Objects;
 import io.pelle.mango.client.base.vo.IVOEntity;
 
 public class ObjectFieldDescriptor {
-	
+
 	private final String fieldName;
 
 	private final Class<?> sourceType;
@@ -78,7 +78,7 @@ public class ObjectFieldDescriptor {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	public Method getSourceWriteMethod() {
 		return sourceWriteMethod;
 	}
@@ -94,11 +94,7 @@ public class ObjectFieldDescriptor {
 	public boolean targetHasReadMethod() {
 		return this.targetReadMethod != null;
 	}
-//
-//	public boolean sourceIsReference() {
-//		return IBaseVO.class.asSubclass(sourceType) ||
-//	}
-	
+
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("fieldName", this.fieldName).toString();

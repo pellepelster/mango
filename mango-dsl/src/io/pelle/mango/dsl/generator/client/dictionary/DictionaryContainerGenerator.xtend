@@ -3,9 +3,12 @@
  */
 package io.pelle.mango.dsl.generator.client.dictionary
 
+import com.google.common.base.Function
+import com.google.common.collect.Collections2
 import com.google.inject.Inject
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel
+import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.mango.ColumnLayout
 import io.pelle.mango.dsl.mango.ColumnLayoutData
@@ -15,14 +18,13 @@ import io.pelle.mango.dsl.mango.DictionaryContainerContent
 import io.pelle.mango.dsl.mango.DictionaryControl
 import io.pelle.mango.dsl.mango.DictionaryControlGroup
 import io.pelle.mango.dsl.mango.DictionaryEditableTable
+import io.pelle.mango.dsl.mango.DictionaryFileList
+import io.pelle.mango.dsl.mango.DictionaryReferenceList
 import io.pelle.mango.dsl.mango.DictionaryTabFolder
 import io.pelle.mango.dsl.query.EntityQuery
+import java.util.Collection
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
-import com.google.common.collect.Collections2
-import com.google.common.base.Function
-import java.util.Collection
-import io.pelle.mango.dsl.mango.DictionaryReferenceList
 
 class DictionaryContainerGenerator {
 
