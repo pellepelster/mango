@@ -1,9 +1,11 @@
 package io.pelle.mango.demo.server.test;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Import;
+
+import io.pelle.mango.server.MangoWebApplicationContext;
 
 @Configuration
-@ImportResource({ "classpath:/MangoGWTRemoteServices-gen.xml" })
+@Import(MangoWebApplicationContext.class)
 public class MangoDemoWebApplicationContext extends MangoDemoApplicationContext {
 }
