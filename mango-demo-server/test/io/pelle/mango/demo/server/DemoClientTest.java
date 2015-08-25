@@ -17,6 +17,10 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
@@ -36,12 +40,14 @@ import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
 import io.pelle.mango.client.web.test.DictionarySearchModuleTestUI;
 import io.pelle.mango.client.web.test.MangoClientSyncWebTest;
 import io.pelle.mango.client.web.test.TestButton;
+import io.pelle.mango.client.web.test.container.FileListTestcontainer;
 import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
 import io.pelle.mango.client.web.test.controls.DateTestControl;
 import io.pelle.mango.client.web.test.controls.DecimalTestControl;
 import io.pelle.mango.client.web.test.controls.EnumerationTestControl;
+import io.pelle.mango.client.web.test.controls.FileTestControl;
 import io.pelle.mango.client.web.test.controls.IntegerTestControl;
 import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
@@ -55,11 +61,22 @@ import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity3VO;
 
+@WebAppConfiguration
 public class DemoClientTest extends BaseDemoTest {
 
 	@Autowired
 	private IBaseEntityService baseEntityService;
 
+	private MockMvc mockMvc;
+
+	@Autowired
+	private WebApplicationContext wac;
+
+	@Before
+	public void setup() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+	}
+	
 	@Before
 	public void beforeEach() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
@@ -511,6 +528,33 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testFileControl() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).setValue("xxx");
+		
+		FileTestControl fileControl = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.FILE_CONTROL1);
+		fileControl.uploadData(new byte[] { 0xa, 0xb }, mockMvc);
+		
+		editor.save();
+		editor.assertHasNoErrors();
+		
+		editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1, editor.getId());
+		fileControl = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.FILE_CONTROL1);
+		fileControl.assertContent(new byte[] { 0xa, 0xb }, mockMvc);
+		
+	}
+	
+	@Test
+	public void testFileList1() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
+		fileList.assertFileCount(0);
+		
+	}
+	
+	@Test
 	public void testDictionary1EnumerationControlWithouEntityAttrbiute() {
 
 		final AtomicBoolean called = new AtomicBoolean(false);
@@ -521,9 +565,7 @@ public class DemoClientTest extends BaseDemoTest {
 			public SelectQuery<Entity1VO> beforeSearch(SelectQuery<Entity1VO> selectQuery) {
 
 				assertEquals(ENUMERATION1.ENUMERATIONVALUE1, selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
-
 				called.set(true);
-
 				return super.beforeSearch(selectQuery);
 			}
 		});

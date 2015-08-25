@@ -19,4 +19,7 @@ package io.pelle.mango.client.base.modules.dictionary.model.containers;
  * 
  */
 public interface IFileListModel extends IBaseContainerModel {
+	
+	String getAttributePath();
+	
 }

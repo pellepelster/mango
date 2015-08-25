@@ -11,23 +11,28 @@
  */
 package io.pelle.mango.client.web.test;
 
+import io.pelle.mango.client.base.modules.dictionary.container.IFileList;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.TabFolderModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ControlGroupModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.DateControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.EnumerationControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.FileControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IntegerControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
+import io.pelle.mango.client.web.test.container.FileListTestcontainer;
 import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
 import io.pelle.mango.client.web.test.controls.DateTestControl;
 import io.pelle.mango.client.web.test.controls.DecimalTestControl;
 import io.pelle.mango.client.web.test.controls.EnumerationTestControl;
+import io.pelle.mango.client.web.test.controls.FileTestControl;
 import io.pelle.mango.client.web.test.controls.IntegerTestControl;
 import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
@@ -46,11 +51,19 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 		return new TextTestControl(this.baseDictionaryModule.getElement(controlModel));
 	}
 
+	public FileTestControl getControl(FileControlModel controlModel) {
+		return new FileTestControl(this.baseDictionaryModule.getElement(controlModel));
+	}
+
 	public void onResize() {
 	}
 
 	public TabFolderTestContainer getContainer(TabFolderModel containerModel) {
 		return new TabFolderTestContainer(baseDictionaryModule.getElement(containerModel));
+	}
+
+	public FileListTestcontainer getContainer(FileListModel<?> fileListModel) {
+		return new FileListTestcontainer((IFileList) baseDictionaryModule.getElement(fileListModel));
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

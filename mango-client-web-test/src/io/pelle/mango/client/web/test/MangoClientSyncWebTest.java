@@ -68,4 +68,10 @@ public class MangoClientSyncWebTest {
 		return (DictionaryEditorModuleTestUI<VOTYPE>) future.get();
 	}
 
+	public <VOTYPE extends IBaseVO> DictionaryEditorModuleTestUI<VOTYPE> openEditor(final EditorModel<VOTYPE> editorModel, long id) {
+		final AsyncCallbackFuture<IModuleUI> future = AsyncCallbackFuture.create();
+		ModuleHandler.getInstance().startUIModule(DictionaryEditorModule.getModuleUrlForDictionary(editorModel.getParent().getName(), id), null, new HashMap<String, Object>(), Optional.of(future.getCallback()));
+		return (DictionaryEditorModuleTestUI<VOTYPE>) future.get();
+	}
+
 }

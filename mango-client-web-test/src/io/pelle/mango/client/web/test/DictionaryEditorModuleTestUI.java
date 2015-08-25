@@ -135,4 +135,8 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 		Assert.assertEquals(messages, 0, module.getDictionaryEditor().getValidationMessages().count());
 	}
 
+	public long getId() {
+		return module.getDictionaryEditor().getVO().getId();
+	}
+
 }
