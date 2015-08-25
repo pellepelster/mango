@@ -76,7 +76,7 @@ public class DemoClientTest extends BaseDemoTest {
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
-	
+
 	@Before
 	public void beforeEach() {
 		baseEntityService.deleteAll(Entity1VO.class.getName());
@@ -532,30 +532,31 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).setValue("xxx");
-		
+
 		FileTestControl fileControl = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.FILE_CONTROL1);
 		fileControl.uploadData(new byte[] { 0xa, 0xb }, mockMvc);
-		
+
 		editor.save();
 		editor.assertHasNoErrors();
-		
+
 		editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1, editor.getId());
 		fileControl = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.FILE_CONTROL1);
 		fileControl.assertContent(new byte[] { 0xa, 0xb }, mockMvc);
-		
+
 	}
-	
+
 	@Test
 	public void testFileList1() {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
 		fileList.assertFileCount(0);
-		
+
 		FileTestControl fileControl = fileList.addNewFile();
-		
+		fileControl.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
+
 	}
-	
+
 	@Test
 	public void testDictionary1EnumerationControlWithouEntityAttrbiute() {
 
@@ -566,7 +567,8 @@ public class DemoClientTest extends BaseDemoTest {
 			@Override
 			public SelectQuery<Entity1VO> beforeSearch(SelectQuery<Entity1VO> selectQuery) {
 
-				assertEquals(ENUMERATION1.ENUMERATIONVALUE1, selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
+				assertEquals(ENUMERATION1.ENUMERATIONVALUE1,
+						selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
 				called.set(true);
 				return super.beforeSearch(selectQuery);
 			}

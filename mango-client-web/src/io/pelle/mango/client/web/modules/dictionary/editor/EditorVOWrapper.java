@@ -56,7 +56,12 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 
 	@Override
 	public Object get(String attribute) {
-		return this.vo.get(attribute);
+
+		if ("/".equals(attribute)) {
+			return this;
+		} else {
+			return this.vo.get(attribute);
+		}
 	}
 
 	@Override
@@ -66,7 +71,12 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 
 	@Override
 	public void set(String attribute, Object value, boolean fireDirtyListeners) {
-		VOBeanUtil.set(this.vo, attribute, value);
+
+		if ("/".equals(attribute)) {
+			setVO((VOType) value);
+		} else {
+			VOBeanUtil.set(this.vo, attribute, value);
+		}
 
 		if (fireDirtyListeners) {
 			markDirty();

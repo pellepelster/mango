@@ -20,6 +20,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.DictionaryElementUtil;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.controls.FileControl;
+import io.pelle.mango.client.web.modules.dictionary.editor.EditorVOWrapper;
 
 public class FileList extends BaseContainerElement<IFileListModel> implements IFileList {
 
@@ -64,13 +65,20 @@ public class FileList extends BaseContainerElement<IFileListModel> implements IF
 	@Override
 	public IFileControl addNewFile() {
 		
+		FileVO fileVO = new FileVO();
+		
+		final EditorVOWrapper<FileVO> voWrapper = new EditorVOWrapper<>(fileVO);
+		
 		FileControlModel fileControlModel = new FileControlModel(UUID.uuid(), getModel());
+		fileControlModel.setAttributePath("/");
+		
 		FileControl fileControl = new FileControl(fileControlModel, this) {
 			@Override
 			public IVOWrapper<? extends IBaseVO> getVOWrapper() {
-				return super.getVOWrapper();
+				return voWrapper;
 			}
 		};
+		
 		
 		return fileControl;
 	}

@@ -92,12 +92,12 @@ public abstract class BaseVO implements IBaseVO {
 	}
 
 	@Override
-	public Object get(String name) {
-		if (IVOEntity.ID_FIELD_NAME.equals(name)) {
+	public Object get(String attributePath) {
+		if (IVOEntity.ID_FIELD_NAME.equals(attributePath)) {
 			return getOid();
 		}
 
-		throw new java.lang.RuntimeException("no such attribute '" + name + "'");
+		throw new java.lang.RuntimeException("no such attribute '" + attributePath + "'");
 	}
 
 	@Override

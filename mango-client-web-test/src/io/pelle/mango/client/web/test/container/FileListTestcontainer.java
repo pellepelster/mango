@@ -34,7 +34,7 @@ public class FileListTestcontainer extends BaseTestContainer implements IUpdateL
 	}
 
 	public FileTestControl addNewFile() {
-		return null;
+		return new FileTestControl(fileList.addNewFile());
 	}
 
 }
