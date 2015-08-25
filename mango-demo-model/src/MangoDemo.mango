@@ -743,6 +743,13 @@ project MangoDemo {
 								textcontrol ref TextControl3
 								textcontrol ref TextControl4
 							}
+							
+							composite Tab3 {
+								filelist FileList1 {
+									entityattribute Entity1.fileEntityDatatypes1
+								}
+							}
+							
 						}
 					
 					}

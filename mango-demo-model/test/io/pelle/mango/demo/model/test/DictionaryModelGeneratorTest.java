@@ -132,6 +132,16 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testFileListModel() {
+		assertTrue(FileListModel.class.isAssignableFrom(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1.getClass()));
+	}
+
+	@Test
+	public void testFileListModelEntityAttribute() {
+		assertEquals("fileEntityDatatypes1", MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1.getAttributePath());
+	}
+
+	@Test
 	public void testEnumerationConverterGetEnumerationValues() {
 		Map<String, String> enumerationValues = DictionaryModelProvider.getEnumerationValues(ENUMERATION1.class.getName());
 		assertEquals(2, enumerationValues.size());

@@ -18,5 +18,5 @@ package io.pelle.mango.client.base.modules.dictionary.model.containers;
  * @version $Rev$, $Date$
  * 
  */
-public interface ITabfolderModel extends ICompositeModel {
+public interface IFileListModel extends IBaseContainerModel {
 }

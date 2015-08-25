@@ -88,6 +88,10 @@ class DictionaryContainerGenerator {
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
+	def dispatch dictionaryGenerator(DictionaryFileList dictionaryContainer, IFileSystemAccess fsa) {
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+	}
+
 	def dispatch dictionaryGenerator(DictionaryTabFolder dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.tabs.dictionaryGenerator(fsa)
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
@@ -157,6 +161,19 @@ class DictionaryContainerGenerator {
 				public «dictionaryContainer.dictionaryClassName»(io.pelle.mango.client.base.modules.dictionary.model.BaseModel<?> parent) {
 					super("«dictionaryContainer.name»", parent);
 					«Collections2.transform(dictionaryContainer.tabs, CONTAINER_CONTENTS).dictionaryContainerContentsConstructor»
+				}
+			}
+	'''
+
+	def dispatch dictionaryClass(DictionaryFileList dictionaryContainer) '''
+			package «dictionaryContainer.packageName»;
+			
+			@«SuppressWarnings.name»("all")
+			public class «dictionaryContainer.dictionaryClassName» extends «FileListModel.name» {
+				
+				public «dictionaryContainer.dictionaryClassName»(«BaseModel.name»<?> parent) {
+					super("«dictionaryContainer.name»", parent);
+					setAttributePath("«dictionaryContainer.entityattribute.name»");
 				}
 			}
 	'''
