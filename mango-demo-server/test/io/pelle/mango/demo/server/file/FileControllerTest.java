@@ -79,13 +79,13 @@ public class FileControllerTest extends BaseDemoTest {
 		pw.close();
 
 		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new FileInputStream(tempFile));
-		mockMvc.perform(fileUpload("/file/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1))).andExpect(jsonPath("$.files[0].fileName", is("file1")))
+		mockMvc.perform(fileUpload("/files/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1))).andExpect(jsonPath("$.files[0].fileName", is("file1")))
 				.andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test
 	public void testGetFileInvalidUUID() throws Exception {
-		mockMvc.perform(get("/file/get/{fileUUID}", "xxx")).andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/files/get/{fileUUID}", "xxx")).andExpect(status().is4xxClientError());
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class FileControllerTest extends BaseDemoTest {
 		byte[] fileContent = new byte[] { 0xa, 0xb, 0xc };
 
 		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new ByteArrayInputStream(fileContent));
-		String content = mockMvc.perform(fileUpload("/file/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
+		String content = mockMvc.perform(fileUpload("/files/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
 				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
 				.getContentAsString();
 
@@ -102,7 +102,7 @@ public class FileControllerTest extends BaseDemoTest {
 		JSONArray files = jsonObject.getJSONArray("files");
 		String fileUUD = ((JSONObject) files.get(0)).getString("fileUUID");
 
-		byte[] downloadedFile = mockMvc.perform(get("/file/get/{fileUUID}", fileUUD)).andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
+		byte[] downloadedFile = mockMvc.perform(get("/files/get/{fileUUID}", fileUUD)).andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
 
 		Assert.assertArrayEquals(fileContent, downloadedFile);
 
@@ -110,7 +110,7 @@ public class FileControllerTest extends BaseDemoTest {
 
 	@Test
 	public void testUploadNoFile() throws Exception {
-		mockMvc.perform(fileUpload("/file/put")).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(false))).andDo(MockMvcResultHandlers.print());
+		mockMvc.perform(fileUpload("/files/put")).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(false))).andDo(MockMvcResultHandlers.print());
 	}
 
 }

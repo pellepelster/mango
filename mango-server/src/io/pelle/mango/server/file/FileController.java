@@ -23,7 +23,7 @@ import io.pelle.mango.db.dao.IBaseEntityDAO;
 import io.pelle.mango.server.File;
 
 @Controller
-@RequestMapping(value = "file")
+@RequestMapping(value = "files")
 public class FileController {
 
 	private static Logger LOG = Logger.getLogger(FileController.class);

@@ -46,9 +46,9 @@ public abstract class MangoWebApplicationInitializer implements WebApplicationIn
 		servletContext.addListener(new Log4jConfigListener());
 		
 
-		ServletRegistration.Dynamic gwtUpload = servletContext.addServlet(IFileControl.FILE_REQUEST_BASE_URL, new FileControlUploadServlet());
+		ServletRegistration.Dynamic gwtUpload = servletContext.addServlet(IFileControl.FILE_UPLOAD_BASE_URL, new FileControlUploadServlet());
 		gwtUpload.setLoadOnStartup(1);
-		gwtUpload.addMapping("/" + IFileControl.FILE_REQUEST_BASE_URL+ "/*");
+		gwtUpload.addMapping("/" + IFileControl.FILE_UPLOAD_BASE_URL+ "/*");
 		
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet(REMOTE_SERVLET_NAME, new DispatcherServlet(context));
 		dispatcher.setLoadOnStartup(1);
