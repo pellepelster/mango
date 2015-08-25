@@ -9,11 +9,17 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 
 import io.pelle.mango.client.FileVO;
+import io.pelle.mango.client.base.db.vos.UUID;
+import io.pelle.mango.client.base.modules.dictionary.IVOWrapper;
 import io.pelle.mango.client.base.modules.dictionary.container.IFileList;
+import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IFileListModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.FileControlModel;
+import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.DictionaryElementUtil;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
+import io.pelle.mango.client.web.modules.dictionary.controls.FileControl;
 
 public class FileList extends BaseContainerElement<IFileListModel> implements IFileList {
 
@@ -53,6 +59,20 @@ public class FileList extends BaseContainerElement<IFileListModel> implements IF
 		if (fileUUID == null) {
 			getFileUUIDs().add(fileUUID);
 		}
+	}
+
+	@Override
+	public IFileControl addNewFile() {
+		
+		FileControlModel fileControlModel = new FileControlModel(UUID.uuid(), getModel());
+		FileControl fileControl = new FileControl(fileControlModel, this) {
+			@Override
+			public IVOWrapper<? extends IBaseVO> getVOWrapper() {
+				return super.getVOWrapper();
+			}
+		};
+		
+		return fileControl;
 	}
 
 }

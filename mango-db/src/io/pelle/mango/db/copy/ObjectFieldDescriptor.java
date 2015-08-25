@@ -1,13 +1,12 @@
 package io.pelle.mango.db.copy;
 
-import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.IVOEntity;
-
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.util.List;
 
 import com.google.common.base.Objects;
+
+import io.pelle.mango.client.base.vo.IVOEntity;
 
 public class ObjectFieldDescriptor {
 	
@@ -63,7 +62,15 @@ public class ObjectFieldDescriptor {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
+	public Object setSourceValue(Object object, Object value) {
+		try {
+			return sourceWriteMethod.invoke(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public Object getTargetValue(Object object) {
 		try {
 			return targetReadMethod.invoke(object, new Object[0]);

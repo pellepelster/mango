@@ -8,6 +8,7 @@ import org.junit.Assert;
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.container.IFileList;
 import io.pelle.mango.client.base.modules.dictionary.container.IFileList.File;
+import io.pelle.mango.client.web.test.controls.FileTestControl;
 
 public class FileListTestcontainer extends BaseTestContainer implements IUpdateListener {
 
@@ -30,6 +31,10 @@ public class FileListTestcontainer extends BaseTestContainer implements IUpdateL
 	public void onUpdate() {
 		files.clear();
 		files.addAll(fileList.getFiles());
+	}
+
+	public FileTestControl addNewFile() {
+		return null;
 	}
 
 }

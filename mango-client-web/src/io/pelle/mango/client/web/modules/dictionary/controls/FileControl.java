@@ -5,7 +5,6 @@ import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IFileControlModel;
 import io.pelle.mango.client.web.MangoClientWeb;
-import io.pelle.mango.client.web.modules.dictionary.DictionaryElementUtil;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 
 public class FileControl extends BaseDictionaryControl<IFileControlModel, Object> implements IFileControl {
@@ -26,9 +25,11 @@ public class FileControl extends BaseDictionaryControl<IFileControlModel, Object
 	@Override
 	public void parseValue(String valueString) {
 		if (valueString == null) {
-			DictionaryElementUtil.getRootEditor(this).getVO().getData().remove(getModel().getAttributePath());
+			setValue(null);
 		} else {
-			DictionaryElementUtil.getRootEditor(this).getVO().getData().put(getModel().getAttributePath(), valueString);
+			FileVO file = new FileVO();
+			file.setFileUUID(valueString);
+			setValue(file);
 		}
 	}
 

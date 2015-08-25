@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,8 +24,6 @@ import io.pelle.mango.server.File;
 @Controller
 @RequestMapping(value = "files")
 public class FileController {
-
-	private static Logger LOG = Logger.getLogger(FileController.class);
 
 	@Autowired
 	private FileStorage fileStorage;

@@ -237,7 +237,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		TabFolderTestContainer container = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1);
-		container.assertTabCount(2);
+		container.assertTabCount(3);
 
 	}
 
@@ -551,6 +551,8 @@ public class DemoClientTest extends BaseDemoTest {
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
 		fileList.assertFileCount(0);
+		
+		FileTestControl fileControl = fileList.addNewFile();
 		
 	}
 	
