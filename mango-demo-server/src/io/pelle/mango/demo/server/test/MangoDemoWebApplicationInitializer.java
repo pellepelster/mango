@@ -31,7 +31,7 @@ public class MangoDemoWebApplicationInitializer extends MangoWebApplicationIniti
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("/remote/*");
 
-		ServletRegistration.Dynamic gwtUpload = servletContext.addServlet("gwtUpload", new MyServlet());
+		ServletRegistration.Dynamic gwtUpload = servletContext.addServlet("gwtUpload", new FileControlUploadServlet());
 		gwtUpload.setLoadOnStartup(1);
 		gwtUpload.addMapping("/" + IFileControl.FILE_REQUEST_BASE_URL + "/*");
 

@@ -38,6 +38,7 @@ import io.pelle.mango.client.web.modules.dictionary.controls.FileControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
 public class GwtFileControl extends Composite implements IGwtControl, ClickHandler, SimpleCallback<Void> {
+
 	private final FileControl fileControl;
 
 	private SingleUploader singleUploader = new SingleUploader(FileInputType.BUTTON);
@@ -87,7 +88,7 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 		singleUploader.addOnFinishUploadHandler(new OnFinishUploaderHandler() {
 			@Override
 			public void onFinish(IUploader uploader) {
-				fileControl.parseValue(uploader.getServerInfo().message);
+				fileControl.parseValue(uploader.getServerMessage().getMessage());
 				setFile(uploader.getFileInput().getFilename(), uploader.getServerMessage().getMessage());
 			}
 		});
