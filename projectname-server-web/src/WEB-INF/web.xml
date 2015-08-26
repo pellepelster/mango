@@ -20,7 +20,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>packagename.projectname.server.ProjectNameApplicationContext</param-value>
+		<param-value>packagename.projectname.server.ProjectNameWebApplicationContext</param-value>
 	</context-param>
 
 	<listener>
