@@ -552,9 +552,15 @@ public class DemoClientTest extends BaseDemoTest {
 		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
 		fileList.assertFileCount(0);
 
-		FileTestControl fileControl = fileList.addNewFile();
-		fileControl.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
+		FileTestControl fileControl1 = fileList.addNewFile();
+		fileControl1.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
+		
+		fileList.assertFileCount(1);
 
+		FileTestControl fileControl2 = fileList.addNewFile();
+		fileControl2.uploadData(new byte[] { 0xe, 0xf }, mockMvc);
+
+		fileList.assertFileCount(2);
 	}
 
 	@Test

@@ -58,7 +58,7 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 	public Object get(String attribute) {
 
 		if ("/".equals(attribute)) {
-			return this;
+			return this.vo;
 		} else {
 			return this.vo.get(attribute);
 		}
@@ -69,6 +69,7 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 		set(attribute, value, true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void set(String attribute, Object value, boolean fireDirtyListeners) {
 

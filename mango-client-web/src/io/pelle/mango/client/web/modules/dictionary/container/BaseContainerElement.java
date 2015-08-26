@@ -72,6 +72,12 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 		return Objects.toStringHelper(this).add("name", getModel().getName()).toString();
 	}
 
+	protected void fireUpdateListeners() {
+		for(IUpdateListener updateListener : updateListeners) {
+			updateListener.onUpdate();
+		}
+	}
+	
 	@Override
 	public void addUpdateListener(IUpdateListener updateListener) {
 		updateListeners.add(updateListener);

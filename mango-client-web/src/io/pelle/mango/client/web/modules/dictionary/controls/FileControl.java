@@ -27,7 +27,7 @@ public class FileControl extends BaseDictionaryControl<IFileControlModel, Object
 		if (valueString == null) {
 			setValue(null);
 		} else {
-			FileVO file = new FileVO();
+			FileVO file = (FileVO) getValue();
 			file.setFileUUID(valueString);
 			setValue(file);
 		}
