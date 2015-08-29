@@ -23,6 +23,8 @@ import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 
 public class FileTestControl extends BaseTestControl<IFileControl, Object> {
 
+	private String fileName;
+
 	public FileTestControl(IFileControl control) {
 		super(control);
 	}
@@ -32,30 +34,47 @@ public class FileTestControl extends BaseTestControl<IFileControl, Object> {
 		try {
 			MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new ByteArrayInputStream(content));
 			String result = mockMvc.perform(fileUpload("/files/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
-					.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print()).andReturn().getResponse().getContentAsString();
-			
+					.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
+					.getContentAsString();
+
 			JSONObject jsonObject = new JSONObject(result);
 			JSONArray files = jsonObject.getJSONArray("files");
-			String fileUUD = ((JSONObject) files.get(0)).getString("fileUUID");
-			getControl().parseValue(fileUUD);
-			
+			String fileUUID = ((JSONObject) files.get(0)).getString("fileUUID");
+			getControl().setFileNameUUID(null, fileUUID);
+
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 
 	}
 
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+
+		this.fileName = getControl().getFileName();
+	}
+
 	public void assertContent(byte[] expectedContent, MockMvc mockMvc) {
-		
+
 		FileVO file = (FileVO) getValue();
-		
+
 		try {
 			byte[] content = mockMvc.perform(get("/files/get/{fileUUID}", file.getFileUUID())).andExpect(status().isOk()).andReturn().getResponse().getContentAsByteArray();
 			Assert.assertArrayEquals(expectedContent, content);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
+
+	}
+
+	public void delete() {
+		getControl().delete();
+	}
+
+	public void assertFileName(String expectedFileName) {
+		Assert.assertEquals(expectedFileName, fileName);
+
 	}
 
 }

@@ -32,7 +32,7 @@ public class ColumnLayoutStrategy {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void createLayout(Panel parent, BaseContainerElement<?> baseContainer) {
+	public void createLayout(Panel parent, BaseContainerElement<?, ?> baseContainer) {
 
 		if (!baseContainer.getControls().isEmpty()) {
 			int colummCount = baseContainer.getColummCount();
@@ -71,7 +71,7 @@ public class ColumnLayoutStrategy {
 
 		if (!baseContainer.getChildren().isEmpty()) {
 
-			for (BaseContainerElement<?> lBaseContainer : baseContainer.getChildren()) {
+			for (BaseContainerElement<?, ?> lBaseContainer : baseContainer.getChildren()) {
 
 				IContainer<Panel> container = ContainerFactory.createContainer(lBaseContainer, this);
 				parent.add(container.getContainer());

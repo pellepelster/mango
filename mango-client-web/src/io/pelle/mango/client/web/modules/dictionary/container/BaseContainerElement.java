@@ -14,15 +14,16 @@ import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.ControlFactory;
 
-public abstract class BaseContainerElement<ModelType extends IBaseContainerModel> extends BaseDictionaryElement<ModelType> implements IBaseContainer {
+public abstract class BaseContainerElement<ModelType extends IBaseContainerModel, UpdateListenerType extends IUpdateListener> extends BaseDictionaryElement<ModelType>
+		implements IBaseContainer<UpdateListenerType> {
 
 	private static final int DEFAULT_COLUMN_COUNT = 1;
 
 	private List<BaseDictionaryControl<?, ?>> controls = new ArrayList<BaseDictionaryControl<?, ?>>();
 
-	private List<BaseContainerElement<?>> children = new ArrayList<BaseContainerElement<?>>();
+	private List<BaseContainerElement<?, ?>> children = new ArrayList<BaseContainerElement<?, ?>>();
 
-	private List<IUpdateListener> updateListeners = new ArrayList<>();
+	private List<UpdateListenerType> updateListeners = new ArrayList<>();
 
 	@SuppressWarnings("static-access")
 	public BaseContainerElement(ModelType baseContainer, BaseDictionaryElement<? extends IBaseModel> parent) {
@@ -40,11 +41,15 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 		}
 	}
 
+	public List<UpdateListenerType> getUpdateListeners() {
+		return updateListeners;
+	}
+
 	public List<BaseDictionaryControl<? extends IBaseControlModel, ?>> getControls() {
 		return this.controls;
 	}
 
-	public List<BaseContainerElement<?>> getChildren() {
+	public List<BaseContainerElement<?, ?>> getChildren() {
 		return this.children;
 	}
 
@@ -73,14 +78,14 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 	}
 
 	protected void fireUpdateListeners() {
-		for(IUpdateListener updateListener : updateListeners) {
+		for (IUpdateListener updateListener : updateListeners) {
 			updateListener.onUpdate();
 		}
 	}
-	
+
 	@Override
-	public void addUpdateListener(IUpdateListener updateListener) {
+	public void addUpdateListener(UpdateListenerType updateListener) {
 		updateListeners.add(updateListener);
 	}
-	
+
 }

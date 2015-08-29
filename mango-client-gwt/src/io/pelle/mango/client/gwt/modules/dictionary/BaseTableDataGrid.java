@@ -11,12 +11,12 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary;
 
-import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.TableUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseTableModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseTableElement;
 
-public abstract class BaseTableDataGrid<VOType extends IBaseVO> extends BaseDataGrid<VOType> implements TableUpdateListener
+public abstract class BaseTableDataGrid<VOType extends IBaseVO> extends BaseDataGrid<VOType> implements IUpdateListener
 {
 
 	private BaseTableElement<VOType, ? extends IBaseTableModel> baseTable;
@@ -27,7 +27,7 @@ public abstract class BaseTableDataGrid<VOType extends IBaseVO> extends BaseData
 
 		this.baseTable = baseTable;
 
-		baseTable.addTableUpdateListeners(this);
+		baseTable.addUpdateListener(this);
 
 		onUpdate();
 	}

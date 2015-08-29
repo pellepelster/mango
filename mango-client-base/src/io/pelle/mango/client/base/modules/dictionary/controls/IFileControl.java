@@ -11,4 +11,19 @@ public interface IFileControl extends IBaseControl<Object, IFileControlModel> {
 	static final String FILE_GET_BASE_URL = "files";
 
 	static final String FILE_GET_URL = "get";
+
+	void delete();
+
+	boolean isDeleteEnabled();
+
+	String getFileName();
+
+	void setFileNameUUID(String fileName, String fileUUID);
+
+	String getFileUrl();
+
+	boolean hasHook();
+
+	void activate();
+
 }

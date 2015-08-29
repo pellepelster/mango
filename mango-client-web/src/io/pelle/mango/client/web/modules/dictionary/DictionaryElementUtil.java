@@ -78,8 +78,8 @@ public class DictionaryElementUtil extends BaseDictionaryElementUtil {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <ElementType> ElementType getElement(List<BaseContainerElement<?>> baseContainers, List<String> modelIds, int level) {
-		for (BaseContainerElement<?> baseContainer : baseContainers) {
+	private static <ElementType> ElementType getElement(List<BaseContainerElement<?, ?>> baseContainers, List<String> modelIds, int level) {
+		for (BaseContainerElement<?, ?> baseContainer : baseContainers) {
 			if (baseContainer.getModel().getName().equals(modelIds.get(level))) {
 
 				if (level == modelIds.size() - 1) {

@@ -72,7 +72,7 @@ public class GwtTabFolder extends Div implements IContainer<Panel>, IUpdateListe
 			if (tabIndex == 0) {
 				tabPane.setActive(true);
 			}
-			columnLayoutStrategy.createLayout(tabPane, (BaseContainerElement<?>) tab);
+			columnLayoutStrategy.createLayout(tabPane, (BaseContainerElement<?, ?>) tab);
 
 			tabMappings.put(tab, tabPane);
 			tabContent.add(tabPane);

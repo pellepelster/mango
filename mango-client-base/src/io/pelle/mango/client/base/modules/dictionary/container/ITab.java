@@ -1,6 +1,8 @@
 package io.pelle.mango.client.base.modules.dictionary.container;
 
-public interface ITab extends IBaseContainer {
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
+
+public interface ITab extends IBaseContainer<IUpdateListener> {
 
 	String getName();
 }

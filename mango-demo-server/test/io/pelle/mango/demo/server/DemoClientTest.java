@@ -534,6 +534,7 @@ public class DemoClientTest extends BaseDemoTest {
 		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).setValue("xxx");
 
 		FileTestControl fileControl = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.FILE_CONTROL1);
+		fileControl.assertFileName("None");
 		fileControl.uploadData(new byte[] { 0xa, 0xb }, mockMvc);
 
 		editor.save();
@@ -546,21 +547,57 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
-	public void testFileList1() {
+	public void testFileList1Add() {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
 		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
 		fileList.assertFileCount(0);
 
 		FileTestControl fileControl1 = fileList.addNewFile();
 		fileControl1.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
-		
+
 		fileList.assertFileCount(1);
 
 		FileTestControl fileControl2 = fileList.addNewFile();
 		fileControl2.uploadData(new byte[] { 0xe, 0xf }, mockMvc);
 
 		fileList.assertFileCount(2);
+
+		editor.save();
+		editor.assertHasNoErrors();
+
+		editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1, editor.getId());
+		fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
+		fileList.assertFileCount(2);
+
+	}
+
+	@Test
+	public void testFileList1Remove() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
+		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
+
+		fileList.assertFileCount(0);
+
+		FileTestControl fileControl1 = fileList.addNewFile();
+		fileControl1.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
+		fileList.assertFileCount(1);
+		fileControl1.delete();
+		fileList.assertFileCount(0);
+
+		// editor.save();
+		// editor.assertHasNoErrors();
+		//
+		// editor =
+		// MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1,
+		// editor.getId());
+		// fileList =
+		// editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
+		// fileList.assertFileCount(1);
+
 	}
 
 	@Test
@@ -573,8 +610,7 @@ public class DemoClientTest extends BaseDemoTest {
 			@Override
 			public SelectQuery<Entity1VO> beforeSearch(SelectQuery<Entity1VO> selectQuery) {
 
-				assertEquals(ENUMERATION1.ENUMERATIONVALUE1,
-						selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
+				assertEquals(ENUMERATION1.ENUMERATIONVALUE1, selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
 				called.set(true);
 				return super.beforeSearch(selectQuery);
 			}

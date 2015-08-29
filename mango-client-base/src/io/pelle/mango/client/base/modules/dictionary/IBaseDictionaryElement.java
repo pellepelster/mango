@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.IBaseRootModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
 public interface IBaseDictionaryElement<ModelType extends IBaseModel> {
+	
 	IBaseDictionaryElement<?> getParent();
 
 	ModelType getModel();

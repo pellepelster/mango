@@ -21,13 +21,13 @@ public class DictionaryCompositeQuery {
 		return new DictionaryCompositeQuery(composite);
 	}
 
-	private void recurseContainerModels(List<BaseDictionaryControl<? extends IBaseControlModel, ?>> baseControls, BaseContainerElement<?> baseContainerElement) {
+	private void recurseContainerModels(List<BaseDictionaryControl<? extends IBaseControlModel, ?>> baseControls, BaseContainerElement<?, ?> baseContainerElement) {
 		baseControls.addAll(baseContainerElement.getControls());
 		recurseContainerModels(baseControls, baseContainerElement.getChildren());
 	}
 
-	private void recurseContainerModels(List<BaseDictionaryControl<? extends IBaseControlModel, ?>> baseControls, List<BaseContainerElement<?>> baseContainerElements) {
-		for (BaseContainerElement<?> baseContainerElement : baseContainerElements) {
+	private void recurseContainerModels(List<BaseDictionaryControl<? extends IBaseControlModel, ?>> baseControls, List<BaseContainerElement<?, ?>> baseContainerElements) {
+		for (BaseContainerElement<?, ?> baseContainerElement : baseContainerElements) {
 			recurseContainerModels(baseControls, baseContainerElement);
 		}
 	}

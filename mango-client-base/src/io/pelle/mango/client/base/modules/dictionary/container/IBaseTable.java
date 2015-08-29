@@ -1,5 +1,6 @@
 package io.pelle.mango.client.base.modules.dictionary.container;
 
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
@@ -9,11 +10,8 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface IBaseTable<VOType extends IBaseVO> extends IBaseContainer {
-	public interface TableUpdateListener {
-		void onUpdate();
-	}
-
+public interface IBaseTable<VOType extends IBaseVO> extends IBaseContainer<IUpdateListener> {
+	
 	interface ITableRow<RowVOType extends IBaseVO> {
 
 		String getStyleNames();
@@ -27,8 +25,6 @@ public interface IBaseTable<VOType extends IBaseVO> extends IBaseContainer {
 		<ElementType extends IBaseControl> ElementType getElement(IBaseControlModel baseControlModel);
 
 	}
-
-	void addTableUpdateListeners(TableUpdateListener tableUpdateListener);
 
 	List<ITableRow<VOType>> getRows();
 

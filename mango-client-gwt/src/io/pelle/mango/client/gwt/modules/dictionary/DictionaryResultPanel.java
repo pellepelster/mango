@@ -11,7 +11,7 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary;
 
-import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.TableUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.elements.ResizeDiv;
@@ -27,7 +27,7 @@ public class DictionaryResultPanel<VOType extends IBaseVO> extends ResizeDiv {
 		resultCellTable.setWidth("100%");
 		resultCellTable.setPageSize(resultCellTable.DEFAULT_PAGESIZE);
 
-		dictionaryResult.addTableUpdateListeners(new TableUpdateListener() {
+		dictionaryResult.addUpdateListener(new IUpdateListener() {
 			@Override
 			public void onUpdate() {
 				resultCellTable.setRows(dictionaryResult.getRows());

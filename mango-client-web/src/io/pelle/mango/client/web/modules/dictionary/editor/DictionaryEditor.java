@@ -143,6 +143,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 			public void onSuccess(List<VOType> result) {
 				if (result.size() == 1) {
 					setVO(result.get(0));
+					DictionaryEditor.this.update();
 				} else {
 					callback.onFailure(new RuntimeException("error loading vo"));
 				}

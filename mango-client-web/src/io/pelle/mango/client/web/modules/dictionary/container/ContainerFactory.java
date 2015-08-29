@@ -22,13 +22,19 @@ public class ContainerFactory {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static BaseContainerElement<? extends IBaseContainerModel> createContainer(IBaseContainerModel baseContainerModel, BaseDictionaryElement parent) {
+	public static BaseContainerElement<? extends IBaseContainerModel, ?> createContainer(IBaseContainerModel baseContainerModel, BaseDictionaryElement parent) {
 		if (baseContainerModel instanceof IFileListModel) {
 			return new FileList((IFileListModel) baseContainerModel, parent);
 		} else if (baseContainerModel instanceof ITabfolderModel) {
 			return new TabFolder((ITabfolderModel) baseContainerModel, parent);
 		} else if (baseContainerModel instanceof ICompositeModel) {
-			return new Composite((ICompositeModel) baseContainerModel, parent);
+			
+			if (baseContainerModel.getParent() instanceof ITabfolderModel) {
+				return new Tab((ICompositeModel) baseContainerModel, parent);
+			} else {
+				return new Composite((ICompositeModel) baseContainerModel, parent);
+			}
+			
 		} else if (baseContainerModel instanceof IEditableTableModel) {
 			return new EditableTable((IEditableTableModel) baseContainerModel, parent);
 		} else if (baseContainerModel instanceof IAssignmentTableModel) {

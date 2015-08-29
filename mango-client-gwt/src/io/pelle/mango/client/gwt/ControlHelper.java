@@ -25,16 +25,16 @@ import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
 
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
+import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.util.CollectionUtils;
-import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrategy;
 
 public class ControlHelper implements IUpdateListener {
 
-	private BaseDictionaryControl<?, ?> baseControl;
+	private IBaseControl<?, ? extends IBaseControlModel> baseControl;
 
 	private final UIObject uiObject;
 
@@ -42,11 +42,11 @@ public class ControlHelper implements IUpdateListener {
 
 	private boolean isUpdating = false;
 
-	public <ValueType> ControlHelper(final Widget uiObject, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener) {
+	public <ValueType> ControlHelper(final Widget uiObject, final IBaseControl<?, ? extends IBaseControlModel> baseControl, IGwtControl gwtControl, boolean addValueChangeListener) {
 		this(uiObject, baseControl, gwtControl, addValueChangeListener, true, true);
 	}
 
-	public <ValueType> ControlHelper(final Widget widget, final BaseDictionaryControl<?, ValueType> baseControl, IGwtControl gwtControl, boolean addValueChangeListener, boolean addDefaultStyle, boolean setWidth) {
+	public <ValueType> ControlHelper(final Widget widget, final IBaseControl<?, ? extends IBaseControlModel> baseControl, IGwtControl gwtControl, boolean addValueChangeListener, boolean addDefaultStyle, boolean setWidth) {
 
 		this.uiObject = widget;
 		this.baseControl = baseControl;

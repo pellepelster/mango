@@ -16,11 +16,13 @@ import com.google.gwt.user.client.ui.Panel;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtAssignmentTable;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtComposite;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtEditableTable;
+import io.pelle.mango.client.gwt.modules.dictionary.container.GwtFileList;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtTabFolder;
 import io.pelle.mango.client.web.modules.dictionary.container.AssignmentTable;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseContainerElement;
 import io.pelle.mango.client.web.modules.dictionary.container.Composite;
 import io.pelle.mango.client.web.modules.dictionary.container.EditableTable;
+import io.pelle.mango.client.web.modules.dictionary.container.FileList;
 import io.pelle.mango.client.web.modules.dictionary.container.IContainer;
 import io.pelle.mango.client.web.modules.dictionary.container.TabFolder;
 
@@ -36,7 +38,9 @@ public class ContainerFactory {
 	public static IContainer<Panel> createContainer(BaseContainerElement baseContainer, ColumnLayoutStrategy columnLayoutStrategy) {
 		IContainer<Panel> container;
 
-		if (baseContainer instanceof TabFolder) {
+		if (baseContainer instanceof FileList) {
+			return new GwtFileList((FileList) baseContainer);
+		} else if (baseContainer instanceof TabFolder) {
 			return new GwtTabFolder((TabFolder) baseContainer, columnLayoutStrategy);
 		} else if (baseContainer instanceof Composite) {
 			return new GwtComposite((Composite) baseContainer);

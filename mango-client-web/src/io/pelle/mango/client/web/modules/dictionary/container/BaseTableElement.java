@@ -1,5 +1,6 @@
 package io.pelle.mango.client.web.modules.dictionary.container;
 
+import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseTableModel;
@@ -13,29 +14,16 @@ import java.util.List;
 import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends IBaseTableModel> extends BaseContainerElement<ModelType> implements IBaseTable<VOType> {
+public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends IBaseTableModel> extends BaseContainerElement<ModelType, IUpdateListener> implements IBaseTable<VOType> {
 
 	private TableRowList<VOType, ModelType> rowList = new TableRowList<VOType, ModelType>(new ArrayList<VOType>(), this);;
 
 	private List<ITableRow<VOType>> selection = new ArrayList<ITableRow<VOType>>();
 
-	private List<TableUpdateListener> tableUpdateListeners = new ArrayList<TableUpdateListener>();
-
 	private Optional<SimpleCallback<VOType>> activationCallback = Optional.absent();
 
 	public BaseTableElement(ModelType baseTable, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(baseTable, parent);
-	}
-
-	private void fireTableUpdateListeners() {
-		for (TableUpdateListener tableUpdateListener : this.tableUpdateListeners) {
-			tableUpdateListener.onUpdate();
-		}
-	}
-
-	@Override
-	public void addTableUpdateListeners(TableUpdateListener tableUpdateListener) {
-		this.tableUpdateListeners.add(tableUpdateListener);
 	}
 
 	@Override
@@ -46,7 +34,7 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 	public void setRows(List<VOType> vos) {
 		this.rowList = new TableRowList<VOType, ModelType>(vos, this);
 
-		fireTableUpdateListeners();
+		fireUpdateListeners();
 	}
 
 	public void setSelection(ITableRow<VOType> tableRow) {
@@ -66,7 +54,7 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 		this.rowList.add(tableRow);
 		setSelection(tableRow);
 
-		fireTableUpdateListeners();
+		fireUpdateListeners();
 
 		return tableRow;
 	}
@@ -86,7 +74,7 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 
 		setDefaultSelection();
 
-		fireTableUpdateListeners();
+		fireUpdateListeners();
 
 		asyncCallback.onSuccess(this.rowList);
 	}
@@ -106,7 +94,7 @@ public abstract class BaseTableElement<VOType extends IBaseVO, ModelType extends
 
 			this.rowList = new TableRowList<VOType, ModelType>(vos, this);
 
-			fireTableUpdateListeners();
+			fireUpdateListeners();
 		}
 	}
 
