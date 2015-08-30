@@ -41,8 +41,20 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("*")
 	String mandatoryMarker();
 
+	@DefaultMessage("in progress")
+	String inProgress();
+
+	@DefaultMessage("failed")
+	String failed();
+
+	@DefaultMessage("canceled")
+	String canceled();
+
 	@DefaultMessage("New")
 	String editorNew();
+
+	@DefaultMessage("add file")
+	String addFile();
 
 	@DefaultMessage("None")
 	String hierarchicalNone();
@@ -207,5 +219,8 @@ public interface MangoMessages extends Messages {
 
 	@DefaultMessage("parent")
 	String hierarchicalParent();
+
+	@DefaultMessage("no files")
+	String noFiles();
 
 }

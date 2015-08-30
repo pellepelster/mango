@@ -38,6 +38,10 @@ public class FileListTestcontainer extends BaseTestContainer implements IListUpd
 		fileControls.addAll(fileList.getFileControls());
 	}
 
+	public FileTestControl getFileControl(int index) {
+		return new FileTestControl(fileControls.get(0));
+	}
+
 	public FileTestControl addNewFile() {
 		future = AsyncCallbackFuture.create();
 		fileList.addNewFile();

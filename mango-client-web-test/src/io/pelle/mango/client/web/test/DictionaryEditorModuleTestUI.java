@@ -139,4 +139,8 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 		return module.getDictionaryEditor().getVO().getId();
 	}
 
+	public VOType getContent() {
+		return module.getDictionaryEditor().getVO();
+	}
+
 }

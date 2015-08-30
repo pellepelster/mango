@@ -552,17 +552,21 @@ public class DemoClientTest extends BaseDemoTest {
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
 		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
-		fileList.assertFileCount(0);
 
-		FileTestControl fileControl1 = fileList.addNewFile();
+		fileList.assertFileCount(1);
+		assertEquals(1, editor.getContent().getFileEntityDatatypes1().size());
+
+		FileTestControl fileControl1 = fileList.getFileControl(0);
 		fileControl1.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
 
 		fileList.assertFileCount(1);
+		assertEquals(1, editor.getContent().getFileEntityDatatypes1().size());
 
 		FileTestControl fileControl2 = fileList.addNewFile();
 		fileControl2.uploadData(new byte[] { 0xe, 0xf }, mockMvc);
 
 		fileList.assertFileCount(2);
+		assertEquals(2, editor.getContent().getFileEntityDatatypes1().size());
 
 		editor.save();
 		editor.assertHasNoErrors();

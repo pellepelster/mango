@@ -1,5 +1,17 @@
 package io.pelle.mango.client.web.modules.dictionary.editor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+
+import com.google.common.base.Optional;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import io.pelle.mango.client.base.db.vos.IInfoVOEntity;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.messages.IValidationMessage;
@@ -23,19 +35,7 @@ import io.pelle.mango.client.web.modules.dictionary.events.VOSavedEvent;
 import io.pelle.mango.client.web.util.BaseAsyncCallback;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-
-import com.google.common.base.Optional;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-
-public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IEditorModel> implements IDictionaryEditor<VOType> {
+public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IEditorModel>implements IDictionaryEditor<VOType> {
 
 	private final EditorVOWrapper<VOType> voWrapper;
 
@@ -61,9 +61,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 		/*
 		 * 
-		 * if
-		 * (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent
-		 * ().getName())) {
+		 * if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().
+		 * getParent ().getName())) {
 		 * 
 		 * final Stack<BaseEditorHook<VOType>> runningHooks = new
 		 * Stack<BaseEditorHook<VOType>>();
@@ -114,6 +113,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 			@Override
 			public void onSuccess(VOType result) {
 				setVO(result);
+				DictionaryEditor.this.update();
 
 				if (callback != null) {
 					callback.onSuccess(null);

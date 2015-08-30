@@ -11,17 +11,21 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import org.gwtbootstrap3.client.ui.Button;
+import org.gwtbootstrap3.client.ui.html.Div;
+
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Anchor;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.HorizontalPanel;
 
+import gwtupload.client.BaseUploadStatus;
+import gwtupload.client.IFileInput;
 import gwtupload.client.IFileInput.FileInputType;
 import gwtupload.client.IUploader;
 import gwtupload.client.IUploader.OnFinishUploaderHandler;
+import gwtupload.client.IUploader.OnStatusChangedHandler;
 import gwtupload.client.SingleUploader;
 import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
@@ -29,45 +33,75 @@ import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.gwt.ControlHelper;
-import io.pelle.mango.client.gwt.GwtStyles;
 import io.pelle.mango.client.gwt.utils.ActionImage;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
-public class GwtFileControl extends Composite implements IGwtControl, ClickHandler, SimpleCallback<Void>, IUpdateListener {
+public class GwtFileControl extends Div implements IGwtControl, ClickHandler, SimpleCallback<Void>, IUpdateListener {
 
 	private final IFileControl fileControl;
 
-	private SingleUploader singleUploader = new SingleUploader(FileInputType.BUTTON);
-
-	private HorizontalPanel panel = new HorizontalPanel();
+	private SingleUploader singleUploader;
 
 	private Anchor fileNameAnchor = new Anchor();
 
 	private ActionImage deleteAction = new ActionImage(MangoClientWeb.RESOURCES.delete(), this);
 
-	public GwtFileControl(final IFileControl fileControl, SimpleCallback<Void> deleteCallback) {
+	public static class FileControlUploadStatus extends BaseUploadStatus {
+		public FileControlUploadStatus() {
+			setProgressWidget(new FileControlProgressBar());
+		}
+	}
+
+	public GwtFileControl(final IFileControl fileControl) {
 		super();
+
+		setWidth("100%");
 
 		this.fileControl = fileControl;
 
-		if (deleteCallback != null) {
-			deleteAction.setActionCallback(deleteCallback);
-		}
-
 		fileControl.addUpdateListener(this);
 
-		panel.setVerticalAlignment(HasVerticalAlignment.ALIGN_MIDDLE);
-		panel.setSpacing(GwtStyles.SPACING);
+		fileNameAnchor.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		add(fileNameAnchor);
 
-		panel.add(fileNameAnchor);
-		panel.add(deleteAction);
+		deleteAction.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		add(deleteAction);
 
-		panel.add(singleUploader.getForm());
-		initWidget(panel);
+		singleUploader = new SingleUploader(FileInputType.CUSTOM.withInput(IFileInput.FileInputType.CUSTOM.with(new Button(MangoClientWeb.MESSAGES.addFile())).getInstance()), new FileControlUploadStatus());
+
+		// singleUploader.getWidget().addStyleName(ButtonType.DEFAULT.getCssName());
+		// singleUploader.getWidget().addStyleName(Styles.BTN);
+
+		singleUploader.getForm().getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		add(singleUploader.getForm());
 
 		singleUploader.setAutoSubmit(true);
 		singleUploader.setEnabled(true);
+		singleUploader.addOnStatusChangedHandler(new OnStatusChangedHandler() {
+
+			@Override
+			public void onStatusChanged(IUploader uploader) {
+				switch (uploader.getStatus()) {
+				case INPROGRESS:
+				case SUBMITING:
+				case QUEUED:
+					fileNameAnchor.setText(MangoClientWeb.MESSAGES.inProgress());
+					break;
+				case CANCELED:
+				case CANCELING:
+					fileNameAnchor.setText(MangoClientWeb.MESSAGES.canceled());
+					break;
+				case ERROR:
+					fileNameAnchor.setText(MangoClientWeb.MESSAGES.failed());
+					break;
+				default:
+					fileNameAnchor.setText(fileControl.getFileName());
+					break;
+				}
+
+			}
+		});
 
 		singleUploader.setServletPath(GWT.getModuleBaseURL() + "../" + IFileControl.FILE_UPLOAD_BASE_URL + "/" + IFileControl.FILE_UPLOAD_URL);
 
@@ -90,10 +124,6 @@ public class GwtFileControl extends Composite implements IGwtControl, ClickHandl
 			});
 		}
 		onUpdate();
-	}
-
-	public GwtFileControl(final IFileControl fileControl) {
-		this(fileControl, null);
 	}
 
 	@Override

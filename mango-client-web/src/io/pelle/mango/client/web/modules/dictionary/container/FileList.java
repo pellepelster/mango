@@ -72,18 +72,21 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 		List<IFileControl> addedFileControls = new ArrayList<>();
 		List<IFileControl> removedFileControls = new ArrayList<>(fileControls);
 
-		for (FileVO fileVO : getFilesInternal()) {
+		if (getFilesInternal().isEmpty()) {
+			addNewFile();
+		} else {
+			for (FileVO fileVO : getFilesInternal()) {
 
-			Optional<IFileControl> fileControl = Iterables.tryFind(fileControls, findByFileVO(fileVO));
+				Optional<IFileControl> fileControl = Iterables.tryFind(fileControls, findByFileVO(fileVO));
 
-			if (fileControl.isPresent()) {
-				removedFileControls.remove(fileControl.get());
-			} else {
-				FileControl newFileControl = createFilecontrol(fileVO);
-				fileControls.add(newFileControl);
-				addedFileControls.add(newFileControl);
+				if (fileControl.isPresent()) {
+					removedFileControls.remove(fileControl.get());
+				} else {
+					FileControl newFileControl = createFilecontrol(fileVO);
+					fileControls.add(newFileControl);
+					addedFileControls.add(newFileControl);
+				}
 			}
-
 		}
 
 		if (!addedFileControls.isEmpty()) {

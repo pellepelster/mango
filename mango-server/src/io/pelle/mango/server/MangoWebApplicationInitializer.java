@@ -24,7 +24,7 @@ public abstract class MangoWebApplicationInitializer implements WebApplicationIn
 	private String configLocation;
 
 	private Class<?> configLocationClass;
-	
+
 	public MangoWebApplicationInitializer(String configLocation) {
 		super();
 		this.configLocation = configLocation;
@@ -34,22 +34,21 @@ public abstract class MangoWebApplicationInitializer implements WebApplicationIn
 		super();
 		this.configLocationClass = configLocationClass;
 	}
-	
+
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
-		
+
 		WebApplicationContext context = getContext();
 
 		servletContext.addListener(new ContextLoaderListener(context));
 		servletContext.addListener(new AwsRdsMysqlJndiInjector());
 		servletContext.setInitParameter("log4jConfigLocation", LOG4J_LOCATION);
 		servletContext.addListener(new Log4jConfigListener());
-		
 
 		ServletRegistration.Dynamic gwtUpload = servletContext.addServlet(IFileControl.FILE_UPLOAD_BASE_URL, new FileControlUploadServlet());
 		gwtUpload.setLoadOnStartup(1);
-		gwtUpload.addMapping("/" + IFileControl.FILE_UPLOAD_BASE_URL+ "/*");
-		
+		gwtUpload.addMapping("/" + IFileControl.FILE_UPLOAD_BASE_URL + "/*");
+
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet(REMOTE_SERVLET_NAME, new DispatcherServlet(context));
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("/" + REMOTE_SERVLET_NAME + "/*");
@@ -57,9 +56,9 @@ public abstract class MangoWebApplicationInitializer implements WebApplicationIn
 	}
 
 	private AnnotationConfigWebApplicationContext getContext() {
-		
+
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		
+
 		if (configLocation != null) {
 			context.setConfigLocation(configLocation);
 		}
@@ -70,6 +69,5 @@ public abstract class MangoWebApplicationInitializer implements WebApplicationIn
 
 		return context;
 	}
-
 
 }

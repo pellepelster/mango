@@ -1,9 +1,3 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-}
-
 dependencies {
 	compile project(':mango-client-web')
 	compile 'com.googlecode.gwtupload:gwtupload:1.0.3'
