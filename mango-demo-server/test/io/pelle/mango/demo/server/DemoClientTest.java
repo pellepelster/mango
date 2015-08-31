@@ -461,12 +461,14 @@ public class DemoClientTest extends BaseDemoTest {
 		control.assertHasErrorWithText("'a' is not a valid date");
 		control.enterValue(date1);
 		editor.save();
+		editor.assertHasNoErrors();
 
 		// create 2
 		editor = createDemoDictionary1Editor1();
 		control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.DATE_CONTROL1);
 		control.enterValue(date2);
 		editor.save();
+		editor.assertHasNoErrors();
 
 		// search all
 		DictionarySearchModuleTestUI<Entity1VO> search = MangoClientSyncWebTest.getInstance().openSearch(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1);
@@ -554,18 +556,18 @@ public class DemoClientTest extends BaseDemoTest {
 		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
 
 		fileList.assertFileCount(1);
-		assertEquals(1, editor.getContent().getFileEntityDatatypes1().size());
+		assertEquals(0, editor.getContent().getFileEntityDatatypes1().size());
 
 		FileTestControl fileControl1 = fileList.getFileControl(0);
 		fileControl1.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
 
-		fileList.assertFileCount(1);
+		fileList.assertFileCount(2);
 		assertEquals(1, editor.getContent().getFileEntityDatatypes1().size());
 
-		FileTestControl fileControl2 = fileList.addNewFile();
+		FileTestControl fileControl2 = fileList.getFileControl(1);
 		fileControl2.uploadData(new byte[] { 0xe, 0xf }, mockMvc);
 
-		fileList.assertFileCount(2);
+		fileList.assertFileCount(3);
 		assertEquals(2, editor.getContent().getFileEntityDatatypes1().size());
 
 		editor.save();
@@ -584,13 +586,19 @@ public class DemoClientTest extends BaseDemoTest {
 		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
 		FileListTestcontainer fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
 
-		fileList.assertFileCount(0);
-
-		FileTestControl fileControl1 = fileList.addNewFile();
-		fileControl1.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
 		fileList.assertFileCount(1);
+		assertEquals(0, editor.getContent().getFileEntityDatatypes1().size());
+
+		FileTestControl fileControl1 = fileList.getFileControl(0);
+		fileControl1.assertIsEmpty();
+		
+		fileControl1.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
+
+		fileList.assertFileCount(2);
+		assertEquals(1, editor.getContent().getFileEntityDatatypes1().size());
+		
 		fileControl1.delete();
-		fileList.assertFileCount(0);
+		fileList.assertFileCount(1);
 
 		// editor.save();
 		// editor.assertHasNoErrors();

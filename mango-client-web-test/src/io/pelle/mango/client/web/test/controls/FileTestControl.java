@@ -25,6 +25,8 @@ public class FileTestControl extends BaseTestControl<IFileControl, Object> {
 
 	private String fileName;
 
+	private String fileUUID;
+
 	public FileTestControl(IFileControl control) {
 		super(control);
 	}
@@ -53,6 +55,7 @@ public class FileTestControl extends BaseTestControl<IFileControl, Object> {
 		super.onUpdate();
 
 		this.fileName = getControl().getFileName();
+		this.fileUUID = getControl().getFileUUID();
 	}
 
 	public void assertContent(byte[] expectedContent, MockMvc mockMvc) {
@@ -75,6 +78,11 @@ public class FileTestControl extends BaseTestControl<IFileControl, Object> {
 	public void assertFileName(String expectedFileName) {
 		Assert.assertEquals(expectedFileName, fileName);
 
+	}
+
+	public void assertIsEmpty() {
+		Assert.assertTrue(fileUUID != null && !fileUUID.trim().isEmpty());
+		
 	}
 
 }

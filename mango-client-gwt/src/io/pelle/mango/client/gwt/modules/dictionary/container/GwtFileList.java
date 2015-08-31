@@ -65,27 +65,27 @@ public class GwtFileList extends Div implements IContainer<Panel>, IListUpdateLi
 			listGroup.remove(i);
 		}
 
+		int index = 0;
 		for (IFileControl fileControl : fileList.getFileControls()) {
-			createListGroupItem(fileControl);
+			createListGroupItem(index, fileControl);
+			index++;
 		}
 	}
 
-	private void createListGroupItem(IFileControl fileControl) {
+	private void createListGroupItem(int index, IFileControl fileControl) {
 
 		final ListGroupItem listGroupItem = new ListGroupItem();
-
+		
 		GwtFileControl gwtFileControl = new GwtFileControl(fileControl);
 		listGroupItem.add(gwtFileControl);
 
-		listGroup.add(listGroupItem);
+		listGroup.insert(listGroupItem, index);
 		mappings.put(fileControl, listGroupItem);
 	}
 
 	@Override
-	public void onAdded(Collection<IFileControl> added) {
-		for (IFileControl fileControl : added) {
-			createListGroupItem(fileControl);
-		}
+	public void onAdded(int index, IFileControl added) {
+		createListGroupItem(index, added);
 	}
 
 	@Override

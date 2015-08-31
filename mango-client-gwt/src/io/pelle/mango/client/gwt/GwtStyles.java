@@ -11,6 +11,10 @@
  */
 package io.pelle.mango.client.gwt;
 
+import org.gwtbootstrap3.client.ui.html.Span;
+
+import io.pelle.mango.client.gwt.utils.HorizontalSpacer;
+
 /**
  * CSS Style Names
  * 
@@ -57,8 +61,6 @@ public interface GwtStyles {
 
 	double ENABLED_OPACITY = 1.0d;
 
-	int SPACING = 10;
-
 	String TOP_SPACER = "top-spacer";
 
 	String TALE_ROW_EVEN = "table-row-even";
@@ -68,5 +70,8 @@ public interface GwtStyles {
 	int FADE_IN_DURATION = 150;
 
 	int FADE_OUT_DURATION = FADE_IN_DURATION;
+
+	int SPACING = 10;
+	
 
 }

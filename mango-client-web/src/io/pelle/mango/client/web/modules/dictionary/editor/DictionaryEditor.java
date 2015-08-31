@@ -122,7 +122,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 			}
 		};
 
-		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().getNewVO(this.dictionaryModel.getVOClass().getName(), CollectionUtils.copyMap(this.context), (AsyncCallback<IBaseVO>) newVOCallback);
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().getNewVO(this.dictionaryModel.getVOClass().getName(), CollectionUtils.copyMap(this.context),
+				(AsyncCallback<IBaseVO>) newVOCallback);
 
 	}
 
@@ -228,8 +229,6 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 	public void save(final AsyncCallback<Result<VOType>> callback) {
 
-		// if (!this.dataBindingContext.hasErrors())
-		// {
 		if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent().getName())) {
 			final Stack<BaseEditorHook<VOType>> runningHooks = new Stack<BaseEditorHook<VOType>>();
 			final Stack<Boolean> hookResults = new Stack<Boolean>();
@@ -252,7 +251,6 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 		} else {
 			internalSave(callback);
 		}
-		// }
 	}
 
 	private void internalSave(AsyncCallback<Result<VOType>> callback) {

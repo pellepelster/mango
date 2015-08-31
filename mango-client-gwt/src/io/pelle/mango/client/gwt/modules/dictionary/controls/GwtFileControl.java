@@ -33,7 +33,7 @@ import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.gwt.ControlHelper;
-import io.pelle.mango.client.gwt.utils.ActionImage;
+import io.pelle.mango.client.gwt.utils.HorizontalSpacer;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 
@@ -45,7 +45,9 @@ public class GwtFileControl extends Div implements IGwtControl, ClickHandler, Si
 
 	private Anchor fileNameAnchor = new Anchor();
 
-	private ActionImage deleteAction = new ActionImage(MangoClientWeb.RESOURCES.delete(), this);
+	private Button addButton = new Button(MangoClientWeb.MESSAGES.addFile());
+
+	private Button deleteButton = new Button(MangoClientWeb.MESSAGES.removeFile());
 
 	public static class FileControlUploadStatus extends BaseUploadStatus {
 		public FileControlUploadStatus() {
@@ -56,19 +58,20 @@ public class GwtFileControl extends Div implements IGwtControl, ClickHandler, Si
 	public GwtFileControl(final IFileControl fileControl) {
 		super();
 
-		setWidth("100%");
-
 		this.fileControl = fileControl;
-
 		fileControl.addUpdateListener(this);
 
 		fileNameAnchor.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		HorizontalSpacer.adapt(fileNameAnchor);
 		add(fileNameAnchor);
 
-		deleteAction.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
-		add(deleteAction);
+		deleteButton.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+		deleteButton.setVisible(false);
+		deleteButton.addClickHandler(this);
+		HorizontalSpacer.adapt(deleteButton);
+		add(deleteButton);
 
-		singleUploader = new SingleUploader(FileInputType.CUSTOM.withInput(IFileInput.FileInputType.CUSTOM.with(new Button(MangoClientWeb.MESSAGES.addFile())).getInstance()), new FileControlUploadStatus());
+		singleUploader = new SingleUploader(FileInputType.CUSTOM.withInput(IFileInput.FileInputType.CUSTOM.with(addButton).getInstance()), new FileControlUploadStatus());
 
 		// singleUploader.getWidget().addStyleName(ButtonType.DEFAULT.getCssName());
 		// singleUploader.getWidget().addStyleName(Styles.BTN);
@@ -97,6 +100,8 @@ public class GwtFileControl extends Div implements IGwtControl, ClickHandler, Si
 					break;
 				default:
 					fileNameAnchor.setText(fileControl.getFileName());
+					addButton.setVisible(false);
+					deleteButton.setVisible(true);
 					break;
 				}
 
@@ -124,10 +129,13 @@ public class GwtFileControl extends Div implements IGwtControl, ClickHandler, Si
 			});
 		}
 		onUpdate();
+		setWidth("100%");
+
 	}
 
 	@Override
 	public void onClick(ClickEvent event) {
+		fileControl.delete();
 	}
 
 	@Override
@@ -142,12 +150,9 @@ public class GwtFileControl extends Div implements IGwtControl, ClickHandler, Si
 	@Override
 	public void onUpdate() {
 
-		if (fileControl.isDeleteEnabled()) {
-			deleteAction.enable();
-		} else {
-			deleteAction.disable();
-		}
-
+		deleteButton.setVisible(fileControl.isDeleteEnabled());
+		
+		fileNameAnchor.setVisible(!fileControl.getFileName().isEmpty());
 		fileNameAnchor.setText(fileControl.getFileName());
 		fileNameAnchor.setHref(fileControl.getFileUrl());
 	}

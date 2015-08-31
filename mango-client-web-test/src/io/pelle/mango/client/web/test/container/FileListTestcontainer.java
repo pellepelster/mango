@@ -39,30 +39,16 @@ public class FileListTestcontainer extends BaseTestContainer implements IListUpd
 	}
 
 	public FileTestControl getFileControl(int index) {
-		return new FileTestControl(fileControls.get(0));
-	}
-
-	public FileTestControl addNewFile() {
-		future = AsyncCallbackFuture.create();
-		fileList.addNewFile();
-		FileTestControl result = future.get();
-
-		future = null;
-
-		return result;
+		return new FileTestControl(fileControls.get(index));
 	}
 
 	@Override
-	public void onAdded(Collection<IFileControl> added) {
+	public void onAdded(int index, IFileControl added) {
 
-		fileControls.addAll(added);
+		fileControls.add(index, added);
 
 		if (future != null) {
-			if (added.size() == 1) {
-				future.onSuccess(new FileTestControl(added.iterator().next()));
-			} else {
-				Assert.fail(String.format("expected 1 file control, but got %d", added.size()));
-			}
+			future.onSuccess(new FileTestControl(added));
 		}
 	}
 

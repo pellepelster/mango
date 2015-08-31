@@ -12,8 +12,6 @@ public interface IFileList extends IBaseContainer<IListUpdateListener<IFileContr
 
 	Collection<IFileControl> getFileControls();
 
-	void addNewFile();
-
 	void removeFile(IFileControl fileControl);
 
 }

@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public interface IListUpdateListener<ListType> extends IUpdateListener {
 	
-	void onAdded(Collection<ListType> added);
+	void onAdded(int index, ListType added);
 
 	void onRemoved(Collection<ListType> removed);
 

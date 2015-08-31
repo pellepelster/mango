@@ -26,4 +26,6 @@ public interface IFileControl extends IBaseControl<Object, IFileControlModel> {
 
 	void activate();
 
+	String getFileUUID();
+
 }

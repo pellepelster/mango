@@ -223,4 +223,7 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("no files")
 	String noFiles();
 
+	@DefaultMessage("remove file")
+	String removeFile();
+
 }

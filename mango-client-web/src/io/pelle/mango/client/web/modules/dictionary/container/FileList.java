@@ -3,12 +3,14 @@ package io.pelle.mango.client.web.modules.dictionary.container;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Ordering;
 
 import io.pelle.mango.client.FileVO;
 import io.pelle.mango.client.base.db.vos.UUID;
@@ -19,15 +21,26 @@ import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IFileListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.FileControlModel;
-import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.controls.FileControl;
+import io.pelle.mango.client.web.modules.dictionary.controls.FileControl.IFileControlCallback;
 import io.pelle.mango.client.web.modules.dictionary.editor.EditorVOWrapper;
 
-public class FileList extends BaseContainerElement<IFileListModel, IListUpdateListener<IFileControl>>implements IFileList, SimpleCallback<FileControl> {
+public class FileList extends BaseContainerElement<IFileListModel, IListUpdateListener<IFileControl>>implements IFileList, IFileControlCallback {
 
 	private List<IFileControl> fileControls = new ArrayList<>();
+
+	Ordering<IFileControl> FILE_CONTROL_ORDERING = Ordering.natural().nullsLast().onResultOf(new Function<IFileControl, String>() {
+		  public String apply(IFileControl fileControl) {
+			  
+			  if (fileControl.getValue() instanceof FileVO) {
+				  return ((FileVO) fileControl.getValue()).getFileName();
+			  } else {
+				  return null;
+			  }
+		  }
+		});
 
 	public static Function<FileVO, File> FILEVO2FILE = new Function<FileVO, IFileList.File>() {
 
@@ -83,25 +96,24 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 					removedFileControls.remove(fileControl.get());
 				} else {
 					FileControl newFileControl = createFilecontrol(fileVO);
-					fileControls.add(newFileControl);
+
+					int index = addFileControlInternal(newFileControl);
+					fireOnAddedUpdateListeners(index, newFileControl);
+
 					addedFileControls.add(newFileControl);
 				}
 			}
 		}
 
-		if (!addedFileControls.isEmpty()) {
-			fireOnAddedUpdateListeners(addedFileControls);
-		}
-
 		if (!removedFileControls.isEmpty()) {
-			fireOnAddedUpdateListeners(removedFileControls);
+			fireOnRemovedUpdateListeners(removedFileControls);
 		}
 
 	}
 
-	protected void fireOnAddedUpdateListeners(Collection<IFileControl> added) {
+	protected void fireOnAddedUpdateListeners(int index, IFileControl added) {
 		for (IListUpdateListener<IFileControl> updateListener : getUpdateListeners()) {
-			updateListener.onAdded(added);
+			updateListener.onAdded(index, added);
 		}
 	}
 
@@ -114,24 +126,27 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 	@Override
 	public void removeFile(IFileControl fileControl) {
 
-		// getFilesInternal().add(fileVO);
-
 		fileControls.remove(fileControl);
-
 		fireOnRemovedUpdateListeners(Arrays.asList(fileControl));
 	}
 
-	@Override
-	public void addNewFile() {
+	private int addFileControlInternal(IFileControl fileControl) {
+		
+		fileControls.add(fileControl);
+		
+		Collections.sort(fileControls, FILE_CONTROL_ORDERING);
+		
+		return fileControls.indexOf(fileControl);
+
+	}
+	
+	private void addNewFile() {
 
 		FileVO fileVO = new FileVO();
-
 		IFileControl fileControl = createFilecontrol(fileVO);
 
-		fileControls.add(fileControl);
-		getFilesInternal().add(fileVO);
-
-		fireOnAddedUpdateListeners(Arrays.asList(fileControl));
+		int index = addFileControlInternal(fileControl);
+		fireOnAddedUpdateListeners(index, fileControl);
 	}
 
 	private FileControl createFilecontrol(FileVO fileVO) {
@@ -141,7 +156,7 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 		FileControlModel fileControlModel = new FileControlModel(UUID.uuid(), getModel());
 		fileControlModel.setAttributePath("/");
 
-		FileControl fileControl = new FileControl(fileControlModel, this, this) {
+		FileControl fileControl = new FileControl(fileControlModel, this, this, false) {
 			@Override
 			public IVOWrapper<? extends IBaseVO> getVOWrapper() {
 				return voWrapper;
@@ -152,8 +167,14 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 	}
 
 	@Override
-	public void onCallback(FileControl fileControl) {
+	public void onDelete(FileControl fileControl) {
 		removeFile(fileControl);
+	}
+
+	@Override
+	public void onAdd(FileControl fileControl) {
+		getFilesInternal().add((FileVO) fileControl.getValue());
+		addNewFile();
 	}
 
 }
