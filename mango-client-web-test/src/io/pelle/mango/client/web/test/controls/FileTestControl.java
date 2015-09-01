@@ -81,8 +81,8 @@ public class FileTestControl extends BaseTestControl<IFileControl, Object> {
 	}
 
 	public void assertIsEmpty() {
-		Assert.assertTrue(fileUUID != null && !fileUUID.trim().isEmpty());
-		
+		Assert.assertTrue(fileUUID == null);
+
 	}
 
 }
