@@ -14,6 +14,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListMo
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IReferenceListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ITabfolderModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IIntegerControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.StateControlModel;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.test.ENUMERATION1;
@@ -135,6 +136,11 @@ public class DictionaryModelGeneratorTest {
 	@Test
 	public void testFileListModel() {
 		assertTrue(FileListModel.class.isAssignableFrom(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1.getClass()));
+	}
+
+	@Test
+	public void testStateModel() {
+		assertTrue(StateControlModel.class.isAssignableFrom(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.STATE_CONTROL1.getClass()));
 	}
 
 	@Test

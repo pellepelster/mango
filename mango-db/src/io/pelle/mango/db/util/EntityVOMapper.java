@@ -55,7 +55,7 @@ public final class EntityVOMapper implements IEntityVOMapper {
 		try {
 			Class<?> clazz = Class.forName(className);
 			
-			if (IBaseVO.class.equals(clazz)) {
+			if (IBaseVO.class.isAssignableFrom(clazz)) {
 				return getEntityClass(clazz);
 			}
 			

@@ -11,6 +11,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.IFileControl
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IHierarchicalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IIntegerControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IStateControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ITextControlModel;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 
@@ -32,6 +33,8 @@ public class ControlFactory {
 			return new TextControl((ITextControlModel) baseControlModel, parent);
 		} else if (baseControlModel instanceof IIntegerControlModel) {
 			return new IntegerControl((IIntegerControlModel) baseControlModel, parent);
+		} else if (baseControlModel instanceof IStateControlModel) {
+			return new StateControl((IStateControlModel) baseControlModel, parent);
 		} else if (baseControlModel instanceof IDateControlModel) {
 			return new DateControl((IDateControlModel) baseControlModel, parent);
 		} else if (baseControlModel instanceof IBooleanControlModel) {

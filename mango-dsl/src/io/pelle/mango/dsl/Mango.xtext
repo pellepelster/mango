@@ -427,7 +427,7 @@ BaseDictionaryControl:
 		;
 
 DictionaryControl:
-	DictionaryControlGroup | DictionaryTextControl | DictionaryIntegerControl | DictionaryHierarchicalControl | DictionaryBigDecimalControl | DictionaryBooleanControl | DictionaryDateControl | DictionaryEnumerationControl | DictionaryFileControl | DictionaryReferenceControl;
+	DictionaryControlGroup | DictionaryTextControl | DictionaryIntegerControl | DictionaryHierarchicalControl | DictionaryBigDecimalControl | DictionaryBooleanControl | DictionaryDateControl | DictionaryEnumerationControl | DictionaryFileControl | DictionaryStateControl | DictionaryReferenceControl;
 
 DictionaryControlGroupOptions:
 	DictionaryControlGroupOptionMultiFilterField;
@@ -520,6 +520,12 @@ DictionaryReferenceControl:
 DictionaryFileControl:
 	{DictionaryFileControl}
 	"filecontrol" (name=ID)? ("ref" ref=[ DictionaryFileControl | QualifiedName ])? ("{"
+		baseControl=BaseDictionaryControl
+	"}")?;
+
+DictionaryStateControl:
+	{DictionaryStateControl}
+	"statecontrol" (name=ID)? ("ref" ref=[ DictionaryStateControl | QualifiedName ])? ("{"
 		baseControl=BaseDictionaryControl
 	"}")?;
 

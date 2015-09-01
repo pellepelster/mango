@@ -11,6 +11,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.FileControlM
 import io.pelle.mango.client.base.modules.dictionary.model.controls.HierarchicalControlModel
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IntegerControlModel
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel
+import io.pelle.mango.client.base.modules.dictionary.model.controls.StateControlModel
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel
 import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.client.ClientAttributeUtils
@@ -31,6 +32,7 @@ import io.pelle.mango.dsl.mango.DictionaryFileControl
 import io.pelle.mango.dsl.mango.DictionaryHierarchicalControl
 import io.pelle.mango.dsl.mango.DictionaryIntegerControl
 import io.pelle.mango.dsl.mango.DictionaryReferenceControl
+import io.pelle.mango.dsl.mango.DictionaryStateControl
 import io.pelle.mango.dsl.mango.DictionaryTextControl
 import io.pelle.mango.dsl.mango.EntityDataType
 import io.pelle.mango.dsl.mango.EntityEntityAttribute
@@ -271,6 +273,25 @@ class DictionaryControls {
 	'''
 
 	def dispatch String dictionaryControlConstantSetters(DictionaryBooleanControl dictionaryControl) '''
+		«IF dictionaryControl.ref != null»
+			«dictionaryControl.ref.dictionaryControlConstantSetters»
+		«ENDIF»
+		
+		«dictionaryControl.dictionaryControlCommonSetters»
+	'''
+
+	//-------------------------------------------------------------------------
+	// DictionaryStateControl
+	//-------------------------------------------------------------------------
+	def dispatch dictionaryControlType(DictionaryStateControl dictionaryControl) '''
+		«StateControlModel.name»
+	'''
+
+	def dispatch String datatypeSetters(DictionaryStateControl dictionaryControl, StringEntityAttribute entityAttribute) '''
+		«dictionaryControl.datatypeSetters(entityAttribute.type.baseDataType)»
+	'''
+
+	def dispatch String dictionaryControlConstantSetters(DictionaryStateControl dictionaryControl) '''
 		«IF dictionaryControl.ref != null»
 			«dictionaryControl.ref.dictionaryControlConstantSetters»
 		«ENDIF»

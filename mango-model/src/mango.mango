@@ -11,12 +11,13 @@ import io.pelle.mango.client.system.Systeminformation
 import io.pelle.mango.client.log.LogEntryVO
 import io.pelle.mango.client.api.webhook.WebhookDefinition
 import io.pelle.mango.client.api.webhook.WebhookVO
+import io.pelle.mango.client.state.Transition
+import io.pelle.mango.client.state.CurrentState
 import io.pelle.mango.client.base.property.IProperty
 import io.pelle.mango.client.base.property.IPropertyCategory
 import java.io.Serializable
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.search.SearchResultItem
-import com.google.common.base.Optional
 
 project Mango {
 
@@ -54,6 +55,27 @@ project Mango {
 			}
 		}
 		
+		package state {
+
+			valueobject CurrentState {
+				string stateId
+				valueobject Transition 0..n transitions
+			}
+		
+			valueobject Transition {
+				string id
+				valueobject Event event
+			}
+		
+			valueobject Event {
+				string id
+			}
+			
+			service StateService {
+				method CurrentState getCurrentState(Long id, String voClassName )
+			}
+		}
+				
 		package ^entity {
 		
 			service BaseEntityService {

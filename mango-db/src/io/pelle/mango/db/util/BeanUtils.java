@@ -1,12 +1,13 @@
 package io.pelle.mango.db.util;
 
-import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-import io.pelle.mango.client.base.vo.IBaseVO;
-
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.beanutils.PropertyUtils;
+
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
+import io.pelle.mango.client.base.vo.IBaseVO;
 
 public class BeanUtils {
 
@@ -39,6 +40,22 @@ public class BeanUtils {
 		}
 
 		return null;
+	}
+	
+	public static Object getAttribute(Object object, String attributeName) {
+		try {
+			return PropertyUtils.getProperty(object, attributeName);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setAttribute(Object object, String attributeName, Object attributeValue) {
+		try {
+			PropertyUtils.setProperty(object, attributeName, attributeValue);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static IAttributeDescriptor<?>[] getAttributeDescriptors(Class<?> clazz) {

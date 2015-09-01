@@ -28,6 +28,7 @@ import io.pelle.mango.server.file.FileEntityCallback;
 import io.pelle.mango.server.file.FileStorage;
 import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
 import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
+import io.pelle.mango.server.state.StateEntityCallback;
 import io.pelle.mango.server.validator.LengthValidator;
 import io.pelle.mango.server.validator.MandatoryValidator;
 import io.pelle.mango.server.validator.NaturalKeyValidator;
@@ -50,6 +51,11 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 		return new FileEntityCallback();
 	}
 
+	@Bean
+	public StateEntityCallback stateEntityCallback() {
+		return new StateEntityCallback();
+	}
+	
 	@Bean
 	public FileStorage fileStorage() {
 		return new FileStorage();

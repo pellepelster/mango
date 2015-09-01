@@ -22,6 +22,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.controls.EnumerationC
 import io.pelle.mango.client.base.modules.dictionary.model.controls.FileControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IntegerControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.StateControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
@@ -35,6 +36,7 @@ import io.pelle.mango.client.web.test.controls.EnumerationTestControl;
 import io.pelle.mango.client.web.test.controls.FileTestControl;
 import io.pelle.mango.client.web.test.controls.IntegerTestControl;
 import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
+import io.pelle.mango.client.web.test.controls.StateTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
 import io.pelle.mango.client.web.test.util.FocusableTestWidget;
 
@@ -49,6 +51,10 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 
 	public TextTestControl getControl(TextControlModel controlModel) {
 		return new TextTestControl(this.baseDictionaryModule.getElement(controlModel));
+	}
+
+	public StateTestControl getControl(StateControlModel controlModel) {
+		return new StateTestControl(this.baseDictionaryModule.getElement(controlModel));
 	}
 
 	public FileTestControl getControl(FileControlModel controlModel) {

@@ -50,6 +50,7 @@ import io.pelle.mango.client.web.test.controls.EnumerationTestControl;
 import io.pelle.mango.client.web.test.controls.FileTestControl;
 import io.pelle.mango.client.web.test.controls.IntegerTestControl;
 import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
+import io.pelle.mango.client.web.test.controls.StateTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
 import io.pelle.mango.client.web.util.I18NProxy;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
@@ -773,5 +774,21 @@ public class DemoClientTest extends BaseDemoTest {
 		MangoClientWeb.getInstance().setMyAdminGWTRemoteServiceLocator(mangoGwtAsyncAdapterRemoteServiceLocator);
 		MangoClientWeb.MESSAGES = I18NProxy.create(MangoMessages.class);
 		MangoDemoClientConfiguration.registerAll();
+	}
+	
+	
+	@Test
+	public void testDictionary1StateControl1() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("abc");
+		
+		StateTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.STATE_CONTROL1);
+		control.assertValue(null);
+		
+		
+		
+		editor.save();
+
 	}
 }

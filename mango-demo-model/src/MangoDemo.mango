@@ -530,6 +530,7 @@ project MangoDemo {
 				date DateDatatype2 dateDatype2
 				entity FileEntityDatatype1 fileEntityDatatype1
 				entity FileEntityDatatype1 0..n fileEntityDatatypes1
+				string StringDatatype1 state1
 			}
 
 			entity Entity2 {
@@ -682,7 +683,11 @@ project MangoDemo {
 						}
 						filecontrol FileControl1 {
 							entityattribute Entity1.fileEntityDatatype1
+						}
+						statecontrol StateControl1 {
+							entityattribute Entity1.state1
 						}						
+												
 					}
 
 					dictionarysearch DemoSearch1 {
@@ -736,6 +741,7 @@ project MangoDemo {
 								bigdecimalcontrol ref DecimalControl1
 								datecontrol ref DateControl1
 								filecontrol ref FileControl1
+								statecontrol ref StateControl1
 							}
 						
 							composite Tab2 {

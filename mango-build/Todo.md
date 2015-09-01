@@ -8,3 +8,4 @@
 * check for dictionary label and natural key usage and alter filter for reference lookups, etc
 * constant for mango.base.remote.url
 * release test1
+* support controls on entity attributes with not datatypes
