@@ -9,6 +9,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvid
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider
 import io.pelle.mango.client.base.modules.navigation.NavigationTreeProvider
 import io.pelle.mango.client.base.util.GeneratedFactoriesProvider
+import io.pelle.mango.client.base.util.IGeneratedFactory
 import io.pelle.mango.client.base.util.MayCreate
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNameUtils
@@ -18,7 +19,6 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.NavigationNode
 import javax.inject.Inject
-import io.pelle.mango.client.base.util.IGeneratedFactory
 
 /**
  * Generates code from your model files on save.
@@ -106,8 +106,6 @@ class GWTClient extends BaseServices {
 		public class «model.gwtClientConfigurationName()» {
 	
 			private «model.gwtClientConfigurationName()»() {
-				«model.generatedFactoriesInterfaceFullQualifiedName» factory = «GWT.name».create(«model.generatedFactoriesInterfaceFullQualifiedName».class);
-				«GeneratedFactoriesProvider.name».registerBaseGeneratedFactory(factory);
 			}
 			
 			private static «model.gwtClientConfigurationName()» instance;
@@ -115,6 +113,10 @@ class GWTClient extends BaseServices {
 			public static «model.gwtClientConfigurationName()» registerAll()
 			{
 				if (instance == null) {
+					
+					«IGeneratedFactory.name» factory = «GWT.name».create(«IGeneratedFactory.name».class);
+					«GeneratedFactoriesProvider.name».registerBaseGeneratedFactory(factory);
+					
 					registerDictionaries();
 					registerEnumerationValueParser();
 					registerValueObjectEntityDescriptors();
