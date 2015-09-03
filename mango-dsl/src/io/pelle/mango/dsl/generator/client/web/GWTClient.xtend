@@ -8,7 +8,6 @@ import com.google.gwt.core.ext.Generator
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider
 import io.pelle.mango.client.base.modules.navigation.NavigationTreeProvider
-import io.pelle.mango.client.base.util.BaseGeneratedFactory
 import io.pelle.mango.client.base.util.GeneratedFactoriesProvider
 import io.pelle.mango.client.base.util.MayCreate
 import io.pelle.mango.dsl.generator.GeneratorConstants
@@ -19,6 +18,7 @@ import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.NavigationNode
 import javax.inject.Inject
+import io.pelle.mango.client.base.util.IGeneratedFactory
 
 /**
  * Generates code from your model files on save.
@@ -37,18 +37,14 @@ class GWTClient extends BaseServices {
 		<inherits name="com.google.gwt.user.User" />
 		
 			<source path="«GeneratorConstants.CLIENT_PACKAGE_POSTFIX»" />
-		
-			<generate-with class="«model.generatedFactoriesGeneratorClassFullQualifiedName»">
-				<when-type-is class="«model.generatedFactoriesInterfaceFullQualifiedName»" />
-			</generate-with>
-		
+
 		</module>
 	'''
 
 	def generatedFactoriesInterface(Model model) '''
 		package «model.modelPackageName»;
 		
-		interface «model.generatedFactoriesInterfaceName» extends «BaseGeneratedFactory.name» {
+		interface «model.generatedFactoriesInterfaceName» extends «IGeneratedFactory.name» {
 		}
 	'''
 	

@@ -17,11 +17,11 @@ import java.util.logging.Logger;
 
 public class GeneratedFactoriesProvider {
 
-	private static List<BaseGeneratedFactory> generatedFactories = new ArrayList<BaseGeneratedFactory>();
+	private static List<IGeneratedFactory> generatedFactories = new ArrayList<IGeneratedFactory>();
 
 	private static Logger LOG = Logger.getLogger(GeneratedFactoriesProvider.class.getName());
 
-	public static void registerBaseGeneratedFactory(BaseGeneratedFactory baseGeneratedFactory) {
+	public static void registerBaseGeneratedFactory(IGeneratedFactory baseGeneratedFactory) {
 		generatedFactories.add(baseGeneratedFactory);
 	}
 

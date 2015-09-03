@@ -14,4 +14,8 @@
 
 	<super-source path="jrestubs" />
 
+	<generate-with class="io.pelle.mango.gwt.rebind.MangoGeneratedFactoryGenerator">
+		<when-type-is class="io.pelle.mango.client.base.util.IGeneratedFactory" />
+	</generate-with>
+
 </module>

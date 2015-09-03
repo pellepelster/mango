@@ -3,9 +3,7 @@ package io.pelle.mango.gwt.rebind;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.gwt.core.ext.Generator;
-
-public abstract class GeneratedFactoriesGenerator extends Generator {
+public abstract class BaseGeneratedFactory {
 
 	private Map<String, FactoryMethod> map = new HashMap<String, FactoryMethod>();
 

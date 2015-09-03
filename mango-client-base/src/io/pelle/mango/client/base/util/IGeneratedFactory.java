@@ -1,5 +1,5 @@
 package io.pelle.mango.client.base.util;
 
-public interface BaseGeneratedFactory {
+public interface IGeneratedFactory {
 	Object create(String type);
 }
