@@ -168,16 +168,16 @@ class NameUtils {
 	//-------------------------------------------------------------------------
 	// client configuration  
 	//-------------------------------------------------------------------------
-	def gwtClientconfigurationName(Model model) {
+	def gwtClientConfigurationName(Model model) {
 		return model.modelName.toFirstUpper + "ClientConfiguration";
 	}
 
-	def gwtClientconfigurationFullQualifiedName(Model model) {
-		return model.modelPackageName + "." + gwtClientconfigurationName(model);
+	def gwtClientConfigurationFullQualifiedName(Model model) {
+		return model.modelPackageName + "." + gwtClientConfigurationName(model);
 	}
 
-	def gwtClientconfigurationFullQualifiedNameFileName(Model model) {
-		return gwtClientconfigurationFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
+	def gwtClientConfigurationFullQualifiedNameFileName(Model model) {
+		return gwtClientConfigurationFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
 	//-------------------------------------------------------------------------

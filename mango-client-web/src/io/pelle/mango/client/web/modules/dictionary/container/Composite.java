@@ -5,11 +5,9 @@ import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 
-public class Composite extends BaseContainerElement<ICompositeModel, IUpdateListener>
-{
+public class Composite extends BaseContainerElement<ICompositeModel, IUpdateListener> {
 
-	public Composite(ICompositeModel composite, BaseDictionaryElement<? extends IBaseModel> parent)
-	{
+	public Composite(ICompositeModel composite, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(composite, parent);
 	}
 

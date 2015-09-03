@@ -6,7 +6,8 @@ import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-public interface IEditableTable<VOType extends IBaseVO> extends IBaseTable<VOType>
-{
+public interface IEditableTable<VOType extends IBaseVO> extends IBaseTable<VOType> {
+	
 	void add(AsyncCallback<List<ITableRow<VOType>>> asyncCallback);
+	
 }

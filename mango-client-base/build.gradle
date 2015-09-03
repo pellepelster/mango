@@ -2,6 +2,7 @@ dependencies {
 	compile project(':mango-base')
 	compile group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
 	compile group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt
+	compile group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
 	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
 
 	compile group: 'commons-httpclient', name: 'commons-httpclient', version: "3.1"

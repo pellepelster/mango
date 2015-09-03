@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import io.pelle.mango.client.MangoDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.CustomCompositeModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IReferenceListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ITabfolderModel;
@@ -136,6 +137,12 @@ public class DictionaryModelGeneratorTest {
 	@Test
 	public void testFileListModel() {
 		assertTrue(FileListModel.class.isAssignableFrom(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1.getClass()));
+	}
+
+	@Test
+	public void testCustomCompositeModel() {
+		assertTrue(CustomCompositeModel.class.isAssignableFrom(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1.getClass()));
+		assertEquals("CustomType1", MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1.getType());
 	}
 
 	@Test

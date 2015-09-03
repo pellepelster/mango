@@ -14,6 +14,12 @@ public class GeneratorConstants {
 
 	public static final String CLIENT_GWT_GEN_OUTPUT_DEFAULT_DIR = "./src-gen-client-gwt";
 
+	public static final String CLIENT_GWT_GEN_STUBS_OUTPUT = "CLIENT_GWT_GEN_STUBS_OUTPUT";
+
+	public static final String CLIENT_GWT_GEN_STUBS_OUTPUT_DESCRIPTION = "generated client gwt stubs";
+
+	public static final String CLIENT_GWT_GEN_STUBS_OUTPUT_DEFAULT_DIR = "./src-gen-client-gwt-stubs";
+
 	public static final String XML_GEN_OUTPUT = "XML_GEN_OUTPUT";
 
 	public static final String XML_GEN_OUTPUT_DESCRIPTION = "generated xml";

@@ -755,6 +755,11 @@ project MangoDemo {
 									entityattribute Entity1.fileEntityDatatypes1
 								}
 							}
+							composite Tab4 {
+								custom Custom1 {
+									type CustomType1
+								}
+							}
 							
 						}
 					

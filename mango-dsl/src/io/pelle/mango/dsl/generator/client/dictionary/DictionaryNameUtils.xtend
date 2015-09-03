@@ -15,6 +15,7 @@ import io.pelle.mango.dsl.mango.DictionaryResult
 import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.NavigationNode
+import io.pelle.mango.dsl.mango.DictionaryCustomComposite
 
 class DictionaryNameUtils extends ClientNameUtils {
 
@@ -208,6 +209,38 @@ class DictionaryNameUtils extends ClientNameUtils {
 	def dictionaryConstantName(DictionaryControl dictionaryControl) {
 		ModelUtil.getControlName(dictionaryControl).constantName
 	}
+
+	//-------------------------------------------------------------------------
+	// GeneratedFactories
+	//-------------------------------------------------------------------------
+
+	def generatedFactoriesInterfaceFullQualifiedName(Model model) {
+		return model.modelPackageName + '.' + model.generatedFactoriesInterfaceName;
+	}
+
+	def generatedFactoriesInterfaceName(Model model) {
+		return model.modelName.toFirstUpper() + "GeneratedFactory";
+	}
+
+	def generatedFactoriesInterfaceFullQualifiedFileName(Model model) {
+		return model.generatedFactoriesInterfaceFullQualifiedName.replaceAll("\\.", "/")  + ".java";
+	}
+
+	def gwtRebindPackageName(Model model) {
+		return ModelUtil.getSingleRootPackage(model).packageName.packageName + ".gwt.rebind";
+	}
+
+	def generatedFactoriesGeneratorClassFullQualifiedName(Model model) {
+		return model.gwtRebindPackageName + "." + model.generatedFactoriesGeneratorClassName;
+	}
+
+	def generatedFactoriesGeneratorClassFullQualifiedFileName(Model model) {
+		return model.generatedFactoriesGeneratorClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
+	}
+
+	def generatedFactoriesGeneratorClassName(Model model) {
+		return model.modelName.toFirstUpper() + "GeneratedFactoryGenerator";
+	}
 	
 	//-------------------------------------------------------------------------
 	// DictionaryContainer
@@ -227,4 +260,48 @@ class DictionaryNameUtils extends ClientNameUtils {
 	def dictionaryConstantName(DictionaryContainer dictionaryContainer) {
 		dictionaryContainer.name.constantName
 	}
+	
+	//-------------------------------------------------------------------------
+	// DictionaryCustomComposite
+	//-------------------------------------------------------------------------
+	def customCompositePackageName(DictionaryCustomComposite dictionaryContainer) {
+		return ModelUtil.getRootModel(dictionaryContainer).modelPackageName;
+	}
+	
+	def dictionaryCustomCompositeFactoryClassName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.name.toFirstUpper() + "ContainerFactory";
+	}
+
+	def dictionaryCustomCompositeFactoryClassFullQualifiedName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.customCompositePackageName + '.' + dictionaryContainer.dictionaryCustomCompositeFactoryClassName;
+	}
+
+	def dictionaryCustomCompositeFactoryClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.dictionaryCustomCompositeFactoryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
+	}
+
+	def dictionaryCustomCompositeBaseClassName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.type.toFirstUpper() + "Base";
+	}
+
+	def dictionaryCustomCompositeBaseClassFullQualifiedName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.customCompositePackageName + '.' + dictionaryContainer.dictionaryCustomCompositeBaseClassName;
+	}
+
+	def dictionaryCustomCompositeBaseClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.dictionaryCustomCompositeBaseClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
+	}
+	
+		def dictionaryCustomCompositeClassName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.type.toFirstUpper() + "Impl";
+	}
+
+	def dictionaryCustomCompositeClassFullQualifiedName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.customCompositePackageName + '.' + dictionaryContainer.dictionaryCustomCompositeClassName;
+	}
+
+	def dictionaryCustomCompositeClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.dictionaryCustomCompositeClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
+	}
+	
 }

@@ -80,6 +80,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 	@Before
 	public void beforeEach() {
+
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 		baseEntityService.deleteAll(Entity2VO.class.getName());
 		baseEntityService.deleteAll(Entity3VO.class.getName());
@@ -238,7 +239,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		TabFolderTestContainer container = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1);
-		container.assertTabCount(3);
+		container.assertTabCount(4);
 
 	}
 
@@ -550,6 +551,16 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testCustomContainerType1() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		// editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
+
+		editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1);
+
+	}
+
+	@Test
 	public void testFileList1Add() {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
@@ -592,12 +603,12 @@ public class DemoClientTest extends BaseDemoTest {
 
 		FileTestControl fileControl1 = fileList.getFileControl(0);
 		fileControl1.assertIsEmpty();
-		
+
 		fileControl1.uploadData(new byte[] { 0xc, 0xd }, mockMvc);
 
 		fileList.assertFileCount(2);
 		assertEquals(1, editor.getContent().getFileEntityDatatypes1().size());
-		
+
 		fileControl1.delete();
 		fileList.assertFileCount(1);
 
@@ -775,19 +786,16 @@ public class DemoClientTest extends BaseDemoTest {
 		MangoClientWeb.MESSAGES = I18NProxy.create(MangoMessages.class);
 		MangoDemoClientConfiguration.registerAll();
 	}
-	
-	
+
 	@Test
 	public void testDictionary1StateControl1() {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("abc");
-		
+
 		StateTestControl control = editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.STATE_CONTROL1);
 		control.assertValue(null);
-		
-		
-		
+
 		editor.save();
 
 	}

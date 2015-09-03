@@ -9,3 +9,4 @@
 * constant for mango.base.remote.url
 * release test1
 * support controls on entity attributes with not datatypes
+* move BaseDictionaryElement into base project or refactor templates for IContainerFactory 

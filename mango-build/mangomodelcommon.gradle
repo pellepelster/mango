@@ -63,6 +63,7 @@ sourceSets {
 		}
 		
 		compileClasspath += project.sourceSets.main.compileClasspath
+		
 	}
 
 	generatedServer {
@@ -78,6 +79,7 @@ sourceSets {
 		compileClasspath += project.sourceSets.generatedClientGWT.output
 		compileClasspath += configurations.generatedServer
 	}
+
 
 	generatedXml {
 		
@@ -151,8 +153,10 @@ signing {
 
 compileGeneratedServerJava.dependsOn("xtextGenerate")
 processGeneratedServerResources.dependsOn("xtextGenerate")
+
 compileGeneratedClientGWTJava.dependsOn("xtextGenerate")
 processGeneratedClientGWTResources.dependsOn("xtextGenerate")
+
 compileGeneratedXmlJava.dependsOn("xtextGenerate")
 processGeneratedXmlResources.dependsOn("xtextGenerate")
 

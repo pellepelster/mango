@@ -6,6 +6,7 @@ package io.pelle.mango.dsl.generator.client
 import com.google.inject.Inject
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.client.dictionary.DictionaryGenerator
+import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNameUtils
 import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNavigationGenerator
 import io.pelle.mango.dsl.generator.client.web.GWTClient
 import io.pelle.mango.dsl.generator.client.web.GWTServices
@@ -41,7 +42,7 @@ class ClientGenerator implements IGenerator {
 	extension Services
 
 	@Inject 
-	extension ClientNameUtils
+	extension DictionaryNameUtils
 
 	@Inject 
 	extension ModuleGenerator
@@ -55,7 +56,10 @@ class ClientGenerator implements IGenerator {
 			fsa.generateFile(model.gwtRemoteServiceLocatorFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocator)
 			fsa.generateFile(model.gwtRemoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocatorInterface)
 			fsa.generateFile(model.gwtClientModuleFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientModule)
-			fsa.generateFile(model.gwtClientconfigurationFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientConfiguration)
+			fsa.generateFile(model.generatedFactoriesGeneratorClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.generatedFactoriesGenerator)
+			fsa.generateFile(model.generatedFactoriesInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.generatedFactoriesInterface)
+			
+			fsa.generateFile(model.gwtClientConfigurationFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientConfiguration)
 			model.dictionaryGenerator(fsa)
 			model.dictionaryNavigationGenerator(fsa)
 			fsa.generateFile(model.enumerationValueParserFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.compileEnumerationValueParser)

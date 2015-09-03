@@ -6,7 +6,9 @@ package io.pelle.mango.dsl.generator.client.dictionary
 import com.google.common.base.Function
 import com.google.common.collect.Collections2
 import com.google.inject.Inject
+import io.pelle.mango.client.base.modules.dictionary.container.IBaseContainer
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
+import io.pelle.mango.client.base.modules.dictionary.model.containers.CustomCompositeModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel
 import io.pelle.mango.dsl.generator.GeneratorConstants
@@ -17,6 +19,7 @@ import io.pelle.mango.dsl.mango.DictionaryContainer
 import io.pelle.mango.dsl.mango.DictionaryContainerContent
 import io.pelle.mango.dsl.mango.DictionaryControl
 import io.pelle.mango.dsl.mango.DictionaryControlGroup
+import io.pelle.mango.dsl.mango.DictionaryCustomComposite
 import io.pelle.mango.dsl.mango.DictionaryEditableTable
 import io.pelle.mango.dsl.mango.DictionaryFileList
 import io.pelle.mango.dsl.mango.DictionaryReferenceList
@@ -86,6 +89,69 @@ class DictionaryContainerGenerator {
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
+	def dispatch dictionaryGenerator(DictionaryCustomComposite dictionaryContainer, IFileSystemAccess fsa) {
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeFactoryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeFactoryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeBaseClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeBaseClass)
+		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeClass)
+	}
+
+	def dictionaryCustomCompositeFactoryClass(DictionaryCustomComposite dictionaryContainer) '''
+		package «dictionaryContainer.customCompositePackageName»;
+
+		import io.pelle.mango.client.base.modules.dictionary.IBaseDictionaryElement;
+		import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
+		import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
+		import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
+
+		
+		@«SuppressWarnings.name»("all")
+		public class «dictionaryContainer.dictionaryCustomCompositeFactoryClassName» {
+			
+			public «dictionaryContainer.dictionaryCustomCompositeFactoryClassName»() {
+			}
+			
+			@Override
+			public «IBaseContainer.name»<?> createInstance(ICustomCompositeModel customCompositeModel, IBaseDictionaryElement<?> parent) {
+				return new «dictionaryContainer.dictionaryCustomCompositeClassFullQualifiedName»(customCompositeModel, (BaseDictionaryElement<? extends IBaseModel>) parent);
+			}
+		}
+	'''
+
+	def dictionaryCustomCompositeBaseClass(DictionaryCustomComposite dictionaryContainer) '''
+		package «dictionaryContainer.customCompositePackageName»;
+		
+		import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
+		import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
+		import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
+
+		@«SuppressWarnings.name»("all")
+		public class «dictionaryContainer.dictionaryCustomCompositeBaseClassName» extends io.pelle.mango.client.web.modules.dictionary.container.BaseCustomComposite {
+			
+			public «dictionaryContainer.dictionaryCustomCompositeBaseClassName»(ICustomCompositeModel customCompositeModel, BaseDictionaryElement<? extends IBaseModel> parent) {
+				super(customCompositeModel, parent);
+			}
+			
+		}
+	'''
+
+	def dictionaryCustomCompositeClass(DictionaryCustomComposite dictionaryContainer) '''
+		package «dictionaryContainer.customCompositePackageName»;
+		
+		import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
+		import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
+		import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
+
+		@«SuppressWarnings.name»("all")
+		public class «dictionaryContainer.dictionaryCustomCompositeClassName» extends «dictionaryContainer.dictionaryCustomCompositeBaseClassFullQualifiedName» {
+			
+			public «dictionaryContainer.dictionaryCustomCompositeClassName»(ICustomCompositeModel customCompositeModel, BaseDictionaryElement<? extends IBaseModel> parent) {
+				super(customCompositeModel, parent);
+			}
+			
+		}
+	'''
+
 	def dispatch dictionaryGenerator(DictionaryReferenceList dictionaryContainer, IFileSystemAccess fsa) {
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
@@ -130,6 +196,21 @@ class DictionaryContainerGenerator {
 					super("«dictionaryContainer.name»", parent);
 					«dictionaryContainer.containercontents.dictionaryContainerContentsConstructor»
 					
+					«layoutSetter(dictionaryContainer.layout, dictionaryContainer.layoutdata)»
+				}
+			}
+	'''
+
+	def dispatch dictionaryClass(DictionaryCustomComposite dictionaryContainer) '''
+			package «dictionaryContainer.packageName»;
+			
+			@«SuppressWarnings.name»("all")
+			public class «dictionaryContainer.dictionaryClassName» extends «CustomCompositeModel.name» {
+				
+				public «dictionaryContainer.dictionaryClassName»(«BaseModel.name»<?> parent) {
+					super("«dictionaryContainer.name»", parent);
+					
+					setType("«dictionaryContainer.type»");
 					«layoutSetter(dictionaryContainer.layout, dictionaryContainer.layoutdata)»
 				}
 			}
