@@ -211,38 +211,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 	}
 
 	//-------------------------------------------------------------------------
-	// GeneratedFactories
-	//-------------------------------------------------------------------------
-
-	def generatedFactoriesInterfaceFullQualifiedName(Model model) {
-		return model.modelPackageName + '.' + model.generatedFactoriesInterfaceName;
-	}
-
-	def generatedFactoriesInterfaceName(Model model) {
-		return model.modelName.toFirstUpper() + "GeneratedFactory";
-	}
-
-	def generatedFactoriesInterfaceFullQualifiedFileName(Model model) {
-		return model.generatedFactoriesInterfaceFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
-	def gwtRebindPackageName(Model model) {
-		return ModelUtil.getSingleRootPackage(model).packageName.packageName + ".gwt.rebind";
-	}
-
-	def generatedFactoriesGeneratorClassFullQualifiedName(Model model) {
-		return model.gwtRebindPackageName + "." + model.generatedFactoriesGeneratorClassName;
-	}
-
-	def generatedFactoriesGeneratorClassFullQualifiedFileName(Model model) {
-		return model.generatedFactoriesGeneratorClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
-	def generatedFactoriesGeneratorClassName(Model model) {
-		return model.modelName.toFirstUpper() + "GeneratedFactoryGenerator";
-	}
-	
-	//-------------------------------------------------------------------------
 	// DictionaryContainer
 	//-------------------------------------------------------------------------
 	def dictionaryClassName(DictionaryContainer dictionaryContainer) {
@@ -268,31 +236,7 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return ModelUtil.getRootModel(dictionaryContainer).modelPackageName;
 	}
 	
-	def dictionaryCustomCompositeFactoryClassName(DictionaryCustomComposite dictionaryContainer) {
-		return dictionaryContainer.name.toFirstUpper() + "ContainerFactory";
-	}
-
-	def dictionaryCustomCompositeFactoryClassFullQualifiedName(DictionaryCustomComposite dictionaryContainer) {
-		return dictionaryContainer.customCompositePackageName + '.' + dictionaryContainer.dictionaryCustomCompositeFactoryClassName;
-	}
-
-	def dictionaryCustomCompositeFactoryClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
-		return dictionaryContainer.dictionaryCustomCompositeFactoryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
-	def dictionaryCustomCompositeBaseClassName(DictionaryCustomComposite dictionaryContainer) {
-		return dictionaryContainer.type.toFirstUpper() + "Base";
-	}
-
-	def dictionaryCustomCompositeBaseClassFullQualifiedName(DictionaryCustomComposite dictionaryContainer) {
-		return dictionaryContainer.customCompositePackageName + '.' + dictionaryContainer.dictionaryCustomCompositeBaseClassName;
-	}
-
-	def dictionaryCustomCompositeBaseClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
-		return dictionaryContainer.dictionaryCustomCompositeBaseClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-	
-		def dictionaryCustomCompositeClassName(DictionaryCustomComposite dictionaryContainer) {
+	def dictionaryCustomCompositeClassName(DictionaryCustomComposite dictionaryContainer) {
 		return dictionaryContainer.type.toFirstUpper() + "Impl";
 	}
 

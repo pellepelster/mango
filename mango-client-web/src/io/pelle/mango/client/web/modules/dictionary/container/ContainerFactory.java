@@ -11,6 +11,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.IEditableT
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IFileListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ITabfolderModel;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
+import io.pelle.mango.client.web.util.CustomCompositeProvider;
 
 public class ContainerFactory {
 
@@ -42,9 +43,7 @@ public class ContainerFactory {
 				throw new RuntimeException("unsupported custom container type '" + customCompositeModel.getType() + "'");
 			}
 
-			return null; // (BaseContainerElement<?, ?>)
-							// containerFactory.createInstance((ICustomCompositeModel)
-							// baseContainerModel, parent);
+			return (BaseContainerElement<?, ?>) CustomCompositeProvider.getInstance().create(customCompositeFactoryName, customCompositeModel, parent);
 
 		} else if (baseContainerModel instanceof ITabfolderModel) {
 			return new TabFolder((ITabfolderModel) baseContainerModel, parent);

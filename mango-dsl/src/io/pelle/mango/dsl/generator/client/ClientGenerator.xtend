@@ -57,9 +57,6 @@ class ClientGenerator implements IGenerator {
 			fsa.generateFile(model.gwtRemoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocatorInterface)
 			fsa.generateFile(model.gwtClientModuleFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientModule)
 			
-//			fsa.generateFile(model.generatedFactoriesGeneratorClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.generatedFactoriesGenerator)
-//			fsa.generateFile(model.generatedFactoriesInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.generatedFactoriesInterface)
-			
 			fsa.generateFile(model.gwtClientConfigurationFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientConfiguration)
 			model.dictionaryGenerator(fsa)
 			model.dictionaryNavigationGenerator(fsa)

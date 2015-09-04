@@ -3,14 +3,9 @@
  */
 package io.pelle.mango.dsl.generator.client.web
 
-import com.google.gwt.core.client.GWT
-import com.google.gwt.core.ext.Generator
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider
 import io.pelle.mango.client.base.modules.navigation.NavigationTreeProvider
-import io.pelle.mango.client.base.util.GeneratedFactoriesProvider
-import io.pelle.mango.client.base.util.IGeneratedFactory
-import io.pelle.mango.client.base.util.MayCreate
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNameUtils
 import io.pelle.mango.dsl.mango.Dictionary
@@ -41,64 +36,6 @@ class GWTClient extends BaseServices {
 		</module>
 	'''
 
-	def generatedFactoriesInterface(Model model) '''
-		package «model.modelPackageName»;
-		
-		interface «model.generatedFactoriesInterfaceName» extends «IGeneratedFactory.name» {
-		}
-	'''
-	
-	def generatedFactoriesGenerator(Model model) '''
-	
-		package «model.gwtRebindPackageName»;
-		
-		import java.io.PrintWriter;
-
-		import com.google.gwt.core.ext.GeneratorContext;
-		import com.google.gwt.core.ext.TreeLogger;
-		import com.google.gwt.core.ext.UnableToCompleteException;
-		import com.google.gwt.core.ext.typeinfo.JClassType;
-		import com.google.gwt.core.ext.typeinfo.TypeOracle;
-		import java.lang.Object;
-		
-		class «model.generatedFactoriesGeneratorClassName» extends «Generator.name» {
-
-			@Override
-			public String generate(TreeLogger logger, GeneratorContext context, String typeName) throws UnableToCompleteException {
-			
-				PrintWriter pw = context.tryCreate(logger, "«model.modelPackageName»", "GeneratedFactoryImpl");
-				
-				if (pw != null) {
-					
-					pw.println("package «model.modelPackageName»;");
-					pw.println();
-					pw.println("public class GeneratedFactoryImpl extends io.pelle.mango.gwt.rebind.GeneratedFactoriesGenerator implements «model.generatedFactoriesInterfaceFullQualifiedName» {");
-					pw.println("	public GeneratedFactoryImpl() {");
-					
-					TypeOracle oracle = context.getTypeOracle();
-					
-					for (JClassType type : oracle.getTypes()) {
-						if (type.getAnnotation(«MayCreate.name».class) != null) {
-							String name = type.getQualifiedSourceName();
-							pw.println("register(\"" + name + "\", ");
-							pw.println("    new FactoryMethod() {");
-							pw.println("        public Object create() {");
-							pw.println("            return new " + name + "();");
-							pw.println("        }");
-							pw.println("    });");
-						}
-					}
-					
-					pw.println("    }");
-					pw.println("}");
-					context.commit(logger, pw);
-				}
-				
-				return "«model.modelPackageName».GeneratedFactoryImpl";
-			}
-		}
-	'''
-	
 	def gwtClientConfiguration(Model model) '''
 	
 		package «model.modelPackageName»;
@@ -113,9 +50,6 @@ class GWTClient extends BaseServices {
 			public static «model.gwtClientConfigurationName()» registerAll()
 			{
 				if (instance == null) {
-					
-					«IGeneratedFactory.name» factory = «GWT.name».create(«IGeneratedFactory.name».class);
-					«GeneratedFactoriesProvider.name».registerBaseGeneratedFactory(factory);
 					
 					registerDictionaries();
 					registerEnumerationValueParser();
@@ -153,7 +87,7 @@ class GWTClient extends BaseServices {
 			public static void registerCustomCompositeFactories()
 			{
 				«FOR customComposite : model.eAllContents().toIterable.filter(DictionaryCustomComposite)»
-					io.pelle.mango.client.web.modules.dictionary.container.ContainerFactory.getInstance().registerCustomCompositeFactory("«customComposite.type»", "«customComposite.dictionaryCustomCompositeFactoryClassFullQualifiedName»");
+					io.pelle.mango.client.web.modules.dictionary.container.ContainerFactory.getInstance().registerCustomCompositeFactory("«customComposite.type»", "«customComposite.dictionaryCustomCompositeClassFullQualifiedName»");
 				«ENDFOR»
 			}
 	

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.lang.reflect.Constructor;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -32,10 +33,13 @@ import io.pelle.mango.client.base.modules.dictionary.controls.BaseButton;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
+import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
+import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
 import io.pelle.mango.client.web.test.DictionarySearchModuleTestUI;
 import io.pelle.mango.client.web.test.MangoClientSyncWebTest;
@@ -52,7 +56,9 @@ import io.pelle.mango.client.web.test.controls.IntegerTestControl;
 import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
 import io.pelle.mango.client.web.test.controls.StateTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
+import io.pelle.mango.client.web.util.CustomCompositeProvider;
 import io.pelle.mango.client.web.util.I18NProxy;
+import io.pelle.mango.client.web.util.ICustomCompositeFactory;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.showcase.CountryVO;
@@ -87,6 +93,21 @@ public class DemoClientTest extends BaseDemoTest {
 		baseEntityService.deleteAll(CountryVO.class.getName());
 
 		DictionaryHookRegistry.getInstance().clearAll();
+		
+		CustomCompositeProvider.getInstance().setFactory(new ICustomCompositeFactory() {
+			
+			@Override
+			public Object create(String className, ICustomCompositeModel compositeModel, BaseDictionaryElement<? extends IBaseModel> parent) {
+				try {
+					Class<?> customCompositeClass = Class.forName(className);
+					Constructor constructor = customCompositeClass.getConstructor(ICustomCompositeModel.class, BaseDictionaryElement.class);
+					return constructor.newInstance(compositeModel, parent);
+
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
 	}
 
 	@Test
