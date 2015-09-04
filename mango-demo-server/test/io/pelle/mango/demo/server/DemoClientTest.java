@@ -28,6 +28,8 @@ import com.google.common.collect.Iterables;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
+import io.pelle.mango.client.MangoDictionaryModel;
+import io.pelle.mango.client.PermissionsImpl;
 import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
 import io.pelle.mango.client.base.modules.dictionary.controls.BaseButton;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
@@ -37,6 +39,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
+import io.pelle.mango.client.security.MangoGroupVO;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
@@ -44,6 +47,7 @@ import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
 import io.pelle.mango.client.web.test.DictionarySearchModuleTestUI;
 import io.pelle.mango.client.web.test.MangoClientSyncWebTest;
 import io.pelle.mango.client.web.test.TestButton;
+import io.pelle.mango.client.web.test.container.CustomCompositeTestContainer;
 import io.pelle.mango.client.web.test.container.FileListTestcontainer;
 import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
@@ -59,6 +63,7 @@ import io.pelle.mango.client.web.test.controls.TextTestControl;
 import io.pelle.mango.client.web.util.CustomCompositeProvider;
 import io.pelle.mango.client.web.util.I18NProxy;
 import io.pelle.mango.client.web.util.ICustomCompositeFactory;
+import io.pelle.mango.demo.client.CustomType1Impl;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.showcase.CountryVO;
@@ -67,6 +72,7 @@ import io.pelle.mango.demo.client.test.ENUMERATION1;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity3VO;
+import io.pelle.mango.demo.server.client.PermissionsCustomCompositeTest;
 
 @WebAppConfiguration
 public class DemoClientTest extends BaseDemoTest {
@@ -93,9 +99,9 @@ public class DemoClientTest extends BaseDemoTest {
 		baseEntityService.deleteAll(CountryVO.class.getName());
 
 		DictionaryHookRegistry.getInstance().clearAll();
-		
+
 		CustomCompositeProvider.getInstance().setFactory(new ICustomCompositeFactory() {
-			
+
 			@Override
 			public Object create(String className, ICustomCompositeModel compositeModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 				try {
@@ -573,11 +579,22 @@ public class DemoClientTest extends BaseDemoTest {
 
 	@Test
 	public void testCustomContainerType1() {
-
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
-		// editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
+		CustomCompositeTestContainer customCompositeTest = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1);
+		assertTrue(customCompositeTest.getCustomComposite() instanceof CustomType1Impl);
+	}
 
-		editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1);
+	@Test
+	public void testPermissionsCustomContainer() {
+
+		DictionaryEditorModuleTestUI<MangoGroupVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR);
+		CustomCompositeTestContainer customCompositeTest = editor.getContainer(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR.MANGO_GROUP_PERMISSIONS);
+
+		assertTrue(customCompositeTest.getCustomComposite() instanceof PermissionsImpl);
+
+		PermissionsCustomCompositeTest permissionsTest = new PermissionsCustomCompositeTest((PermissionsImpl) customCompositeTest.getCustomComposite());
+
+		assertEquals(24, permissionsTest.getAvailablePermissions().size());
 
 	}
 
@@ -655,7 +672,8 @@ public class DemoClientTest extends BaseDemoTest {
 			@Override
 			public SelectQuery<Entity1VO> beforeSearch(SelectQuery<Entity1VO> selectQuery) {
 
-				assertEquals(ENUMERATION1.ENUMERATIONVALUE1, selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
+				assertEquals(ENUMERATION1.ENUMERATIONVALUE1,
+						selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
 				called.set(true);
 				return super.beforeSearch(selectQuery);
 			}

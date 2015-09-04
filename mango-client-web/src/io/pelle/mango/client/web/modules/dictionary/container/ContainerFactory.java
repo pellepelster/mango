@@ -3,6 +3,7 @@ package io.pelle.mango.client.web.modules.dictionary.container;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.pelle.mango.client.base.modules.dictionary.CustomImplementationRegistry;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IAssignmentTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
@@ -26,8 +27,6 @@ public class ContainerFactory {
 		return instance;
 	}
 
-	private Map<String, String> customCompositeFactories = new HashMap<String, String>();
-
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public BaseContainerElement<?, ?> createContainer(IBaseContainerModel baseContainerModel, BaseDictionaryElement parent) {
 
@@ -37,7 +36,7 @@ public class ContainerFactory {
 
 			ICustomCompositeModel customCompositeModel = (ICustomCompositeModel) baseContainerModel;
 
-			String customCompositeFactoryName = customCompositeFactories.get(customCompositeModel.getType());
+			String customCompositeFactoryName = CustomImplementationRegistry.getInstance().getCustomCompositeClassName(customCompositeModel.getType());
 
 			if (customCompositeFactoryName == null) {
 				throw new RuntimeException("unsupported custom container type '" + customCompositeModel.getType() + "'");
@@ -60,10 +59,6 @@ public class ContainerFactory {
 		} else {
 			throw new RuntimeException("unsupported container model type '" + baseContainerModel.getClass().getName() + "'");
 		}
-	}
-
-	public void registerCustomCompositeFactory(String type, String customCompositeFactoryName) {
-		customCompositeFactories.put(type, customCompositeFactoryName);
 	}
 
 }

@@ -28,7 +28,7 @@ public class AsyncCallbackFuture<V> extends AbstractFuture<V> implements AsyncCa
 		super.set(result);
 	}
 
-	AsyncCallback<V> getCallback() {
+	public AsyncCallback<V> getCallback() {
 		return this;
 	}
 }

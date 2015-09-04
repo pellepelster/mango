@@ -101,7 +101,7 @@ class DictionaryContainerGenerator {
 		import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 		import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
 		import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
-		import «io.pelle.mango.client.base.util.CustomComposite.name»
+		import «io.pelle.mango.client.base.util.CustomComposite.name»;
 
 		@«io.pelle.mango.client.base.util.CustomComposite.simpleName»
 		public class «customComposite.dictionaryCustomCompositeClassName» extends io.pelle.mango.client.web.modules.dictionary.container.BaseCustomComposite {

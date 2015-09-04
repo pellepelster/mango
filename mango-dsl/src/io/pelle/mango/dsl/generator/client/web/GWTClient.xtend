@@ -3,6 +3,7 @@
  */
 package io.pelle.mango.dsl.generator.client.web
 
+import io.pelle.mango.client.base.modules.dictionary.CustomImplementationRegistry
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider
 import io.pelle.mango.client.base.modules.navigation.NavigationTreeProvider
@@ -87,7 +88,7 @@ class GWTClient extends BaseServices {
 			public static void registerCustomCompositeFactories()
 			{
 				«FOR customComposite : model.eAllContents().toIterable.filter(DictionaryCustomComposite)»
-					io.pelle.mango.client.web.modules.dictionary.container.ContainerFactory.getInstance().registerCustomCompositeFactory("«customComposite.type»", "«customComposite.dictionaryCustomCompositeClassFullQualifiedName»");
+					«CustomImplementationRegistry.name».getInstance().registerCustomComposite("«customComposite.type»", "«customComposite.dictionaryCustomCompositeClassFullQualifiedName»");
 				«ENDFOR»
 			}
 	

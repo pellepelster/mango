@@ -1,16 +1,5 @@
 package io.pelle.mango.server.vo;
 
-import io.pelle.mango.client.base.db.vos.IMobileBaseVO;
-import io.pelle.mango.client.base.vo.IBaseEntity;
-import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.base.vo.IEntityDescriptor;
-import io.pelle.mango.client.base.vo.IEntityVOMapper;
-import io.pelle.mango.client.base.vo.IVOEntity;
-import io.pelle.mango.db.util.BeanUtils;
-import io.pelle.mango.db.util.EntityVOMapper;
-import io.pelle.mango.server.DirectedGraph;
-import io.pelle.mango.server.TopologicalSort;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -21,13 +10,44 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.vidageek.mirror.dsl.Mirror;
-import net.vidageek.mirror.list.dsl.Matcher;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class VOMetaDataService {
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
+
+import io.pelle.mango.client.base.db.vos.IMobileBaseVO;
+import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IEntityDescriptor;
+import io.pelle.mango.client.base.vo.IEntityVOMapper;
+import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.security.MangoOperationVO;
+import io.pelle.mango.client.security.MangoPermissionVO;
+import io.pelle.mango.db.util.BeanUtils;
+import io.pelle.mango.db.util.EntityVOMapper;
+import io.pelle.mango.server.DirectedGraph;
+import io.pelle.mango.server.TopologicalSort;
+import io.pelle.mango.server.security.IPermissionProvider;
+import net.vidageek.mirror.dsl.Mirror;
+import net.vidageek.mirror.list.dsl.Matcher;
+
+public class VOMetaDataService implements IPermissionProvider {
+
+	private List<MangoOperationVO> DEFAULT_ENTITY_OPERATIONS;
+
+	private Function<Class<? extends IBaseVO>, MangoPermissionVO> VO_TO_PERMSSION = new Function<Class<? extends IBaseVO>, MangoPermissionVO>() {
+
+		@Override
+		public MangoPermissionVO apply(Class<? extends IBaseVO> input) {
+			MangoPermissionVO result = new MangoPermissionVO();
+
+			result.setPermissionId(input.getName());
+			result.setOperations(getDefaultEntityOperations());
+			
+			return result;
+		}
+	};
 
 	private final static Logger LOG = Logger.getLogger(VOMetaDataService.class);
 
@@ -54,6 +74,24 @@ public class VOMetaDataService {
 		}
 
 		buildMetaData(voClasses);
+	}
+
+	private List<MangoOperationVO> getDefaultEntityOperations() {
+
+		if (DEFAULT_ENTITY_OPERATIONS == null) {
+
+			DEFAULT_ENTITY_OPERATIONS = new ArrayList<>();
+
+			for (String operation : new String[] { IVOEntity.OPERATION_CREATE, IVOEntity.OPERATION_READ, IVOEntity.OPERATION_UPDATE, IVOEntity.OPERATION_DELETE }) {
+
+				MangoOperationVO operationVO = new MangoOperationVO();
+				operationVO.setOperationId(operation);
+				DEFAULT_ENTITY_OPERATIONS.add(operationVO);
+			}
+
+		}
+
+		return DEFAULT_ENTITY_OPERATIONS;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -141,6 +179,11 @@ public class VOMetaDataService {
 	public IEntityDescriptor<?> getEntityDescriptor(Class<? extends IVOEntity> voEntityClass) {
 		Class<? extends IBaseVO> voClass = EntityVOMapper.getInstance().getVOClass(voEntityClass);
 		return entityDescriptors.get(voClass);
+	}
+
+	@Override
+	public Collection<MangoPermissionVO> getPermissions() {
+		return Collections2.transform(voClasses, VO_TO_PERMSSION);
 	}
 
 }

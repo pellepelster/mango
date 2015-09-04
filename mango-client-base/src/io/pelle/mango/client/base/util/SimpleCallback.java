@@ -11,7 +11,6 @@
  */
 package io.pelle.mango.client.base.util;
 
-public interface SimpleCallback<T>
-{
+public interface SimpleCallback<T> {
 	void onCallback(T t);
 }

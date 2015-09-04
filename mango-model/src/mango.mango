@@ -9,6 +9,7 @@ import io.pelle.mango.client.base.vo.query.DeleteQuery
 import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO
 import io.pelle.mango.client.system.Systeminformation
 import io.pelle.mango.client.log.LogEntryVO
+import io.pelle.mango.client.security.MangoPermissionVO
 import io.pelle.mango.client.api.webhook.WebhookDefinition
 import io.pelle.mango.client.api.webhook.WebhookVO
 import io.pelle.mango.client.state.Transition
@@ -123,11 +124,32 @@ project Mango {
 			stringdatatype MangoUserName { }
 
 			stringdatatype MangoGroupName { }
+
+			stringdatatype MangoPermissionId { }
+
+			stringdatatype MangoOperationId { }
+
+			entitydatatype MangoPermission {
+				entity MangoPermission
+			}
+
+			entity MangoPermission {
+				string MangoPermissionId permissionId
+				entity MangoOperation 0..n operations
+			}
+
+			entitydatatype MangoOperation {
+				entity MangoOperation
+			}
+
+			entity MangoOperation {
+				string MangoOperationId operationId
+			}
 			
 			entitydatatype MangoGroup {
 				entity MangoGroup
 			}
-			
+
 			entity MangoUser {
 				string MangoUserName userName
 				entity MangoGroup 0..n userGroups		
@@ -135,8 +157,13 @@ project Mango {
 
 			entity MangoGroup {
 				string MangoGroupName groupName
+				entity MangoPermission 0..n permissions		
 			}
 			
+			service SecurityService {
+				method List<MangoPermissionVO> getAvailablePermissions( )
+			}
+				
 			dictionary MangoUser {
 				
 				entity MangoUser
@@ -170,6 +197,7 @@ project Mango {
 					}
 					
 				}
+				
 			}
 			
 			dictionary MangoGroup {
@@ -196,7 +224,12 @@ project Mango {
 				}
 
 				dictionaryeditor MangoGroupEditor {
-					textcontrol ref MangoGroupName
+					composite MangoGroupCommon {
+						textcontrol ref MangoGroupName
+					}
+					custom MangoGroupPermissions {
+						type Permissions
+					}
 				}
 			}
 		}
