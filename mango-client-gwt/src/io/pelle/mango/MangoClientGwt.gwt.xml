@@ -17,4 +17,9 @@
 
 	<entry-point class="io.pelle.mango.client.gwt.MangoClientGwt" />
 
+	<generate-with
+		class="io.pelle.mango.gwt.rebind.CustomGwtCompositeFactoryGenerator">
+		<when-type-is class="io.pelle.mango.client.gwt.utils.ICustomGwtCompositeFactory" />
+	</generate-with>
+
 </module>

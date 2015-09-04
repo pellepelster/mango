@@ -10,6 +10,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.CustomCompositeModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel
+import io.pelle.mango.client.base.util.CustomComposite
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.mango.ColumnLayout
 import io.pelle.mango.dsl.mango.ColumnLayoutData
@@ -27,7 +28,6 @@ import io.pelle.mango.dsl.query.EntityQuery
 import java.util.Collection
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
-import io.pelle.mango.client.base.util.CustomComposite
 
 class DictionaryContainerGenerator {
 
@@ -92,6 +92,7 @@ class DictionaryContainerGenerator {
 	def dispatch dictionaryGenerator(DictionaryCustomComposite dictionaryContainer, IFileSystemAccess fsa) {
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeStub)
+		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeGwtClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeGwtStub)
 	}
 
 	def dictionaryCustomCompositeStub(DictionaryCustomComposite customComposite) '''
@@ -101,15 +102,43 @@ class DictionaryContainerGenerator {
 		import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 		import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
 		import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
-		import «io.pelle.mango.client.base.util.CustomComposite.name»;
+		import «CustomComposite.name»;
 
-		@«io.pelle.mango.client.base.util.CustomComposite.simpleName»
+		@«CustomComposite.simpleName»("«customComposite.type.toLowerCase»")
 		public class «customComposite.dictionaryCustomCompositeClassName» extends io.pelle.mango.client.web.modules.dictionary.container.BaseCustomComposite {
 
 			public «customComposite.dictionaryCustomCompositeClassName»(ICustomCompositeModel composite, BaseDictionaryElement<? extends IBaseModel> parent) {
 				super(composite, parent);
 			}
 			
+		}
+	'''
+
+	def dictionaryCustomCompositeGwtStub(DictionaryCustomComposite customComposite) '''
+		
+		package «customComposite.customCompositeGwtPackageName»;
+		
+		import org.gwtbootstrap3.client.ui.html.Div;
+		
+		import com.google.gwt.user.client.ui.Panel;
+		
+		import io.pelle.mango.client.gwt.utils.CustomGwtComposite;
+		import io.pelle.mango.client.web.modules.dictionary.container.IContainer;
+
+		@CustomGwtComposite("«customComposite.type.toLowerCase»")
+		public class «customComposite.dictionaryCustomCompositeGwtClassName» implements IContainer<Panel> {
+
+
+			private Div panel = new Div();
+
+			public «customComposite.dictionaryCustomCompositeGwtClassName»(«customComposite.dictionaryCustomCompositeClassName» «customComposite.dictionaryCustomCompositeClassName.toFirstLower») {
+				super();
+			}
+			
+			@Override
+			public Panel getContainer() {
+				return panel;
+			}
 		}
 	'''
 
@@ -171,7 +200,7 @@ class DictionaryContainerGenerator {
 				public «dictionaryContainer.dictionaryClassName»(«BaseModel.name»<?> parent) {
 					super("«dictionaryContainer.name»", parent);
 					
-					setType("«dictionaryContainer.type»");
+					setType("«dictionaryContainer.type.toLowerCase»");
 					«layoutSetter(dictionaryContainer.layout, dictionaryContainer.layoutdata)»
 				}
 			}

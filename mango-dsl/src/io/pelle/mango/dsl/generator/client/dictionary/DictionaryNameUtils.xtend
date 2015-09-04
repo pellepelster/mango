@@ -5,17 +5,18 @@ package io.pelle.mango.dsl.generator.client.dictionary
 
 import com.google.common.base.CaseFormat
 import io.pelle.mango.dsl.ModelUtil
+import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.mango.Dictionary
 import io.pelle.mango.dsl.mango.DictionaryContainer
 import io.pelle.mango.dsl.mango.DictionaryControl
+import io.pelle.mango.dsl.mango.DictionaryCustomComposite
 import io.pelle.mango.dsl.mango.DictionaryEditor
 import io.pelle.mango.dsl.mango.DictionaryFilter
 import io.pelle.mango.dsl.mango.DictionaryResult
 import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.NavigationNode
-import io.pelle.mango.dsl.mango.DictionaryCustomComposite
 
 class DictionaryNameUtils extends ClientNameUtils {
 
@@ -233,7 +234,7 @@ class DictionaryNameUtils extends ClientNameUtils {
 	// DictionaryCustomComposite
 	//-------------------------------------------------------------------------
 	def customCompositePackageName(DictionaryCustomComposite dictionaryContainer) {
-		return ModelUtil.getRootModel(dictionaryContainer).modelPackageName;
+		return ModelUtil.getRootModel(dictionaryContainer).modelPackageName + "." + GeneratorConstants.CLIENT_PACKAGE_POSTFIX;
 	}
 	
 	def dictionaryCustomCompositeClassName(DictionaryCustomComposite dictionaryContainer) {
@@ -244,8 +245,28 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return dictionaryContainer.customCompositePackageName + '.' + dictionaryContainer.dictionaryCustomCompositeClassName;
 	}
 
+	//-------------------------------------------------------------------------
+	// DictionaryCustomComposite (GWT)
+	//-------------------------------------------------------------------------
+
 	def dictionaryCustomCompositeClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
 		return dictionaryContainer.dictionaryCustomCompositeClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
+	}
+
+	def customCompositeGwtPackageName(DictionaryCustomComposite dictionaryContainer) {
+		return ModelUtil.getRootModel(dictionaryContainer).modelPackageName +  "." + GeneratorConstants.CLIENT_PACKAGE_POSTFIX;
+	}
+
+	def dictionaryCustomCompositeGwtClassName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.type.toFirstUpper() + "GwtImpl";
+	}
+
+	def dictionaryCustomCompositeGwtClassFullQualifiedName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.customCompositeGwtPackageName + '.' + dictionaryContainer.dictionaryCustomCompositeGwtClassName;
+	}
+
+	def dictionaryCustomCompositeGwtClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
+		return dictionaryContainer.dictionaryCustomCompositeGwtClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
 	}
 	
 }

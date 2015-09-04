@@ -1,9 +1,5 @@
 package io.pelle.mango.client.web.modules.dictionary.container;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import io.pelle.mango.client.base.modules.dictionary.CustomImplementationRegistry;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IAssignmentTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
@@ -36,13 +32,7 @@ public class ContainerFactory {
 
 			ICustomCompositeModel customCompositeModel = (ICustomCompositeModel) baseContainerModel;
 
-			String customCompositeFactoryName = CustomImplementationRegistry.getInstance().getCustomCompositeClassName(customCompositeModel.getType());
-
-			if (customCompositeFactoryName == null) {
-				throw new RuntimeException("unsupported custom container type '" + customCompositeModel.getType() + "'");
-			}
-
-			return (BaseContainerElement<?, ?>) CustomCompositeProvider.getInstance().create(customCompositeFactoryName, customCompositeModel, parent);
+			return (BaseContainerElement<?, ?>) CustomCompositeProvider.getInstance().create(customCompositeModel.getType(), customCompositeModel, parent);
 
 		} else if (baseContainerModel instanceof ITabfolderModel) {
 			return new TabFolder((ITabfolderModel) baseContainerModel, parent);

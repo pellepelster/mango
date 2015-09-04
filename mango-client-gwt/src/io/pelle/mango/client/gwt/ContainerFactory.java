@@ -18,8 +18,10 @@ import io.pelle.mango.client.gwt.modules.dictionary.container.GwtComposite;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtEditableTable;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtFileList;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtTabFolder;
+import io.pelle.mango.client.gwt.utils.CustomGwtCompositeProvider;
 import io.pelle.mango.client.web.modules.dictionary.container.AssignmentTable;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseContainerElement;
+import io.pelle.mango.client.web.modules.dictionary.container.BaseCustomComposite;
 import io.pelle.mango.client.web.modules.dictionary.container.Composite;
 import io.pelle.mango.client.web.modules.dictionary.container.EditableTable;
 import io.pelle.mango.client.web.modules.dictionary.container.FileList;
@@ -38,7 +40,13 @@ public class ContainerFactory {
 	public static IContainer<Panel> createContainer(BaseContainerElement baseContainer, ColumnLayoutStrategy columnLayoutStrategy) {
 		IContainer<Panel> container;
 
-		if (baseContainer instanceof FileList) {
+		if (baseContainer instanceof BaseCustomComposite) {
+
+			BaseCustomComposite baseCustomComposite = (BaseCustomComposite) baseContainer;
+
+			return (IContainer<Panel>) CustomGwtCompositeProvider.getInstance().create(baseCustomComposite.getModel().getType(), baseCustomComposite);
+
+		} else if (baseContainer instanceof FileList) {
 			return new GwtFileList((FileList) baseContainer);
 		} else if (baseContainer instanceof TabFolder) {
 			return new GwtTabFolder((TabFolder) baseContainer, columnLayoutStrategy);

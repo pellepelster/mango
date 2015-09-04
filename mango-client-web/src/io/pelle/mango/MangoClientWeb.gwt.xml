@@ -4,13 +4,13 @@
 
 	<inherits name="io.pelle.mango.MangoClientCore" />
 	<inherits name="io.pelle.mango.MangoGenerated" />
-		
-	<entry-point class="io.pelle.mango.client.web.MangoClientWeb"/>
+
+	<entry-point class="io.pelle.mango.client.web.MangoClientWeb" />
 	<source path="client.web" />
-	
-	
-	<generate-with class="io.pelle.mango.gwt.rebind.CustomCompositeFactoryGenerator">
+
+	<generate-with
+		class="io.pelle.mango.gwt.rebind.CustomCompositeFactoryGenerator">
 		<when-type-is class="io.pelle.mango.client.web.util.ICustomCompositeFactory" />
 	</generate-with>
-	
+
 </module>

@@ -6,7 +6,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCom
 import io.pelle.mango.client.base.util.CustomComposite;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 
-@CustomComposite
+@CustomComposite("CustomType1")
 public class CustomType1Impl extends io.pelle.mango.client.web.modules.dictionary.container.BaseCustomComposite {
 
 	public CustomType1Impl(ICustomCompositeModel composite, BaseDictionaryElement<? extends IBaseModel> parent) {

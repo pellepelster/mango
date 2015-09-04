@@ -3,14 +3,12 @@
  */
 package io.pelle.mango.dsl.generator.client.web
 
-import io.pelle.mango.client.base.modules.dictionary.CustomImplementationRegistry
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider
 import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider
 import io.pelle.mango.client.base.modules.navigation.NavigationTreeProvider
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.client.dictionary.DictionaryNameUtils
 import io.pelle.mango.dsl.mango.Dictionary
-import io.pelle.mango.dsl.mango.DictionaryCustomComposite
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.NavigationNode
@@ -55,7 +53,7 @@ class GWTClient extends BaseServices {
 					registerDictionaries();
 					registerEnumerationValueParser();
 					registerValueObjectEntityDescriptors();
-					registerCustomCompositeFactories();
+					
 					«IF !model.eAllContents.filter(NavigationNode).isEmpty»
 						registerNavigation();
 					«ENDIF»
@@ -82,13 +80,6 @@ class GWTClient extends BaseServices {
 			{
 				«FOR dictionary : model.eAllContents().toIterable.filter(Dictionary)»
 					«DictionaryModelProvider.name».registerDictionary(«model.dictionaryClassFullQualifiedName».«dictionary.dictionaryConstantName»);
-				«ENDFOR»
-			}
-	
-			public static void registerCustomCompositeFactories()
-			{
-				«FOR customComposite : model.eAllContents().toIterable.filter(DictionaryCustomComposite)»
-					«CustomImplementationRegistry.name».getInstance().registerCustomComposite("«customComposite.type»", "«customComposite.dictionaryCustomCompositeClassFullQualifiedName»");
 				«ENDFOR»
 			}
 	
