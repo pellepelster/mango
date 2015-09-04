@@ -62,7 +62,7 @@ public class CustomGwtCompositeFactoryGenerator extends Generator {
 								pw.println("register(\"" + gwtCompositeAnnotation.value().toLowerCase() + "\", ");
 								pw.println("	new FactoryMethod() {");
 								pw.println("		public Object create(io.pelle.mango.client.web.modules.dictionary.container.BaseCustomComposite baseCustomComposite) {");
-								pw.println("			return new " + name + "((" + compositeType.getQualifiedSourceName() + ")baseContainer);");
+								pw.println("			return new " + name + "((" + compositeType.getQualifiedSourceName() + ") baseCustomComposite);");
 								pw.println("		}");
 								pw.println("	});");
 
