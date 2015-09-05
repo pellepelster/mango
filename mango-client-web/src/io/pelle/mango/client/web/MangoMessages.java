@@ -226,4 +226,13 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("remove file")
 	String removeFile();
 
+	@DefaultMessage("add permission")
+	String addPermission();
+
+	@DefaultMessage("select permission to add")
+	String selectPermissionToAdd();
+
+	@DefaultMessage("permission")
+	String permission();
+
 }

@@ -5,10 +5,10 @@ import org.apache.commons.beanutils.PropertyUtils;
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
 
-public class AttributeEqualsPredicate implements Predicate<Object> {
+public class AttributeEqualsPredicate<T> implements Predicate<T> {
 
 	private String attributeName;
-	
+
 	private Object value;
 
 	public AttributeEqualsPredicate(Object value, String attributeName) {

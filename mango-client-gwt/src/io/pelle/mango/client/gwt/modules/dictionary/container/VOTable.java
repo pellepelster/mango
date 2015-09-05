@@ -1,43 +1,73 @@
 package io.pelle.mango.client.gwt.modules.dictionary.container;
 
-import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import java.util.List;
+
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.DataGrid;
+import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SingleSelectionModel;
+
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
+import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ControlHandler;
-import io.pelle.mango.client.gwt.modules.dictionary.BaseDataGrid;
-import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
-import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+public class VOTable<VOType extends IBaseVO> extends DataGrid<VOType> {
 
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.view.client.ListDataProvider;
+	private final ListDataProvider<VOType> dataProvider = new ListDataProvider<VOType>();
 
-public class VOTable<VOType extends IBaseVO> extends BaseDataGrid<VOType> implements IMangoCellTable<VOType> {
+	private List<IBaseControlModel> baseControlModels;
 
-	private final ListDataProvider<IBaseTable.ITableRow<VOType>> dataProvider = new ListDataProvider<IBaseTable.ITableRow<VOType>>();
+	private final SingleSelectionModel<VOType> selectionModel;
 
-	public VOTable(List<BaseDictionaryControl<?, ?>> baseControls) {
-		super(baseControls);
+	public VOTable(List<IBaseControlModel> baseControlModels) {
 
-		createModelColumns();
+		this.baseControlModels = baseControlModels;
+
+		selectionModel = new SingleSelectionModel<VOType>(getKeyProvider());
+		setSelectionModel(selectionModel);
+
 		dataProvider.addDataDisplay(this);
+		createModelColumns();
 	}
 
-	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected Column<IBaseTable.ITableRow<VOType>, ?> getColumn(BaseDictionaryControl baseControl) {
-		return (Column<IBaseTable.ITableRow<VOType>, ?>) ControlHandler.getInstance().createColumn(baseControl, false, dataProvider, this);
+	public void addSelectHandler(final SimpleCallback<VOType> selectHandler) {
+		addDomHandler(new DoubleClickHandler() {
+
+			/** {@inheritDoc} */
+			@Override
+			public void onDoubleClick(DoubleClickEvent event) {
+
+				if (selectionModel.getSelectedObject() != null) {
+					selectHandler.onCallback(selectionModel.getSelectedObject());
+				}
+			}
+		}, DoubleClickEvent.getType());
+
 	}
 
-	public void setContent(List<IBaseTable.ITableRow<VOType>> content) {
-		dataProvider.setList(content);
+	protected void createModelColumns() {
+
+		for (final IBaseControlModel baseControlModel : baseControlModels) {
+
+			Header<?> header = ControlHandler.getInstance().createHeader(baseControlModel);
+			Column<VOType, ?> column = ControlHandler.getInstance().createColumn(baseControlModel);
+
+			addColumn(column, header);
+
+		}
+
 	}
 
-	@Override
-	public Set<String> getHighlightedTexts() {
-		return Collections.emptySet();
+	public void setContent(List<VOType> list) {
+		dataProvider.setList(list);
+	}
+
+	public VOType getCurrentSelection() {
+		return selectionModel.getSelectedObject();
 	}
 
 }

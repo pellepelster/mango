@@ -11,18 +11,23 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import com.google.common.base.Objects;
+import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.cellview.client.TextHeader;
+import com.google.gwt.view.client.ListDataProvider;
+
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
+import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.table.HighlightingTextCell;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.table.TableRowColumn;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
-
-import com.google.gwt.cell.client.FieldUpdater;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.view.client.ListDataProvider;
 
 /**
  * @author pelle
@@ -75,6 +80,26 @@ public abstract class BaseControlFactory<ControlModelType extends IBaseControlMo
 		}
 
 		return column;
+	}
+
+	@Override
+	public <VOType extends IBaseVO> Column<VOType, ?> createColumn(final IBaseControlModel baseControlModel) {
+		return new TextColumn<VOType>() {
+			@Override
+			public String getValue(VOType vo) {
+				return Objects.firstNonNull(vo.get(baseControlModel.getAttributePath()), "").toString();
+			}
+		};
+	}
+
+	@Override
+	public <VOType extends IBaseVO> Header<?> createHeader(final IBaseControlModel baseControlModel) {
+		return new TextHeader(DictionaryModelUtil.getColumnLabel(baseControlModel));
+	}
+
+	@Override
+	public boolean supports(IBaseControlModel baseControlModel) {
+		return true;
 	}
 
 }

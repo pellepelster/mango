@@ -757,6 +757,7 @@ project MangoDemo {
 							}
 							composite Tab4 {
 								custom Custom1 {
+									entityattribute Entity1.integerDatatype2					
 									type CustomType1
 								}
 							}

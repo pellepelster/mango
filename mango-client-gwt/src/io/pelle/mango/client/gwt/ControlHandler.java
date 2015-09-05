@@ -11,6 +11,14 @@
  */
 package io.pelle.mango.client.gwt;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
+
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
@@ -28,13 +36,6 @@ import io.pelle.mango.client.gwt.modules.dictionary.controls.numbers.IntegerCont
 import io.pelle.mango.client.gwt.modules.dictionary.controls.text.TextControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.time.DateControlFactory;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ListDataProvider;
 
 public class ControlHandler {
 
@@ -69,6 +70,14 @@ public class ControlHandler {
 		return getControlFactory(baseControl).createColumn(baseControl, editable, listDataProvider, mangoCellTable);
 	}
 
+	public <VOType extends IBaseVO> Column<VOType, ?> createColumn(IBaseControlModel baseControlModel) {
+		return getControlFactory(baseControlModel).createColumn(baseControlModel);
+	}
+
+	public <VOType extends IBaseVO> Header<?> createHeader(IBaseControlModel baseControlModel) {
+		return getControlFactory(baseControlModel).createHeader(baseControlModel);
+	}
+
 	public <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType) {
 		return getControlFactory(baseControl).createControl(baseControl, layoutType);
 	}
@@ -83,7 +92,20 @@ public class ControlHandler {
 			}
 		}
 
-		throw new RuntimeException("unsupported control model '" + baseControl.getModel().getClass().getName() + "'");
+		throw new RuntimeException("unsupported control type '" + baseControl.getModel().getClass().getName() + "'");
+	}
+
+	@SuppressWarnings("unchecked")
+	private <ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>, VOType extends IBaseVO> IGwtControlFactory<ControlModelType, ControlType> getControlFactory(
+			IBaseControlModel baseControlModel) {
+
+		for (IGwtControlFactory<?, ?> controlFactory : controlFactories) {
+			if (controlFactory.supports(baseControlModel)) {
+				return (IGwtControlFactory<ControlModelType, ControlType>) controlFactory;
+			}
+		}
+
+		throw new RuntimeException("unsupported control model '" + baseControlModel.getClass().getName() + "'");
 	}
 
 }

@@ -228,6 +228,7 @@ project Mango {
 						textcontrol ref MangoGroupName
 					}
 					custom MangoGroupPermissions {
+						entityattribute permissions
 						type Permissions
 					}
 				}

@@ -22,4 +22,6 @@ public interface ICustomCompositeModel extends IBaseContainerModel {
 
 	String getType();
 
+	String getAttributeName();
+
 }

@@ -142,7 +142,8 @@ public class DictionaryModelGeneratorTest {
 	@Test
 	public void testCustomCompositeModel() {
 		assertTrue(CustomCompositeModel.class.isAssignableFrom(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1.getClass()));
-		assertEquals("CustomType1", MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1.getType());
+		assertEquals("customtype1", MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1.getType());
+		assertEquals("integerDatatype2", MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB4.CUSTOM1.getAttributeName());
 	}
 
 	@Test

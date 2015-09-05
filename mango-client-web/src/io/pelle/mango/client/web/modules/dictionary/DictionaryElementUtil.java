@@ -1,5 +1,13 @@
 package io.pelle.mango.client.web.modules.dictionary;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+
 import io.pelle.mango.client.base.modules.dictionary.BaseDictionaryElementUtil;
 import io.pelle.mango.client.base.modules.dictionary.IBaseDictionaryElement;
 import io.pelle.mango.client.base.modules.dictionary.IBaseRootElement;
@@ -14,15 +22,8 @@ import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryContr
 import io.pelle.mango.client.web.modules.dictionary.editor.BaseRootElement;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-
 public class DictionaryElementUtil extends BaseDictionaryElementUtil {
+
 	public static <ElementType> ElementType getElement(BaseRootElement<?> baseRootElement, BaseModel<ElementType> baseModel) {
 		List<String> descriptorModelIds = getParentModelIds(baseModel);
 

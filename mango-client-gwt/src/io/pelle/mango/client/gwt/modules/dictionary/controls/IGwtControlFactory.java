@@ -11,16 +11,17 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.Header;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.ListDataProvider;
+
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
-
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.ListDataProvider;
 
 public interface IGwtControlFactory<ControlModelType extends IBaseControlModel, ControlType extends BaseDictionaryControl<ControlModelType, ?>> {
 
@@ -29,5 +30,11 @@ public interface IGwtControlFactory<ControlModelType extends IBaseControlModel, 
 	Widget createControl(ControlType baseControl, LAYOUT_TYPE layoutType);
 
 	boolean supports(BaseDictionaryControl<?, ?> baseControl);
+
+	boolean supports(IBaseControlModel baseControlModel);
+
+	<VOType extends IBaseVO> Column<VOType, ?> createColumn(IBaseControlModel baseControlModel);
+
+	<VOType extends IBaseVO> Header<?> createHeader(IBaseControlModel baseControlModel);
 
 }

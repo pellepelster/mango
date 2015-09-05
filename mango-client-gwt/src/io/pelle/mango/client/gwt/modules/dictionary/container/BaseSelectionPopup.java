@@ -1,9 +1,5 @@
 package io.pelle.mango.client.gwt.modules.dictionary.container;
 
-import io.pelle.mango.client.base.util.SimpleCallback;
-import io.pelle.mango.client.base.vo.IBaseVO;
-import io.pelle.mango.client.web.MangoClientWeb;
-
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.ModalBody;
@@ -17,7 +13,11 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 
-public abstract class BaseVOSelectionPopup<VOType extends IBaseVO> {
+import io.pelle.mango.client.base.util.SimpleCallback;
+import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.web.MangoClientWeb;
+
+public abstract class BaseSelectionPopup<VOType extends IBaseVO> {
 
 	private final String message;
 
@@ -25,7 +25,7 @@ public abstract class BaseVOSelectionPopup<VOType extends IBaseVO> {
 
 	private SimpleCallback<VOType> voSelectHandler;
 
-	protected BaseVOSelectionPopup(String message, final SimpleCallback<VOType> voSelectHandler) {
+	protected BaseSelectionPopup(String message, final SimpleCallback<VOType> voSelectHandler) {
 		this.message = message;
 		this.voSelectHandler = voSelectHandler;
 	}

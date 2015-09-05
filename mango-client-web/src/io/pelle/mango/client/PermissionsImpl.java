@@ -43,4 +43,8 @@ public class PermissionsImpl extends io.pelle.mango.client.web.modules.dictionar
 		}
 
 	}
+
+	public List<MangoPermissionVO> getPermissions() {
+		return (List<MangoPermissionVO>) getVOWrapper().get(getModel().getAttributeName());
+	}
 }

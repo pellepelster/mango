@@ -9,9 +9,9 @@ public class Predicates {
 	public static AttributeDescriptorNamePredicate attributeDescriptorByName(String name) {
 		return new AttributeDescriptorNamePredicate(name);
 	}
-	
-	public static AttributeEqualsPredicate attributeEquals(IAttributeDescriptor<?> attributeDescriptor, Object value) {
-		return new AttributeEqualsPredicate(value, attributeDescriptor.getAttributeName());
+
+	public static <T> AttributeEqualsPredicate<T> attributeEquals(IAttributeDescriptor<?> attributeDescriptor, Object value) {
+		return new AttributeEqualsPredicate<T>(value, attributeDescriptor.getAttributeName());
 	}
-	
+
 }

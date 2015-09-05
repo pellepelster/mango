@@ -6,10 +6,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Constructor;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,14 +35,11 @@ import io.pelle.mango.client.base.modules.dictionary.controls.BaseButton;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseSearchHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseTableHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
-import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
-import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.security.MangoGroupVO;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
-import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
 import io.pelle.mango.client.web.test.DictionarySearchModuleTestUI;
 import io.pelle.mango.client.web.test.MangoClientSyncWebTest;
@@ -62,7 +59,6 @@ import io.pelle.mango.client.web.test.controls.StateTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
 import io.pelle.mango.client.web.util.CustomCompositeProvider;
 import io.pelle.mango.client.web.util.I18NProxy;
-import io.pelle.mango.client.web.util.ICustomCompositeFactory;
 import io.pelle.mango.demo.client.CustomType1Impl;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
@@ -100,20 +96,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryHookRegistry.getInstance().clearAll();
 
-		CustomCompositeProvider.getInstance().setFactory(new ICustomCompositeFactory() {
-
-			@Override
-			public Object create(String className, ICustomCompositeModel compositeModel, BaseDictionaryElement<? extends IBaseModel> parent) {
-				try {
-					Class<?> customCompositeClass = Class.forName(className);
-					Constructor constructor = customCompositeClass.getConstructor(ICustomCompositeModel.class, BaseDictionaryElement.class);
-					return constructor.newInstance(compositeModel, parent);
-
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-		});
+		CustomCompositeProvider.getInstance().setFactory(new ReflectionCustomCompositeFactory());
 	}
 
 	@Test
@@ -140,6 +123,17 @@ public class DemoClientTest extends BaseDemoTest {
 		search.assertSearchResults(1);
 
 		assertEquals("style1", search.getResultRow(0).getStyleNames());
+	}
+
+	@Test
+	public void testMangoGroupEditorLoadedPermissionsList() {
+
+		DictionaryEditorModuleTestUI<MangoGroupVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR);
+
+		CustomCompositeTestContainer permissions = editor.getContainer(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR.MANGO_GROUP_PERMISSIONS);
+
+		List p = (((PermissionsImpl) permissions.getCustomComposite()).getPermissions());
+		p.toArray();
 	}
 
 	@Test
@@ -672,8 +666,7 @@ public class DemoClientTest extends BaseDemoTest {
 			@Override
 			public SelectQuery<Entity1VO> beforeSearch(SelectQuery<Entity1VO> selectQuery) {
 
-				assertEquals(ENUMERATION1.ENUMERATIONVALUE1,
-						selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
+				assertEquals(ENUMERATION1.ENUMERATIONVALUE1, selectQuery.getData().get(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_SEARCH1.DEMO_FILTER1.ENUMERATION_CONTROL1_WITHOUT_ATTRIBUTE.getFullQualifiedName()));
 				called.set(true);
 				return super.beforeSearch(selectQuery);
 			}

@@ -1,8 +1,15 @@
 package io.pelle.mango.client.gwt.modules.dictionary.container;
 
-import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
+import java.util.List;
+
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
+
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
@@ -12,24 +19,19 @@ import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.client.web.modules.dictionary.container.AssignmentTable;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 
-import java.util.List;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
-
-public class VOSelectionPopup<VOType extends IBaseVO> extends BaseVOSelectionPopup<VOType> {
+public class VOSelectionPopup<VOType extends IBaseVO> extends BaseSelectionPopup<VOType> {
 
 	private final Class<VOType> voClass;
 
 	private VOTable<VOType> voTable;
 
-	private List<BaseDictionaryControl<?, ?>> baseControls;
+	private List<IBaseControlModel> baseControlModels;
 
 	private VOSelectionPopup(Class<VOType> voClass, String message, List<BaseDictionaryControl<?, ?>> baseControls, final SimpleCallback<VOType> voSelectHandler) {
 		super(message, voSelectHandler);
 
 		this.voClass = voClass;
-		this.baseControls = baseControls;
+		this.baseControlModels = Lists.newArrayList(Iterables.transform(baseControls, BaseDictionaryControl.TO_CONTROL_MODEL));
 	}
 
 	private void refreshTable() {
@@ -58,15 +60,15 @@ public class VOSelectionPopup<VOType extends IBaseVO> extends BaseVOSelectionPop
 
 	@Override
 	protected Widget createDialogBoxContent() {
-		// vo table
-		voTable = new VOTable<VOType>(baseControls);
+
+		voTable = new VOTable<VOType>(baseControlModels);
 
 		voTable.setHeight(BaseCellTable.DEFAULT_TABLE_HEIGHT);
 		voTable.setWidth("100%");
-		voTable.addVOSelectHandler(new SimpleCallback<IBaseTable.ITableRow<VOType>>() {
+		voTable.addSelectHandler(new SimpleCallback<VOType>() {
 			@Override
-			public void onCallback(IBaseTable.ITableRow<VOType> tableRow) {
-				closeDialogWithSelection(tableRow.getVO());
+			public void onCallback(VOType vo) {
+				closeDialogWithSelection(vo);
 			}
 		});
 		refreshTable();
@@ -76,7 +78,7 @@ public class VOSelectionPopup<VOType extends IBaseVO> extends BaseVOSelectionPop
 
 	@Override
 	protected void getCurrentSelection(AsyncCallback<VOType> asyncCallback) {
-		asyncCallback.onSuccess(voTable.getCurrentSelection().getVO());
+		asyncCallback.onSuccess(voTable.getCurrentSelection());
 	}
 
 }

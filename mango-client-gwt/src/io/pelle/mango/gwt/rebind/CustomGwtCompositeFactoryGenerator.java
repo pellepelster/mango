@@ -43,7 +43,7 @@ public class CustomGwtCompositeFactoryGenerator extends Generator {
 
 				if (gwtCompositeAnnotation != null) {
 
-					System.out.println(String.format("found CustomGwtComposite '%s'", gwtCompositeAnnotation.value(), gwtCompositeType.getQualifiedSourceName()));
+					logger.log(Type.INFO, String.format("found CustomGwtComposite '%s'", gwtCompositeAnnotation.value(), gwtCompositeType.getQualifiedSourceName()));
 
 					for (JClassType compositeType : oracle.getTypes()) {
 
@@ -51,11 +51,11 @@ public class CustomGwtCompositeFactoryGenerator extends Generator {
 
 						if (compositeAnnotation != null) {
 
-							System.out.println(String.format("found CustomComposite '%s'", compositeAnnotation.value(), compositeType.getQualifiedSourceName()));
+							logger.log(Type.INFO, String.format("found CustomComposite '%s'", compositeAnnotation.value(), compositeType.getQualifiedSourceName()));
 
 							if (compositeAnnotation.value().toLowerCase().equals(gwtCompositeAnnotation.value().toLowerCase())) {
 
-								logger.log(Type.ERROR, String.format("found annotated gwt class '%s' for custom composite '%s'", gwtCompositeType.getQualifiedSourceName(), compositeType.getQualifiedSourceName()));
+								logger.log(Type.INFO, String.format("found annotated gwt class '%s' for custom composite '%s'", gwtCompositeType.getQualifiedSourceName(), compositeType.getQualifiedSourceName()));
 
 								String name = gwtCompositeType.getQualifiedSourceName();
 

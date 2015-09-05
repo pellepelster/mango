@@ -11,6 +11,19 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.container;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
+import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.user.cellview.client.Column;
+import com.google.gwt.user.cellview.client.TextHeader;
+import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
@@ -28,26 +41,13 @@ import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryContr
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 import io.pelle.mango.client.web.util.DummyAsyncCallback;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import com.google.gwt.dom.client.Style.Unit;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.cellview.client.TextHeader;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.SimpleLayoutPanel;
-import com.google.gwt.user.client.ui.VerticalPanel;
-
 /**
  * GWT {@link ICompositeModel} implementation
  * 
  * @author pelle
  * 
  */
-public class GwtEditableTable<VOType extends IBaseVO> extends BaseTableDataGrid<VOType> implements IContainer<Panel>, IMangoCellTable<VOType> {
+public class GwtEditableTable<VOType extends IBaseVO> extends BaseTableDataGrid<VOType>implements IContainer<Panel>, IMangoCellTable<VOType> {
 
 	private final SimpleLayoutPanel simpleLayoutPanel = new SimpleLayoutPanel();
 

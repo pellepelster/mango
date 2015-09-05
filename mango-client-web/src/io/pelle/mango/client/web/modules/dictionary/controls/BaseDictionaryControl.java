@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Strings;
 
@@ -23,7 +24,15 @@ import io.pelle.mango.client.web.modules.dictionary.databinding.IValidator;
 import io.pelle.mango.client.web.modules.dictionary.databinding.validator.MandatoryValidator;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearch;
 
-public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel, ValueType> extends BaseDictionaryElement<ModelType> implements IBaseControl<ValueType, ModelType> {
+public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel, ValueType> extends BaseDictionaryElement<ModelType>implements IBaseControl<ValueType, ModelType> {
+
+	public static Function<BaseDictionaryControl<?, ?>, IBaseControlModel> TO_CONTROL_MODEL = new Function<BaseDictionaryControl<?, ?>, IBaseControlModel>() {
+
+		@Override
+		public IBaseControlModel apply(BaseDictionaryControl<?, ?> input) {
+			return input.getModel();
+		}
+	};
 
 	protected class ParseResult {
 

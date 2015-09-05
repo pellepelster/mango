@@ -10,11 +10,11 @@ dependencies {
 	compile project(':mango-server-base')
 }
 
-apply plugin: 'xtend'
+apply plugin: 'org.xtend.xtend'
 
 buildscript {
 	repositories { mavenCentral() }
-	dependencies { classpath 'org.xtend:xtend-gradle-plugin:0.1.+' }
+	dependencies { classpath 'org.xtend:xtend-gradle-plugin:0.4.8' }
 }
 
 sourceSets {
@@ -66,12 +66,13 @@ compileXtend.doFirst {
 	xtendOutputDir.mkdirs()
 }
 
-xtend {
-	fork = true
-	useDaemon = true
-	xtendAsPrimaryDebugSource = true
-	hideSyntheticVariables = false
-	encoding = "UTF-8"
+tasks.withType(org.xtend.gradle.tasks.XtendCompile) {
+	options.encoding = "UTF-8"
+}
+
+tasks.withType(org.xtend.gradle.tasks.XtendEclipseSettings) {
+	options.xtendAsPrimaryDebugSource = true
+	options.hideSyntheticVariables = false
 }
 
 task clean.doLast {

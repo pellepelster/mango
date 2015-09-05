@@ -359,6 +359,7 @@ DictionaryFileList:
 DictionaryCustomComposite:
 	"custom" name=ID "{"
 
+		"entityattribute" entityattribute=[ EntityAttribute | QualifiedName ]
 		"type" type=ID
 
 		(layoutdata=ColumnLayoutData)?
@@ -373,7 +374,6 @@ enum ReferenceListType:
 DictionaryReferenceList:
 	"referencelist" name=ID "{"
 		"entityattribute" entityattribute=[ EntityAttribute | QualifiedName ]
-				
 	"}";
 
 DictionaryTabFolder:

@@ -2,8 +2,9 @@ package io.pelle.mango.client.base.modules.dictionary.model.controls;
 
 import io.pelle.mango.client.base.modules.dictionary.controls.ITextControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 
-public class TextControlModel extends BaseControlModel<ITextControl> implements ITextControlModel {
+public class TextControlModel extends BaseControlModel<ITextControl>implements ITextControlModel {
 
 	private static final long serialVersionUID = -6029017257538622486L;
 
@@ -13,6 +14,12 @@ public class TextControlModel extends BaseControlModel<ITextControl> implements 
 
 	public TextControlModel(String name, IBaseModel parent) {
 		super(name, parent);
+	}
+
+	public TextControlModel(String name, IAttributeDescriptor<?> attributeDescriptor) {
+		super(name, null);
+		setLabel(name);
+		setAttributePath(attributeDescriptor.getAttributeName());
 	}
 
 	@Override

@@ -16,13 +16,11 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseTable
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseTableElement;
 
-public abstract class BaseTableDataGrid<VOType extends IBaseVO> extends BaseDataGrid<VOType> implements IUpdateListener
-{
+public abstract class BaseTableDataGrid<VOType extends IBaseVO> extends BaseDataGrid<VOType>implements IUpdateListener {
 
 	private BaseTableElement<VOType, ? extends IBaseTableModel> baseTable;
 
-	public BaseTableDataGrid(final BaseTableElement<VOType, ? extends IBaseTableModel> baseTable)
-	{
+	public BaseTableDataGrid(final BaseTableElement<VOType, ? extends IBaseTableModel> baseTable) {
 		super(baseTable.getControls());
 
 		this.baseTable = baseTable;
@@ -33,20 +31,14 @@ public abstract class BaseTableDataGrid<VOType extends IBaseVO> extends BaseData
 	}
 
 	@Override
-	public void onUpdate()
-	{
-		if (baseTable != null)
-		{
+	public void onUpdate() {
+		if (baseTable != null) {
 			getDataProvider().setList(baseTable.getRows());
 
-			if (!baseTable.getSelection().isEmpty())
-			{
-				if (baseTable.getSelection().size() == 1)
-				{
+			if (!baseTable.getSelection().isEmpty()) {
+				if (baseTable.getSelection().size() == 1) {
 					getSelectionModel().setSelected(baseTable.getSelection().get(0), true);
-				}
-				else
-				{
+				} else {
 					throw new RuntimeException("more than one table row selcted");
 				}
 			}

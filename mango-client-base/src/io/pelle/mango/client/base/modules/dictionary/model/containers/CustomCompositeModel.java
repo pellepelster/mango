@@ -3,9 +3,11 @@ package io.pelle.mango.client.base.modules.dictionary.model.containers;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 
 @SuppressWarnings("serial")
-public class CustomCompositeModel extends BaseContainerModel<ICustomCompositeModel> implements ICustomCompositeModel {
+public class CustomCompositeModel extends BaseContainerModel<ICustomCompositeModel>implements ICustomCompositeModel {
 
 	private String type;
+
+	private String entityattribute;
 
 	public CustomCompositeModel(String name, IBaseModel parent) {
 		super(name, parent);
@@ -15,9 +17,18 @@ public class CustomCompositeModel extends BaseContainerModel<ICustomCompositeMod
 		this.type = type;
 	}
 
+	public void setEntityattribute(String entityattribute) {
+		this.entityattribute = entityattribute;
+	}
+
 	@Override
 	public String getType() {
 		return type;
+	}
+
+	@Override
+	public String getAttributeName() {
+		return entityattribute;
 	}
 
 }

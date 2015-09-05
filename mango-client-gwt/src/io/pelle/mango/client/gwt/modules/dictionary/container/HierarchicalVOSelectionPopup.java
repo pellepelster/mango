@@ -14,7 +14,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class HierarchicalVOSelectionPopup extends BaseVOSelectionPopup<IHierarchicalVO> {
+public class HierarchicalVOSelectionPopup extends BaseSelectionPopup<IHierarchicalVO> {
 
 	private HierarchicalTree hierarchicalTree;
 

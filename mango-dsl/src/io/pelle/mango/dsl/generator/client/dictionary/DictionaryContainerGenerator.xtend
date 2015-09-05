@@ -201,6 +201,7 @@ class DictionaryContainerGenerator {
 					super("«dictionaryContainer.name»", parent);
 					
 					setType("«dictionaryContainer.type.toLowerCase»");
+					setEntityattribute("«dictionaryContainer.entityattribute.name»");
 					«layoutSetter(dictionaryContainer.layout, dictionaryContainer.layoutdata)»
 				}
 			}

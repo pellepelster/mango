@@ -11,14 +11,14 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls.text;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ITextControlModel;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.BaseControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.ReadonlyControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
-
-import com.google.gwt.user.client.ui.Widget;
 
 public class TextControlFactory extends BaseControlFactory<ITextControlModel, TextControl> {
 
