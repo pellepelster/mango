@@ -1,16 +1,5 @@
 package io.pelle.mango.server.property;
 
-import io.pelle.mango.client.base.property.IProperty;
-import io.pelle.mango.client.base.property.IPropertyCategory;
-import io.pelle.mango.client.base.util.CollectionUtils;
-import io.pelle.mango.client.base.util.MessageFormat;
-import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.core.property.PropertyBuilder;
-import io.pelle.mango.client.property.IPropertyService;
-import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.server.ConfigurationParameters;
-import io.pelle.mango.server.Messages;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +9,12 @@ import javax.transaction.Transactional;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.fluent.Request;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +30,21 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.base.property.IPropertyCategory;
+import io.pelle.mango.client.base.util.CollectionUtils;
+import io.pelle.mango.client.base.util.MessageFormat;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.core.property.PropertyBuilder;
+import io.pelle.mango.client.property.IPropertyService;
+import io.pelle.mango.db.dao.IBaseEntityDAO;
+import io.pelle.mango.server.ConfigurationParameters;
+import io.pelle.mango.server.Messages;
+
 @Transactional
 public class PropertyServiceImpl implements IPropertyService, InitializingBean {
+
+	public CloseableHttpClient httpclient = HttpClients.createDefault();
 
 	public static final String PROPERTY_CHANGED_TAG = "property-changed";
 
@@ -162,7 +168,7 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 	}
 
 	@Override
-	@CacheEvict(value = "properties", key="#property.key")
+	@CacheEvict(value = "properties", key = "#property.key")
 	public <VALUETYPE extends Serializable> void setProperty(IProperty<VALUETYPE> property, VALUETYPE value) {
 
 		VALUETYPE oldValue = getProperty(property);
@@ -190,8 +196,7 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 			throw new RuntimeException("unsupported property type '" + property.getType() + "'");
 		}
 
-		String message = MessageFormat.format(Messages.getString(PROPERTY_CHANGED_MESSAGE),
-				CollectionUtils.getMap(PROPERTY_HUMAN_NAME_KEY, property.getHumanName(), PROPERTY_OLD_VALUE_KEY, oldValue, PROPERTY_NEW_VALUE_KEY, value));
+		String message = MessageFormat.format(Messages.getString(PROPERTY_CHANGED_MESSAGE), CollectionUtils.getMap(PROPERTY_HUMAN_NAME_KEY, property.getHumanName(), PROPERTY_OLD_VALUE_KEY, oldValue, PROPERTY_NEW_VALUE_KEY, value));
 		GraphiteEvent graphiteEvent = new GraphiteEvent(message, new String[] { PROPERTY_CHANGED_TAG, PROPERTY_TAG });
 		sendGraphiteEvent(graphiteEvent);
 	}
@@ -251,8 +256,14 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 			try {
 				graphiteEventString = mapper.writeValueAsString(graphiteEvent);
 
-				HttpResponse response = Request.Post(graphiteUrl).connectTimeout(TIMEOUT).socketTimeout(TIMEOUT)
-						.bodyString(graphiteEventString, ContentType.TEXT_PLAIN).execute().returnResponse();
+				HttpPost httpPost = new HttpPost(graphiteUrl);
+
+				RequestConfig requestConfig = RequestConfig.copy(httpPost.getConfig()).setSocketTimeout(TIMEOUT).setConnectTimeout(TIMEOUT).setConnectionRequestTimeout(TIMEOUT).build();
+				httpPost.setConfig(requestConfig);
+
+				httpPost.setEntity(new StringEntity(graphiteEventString, ContentType.TEXT_PLAIN));
+
+				HttpResponse response = httpclient.execute(httpPost);
 
 				if (response.getStatusLine().getStatusCode() != 200) {
 					LOG.error("error sending property change event to graphite (" + IOUtils.toString(response.getEntity().getContent()) + ")");
