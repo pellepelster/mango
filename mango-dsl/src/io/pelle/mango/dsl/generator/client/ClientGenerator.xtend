@@ -53,10 +53,12 @@ class ClientGenerator implements IGenerator {
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 
 		for (model : resource.allContents.toIterable.filter(Model)) {
+
 			fsa.generateFile(model.gwtRemoteServiceLocatorFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocator)
 			fsa.generateFile(model.gwtRemoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocatorInterface)
 			fsa.generateFile(model.gwtClientModuleFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientModule)
-			
+	
+			fsa.generateFile(model.dictionaryI18NNameFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.dictionaryI18N)
 			fsa.generateFile(model.gwtClientConfigurationFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientConfiguration)
 			model.dictionaryGenerator(fsa)
 			model.dictionaryNavigationGenerator(fsa)

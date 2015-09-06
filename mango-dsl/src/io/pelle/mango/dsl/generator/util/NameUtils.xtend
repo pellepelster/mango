@@ -42,8 +42,7 @@ class NameUtils {
 	}
 
 	def dispatch String getPackageName(PackageDeclaration packageDeclaration) {
-		return combinePackageName(getPackageName(packageDeclaration.eContainer),
-			packageDeclaration.packageName.packageName)
+		return combinePackageName(getPackageName(packageDeclaration.eContainer), packageDeclaration.packageName.packageName)
 	}
 
 	def dispatch String getPackageName(EObject eObject) {
@@ -53,7 +52,7 @@ class NameUtils {
 			return getPackageName(eObject.eContainer)
 		}
 	}
-	
+
 	def dispatch String getPackageName(Service service) {
 		return getPackageName(service.eContainer)
 	}
@@ -102,30 +101,28 @@ class NameUtils {
 
 	def gwtClientModuleFullQualifiedFileName(Model model) {
 		var nameUtils = new NameUtils
-		nameUtils.modelPackageName(model).replaceAll("\\.", "/") + "/" +
-			gwtClientGeneratedModuleDefinitionFileName(model);
+		nameUtils.modelPackageName(model).replaceAll("\\.", "/") + "/" + gwtClientGeneratedModuleDefinitionFileName(model);
 	}
-	
-			def attributeName(String attribute) {
+
+	def attributeName(String attribute) {
 		return attribute.toFirstLower
 	}
 
 	def attributeName(EntityAttribute entityAttribute) {
 		return entityAttribute.name.attributeName
 	}
-	
+
 	def entityTableColumnName(EntityAttribute entityAttribute) {
-		return GeneratorUtil.getParentEntity(entityAttribute).entityTableName + "_" +
-			entityAttribute.name.entityTableColumnName
+		return GeneratorUtil.getParentEntity(entityAttribute).entityTableName + "_" + entityAttribute.name.entityTableColumnName
 	}
 
 	def entityTableColumnName(String attribute) {
 		return attribute.toLowerCase
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// value object
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def voName(ValueObject valueObject) {
 		return valueObject.name.toFirstUpper;
 	}
@@ -138,9 +135,9 @@ class NameUtils {
 		return voFullQualifiedName(valueObject).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// service 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def serviceName(Service service) {
 		return service.name.toFirstUpper;
 	}
@@ -165,9 +162,9 @@ class NameUtils {
 		return serviceMethod.name.toFirstLower;
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// client configuration  
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def gwtClientConfigurationName(Model model) {
 		return model.modelName.toFirstUpper + "ClientConfiguration";
 	}
@@ -180,9 +177,9 @@ class NameUtils {
 		return gwtClientConfigurationFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// service interface  
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def serviceInterfaceName(Service service) {
 		return "I" + service.name.toFirstUpper;
 	}
@@ -195,9 +192,9 @@ class NameUtils {
 		return serviceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// GWT service interface  
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def gwtServiceInterfaceName(Service service) {
 		return "I" + service.name.toFirstUpper + "GWT";
 	}
@@ -210,9 +207,9 @@ class NameUtils {
 		return gwtServiceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// GWT Async interface  
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def gwtAsyncServiceInterfaceName(Service service) {
 		return "I" + service.name.toFirstUpper + "GWTAsync";
 	}
@@ -225,9 +222,9 @@ class NameUtils {
 		return gwtAsyncServiceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// GWT Async interface  
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def gwtAsyncAdapterName(Service service) {
 		return service.name.toFirstUpper + "GWTAsyncAdapter";
 	}
@@ -244,9 +241,9 @@ class NameUtils {
 		return gwtAsyncAdapterFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// GWT remote service locator 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def gwtRemoteServiceLocatorName(Model model) {
 		return model.modelName.toFirstUpper + "GwtRemoteServiceLocator";
 	}
@@ -259,9 +256,9 @@ class NameUtils {
 		return gwtRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// GWT async adapter remote service locator 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def gwtAsyncAdapterRemoteServiceLocatorName(Model model) {
 		return model.modelName.toFirstUpper + "GwtAsyncAdapterRemoteServiceLocator";
 	}
@@ -274,9 +271,9 @@ class NameUtils {
 		return gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// GWT remote service locator interface 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def gwtRemoteServiceLocatorInterfaceName(Model model) {
 		return "I" + model.modelName.toFirstUpper + "GwtRemoteServiceLocator";
 	}
@@ -289,9 +286,9 @@ class NameUtils {
 		return gwtRemoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// remote service locator 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def remoteServiceLocatorName(Model model) {
 		return model.modelName.toFirstUpper + "RemoteServiceLocator";
 	}
@@ -304,9 +301,9 @@ class NameUtils {
 		return remoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// GWT remote service locator interface 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def remoteServiceLocatorInterfaceName(Model model) {
 		return "I" + model.modelName.toFirstUpper + "RemoteServiceLocator";
 	}
@@ -319,9 +316,9 @@ class NameUtils {
 		return remoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// module definition
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	def baseModuleDefinitionName(ModuleDefinition moduleDefinition) {
 		return "Base" + moduleDefinition.name.toFirstUpper + "Module";
 	}
@@ -338,9 +335,9 @@ class NameUtils {
 		return ModelUtil.getSingleRootPackage(model).packageName.packageName
 	}
 
-	//-----------------------
+	// -----------------------
 	// vo mapper	
-	//-----------------------
+	// -----------------------
 	def voMapperName(Model model) {
 		return model.modelName.toFirstUpper + "VOMapper";
 	}
@@ -372,5 +369,21 @@ class NameUtils {
 	def jndiName(Model model) {
 		return persistenceUnitName(model)
 	}
+	
+	// -------------------------------------------------------------------------
+	// dictionary model I18N
+	// -------------------------------------------------------------------------
+	def dictionaryI18NName(Model model) {
+		return model.modelName.toFirstUpper + "_messages";
+	}
+
+	def dictionaryI18NNameFullQualifiedName(Model model) {
+		return "i18n/" + model.dictionaryI18NName;
+	}
+
+	def dictionaryI18NNameFullQualifiedNameFileName(Model model) {
+		return dictionaryI18NNameFullQualifiedName(model).replaceAll("\\.", "/") + ".properties";
+	}
+	
 
 }

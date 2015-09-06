@@ -16,7 +16,7 @@ import io.pelle.mango.db.dao.IEntityCallback;
 
 public class MangoGroupPermissionMerger implements IEntityCallback {
 
-	class DuplicateRemover implements Predicate<MangoOperation> {
+	private class DuplicateRemover implements Predicate<MangoOperation> {
 
 		private final Set<String> set = new HashSet<>();
 

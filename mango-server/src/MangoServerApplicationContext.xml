@@ -15,17 +15,6 @@
 
 	<import resource="classpath:/MangoBaseApplicationContext.xml" />
 
-	<bean class="io.pelle.mango.server.util.ConfigurationLogger" />
-
-	<bean name="xmlVOImporter" class="io.pelle.mango.server.xml.XmlVOImporter" />
-	<bean name="xmlVOExporter" class="io.pelle.mango.server.xml.XmlVOExporter" />
-	<bean class="io.pelle.mango.server.xml.XmlVOMapper" />
-
-	<bean class="io.pelle.mango.server.log.LogReferenceKeyMapperRegistry" />
-	<bean class="io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper" />
-
-	<bean class="io.pelle.mango.server.vo.VOMetaDataService" />
-
 	<!-- freemarker config -->
 	<bean id="freemarkerConfig"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
@@ -37,25 +26,5 @@
 		<property name="cache" value="true" />
 		<property name="suffix" value=".ftl" />
 	</bean>
-
-	<bean class="io.pelle.mango.server.api.entity.EntityApiController" />
-	<bean class="io.pelle.mango.server.api.entity.EntityApiIndexController" />
-
-	<bean class="io.pelle.mango.server.api.webhook.WebhookApiController" />
-	<bean class="io.pelle.mango.server.api.webhook.EntityWebhookRegistry" />
-
-	<!-- jackson mapper configuration -->
-	<bean id="objectMapper" class="io.pelle.mango.server.xml.MangoObjectMapper" />
-
-	<mvc:annotation-driven>
-		<mvc:message-converters register-defaults="false">
-			<bean
-				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-				<property name="objectMapper">
-					<ref bean="objectMapper" />
-				</property>
-			</bean>
-		</mvc:message-converters>
-	</mvc:annotation-driven>
 
 </beans>

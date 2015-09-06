@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
@@ -22,17 +24,28 @@ import com.codahale.metrics.graphite.GraphiteReporter.Builder;
 
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
+import io.pelle.mango.server.api.entity.EntityApiController;
+import io.pelle.mango.server.api.entity.EntityApiIndexController;
+import io.pelle.mango.server.api.webhook.EntityWebhookRegistry;
+import io.pelle.mango.server.api.webhook.WebhookApiController;
 import io.pelle.mango.server.file.EntityFileUUIDCallback;
 import io.pelle.mango.server.file.FileController;
 import io.pelle.mango.server.file.FileEntityCallback;
 import io.pelle.mango.server.file.FileStorage;
 import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
 import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
+import io.pelle.mango.server.log.LogReferenceKeyMapperRegistry;
+import io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper;
 import io.pelle.mango.server.security.MangoGroupPermissionMerger;
 import io.pelle.mango.server.state.StateEntityCallback;
+import io.pelle.mango.server.util.ConfigurationLogger;
 import io.pelle.mango.server.validator.LengthValidator;
 import io.pelle.mango.server.validator.MandatoryValidator;
 import io.pelle.mango.server.validator.NaturalKeyValidator;
+import io.pelle.mango.server.vo.VOMetaDataService;
+import io.pelle.mango.server.xml.XmlVOExporter;
+import io.pelle.mango.server.xml.XmlVOImporter;
+import io.pelle.mango.server.xml.XmlVOMapper;
 
 @Configuration
 @ImportResource({ "classpath:/MangoServerApplicationContext.xml" })
@@ -42,9 +55,64 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 	private IPropertyService propertyService;
 
 	@Bean
+	public ConfigurationLogger ConfigurationLogger() {
+		return new ConfigurationLogger();
+	}
+
+	@Bean(name = "xmlVOImporter")
+	public XmlVOImporter XmlVOImporter() {
+		return new XmlVOImporter();
+	}
+
+	@Bean(name = "xmlVOExporter")
+	public XmlVOExporter XmlVOExporter() {
+		return new XmlVOExporter();
+	}
+
+	@Bean
+	public XmlVOMapper XmlVOMapper() {
+		return new XmlVOMapper();
+	}
+
+	@Bean
+	public LogReferenceKeyMapperRegistry LogReferenceKeyMapperRegistry() {
+		return new LogReferenceKeyMapperRegistry();
+	}
+
+	@Bean
+	public VOEntityLogReferenceKeyMapper VOEntityLogReferenceKeyMapper() {
+		return new VOEntityLogReferenceKeyMapper();
+	}
+
+	@Bean
+	public VOMetaDataService VOMetaDataService() {
+		return new VOMetaDataService();
+	}
+
+	@Bean
 	public MetricRegistry metricRegistry() {
 		MetricRegistry bean = new MetricRegistry();
 		return bean;
+	}
+
+	@Bean
+	public EntityApiController entityApiController() {
+		return new EntityApiController();
+	}
+
+	@Bean
+	public EntityApiIndexController entityApiIndexController() {
+		return new EntityApiIndexController();
+	}
+
+	@Bean
+	public WebhookApiController webhookApiController() {
+		return new WebhookApiController();
+	}
+
+	@Bean
+	public EntityWebhookRegistry entityWebhookRegistry() {
+		return new EntityWebhookRegistry();
 	}
 
 	@Bean
@@ -124,6 +192,14 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 	@Bean
 	public HierarchyParentValidator hierarchyParentValidator() {
 		return new HierarchyParentValidator();
+	}
+
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("/i18/usermsg");
+		messageSource.setDefaultEncoding("UTF-8");
+		return messageSource;
 	}
 
 	@Bean
