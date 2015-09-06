@@ -4,6 +4,10 @@ import static io.pelle.mango.client.base.vo.query.BaseQuery.and;
 import static io.pelle.mango.client.base.vo.query.BaseQuery.or;
 import static io.pelle.mango.client.base.vo.query.CountQuery.countFrom;
 import static io.pelle.mango.client.base.vo.query.DeleteQuery.deleteFrom;
+
+import org.junit.Test;
+
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.query.CountQuery;
 import io.pelle.mango.client.base.vo.query.DeleteQuery;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
@@ -15,8 +19,6 @@ import io.pelle.mango.db.test.mockup.entities.DBTest1;
 import io.pelle.mango.db.test.mockup.entities.DBTest2;
 import io.pelle.mango.db.test.mockup.entities.DBTest3;
 import junit.framework.TestCase;
-
-import org.junit.Test;
 
 public class JPQLTest extends TestCase {
 
@@ -50,8 +52,8 @@ public class JPQLTest extends TestCase {
 	}
 
 	@Test
-	public void testJoin1() {
-		SelectQuery<DBTest1> query = SelectQuery.selectFrom(DBTest1.class).join(DBTest1.TEST2S, DBTest2.TEST3);
+	public void testMultipleJoins() {
+		SelectQuery<DBTest1> query = SelectQuery.selectFrom(DBTest1.class).join(new IAttributeDescriptor<?>[] { DBTest1.TEST2S, DBTest2.TEST3 });
 		assertQueryEquals("SELECT x0 FROM DBTest1 x0 LEFT JOIN x0.test2s x1 LEFT JOIN x1.test3 x2", query);
 	}
 

@@ -1,5 +1,7 @@
 package io.pelle.mango.client.web.modules.dictionary.base;
 
+import java.util.List;
+
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.IBaseDictionaryElement;
@@ -7,8 +9,7 @@ import io.pelle.mango.client.base.modules.dictionary.IBaseRootElement;
 import io.pelle.mango.client.base.modules.dictionary.IVOWrapper;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
-
-import java.util.List;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
 
 public abstract class BaseDictionaryElement<ModelType extends IBaseModel> implements IBaseDictionaryElement<ModelType> {
 
@@ -76,7 +77,12 @@ public abstract class BaseDictionaryElement<ModelType extends IBaseModel> implem
 		update();
 	}
 
-	
+	public void populateLoadFilter(SelectQuery<?> selectQuery) {
+		for (BaseDictionaryElement<?> baseDictionaryElement : getAllChildren()) {
+			baseDictionaryElement.populateLoadFilter(selectQuery);
+		}
+	}
+
 	public void addValidationMessage(IValidationMessage validationMessage) {
 		getRootElement().getValidationMessages(this).addValidationMessage(validationMessage);
 		update();

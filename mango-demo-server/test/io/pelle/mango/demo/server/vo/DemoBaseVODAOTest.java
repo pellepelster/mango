@@ -6,13 +6,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import io.pelle.mango.client.base.vo.query.AggregateQuery;
-import io.pelle.mango.db.dao.IBaseVODAO;
-import io.pelle.mango.demo.client.test.Entity1VO;
-import io.pelle.mango.demo.client.test.Entity2VO;
-import io.pelle.mango.demo.client.test.Entity3VO;
-import io.pelle.mango.demo.client.test.Entity4VO;
-import io.pelle.mango.demo.server.BaseDemoTest;
 
 import java.util.List;
 
@@ -25,6 +18,15 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Optional;
+
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
+import io.pelle.mango.client.base.vo.query.AggregateQuery;
+import io.pelle.mango.db.dao.IBaseVODAO;
+import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.client.test.Entity2VO;
+import io.pelle.mango.demo.client.test.Entity3VO;
+import io.pelle.mango.demo.client.test.Entity4VO;
+import io.pelle.mango.demo.server.BaseDemoTest;
 
 public class DemoBaseVODAOTest extends BaseDemoTest {
 
@@ -130,7 +132,7 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 		}
 		assertTrue(thrown);
 
-		entity1s = baseVODAO.filter(selectFrom(Entity1VO.class).join(Entity1VO.ENTITY2DATATYPE, Entity2VO.ENTITY3DATATYPES));
+		entity1s = baseVODAO.filter(selectFrom(Entity1VO.class).join(new IAttributeDescriptor<?>[] { Entity1VO.ENTITY2DATATYPE, Entity2VO.ENTITY3DATATYPES }));
 		assertEquals(1, entity1s.get(0).getEntity2Datatype().getEntity3Datatypes().size());
 
 	}
@@ -139,7 +141,7 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 	public void testVOMetataCleanAfterFilter() {
 
 		baseVODAO.deleteAll(Entity1VO.class);
-		
+
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setStringDatatype1("xxx");
 
@@ -150,12 +152,11 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 		assertFalse(entity1Result.get().getMetadata().hasChanges());
 	}
 
-	
 	@Test
 	public void testVOMetataFistLevelIsLoadedNull() {
 
 		baseVODAO.deleteAll(Entity1VO.class);
-		
+
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setEntity2Datatype(null);
 		baseVODAO.create(entity1);
@@ -165,11 +166,12 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 		assertTrue(entity1Result.get().getMetadata().isLoaded(Entity1VO.ENTITY2DATATYPE.getAttributeName()));
 		assertTrue(entity1Result.get().getMetadata().isLoaded(Entity1VO.STRINGDATATYPE1LIST.getAttributeName()));
 	}
+
 	@Test
 	public void testVOMetataCleanAfterCreate() {
 
 		baseVODAO.deleteAll(Entity1VO.class);
-		
+
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setStringDatatype1("xxx");
 
@@ -256,7 +258,7 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 		long result = baseVODAO.aggregate(query);
 		assertEquals(7, result);
 	}
-	
+
 	@Test
 	public void testGetByNaturalKey() {
 
@@ -277,7 +279,7 @@ public class DemoBaseVODAOTest extends BaseDemoTest {
 
 		result = baseVODAO.searchByNaturalKey(Entity1VO.class, "aa");
 		assertEquals(3, result.size());
-		
+
 		result = baseVODAO.searchByNaturalKey(Entity1VO.class, "aab");
 		assertEquals(1, result.size());
 

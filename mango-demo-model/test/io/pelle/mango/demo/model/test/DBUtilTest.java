@@ -3,6 +3,13 @@ package io.pelle.mango.demo.model.test;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertThat;
+
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Test;
+
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IVOEntity;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.util.DBUtil;
@@ -10,20 +17,14 @@ import io.pelle.mango.demo.client.test.Entity5VO;
 import io.pelle.mango.demo.client.test.Entity6VO;
 import io.pelle.mango.demo.server.test.Entity1;
 import io.pelle.mango.demo.server.test.Entity2;
-
-import java.util.Map;
-import java.util.Set;
-
 import junit.framework.TestCase;
-
-import org.junit.Test;
 
 public class DBUtilTest extends TestCase {
 
 	@Test
 	public void testGetClassLoadAssociationsWithJoin() {
 
-		SelectQuery<Entity1> query = selectFrom(Entity1.class).join(Entity1.ENTITY2DATATYPE, Entity2.ENTITY3DATATYPES);
+		SelectQuery<Entity1> query = selectFrom(Entity1.class).join(new IAttributeDescriptor<?>[] { Entity1.ENTITY2DATATYPE, Entity2.ENTITY3DATATYPES });
 
 		Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations = DBUtil.getLoadAssociations(query);
 

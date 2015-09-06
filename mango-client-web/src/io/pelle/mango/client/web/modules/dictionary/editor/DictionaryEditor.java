@@ -122,8 +122,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 			}
 		};
 
-		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().getNewVO(this.dictionaryModel.getVOClass().getName(), CollectionUtils.copyMap(this.context),
-				(AsyncCallback<IBaseVO>) newVOCallback);
+		MangoClientWeb.getInstance().getRemoteServiceLocator().getBaseEntityService().getNewVO(this.dictionaryModel.getVOClass().getName(), CollectionUtils.copyMap(this.context), (AsyncCallback<IBaseVO>) newVOCallback);
 
 	}
 
@@ -133,6 +132,8 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 		selectQuery.loadNaturalKeyReferences(true);
 		IBooleanExpression expression = ExpressionFactory.createLongExpression(dictionaryModel.getVOClass(), IBaseVO.ID_FIELD_NAME, id);
 		selectQuery.where(expression);
+
+		populateLoadFilter(selectQuery);
 
 		if (DictionaryHookRegistry.getInstance().hasEditorHook(getModel().getParent().getName())) {
 		}

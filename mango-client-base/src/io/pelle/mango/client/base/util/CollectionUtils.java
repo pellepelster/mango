@@ -12,12 +12,18 @@
 package io.pelle.mango.client.base.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+
 public class CollectionUtils {
+
 	public static <T> List<T> copyToArrayList(List<T> fromList) {
+
 		ArrayList<T> result = new ArrayList<T>();
 
 		for (T listItem : fromList) {
@@ -69,4 +75,14 @@ public class CollectionUtils {
 
 		return result;
 	}
+
+	public static <T> T addIfNotExists(Collection<T> collection, Predicate<T> predicate, T element) {
+
+		if (!Iterables.contains(collection, predicate)) {
+			collection.add(element);
+		}
+
+		return element;
+	}
+
 }

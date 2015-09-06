@@ -11,12 +11,12 @@
  */
 package io.pelle.mango.client.base.vo.query;
 
-import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 
 @SuppressWarnings("serial")
 public class Join implements IEntity, Serializable {
@@ -51,25 +51,21 @@ public class Join implements IEntity, Serializable {
 	}
 
 	/** Joins for this query */
-	private final Map<String, Join> joins = new HashMap<String, Join>();
+	private Map<String, Join> joins = new HashMap<String, Join>();
 
 	/** The join field */
-	private final String field;
+	private String field;
 
 	/** Type of the join */
-	private final JOIN_TYPE joinType;
+	private JOIN_TYPE joinType;
 
 	private String alias;
 
 	private IAliasProvider aliasProvider;;
 
-	/**
-	 * Constructor for <code>Join</code>
-	 * 
-	 * @param aliasProvider
-	 * @param joinType
-	 * @param field
-	 */
+	public Join() {
+	}
+
 	public Join(IAliasProvider aliasProvider, JOIN_TYPE joinType, String field) {
 		super();
 		this.alias = aliasProvider.getAliasFor(this);

@@ -1,14 +1,14 @@
 package io.pelle.mango.client.base.vo.query;
 
-import io.pelle.mango.client.base.vo.IAttributeDescriptor;
-import io.pelle.mango.client.base.vo.IVOEntity;
-import io.pelle.mango.client.base.vo.query.expressions.BooleanExpression;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Optional;
+
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
+import io.pelle.mango.client.base.vo.IVOEntity;
+import io.pelle.mango.client.base.vo.query.expressions.BooleanExpression;
 
 @SuppressWarnings("serial")
 public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable {
@@ -31,7 +31,7 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 		super();
 	}
 
-	public Q join(IAttributeDescriptor<?>... attributeDescriptors) {
+	public Q join(IAttributeDescriptor<?>[] attributeDescriptors) {
 
 		Join join = null;
 
@@ -44,6 +44,14 @@ public abstract class BaseQuery<T extends IVOEntity, Q> implements Serializable 
 		}
 
 		return getQuery();
+	}
+
+	public Q join(IAttributeDescriptor<?> attributeDescriptor) {
+		return join(new IAttributeDescriptor<?>[] { attributeDescriptor });
+	}
+
+	public Q join(List<IAttributeDescriptor<?>> attributeDescriptors) {
+		return join(attributeDescriptors.toArray(new IAttributeDescriptor<?>[0]));
 	}
 
 	public IAliasProvider getAliasProvider() {

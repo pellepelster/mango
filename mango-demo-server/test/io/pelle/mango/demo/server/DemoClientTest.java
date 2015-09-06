@@ -38,6 +38,7 @@ import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistr
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.security.MangoGroupVO;
+import io.pelle.mango.client.security.MangoPermissionVO;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
@@ -130,10 +131,21 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryEditorModuleTestUI<MangoGroupVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR);
 
-		CustomCompositeTestContainer permissions = editor.getContainer(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR.MANGO_GROUP_PERMISSIONS);
+		CustomCompositeTestContainer customCompositeTestContainer = editor.getContainer(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR.MANGO_GROUP_PERMISSIONS);
+		PermissionsImpl permissions = (PermissionsImpl) customCompositeTestContainer.getCustomComposite();
 
-		List p = (((PermissionsImpl) permissions.getCustomComposite()).getPermissions());
-		p.toArray();
+		permissions.addPermission("abc", "READ");
+
+		editor.save();
+		editor.assertHasNoErrors();
+
+		editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR, editor.getContent().getId());
+
+		customCompositeTestContainer = editor.getContainer(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR.MANGO_GROUP_PERMISSIONS);
+		permissions = (PermissionsImpl) customCompositeTestContainer.getCustomComposite();
+
+		List<MangoPermissionVO> p = permissions.getPermissions();
+		p.get(0).getOperations().get(0);
 	}
 
 	@Test

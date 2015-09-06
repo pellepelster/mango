@@ -80,11 +80,13 @@ public class PermissionsGwtImpl implements IContainer<Panel>, ClickHandler, IUpd
 				if (availablePermissions.isEmpty()) {
 					availablePermissions.addAll(result);
 				}
+
+				onUpdate();
+
 			}
 		});
 
 		container.addUpdateListener(this);
-		onUpdate();
 	}
 
 	@Override
