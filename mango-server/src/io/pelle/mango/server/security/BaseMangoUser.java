@@ -1,4 +1,4 @@
-package io.pelle.mango.server.base;
+package io.pelle.mango.server.security;
 
 import java.util.Collection;
 import java.util.Collections;
