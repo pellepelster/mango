@@ -16,6 +16,7 @@ import io.pelle.mango.demo.client.showcase.CompanyVO;
 import io.pelle.mango.demo.client.showcase.DepartmentVO;
 import io.pelle.mango.demo.client.showcase.EmployeeVO;
 import io.pelle.mango.demo.client.showcase.ManagerVO;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 
 import java.util.List;
 import java.util.Map;

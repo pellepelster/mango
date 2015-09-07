@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.pelle.mango.client.FileVO;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.dao.IBaseVODAO;
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 
 public class DemoFileStorageServiceTest extends BaseDemoTest {
 

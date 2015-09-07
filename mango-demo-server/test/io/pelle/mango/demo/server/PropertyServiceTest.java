@@ -4,6 +4,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Map;
+
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.gwt.thirdparty.guava.common.collect.Iterables;
+
 import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.IPropertyCategory;
 import io.pelle.mango.client.base.property.IPropertyGroup;
@@ -12,14 +20,8 @@ import io.pelle.mango.client.core.property.PropertyProvider;
 import io.pelle.mango.client.core.property.SystemProperties;
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.dao.BaseEntityDAO;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.property.PropertyValue;
-
-import java.util.Map;
-
-import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.google.gwt.thirdparty.guava.common.collect.Iterables;
 
 public class PropertyServiceTest extends BaseDemoTest {
 
@@ -42,6 +44,13 @@ public class PropertyServiceTest extends BaseDemoTest {
 
 	@Autowired
 	private IPropertyService propertyService;
+
+	@Test
+	public void testDefaultWihtFallback() {
+		IProperty<Boolean> DEFAULT_WITH_SPRING_FALLBACK = PropertyBuilder.getInstance().createBooleanProperty("default.with.fallback.to.spring").defaultValue(true).system().fallbackToSpring();
+		boolean bool = propertyService.getProperty(DEFAULT_WITH_SPRING_FALLBACK);
+		assertTrue(bool);
+	}
 
 	@Test
 	public void testDefaultNameIsId() {
@@ -122,6 +131,7 @@ public class PropertyServiceTest extends BaseDemoTest {
 		assertNull(propertyService.getProperty(DB_PROPERTY_WITH_FALLBACK));
 
 		propertyService.setProperty(DB_SYSTEM_PROPERTY_FALLBACK, "zzz");
+
 		assertEquals("zzz", propertyService.getProperty(DB_PROPERTY_WITH_FALLBACK));
 	}
 

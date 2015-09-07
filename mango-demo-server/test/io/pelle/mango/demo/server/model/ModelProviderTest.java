@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.model;
 
 import static org.junit.Assert.assertEquals;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;

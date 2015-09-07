@@ -3,6 +3,7 @@ package io.pelle.mango.demo.server.file;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,15 +27,19 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.MangoDemoTestApplicationContext;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
+import io.pelle.mango.server.MangoWebMvcApplicationContext;
 
 @WebAppConfiguration
+@ContextConfiguration(classes = { MangoWebMvcApplicationContext.class, MangoDemoTestApplicationContext.class })
 public class FileControllerTest extends BaseDemoTest {
 
 	private MockMvc mockMvc;
@@ -44,7 +49,7 @@ public class FileControllerTest extends BaseDemoTest {
 
 	@Before
 	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
 	}
 
 	@Test
@@ -78,9 +83,14 @@ public class FileControllerTest extends BaseDemoTest {
 		pw.write("xxx");
 		pw.close();
 
+		HashMap<String, String> contentTypeParams = new HashMap<String, String>();
+		contentTypeParams.put("boundary", "265001916915724");
+		MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
+
 		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new FileInputStream(tempFile));
-		mockMvc.perform(fileUpload("/files/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1))).andExpect(jsonPath("$.files[0].fileName", is("file1")))
-				.andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print());
+
+		mockMvc.perform(fileUpload("/files/put").file(multipartFile).contentType(mediaType)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
+				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test

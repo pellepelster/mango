@@ -1,7 +1,8 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.api;
 
 import static org.junit.Assert.assertEquals;
 import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.xml.XmlVOMapper;
 
 import org.junit.Test;

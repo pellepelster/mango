@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import io.pelle.mango.client.api.webhook.IWebhookService;
@@ -15,10 +16,12 @@ import io.pelle.mango.client.api.webhook.WebhookVO;
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
+import io.pelle.mango.server.MangoWebMvcApplicationContext;
 import io.pelle.mango.server.api.webhook.Webhook;
 
 @WebAppConfiguration
+@Import({ MangoWebMvcApplicationContext.class })
 public class WebhookServiceTest extends BaseDemoTest {
 
 	@Autowired

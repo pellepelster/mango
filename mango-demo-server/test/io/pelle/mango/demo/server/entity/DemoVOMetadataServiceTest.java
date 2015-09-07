@@ -1,10 +1,11 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.entity;
 
 import static org.junit.Assert.*;
 import io.pelle.mango.db.util.DBUtil;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.server.test.Entity1;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.vo.VOMetaDataService;
 
 import org.junit.Test;

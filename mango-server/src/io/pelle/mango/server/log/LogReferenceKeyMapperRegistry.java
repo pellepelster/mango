@@ -17,6 +17,10 @@ public class LogReferenceKeyMapperRegistry {
 	@Autowired(required = false)
 	private List<ILogReferenceKeyMapper> referenceMappers = new ArrayList<ILogReferenceKeyMapper>();
 
+	public LogReferenceKeyMapperRegistry() {
+		super();
+	}
+
 	public String getLogReferenceKey(Object reference) {
 
 		String result = null;

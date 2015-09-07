@@ -13,6 +13,7 @@ import io.pelle.mango.client.search.SearchResultItem;
 import io.pelle.mango.db.dao.IBaseVODAO;
 import io.pelle.mango.demo.client.showcase.CompanyVO;
 import io.pelle.mango.demo.client.showcase.CountryVO;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 
 public class SearchServiceTest extends BaseDemoTest {
 

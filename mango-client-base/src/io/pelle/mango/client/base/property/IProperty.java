@@ -1,6 +1,7 @@
 package io.pelle.mango.client.base.property;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface IProperty<VALUETYPE extends Serializable> {
 
@@ -10,7 +11,7 @@ public interface IProperty<VALUETYPE extends Serializable> {
 
 	String getKey();
 
-	IProperty<VALUETYPE> getFallback();
+	List<IProperty<VALUETYPE>> getFallbacks();
 
 	VALUETYPE getDefaultValue();
 

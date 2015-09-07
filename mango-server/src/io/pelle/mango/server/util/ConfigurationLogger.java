@@ -50,6 +50,7 @@ public class ConfigurationLogger implements ApplicationListener<ContextRefreshed
 			addProperty(table, ConfigurationParameters.GRAPHITE_CARBON_PORT);
 			addProperty(table, ConfigurationParameters.GRAPHITE_EVENTSAPI_URL);
 			addProperty(table, ConfigurationParameters.GRAPHITE_METRICS_PREFIX);
+			addProperty(table, ConfigurationParameters.SECURITY_DISABLE);
 
 			String tableString = table.render();
 			int tableWidth = tableString.indexOf("\n");

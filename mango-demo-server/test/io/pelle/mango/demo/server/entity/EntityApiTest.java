@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -19,9 +20,12 @@ import org.springframework.web.context.WebApplicationContext;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CountryVO;
 import io.pelle.mango.demo.client.showcase.CustomerVO;
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.MangoDemoTestApplicationContext;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
+import io.pelle.mango.server.MangoWebMvcApplicationContext;
 
 @WebAppConfiguration
+@ContextConfiguration(classes = { MangoWebMvcApplicationContext.class, MangoDemoTestApplicationContext.class })
 public class EntityApiTest extends BaseDemoTest {
 
 	private MockMvc mockMvc;

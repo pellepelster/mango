@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.google.common.base.Optional;
 
 import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.demo.server.test.Entity1;
 import io.pelle.mango.demo.server.test.Entity2;
 import io.pelle.mango.demo.server.test.Entity3;
@@ -30,6 +29,7 @@ import io.pelle.mango.demo.server.test.Entity4;
 import io.pelle.mango.demo.server.test.Entity5;
 import io.pelle.mango.demo.server.test.Entity6;
 import io.pelle.mango.demo.server.test.Entity7;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 
 public class DemoBaseEntityDAOTest extends BaseDemoTest {
 

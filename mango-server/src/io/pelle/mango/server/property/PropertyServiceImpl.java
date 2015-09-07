@@ -3,7 +3,6 @@ package io.pelle.mango.server.property;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.transaction.Transactional;
 
@@ -18,9 +17,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.AbstractBeanFactory;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 
 import com.codahale.metrics.Gauge;
@@ -101,37 +99,38 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 	@Autowired
 	private MetricRegistry metricRegistry;
 
-	private final Map<String, String> cache = new ConcurrentHashMap<String, String>();
-
 	@Autowired
 	private IBaseEntityDAO baseEntityDAO;
 
 	@Autowired
-	private AbstractBeanFactory beanFactory;
+	private Environment environment;
 
 	public String getSpringProperty(String key) {
-
-		if (cache.containsKey(key)) {
-			return cache.get(key);
-		}
-
-		String value = null;
-		try {
-			value = beanFactory.resolveEmbeddedValue("${" + key.trim() + "}");
-
-			if (value != null) {
-				cache.put(key, value);
-			}
-		} catch (IllegalArgumentException e) {
-			// ignore non existant values
-		}
-
-		return value;
+		return environment.getProperty(key);
 	}
 
 	@Override
-	@Cacheable(value = "properties", key = "#property.key")
 	public <VALUETYPE extends Serializable> VALUETYPE getProperty(IProperty<VALUETYPE> property) {
+
+		VALUETYPE result = getValueInternal(property);
+
+		if (result != null) {
+			return result;
+		}
+
+		for (IProperty<VALUETYPE> fallback : property.getFallbacks()) {
+			result = getValueInternal(fallback);
+
+			if (result != null) {
+				return result;
+			}
+		}
+
+		return getPropertyDefault(property);
+
+	}
+
+	private <VALUETYPE extends Serializable> VALUETYPE getValueInternal(IProperty<VALUETYPE> property) {
 
 		String valueString = null;
 
@@ -146,6 +145,7 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 			if (dbProperty.isPresent()) {
 				valueString = dbProperty.get().getValue();
 			}
+
 			break;
 		case SPRING:
 			valueString = getSpringProperty(property.getKey());
@@ -157,14 +157,9 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 
 		if (valueString != null && !valueString.trim().isEmpty()) {
 			return property.parseValue(valueString);
-		}
-
-		if (property.getFallback() != null) {
-			return getProperty(property.getFallback());
 		} else {
-			return getPropertyDefault(property);
+			return null;
 		}
-
 	}
 
 	@Override
@@ -215,14 +210,28 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 	@Override
 	public <VALUETYPE extends Serializable> VALUETYPE getPropertyDefault(IProperty<VALUETYPE> property) {
 
+		VALUETYPE result = getPropertyDefaultInternal(property);
+
+		if (result != null) {
+			return result;
+		}
+
+		for (IProperty<VALUETYPE> fallback : property.getFallbacks()) {
+			result = getPropertyDefaultInternal(fallback);
+
+			if (result != null) {
+				return result;
+			}
+		}
+
+		return null;
+	}
+
+	private <VALUETYPE extends Serializable> VALUETYPE getPropertyDefaultInternal(IProperty<VALUETYPE> property) {
 		if (property.getDefaultValue() != null) {
 			return property.getDefaultValue();
 		} else if (property.getDefaultProperty() != null) {
 			return getProperty(property.getDefaultProperty());
-		}
-
-		if (property.getFallback() != null) {
-			return getPropertyDefault(property.getFallback());
 		}
 
 		return null;

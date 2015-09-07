@@ -1,9 +1,10 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.api;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import io.pelle.mango.demo.client.test.ValueObject2;
 import io.pelle.mango.demo.server.test.RestTestRestControllerMethodWithBooleanParameterRequest;
+import io.pelle.mango.demo.server.util.BaseRemoteRestTest;
 
 import org.junit.Ignore;
 import org.junit.Test;

@@ -18,6 +18,7 @@ import io.pelle.mango.client.state.CurrentState;
 import io.pelle.mango.client.state.IStateService;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.server.test.Entity1;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.state.StateBuilder;
 
 public class StateServiceTest extends BaseDemoTest {

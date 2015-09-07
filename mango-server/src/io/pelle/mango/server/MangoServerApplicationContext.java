@@ -10,10 +10,12 @@ import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricFilter;
@@ -49,6 +51,8 @@ import io.pelle.mango.server.xml.XmlVOMapper;
 
 @Configuration
 @ImportResource({ "classpath:/MangoServerApplicationContext.xml" })
+@Import({ MangoSecurityConfig.class })
+@PropertySources({ @PropertySource(value = "classpath:/mango.properties", ignoreResourceNotFound = true), @PropertySource("classpath:/mango_defaults.properties") })
 public class MangoServerApplicationContext extends MangoDBApplicationContext {
 
 	@Autowired
@@ -75,7 +79,7 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 	}
 
 	@Bean
-	public LogReferenceKeyMapperRegistry LogReferenceKeyMapperRegistry() {
+	public LogReferenceKeyMapperRegistry logReferenceKeyMapperRegistry() {
 		return new LogReferenceKeyMapperRegistry();
 	}
 
@@ -138,13 +142,6 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 	@Bean
 	public EntityFileUUIDCallback entityFileUUIDCallback() {
 		return new EntityFileUUIDCallback();
-	}
-
-	@Bean
-	public CommonsMultipartResolver multipartResolver() {
-		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-		resolver.setMaxUploadSize(5242880);
-		return resolver;
 	}
 
 	@Bean

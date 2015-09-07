@@ -18,6 +18,7 @@ import io.pelle.mango.client.log.ILogService;
 import io.pelle.mango.client.log.LOGLEVEL;
 import io.pelle.mango.client.log.LogEntryVO;
 import io.pelle.mango.demo.client.test.Entity1VO;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.log.IMangoLogger;
 
 public class DemoLogServiceTest extends BaseDemoTest {

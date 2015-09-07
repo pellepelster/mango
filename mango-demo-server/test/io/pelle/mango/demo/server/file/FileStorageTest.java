@@ -18,6 +18,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -31,9 +32,12 @@ import io.pelle.mango.client.FileVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.test.Entity1VO;
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.MangoDemoTestApplicationContext;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
+import io.pelle.mango.server.MangoWebMvcApplicationContext;
 
 @WebAppConfiguration
+@ContextConfiguration(classes = { MangoWebMvcApplicationContext.class, MangoDemoTestApplicationContext.class })
 public class FileStorageTest extends BaseDemoTest {
 
 	@Rule

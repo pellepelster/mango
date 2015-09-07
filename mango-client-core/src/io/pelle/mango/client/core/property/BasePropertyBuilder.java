@@ -1,10 +1,12 @@
 package io.pelle.mango.client.core.property;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.PROPERTY_TYPE;
-
-import java.io.Serializable;
-import java.util.Objects;
 
 @SuppressWarnings("serial")
 public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDER_TYPE extends IProperty<VALUETYPE>> implements IProperty<VALUETYPE>, Serializable {
@@ -17,7 +19,7 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 
 	private IProperty<VALUETYPE> defaultProperty;
 
-	private IProperty<VALUETYPE> fallback;
+	private List<IProperty<VALUETYPE>> fallbacks = new ArrayList<>();
 
 	private PROPERTY_TYPE type;
 
@@ -70,20 +72,23 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 	}
 
 	public IProperty<VALUETYPE> fallback(IProperty<VALUETYPE> fallback) {
-		this.fallback = fallback;
-		return fallback;
+		this.fallbacks.add(fallback);
+		return getBuilder();
 	}
 
 	public BUILDER_TYPE fallbackToDatabase() {
-		return (BUILDER_TYPE) fallback(clone(null).setType(PROPERTY_TYPE.DATABASE));
+		fallback(clone(null).setType(PROPERTY_TYPE.DATABASE));
+		return getBuilder();
 	}
 
 	public BUILDER_TYPE fallbackToSpring() {
-		return (BUILDER_TYPE) fallback(clone(null).setType(PROPERTY_TYPE.SPRING));
+		fallback(clone(null).setType(PROPERTY_TYPE.SPRING));
+		return getBuilder();
 	}
 
 	public BUILDER_TYPE fallbackToSystem() {
-		return (BUILDER_TYPE) fallback(clone(null).setType(PROPERTY_TYPE.SYSTEM));
+		fallback(clone(null).setType(PROPERTY_TYPE.SYSTEM));
+		return getBuilder();
 	}
 
 	protected BUILDER_TYPE setType(PROPERTY_TYPE type) {
@@ -102,8 +107,8 @@ public abstract class BasePropertyBuilder<VALUETYPE extends Serializable, BUILDE
 	}
 
 	@Override
-	public IProperty<VALUETYPE> getFallback() {
-		return fallback;
+	public List<IProperty<VALUETYPE>> getFallbacks() {
+		return fallbacks;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static com.github.tomakehurst.wiremock.client.WireMock.verify;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -22,6 +23,7 @@ import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -33,9 +35,12 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import io.pelle.mango.client.api.webhook.WebhookVO;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.demo.client.showcase.CountryVO;
-import io.pelle.mango.demo.server.BaseDemoTest;
+import io.pelle.mango.demo.server.MangoDemoTestApplicationContext;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
+import io.pelle.mango.server.MangoWebMvcApplicationContext;
 
 @WebAppConfiguration
+@ContextConfiguration(classes = { MangoWebMvcApplicationContext.class, MangoDemoTestApplicationContext.class })
 public class WebhookApiTest extends BaseDemoTest {
 
 	@Rule
@@ -51,7 +56,7 @@ public class WebhookApiTest extends BaseDemoTest {
 
 	@Before
 	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
 	}
 
 	@Test

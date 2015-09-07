@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.entity;
 
 import static io.pelle.mango.client.base.vo.query.AggregateQuery.aggregateFrom;
 import static io.pelle.mango.client.base.vo.query.SelectQuery.selectFrom;
@@ -11,6 +11,7 @@ import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.server.test.Entity4;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 
 import org.junit.Test;
 

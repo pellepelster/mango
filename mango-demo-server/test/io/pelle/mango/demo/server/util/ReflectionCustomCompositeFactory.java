@@ -1,4 +1,4 @@
-package io.pelle.mango.demo.server;
+package io.pelle.mango.demo.server.util;
 
 import java.lang.reflect.Constructor;
 import java.util.Set;

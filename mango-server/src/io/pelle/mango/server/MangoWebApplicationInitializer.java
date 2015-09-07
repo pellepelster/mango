@@ -1,10 +1,9 @@
 package io.pelle.mango.server;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-import org.springframework.web.WebApplicationInitializer;
+import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -15,7 +14,7 @@ import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
 import io.pelle.mango.server.file.FileControlUploadServlet;
 import io.pelle.mango.server.util.AwsRdsMysqlJndiInjector;
 
-public abstract class MangoWebApplicationInitializer implements WebApplicationInitializer {
+public abstract class MangoWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer {
 
 	private static final String LOG4J_LOCATION = "/WEB-INF/log4j.properties";
 
@@ -36,7 +35,7 @@ public abstract class MangoWebApplicationInitializer implements WebApplicationIn
 	}
 
 	@Override
-	public void onStartup(ServletContext servletContext) throws ServletException {
+	public void afterSpringSecurityFilterChain(ServletContext servletContext)  {
 
 		WebApplicationContext context = getContext();
 

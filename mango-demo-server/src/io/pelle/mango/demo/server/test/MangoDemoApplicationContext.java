@@ -2,10 +2,12 @@ package io.pelle.mango.demo.server.test;
 
 import static io.pelle.mango.server.state.StateBuilder.transition;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.core.env.Environment;
 
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
@@ -32,6 +34,9 @@ public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 		return MangoDemoClientConfiguration.registerAll();
 	}
 
+	@Autowired
+	Environment env;
+
 	@Bean
 	public SearchIndexBuilder createEntity1Index() {
 
@@ -43,15 +48,14 @@ public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 
 		return result;
 	}
-	
+
 	@Bean
 	public StateBuilder createEntity1States() {
-	
+
 		StateBuilder sb = StateBuilder.create(Entity1.class, Entity1VO.STATE1);
 		sb.addState("stateA", transition("transitionAtoB", "stateB"));
-		
+
 		return sb;
 	}
-
 
 }

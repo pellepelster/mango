@@ -31,4 +31,6 @@ public interface ConfigurationParameters {
 
 	public static IProperty<String> GRAPHITE_METRICS_PREFIX = PropertyBuilder.getInstance().createStringProperty("graphite.metrics.prefix").system().fallbackToSpring();
 
+	public static IProperty<Boolean> SECURITY_DISABLE = PropertyBuilder.getInstance().createBooleanProperty("security.disable").defaultValue(false).system().fallbackToSpring();
+
 }

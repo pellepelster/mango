@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 import io.pelle.mango.client.base.vo.query.ComparisonOperator;
 import io.pelle.mango.db.util.EntityVOMapper;
 import io.pelle.mango.demo.client.showcase.CountryVO;
-import io.pelle.mango.demo.server.BaseDemoTest;
 import io.pelle.mango.demo.server.showcase.Country;
 import io.pelle.mango.demo.server.showcase.Customer;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.entity.EntityUtils;
 import io.pelle.mango.server.entity.EntityUtils.ReferenceTree;
 

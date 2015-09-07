@@ -18,6 +18,7 @@ import io.pelle.mango.client.security.MangoGroupVO;
 import io.pelle.mango.client.security.MangoOperationVO;
 import io.pelle.mango.client.security.MangoPermissionVO;
 import io.pelle.mango.db.voquery.Predicates;
+import io.pelle.mango.demo.server.util.BaseDemoTest;
 
 public class SecurityServiceTest extends BaseDemoTest {
 
