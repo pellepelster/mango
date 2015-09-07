@@ -2,29 +2,43 @@
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
 <Configure class="org.eclipse.jetty.server.Server">
 
+	<Call class="java.lang.System" name="setProperty">
+		<Arg>security.disable</Arg>
+		<Arg>true</Arg>
+	</Call>
+
+
 	<New id="jdbcUrl" class="java.lang.StringBuilder">
-	 	<Call name="append">
-	      <Arg>jdbc:hsqldb:file:</Arg>
-	    </Call>
-	 	<Call name="append">
-			<Arg><Call class="java.lang.System" name="getProperty"><Arg>java.io.tmpdir</Arg></Call></Arg>
-	    </Call>
-	 	<Call name="append">
-	      <Arg>/mangodemo-db</Arg>
-	    </Call>
- 	</New>
+		<Call name="append">
+			<Arg>jdbc:hsqldb:file:</Arg>
+		</Call>
+		<Call name="append">
+			<Arg>
+				<Call class="java.lang.System" name="getProperty">
+					<Arg>java.io.tmpdir</Arg>
+				</Call>
+			</Arg>
+		</Call>
+		<Call name="append">
+			<Arg>/mangodemo-db</Arg>
+		</Call>
+	</New>
 
 	<New id="jdbc/mangodemo" class="org.eclipse.jetty.plus.jndi.Resource">
 		<Arg></Arg>
 		<Arg>jdbc/mangodemo</Arg>
 		<Arg>
-            <New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
-                <Set name="driverClassName">org.hsqldb.jdbcDriver</Set>
-                <Set name="url"><Ref id="jdbcUrl"><Call name="toString" /></Ref></Set>
-                <Set name="username">mangodemo</Set>
-                <Set name="password">mangodemo</Set>
-            </New>
-		
+			<New class="org.apache.tomcat.dbcp.dbcp.BasicDataSource">
+				<Set name="driverClassName">org.hsqldb.jdbcDriver</Set>
+				<Set name="url">
+					<Ref id="jdbcUrl">
+						<Call name="toString" />
+					</Ref>
+				</Set>
+				<Set name="username">mangodemo</Set>
+				<Set name="password">mangodemo</Set>
+			</New>
+
 		</Arg>
 	</New>
 

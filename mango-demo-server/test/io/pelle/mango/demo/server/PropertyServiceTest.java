@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +19,9 @@ import io.pelle.mango.client.base.property.IPropertyGroup;
 import io.pelle.mango.client.core.property.PropertyBuilder;
 import io.pelle.mango.client.core.property.PropertyProvider;
 import io.pelle.mango.client.core.property.SystemProperties;
+import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.property.IPropertyService;
+import io.pelle.mango.client.property.PropertyValueVO;
 import io.pelle.mango.db.dao.BaseEntityDAO;
 import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.property.PropertyValue;
@@ -38,6 +41,14 @@ public class PropertyServiceTest extends BaseDemoTest {
 	public static IProperty<String> SYSTEM_PROPERTY = PropertyBuilder.getInstance().createStringProperty("systemproperty").system().name("test property");
 
 	public static IProperty<String> SYSTEM_PROPERTY_WITH_DEFAULT = PropertyBuilder.getInstance().createStringProperty("systemproperty.with.default").system().name("test property").defaultValue("ddd");
+
+	@Autowired
+	private IBaseEntityService baseEntityService;
+
+	@Before
+	public void beforeEach() {
+		baseEntityService.deleteAll(PropertyValueVO.class.getName());
+	}
 
 	@Autowired
 	private BaseEntityDAO baseEntityDAO;

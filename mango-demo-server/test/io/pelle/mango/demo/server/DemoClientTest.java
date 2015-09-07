@@ -90,10 +90,6 @@ public class DemoClientTest extends BaseDemoTest {
 	@Before
 	public void setup() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-	}
-
-	@Before
-	public void beforeEach() {
 
 		baseEntityService.deleteAll(Entity1VO.class.getName());
 		baseEntityService.deleteAll(Entity2VO.class.getName());
