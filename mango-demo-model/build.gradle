@@ -7,6 +7,4 @@ dependencies {
 	compile project(path: ':mango-model')
 	compile project(path: ':mango-server')
 	
-	testCompile group: "com.jayway.jsonpath", name: "json-path", version: "2.0.0"
-	
 }

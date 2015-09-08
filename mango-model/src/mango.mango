@@ -168,6 +168,9 @@ project Mango {
 				
 				entity MangoUser
 				
+				label "User"
+				pluralLabel "Users"
+				
 				dictionarycontrols {
 					textcontrol MangoUserName {
 						entityattribute userName

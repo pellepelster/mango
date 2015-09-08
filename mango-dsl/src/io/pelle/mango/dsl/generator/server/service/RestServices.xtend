@@ -13,6 +13,7 @@ import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
 import org.eclipse.xtext.xbase.compiler.ImportManager
+import java.util.Date
 
 class RestServices extends BaseServices {
 
@@ -75,11 +76,23 @@ class RestServices extends BaseServices {
 			}
 		
 			«FOR method : service.remoteMethods»
+
+				«IF method.params.hasOnlyTypes( #[String, Long, Integer, Date ] )»
+					@RequestMapping(value = "«restMapping(service, method)»", produces="application/json", method = RequestMethod.GET)
+					@ResponseBody
+					@Transactional
+					public «method.methodReturn» «uniqueMethodName(service, method)»Get(«FOR parameter : method.params SEPARATOR ", "»@RequestParam("«parameter.name»") «parameter.parameterType.qualifiedName» «parameter.name» «ENDFOR»«IF method.params.size > 0»,«ENDIF» javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
+						«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF»«method.methodName»(«FOR parameter : method.params SEPARATOR ", "»«parameter.name»«ENDFOR»«IF method.params.size > 0»,«ENDIF» httpServletResponse, httpServletRequest);
+					}
+				«ENDIF»
+			
+			
 				public «method.methodReturn» «method.methodName»(«method.params.methodParameters»«IF !method.params.isEmpty», «ENDIF»javax.servlet.http.HttpServletResponse httpServletResponse, javax.servlet.http.HttpServletRequest httpServletRequest) {
 					«IF !method.returnsVoid»return («method.returnType.qualifiedName»)«ENDIF» this.«service.variableName».«method.name.toFirstLower»(«FOR parameter : method.params SEPARATOR ", "»«parameter.name»«ENDFOR»);
 				}
 
-				@RequestMapping(value = "«method.restMapping»", produces="application/json", method = RequestMethod.POST, consumes = "application/json")
+
+				@RequestMapping(value = "«restMapping(service, method)»", produces="application/json", method = RequestMethod.POST, consumes = "application/json")
 				@ResponseBody
 				@Transactional
 				«IF method.params.size == 1 && method.params.hasOnlyType(typeof(ValueObject))»

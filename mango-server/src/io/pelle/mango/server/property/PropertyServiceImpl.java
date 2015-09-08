@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
 
@@ -110,6 +111,7 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 	}
 
 	@Override
+	@Cacheable(value = "properties", key = "#property.key")
 	public <VALUETYPE extends Serializable> VALUETYPE getProperty(IProperty<VALUETYPE> property) {
 
 		VALUETYPE result = getValueInternal(property);

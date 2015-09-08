@@ -329,6 +329,8 @@ project MangoDemo {
 				
 				entity Employee
 				
+				pluralLabel "Employees"
+				
 				dictionarycontrols {
 					textcontrol Name1 {
 						entityattribute name

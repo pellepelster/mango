@@ -3,7 +3,7 @@ package io.pelle.mango.server.api.entity;
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.server.BaseEntityApiController;
+import io.pelle.mango.server.api.BaseEntityApiController;
 import io.pelle.mango.server.entity.EntityUtils;
 
 import java.util.List;

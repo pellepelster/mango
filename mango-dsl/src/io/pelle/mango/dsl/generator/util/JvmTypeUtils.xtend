@@ -20,7 +20,11 @@ class JvmTypeUtils {
 	def <T> boolean hasOnlyType(List<JvmFormalParameter> jvmFormalParameters, Class<T> typeClass) {
 		return !jvmFormalParameters.exists[e | !e.parameterType.isWrappedTypeType(typeClass)]
 	}
-	
+
+	def boolean hasOnlyTypes(List<JvmFormalParameter> jvmFormalParameters, Class<?>[] typeClasses) {
+		return jvmFormalParameters.forall[ e | typeClasses.exists[ f | !e.parameterType.isWrappedTypeType(f) ] ]
+	}
+
 	def <T> boolean isWrappedTypeType(JvmTypeReference jvmTypeReference, Class<T> typeClass) {
 		return getWrappedTypeType(jvmTypeReference, typeClass) != null
 	}

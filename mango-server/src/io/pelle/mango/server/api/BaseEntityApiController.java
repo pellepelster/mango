@@ -1,4 +1,4 @@
-package io.pelle.mango.server;
+package io.pelle.mango.server.api;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.server.vo.VOMetaDataService;

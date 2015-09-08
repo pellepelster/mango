@@ -192,14 +192,6 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 	}
 
 	@Bean
-	public MessageSource messageSource() {
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("/i18/usermsg");
-		messageSource.setDefaultEncoding("UTF-8");
-		return messageSource;
-	}
-
-	@Bean
 	public JmxReporter jmxReporter() {
 
 		JmxReporter reporter = JmxReporter.forRegistry(metricRegistry()).build();

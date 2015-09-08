@@ -374,7 +374,7 @@ class NameUtils {
 	// dictionary model I18N
 	// -------------------------------------------------------------------------
 	def dictionaryI18NName(Model model) {
-		return model.modelName.toFirstUpper + "_messages";
+		return model.modelName.toLowerCase + "_dictionary_messages";
 	}
 
 	def dictionaryI18NNameFullQualifiedName(Model model) {

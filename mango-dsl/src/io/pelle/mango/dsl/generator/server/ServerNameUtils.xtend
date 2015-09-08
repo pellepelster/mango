@@ -147,8 +147,13 @@ class ServerNameUtils extends NameUtils {
 		return service.name.toLowerCase
 	}
 
-	def restMapping(ServiceMethod serviceMethod) {
-		return serviceMethod.name.toLowerCase
+	def restMapping(Service service, ServiceMethod serviceMethod) {
+		
+		if (service.remoteMethods.filter[e|e.name.equals(serviceMethod.name)].size > 1) {
+			return serviceMethod.name.toLowerCase + service.remoteMethods.indexOf(serviceMethod)
+		} else {
+			return serviceMethod.name.toLowerCase
+		}
 	}
 
 	// rest controller

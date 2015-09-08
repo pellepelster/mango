@@ -2,6 +2,12 @@
 <!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
 
 <Configure class="org.eclipse.jetty.server.Server">
+
+	<Call class="java.lang.System" name="setProperty">
+		<Arg>security.disable</Arg>
+		<Arg>true</Arg>
+	</Call>
+
 	<New id="jdbc/projectname" class="org.eclipse.jetty.plus.jndi.Resource">
 		<Arg></Arg>
 		<Arg>jdbc/projectname</Arg>

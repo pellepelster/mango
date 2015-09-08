@@ -19,7 +19,7 @@ import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.web.modules.dictionary.databinding.ValidationUtils;
 import io.pelle.mango.client.web.modules.webhook.EntityWebhookDefitnition;
 import io.pelle.mango.db.dao.IBaseVODAO;
-import io.pelle.mango.server.BaseEntityApiController;
+import io.pelle.mango.server.api.BaseEntityApiController;
 
 @RestController
 public class WebhookApiController extends BaseEntityApiController {
