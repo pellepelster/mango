@@ -11,9 +11,17 @@
  */
 package io.pelle.mango.client.web;
 
+import com.google.gwt.core.client.Callback;
+import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.ScriptInjector;
+import com.google.gwt.core.shared.GWT;
+import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.i18n.client.Dictionary;
+import com.google.gwt.user.client.rpc.RpcRequestBuilder;
+
 import io.pelle.mango.client.IMangoGwtRemoteServiceLocator;
 import io.pelle.mango.client.MangoClientConfiguration;
-import io.pelle.mango.client.MangoGwtRemoteServiceLocator;
 import io.pelle.mango.client.base.MangoClientBase;
 import io.pelle.mango.client.base.layout.ILayoutFactory;
 import io.pelle.mango.client.web.module.ModuleFactoryRegistry;
@@ -24,12 +32,6 @@ import io.pelle.mango.client.web.modules.log.LogModuleFactory;
 import io.pelle.mango.client.web.modules.navigation.ModuleNavigationModuleFactory;
 import io.pelle.mango.client.web.modules.property.PropertyModuleFactory;
 import io.pelle.mango.client.web.modules.webhook.WebHookModuleFactory;
-
-import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.shared.GWT;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.user.client.rpc.RpcRequestBuilder;
 
 /**
  * TODO pelle insert type comment
@@ -66,29 +68,40 @@ public final class MangoClientWeb implements EntryPoint {
 		init();
 	}
 
-	public static MangoMessages MESSAGES;
-
 	public static MangoResources RESOURCES;
 
-	private IMangoGwtRemoteServiceLocator myAdminGWTRemoteServiceLocator;
+	private IMangoImplProvider mangoProvider = new MangoGwtImplProvider();
 
 	public ILayoutFactory<?, ?> getLayoutFactory() {
 		return this.layoutFactory;
 	}
 
 	public IMangoGwtRemoteServiceLocator getRemoteServiceLocator() {
-
-		if (this.myAdminGWTRemoteServiceLocator != null) {
-			return this.myAdminGWTRemoteServiceLocator;
-		}
-
-		return MangoGwtRemoteServiceLocator.getInstance();
+		return mangoProvider.getGwtRemoteServiceLocatorInstance();
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public void onModuleLoad() {
+
 		instance = this;
+
+		String dictionaryScriptUrl = com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/systemservice/getdictionaryi18nscript?variableName=dictionary";
+		ScriptInjector.fromUrl(dictionaryScriptUrl).setCallback(new Callback<Void, Exception>() {
+			public void onFailure(Exception reason) {
+				GWT.log("failed to load dictionary translations from .");
+			}
+
+			public void onSuccess(Void result) {
+				Dictionary dictionary = Dictionary.getDictionary("dictionary");
+
+				if (mangoProvider instanceof MangoGwtImplProvider) {
+					((MangoGwtImplProvider) mangoProvider).setDictionary(dictionary);
+				}
+
+			}
+		}).setRemoveTag(false).setWindow(ScriptInjector.TOP_WINDOW).inject();
+
 		init();
 	}
 
@@ -96,6 +109,7 @@ public final class MangoClientWeb implements EntryPoint {
 	 * Registers all MyAdmin modules
 	 */
 	public static void init() {
+
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new DictionarySearchModuleFactory());
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new DictionaryEditorModuleFactory());
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new ModuleNavigationModuleFactory());
@@ -105,7 +119,6 @@ public final class MangoClientWeb implements EntryPoint {
 		ModuleFactoryRegistry.getInstance().addModuleFactory(new WebHookModuleFactory());
 
 		if (GWT.isClient()) {
-			MESSAGES = ((MangoMessages) GWT.create(MangoMessages.class));
 			RESOURCES = ((MangoResources) GWT.create(MangoResources.class));
 		}
 
@@ -117,14 +130,22 @@ public final class MangoClientWeb implements EntryPoint {
 		return this;
 	}
 
-	public MangoClientWeb setMyAdminGWTRemoteServiceLocator(IMangoGwtRemoteServiceLocator myAdminGWTRemoteServiceLocator) {
-		this.myAdminGWTRemoteServiceLocator = myAdminGWTRemoteServiceLocator;
+	public MangoClientWeb setMangoImplProvider(IMangoImplProvider mangoProvider) {
+		this.mangoProvider = mangoProvider;
 		return this;
 	}
 
 	public MangoClientWeb setRpcRequestBuilder(RpcRequestBuilder rpcRequestBuilder) {
 		MangoClientBase.getInstance().setRpcRequestBuilder(rpcRequestBuilder);
 		return this;
+	}
+
+	public IMangoImplProvider getMangoProvider() {
+		return mangoProvider;
+	}
+
+	public MangoMessages getMessages() {
+		return mangoProvider.getMessages();
 	}
 
 }

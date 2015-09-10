@@ -59,7 +59,7 @@ public class BaseControlWithHelp<CONTROL_TYPE extends Widget> extends Composite 
 
 		if (baseControlModel.getHelpText() != null) {
 
-			helpLabel = new Label(MangoClientWeb.MESSAGES.helpShort());
+			helpLabel = new Label(MangoClientWeb.getInstance().getMessages().helpShort());
 			parent.getElement().appendChild(helpLabel.getElement());
 
 			helpLabel.addStyleName(GwtStyles.CONTROL_FEEDBACK_HELP_STYLE);

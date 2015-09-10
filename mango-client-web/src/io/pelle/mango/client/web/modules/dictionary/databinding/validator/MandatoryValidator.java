@@ -14,10 +14,10 @@ package io.pelle.mango.client.web.modules.dictionary.databinding.validator;
 import io.pelle.mango.client.base.messages.IMessage;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IContentAwareModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.web.MangoClientWeb;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +34,7 @@ public class MandatoryValidator extends BaseValidator {
 		if (isEmpty(value) && databindingAwareModel instanceof IBaseControlModel) {
 			IBaseControlModel baseControlModel = (IBaseControlModel) databindingAwareModel;
 
-			return resultListHelper(new ValidationMessage(IMessage.SEVERITY.ERROR, MandatoryValidator.class.getName(), MangoClientWeb.MESSAGES.mandatoryMessage(DictionaryModelUtil.getEditorLabel(baseControlModel))));
+			return resultListHelper(new ValidationMessage(IMessage.SEVERITY.ERROR, MandatoryValidator.class.getName(), MangoClientWeb.getInstance().getMessages().mandatoryMessage(DictionaryModelUtil.getEditorLabel(baseControlModel))));
 		} else {
 			return Collections.emptyList();
 		}

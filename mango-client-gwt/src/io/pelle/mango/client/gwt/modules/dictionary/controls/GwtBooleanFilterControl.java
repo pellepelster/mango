@@ -17,11 +17,11 @@ import com.google.gwt.user.client.ui.ListBox;
 
 import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.controls.BooleanControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public class GwtBooleanFilterControl extends ListBox implements IGwtControl, IUpdateListener {
 
@@ -52,8 +52,8 @@ public class GwtBooleanFilterControl extends ListBox implements IGwtControl, IUp
 
 		clear();
 		addItem("", "");
-		addItem(MangoClientWeb.MESSAGES.trueText(), Boolean.TRUE.toString());
-		addItem(MangoClientWeb.MESSAGES.falseText(), Boolean.FALSE.toString());
+		addItem(MangoClientWeb.getInstance().getMessages().trueText(), Boolean.TRUE.toString());
+		addItem(MangoClientWeb.getInstance().getMessages().falseText(), Boolean.FALSE.toString());
 
 		onUpdate();
 	}

@@ -82,7 +82,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 		if (previousModuleUI.isPresent()) {
 
-			actionBar.addSingleButton(MangoClientWeb.RESOURCES.back(), MangoClientWeb.MESSAGES.editorBack(), new ClickHandler() {
+			actionBar.addSingleButton(MangoClientWeb.RESOURCES.back(), MangoClientWeb.getInstance().getMessages().editorBack(), new ClickHandler() {
 				/** {@inheritDoc} */
 				@Override
 				public void onClick(ClickEvent event) {
@@ -92,7 +92,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 		}
 
-		actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorSave(), MangoClientWeb.MESSAGES.editorSave(), new ClickHandler() {
+		actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorSave(), MangoClientWeb.getInstance().getMessages().editorSave(), new ClickHandler() {
 			/** {@inheritDoc} */
 			@Override
 			public void onClick(ClickEvent event) {
@@ -100,7 +100,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 			}
 		}, DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName() + "-" + DICTIONARY_SAVE_BUTTON_DEBUG_ID);
 
-		final Button refreshButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorRefresh(), MangoClientWeb.MESSAGES.editorRefresh(), new ClickHandler() {
+		final Button refreshButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.editorRefresh(), MangoClientWeb.getInstance().getMessages().editorRefresh(), new ClickHandler() {
 			/** {@inheritDoc} */
 			@Override
 			public void onClick(ClickEvent event) {
@@ -115,7 +115,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 			final MetaInformationPopupPanel infoPopupPanel = new MetaInformationPopupPanel(getModule().getDictionaryEditor(), getModule().getDictionaryModel());
 			infoPopupPanel.setAutoHideEnabled(true);
 
-			final Button infoButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(), MangoClientWeb.MESSAGES.dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-"
+			final Button infoButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryInfo(), MangoClientWeb.getInstance().getMessages().dictionaryInfo(), DictionaryEditorModule.MODULE_ID + "-"
 					+ getModule().getDictionaryModel().getName() + "-" + DICTIONARY_INFO_BUTTON_DEBUG_ID);
 			infoButton.addClickHandler(new ClickHandler() {
 				/** {@inheritDoc} */
@@ -131,7 +131,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 			final LogPopupPanel logPopupPanel = new LogPopupPanel(getModule().getDictionaryEditor());
 			logPopupPanel.setAutoHideEnabled(true);
 
-			final Button logButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.log(), MangoClientWeb.MESSAGES.log(), DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName()
+			final Button logButton = actionBar.addToButtonGroup(getModule().getModuleUrl(), MangoClientWeb.RESOURCES.log(), MangoClientWeb.getInstance().getMessages().log(), DictionaryEditorModule.MODULE_ID + "-" + getModule().getDictionaryModel().getName()
 					+ "-" + DICTIONARY_LOG_BUTTON_DEBUG_ID);
 			logButton.addClickHandler(new ClickHandler() {
 				/** {@inheritDoc} */
@@ -160,7 +160,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 			@Override
 			public void onSuccess(Result<VOType> result) {
 				if (getModule().getDictionaryEditor().getValidationMessages().hasErrors()) {
-					Toastr.error(MangoClientWeb.MESSAGES.editorContainsErrors());
+					Toastr.error(MangoClientWeb.getInstance().getMessages().editorContainsErrors());
 				}
 			}
 		});
@@ -172,7 +172,7 @@ public class DictionaryEditorModuleUI<VOType extends IBaseVO> extends BaseDictio
 	public boolean close() {
 
 		if (getModule().getDictionaryEditor().isDirty()) {
-			return Window.confirm(MangoClientWeb.MESSAGES.editorClose());
+			return Window.confirm(MangoClientWeb.getInstance().getMessages().editorClose());
 		} else {
 			return true;
 		}

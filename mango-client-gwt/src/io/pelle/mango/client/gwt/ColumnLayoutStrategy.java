@@ -16,12 +16,12 @@ import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.Widget;
 
 import io.pelle.mango.client.base.layout.LAYOUT_TYPE;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseContainerElement;
 import io.pelle.mango.client.web.modules.dictionary.container.BaseTableElement;
 import io.pelle.mango.client.web.modules.dictionary.container.IContainer;
 import io.pelle.mango.client.web.modules.dictionary.container.TabFolder;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public class ColumnLayoutStrategy {
 

@@ -76,7 +76,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 
 			container.add(dictionaryFilter);
 
-			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.searchSearch(), MangoClientWeb.MESSAGES.searchSearch(), new ClickHandler() {
+			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.searchSearch(), MangoClientWeb.getInstance().getMessages().searchSearch(), new ClickHandler() {
 				/** {@inheritDoc} */
 				@Override
 				public void onClick(ClickEvent event) {
@@ -84,7 +84,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 				}
 			}, DictionarySearchModule.MODULE_ID + "-" + module.getDictionaryModel().getName() + "-" + DICTIONARY_SEARCH_BUTTON_DEBUG_ID);
 		} else {
-			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.searchSearch(), MangoClientWeb.MESSAGES.searchSearch(), new ClickHandler() {
+			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.searchSearch(), MangoClientWeb.getInstance().getMessages().searchSearch(), new ClickHandler() {
 				/** {@inheritDoc} */
 				@Override
 				public void onClick(ClickEvent event) {
@@ -95,7 +95,7 @@ public class DictionarySearchModuleUI<VOType extends IBaseVO> extends BaseDictio
 		}
 
 		if (module.isCreateEnabled()) {
-			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryCreate(), MangoClientWeb.MESSAGES.dictionaryCreate(), new ClickHandler() {
+			actionBar.addToButtonGroup(module.getModuleUrl(), MangoClientWeb.RESOURCES.dictionaryCreate(), MangoClientWeb.getInstance().getMessages().dictionaryCreate(), new ClickHandler() {
 				/** {@inheritDoc} */
 				@Override
 				public void onClick(ClickEvent event) {

@@ -30,12 +30,12 @@ import gwtupload.client.SingleUploader;
 import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.controls.IFileControl;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.gwt.utils.HorizontalSpacer;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public class GwtFileControl extends Div implements IGwtControl, ClickHandler, SimpleCallback<Void>, IUpdateListener {
 
@@ -45,9 +45,9 @@ public class GwtFileControl extends Div implements IGwtControl, ClickHandler, Si
 
 	private Anchor fileNameAnchor = new Anchor();
 
-	private Button addButton = new Button(MangoClientWeb.MESSAGES.addFile());
+	private Button addButton = new Button(MangoClientWeb.getInstance().getMessages().addFile());
 
-	private Button deleteButton = new Button(MangoClientWeb.MESSAGES.removeFile());
+	private Button deleteButton = new Button(MangoClientWeb.getInstance().getMessages().removeFile());
 
 	public static class FileControlUploadStatus extends BaseUploadStatus {
 		public FileControlUploadStatus() {
@@ -89,14 +89,14 @@ public class GwtFileControl extends Div implements IGwtControl, ClickHandler, Si
 				case INPROGRESS:
 				case SUBMITING:
 				case QUEUED:
-					fileNameAnchor.setText(MangoClientWeb.MESSAGES.inProgress());
+					fileNameAnchor.setText(MangoClientWeb.getInstance().getMessages().inProgress());
 					break;
 				case CANCELED:
 				case CANCELING:
-					fileNameAnchor.setText(MangoClientWeb.MESSAGES.canceled());
+					fileNameAnchor.setText(MangoClientWeb.getInstance().getMessages().canceled());
 					break;
 				case ERROR:
-					fileNameAnchor.setText(MangoClientWeb.MESSAGES.failed());
+					fileNameAnchor.setText(MangoClientWeb.getInstance().getMessages().failed());
 					break;
 				default:
 					fileNameAnchor.setText(fileControl.getFileName());

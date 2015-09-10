@@ -12,12 +12,12 @@
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.messages.IValidationMessages;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IEnumerationControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.ReferenceControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

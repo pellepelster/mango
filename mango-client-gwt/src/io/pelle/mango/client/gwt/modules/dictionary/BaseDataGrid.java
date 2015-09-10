@@ -12,11 +12,11 @@
 package io.pelle.mango.client.gwt.modules.dictionary;
 
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.container.BaseTableRowKeyProvider;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import java.util.List;
 

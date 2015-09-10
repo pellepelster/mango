@@ -49,8 +49,8 @@ public class EndlessLogDataGrid extends EndlessDataGrid<LogEntryVO> {
 			}
 		});
 
-		addColumn(LOG_TIMESTAMP_COLUMN, MangoClientWeb.MESSAGES.logTimestampTitle());
-		addColumn(LOG_MESSAGE_COLUMN, MangoClientWeb.MESSAGES.logMessageTitle());
+		addColumn(LOG_TIMESTAMP_COLUMN, MangoClientWeb.getInstance().getMessages().logTimestampTitle());
+		addColumn(LOG_MESSAGE_COLUMN, MangoClientWeb.getInstance().getMessages().logMessageTitle());
 
 	}
 

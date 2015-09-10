@@ -13,7 +13,6 @@ package io.pelle.mango.client.web.modules.dictionary.base;
 
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IHierarchicalControlModel;
@@ -27,6 +26,7 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.controls.ControlContentPresenter;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditor;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +48,7 @@ public final class DictionaryUtil {
 	public static String getDictionaryAdd(IDictionaryModel dictionaryModel) {
 		String title = DictionaryModelUtil.getEditorLabel(dictionaryModel);
 
-		return MangoClientWeb.MESSAGES.dictionaryAdd(title);
+		return MangoClientWeb.getInstance().getMessages().dictionaryAdd(title);
 
 	}
 
@@ -59,13 +59,13 @@ public final class DictionaryUtil {
 		String label = DictionaryModelUtil.getEditorLabel(dictionaryModel);
 
 		if (vo == null || vo.isNew()) {
-			label += " (" + MangoClientWeb.MESSAGES.editorNew() + ")";
+			label += " (" + MangoClientWeb.getInstance().getMessages().editorNew() + ")";
 		} else {
 			label += " " + getLabel(dictionaryModel.getLabelControls(), vo);
 		}
 
 		if (dictionaryEditor.isDirty()) {
-			label += " " + MangoClientWeb.MESSAGES.editorDirtyMarker();
+			label += " " + MangoClientWeb.getInstance().getMessages().editorDirtyMarker();
 		}
 
 		return label;
@@ -140,9 +140,9 @@ public final class DictionaryUtil {
 
 		String countText = null;
 		if (moreResultsAvailable) {
-			countText = MangoClientWeb.MESSAGES.searchResultsMoreAvailable(resultCount);
+			countText = MangoClientWeb.getInstance().getMessages().searchResultsMoreAvailable(resultCount);
 		} else {
-			countText = MangoClientWeb.MESSAGES.searchResults(resultCount);
+			countText = MangoClientWeb.getInstance().getMessages().searchResults(resultCount);
 		}
 
 		return getSearchLabel(dictionaryModel) + " (" + countText + ")";

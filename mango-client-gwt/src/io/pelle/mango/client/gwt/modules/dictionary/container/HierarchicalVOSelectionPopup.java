@@ -23,7 +23,7 @@ public class HierarchicalVOSelectionPopup extends BaseSelectionPopup<IHierarchic
 	private DictionaryHierarchicalNodeVO dictionaryHierarchicalNodeVO;
 
 	private HierarchicalVOSelectionPopup(HierarchicalConfigurationVO hierarchicalConfiguration, IHierarchicalVO currentParent, IHierarchicalControlModel hierarchicalControlModel) {
-		super(MangoClientWeb.MESSAGES.hierarchicalParent(), null);
+		super(MangoClientWeb.getInstance().getMessages().hierarchicalParent(), null);
 		this.hierarchicalConfiguration = hierarchicalConfiguration;
 	}
 

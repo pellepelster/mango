@@ -15,6 +15,8 @@ import java.io.Serializable;
 
 public interface IBaseModel extends Serializable {
 
+	public static final String I18N_LABEL_KEY = "label";
+
 	String getName();
 
 	String getFullQualifiedName();

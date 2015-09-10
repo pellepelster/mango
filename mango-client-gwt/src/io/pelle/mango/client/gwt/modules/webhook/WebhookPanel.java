@@ -68,7 +68,7 @@ public class WebhookPanel extends FlowPanel {
 		form.add(nameFormGroup);
 
 		FormLabel nameLabel = new FormLabel();
-		nameLabel.setText(MangoClientWeb.MESSAGES.webHookName());
+		nameLabel.setText(MangoClientWeb.getInstance().getMessages().webHookName());
 		nameFormGroup.add(nameLabel);
 
 		nameInput = new Input();
@@ -80,7 +80,7 @@ public class WebhookPanel extends FlowPanel {
 		form.add(urlFormGroup);
 
 		FormLabel urlLabel = new FormLabel();
-		urlLabel.setText(MangoClientWeb.MESSAGES.webHookURL());
+		urlLabel.setText(MangoClientWeb.getInstance().getMessages().webHookURL());
 		urlFormGroup.add(urlLabel);
 
 		urlInput = new Input();
@@ -92,7 +92,7 @@ public class WebhookPanel extends FlowPanel {
 		form.add(entitiesFormGroup);
 
 		FormLabel entityLabel = new FormLabel();
-		entityLabel.setText(MangoClientWeb.MESSAGES.webHookName());
+		entityLabel.setText(MangoClientWeb.getInstance().getMessages().webHookName());
 		entitiesFormGroup.add(entityLabel);
 
 		entitiesListBox = new ListBox();
@@ -109,7 +109,7 @@ public class WebhookPanel extends FlowPanel {
 		buttonGroup = new ButtonGroup();
 		buttondFormGroup.add(buttonGroup);
 
-		saveButton = new Button(MangoClientWeb.MESSAGES.webHookSave());
+		saveButton = new Button(MangoClientWeb.getInstance().getMessages().webHookSave());
 		saveButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -123,7 +123,7 @@ public class WebhookPanel extends FlowPanel {
 			}
 		});
 
-		deleteButton = new Button(MangoClientWeb.MESSAGES.webHookDelete());
+		deleteButton = new Button(MangoClientWeb.getInstance().getMessages().webHookDelete());
 		deleteButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -132,7 +132,7 @@ public class WebhookPanel extends FlowPanel {
 			}
 		});
 
-		cancelButton = new Button(MangoClientWeb.MESSAGES.webHookCancel());
+		cancelButton = new Button(MangoClientWeb.getInstance().getMessages().webHookCancel());
 		cancelButton.addClickHandler(new ClickHandler() {
 
 			@Override
@@ -145,7 +145,7 @@ public class WebhookPanel extends FlowPanel {
 			}
 		});
 
-		editButton = new Button(MangoClientWeb.MESSAGES.webHookEdit());
+		editButton = new Button(MangoClientWeb.getInstance().getMessages().webHookEdit());
 		editButton.addClickHandler(new ClickHandler() {
 
 			@Override

@@ -13,7 +13,6 @@ import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.IBaseDictionaryElement;
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
@@ -23,6 +22,7 @@ import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.modules.dictionary.databinding.IValidator;
 import io.pelle.mango.client.web.modules.dictionary.databinding.validator.MandatoryValidator;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearch;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel, ValueType> extends BaseDictionaryElement<ModelType>implements IBaseControl<ValueType, ModelType> {
 
@@ -99,7 +99,7 @@ public abstract class BaseDictionaryControl<ModelType extends IBaseControlModel,
 		String label = DictionaryModelUtil.getEditorLabel(getModel());
 
 		if (getModel().isMandatory()) {
-			label += MangoClientWeb.MESSAGES.mandatoryMarker();
+			label += MangoClientWeb.getInstance().getMessages().mandatoryMarker();
 		}
 
 		return label;

@@ -55,7 +55,7 @@ public class PropertyModuleUI extends BaseGwtModuleUI<PropertyModule> {
 	public PropertyModuleUI(PropertyModule module) {
 		super(module, PropertyModule.UI_MODULE_ID);
 
-		title = new HTML(MangoClientWeb.MESSAGES.properties());
+		title = new HTML(MangoClientWeb.getInstance().getMessages().properties());
 		title.addStyleName(GwtStyles.TITLE);
 		container.add(title);
 

@@ -28,6 +28,9 @@ import java.util.List;
  */
 public interface IDictionaryModel extends IBaseModel {
 
+	
+	public static final String I18N_PLURAL_LABEL_KEY = "label";
+
 	/**
 	 * Model for the editor UI
 	 * 
@@ -70,4 +73,6 @@ public interface IDictionaryModel extends IBaseModel {
 	 * @return
 	 */
 	Class<? extends IBaseVO> getVOClass();
+
+
 }

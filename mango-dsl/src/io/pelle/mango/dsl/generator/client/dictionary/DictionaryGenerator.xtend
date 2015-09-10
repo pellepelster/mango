@@ -5,6 +5,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.CompositeModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel
 import io.pelle.mango.client.base.modules.dictionary.model.editor.EditorModel
 import io.pelle.mango.client.base.modules.dictionary.model.search.FilterModel
 import io.pelle.mango.client.base.modules.dictionary.model.search.ResultModel
@@ -23,6 +24,7 @@ import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import org.eclipse.xtext.generator.IFileSystemAccess
+import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel
 
 class DictionaryGenerator {
 
@@ -71,19 +73,19 @@ class DictionaryGenerator {
 	'''
 
 	def dictionaryI18N(Dictionary dictionary) '''
-		«dictionary.name.toLowerCase»_label=«dictionary.label»
-		«dictionary.name.toLowerCase»_plurallabel=«dictionary.pluralLabel»
+		«dictionary.name.toLowerCase»_«IBaseControlModel.I18N_LABEL_KEY»=«dictionary.label»
+		«dictionary.name.toLowerCase»_«IDictionaryModel.I18N_PLURAL_LABEL_KEY»=«dictionary.pluralLabel»
 		«dictionary.dictionarysearch.dictionaryI18N(dictionary.name.toLowerCase)»
 		«dictionary.dictionaryeditor.dictionaryI18N(dictionary.name.toLowerCase)»
 	'''
 
 	def dispatch dictionaryI18N(DictionarySearch dictionarySearch, String prefix) '''
-		«prefix»_«dictionarySearch.name.toLowerCase»_label=«dictionarySearch.label»
+		«prefix»_«dictionarySearch.name.toLowerCase»_«IBaseControlModel.I18N_LABEL_KEY»=«dictionarySearch.label»
 		«dictionarySearch.dictionaryfilters.forEach[it.dictionaryI18N(prefix + "_" + dictionarySearch.name.toLowerCase)]»
 	'''
 
 	def dispatch dictionaryI18N(DictionaryEditor dictionaryEditor, String prefix) '''
-		«prefix»_«dictionaryEditor.name.toLowerCase»_label=«dictionaryEditor.label»
+		«prefix»_«dictionaryEditor.name.toLowerCase»_«IBaseControlModel.I18N_LABEL_KEY»=«dictionaryEditor.label»
 		«dictionaryEditor.containercontents.forEach[it.dictionaryI18N(prefix + "_" + dictionaryEditor.name.toLowerCase)]»
 	'''
 
@@ -101,7 +103,7 @@ class DictionaryGenerator {
 	def dispatch dictionaryI18N(DictionaryControl dictionaryControl, String prefix) '''
 		«IF dictionaryControl.baseControl != null && dictionaryControl.baseControl.labels != null»
 			«IF dictionaryControl.name != null»
-				«prefix»_«dictionaryControl.name.toLowerCase»_label=«dictionaryControl.baseControl.labels.label»
+				«prefix»_«dictionaryControl.name.toLowerCase»_«IBaseControlModel.I18N_LABEL_KEY»=«dictionaryControl.baseControl.labels.label»
 			«ENDIF»
 		«ENDIF»
 	'''

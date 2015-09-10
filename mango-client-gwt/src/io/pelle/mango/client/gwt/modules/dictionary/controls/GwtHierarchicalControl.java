@@ -13,7 +13,6 @@ package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.messages.IValidationMessages;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.util.SimpleCallback;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.gwt.modules.dictionary.container.HierarchicalVOSelectionPopup;
@@ -21,6 +20,7 @@ import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.client.web.modules.dictionary.controls.HierarchicalControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -81,7 +81,7 @@ public class GwtHierarchicalControl extends Hyperlink implements IGwtControl {
 			}
 		} else {
 			hierarchicalVO = null;
-			setText(MangoClientWeb.MESSAGES.hierarchicalNone());
+			setText(MangoClientWeb.getInstance().getMessages().hierarchicalNone());
 		}
 	}
 

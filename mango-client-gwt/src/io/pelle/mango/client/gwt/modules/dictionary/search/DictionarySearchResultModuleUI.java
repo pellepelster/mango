@@ -14,7 +14,6 @@ package io.pelle.mango.client.gwt.modules.dictionary.search;
 import io.pelle.mango.client.base.module.IModule.IModuleUpdateListener;
 import io.pelle.mango.client.base.module.ModuleUtils;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.query.DictionaryModelQuery;
@@ -28,6 +27,7 @@ import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
 import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModuleFactory;
 import io.pelle.mango.client.web.modules.dictionary.search.DictionarySearchModule;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -97,7 +97,7 @@ public class DictionarySearchResultModuleUI<VOType extends IBaseVO> extends Base
 
 		if (result.size() == 0) {
 			Div noSearchResults = new Div();
-			noSearchResults.add(new HTML(MangoClientWeb.MESSAGES.noSearchResults()));
+			noSearchResults.add(new HTML(MangoClientWeb.getInstance().getMessages().noSearchResults()));
 			resultContainer.add(noSearchResults);
 		} else {
 			for (final SearchResultItem searchResultItem : result) {

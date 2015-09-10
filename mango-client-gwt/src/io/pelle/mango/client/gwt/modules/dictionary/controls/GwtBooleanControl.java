@@ -17,10 +17,10 @@ import com.google.gwt.user.client.ui.CheckBox;
 
 import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.BooleanControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public class GwtBooleanControl extends CheckBox implements IGwtControl, IUpdateListener {
 

@@ -42,25 +42,25 @@ public class MetaInformationPopupPanel extends PopupPanel {
 		grid = new FlexTable();
 
 		int row = 0;
-		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoCreateDate()));
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.getInstance().getMessages().dictionaryInfoCreateDate()));
 		grid.setHTML(row, 1, formatLabelValue(null));
 
 		row++;
-		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoCreateUser()));
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.getInstance().getMessages().dictionaryInfoCreateUser()));
 		grid.setHTML(row, 1, formatLabelValue(null));
 
 		row++;
-		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoUpdateDate()));
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.getInstance().getMessages().dictionaryInfoUpdateDate()));
 		grid.setHTML(row, 1, formatLabelValue(null));
 
 		row++;
-		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.dictionaryInfoUpdateUser()));
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.getInstance().getMessages().dictionaryInfoUpdateUser()));
 		grid.setHTML(row, 1, formatLabelValue(null));
 
 		row++;
-		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.MESSAGES.apiLabel()));
+		grid.setHTML(row, 0, TEMPLATE.labelText(MangoClientWeb.getInstance().getMessages().apiLabel()));
 		
-		Anchor anchor = new Anchor(MangoClientWeb.MESSAGES.entityApi(capitalize(entityDescriptor.getName())), com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/api/entity/"
+		Anchor anchor = new Anchor(MangoClientWeb.getInstance().getMessages().entityApi(capitalize(entityDescriptor.getName())), com.google.gwt.core.client.GWT.getModuleBaseURL() + "../remote/api/entity/"
 				+ entityDescriptor.getName().toLowerCase() + "/index");
 		anchor.setTarget("_blank");
 		grid.setWidget(row, 1, anchor);
@@ -81,10 +81,10 @@ public class MetaInformationPopupPanel extends PopupPanel {
 
 	public void updateMetainformation(IInfoVOEntity infoVOEntity) {
 
-		grid.setHTML(0, 1, formatLabelValue(infoVOEntity.getCreateDate(), MangoClientWeb.MESSAGES.undefined()));
-		grid.setHTML(1, 1, formatLabelValue(infoVOEntity.getCreateUser(), MangoClientWeb.MESSAGES.undefined()));
-		grid.setHTML(2, 1, formatLabelValue(infoVOEntity.getUpdateDate(), MangoClientWeb.MESSAGES.undefined()));
-		grid.setHTML(3, 1, formatLabelValue(infoVOEntity.getUpdateUser(), MangoClientWeb.MESSAGES.undefined()));
+		grid.setHTML(0, 1, formatLabelValue(infoVOEntity.getCreateDate(), MangoClientWeb.getInstance().getMessages().undefined()));
+		grid.setHTML(1, 1, formatLabelValue(infoVOEntity.getCreateUser(), MangoClientWeb.getInstance().getMessages().undefined()));
+		grid.setHTML(2, 1, formatLabelValue(infoVOEntity.getUpdateDate(), MangoClientWeb.getInstance().getMessages().undefined()));
+		grid.setHTML(3, 1, formatLabelValue(infoVOEntity.getUpdateUser(), MangoClientWeb.getInstance().getMessages().undefined()));
 	}
 
 	public static String formatLabelValue(Object labelValue, String defaultNullValue) {

@@ -85,10 +85,10 @@ public class HierarchicalEditorHook<VOType extends IHierarchicalVO> extends Base
 
 		final PopupPanel hierarchicalMenuWrapper = new PopupPanel(true);
 
-		hierarchicalMenuWrapper.setTitle(MangoClientWeb.MESSAGES.addChildren());
+		hierarchicalMenuWrapper.setTitle(MangoClientWeb.getInstance().getMessages().addChildren());
 		hierarchicalMenuWrapper.add(hierarchicalMenuOtions);
 
-		final IButton hierarchicalButton = new BaseButton(MangoClientWeb.RESOURCES.hierarchy(), MangoClientWeb.MESSAGES.addChildren(), HIERARCHY_ADD_CHILD_BUTTON_DEBUG_ID) {
+		final IButton hierarchicalButton = new BaseButton(MangoClientWeb.RESOURCES.hierarchy(), MangoClientWeb.getInstance().getMessages().addChildren(), HIERARCHY_ADD_CHILD_BUTTON_DEBUG_ID) {
 			@Override
 			public void onClick(final ClickEvent event, DictionaryContext dictionaryContext) {
 				hierarchicalMenuWrapper.setPopupPositionAndShow(new PositionCallback() {

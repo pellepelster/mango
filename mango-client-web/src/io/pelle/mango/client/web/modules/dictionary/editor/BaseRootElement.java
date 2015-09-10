@@ -14,16 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BaseRootElement<ModelType extends IBaseRootModel> extends BaseDictionaryElement<ModelType> implements IBaseRootElement<ModelType>
-{
+public class BaseRootElement<ModelType extends IBaseRootModel> extends BaseDictionaryElement<ModelType>implements IBaseRootElement<ModelType> {
 	private final Composite rootComposite;
 
 	private Map<IBaseDictionaryElement<?>, ValidationMessages> validationMessagesMap = new HashMap<IBaseDictionaryElement<?>, ValidationMessages>();
 
 	private RootElementValidationMessages rootElementValidationMessages;
 
-	public BaseRootElement(ModelType baseRootModel, BaseDictionaryElement<IBaseModel> parent)
-	{
+	public BaseRootElement(ModelType baseRootModel, BaseDictionaryElement<IBaseModel> parent) {
 		super(baseRootModel, parent);
 
 		this.rootComposite = new Composite(baseRootModel.getCompositeModel(), this);
@@ -31,22 +29,18 @@ public class BaseRootElement<ModelType extends IBaseRootModel> extends BaseDicti
 		this.rootElementValidationMessages = new RootElementValidationMessages(this.validationMessagesMap);
 	}
 
-	public Composite getRootComposite()
-	{
+	public Composite getRootComposite() {
 		return this.rootComposite;
 	}
 
 	@Override
-	public List<? extends BaseDictionaryElement<?>> getAllChildren()
-	{
+	public List<? extends BaseDictionaryElement<?>> getAllChildren() {
 		return this.rootComposite.getAllChildren();
 	}
 
 	@Override
-	public ValidationMessages getValidationMessages(IBaseDictionaryElement<?> baseDictionaryElement)
-	{
-		if (!this.validationMessagesMap.containsKey(baseDictionaryElement))
-		{
+	public ValidationMessages getValidationMessages(IBaseDictionaryElement<?> baseDictionaryElement) {
+		if (!this.validationMessagesMap.containsKey(baseDictionaryElement)) {
 			this.validationMessagesMap.put(baseDictionaryElement, new ValidationMessages());
 		}
 
@@ -54,20 +48,17 @@ public class BaseRootElement<ModelType extends IBaseRootModel> extends BaseDicti
 	}
 
 	@Override
-	public void addValidationMessages(IBaseDictionaryElement<?> baseDictionaryElement, List<IValidationMessage> elementValidationMessages)
-	{
+	public void addValidationMessages(IBaseDictionaryElement<?> baseDictionaryElement, List<IValidationMessage> elementValidationMessages) {
 		getValidationMessages(baseDictionaryElement).addAll(elementValidationMessages);
 	}
 
 	@Override
-	public void clearValidationMessages(IBaseDictionaryElement<?> baseDictionaryElement)
-	{
+	public void clearValidationMessages(IBaseDictionaryElement<?> baseDictionaryElement) {
 		getValidationMessages(baseDictionaryElement).clear();
 		this.validationMessagesMap.remove(baseDictionaryElement);
 	}
 
-	public IValidationMessages getValidationMessages()
-	{
+	public IValidationMessages getValidationMessages() {
 		return this.rootElementValidationMessages;
 	}
 

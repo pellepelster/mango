@@ -75,7 +75,7 @@ public class WebhookModuleUI extends BaseGwtModuleUI<WebHookModule> implements W
 		ButtonGroup addWebhookButtonGroup = new ButtonGroup();
 		container.add(addWebhookButtonGroup);
 
-		Button addWebhookButton = new Button(MangoClientWeb.MESSAGES.webHooksAdd());
+		Button addWebhookButton = new Button(MangoClientWeb.getInstance().getMessages().webHooksAdd());
 		addWebhookButton.setDataToggle(Toggle.DROPDOWN);
 		addWebhookButtonGroup.add(addWebhookButton);
 

@@ -100,7 +100,7 @@ public class ReferenceControl<VOTYPE extends IBaseVO> extends BaseDictionaryCont
 						if (result.size() == 1) {
 							setValue(result.get(0));
 						} else if (result.size() == 0) {
-							addValidationMessage(new ValidationMessage(IMessage.SEVERITY.ERROR, ReferenceControl.class.getName(), MangoClientWeb.MESSAGES.referenceParseError(valueString)));
+							addValidationMessage(new ValidationMessage(IMessage.SEVERITY.ERROR, ReferenceControl.class.getName(), MangoClientWeb.getInstance().getMessages().referenceParseError(valueString)));
 						}
 					}
 				});

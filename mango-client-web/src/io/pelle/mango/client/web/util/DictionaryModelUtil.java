@@ -9,20 +9,25 @@
  * Contributors:
  *     Christian Pelster - initial API and implementation
  */
-package io.pelle.mango.client.base.modules.dictionary.model;
+package io.pelle.mango.client.web.util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.base.Objects;
 
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseLookupControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
+import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
+import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
+import io.pelle.mango.client.base.modules.dictionary.model.VOMetaModelProvider;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IAssignmentTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseContainerModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.common.base.Objects;
+import io.pelle.mango.client.web.MangoClientWeb;
 
 public final class DictionaryModelUtil {
 
@@ -52,7 +57,19 @@ public final class DictionaryModelUtil {
 	}
 
 	public static String getEditorLabel(IDictionaryModel dictionaryModel) {
+
+		String i18nText = getModelI18N(dictionaryModel, IDictionaryModel.I18N_LABEL_KEY);
+
+		if (i18nText != null) {
+			return i18nText;
+		}
+
 		return Objects.firstNonNull(dictionaryModel.getEditorModel().getLabel(), getLabel(dictionaryModel));
+	}
+
+	public static String getModelI18N(IBaseModel baseModel, String keyPostfix) {
+		String key = baseModel.getFullQualifiedName().replaceAll("/", "_").toLowerCase() + "_" + keyPostfix;
+		return MangoClientWeb.getInstance().getMangoProvider().getI18NString(key);
 	}
 
 	public static String getLabel(IDictionaryModel dictionaryModel) {

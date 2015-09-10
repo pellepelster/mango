@@ -134,7 +134,7 @@ public class NavigationModuleOverviewUI extends BaseGwtModuleUI<ModuleNavigation
 
 	@Override
 	public String getTitle() {
-		return MangoClientWeb.MESSAGES.navigationTitle();
+		return MangoClientWeb.getInstance().getMessages().navigationTitle();
 	}
 
 }

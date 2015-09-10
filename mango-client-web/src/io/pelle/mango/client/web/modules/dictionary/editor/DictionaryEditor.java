@@ -19,7 +19,6 @@ import io.pelle.mango.client.base.modules.dictionary.editor.IDictionaryEditor;
 import io.pelle.mango.client.base.modules.dictionary.editor.IEditorUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.hooks.BaseEditorHook;
 import io.pelle.mango.client.base.modules.dictionary.hooks.DictionaryHookRegistry;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.editor.IEditorModel;
 import io.pelle.mango.client.base.util.CollectionUtils;
@@ -34,6 +33,7 @@ import io.pelle.mango.client.web.modules.dictionary.editor.DictionaryEditorModul
 import io.pelle.mango.client.web.modules.dictionary.events.VOSavedEvent;
 import io.pelle.mango.client.web.util.BaseAsyncCallback;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IEditorModel>implements IDictionaryEditor<VOType> {
 

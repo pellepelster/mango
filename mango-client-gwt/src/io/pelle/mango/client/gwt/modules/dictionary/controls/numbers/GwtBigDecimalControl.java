@@ -12,10 +12,10 @@
 package io.pelle.mango.client.gwt.modules.dictionary.controls.numbers;
 
 import io.pelle.mango.client.base.messages.IValidationMessages;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.BigDecimalControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import java.math.BigDecimal;
 

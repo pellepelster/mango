@@ -42,7 +42,7 @@ public class SystemServiceImpl implements ISystemService {
 		return result;
 	}
 
-	@RequestMapping(value = "getdictionaryi18nscript", produces = "application/json", method = RequestMethod.GET)
+	@RequestMapping(value = "getdictionaryi18nscript", produces = "application/javascript", method = RequestMethod.GET)
 	public void getDictionaryI18NScript(String variableName, HttpServletResponse httpServletResponse) throws IOException {
 
 		Locale locale = LocaleContextHolder.getLocale();
@@ -53,7 +53,11 @@ public class SystemServiceImpl implements ISystemService {
 
 		try {
 
-			resources = resolver.getResources(String.format(MESSAGES_FILE, "_" + locale.getCountry() + "_" + locale.getLanguage()));
+			if (locale.getCountry() != null) {
+				resources = resolver.getResources(String.format(MESSAGES_FILE, "_" + locale.getLanguage().toLowerCase() + "_" + locale.getCountry().toLowerCase()));
+			} else {
+				resources = resolver.getResources(String.format(MESSAGES_FILE, "_" + locale.getLanguage().toLowerCase()));
+			}
 
 			if (resources.length == 0) {
 				resources = resolver.getResources(String.format(MESSAGES_FILE, ""));
@@ -74,7 +78,7 @@ public class SystemServiceImpl implements ISystemService {
 
 				for (Entry<Object, Object> e : properties.entrySet()) {
 
-					sb.append(String.format("%s = \"%s\"; ", e.getKey(), e.getValue()));
+					sb.append(String.format("%s: \"%s\", ", e.getKey(), e.getValue()));
 				}
 
 			} catch (IOException e) {
@@ -84,6 +88,7 @@ public class SystemServiceImpl implements ISystemService {
 
 		sb.append(" };");
 
+		httpServletResponse.setContentType("application/javascript");
 		httpServletResponse.getWriter().print(sb.toString());
 		httpServletResponse.getWriter().close();
 	}

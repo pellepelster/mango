@@ -97,7 +97,7 @@ public class FileControl extends BaseDictionaryControl<IFileControlModel, Object
 	private String getFileNamePlaceholder() {
 		
 		if (showEmptyPlaceHolder) {
-			return MangoClientWeb.MESSAGES.fileNone();
+			return MangoClientWeb.getInstance().getMessages().fileNone();
 		} else {
 			return "";
 		}

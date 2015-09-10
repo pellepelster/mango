@@ -136,7 +136,6 @@ public class PropertyServiceTest extends BaseDemoTest {
 	}
 
 	@Test
-	@Ignore
 	public void testGetDatabasePropertyWithFallback() {
 
 		baseEntityDAO.deleteAll(PropertyValue.class);

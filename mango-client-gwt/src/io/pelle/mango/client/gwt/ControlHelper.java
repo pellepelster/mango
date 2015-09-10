@@ -26,11 +26,11 @@ import com.google.gwt.user.client.ui.Widget;
 
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.controls.IBaseControl;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.util.CollectionUtils;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 import io.pelle.mango.client.web.modules.dictionary.layout.WidthCalculationStrategy;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public class ControlHelper implements IUpdateListener {
 

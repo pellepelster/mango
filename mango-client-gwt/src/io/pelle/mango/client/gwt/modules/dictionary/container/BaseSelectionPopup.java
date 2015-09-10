@@ -31,7 +31,7 @@ public abstract class BaseSelectionPopup<VOType extends IBaseVO> {
 	}
 
 	private void createOkButton(FlowPanel panel) {
-		Button button = new Button(MangoClientWeb.MESSAGES.buttonOk());
+		Button button = new Button(MangoClientWeb.getInstance().getMessages().buttonOk());
 		button.setType(ButtonType.PRIMARY);
 		button.setIcon(IconType.CHECK);
 		panel.add(button);
@@ -61,7 +61,7 @@ public abstract class BaseSelectionPopup<VOType extends IBaseVO> {
 
 	private void createCancelButton(FlowPanel panel) {
 
-		Button button = new Button(MangoClientWeb.MESSAGES.buttonCancel());
+		Button button = new Button(MangoClientWeb.getInstance().getMessages().buttonCancel());
 		button.setType(ButtonType.DEFAULT);
 		button.setIcon(IconType.CLOSE);
 
@@ -84,7 +84,7 @@ public abstract class BaseSelectionPopup<VOType extends IBaseVO> {
 
 	protected void initDialogBox() {
 		modal = new Modal();
-		modal.setTitle(MangoClientWeb.MESSAGES.voSelectionTitle(message));
+		modal.setTitle(MangoClientWeb.getInstance().getMessages().voSelectionTitle(message));
 
 		ModalBody modalBody = new ModalBody();
 		modalBody.add(createDialogBoxContent());

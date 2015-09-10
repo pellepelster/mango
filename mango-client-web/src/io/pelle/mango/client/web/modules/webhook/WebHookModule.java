@@ -43,7 +43,7 @@ public class WebHookModule extends BaseWebhookModule {
 
 	@Override
 	public String getTitle() {
-		return MangoClientWeb.MESSAGES.webHooksTitle();
+		return MangoClientWeb.getInstance().getMessages().webHooksTitle();
 	}
 
 	@Override

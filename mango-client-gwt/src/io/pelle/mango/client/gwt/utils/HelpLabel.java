@@ -20,10 +20,10 @@ public class HelpLabel {
 		Label tempLabel = null;
 
 		if (inline) {
-			tempLabel = new InlineLabel(MangoClientWeb.MESSAGES.helpShort());
+			tempLabel = new InlineLabel(MangoClientWeb.getInstance().getMessages().helpShort());
 			tempLabel.addStyleName(GwtStyles.FEEDBACK_HELP_INLINE_STYLE);
 		} else {
-			tempLabel = new Label(MangoClientWeb.MESSAGES.helpShort());
+			tempLabel = new Label(MangoClientWeb.getInstance().getMessages().helpShort());
 			tempLabel.addStyleName(GwtStyles.CONTROL_FEEDBACK_HELP_STYLE);
 		}
 

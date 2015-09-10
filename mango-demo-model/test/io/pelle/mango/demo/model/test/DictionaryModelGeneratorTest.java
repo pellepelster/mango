@@ -115,6 +115,11 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testGetDictionaryModelPath() {
+		assertEquals("DemoDictionary1/DemoEditor1/Tabfolder1/Tab1/IntegerControl1",  MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.INTEGER_CONTROL1.getFullQualifiedName());
+	}
+	
+	@Test
 	public void testDictionary1IntegerControl1RatingControlInputType() {
 		assertEquals(IIntegerControlModel.CONTROL_TYPE.RATING, MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.INTEGER_CONTROL2.getControlType());
 	}

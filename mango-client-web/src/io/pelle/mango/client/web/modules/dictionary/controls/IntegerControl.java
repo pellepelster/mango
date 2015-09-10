@@ -26,7 +26,7 @@ public class IntegerControl extends BaseDictionaryControl<IIntegerControlModel, 
 		try {
 			return new ParseResult(new Integer(valueString));
 		} catch (NumberFormatException e) {
-			return new ParseResult(new ValidationMessage(IMessage.SEVERITY.ERROR, IntegerControl.class.getName(), MangoClientWeb.MESSAGES.integerParseError(valueString)));
+			return new ParseResult(new ValidationMessage(IMessage.SEVERITY.ERROR, IntegerControl.class.getName(), MangoClientWeb.getInstance().getMessages().integerParseError(valueString)));
 		}
 	}
 

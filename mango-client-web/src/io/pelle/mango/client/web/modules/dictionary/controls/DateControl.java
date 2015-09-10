@@ -69,7 +69,7 @@ public class DateControl extends BaseDictionaryControl<IDateControlModel, Date> 
 			if (parsedDate != null) {
 				setValue(parsedDate);
 			} else {
-				addValidationMessage(new ValidationMessage(IMessage.SEVERITY.ERROR, DateControl.class.getName(), MangoClientWeb.MESSAGES.dateParseError(valueString)));
+				addValidationMessage(new ValidationMessage(IMessage.SEVERITY.ERROR, DateControl.class.getName(), MangoClientWeb.getInstance().getMessages().dateParseError(valueString)));
 			}
 		} else {
 			setValue(null);

@@ -165,7 +165,7 @@ public class PropertyServiceImpl implements IPropertyService, InitializingBean {
 	}
 
 	@Override
-	@CacheEvict(value = "properties", key = "#property.key")
+	@CacheEvict(value = "properties", key = "#property.key", allEntries = true)
 	public <VALUETYPE extends Serializable> void setProperty(IProperty<VALUETYPE> property, VALUETYPE value) {
 
 		VALUETYPE oldValue = getProperty(property);

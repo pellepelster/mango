@@ -20,10 +20,10 @@ import com.google.gwt.user.client.ui.ListBox;
 import io.pelle.mango.client.base.messages.IValidationMessages;
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
 import io.pelle.mango.client.base.modules.dictionary.controls.IEnumerationControl;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.EnumerationControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public class GwtEnumerationControl extends ListBox implements IGwtControl, IUpdateListener {
 

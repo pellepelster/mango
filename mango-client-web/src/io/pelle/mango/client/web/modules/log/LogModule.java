@@ -45,7 +45,7 @@ public class LogModule extends BaseLogModule {
 
 	@Override
 	public String getTitle() {
-		return MangoClientWeb.MESSAGES.logTitle();
+		return MangoClientWeb.getInstance().getMessages().logTitle();
 	}
 
 	@Override

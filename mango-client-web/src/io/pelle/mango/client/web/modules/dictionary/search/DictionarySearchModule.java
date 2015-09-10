@@ -59,7 +59,7 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 
 	private DictionarySearch<VOType> dictionarySearch;
 
-	private String title = MangoClientWeb.MESSAGES.dictionarySearch();
+	private String title = MangoClientWeb.getInstance().getMessages().dictionarySearch();
 
 	public DictionarySearchModule(String moduleUrl, AsyncCallback<IModule> moduleCallback, Map<String, Object> parameters) {
 
@@ -90,7 +90,7 @@ public class DictionarySearchModule<VOType extends IBaseVO> extends BaseDictiona
 	}
 
 	public void search(String query, AsyncCallback<List<io.pelle.mango.client.search.SearchResultItem>> callback) {
-		this.title = MangoClientWeb.MESSAGES.dictionarySearchResults(query);
+		this.title = MangoClientWeb.getInstance().getMessages().dictionarySearchResults(query);
 		MangoClientWeb.getInstance().getRemoteServiceLocator().getSearchService().search(null, query, callback);
 	}
 

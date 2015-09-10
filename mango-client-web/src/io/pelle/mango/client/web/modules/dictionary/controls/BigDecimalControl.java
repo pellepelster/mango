@@ -43,7 +43,7 @@ public class BigDecimalControl extends BaseDictionaryControl<IBigDecimalControlM
 		try {
 			return new ParseResult(new BigDecimal(valueString));
 		} catch (NumberFormatException e) {
-			return new ParseResult(new ValidationMessage(IMessage.SEVERITY.ERROR, BigDecimalControl.class.getName(), MangoClientWeb.MESSAGES.decimalParseError(valueString)));
+			return new ParseResult(new ValidationMessage(IMessage.SEVERITY.ERROR, BigDecimalControl.class.getName(), MangoClientWeb.getInstance().getMessages().decimalParseError(valueString)));
 		}
 	}
 

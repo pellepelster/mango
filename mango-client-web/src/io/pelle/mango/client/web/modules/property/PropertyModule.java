@@ -41,7 +41,7 @@ public class PropertyModule extends BasePropertyModule {
 
 	@Override
 	public String getTitle() {
-		return MangoClientWeb.MESSAGES.logTitle();
+		return MangoClientWeb.getInstance().getMessages().logTitle();
 	}
 
 	@Override

@@ -4,11 +4,11 @@ import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
 import io.pelle.mango.client.base.messages.IValidationMessage;
 import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.hierarchy.IHierarchicalService;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 import io.pelle.mango.server.validator.IValidator;
 import io.pelle.mango.server.validator.ValidatorMessages;
 

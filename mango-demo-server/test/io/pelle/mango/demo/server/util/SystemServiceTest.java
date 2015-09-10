@@ -5,6 +5,7 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Locale;
@@ -13,7 +14,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -52,21 +52,18 @@ public class SystemServiceTest extends BaseDemoTest {
 	@Test
 	public void testGetDictionaryI18N() throws Exception {
 
-		String content = mockMvc.perform(get("/systemservice/getdictionaryi18nscript?variableName=xxx")).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		String content = mockMvc.perform(get("/systemservice/getdictionaryi18nscript?variableName=xxx")).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/javascript")).andReturn().getResponse().getContentAsString();
 
 		assertTrue(content.trim().startsWith("var xxx = {"));
-		assertTrue(content.trim().contains("employee_plurallabel = \"Employees\";"));
-		assertTrue(content.trim().contains("mangouser_label = \"User\";"));
+		assertTrue(content.trim().contains("mangouser_label: \"User\","));
+		//assertTrue(content.trim().contains("employee_plurallabel: \"Employees\";"));
 		assertTrue(content.trim().endsWith("};"));
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(HttpHeaders.ACCEPT_LANGUAGE, Locale.GERMANY.toString());
-
-		content = mockMvc.perform(get("/systemservice/getdictionaryi18nscript?variableName=xxx&locale=de_DE").headers(httpHeaders)).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+		content = mockMvc.perform(get("/systemservice/getdictionaryi18nscript?variableName=xxx").locale(Locale.GERMANY)).andDo(print()).andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
 		assertTrue(content.trim().startsWith("var xxx = {"));
-		assertTrue(content.trim().contains("employee_plurallabel = \"Employees\";"));
-		assertTrue(content.trim().contains("mangouser_label = \"User\";"));
+		assertTrue(content.trim().contains("mangouser_label: \"Benutzer\","));
+		assertTrue(content.trim().contains("employee_plurallabel: \"Mitarbeiter\","));
 		assertTrue(content.trim().endsWith("};"));
 
 	}

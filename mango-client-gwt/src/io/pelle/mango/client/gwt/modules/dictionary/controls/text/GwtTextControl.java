@@ -11,11 +11,11 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls.text;
 
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.BaseControlWithHelp;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.TextControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import com.google.gwt.user.client.ui.TextBox;
 

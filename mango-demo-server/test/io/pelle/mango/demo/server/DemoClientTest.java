@@ -28,7 +28,6 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.gwt.event.dom.client.ClickEvent;
 
-import io.pelle.mango.MangoGwtAsyncAdapterRemoteServiceLocator;
 import io.pelle.mango.client.MangoDictionaryModel;
 import io.pelle.mango.client.PermissionsImpl;
 import io.pelle.mango.client.base.modules.dictionary.DictionaryContext;
@@ -40,6 +39,7 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.security.MangoGroupVO;
 import io.pelle.mango.client.security.MangoPermissionVO;
+import io.pelle.mango.client.web.IMangoImplProvider;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
@@ -826,9 +826,8 @@ public class DemoClientTest extends BaseDemoTest {
 	}
 
 	@Autowired
-	public void setMangoGwtAsyncAdapterRemoteServiceLocator(MangoGwtAsyncAdapterRemoteServiceLocator mangoGwtAsyncAdapterRemoteServiceLocator) {
-		MangoClientWeb.getInstance().setMyAdminGWTRemoteServiceLocator(mangoGwtAsyncAdapterRemoteServiceLocator);
-		MangoClientWeb.MESSAGES = I18NProxy.create(MangoMessages.class);
+	public void setMangoImplProvider(IMangoImplProvider mangoImplProvider) {
+		MangoClientWeb.getInstance().setMangoImplProvider(mangoImplProvider);
 		MangoDemoClientConfiguration.registerAll();
 	}
 

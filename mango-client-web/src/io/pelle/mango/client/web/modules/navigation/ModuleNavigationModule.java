@@ -84,7 +84,7 @@ public class ModuleNavigationModule extends BaseModuleNavigationModule {
 		if (hasParameter(MODULE_TITLE_PARAMETER_ID)) {
 			return this.parameters.get(MODULE_TITLE_PARAMETER_ID).toString();
 		} else {
-			return MangoClientWeb.MESSAGES.navigationTitle();
+			return MangoClientWeb.getInstance().getMessages().navigationTitle();
 		}
 	}
 

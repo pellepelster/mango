@@ -55,7 +55,7 @@ public class PermissionsGwtImpl implements IContainer<Panel>, ClickHandler, IUpd
 		dataProvider = new ListDataProvider<MangoPermissionVO>();
 		dataProvider.addDataDisplay(permissionsTable);
 
-		TextControlModel textControlModel = new TextControlModel(MangoClientWeb.MESSAGES.permission(), MangoPermissionVO.PERMISSIONID);
+		TextControlModel textControlModel = new TextControlModel(MangoClientWeb.getInstance().getMessages().permission(), MangoPermissionVO.PERMISSIONID);
 		permissionsTable.addColumn(ControlHandler.getInstance().<MangoPermissionVO> createColumn(textControlModel));
 		panel.add(permissionsTable);
 
@@ -69,7 +69,7 @@ public class PermissionsGwtImpl implements IContainer<Panel>, ClickHandler, IUpd
 
 		permissionsTable.addColumn(column, new TextHeader("sss"));
 
-		Button addButton = new Button(MangoClientWeb.MESSAGES.addPermission());
+		Button addButton = new Button(MangoClientWeb.getInstance().getMessages().addPermission());
 		addButton.addClickHandler(this);
 		panel.add(addButton);
 
@@ -99,7 +99,7 @@ public class PermissionsGwtImpl implements IContainer<Panel>, ClickHandler, IUpd
 
 		IBaseControlModel model = new TextControlModel("permission", MangoPermissionVO.PERMISSIONID);
 
-		final BaseListSelectionPopup<MangoPermissionVO> popup = new BaseListSelectionPopup<MangoPermissionVO>(MangoClientWeb.MESSAGES.selectPermissionToAdd(), Arrays.asList(new IBaseControlModel[] { model }),
+		final BaseListSelectionPopup<MangoPermissionVO> popup = new BaseListSelectionPopup<MangoPermissionVO>(MangoClientWeb.getInstance().getMessages().selectPermissionToAdd(), Arrays.asList(new IBaseControlModel[] { model }),
 				new SimpleCallback<MangoPermissionVO>() {
 
 					@Override

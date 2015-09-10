@@ -21,13 +21,13 @@ import com.google.gwt.view.client.ListDataProvider;
 
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable;
 import io.pelle.mango.client.base.modules.dictionary.container.IBaseTable.ITableRow;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.gwt.modules.dictionary.IMangoCellTable;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.table.HighlightingTextCell;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.table.TableRowColumn;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 /**
  * @author pelle

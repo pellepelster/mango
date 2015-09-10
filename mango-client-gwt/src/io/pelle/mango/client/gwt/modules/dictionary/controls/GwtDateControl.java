@@ -12,11 +12,11 @@
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
 import io.pelle.mango.client.base.messages.IValidationMessages;
-import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelUtil;
 import io.pelle.mango.client.base.util.GwtUtils;
 import io.pelle.mango.client.gwt.ControlHelper;
 import io.pelle.mango.client.web.modules.dictionary.controls.DateControl;
 import io.pelle.mango.client.web.modules.dictionary.controls.IGwtControl;
+import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 import java.util.Date;
 
