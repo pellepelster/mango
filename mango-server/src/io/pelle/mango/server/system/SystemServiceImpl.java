@@ -49,14 +49,18 @@ public class SystemServiceImpl implements ISystemService {
 
 		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-		Resource[] resources;
+		Resource[] resources = new Resource[0];
 
 		try {
 
-			if (locale.getCountry() != null) {
-				resources = resolver.getResources(String.format(MESSAGES_FILE, "_" + locale.getLanguage().toLowerCase() + "_" + locale.getCountry().toLowerCase()));
-			} else {
-				resources = resolver.getResources(String.format(MESSAGES_FILE, "_" + locale.getLanguage().toLowerCase()));
+			String localeParts[] = locale.toString().split("_");
+
+			if (localeParts.length == 2) {
+				resources = resolver.getResources(String.format(MESSAGES_FILE, "_" + localeParts[0] + "_" + localeParts[1]));
+			}
+
+			if (resources.length == 0) {
+				resources = resolver.getResources(String.format(MESSAGES_FILE, "_" + localeParts[0]));
 			}
 
 			if (resources.length == 0) {
