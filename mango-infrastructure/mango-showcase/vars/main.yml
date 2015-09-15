@@ -1,0 +1,10 @@
+mysql_root_password: mangodemo
+mysql_databases:
+  - name: mangodemo
+    encoding: latin1
+    collation: latin1_general_ci
+mysql_users:
+  - name: mangodemo
+    host: "%"
+    password: mangodemo
+    priv: "mangodemo.*:ALL"

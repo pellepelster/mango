@@ -1,0 +1,28 @@
+repositories {
+
+	ivy {
+		name "warRepository"
+		url "http://zoidberg.pelle.io/~mango-ci/repository/"
+		layout "maven"
+	}
+	
+	mavenCentral()
+}
+
+configurations {
+	war
+}
+
+dependencies {
+	war group: "io.pelle.mango", name: "mango-demo-server", version: "+", ext: "war"
+	war group: "org.apache.derby", name: "derby", version: "10.9.1.0"
+	war group: "org.apache.tomcat", name: "dbcp", version: '6.0.39'
+	war 'mysql:mysql-connector-java:5.1.35'
+}
+
+task fetchWar(type: Copy) {
+	ext.warDir = new File('war')
+	warDir.mkdirs()
+	into warDir
+	from configurations.war
+}
