@@ -17,7 +17,7 @@ $DIR/eclipse-builder.sh --name mango-eclipse --destination $DISTRIBUTIONS_DIR \
 --platform linux \
 --platform macosx \
 --platform windows \
-mango-eclipse.conf
+$DIR/mango-eclipse.conf
 
 pushd $DISTRIBUTIONS_DIR
 for FILE in *linux*; do tar -czf ../${FILE}.tar.gz ${FILE}; done
