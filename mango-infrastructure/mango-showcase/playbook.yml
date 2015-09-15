@@ -1,21 +1,17 @@
 ---
 - hosts: all
-  vars_files:
-    - vars/main.yml
-  roles:
-#    - { role: groover.java }
-#    - { role: groover.tomcat }
-#    - { role: geerlingguy.mysql }
   sudo: true
   tasks:
+    - name: Ensure python-apt is installed
+      command: apt-get install python-apt -y -q creates=/usr/share/doc/python-apt
+      sudo: yes
     - name: update apt cache
       apt: update_cache=yes
     - name: install tomcat8
       apt: name=tomcat8 state=present
+    - copy: src=tomcat/server.xml dest=/etc/tomcat8/server.xml
     - copy: src=gradle dest=/tmp mode=0755
     - shell: /tmp/gradle/gradlew --build-file /tmp/gradle/build.gradle fetchWar
     - shell: cp /tmp/gradle/war/mango-demo-server*.war /var/lib/tomcat8/webapps/mango-demo-server.war
     - shell: cp /tmp/gradle/war/*derby*.jar /usr/share/tomcat8/lib/
-    - shell: cp /tmp/gradle/war/*mysql*.jar /usr/share/tomcat8/lib/
-    - copy: src=tomcat/server.xml dest=/etc/tomcat8/server.xml
     - service: name=tomcat8 state=restarted
