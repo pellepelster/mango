@@ -1,6 +1,6 @@
 # Mango in three minutes
 
-Mango is a model based framework for easy web application development. Have a look at the video to see how little it takes to get started with your own project.
+Mango is a web based framework built on top of a domain specific language that lets you model entities, user interfaces and services. Have a look at the video to see how little it takes to get started with your own project.
 
 [![Mango in three minutes](http://img.youtube.com/vi/Okah2fwFjh8/0.jpg)](http://www.youtube.com/watch?v=Okah2fwFjh8)
 
