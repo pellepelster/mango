@@ -10,7 +10,7 @@ rm -rf $DISTRIBUTIONS_DIR
 mkdir -p $DISTRIBUTIONS_DIR
 
 if [ ! -d "$ECLIPSE_DIR" ]; then
-	curl $ECLIPSE_DISTRIBUTION_URL | tar -xzv
+	curl $ECLIPSE_DISTRIBUTION_URL | tar -xzv -c $DIR
 fi
 
 $DIR/eclipse-builder.sh --name mango-eclipse --destination $DISTRIBUTIONS_DIR \
