@@ -1,13 +1,19 @@
+configurations{
+	provided
+}
+
 dependencies {
 	compile project(':mango-base')
 	compile group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
 	compile group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt
-	compile group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
+	provided group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
 	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
 
 	compile project(':mango-gwt-commons')
 
 }
+
+sourceSets.main.compileClasspath += [ configurations.provided ]
 
 jar {
 	from sourceSets.main.allSource
