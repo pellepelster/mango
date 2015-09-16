@@ -60,6 +60,10 @@ allprojects {
 
 	eclipse {
 		pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir
+		
+		 classpath {
+			plusConfigurations += [ configurations.provided ]
+		}
 	}
 
 	dependencies {
