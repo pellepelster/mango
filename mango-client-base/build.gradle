@@ -1,7 +1,3 @@
-configurations{
-	provided
-}
-
 dependencies {
 	compile project(':mango-base')
 	compile group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
@@ -12,8 +8,6 @@ dependencies {
 	compile project(':mango-gwt-commons')
 
 }
-
-sourceSets.main.compileClasspath += [ configurations.provided ]
 
 jar {
 	from sourceSets.main.allSource
