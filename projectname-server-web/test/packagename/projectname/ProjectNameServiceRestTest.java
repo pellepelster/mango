@@ -1,9 +1,11 @@
 package packagename.projectname;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.test.BaseDBTest;
 import org.springframework.http.MediaType;
@@ -32,7 +34,7 @@ public class ProjectNameServiceRestTest extends BaseDBTest {
 
 	@Before
 	public void setup() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+		mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).apply(springSecurity()).build();
 	}
 
 	public ProjectNameServiceRestTest() {
