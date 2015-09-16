@@ -15,6 +15,7 @@ import io.pelle.mango.client.base.modules.dictionary.container.ICustomComposite;
 import io.pelle.mango.client.base.modules.dictionary.container.IFileList;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.CustomCompositeModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.ReferenceListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.TabFolderModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
@@ -30,6 +31,7 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
 import io.pelle.mango.client.web.test.container.CustomCompositeTestContainer;
 import io.pelle.mango.client.web.test.container.FileListTestcontainer;
+import io.pelle.mango.client.web.test.container.ReferenceListTestContainer;
 import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
@@ -69,6 +71,10 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 
 	public TabFolderTestContainer getContainer(TabFolderModel containerModel) {
 		return new TabFolderTestContainer(baseDictionaryModule.getElement(containerModel));
+	}
+
+	public ReferenceListTestContainer getContainer(ReferenceListModel containerModel) {
+		return new ReferenceListTestContainer(baseDictionaryModule.getElement(containerModel));
 	}
 
 	public CustomCompositeTestContainer getContainer(CustomCompositeModel containerModel) {

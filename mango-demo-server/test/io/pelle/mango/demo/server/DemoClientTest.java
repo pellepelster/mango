@@ -39,15 +39,16 @@ import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.client.security.MangoGroupVO;
 import io.pelle.mango.client.security.MangoPermissionVO;
+import io.pelle.mango.client.security.MangoUserVO;
 import io.pelle.mango.client.web.IMangoImplProvider;
 import io.pelle.mango.client.web.MangoClientWeb;
-import io.pelle.mango.client.web.MangoMessages;
 import io.pelle.mango.client.web.test.DictionaryEditorModuleTestUI;
 import io.pelle.mango.client.web.test.DictionarySearchModuleTestUI;
 import io.pelle.mango.client.web.test.MangoClientSyncWebTest;
 import io.pelle.mango.client.web.test.TestButton;
 import io.pelle.mango.client.web.test.container.CustomCompositeTestContainer;
 import io.pelle.mango.client.web.test.container.FileListTestcontainer;
+import io.pelle.mango.client.web.test.container.ReferenceListTestContainer;
 import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
@@ -60,7 +61,6 @@ import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
 import io.pelle.mango.client.web.test.controls.StateTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
 import io.pelle.mango.client.web.util.CustomCompositeProvider;
-import io.pelle.mango.client.web.util.I18NProxy;
 import io.pelle.mango.demo.client.CustomType1Impl;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
@@ -147,6 +147,18 @@ public class DemoClientTest extends BaseDemoTest {
 
 		List<MangoPermissionVO> p = permissions.getPermissions();
 		p.get(0).getOperations().get(0);
+	}
+
+	@Test
+	public void testMangoUserEditorGroupReferenceList() {
+
+		DictionaryEditorModuleTestUI<MangoUserVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDictionaryModel.MANGO_USER.MANGO_USER_EDITOR);
+
+		ReferenceListTestContainer referenceListTestContainer = editor.getContainer(MangoDictionaryModel.MANGO_USER.MANGO_USER_EDITOR.USER_GROUPS);
+
+		// editor.save();
+		// editor.assertHasNoErrors();
+
 	}
 
 	@Test

@@ -6,6 +6,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.IComposite
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCompositeModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IEditableTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IFileListModel;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.IReferenceListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ITabfolderModel;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 import io.pelle.mango.client.web.util.CustomCompositeProvider;
@@ -26,7 +27,9 @@ public class ContainerFactory {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public BaseContainerElement<?, ?> createContainer(IBaseContainerModel baseContainerModel, BaseDictionaryElement parent) {
 
-		if (baseContainerModel instanceof IFileListModel) {
+		if (baseContainerModel instanceof IReferenceListModel) {
+			return new ReferenceList((IReferenceListModel) baseContainerModel, parent);
+		} else if (baseContainerModel instanceof IFileListModel) {
 			return new FileList((IFileListModel) baseContainerModel, parent);
 		} else if (baseContainerModel instanceof ICustomCompositeModel) {
 

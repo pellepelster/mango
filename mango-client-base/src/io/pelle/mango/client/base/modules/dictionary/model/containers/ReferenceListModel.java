@@ -1,9 +1,10 @@
 package io.pelle.mango.client.base.modules.dictionary.model.containers;
 
+import io.pelle.mango.client.base.modules.dictionary.container.IReferenceList;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 
 @SuppressWarnings("serial")
-public abstract class ReferenceListModel extends BaseContainerModel<IReferenceListModel>implements IReferenceListModel {
+public abstract class ReferenceListModel extends BaseContainerModel<IReferenceList>implements IReferenceListModel {
 
 	private String attributePath;
 
