@@ -55,7 +55,7 @@ public class SystemServiceTest extends BaseDemoTest {
 		String content = mockMvc.perform(get("/systemservice/getdictionaryi18nscript?variableName=xxx")).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType("application/javascript")).andReturn().getResponse().getContentAsString();
 
 		assertTrue(content.trim().startsWith("var xxx = {"));
-		assertTrue(content.trim().contains("mangouser_label: \"User\","));
+		assertTrue(content.trim().contains("mangouser_label: \"Users\","));
 		//assertTrue(content.trim().contains("employee_plurallabel: \"Employees\";"));
 		assertTrue(content.trim().endsWith("};"));
 

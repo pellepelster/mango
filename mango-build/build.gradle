@@ -37,6 +37,10 @@ allprojects {
 
 	apply plugin: 'eclipse'
 
+	configurations {
+		provided
+	}
+	
 	sourceSets {
 		main {
 			java { srcDirs = ["src"] }
@@ -47,6 +51,8 @@ allprojects {
 			resources { srcDirs = ["test"] }
 		}
 	}
+	
+	sourceSets.main.compileClasspath += [ configurations.provided ]
 	
 	javadoc {
     	exclude "**/**"

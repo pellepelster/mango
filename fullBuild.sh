@@ -2,8 +2,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ -z "$BUILD_NUMBER" ]; then
-    echo "BUILD_NUMBER not set"
-    exit 1
+	BUILD_NUMBER=$(date +%Y%m%d%H%M)
+	echo "no build number set, using timestamp ${BUILD_NUMBER}"
 fi
 
 GRADLE_OPTIONS=""
