@@ -18,11 +18,16 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
+import io.pelle.mango.client.web.modules.dictionary.base.Button;
 import io.pelle.mango.client.web.util.BaseErrorAsyncCallback;
 
 public class ReferenceList<VOTYPE extends IBaseVO> extends BaseContainerElement<IReferenceListModel<VOTYPE>, IUpdateListener>implements IReferenceList<VOTYPE> {
 
 	private List<VOTYPE> availableVOs = new ArrayList<VOTYPE>();
+
+	private Button addButton = new Button();
+
+	private Button removeButton = new Button();
 
 	public ReferenceList(IReferenceListModel<VOTYPE> referenceListModel, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(referenceListModel, parent);
@@ -65,6 +70,15 @@ public class ReferenceList<VOTYPE extends IBaseVO> extends BaseContainerElement<
 	}
 
 	@Override
+	protected void fireUpdateListeners() {
+
+		addButton.setEnabled(!getAvailableVOs().isEmpty());
+		removeButton.setEnabled(!getSelectedVOs().isEmpty());
+
+		super.fireUpdateListeners();
+	}
+
+	@Override
 	public void addVOs(Collection<VOTYPE> vos) {
 		getListInternal().addAll(vos);
 		fireUpdateListeners();
@@ -85,4 +99,13 @@ public class ReferenceList<VOTYPE extends IBaseVO> extends BaseContainerElement<
 		getListInternal().removeAll(vos);
 		fireUpdateListeners();
 	}
+
+	public Button getRemoveButton() {
+		return removeButton;
+	}
+
+	public Button getAddButton() {
+		return addButton;
+	}
+
 }
