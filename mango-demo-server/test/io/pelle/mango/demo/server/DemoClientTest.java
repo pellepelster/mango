@@ -160,14 +160,24 @@ public class DemoClientTest extends BaseDemoTest {
 		ReferenceListTestContainer<MangoGroupVO> referenceListTestContainer = editor.getContainer(MangoDictionaryModel.MANGO_USER.MANGO_USER_EDITOR.USER_GROUPS);
 
 		referenceListTestContainer.updateReferenceList();
-		referenceListTestContainer.assertReferenceListSize(0);
+		referenceListTestContainer.assertAvailableVOsSize(0);
+		referenceListTestContainer.assertSelectedVOsSize(0);
 
 		DictionaryEditorModuleTestUI<MangoGroupVO> groupEditor = MangoClientSyncWebTest.getInstance().openEditor(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR);
 		groupEditor.getControl(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR.MANGO_GROUP_COMMON.MANGO_GROUP_NAME).setValue("xxx");
 		groupEditor.saveAndAssertHasNoErrors();
 
 		referenceListTestContainer.updateReferenceList();
-		referenceListTestContainer.assertReferenceListSize(1);
+		referenceListTestContainer.assertAvailableVOsSize(1);
+		referenceListTestContainer.assertSelectedVOsSize(0);
+
+		referenceListTestContainer.addVOs(referenceListTestContainer.getAvailableVOs());
+		referenceListTestContainer.assertAvailableVOsSize(0);
+		referenceListTestContainer.assertSelectedVOsSize(1);
+
+		referenceListTestContainer.removeVOs(referenceListTestContainer.getSelectedVOs());
+		referenceListTestContainer.assertAvailableVOsSize(1);
+		referenceListTestContainer.assertSelectedVOsSize(0);
 
 	}
 
@@ -272,9 +282,6 @@ public class DemoClientTest extends BaseDemoTest {
 		referenceControl1.enterValue("");
 		search1.execute();
 		search1.assertSearchResults(2);
-
-		// assertEquals("abc",
-		// search.getResultRow(0).getVO().getStringDatatype1());
 
 	}
 

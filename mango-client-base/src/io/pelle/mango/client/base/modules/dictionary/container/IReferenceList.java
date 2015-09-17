@@ -1,5 +1,6 @@
 package io.pelle.mango.client.base.modules.dictionary.container;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -12,5 +13,11 @@ public interface IReferenceList<VOTYPE extends IBaseVO> extends IBaseContainer<I
 	List<VOTYPE> getAvailableVOs();
 
 	void updateReferenceList(final AsyncCallback<Void> asyncCallback);
+
+	void addVOs(Collection<VOTYPE> voType);
+
+	void removeVOs(Collection<VOTYPE> voType);
+
+	List<VOTYPE> getSelectedVOs();
 
 }

@@ -12,6 +12,7 @@
 package io.pelle.mango.client.web.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.google.common.base.Objects;
@@ -26,7 +27,9 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.IBaseConta
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.ReferenceControlModel;
+import io.pelle.mango.client.base.modules.dictionary.model.controls.TextControlModel;
 import io.pelle.mango.client.base.vo.IEntityDescriptor;
+import io.pelle.mango.client.security.MangoPermissionVO;
 import io.pelle.mango.client.web.MangoClientWeb;
 
 public final class DictionaryModelUtil {
@@ -171,6 +174,17 @@ public final class DictionaryModelUtil {
 	}
 
 	private DictionaryModelUtil() {
+	}
+
+	public static List<IBaseControlModel> getLabelControlsWithFallback(IDictionaryModel dictionaryModel) {
+
+		if (!dictionaryModel.getLabelControls().isEmpty()) {
+			return dictionaryModel.getLabelControls();
+		}
+
+		TextControlModel textControlModel = new TextControlModel(DictionaryModelUtil.getLabel(dictionaryModel), MangoPermissionVO.ID.getAttributeName());
+
+		return Arrays.asList(new IBaseControlModel[] { textControlModel });
 	}
 
 }

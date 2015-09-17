@@ -17,6 +17,7 @@ import io.pelle.mango.client.gwt.modules.dictionary.container.GwtAssignmentTable
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtComposite;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtEditableTable;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtFileList;
+import io.pelle.mango.client.gwt.modules.dictionary.container.GwtReferenceList;
 import io.pelle.mango.client.gwt.modules.dictionary.container.GwtTabFolder;
 import io.pelle.mango.client.gwt.utils.CustomGwtCompositeProvider;
 import io.pelle.mango.client.web.modules.dictionary.container.AssignmentTable;
@@ -26,6 +27,7 @@ import io.pelle.mango.client.web.modules.dictionary.container.Composite;
 import io.pelle.mango.client.web.modules.dictionary.container.EditableTable;
 import io.pelle.mango.client.web.modules.dictionary.container.FileList;
 import io.pelle.mango.client.web.modules.dictionary.container.IContainer;
+import io.pelle.mango.client.web.modules.dictionary.container.ReferenceList;
 import io.pelle.mango.client.web.modules.dictionary.container.TabFolder;
 
 /**
@@ -48,6 +50,8 @@ public class ContainerFactory {
 
 		} else if (baseContainer instanceof FileList) {
 			return new GwtFileList((FileList) baseContainer);
+		} else if (baseContainer instanceof ReferenceList) {
+			return new GwtReferenceList((ReferenceList) baseContainer);
 		} else if (baseContainer instanceof TabFolder) {
 			return new GwtTabFolder((TabFolder) baseContainer, columnLayoutStrategy);
 		} else if (baseContainer instanceof Composite) {

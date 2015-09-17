@@ -1,6 +1,8 @@
 package io.pelle.mango.client.gwt.modules.dictionary.container;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
@@ -8,7 +10,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.DataGrid;
 import com.google.gwt.user.cellview.client.Header;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.gwt.view.client.MultiSelectionModel;
 
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel;
 import io.pelle.mango.client.base.util.SimpleCallback;
@@ -21,28 +23,28 @@ public class VOTable<VOType extends IBaseVO> extends DataGrid<VOType> {
 
 	private List<IBaseControlModel> baseControlModels;
 
-	private final SingleSelectionModel<VOType> selectionModel;
+	private final MultiSelectionModel<VOType> selectionModel;
 
 	public VOTable(List<IBaseControlModel> baseControlModels) {
 
 		this.baseControlModels = baseControlModels;
 
-		selectionModel = new SingleSelectionModel<VOType>(getKeyProvider());
+		selectionModel = new MultiSelectionModel<VOType>(getKeyProvider());
 		setSelectionModel(selectionModel);
 
 		dataProvider.addDataDisplay(this);
 		createModelColumns();
 	}
 
-	public void addSelectHandler(final SimpleCallback<VOType> selectHandler) {
+	public void addSelectHandler(final SimpleCallback<Set<VOType>> selectHandler) {
 		addDomHandler(new DoubleClickHandler() {
 
 			/** {@inheritDoc} */
 			@Override
 			public void onDoubleClick(DoubleClickEvent event) {
 
-				if (selectionModel.getSelectedObject() != null) {
-					selectHandler.onCallback(selectionModel.getSelectedObject());
+				if (!selectionModel.getSelectedSet().isEmpty()) {
+					selectHandler.onCallback(selectionModel.getSelectedSet());
 				}
 			}
 		}, DoubleClickEvent.getType());
@@ -67,7 +69,16 @@ public class VOTable<VOType extends IBaseVO> extends DataGrid<VOType> {
 	}
 
 	public VOType getCurrentSelection() {
-		return selectionModel.getSelectedObject();
+
+		if (!selectionModel.getSelectedSet().isEmpty()) {
+			return selectionModel.getSelectedSet().iterator().next();
+		} else {
+			return null;
+		}
+	}
+
+	public Collection<VOType> getCurrentSelectionList() {
+		return selectionModel.getSelectedSet();
 	}
 
 }

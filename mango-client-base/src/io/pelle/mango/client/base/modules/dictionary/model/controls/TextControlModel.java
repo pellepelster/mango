@@ -17,9 +17,13 @@ public class TextControlModel extends BaseControlModel<ITextControl>implements I
 	}
 
 	public TextControlModel(String name, IAttributeDescriptor<?> attributeDescriptor) {
+		this(name, attributeDescriptor.getAttributeName());
+	}
+
+	public TextControlModel(String name, String attributeName) {
 		super(name, null);
 		setLabel(name);
-		setAttributePath(attributeDescriptor.getAttributeName());
+		setAttributePath(attributeName);
 	}
 
 	@Override

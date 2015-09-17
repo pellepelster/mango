@@ -11,9 +11,6 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
-import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
-import io.pelle.mango.client.base.vo.IBaseVO;
-
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -34,7 +31,11 @@ import com.google.gwt.text.shared.SafeHtmlRenderer;
 import com.google.gwt.text.shared.SimpleSafeHtmlRenderer;
 import com.google.gwt.user.client.ui.ListBox;
 
+import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
+import io.pelle.mango.client.base.vo.IBaseVO;
+
 public class ReferenceDropDownCellControl<T extends IBaseVO> extends BaseCellControl<T> {
+
 	public class ListBoxInternal extends ListBox {
 		public ListBoxInternal(Element element) {
 			super(element);

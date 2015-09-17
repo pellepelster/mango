@@ -1,8 +1,11 @@
 package io.pelle.mango.client.web.modules.dictionary.container;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import io.pelle.mango.client.base.modules.dictionary.IUpdateListener;
@@ -52,7 +55,34 @@ public class ReferenceList<VOTYPE extends IBaseVO> extends BaseContainerElement<
 
 	@Override
 	public List<VOTYPE> getAvailableVOs() {
-		return availableVOs;
+		return new ArrayList<VOTYPE>(Collections2.filter(availableVOs, new Predicate<VOTYPE>() {
+
+			@Override
+			public boolean apply(VOTYPE input) {
+				return !getListInternal().contains(input);
+			}
+		}));
 	}
 
+	@Override
+	public void addVOs(Collection<VOTYPE> vos) {
+		getListInternal().addAll(vos);
+		fireUpdateListeners();
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<VOTYPE> getListInternal() {
+		return (List<VOTYPE>) getParent().getVOWrapper().get(getModel().getAttributePath());
+	}
+
+	@Override
+	public List<VOTYPE> getSelectedVOs() {
+		return getListInternal();
+	}
+
+	@Override
+	public void removeVOs(Collection<VOTYPE> vos) {
+		getListInternal().removeAll(vos);
+		fireUpdateListeners();
+	}
 }

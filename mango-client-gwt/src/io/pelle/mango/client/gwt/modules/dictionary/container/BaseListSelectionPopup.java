@@ -1,6 +1,7 @@
 package io.pelle.mango.client.gwt.modules.dictionary.container;
 
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -27,10 +28,13 @@ public class BaseListSelectionPopup<VOType extends IBaseVO> extends BaseSelectio
 
 		voTable.setHeight(BaseCellTable.DEFAULT_TABLE_HEIGHT);
 		voTable.setWidth("100%");
-		voTable.addSelectHandler(new SimpleCallback<VOType>() {
+		voTable.addSelectHandler(new SimpleCallback<Set<VOType>>() {
 			@Override
-			public void onCallback(VOType vo) {
-				closeDialogWithSelection(vo);
+			public void onCallback(Set<VOType> vos) {
+
+				if (vos.size() == 1) {
+					closeDialogWithSelection(vos.iterator().next());
+				}
 			}
 		});
 

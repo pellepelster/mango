@@ -13,7 +13,9 @@ public class ReferenceListTestContainer<VOTYPE extends IBaseVO> extends BaseTest
 
 	private IReferenceList<VOTYPE> referenceList;
 
-	private List<IBaseVO> availableVOs = new ArrayList<IBaseVO>();
+	private List<VOTYPE> availableVOs = new ArrayList<VOTYPE>();
+
+	private List<VOTYPE> selectedVOs = new ArrayList<VOTYPE>();
 
 	public ReferenceListTestContainer(IReferenceList<VOTYPE> referenceList) {
 		super();
@@ -26,6 +28,9 @@ public class ReferenceListTestContainer<VOTYPE extends IBaseVO> extends BaseTest
 	public void onUpdate() {
 		availableVOs.clear();
 		availableVOs.addAll(referenceList.getAvailableVOs());
+
+		selectedVOs.clear();
+		selectedVOs.addAll(referenceList.getSelectedVOs());
 	}
 
 	public void updateReferenceList() {
@@ -37,9 +42,28 @@ public class ReferenceListTestContainer<VOTYPE extends IBaseVO> extends BaseTest
 		future.get();
 	}
 
-	public void assertReferenceListSize(int expected) {
+	public void assertAvailableVOsSize(int expected) {
 		Assert.assertEquals(expected, availableVOs.size());
+	}
 
+	public void assertSelectedVOsSize(int expected) {
+		Assert.assertEquals(expected, selectedVOs.size());
+	}
+
+	public void addVOs(List<VOTYPE> vos) {
+		referenceList.addVOs(vos);
+	}
+
+	public void removeVOs(List<VOTYPE> vos) {
+		referenceList.removeVOs(vos);
+	}
+
+	public List<VOTYPE> getAvailableVOs() {
+		return availableVOs;
+	}
+
+	public List<VOTYPE> getSelectedVOs() {
+		return selectedVOs;
 	}
 
 }

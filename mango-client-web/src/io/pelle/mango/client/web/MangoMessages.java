@@ -235,4 +235,7 @@ public interface MangoMessages extends Messages {
 	@DefaultMessage("permission")
 	String permission();
 
+	@DefaultMessage("Add")
+	String add();
+
 }

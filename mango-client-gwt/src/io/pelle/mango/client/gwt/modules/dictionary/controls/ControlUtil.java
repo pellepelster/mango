@@ -11,6 +11,11 @@
  */
 package io.pelle.mango.client.gwt.modules.dictionary.controls;
 
+import java.util.List;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.ListBox;
+
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModelProvider;
 import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IReferenceControlModel;
@@ -18,11 +23,6 @@ import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.DictionaryUtil;
-
-import java.util.List;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.ListBox;
 
 public class ControlUtil {
 
