@@ -48,6 +48,11 @@ public class DictionaryModelGeneratorTest {
 	}
 
 	@Test
+	public void testReferenceListModelDictionaryName() {
+		assertEquals("MangoGroup", MangoDictionaryModel.MANGO_USER.MANGO_USER_EDITOR.USER_GROUPS.getDictionaryName());
+	}
+
+	@Test
 	public void testDictionary2OveriddenLabel() {
 		assertEquals("Entity2 Label", MangoDemoDictionaryModel.DEMO_DICTIONARY2.getLabel());
 	}
@@ -116,9 +121,9 @@ public class DictionaryModelGeneratorTest {
 
 	@Test
 	public void testGetDictionaryModelPath() {
-		assertEquals("DemoDictionary1/DemoEditor1/Tabfolder1/Tab1/IntegerControl1",  MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.INTEGER_CONTROL1.getFullQualifiedName());
+		assertEquals("DemoDictionary1/DemoEditor1/Tabfolder1/Tab1/IntegerControl1", MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.INTEGER_CONTROL1.getFullQualifiedName());
 	}
-	
+
 	@Test
 	public void testDictionary1IntegerControl1RatingControlInputType() {
 		assertEquals(IIntegerControlModel.CONTROL_TYPE.RATING, MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.INTEGER_CONTROL2.getControlType());

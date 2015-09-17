@@ -3,6 +3,7 @@ package io.pelle.mango.demo.server;
 import static com.jayway.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -146,7 +147,9 @@ public class DemoClientTest extends BaseDemoTest {
 		permissions = (PermissionsImpl) customCompositeTestContainer.getCustomComposite();
 
 		List<MangoPermissionVO> p = permissions.getPermissions();
-		p.get(0).getOperations().get(0);
+		assertFalse(p.isEmpty());
+		assertFalse(p.get(0).getOperations().isEmpty());
+
 	}
 
 	@Test
@@ -154,10 +157,17 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryEditorModuleTestUI<MangoUserVO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDictionaryModel.MANGO_USER.MANGO_USER_EDITOR);
 
-		ReferenceListTestContainer referenceListTestContainer = editor.getContainer(MangoDictionaryModel.MANGO_USER.MANGO_USER_EDITOR.USER_GROUPS);
+		ReferenceListTestContainer<MangoGroupVO> referenceListTestContainer = editor.getContainer(MangoDictionaryModel.MANGO_USER.MANGO_USER_EDITOR.USER_GROUPS);
 
-		// editor.save();
-		// editor.assertHasNoErrors();
+		referenceListTestContainer.updateReferenceList();
+		referenceListTestContainer.assertReferenceListSize(0);
+
+		DictionaryEditorModuleTestUI<MangoGroupVO> groupEditor = MangoClientSyncWebTest.getInstance().openEditor(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR);
+		groupEditor.getControl(MangoDictionaryModel.MANGO_GROUP.MANGO_GROUP_EDITOR.MANGO_GROUP_COMMON.MANGO_GROUP_NAME).setValue("xxx");
+		groupEditor.saveAndAssertHasNoErrors();
+
+		referenceListTestContainer.updateReferenceList();
+		referenceListTestContainer.assertReferenceListSize(1);
 
 	}
 

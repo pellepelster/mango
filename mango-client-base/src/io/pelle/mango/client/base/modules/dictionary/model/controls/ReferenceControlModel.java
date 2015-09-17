@@ -1,13 +1,13 @@
 package io.pelle.mango.client.base.modules.dictionary.model.controls;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.pelle.mango.client.base.modules.dictionary.controls.IReferenceControl;
 import io.pelle.mango.client.base.modules.dictionary.model.IBaseModel;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ReferenceControlModel<VOType extends IBaseVO> extends BaseControlModel<IReferenceControl<VOType>> implements IReferenceControlModel {
+public class ReferenceControlModel<VOType extends IBaseVO> extends BaseControlModel<IReferenceControl<VOType>>implements IReferenceControlModel {
 
 	private static final long serialVersionUID = -9089131170958607211L;
 
@@ -19,12 +19,12 @@ public class ReferenceControlModel<VOType extends IBaseVO> extends BaseControlMo
 
 	private int suggestionsLimit = DEFAULT_SUGGESTIONS_LIMIT;
 
-	public void setDictionaryName(String dictionaryName) {
-		this.dictionaryName = dictionaryName;
-	}
-
 	public ReferenceControlModel(String name, IBaseModel parent) {
 		super(name, parent);
+	}
+
+	public void setDictionaryName(String dictionaryName) {
+		this.dictionaryName = dictionaryName;
 	}
 
 	@Override

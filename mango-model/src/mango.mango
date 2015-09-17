@@ -197,6 +197,7 @@ project Mango {
 					
 					referencelist UserGroups {
 						entityattribute userGroups
+						dictionary MangoGroup
 					}
 					
 				}

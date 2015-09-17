@@ -374,6 +374,7 @@ enum ReferenceListType:
 DictionaryReferenceList:
 	"referencelist" name=ID "{"
 		"entityattribute" entityattribute=[ EntityAttribute | QualifiedName ]
+		"dictionary" dictionary=[ Dictionary | QualifiedName ]?
 	"}";
 
 DictionaryTabFolder:

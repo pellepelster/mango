@@ -143,4 +143,9 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 		return module.getDictionaryEditor().getVO();
 	}
 
+	public void saveAndAssertHasNoErrors() {
+		save();
+		assertHasNoErrors();
+	}
+
 }

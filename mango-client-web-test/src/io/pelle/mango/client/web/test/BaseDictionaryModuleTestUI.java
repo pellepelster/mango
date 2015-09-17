@@ -73,8 +73,9 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 		return new TabFolderTestContainer(baseDictionaryModule.getElement(containerModel));
 	}
 
-	public ReferenceListTestContainer getContainer(ReferenceListModel containerModel) {
-		return new ReferenceListTestContainer(baseDictionaryModule.getElement(containerModel));
+	@SuppressWarnings("unchecked")
+	public <VOTYPE extends IBaseVO> ReferenceListTestContainer<VOTYPE> getContainer(ReferenceListModel<VOTYPE> containerModel) {
+		return new ReferenceListTestContainer<VOTYPE>(baseDictionaryModule.getElement(containerModel));
 	}
 
 	public CustomCompositeTestContainer getContainer(CustomCompositeModel containerModel) {

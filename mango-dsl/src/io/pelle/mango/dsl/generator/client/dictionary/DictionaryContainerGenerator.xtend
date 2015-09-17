@@ -11,6 +11,7 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.CustomComp
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel
 import io.pelle.mango.client.base.util.CustomComposite
+import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.mango.ColumnLayout
 import io.pelle.mango.dsl.mango.ColumnLayoutData
@@ -28,6 +29,7 @@ import io.pelle.mango.dsl.query.EntityQuery
 import java.util.Collection
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
+import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 
 class DictionaryContainerGenerator {
 
@@ -36,6 +38,9 @@ class DictionaryContainerGenerator {
 
 	@Inject
 	extension DictionaryControls
+
+	@Inject
+	extension ClientTypeUtils
 
 	private Function<DictionaryComposite, DictionaryContainerContent> CONTAINER_CONTENTS = new Function<DictionaryComposite, DictionaryContainerContent>() {
 			
@@ -211,12 +216,13 @@ class DictionaryContainerGenerator {
 			package «dictionaryContainer.packageName»;
 			
 			@«SuppressWarnings.name»("all")
-			public class «dictionaryContainer.dictionaryClassName» extends io.pelle.mango.client.base.modules.dictionary.model.containers.ReferenceListModel {
+			public class «dictionaryContainer.dictionaryClassName» extends io.pelle.mango.client.base.modules.dictionary.model.containers.ReferenceListModel<«dictionaryContainer.entityattribute.rawType»> {
 				
 				public «dictionaryContainer.dictionaryClassName»(io.pelle.mango.client.base.modules.dictionary.model.BaseModel<?> parent) {
 					super("«dictionaryContainer.name»", parent);
 					
 					setAttributePath("«dictionaryContainer.entityattribute.name»");
+					setDictionaryName("«dictionaryContainer.dictionary.name»");
 				}
 			}
 	'''

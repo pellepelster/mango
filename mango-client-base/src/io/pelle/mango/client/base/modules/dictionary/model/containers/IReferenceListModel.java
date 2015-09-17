@@ -11,6 +11,8 @@
  */
 package io.pelle.mango.client.base.modules.dictionary.model.containers;
 
+import io.pelle.mango.client.base.vo.IBaseVO;
+
 /**
  * Model for a UI container
  * 
@@ -18,7 +20,9 @@ package io.pelle.mango.client.base.modules.dictionary.model.containers;
  * @version $Rev$, $Date$
  * 
  */
-public interface IReferenceListModel extends IBaseContainerModel {
+public interface IReferenceListModel<VOTYPE extends IBaseVO> extends IBaseContainerModel {
 
 	String getAttributePath();
+
+	String getDictionaryName();
 }
