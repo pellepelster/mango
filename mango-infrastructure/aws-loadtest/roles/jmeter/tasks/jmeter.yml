@@ -177,9 +177,5 @@
 - set_fact: jmeter_executable="{{jmeter_base_dir}}/{{ jmeter_name }}/bin/jmeter"
 - debug: msg="jmeter_executable {{ jmeter_executable }}"
 
-- set_fact: jmeter_agent_executable="{{jmeter_base_dir}}/{{ jmeter_name }}/{{jmeter_serveragent_base_dir}}/startAgent.sh"
+- set_fact: jmeter_agent_executable="{{jmeter_base_dir}}/{{ jmeter_name }}/bin/jmeter-server"
 - debug: msg="jmeter_agent_executable {{ jmeter_agent_executable }}"
-
-- debug: msg=" jmeter | Start jmeter agent {{jmeter_serveragent_base_dir}}/startAgent.sh"
-- debug: msg=" jmeter | Start jmeter {{jmeter_base_dir}}/{{ jmeter_name }}/bin/jmeter"
-

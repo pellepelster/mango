@@ -11,9 +11,10 @@
         user: "ubuntu"  
       }
   tasks:
-  - shell: nohup {{ jmeter_agent_executable }} &  
+  - shell: "nohup {{ jmeter_agent_executable }} &> /tmp/jmeter_server_command.log &"  
   - copy: src="files/{{ jmeter_test_file }}" dest="/tmp/{{ jmeter_test_file }}"
-  - shell: "{{ jmeter_executable }} -n -t  /tmp/{{ jmeter_test_file }} -l /tmp/{{ jmeter_log_file }} -X -R{% for host in groups['jmeter-clients'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% if not loop.last %},{% endif %}{% endfor %} -Jbase_url={{ elb_endpoint }} &> /tmp/jmeter_command.log"
+  - debug: msg="{{ jmeter_executable }} -n -t /tmp/{{ jmeter_test_file }} -l /tmp/{{ jmeter_log_file }} -X -R{% for host in groups['jmeter-clients'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% if not loop.last %},{% endif %}{% endfor %} -Jbase_url={{ elb_endpoint }} &> /tmp/jmeter_command.log"
+  - shell: "{{ jmeter_executable }} -n -t /tmp/{{ jmeter_test_file }} -l /tmp/{{ jmeter_log_file }} -X -R{% for host in groups['jmeter-clients'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% if not loop.last %},{% endif %}{% endfor %} -Jbase_url={{ elb_endpoint }} &> /tmp/jmeter_command.log"
     run_once: true
   - fetch: src="/tmp/{{ jmeter_log_file }}" dest="results/{{ jmeter_log_file }}"
     register: out

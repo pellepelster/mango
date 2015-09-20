@@ -1,12 +1,12 @@
 ---
 loadtest_id: "mangodemo"
 
-# ec2 parmaters
+# ec2 parameters
 ec2_region: us-east-1
 instances_keypair: pelle
 image_id: ami-4c7a3924
 
-#  wev application options
+# web application options
 application_war_file: "{{ loadtest_id }}.war"
 application_url: "/DemoClient/DemoClient.html"
 application_server_instance_type: m1.small 
