@@ -48,6 +48,10 @@ public class GwtReferenceList<VOTYPE extends IBaseVO> implements IContainer<Pane
 
 	private ReferenceList<VOTYPE> referenceList;
 
+	private Button removeButton;
+
+	private Button addButton;
+
 	public GwtReferenceList(final ReferenceList<VOTYPE> referenceList) {
 
 		this.referenceList = referenceList;
@@ -64,7 +68,7 @@ public class GwtReferenceList<VOTYPE extends IBaseVO> implements IContainer<Pane
 
 		Div buttonDiv = new Div();
 
-		Button removeButton = new Button("");
+		removeButton = new Button("");
 		removeButton.setIcon(IconType.ARROW_LEFT);
 		removeButton.addClickHandler(new ClickHandler() {
 
@@ -75,7 +79,7 @@ public class GwtReferenceList<VOTYPE extends IBaseVO> implements IContainer<Pane
 		});
 		buttonDiv.add(removeButton);
 
-		Button addButton = new Button("");
+		addButton = new Button("");
 		addButton.setIcon(IconType.ARROW_RIGHT);
 		addButton.addClickHandler(new ClickHandler() {
 
@@ -106,6 +110,8 @@ public class GwtReferenceList<VOTYPE extends IBaseVO> implements IContainer<Pane
 	public void onUpdate() {
 		availableVoTable.setContent(referenceList.getAvailableVOs());
 		selectedVoTable.setContent(referenceList.getSelectedVOs());
+		addButton.setEnabled(referenceList.getAddButton().isEnabled());
+		removeButton.setEnabled(referenceList.getRemoveButton().isEnabled());
 	}
 
 }
