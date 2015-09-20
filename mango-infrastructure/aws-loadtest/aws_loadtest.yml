@@ -1,0 +1,4 @@
+---
+- include: aws_loadtest_create.yml
+- include: aws_loadtest_application_servers.yml
+- include: aws_loadtest_jmeter_clients.yml

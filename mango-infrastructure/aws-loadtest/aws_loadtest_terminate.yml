@@ -1,0 +1,31 @@
+---
+- name: terminate ec2 instances and elb
+  hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars_files:
+    - vars/dev-environment.yml
+    - ~/ansible/aws.yml
+  tasks:
+  - name: Gather facts
+    action: ec2_facts
+    register: ec2_facts
+    # just show the instance-id
+  - debug: msg= "{{ hostvars[inventory_hostname]['ansible_ec2_instance_id'] }}"
+
+
+  - name: Conditional
+    action: debug msg="{{ ec2_facts }}"
+
+  - name: terminate ec2 instances
+    ec2: 
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+   #   keypair: "{{ instances_keypair }}"
+   #   instance_type: m1.small
+   #   image: "{{ image_id }}"
+      wait: true
+      state: 'absent'
+      

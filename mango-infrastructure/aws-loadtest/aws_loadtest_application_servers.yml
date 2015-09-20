@@ -1,0 +1,65 @@
+---
+- name: configure application server instances
+  hosts: application-servers
+  sudo: true
+  remote_user: ubuntu
+  vars_files:
+    - vars/aws_loadtest_vars.yml
+    - ~/ansible/aws.yml
+  roles:
+    - { role: application-servers,
+        application_id: "{{ loadtest_id }}",
+        war_file: "files/{{ application_war_file }}",
+        tomcat_jdbc_jndi_name: "{{ db_jndi_name }}",
+        tomcat_jdbc_mysql_host: "{{ mysql_endpoint }}",
+        tomcat_jdbc_mysql_db: "{{ db_name }}",
+        tomcat_jdbc_mysql_user: "{{ db_user }}",
+        tomcat_jdbc_mysql_password: "{{ db_password }}",
+        when: "onlyRunJmeter is undefined"        
+      }
+
+  tasks:
+  - name: "wait until application url is ready"
+    shell: "curl --head --silent http://localhost:8080/{{ application_url }}"
+    register: result
+    until: result.stdout.find("200 OK") != -1
+    retries: 12
+    delay: 10  
+  
+  pre_tasks:
+  - apt: update_cache=yes cache_valid_time=3600
+  - apt: name=python-mysqldb
+
+  - name: "creating database"
+    mysql_db: name="{{ db_name }}" state=present login_host={{ mysql_endpoint }} login_password="{{ db_password }}" login_user="{{ db_user }}"
+
+- name: add application servers to elb
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - vars/aws_loadtest_vars.yml
+    - ~/ansible/aws.yml
+  pre_tasks:
+  - name: add instances to elb
+    local_action:
+      module: ec2_elb
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      instance_id: "{{ item.id }}"
+      ec2_elbs: "{{ elb_name }}"
+      state: 'absent'
+      wait: yes
+    with_items: application_server_ec2.tagged_instances
+  post_tasks:
+  - name: add instances to elb
+    local_action:
+      module: ec2_elb
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      instance_id: "{{ item.id }}"
+      ec2_elbs: "{{ elb_name }}"
+      state: 'present'
+      wait: yes
+    with_items: application_server_ec2.tagged_instances

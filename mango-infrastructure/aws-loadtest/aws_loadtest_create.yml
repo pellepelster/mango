@@ -1,0 +1,111 @@
+---
+- name: provision ec2 and rds instances
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - vars/aws_loadtest_vars.yml
+    - ~/ansible/aws.yml
+  tasks:
+  - name: "create database"
+    rds:
+      command: create
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      instance_name: "{{ db_name }}"
+      db_engine: MySQL
+      size: 10
+      instance_type: "{{ rds_instance_type }}"
+      username: "{{ db_user }}"
+      password: "{{ db_password }}"
+      wait: yes
+      snapshot: ""
+      wait_timeout: 800
+    register: database_facts
+  - set_fact: mysql_endpoint="{{ database_facts.instance.endpoint }}"
+  - debug: msg="mysql_endpoint {{ mysql_endpoint }}"
+
+  - name: "create load balancer"
+    local_action:
+      module: ec2_elb_lb
+      name: "{{ elb_name }}"
+      state: present
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      zones:
+        - us-east-1a
+      listeners:
+        - protocol: http
+          load_balancer_port: 80
+          instance_port: 8080
+      health_check:
+        ping_protocol: http
+        ping_port: 8080
+        ping_path: "{{ elb_healtcheck_url }}"
+        response_timeout: 20
+        interval: 30
+        unhealthy_threshold: 2
+        healthy_threshold: 2
+    register: elb_facts
+    
+  - set_fact: elb_endpoint="http://{{ elb_facts.elb.dns_name }}"
+  - debug: msg="elb_endpoint {{ elb_endpoint }}"
+
+  - name: create required security groups
+    ec2_group:
+      name: "{{ item.name }}"
+      description: "{{ item.desc }}"
+      rules: "{{ item.rules }}"
+      rules_egress: "{{ item.rules_egress }}"
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+    with_items: security_groups
+
+  - name: launch application server instances
+    ec2: 
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      keypair: "{{ instances_keypair }}"
+      instance_type: "{{ application_server_instance_type }}"
+      image: "{{ image_id }}"
+      group: [ "{{ security_group_ssh }}", "{{ security_group_application }}", "{{ security_group_outbound }}" ]
+      instance_tags: { application-server: "application-server" }
+      exact_count: "{{ application_server_instance_count }}"
+      count_tag: "application-server"
+      wait: true
+    register: application_server_ec2
+
+  - name: add application server instances to host group application-servers
+    add_host: hostname={{item.public_ip}} groupname=application-servers mysql_endpoint={{ mysql_endpoint }}
+    with_items: application_server_ec2.tagged_instances
+
+  - name: wait for the application server instances to boot
+    wait_for: host={{item.public_dns_name}} port=22 delay=1 timeout=320 state=started
+    with_items: application_server_ec2.tagged_instances
+
+  - name: launch jmeter client instances
+    ec2: 
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      keypair: "{{ instances_keypair }}"
+      instance_type: "{{ jmeter_client_instance_type }}"
+      image: "{{ image_id }}"
+      group: [ "{{ security_group_ssh }}", "{{ security_group_jmeter }}", "{{ security_group_outbound }}" ]
+      instance_tags: { jmeter-client: "jmeter-client" }
+      exact_count: "{{ jmeter_client_instance_count }}"
+      count_tag: "jmeter-client"
+      wait: true
+    register: jmeter_client_ec2
+
+  - name: add jmeter client instances to host group jmeter-clients
+    add_host: hostname={{item.public_ip}} groupname=jmeter-clients elb_endpoint={{ elb_endpoint }}
+    with_items: jmeter_client_ec2.tagged_instances
+
+  - name: wait for the jmeter client instances to boot
+    wait_for: host={{item.public_dns_name}} port=22 delay=1 timeout=320 state=started
+    with_items: jmeter_client_ec2.tagged_instances

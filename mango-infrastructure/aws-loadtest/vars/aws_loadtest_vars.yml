@@ -1,0 +1,78 @@
+---
+loadtest_id: "mangodemo"
+
+# ec2 parmaters
+ec2_region: us-east-1
+instances_keypair: pelle
+image_id: ami-4c7a3924
+
+#  wev application options
+application_war_file: "{{ loadtest_id }}.war"
+application_url: "/DemoClient/DemoClient.html"
+application_server_instance_type: m1.small 
+application_server_instance_count: 2
+
+# load balancer options
+elb_name: "{{ loadtest_id }}-loadtest"
+elb_healtcheck_url: "{{ application_url }}"
+
+# database options
+rds_instance_type: db.m1.small
+db_jndi_name: "{{ loadtest_id }}"
+db_name: "{{ loadtest_id }}"
+db_user: "{{ loadtest_id }}"
+db_password: "{{ loadtest_id }}"
+
+# jmeter options
+jmeter_test_file: "{{ loadtest_id }}-loadtest.jmx"
+jmeter_log_file: "{{ loadtest_id }}.jtl"
+jmeter_client_instance_type: m1.small 
+jmeter_client_instance_count: 2 
+
+security_group_ssh: "{{ loadtest_id }}-loadtest-ssh"
+security_group_outbound: "{{ loadtest_id }}-loadtest-outbound"
+security_group_application: "{{ loadtest_id }}-loadtest-application"
+security_group_jmeter: "{{ loadtest_id }}-loadtest-jmeter"
+
+# security groups to be created
+security_groups:
+  - name: "{{ security_group_ssh }}"
+    desc: "{{ loadtest ssh security group"
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+    rules_egress: { }
+  - name: "{{ security_group_outbound }}"
+    desc: "{{ loadtest outbound security group"
+    rules: {}
+    rules_egress:
+      - proto: tcp
+        from_port: 0
+        to_port: 65535
+        cidr_ip: 0.0.0.0/0
+  - name: "{{ security_group_application }}"
+    desc: "{{ loadtest application server security group"
+    rules:
+      - proto: tcp
+        from_port: "80"
+        to_port: "80"
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: "8080"
+        to_port: "8080"
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: "443"
+        to_port: "443"
+        cidr_ip: 0.0.0.0/0
+    rules_egress: { }
+  - name: "{{ security_group_jmeter }}"
+    desc: "{{ loadtest jmeter client security group"
+    rules:
+      - proto: tcp
+        from_port: "0"
+        to_port: "65535"
+        cidr_ip: 0.0.0.0/0
+    rules_egress: { }

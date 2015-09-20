@@ -1,0 +1,24 @@
+---
+dependencies: []
+
+galaxy_info:
+  author: Michael Sherron
+  description: A role for installing JMeter
+  company: Acquia
+  license: GPLv3
+  min_ansible_version: 1.6.3
+  platforms:
+  - name: Ubuntu
+    versions:
+    - all
+    - lucid
+    - maverick
+    - natty
+    - oneiric
+    - precise
+    - quantal
+    - raring
+    - saucy
+    - trusty
+  categories:
+  - development

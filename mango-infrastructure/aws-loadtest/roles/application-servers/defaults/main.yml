@@ -1,0 +1,8 @@
+application_id: application1
+tomcat_download_url: http://mirror.softaculous.com/apache/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz
+tomcat_jdbc_jndi_name: "{{ application_id }}"
+tomcat_jdbc_mysql_host: "127.0.0.1"
+tomcat_jdbc_mysql_db: "{{ application_id }}"
+tomcat_jdbc_mysql_user: "{{ application_id }}"
+tomcat_jdbc_mysql_password: "{{ application_id }}"
+war_file: "{{ application_id }}.war"

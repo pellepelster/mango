@@ -1,0 +1,55 @@
+---
+- name: "update apt cache"
+  apt: update_cache=yes cache_valid_time=3600
+
+- name: "create tomcat base dir"
+  stat: path={{ tomcat_base_dir }}
+  register: tomcat_basedir
+
+- name: "stop tomcat if needed"
+  command: "{{ tomcat_stopscript }}"
+  ignore_errors: yes
+  when: tomcat_basedir.stat.exists == True
+  args:
+    chdir: "{{ tomcat_base_dir }}"
+
+- name: "install java"
+  apt: name=openjdk-7-jre
+
+- debug: msg="application {{ application_id }}"
+
+- name: "create tomcat user"
+  user: name={{ tomcat_username }} comment="user for application {{ application_id }}"
+
+- name: "downloading tomcat distribution"
+  command: wget {{ tomcat_download_url }} -O {{ tomcat_download_target }} creates={{ tomcat_download_target }}
+
+- name: "creating tomcat basedir"
+  command: mkdir {{ tomcat_base_dir }} creates={{ tomcat_base_dir }}
+
+- name: "extracting downloaded tomcat distribution"
+  command: tar -xzf {{ tomcat_download_target }} --strip-components=1 -C {{ tomcat_base_dir }} creates={{ tomcat_base_dir }}/RELEASE-NOTES
+
+- name: "create tomcat config"
+  template: src=server.xml.j2 dest={{ tomcat_conf_dir}}/server.xml owner={{ tomcat_username }}
+
+- name: "copy gradle wrapper"
+  copy: src=gradle dest=/tmp mode=0755
+
+- name: "invoking gradle tomcat library download"
+  shell: /tmp/gradle/gradlew --build-file /tmp/gradle/build.gradle fetchTomcatLibs
+
+- name: "copy downloaded libs to tomcat lib dir"
+  shell: cp /tmp/gradle/tomcatLibs/*.jar {{ tomcat_lib_dir }}
+
+- name: "remove current root application"
+  command: rm -rf {{ tomcat_webapps_dir }}/ROOT removes={{ tomcat_webapps_dir }}/ROOT
+
+- name: "copy war file"
+  copy: src={{ war_file }} dest={{ tomcat_webapps_dir }}/ROOT.war mode=0755
+
+- name: start tomcat daemon
+  shell: nohup {{ tomcat_startscript }} &
+
+- name: wait for the application server to come up
+  wait_for: host=localhost port=8080 delay=1 timeout=320 state=started

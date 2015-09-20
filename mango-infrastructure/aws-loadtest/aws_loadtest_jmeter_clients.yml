@@ -1,0 +1,22 @@
+---
+- name: configure jmeter clients
+  hosts: jmeter-clients
+  sudo: true
+  remote_user: ubuntu
+  vars_files:
+    - vars/aws_loadtest_vars.yml
+    - ~/ansible/aws.yml
+  roles:
+    - { role: jmeter,
+        user: "ubuntu"  
+      }
+  tasks:
+  - shell: nohup {{ jmeter_agent_executable }} &  
+  - copy: src="files/{{ jmeter_test_file }}" dest="/tmp/{{ jmeter_test_file }}"
+  - shell: "{{ jmeter_executable }} -n -t  /tmp/{{ jmeter_test_file }} -l /tmp/{{ jmeter_log_file }} -X -R{% for host in groups['jmeter-clients'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% if not loop.last %},{% endif %}{% endfor %} -Jbase_url={{ elb_endpoint }} &> /tmp/jmeter_command.log"
+    run_once: true
+  - fetch: src="/tmp/{{ jmeter_log_file }}" dest="results/{{ jmeter_log_file }}"
+    register: out
+  - debug: var=out.stdout_lines
+  pre_tasks:
+    - apt: update_cache=yes cache_valid_time=3600
