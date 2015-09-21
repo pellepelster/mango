@@ -3,7 +3,7 @@ loadtest_id: "mangodemo"
 
 # ec2 parameters
 ec2_region: us-east-1
-instances_keypair: pelle
+instances_keypair: zoidberg_jenkins
 image_id: ami-4c7a3924
 
 # web application options
