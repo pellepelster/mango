@@ -11,13 +11,17 @@
         user: "ubuntu"  
       }
   tasks:
-  - shell: "nohup {{ jmeter_agent_executable }} &> /tmp/jmeter_server_command.log &"  
+  - name: "kill all running agents listening on port 1099"
+    shell: "kill $(ps aux | grep Dserver_port=1099 | awk '{print $2}')"
+    ignore_errors: yes
+  - shell: "nohup {{ jmeter_agent_executable }} -Jbase_url={{ elb_endpoint }} &> /tmp/jmeter_server_command.log &"  
+    register: jmeter_agent
+  - debug: var=jmeter_agent
   - copy: src="files/{{ jmeter_test_file }}" dest="/tmp/{{ jmeter_test_file }}"
-  - debug: msg="{{ jmeter_executable }} -n -t /tmp/{{ jmeter_test_file }} -l /tmp/{{ jmeter_log_file }} -X -R{% for host in groups['jmeter-clients'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% if not loop.last %},{% endif %}{% endfor %} -Jbase_url={{ elb_endpoint }} &> /tmp/jmeter_command.log"
-  - shell: "{{ jmeter_executable }} -n -t /tmp/{{ jmeter_test_file }} -l /tmp/{{ jmeter_log_file }} -X -R{% for host in groups['jmeter-clients'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% if not loop.last %},{% endif %}{% endfor %} -Jbase_url={{ elb_endpoint }} &> /tmp/jmeter_command.log"
+  - shell: "{{ jmeter_executable }} -n -t /tmp/{{ jmeter_test_file }} -l /tmp/{{ jmeter_log_file }} -Jbase_url={{ elb_endpoint }} -X -R{% for host in groups['jmeter-clients'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% if not loop.last %},{% endif %}{% endfor %}"
     run_once: true
+    register: jmeter
+  - debug: var=jmeter
   - fetch: src="/tmp/{{ jmeter_log_file }}" dest="results/{{ jmeter_log_file }}"
-    register: out
-  - debug: var=out.stdout_lines
   pre_tasks:
     - apt: update_cache=yes cache_valid_time=3600

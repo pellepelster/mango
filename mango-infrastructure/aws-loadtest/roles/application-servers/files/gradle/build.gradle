@@ -1,0 +1,26 @@
+repositories {
+
+	ivy {
+		name "warRepository"
+		url "http://zoidberg.pelle.io/~mango-ci/repository/"
+		layout "maven"
+	}
+	
+	mavenCentral()
+}
+
+configurations {
+	tomcatLibs
+}
+
+dependencies {
+	tomcatLibs group: "org.apache.tomcat", name: "dbcp", version: '6.0.39'
+	tomcatLibs 'mysql:mysql-connector-java:5.1.35'
+}
+
+task fetchTomcatLibs(type: Copy) {
+	ext.tomcatLibsDir = new File('tomcatLibs')
+	tomcatLibsDir.mkdirs()
+	into tomcatLibsDir
+	from configurations.tomcatLibs
+}

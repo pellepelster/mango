@@ -1,0 +1,58 @@
+---
+- name: destroy ec2 and rds instances
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - vars/aws_loadtest_vars.yml
+    - ~/ansible/aws.yml
+  tasks:
+  - name: "destroy load balancer"
+    local_action:
+      module: ec2_elb_lb
+      name: "{{ elb_name }}"
+      state: absent
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+
+  - name: "destroy application server instances"
+    ec2: 
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      state: 'absent'
+      instance_ids: "{{ application_server_ec2.tagged_instances | map(attribute='id') | list }}"
+      wait: true
+
+  - name: "destroy jmeter client instances"
+    ec2: 
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      state: 'absent'
+      instance_ids: "{{ jmeter_client_ec2.tagged_instances | map(attribute='id') | list }}"
+      wait: true
+
+  - name: "remove security groups"
+    ec2_group:
+      name: "{{ item.name }}"
+      description: "{{ item.desc }}"
+      state: 'absent'
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+    with_items: security_groups
+
+
+  - name: "destroy database"
+    rds:
+      command: delete
+      region: "{{ ec2_region }}"
+      ec2_access_key: "{{ ec2_access_key }}"
+      ec2_secret_key: "{{ ec2_secret_key }}"
+      instance_name: "{{ db_name }}"
+      wait: yes
+      snapshot: ""
+      wait_timeout: 800
+
