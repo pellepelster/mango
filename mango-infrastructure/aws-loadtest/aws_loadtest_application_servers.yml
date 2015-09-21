@@ -48,8 +48,6 @@
   pre_tasks:
   - apt: update_cache=yes cache_valid_time=3600
   - apt: name=python-mysqldb
-  - name: "dropping database"
-    mysql_db: name="{{ db_name }}" state=absent login_host={{ mysql_endpoint }} login_password="{{ db_password }}" login_user="{{ db_user }}"
   - name: "creating database"
     mysql_db: name="{{ db_name }}" state=present login_host={{ mysql_endpoint }} login_password="{{ db_password }}" login_user="{{ db_user }}"
 
