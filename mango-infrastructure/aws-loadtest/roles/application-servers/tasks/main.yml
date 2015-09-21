@@ -33,6 +33,9 @@
 - name: "create tomcat config"
   template: src=server.xml.j2 dest={{ tomcat_conf_dir}}/server.xml owner={{ tomcat_username }}
 
+- name: "create setenv script"
+  template: src=setenv.sh.j2 dest={{ tomcat_base_dir}}/bin/setenv.sh owner={{ tomcat_username }} mode="u=rwx,g=rwx,o=rx"
+
 - name: "copy gradle wrapper"
   copy: src=gradle dest=/tmp mode=0755
 
@@ -49,7 +52,7 @@
   copy: src={{ war_file }} dest={{ tomcat_webapps_dir }}/ROOT.war mode=0755
 
 - name: start tomcat daemon
-  shell: "nohup CATALINA_OPTS='-Dsecurity.disable=true' {{ tomcat_startscript }} &"
+  shell: "nohup {{ tomcat_startscript }} &"
 
 - name: wait for the application server to come up
   wait_for: host=localhost port=8080 delay=1 timeout=320 state=started
