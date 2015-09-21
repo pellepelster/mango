@@ -49,7 +49,7 @@
   copy: src={{ war_file }} dest={{ tomcat_webapps_dir }}/ROOT.war mode=0755
 
 - name: start tomcat daemon
-  shell: nohup {{ tomcat_startscript }} &
+  shell: nohup {{ tomcat_startscript }} -Dsecurity.disable=true &
 
 - name: wait for the application server to come up
   wait_for: host=localhost port=8080 delay=1 timeout=320 state=started
