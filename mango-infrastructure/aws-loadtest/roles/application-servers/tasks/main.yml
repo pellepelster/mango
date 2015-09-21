@@ -34,7 +34,7 @@
   template: src=server.xml.j2 dest={{ tomcat_conf_dir}}/server.xml owner={{ tomcat_username }}
 
 - name: "create setenv script"
-  template: src=setenv.sh.j2 dest={{ tomcat_base_dir}}/bin/setenv.sh owner={{ tomcat_username }} mode="u=rwx,g=rwx,o=rx"
+  template: src=setenv.sh.j2 dest={{ tomcat_base_dir}}/bin/setenv.sh owner={{ tomcat_username }} mode=0755
 
 - name: "copy gradle wrapper"
   copy: src=gradle dest=/tmp mode=0755
