@@ -236,6 +236,7 @@ public class DemoBaseEntityServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testDeleteAll() {
 
 		List<Entity1VO> entites = baseEntityService.filter(SelectQuery.selectFrom(Entity1VO.class));
