@@ -7,7 +7,7 @@ public class CustomCompositeTestContainer extends BaseTestContainer {
 	private ICustomComposite customComposite;
 
 	public CustomCompositeTestContainer(ICustomComposite customComposite) {
-		super();
+		super(customComposite);
 		this.customComposite = customComposite;
 	}
 

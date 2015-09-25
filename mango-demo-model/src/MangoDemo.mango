@@ -763,6 +763,10 @@ project MangoDemo {
 									type CustomType1
 								}
 							}
+							composite Tab5 {
+								statecontainer StateContainer1 {
+								}
+							}
 							
 						}
 					

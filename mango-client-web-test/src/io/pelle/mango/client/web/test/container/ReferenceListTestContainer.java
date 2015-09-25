@@ -18,7 +18,7 @@ public class ReferenceListTestContainer<VOTYPE extends IBaseVO> extends BaseTest
 	private List<VOTYPE> selectedVOs = new ArrayList<VOTYPE>();
 
 	public ReferenceListTestContainer(IReferenceList<VOTYPE> referenceList) {
-		super();
+		super(referenceList);
 		this.referenceList = referenceList;
 
 		referenceList.addUpdateListener(this);

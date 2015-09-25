@@ -91,8 +91,9 @@ public class DictionaryEditorModuleTestUI<VOType extends IBaseVO> extends BaseDi
 		FocusManager.getInstance().setCurrentWidget(this);
 
 		AsyncCallbackFuture<Result<VOType>> future = AsyncCallbackFuture.create();
-		this.module.getDictionaryEditor().save(future.getCallback());
+		this.module.getDictionaryEditor().save(future);
 
+		future.get();
 	}
 
 	@Override

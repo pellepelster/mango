@@ -7,9 +7,10 @@ import io.pelle.mango.client.base.modules.dictionary.model.containers.ICustomCom
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IEditableTableModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IFileListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.IReferenceListModel;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.IStateModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ITabfolderModel;
+import io.pelle.mango.client.web.MangoClientWeb;
 import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
-import io.pelle.mango.client.web.util.CustomCompositeProvider;
 
 public class ContainerFactory {
 
@@ -32,13 +33,12 @@ public class ContainerFactory {
 		} else if (baseContainerModel instanceof IFileListModel) {
 			return new FileList((IFileListModel) baseContainerModel, parent);
 		} else if (baseContainerModel instanceof ICustomCompositeModel) {
-
 			ICustomCompositeModel customCompositeModel = (ICustomCompositeModel) baseContainerModel;
-
-			return (BaseContainerElement<?, ?>) CustomCompositeProvider.getInstance().create(customCompositeModel.getType(), customCompositeModel, parent);
-
+			return (BaseContainerElement<?, ?>) MangoClientWeb.getInstance().getMangoProvider().getCompositeFactory().create(customCompositeModel.getType(), customCompositeModel, parent);
 		} else if (baseContainerModel instanceof ITabfolderModel) {
 			return new TabFolder((ITabfolderModel) baseContainerModel, parent);
+		} else if (baseContainerModel instanceof IStateModel) {
+			return new StateContainer((IStateModel) baseContainerModel, parent);
 		} else if (baseContainerModel instanceof ICompositeModel) {
 			if (baseContainerModel.getParent() instanceof ITabfolderModel) {
 				return new Tab((ICompositeModel) baseContainerModel, parent);

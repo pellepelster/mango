@@ -6,4 +6,6 @@ public interface IBaseContainer<UpdateListenerType extends IUpdateListener> {
 	
 	void addUpdateListener(UpdateListenerType updateListener);
 
+	boolean isEnabled();
+
 }

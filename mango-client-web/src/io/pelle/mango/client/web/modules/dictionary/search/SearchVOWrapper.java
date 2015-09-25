@@ -34,4 +34,9 @@ public class SearchVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 		this.filterValues.put(attribute, value);
 	}
 
+	@Override
+	public boolean isNew() {
+		return true;
+	}
+
 }

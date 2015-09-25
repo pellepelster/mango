@@ -16,6 +16,7 @@ import io.pelle.mango.client.base.modules.dictionary.IVOWrapper;
 import io.pelle.mango.client.base.vo.IBaseVO;
 
 public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOType> {
+	
 	private boolean dirty = false;
 
 	private VOType vo;
@@ -59,6 +60,8 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 
 		if ("/".equals(attribute)) {
 			return this.vo;
+		} else if (vo == null) {
+			return null;
 		} else {
 			return this.vo.get(attribute);
 		}
@@ -89,6 +92,7 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 		markClean();
 	}
 
+	
 	@Override
 	public VOType getContent() {
 		return this.vo;
@@ -96,5 +100,10 @@ public class EditorVOWrapper<VOType extends IBaseVO> implements IVOWrapper<VOTyp
 
 	public void setDirtyCallback(IDirtyCallback dirtyCallback) {
 		this.dirtyCallback = dirtyCallback;
+	}
+
+	@Override
+	public boolean isNew() {
+		return vo == null || vo.isNew();
 	}
 }

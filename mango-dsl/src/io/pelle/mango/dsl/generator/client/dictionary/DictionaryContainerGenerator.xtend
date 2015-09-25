@@ -10,9 +10,10 @@ import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.CustomCompositeModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.EditableTableModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel
+import io.pelle.mango.client.base.modules.dictionary.model.containers.StateModel
 import io.pelle.mango.client.base.util.CustomComposite
-import io.pelle.mango.dsl.ModelUtil
 import io.pelle.mango.dsl.generator.GeneratorConstants
+import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 import io.pelle.mango.dsl.mango.ColumnLayout
 import io.pelle.mango.dsl.mango.ColumnLayoutData
 import io.pelle.mango.dsl.mango.DictionaryComposite
@@ -24,12 +25,12 @@ import io.pelle.mango.dsl.mango.DictionaryCustomComposite
 import io.pelle.mango.dsl.mango.DictionaryEditableTable
 import io.pelle.mango.dsl.mango.DictionaryFileList
 import io.pelle.mango.dsl.mango.DictionaryReferenceList
+import io.pelle.mango.dsl.mango.DictionaryState
 import io.pelle.mango.dsl.mango.DictionaryTabFolder
 import io.pelle.mango.dsl.query.EntityQuery
 import java.util.Collection
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess
-import io.pelle.mango.dsl.generator.client.ClientTypeUtils
 
 class DictionaryContainerGenerator {
 
@@ -155,6 +156,10 @@ class DictionaryContainerGenerator {
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
+	def dispatch dictionaryGenerator(DictionaryState dictionaryContainer, IFileSystemAccess fsa) {
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+	}
+
 	def dispatch dictionaryGenerator(DictionaryTabFolder dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.tabs.dictionaryGenerator(fsa)
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
@@ -257,7 +262,19 @@ class DictionaryContainerGenerator {
 				}
 			}
 	'''
-	
+
+	def dispatch dictionaryClass(DictionaryState dictionaryContainer) '''
+			package «dictionaryContainer.packageName»;
+			
+			@«SuppressWarnings.name»("all")
+			public class «dictionaryContainer.dictionaryClassName» extends «StateModel.name» {
+				
+				public «dictionaryContainer.dictionaryClassName»(«BaseModel.name»<?> parent) {
+					super("«dictionaryContainer.name»", parent);
+				}
+			}
+	'''
+
 	def dispatch dictionaryGenerator(DictionaryEditableTable dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
 		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)

@@ -25,6 +25,8 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 
 	private List<UpdateListenerType> updateListeners = new ArrayList<>();
 
+	private boolean enabled = true;
+
 	@SuppressWarnings("static-access")
 	public BaseContainerElement(ModelType baseContainer, BaseDictionaryElement<? extends IBaseModel> parent) {
 		super(baseContainer, parent);
@@ -88,4 +90,20 @@ public abstract class BaseContainerElement<ModelType extends IBaseContainerModel
 		updateListeners.add(updateListener);
 	}
 
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		
+		boolean doFireUpdateListener = this.enabled != enabled;
+		
+		this.enabled = enabled;
+		
+		if (doFireUpdateListener) {
+			fireUpdateListeners();
+		}
+		
+	}
 }

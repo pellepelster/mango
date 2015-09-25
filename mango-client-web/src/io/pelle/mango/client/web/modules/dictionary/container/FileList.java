@@ -11,6 +11,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
+import com.google.gwt.thirdparty.guava.common.base.Objects;
 
 import io.pelle.mango.client.FileVO;
 import io.pelle.mango.client.base.db.vos.UUID;
@@ -74,7 +75,7 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 
 	@SuppressWarnings("unchecked")
 	private List<FileVO> getFilesInternal() {
-		return (List<FileVO>) getParent().getVOWrapper().get(getModel().getAttributePath());
+		return (List<FileVO>) Objects.firstNonNull(getParent().getVOWrapper().get(getModel().getAttributePath()), Collections.emptyList());
 	}
 
 	@Override

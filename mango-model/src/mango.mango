@@ -74,6 +74,7 @@ project Mango {
 			
 			service StateService {
 				method CurrentState getCurrentState(Long id, String voClassName )
+				method CurrentState triggerEvent(String eventId, Long id, String voClassName )
 			}
 		}
 				

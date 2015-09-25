@@ -9,7 +9,7 @@ public class TabFolderTestContainer extends BaseTestContainer {
 	private ITabFolder tabFolder;
 
 	public TabFolderTestContainer(ITabFolder tabFolder) {
-		super();
+		super(tabFolder);
 		this.tabFolder = tabFolder;
 	}
 

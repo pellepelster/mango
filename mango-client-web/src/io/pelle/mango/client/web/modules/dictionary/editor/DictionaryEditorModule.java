@@ -83,6 +83,7 @@ public class DictionaryEditorModule<VOType extends IBaseVO> extends BaseDictiona
 
 		DictionaryEditorModule.this.dictionaryModel = DictionaryModelProvider.getDictionary(dictionaryName);
 		DictionaryEditorModule.this.dictionaryEditor = new DictionaryEditor<VOType>(this.dictionaryModel, getParameters());
+		dictionaryEditor.update();
 		dictionaryEditor.addUpdateListener(this);
 
 		AsyncCallback<Void> asyncCallback = new BaseErrorAsyncCallback<Void>() {

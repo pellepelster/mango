@@ -37,7 +37,7 @@ import io.pelle.mango.client.web.util.DictionaryModelUtil;
 
 public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IEditorModel>implements IDictionaryEditor<VOType> {
 
-	private final EditorVOWrapper<VOType> voWrapper;
+	private final EditorVOWrapper<VOType> voWrapper = new EditorVOWrapper<VOType>();
 
 	private List<IEditorUpdateListener> updateListeners = new ArrayList<IEditorUpdateListener>();
 
@@ -50,7 +50,6 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 
 		this.context = context;
 		this.dictionaryModel = dictionaryModel;
-		this.voWrapper = new EditorVOWrapper<VOType>();
 		voWrapper.setDirtyCallback(new IDirtyCallback() {
 
 			@Override
@@ -95,7 +94,7 @@ public class DictionaryEditor<VOType extends IBaseVO> extends BaseRootElement<IE
 	}
 
 	private EditorMode getEditorMode() {
-		if (this.voWrapper.getVO() == null || this.voWrapper.getVO().getId() == IBaseVO.NEW_VO_ID) {
+		if (this.voWrapper.isNew()) {
 			return EditorMode.INSERT;
 		} else {
 			return EditorMode.UPDATE;

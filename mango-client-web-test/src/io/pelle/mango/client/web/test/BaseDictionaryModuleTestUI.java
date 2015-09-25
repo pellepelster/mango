@@ -13,9 +13,11 @@ package io.pelle.mango.client.web.test;
 
 import io.pelle.mango.client.base.modules.dictionary.container.ICustomComposite;
 import io.pelle.mango.client.base.modules.dictionary.container.IFileList;
+import io.pelle.mango.client.base.modules.dictionary.container.IStateContainer;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.CustomCompositeModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.FileListModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ReferenceListModel;
+import io.pelle.mango.client.base.modules.dictionary.model.containers.StateModel;
 import io.pelle.mango.client.base.modules.dictionary.model.containers.TabFolderModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BigDecimalControlModel;
 import io.pelle.mango.client.base.modules.dictionary.model.controls.BooleanControlModel;
@@ -32,6 +34,7 @@ import io.pelle.mango.client.web.modules.dictionary.IBaseDictionaryModule;
 import io.pelle.mango.client.web.test.container.CustomCompositeTestContainer;
 import io.pelle.mango.client.web.test.container.FileListTestcontainer;
 import io.pelle.mango.client.web.test.container.ReferenceListTestContainer;
+import io.pelle.mango.client.web.test.container.StateTestContainer;
 import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
@@ -80,6 +83,10 @@ public abstract class BaseDictionaryModuleTestUI implements FocusableTestWidget 
 
 	public CustomCompositeTestContainer getContainer(CustomCompositeModel containerModel) {
 		return new CustomCompositeTestContainer((ICustomComposite) baseDictionaryModule.getElement(containerModel));
+	}
+
+	public StateTestContainer getContainer(StateModel containerModel) {
+		return new StateTestContainer((IStateContainer) baseDictionaryModule.getElement(containerModel));
 	}
 
 	public FileListTestcontainer getContainer(FileListModel<?> fileListModel) {

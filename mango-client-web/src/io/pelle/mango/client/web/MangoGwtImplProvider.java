@@ -5,12 +5,15 @@ import com.google.gwt.i18n.client.Dictionary;
 
 import io.pelle.mango.client.IMangoGwtRemoteServiceLocator;
 import io.pelle.mango.client.MangoGwtRemoteServiceLocator;
+import io.pelle.mango.client.web.util.ICustomCompositeFactory;
 
 public class MangoGwtImplProvider implements IMangoImplProvider {
 
 	private MangoMessages messages;
 
 	private Dictionary dictionary;
+
+	private ICustomCompositeFactory compositeFactory;
 
 	public void setDictionary(Dictionary dictionary) {
 		this.dictionary = dictionary;
@@ -21,6 +24,7 @@ public class MangoGwtImplProvider implements IMangoImplProvider {
 
 		if (GWT.isClient()) {
 			messages = ((MangoMessages) GWT.create(MangoMessages.class));
+			compositeFactory = GWT.create(ICustomCompositeFactory.class);
 		}
 
 	}
@@ -49,6 +53,11 @@ public class MangoGwtImplProvider implements IMangoImplProvider {
 			return value;
 		}
 
+	}
+
+	@Override
+	public ICustomCompositeFactory getCompositeFactory() {
+		return compositeFactory;
 	}
 
 }

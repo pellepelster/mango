@@ -73,19 +73,13 @@ public class StateServiceImpl implements IStateService {
 	@Override
 	public CurrentState getCurrentState(Long id, String voClassName) {
 		
-		IBaseEntity entity = baseEntityDAO.read(id, EntityVOMapper.getInstance().getEntityClass(voClassName));
-		
-		if (entity == null) {
-			throw new RuntimeException(String.format("entity '%s' with id %d not found", voClassName, id));
-		}
+		IBaseEntity entity = getEntityOrExplode(id, voClassName);
 		
 		StateBuilder stateBuilder = getStateBuilder(entity);
 		
 		if (stateBuilder == null) {
 			throw new RuntimeException(String.format("no state definition found for '%s'", entity.getClass().getName()));
 		}
-		
-		//UntypedStateMachine stateMachine = stateBuilder.get().createStateMachine(vo);
 		
 		CurrentState result = new CurrentState();
 
@@ -94,6 +88,15 @@ public class StateServiceImpl implements IStateService {
 		result.setTransitions(new ArrayList<io.pelle.mango.client.state.Transition>(Collections2.transform(transitions, TRANSITION2TRANSITION)));
 		
 		return result;
+	}
+
+	private IBaseEntity getEntityOrExplode(Long id, String voClassName) {
+		IBaseEntity entity = baseEntityDAO.read(id, EntityVOMapper.getInstance().getEntityClass(voClassName));
+		
+		if (entity == null) {
+			throw new RuntimeException(String.format("entity '%s' with id %d not found", voClassName, id));
+		}
+		return entity;
 	}
 
 	public StateBuilder getStateBuilder(IBaseEntity vo) {
@@ -105,6 +108,22 @@ public class StateServiceImpl implements IStateService {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public CurrentState triggerEvent(String eventId, Long id, String voClassName) {
+		
+		IBaseEntity entity = getEntityOrExplode(id, voClassName);
+		
+		if (entity == null) {
+			throw new RuntimeException(String.format("entity '%s' with id %d not found", voClassName, id));
+		}
+
+		StateBuilder stateBuilder = getStateBuilder(entity);
+
+		stateBuilder.createStateMachine(entity).fire(eventId);
+		
+		return getCurrentState(id, voClassName);
 	}
 
 }

@@ -4,6 +4,7 @@ import static com.jayway.awaitility.Awaitility.await;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -50,6 +51,7 @@ import io.pelle.mango.client.web.test.TestButton;
 import io.pelle.mango.client.web.test.container.CustomCompositeTestContainer;
 import io.pelle.mango.client.web.test.container.FileListTestcontainer;
 import io.pelle.mango.client.web.test.container.ReferenceListTestContainer;
+import io.pelle.mango.client.web.test.container.StateTestContainer;
 import io.pelle.mango.client.web.test.container.TabFolderTestContainer;
 import io.pelle.mango.client.web.test.controls.BooleanTestControl;
 import io.pelle.mango.client.web.test.controls.ControlGroupTestControl;
@@ -61,7 +63,6 @@ import io.pelle.mango.client.web.test.controls.IntegerTestControl;
 import io.pelle.mango.client.web.test.controls.ReferenceTestControl;
 import io.pelle.mango.client.web.test.controls.StateTestControl;
 import io.pelle.mango.client.web.test.controls.TextTestControl;
-import io.pelle.mango.client.web.util.CustomCompositeProvider;
 import io.pelle.mango.demo.client.CustomType1Impl;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
@@ -73,7 +74,6 @@ import io.pelle.mango.demo.client.test.Entity2VO;
 import io.pelle.mango.demo.client.test.Entity3VO;
 import io.pelle.mango.demo.server.client.PermissionsCustomCompositeTest;
 import io.pelle.mango.demo.server.util.BaseDemoTest;
-import io.pelle.mango.demo.server.util.ReflectionCustomCompositeFactory;
 import io.pelle.mango.server.MangoWebMvcApplicationContext;
 
 @WebAppConfiguration
@@ -99,7 +99,6 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryHookRegistry.getInstance().clearAll();
 
-		CustomCompositeProvider.getInstance().setFactory(new ReflectionCustomCompositeFactory());
 	}
 
 	@Test
@@ -662,6 +661,38 @@ public class DemoClientTest extends BaseDemoTest {
 		editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1, editor.getId());
 		fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
 		fileList.assertFileCount(2);
+
+	}
+
+	@Test
+	public void testStateContainer1EnabledAfterSave() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
+		
+		StateTestContainer stateTestContainer = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB5.STATE_CONTAINER1);
+		assertNotNull(stateTestContainer);
+
+		stateTestContainer.assertIsDisabled();
+		
+		editor.saveAndAssertHasNoErrors();
+		
+		stateTestContainer.assertIsEnabled();
+		
+	}
+
+	@Test
+	public void testStateContainer1Transition() {
+
+		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
+		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
+		editor.saveAndAssertHasNoErrors();
+
+		StateTestContainer stateTestContainer = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB5.STATE_CONTAINER1);
+
+		stateTestContainer.assertCurrentState("stateA");
+		stateTestContainer.fireEvent("transitionAtoB");
+		//stateTestContainer.assertCurrentState("stateB");
 
 	}
 
