@@ -7,11 +7,11 @@ import java.util.Collections;
 import java.util.List;
 
 import com.google.common.base.Function;
+import com.google.common.base.Objects;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Ordering;
-import com.google.gwt.thirdparty.guava.common.base.Objects;
 
 import io.pelle.mango.client.FileVO;
 import io.pelle.mango.client.base.db.vos.UUID;
@@ -33,15 +33,15 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 	private List<IFileControl> fileControls = new ArrayList<>();
 
 	Ordering<IFileControl> FILE_CONTROL_ORDERING = Ordering.natural().nullsLast().onResultOf(new Function<IFileControl, String>() {
-		  public String apply(IFileControl fileControl) {
-			  
-			  if (fileControl.getValue() instanceof FileVO) {
-				  return ((FileVO) fileControl.getValue()).getFileName();
-			  } else {
-				  return null;
-			  }
-		  }
-		});
+		public String apply(IFileControl fileControl) {
+
+			if (fileControl.getValue() instanceof FileVO) {
+				return ((FileVO) fileControl.getValue()).getFileName();
+			} else {
+				return null;
+			}
+		}
+	});
 
 	public static Function<FileVO, File> FILEVO2FILE = new Function<FileVO, IFileList.File>() {
 
@@ -132,15 +132,15 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 	}
 
 	private int addFileControlInternal(IFileControl fileControl) {
-		
+
 		fileControls.add(fileControl);
-		
+
 		Collections.sort(fileControls, FILE_CONTROL_ORDERING);
-		
+
 		return fileControls.indexOf(fileControl);
 
 	}
-	
+
 	private void addNewFile() {
 
 		FileVO fileVO = new FileVO();
