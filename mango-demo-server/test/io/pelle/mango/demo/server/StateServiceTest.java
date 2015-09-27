@@ -85,6 +85,7 @@ public class StateServiceTest extends BaseDemoTest {
 	}
 
 	@Test
+	@Ignore
 	public void testEntity1TriggerEvent() {
 
 		Entity1VO entity1 = new Entity1VO();
