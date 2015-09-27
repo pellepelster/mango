@@ -301,7 +301,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		TabFolderTestContainer container = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1);
-		container.assertTabCount(4);
+		container.assertTabCount(5);
 
 	}
 
@@ -660,7 +660,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1, editor.getId());
 		fileList = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB3.FILE_LIST1);
-		fileList.assertFileCount(2);
+		fileList.assertFileCount(3);
 
 	}
 
@@ -669,16 +669,16 @@ public class DemoClientTest extends BaseDemoTest {
 
 		DictionaryEditorModuleTestUI<Entity1VO> editor = MangoClientSyncWebTest.getInstance().openEditor(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1);
 		editor.getControl(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB1.TEXT_CONTROL1).enterValue("uuu");
-		
+
 		StateTestContainer stateTestContainer = editor.getContainer(MangoDemoDictionaryModel.DEMO_DICTIONARY1.DEMO_EDITOR1.TABFOLDER1.TAB5.STATE_CONTAINER1);
 		assertNotNull(stateTestContainer);
 
 		stateTestContainer.assertIsDisabled();
-		
+
 		editor.saveAndAssertHasNoErrors();
-		
+
 		stateTestContainer.assertIsEnabled();
-		
+
 	}
 
 	@Test
@@ -692,7 +692,7 @@ public class DemoClientTest extends BaseDemoTest {
 
 		stateTestContainer.assertCurrentState("stateA");
 		stateTestContainer.fireEvent("transitionAtoB");
-		//stateTestContainer.assertCurrentState("stateB");
+		// stateTestContainer.assertCurrentState("stateB");
 
 	}
 

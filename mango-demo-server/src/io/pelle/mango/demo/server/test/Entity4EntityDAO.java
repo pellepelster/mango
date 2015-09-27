@@ -1,9 +1,9 @@
 package io.pelle.mango.demo.server.test;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.demo.client.DemoClient;
-
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class Entity4EntityDAO extends BaseEntity4EntityDAO {
 
@@ -15,7 +15,7 @@ public class Entity4EntityDAO extends BaseEntity4EntityDAO {
 
 		if (propertyService.getProperty(DemoClient.ACTIVATE_ENTITY1_CREATE_FEATURE)) {
 			try {
-				Thread.sleep(propertyService.getProperty(DemoClient.ENTITY1_CREATE_FEATURE_WAIT_TIME));
+				Thread.sleep((long) propertyService.getProperty(DemoClient.ENTITY1_CREATE_FEATURE_WAIT_TIME));
 			} catch (InterruptedException e) {
 				// do something meaningful here
 			}

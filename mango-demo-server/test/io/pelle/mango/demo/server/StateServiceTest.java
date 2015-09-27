@@ -72,7 +72,7 @@ public class StateServiceTest extends BaseDemoTest {
 
 	@Test
 	public void testEntity1InitialState() {
-		
+
 		Entity1VO entity1 = new Entity1VO();
 		entity1.setStringDatatype1(UUID.randomUUID().toString());
 		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1);
@@ -83,4 +83,20 @@ public class StateServiceTest extends BaseDemoTest {
 		assertEquals(1, currentState.getTransitions().size());
 		assertEquals("transitionAtoB", currentState.getTransitions().get(0).getId());
 	}
+
+	@Test
+	public void testEntity1TriggerEvent() {
+
+		Entity1VO entity1 = new Entity1VO();
+		entity1.setStringDatatype1(UUID.randomUUID().toString());
+		Result<Entity1VO> result = baseEntityService.validateAndCreate(entity1);
+		assertTrue(result.isOk());
+
+		CurrentState currentState = stateService.getCurrentState(result.getValue().getId(), result.getValue().getClass().getName());
+		assertEquals("stateA", currentState.getStateId());
+
+		currentState = stateService.triggerEvent("transitionAtoB", result.getValue().getId(), result.getValue().getClass().getName());
+		assertEquals("stateB", currentState.getStateId());
+	}
+
 }

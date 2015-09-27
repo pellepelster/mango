@@ -28,4 +28,6 @@ public interface IFileControl extends IBaseControl<Object, IFileControlModel> {
 
 	String getFileUUID();
 
+	boolean isNew();
+
 }

@@ -35,6 +35,7 @@ public class FileTestControl extends BaseTestControl<IFileControl, Object> {
 
 		try {
 			MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new ByteArrayInputStream(content));
+
 			String result = mockMvc.perform(fileUpload("/files/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
 					.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
 					.getContentAsString();

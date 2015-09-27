@@ -32,6 +32,14 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 
 	private List<IFileControl> fileControls = new ArrayList<>();
 
+	Predicate<IFileControl> HAS_NEW_CONTROL = new Predicate<IFileControl>() {
+
+		@Override
+		public boolean apply(IFileControl input) {
+			return input.isNew();
+		}
+	};
+
 	Ordering<IFileControl> FILE_CONTROL_ORDERING = Ordering.natural().nullsLast().onResultOf(new Function<IFileControl, String>() {
 		public String apply(IFileControl fileControl) {
 
@@ -87,7 +95,11 @@ public class FileList extends BaseContainerElement<IFileListModel, IListUpdateLi
 		List<IFileControl> removedFileControls = new ArrayList<>(fileControls);
 
 		if (getFilesInternal().isEmpty()) {
-			addNewFile();
+
+			if (!Iterables.any(fileControls, HAS_NEW_CONTROL)) {
+				addNewFile();
+			}
+
 		} else {
 			for (FileVO fileVO : getFilesInternal()) {
 

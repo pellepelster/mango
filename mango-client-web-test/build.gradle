@@ -2,6 +2,7 @@ dependencies {
 	compile project(':mango-client-web')
 	compile group: 'junit', name: 'junit', version: '4.11'
 	compile group: "org.springframework", name: "spring-test", version: versions.spring
+	compile group: "org.springframework", name: "spring-beans", version: versions.spring
 	compile group: "org.hamcrest", name: "hamcrest-library", version: "1.3"
 }
 

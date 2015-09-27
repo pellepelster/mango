@@ -15,15 +15,17 @@ import io.pelle.mango.client.web.modules.dictionary.base.BaseDictionaryElement;
 public class FileControl extends BaseDictionaryControl<IFileControlModel, Object>implements IFileControl {
 
 	private boolean showEmptyPlaceHolder;
-	
+
+	private boolean isNew = true;
+
 	public interface IFileControlCallback {
 
 		void onDelete(FileControl fileControl);
 
 		void onAdd(FileControl fileControl);
-		
+
 	}
-	
+
 	private boolean deleteEnabled = false;
 
 	private IFileControlHook fileControlHook = null;
@@ -65,14 +67,14 @@ public class FileControl extends BaseDictionaryControl<IFileControlModel, Object
 
 	@Override
 	public void delete() {
-		
+
 		deleteEnabled = false;
 		parseValue(null);
 
 		if (fileControlCallback != null) {
 			fileControlCallback.onDelete(this);
 		}
-		
+
 		fireUpdateListeners();
 	}
 
@@ -95,15 +97,15 @@ public class FileControl extends BaseDictionaryControl<IFileControlModel, Object
 	}
 
 	private String getFileNamePlaceholder() {
-		
+
 		if (showEmptyPlaceHolder) {
 			return MangoClientWeb.getInstance().getMessages().fileNone();
 		} else {
 			return "";
 		}
-		
+
 	}
-	
+
 	@Override
 	public String getFileName() {
 		if (getValue() instanceof FileVO) {
@@ -129,11 +131,13 @@ public class FileControl extends BaseDictionaryControl<IFileControlModel, Object
 
 		deleteEnabled = true;
 		setValue(file);
-		
+
 		if (fileControlCallback != null) {
 			fileControlCallback.onAdd(this);
 		}
-		
+
+		isNew = false;
+
 		fireUpdateListeners();
 	}
 
@@ -161,6 +165,11 @@ public class FileControl extends BaseDictionaryControl<IFileControlModel, Object
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public boolean isNew() {
+		return (getValue() == null || ((FileVO) getValue()).isNew()) && isNew;
 	}
 
 }
