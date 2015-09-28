@@ -99,28 +99,27 @@ public class StateBuilder {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public UntypedStateMachine createStateMachine(IBaseEntity entity) {
 
-		UntypedStateMachineBuilder builder = StateMachineBuilderFactory.create(StateMachine.class);
+		UntypedStateMachineBuilder builder = StateMachineBuilderFactory.create(StateMachine.class, new Class[] { IBaseEntity.class, String.class });
 
 		for (State state : states) {
 
 			for (Transition transition : state.getTransitions()) {
 				To to = builder.externalTransition().from(state.getId()).to(transition.getState().getId());
-				
+
 				if (transition.getEvent() != null) {
-					to.on(transition.getEvent().getId()).callMethod("log");
+					to.on(transition.getEvent().getId()).callMethod("onEvent");
 				}
-				
+
 			}
 		}
-		
-		return builder.newStateMachine(getInitalState(entity));
+
+		return builder.newStateMachine(getInitalState(entity), entity, attributeName);
 	}
 
-
 	public String getCurrentState(IBaseEntity entity) {
-		
+
 		Object attributeValue = io.pelle.mango.db.util.BeanUtils.getAttribute(entity, attributeName);
-		
+
 		if (attributeValue != null) {
 			return attributeValue.toString();
 		} else {
@@ -139,8 +138,7 @@ public class StateBuilder {
 	private String getCurrentStateWithInitalFallback(IBaseEntity entity) {
 		return Objects.firstNonNull(getCurrentState(entity), getInitalState(entity));
 	}
-	
-	
+
 	public Class<? extends IBaseEntity> getVOClass() {
 		return entityClass;
 	}

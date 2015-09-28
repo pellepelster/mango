@@ -7,6 +7,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="build/xtend-gen/test"/>
 	<classpathentry kind="src" path="/mango-dsl" exported="true"/>
 	<classpathentry sourcepath="GRADLE_USER_HOME/caches/modules-2/files-2.1/log4j/log4j/1.2.17/677abe279b68c5e7490d6d50c6951376238d7d3e/log4j-1.2.17-sources.jar" kind="var" path="GRADLE_USER_HOME/caches/modules-2/files-2.1/log4j/log4j/1.2.17/5af35056b4d257e4b64b9e8069c0746e8b08629f/log4j-1.2.17.jar" exported="true"/>
 	<classpathentry sourcepath="GRADLE_USER_HOME/caches/modules-2/files-2.1/org.eclipse.xtext/org.eclipse.xtext.xtext/2.7.0/248b036918200291a1591a1489cfa15564496a8b/org.eclipse.xtext.xtext-2.7.0-sources.jar" kind="var" path="GRADLE_USER_HOME/caches/modules-2/files-2.1/org.eclipse.xtext/org.eclipse.xtext.xtext/2.7.0/d05fe37e3141cd9d188c14509a7d4acad0b8ec54/org.eclipse.xtext.xtext-2.7.0.jar" exported="true"/>

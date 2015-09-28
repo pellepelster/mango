@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.squirrelframework.foundation.fsm.UntypedStateMachine;
 
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.entity.IBaseEntityService;
@@ -53,17 +52,6 @@ public class StateServiceTest extends BaseDemoTest {
 		assertEquals("stateB", sb.getStates().get(1).getId());
 	}
 
-	@Test
-	public void testCreateStateMachine() {
-
-		StateBuilder sb = StateBuilder.create(Entity1.class, Entity1VO.STATE1);
-
-		sb.addState("stateA", transition("transitionAtoB", "stateB", "event1"));
-
-		UntypedStateMachine fsm = sb.createStateMachine(null);
-		fsm.fire("event1", 10);
-	}
-
 	@Test(expected = RuntimeException.class)
 	@Ignore
 	public void testInvalidEntity1() {
@@ -85,7 +73,6 @@ public class StateServiceTest extends BaseDemoTest {
 	}
 
 	@Test
-	@Ignore
 	public void testEntity1TriggerEvent() {
 
 		Entity1VO entity1 = new Entity1VO();
