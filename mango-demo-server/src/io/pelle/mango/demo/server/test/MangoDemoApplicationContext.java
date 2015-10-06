@@ -13,6 +13,7 @@ import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.server.MangoLoggerApplicationContext;
+import io.pelle.mango.server.MangoSecurityConfig;
 import io.pelle.mango.server.MangoServerApplicationContext;
 import io.pelle.mango.server.search.SearchIndexBuilder;
 import io.pelle.mango.server.state.StateBuilder;
@@ -20,7 +21,7 @@ import io.pelle.mango.server.state.StateBuilder;
 @Configuration
 @ImportResource({ "classpath:/MangoDemoWebservices-gen.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml", "classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoDemoSpringServices-gen.xml",
 		"classpath:/MangoSpringServices-gen.xml", "classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
-@Import(MangoLoggerApplicationContext.class)
+@Import({ MangoLoggerApplicationContext.class, MangoSecurityConfig.class })
 public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 
 	@Bean

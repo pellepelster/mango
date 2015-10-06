@@ -7,14 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ClassPathResource;
 
 import com.codahale.metrics.JmxReporter;
@@ -51,7 +48,6 @@ import io.pelle.mango.server.xml.XmlVOMapper;
 
 @Configuration
 @ImportResource({ "classpath:/MangoServerApplicationContext.xml" })
-@Import({ MangoSecurityConfig.class })
 @PropertySources({ @PropertySource(value = "classpath:/mango.properties", ignoreResourceNotFound = true), @PropertySource("classpath:/mango_defaults.properties") })
 public class MangoServerApplicationContext extends MangoDBApplicationContext {
 
