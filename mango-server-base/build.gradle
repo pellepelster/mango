@@ -65,7 +65,7 @@ dependencies {
 		exclude module: "spring-aop"
 	}
 
-	compile (group: "org.springframework.security", name: "spring-security-test", version: versions.spring_security) {
+	testCompile (group: "org.springframework.security", name: "spring-security-test", version: versions.spring_security) {
 		exclude module: "spring-tx"
 		exclude module: "spring-context"
 		exclude module: "spring-core"

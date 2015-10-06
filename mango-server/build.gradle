@@ -1,9 +1,12 @@
 dependencies {
 	
 	compile project(":mango-server-base")
+	testCompile project(path: ":mango-server-base", configuration: "testCompile")
+	
 	compile project(":mango-client-core")
 	compile project(":mango-client-web")
 	compile project(":mango-db")
+
 	
 	compile project(path: ":mango-model", configuration: "generatedClientGWT")
 	compile project(path: ":mango-model", configuration: "generatedServer")
@@ -39,8 +42,6 @@ dependencies {
 
 	compile group: "org.freemarker", name: "freemarker", version: "2.3.21"
 
-	testCompile group: "com.icegreen", name: "greenmail", version: "1.4.0"
-	
 	compile 'com.googlecode.gwtupload:gwtupload:1.0.3'
 	
 }

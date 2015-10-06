@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.vote.AffirmativeBased;
 import org.springframework.security.access.vote.AuthenticatedVoter;
@@ -21,16 +22,16 @@ import io.pelle.mango.server.security.MangoAffirmativeBased;
 
 @EnableWebSecurity
 @Configuration
+@Order(10)
 public class MangoSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
 	}
-	
 
-    @Autowired
-    private IPropertyService propertyService;
+	@Autowired
+	private IPropertyService propertyService;
 
 	@Bean
 	public AffirmativeBased accessDecisionManager() {
