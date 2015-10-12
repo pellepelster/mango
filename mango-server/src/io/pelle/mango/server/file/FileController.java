@@ -8,8 +8,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,8 @@ import io.pelle.mango.server.File;
 @Controller
 @RequestMapping(value = "files")
 public class FileController {
+
+	private static Logger LOG = Logger.getLogger(FileController.class);
 
 	@Autowired
 	private FileStorage fileStorage;
@@ -98,15 +102,14 @@ public class FileController {
 		}
 	}
 
-	@RequestMapping(value = "putsingle", method = RequestMethod.POST)
-	@ResponseBody
-	public FileUploadResponse putSingle(MultipartFile file) {
-		return put(Arrays.asList(new MultipartFile[] { file }));
-	}
-	
 	@RequestMapping(value = "put", method = RequestMethod.POST)
 	@ResponseBody
-	public FileUploadResponse put(List<MultipartFile> files) {
+	@Transactional
+	public FileUploadResponse putSingle(@RequestParam("file") MultipartFile file) {
+		return put(Arrays.asList(new MultipartFile[] { file }));
+	}
+
+	private FileUploadResponse put(@RequestParam("files") List<MultipartFile> files) {
 
 		if (!files.isEmpty()) {
 			try {
@@ -126,6 +129,7 @@ public class FileController {
 				return response;
 
 			} catch (Exception e) {
+				LOG.error(e);
 				return new FileUploadResponse(false);
 			}
 		} else {
