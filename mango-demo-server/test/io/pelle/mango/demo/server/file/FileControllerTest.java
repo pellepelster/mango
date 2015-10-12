@@ -52,7 +52,7 @@ public class FileControllerTest extends BaseDemoTest {
 	public void testGetControlUploadServlet() throws Exception {
 
 		HashMap<String, String> contentTypeParams = new HashMap<String, String>();
-		contentTypeParams.put("boundary", "265001916915724");
+		contentTypeParams.put("boundary", "2625001916915724");
 		MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
 
 		mockMvc.perform(post("/gwtfilecontrol/put").contentType(mediaType)).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print());

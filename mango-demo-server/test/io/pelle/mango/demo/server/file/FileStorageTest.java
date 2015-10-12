@@ -58,7 +58,7 @@ public class FileStorageTest extends BaseDemoTest {
 
 	private String uploadFile(byte[] fileContent) throws Exception {
 
-		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new ByteArrayInputStream(fileContent));
+		MockMultipartFile multipartFile = new MockMultipartFile("file", "file1", null, new ByteArrayInputStream(fileContent));
 		String content = mockMvc.perform(fileUpload("/files/put").file(multipartFile)).andExpect(status().isOk()).andDo(MockMvcResultHandlers.print()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
 				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andReturn().getResponse().getContentAsString();
 
