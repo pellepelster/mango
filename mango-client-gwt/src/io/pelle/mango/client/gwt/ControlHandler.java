@@ -33,6 +33,7 @@ import io.pelle.mango.client.gwt.modules.dictionary.controls.IGwtControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.ReferenceControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.numbers.BigDecimalControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.numbers.IntegerControlFactory;
+import io.pelle.mango.client.gwt.modules.dictionary.controls.state.StateControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.text.TextControlFactory;
 import io.pelle.mango.client.gwt.modules.dictionary.controls.time.DateControlFactory;
 import io.pelle.mango.client.web.modules.dictionary.controls.BaseDictionaryControl;
@@ -55,6 +56,7 @@ public class ControlHandler {
 		controlFactories.add(new BigDecimalControlFactory());
 		controlFactories.add(new HierarchicalControlFactory());
 		controlFactories.add(new FileControlFactory());
+		controlFactories.add(new StateControlFactory());
 	}
 
 	public static ControlHandler getInstance() {

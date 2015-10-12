@@ -3,6 +3,7 @@ package io.pelle.mango.server.file;
 import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -97,9 +98,15 @@ public class FileController {
 		}
 	}
 
+	@RequestMapping(value = "putsingle", method = RequestMethod.POST)
+	@ResponseBody
+	public FileUploadResponse putSingle(MultipartFile file) {
+		return put(Arrays.asList(new MultipartFile[] { file }));
+	}
+	
 	@RequestMapping(value = "put", method = RequestMethod.POST)
 	@ResponseBody
-	public FileUploadResponse handleFileUpload(@RequestParam("files") List<MultipartFile> files) {
+	public FileUploadResponse put(List<MultipartFile> files) {
 
 		if (!files.isEmpty()) {
 			try {

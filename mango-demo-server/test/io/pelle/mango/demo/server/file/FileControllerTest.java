@@ -10,11 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.HashMap;
 
 import org.hamcrest.text.IsEmptyString;
@@ -56,11 +51,6 @@ public class FileControllerTest extends BaseDemoTest {
 	@Ignore
 	public void testGetControlUploadServlet() throws Exception {
 
-		File tempFile = Files.createTempFile("gwtcontrolupload", "tmp").toFile();
-		PrintWriter pw = new PrintWriter(tempFile);
-		pw.write("xxx");
-		pw.close();
-
 		HashMap<String, String> contentTypeParams = new HashMap<String, String>();
 		contentTypeParams.put("boundary", "265001916915724");
 		MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
@@ -78,19 +68,15 @@ public class FileControllerTest extends BaseDemoTest {
 	@Test
 	public void testUploadSingleFile() throws Exception {
 
-		File tempFile = Files.createTempFile("gwtcontrolupload", "tmp").toFile();
-		PrintWriter pw = new PrintWriter(tempFile);
-		pw.write("xxx");
-		pw.close();
-
 		HashMap<String, String> contentTypeParams = new HashMap<String, String>();
 		contentTypeParams.put("boundary", "265001916915724");
 		MediaType mediaType = new MediaType("multipart", "form-data", contentTypeParams);
 
-		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new FileInputStream(tempFile));
+		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new byte[] { 0xa, 0xb });
 
-		mockMvc.perform(fileUpload("/files/put").file(multipartFile).contentType(mediaType)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
-				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print());
+		mockMvc.perform(fileUpload("/files/put").file(multipartFile).contentType(mediaType)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true)))
+				.andExpect(jsonPath("$.files", hasSize(1))).andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString())))
+				.andDo(MockMvcResultHandlers.print());
 	}
 
 	@Test
@@ -103,10 +89,10 @@ public class FileControllerTest extends BaseDemoTest {
 
 		byte[] fileContent = new byte[] { 0xa, 0xb, 0xc };
 
-		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, new ByteArrayInputStream(fileContent));
+		MockMultipartFile multipartFile = new MockMultipartFile("files", "file1", null, fileContent);
 		String content = mockMvc.perform(fileUpload("/files/put").file(multipartFile)).andExpect(status().isOk()).andExpect(jsonPath("$.success", is(true))).andExpect(jsonPath("$.files", hasSize(1)))
-				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print()).andReturn().getResponse()
-				.getContentAsString();
+				.andExpect(jsonPath("$.files[0].fileName", is("file1"))).andExpect(jsonPath("$.files[0].fileUUID", not(IsEmptyString.isEmptyOrNullString()))).andDo(MockMvcResultHandlers.print())
+				.andReturn().getResponse().getContentAsString();
 
 		JSONObject jsonObject = new JSONObject(content);
 		JSONArray files = jsonObject.getJSONArray("files");
