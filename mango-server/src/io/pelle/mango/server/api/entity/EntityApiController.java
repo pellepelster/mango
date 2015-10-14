@@ -70,6 +70,17 @@ public class EntityApiController extends BaseEntityApiController {
 
 	}
 
+	@RequestMapping("api/entity/{entityName}/all")
+	@SuppressWarnings("unchecked")
+	public <T extends IBaseEntity> List<T> entityById(@PathVariable String entityName) {
+
+		Class<? extends IBaseEntity> entityClass = getEntityClassByNameOrExplode(entityName);
+
+		List<T> result = (List<T>) baseEntityDAO.filter(SelectQuery.selectFrom(entityClass));
+
+		return result;
+	}
+
 	@RequestMapping("api/entity/{entityName}/bynaturalkey/{naturalKey}")
 	@SuppressWarnings("unchecked")
 	public <T extends IBaseEntity> T entityByNaturalKey(@PathVariable String entityName, @PathVariable String naturalKey) {

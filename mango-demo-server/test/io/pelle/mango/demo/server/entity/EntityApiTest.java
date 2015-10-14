@@ -94,6 +94,23 @@ public class EntityApiTest extends BaseDemoTest {
 	}
 
 	@Test
+	public void testGetAllEntities() throws Exception {
+
+		CountryVO countryVO = new CountryVO();
+		countryVO.setCountryIsoCode2("AA");
+		countryVO.setCountryIsoCode3("AA");
+		countryVO = baseEntityService.create(countryVO);
+
+		countryVO = new CountryVO();
+		countryVO.setCountryIsoCode2("BB");
+		countryVO.setCountryIsoCode3("BB");
+		countryVO = baseEntityService.create(countryVO);
+
+		mockMvc.perform(post("/api/entity/country/all").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
+				.andExpect(jsonPath("$.[0]countryIsoCode2").value("AA")).andExpect(jsonPath("$.[1]countryIsoCode2").value("BB")).andExpect(jsonPath("$").value(Matchers.hasSize(2)));
+	}
+
+	@Test
 	public void testGetEntitiesByQueryPost() throws Exception {
 
 		CountryVO countryVO = new CountryVO();
