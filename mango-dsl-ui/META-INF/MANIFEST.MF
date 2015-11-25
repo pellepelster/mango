@@ -25,5 +25,6 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: io.pelle.mango.dsl.ui.quickfix,
  io.pelle.mango.dsl.ui.contentassist,
  io.pelle.mango.dsl.ui.contentassist.antlr,
- io.pelle.mango.dsl.ui.internal
+ io.pelle.mango.dsl.ui.internal,
+ io.pelle.mango.dsl.ui.contentassist.antlr.internal
 Bundle-Activator: io.pelle.mango.dsl.ui.internal.MangoActivator

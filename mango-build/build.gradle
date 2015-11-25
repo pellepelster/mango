@@ -14,8 +14,8 @@ buildscript {
 	}
 	
 	dependencies {
-		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '0.0.2'
-		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+'
+		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '+'
+		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+' 
 	}
 }
 
@@ -26,8 +26,10 @@ ext {
 		spring_security: "4.0.2.RELEASE",
 		gwt: "2.6.1",
 		guava: "17.0",
-		xtext: "2.7.0",
-		metrics: "3.1.2"
+		xtext: "2.9.0.rc2",
+		metrics: "3.1.2",
+		xtend_gradle: "0.4.12",
+		xtext_gradle: "0.3.25"
 	]
 }
 

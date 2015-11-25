@@ -1,17 +1,22 @@
 dependencies {
 	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xtext', version: versions.xtext
+	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.ui', version: versions.xtext
 	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xbase', version: versions.xtext
 	compile group: 'org.eclipse.xtend', name: 'org.eclipse.xtend.lib', version: versions.xtext
+	compile 'org.eclipse.emf:edit-ui:2.1.0'
+
 	compile files(fileTree(System.properties['user.home'] + "/java/eclipse_pdebuild/plugins").include('*xtext*ui*.jar').include('*emf*ui*.jar').include('org.eclipse.osgi*.jar').include('org.eclipse.ui*.jar').include('org.eclipse.jface*.jar').include('org.eclipse.compare*.jar').include('org.eclipse.core.resources*.jar').include('org.eclipse.core.command*.jar').include('org.eclipse.equinox.registry*.jar').include('org.eclipse.equinox.common*.jar').include('org.eclipse.core.runtime*.jar').include('org.eclipse.emf.edit*.jar').include('org.eclipse.swt*.jar').include('org.eclipse.text*.jar').exclude("*.source_*.jar"))
 	compile project(':mango-dsl')
 }
 
 buildscript {
 	repositories { mavenCentral() }
-	dependencies { classpath 'org.xtend:xtend-gradle-plugin:0.1.+' }
+	dependencies { 
+		classpath group: 'org.xtend', name: 'xtend-gradle-plugin', version: versions.xtend_gradle
+	}
 }
 
-apply plugin: 'xtend'
+apply plugin: "org.xtend.xtend"
 
 sourceSets {
 	main {
@@ -49,10 +54,10 @@ compileXtend.doFirst {
 	xtendOutputDir.mkdirs()
 }
 
-xtend {
-	fork = true
-	useDaemon = true
-	xtendAsPrimaryDebugSource = true
-	hideSyntheticVariables = false
-	encoding = "UTF-8"
-}
+//xtend {
+//	fork = true
+//	useDaemon = true
+//	xtendAsPrimaryDebugSource = true
+//	hideSyntheticVariables = false
+//	encoding = "UTF-8"
+//}

@@ -4,7 +4,7 @@ apply plugin: 'groovy'
 
 
 dependencies {
-	compile group: 'org.xtext', name: 'xtext-gradle-plugin', version: '0.0.2'
+    compile group: 'org.xtext', name: 'xtext-gradle-plugin', version: versions.xtext_gradle
     compile gradleApi()
     compile localGroovy()
 }
