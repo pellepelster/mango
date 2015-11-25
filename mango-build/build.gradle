@@ -10,13 +10,16 @@ buildscript {
 			layout "maven"
 		}
 		
-		mavenCentral()
+    jcenter()
+    mavenCentral()
+
 	}
 	
 	dependencies {
 		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '+'
-		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+' 
-	}
+		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+'
+    classpath group: 'de.undercouch', name: 'gradle-download-task', version: '2.0.0'
+  }
 }
 
 ext {
@@ -31,7 +34,32 @@ ext {
 		xtend_gradle: "0.4.12",
 		xtext_gradle: "0.3.25"
 	]
+
+  eclipse_url = 'http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/modeling/tmf/xtext/downloads/distros/eclipse-dsl-mars-1-linux-gtk-x86_64.tar.gz'
+
+  mango_gradle_dir = new File(project.gradle.gradleUserHomeDir, 'mango')
+
 }
+
+import de.undercouch.gradle.tasks.download.Download
+
+task downloadEclipse(type: Download) {
+    
+    def destFile = new File(mango_gradle_dir, 'eclipse.tar.gz')
+
+    println "downloading eclipse to '" + destFile + "'"
+
+    src eclipse_url
+    dest destFile
+    outputs.file destFile
+}
+
+task downloadAndExtractEclipse(dependsOn: downloadEclipse, type: Copy) {
+    from tarTree(downloadEclipse.dest)
+    into mango_gradle_dir
+}
+
+build.dependsOn downloadAndExtractEclipse
 
 allprojects {
 
@@ -57,15 +85,15 @@ allprojects {
 	sourceSets.main.compileClasspath += [ configurations.provided ]
 	
 	javadoc {
-    	exclude "**/**"
+	    	exclude "**/**"
 	}
 
 	eclipse {
 		pathVariables 'GRADLE_USER_HOME': gradle.gradleUserHomeDir
 		
-		 classpath {
-			plusConfigurations += [ configurations.provided ]
-		}
+	  classpath {
+		  plusConfigurations += [ configurations.provided ]
+	  }
 	}
 
 	dependencies {
@@ -74,4 +102,3 @@ allprojects {
 	}
 
 }
-
