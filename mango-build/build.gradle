@@ -18,7 +18,7 @@ buildscript {
 	dependencies {
 		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '+'
 		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+'
-    classpath group: 'de.undercouch', name: 'gradle-download-task', version: '2.0.0'
+		classpath group: 'de.undercouch', name: 'gradle-download-task', version: '2.0.0'
   }
 }
 
