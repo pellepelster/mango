@@ -29,7 +29,7 @@ ext {
 		spring_security: "4.0.2.RELEASE",
 		gwt: "2.6.1",
 		guava: "17.0",
-		xtext: "2.9.0.rc2",
+		xtext: "2.8.4",
 		metrics: "3.1.2",
 		xtend_gradle: "0.4.12",
 		xtext_gradle: "0.3.25"

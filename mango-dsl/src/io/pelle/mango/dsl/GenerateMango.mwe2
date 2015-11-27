@@ -50,7 +50,7 @@ Workflow {
 			
 			fileExtensions = file.extensions
 
-    		fragment = Xtend2GeneratorFragment auto-inject { }
+	    		fragment = Xtend2GeneratorFragment auto-inject { }
 
 			// Java API to access grammar elements (required by several other fragments)
 			fragment = grammarAccess.GrammarAccessFragment {}
