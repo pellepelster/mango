@@ -18,6 +18,8 @@
 	<property name="pde.build.location" value="${basedir}/${build.dir}/mango" />
 
 	<property file="build.properties" />
+	
+	<echo message="pde.eclipse.location: ${pde.eclipse.location}" />
 
 	<echo message="updatesite.location: ${updatesite.location}" />
 	<mkdir dir="${updatesite.location}"/>

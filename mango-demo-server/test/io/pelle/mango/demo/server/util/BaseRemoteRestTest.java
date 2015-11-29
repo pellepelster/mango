@@ -13,7 +13,7 @@ import com.jayway.restassured.specification.RequestSpecification;
  */
 public class BaseRemoteRestTest {
 
-	private String baseUrl = "http://localhost:9090/remote";
+	private String baseUrl = "http://localhost:9999/remote";
 
 	public BaseRemoteRestTest() {
 	}

@@ -13,6 +13,8 @@ task(pdeBuild) <<
 		ant.properties['versionQualifier'] = buildTimeStamp
 	}
 	
+	ant.properties['pde.eclipse.location'] = mango_gradle_dir.toString() + '/eclipse'
+	
 	ant.importBuild 'build.xml'
 
 	buildAll.execute()
