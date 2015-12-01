@@ -135,7 +135,7 @@
 		<java classname="org.eclipse.equinox.launcher.Main" fork="true" failonerror="true" logerror="true" output="pde_build.log">
 			<arg value="-consoleLog" />
 			<arg value="-application" />
-			<arg line="-data /tmp/workspace" />
+			<arg line="-data build_workspace" />
 			<arg value="org.eclipse.ant.core.antRunner" />
 			<arg value="-buildfile" />
 			<arg value="${pde.eclipse.location}/plugins/org.eclipse.pde.build_${pde.build.version}/scripts/build.xml" />
