@@ -20,7 +20,7 @@ public class ProjectNameServiceRestRemoteTest {
 
 		String todoTitle = UUID.randomUUID().toString();
 
-		String baseUrl = "http://localhost:9090/remote/";
+		String baseUrl = "http://localhost:8888/remote/";
 		given().get(baseUrl + "/todos/deleteAll").then();
 
 		given().get(baseUrl + "/todos").then().assertThat().body("", Matchers.hasSize(0));
@@ -38,7 +38,7 @@ public class ProjectNameServiceRestRemoteTest {
 
 		String todoTitle = UUID.randomUUID().toString();
 
-		String baseUrl = "http://localhost:9090/remote/";
+		String baseUrl = "http://localhost:8888/remote/";
 		given().get(baseUrl + "/todos/deleteAll").then();
 
 		given().get(baseUrl + "/todos").then().assertThat().body("", Matchers.hasSize(0));
@@ -66,7 +66,7 @@ public class ProjectNameServiceRestRemoteTest {
 
 		String todoTitle = UUID.randomUUID().toString();
 
-		String baseUrl = "http://localhost:9090/remote/";
+		String baseUrl = "http://localhost:8888/remote/";
 		given().get(baseUrl + "/todos/deleteAll").then();
 
 		given().get(baseUrl + "/todos").then().assertThat().body("", Matchers.hasSize(0));

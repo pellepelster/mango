@@ -51,7 +51,7 @@ dependencies {
 
 jettyEclipse {
 	jettyConfig = file('test/jetty-env.xml')
-	httpPort = 9090
+	httpPort = 8888
 }
 
 war {
