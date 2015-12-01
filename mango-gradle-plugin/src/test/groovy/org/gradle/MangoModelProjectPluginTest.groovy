@@ -9,7 +9,7 @@ import static org.junit.Assert.*
 class MangoModelProjectPluginTest {
 
 	@Test
-    public void greeterPluginAddsGreetingTaskToProject() {
+    public void addMangoModelProjectPlugin() {
 		
         Project project = ProjectBuilder.builder().build()
         project.apply plugin: 'java'

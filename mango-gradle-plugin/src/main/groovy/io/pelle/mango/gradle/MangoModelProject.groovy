@@ -11,7 +11,7 @@ class MangoModelProject extends MangoBaseProject {
 
 		super.apply(project);
 		
-		project.apply(plugin: 'xtext')
+		project.apply(plugin: 'org.xtext.xtext')
 		
 		project.xtext {
 			languages{
