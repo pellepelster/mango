@@ -2,7 +2,6 @@ package io.pelle.mango.db.test;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
 import org.junit.runner.RunWith;
-import org.springframework.context.annotation.Profile;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

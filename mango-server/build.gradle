@@ -1,11 +1,14 @@
 dependencies {
 	
-	compile project(":mango-server-base")
+	compile 	project(":mango-server-base")
 	testCompile project(path: ":mango-server-base", configuration: "testCompile")
 	
 	compile project(":mango-client-core")
 	compile project(":mango-client-web")
+	
 	compile project(":mango-db")
+	testCompile project(path: ":mango-db", configuration: "testCompile")
+	testCompile project(path: ':mango-db', configuration: 'testArtifacts' ) 
 
 	
 	compile project(path: ":mango-model", configuration: "generatedClientGWT")
@@ -41,7 +44,8 @@ dependencies {
 	compile group: "org.apache.tomcat", name: "dbcp", version: "6.0.39"
 
 	compile group: "org.freemarker", name: "freemarker", version: "2.3.21"
-
 	compile 'com.googlecode.gwtupload:gwtupload:1.0.3'
+
+	compile group: 'io.dropwizard.metrics', name: 'metrics-servlets', version: versions.metrics
 	
 }

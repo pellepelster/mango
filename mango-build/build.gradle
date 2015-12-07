@@ -32,7 +32,8 @@ ext {
 		xtext: "2.8.4",
 		metrics: "3.1.2",
 		xtend_gradle: "0.4.12",
-		xtext_gradle: "0.3.25"
+		xtext_gradle: "0.3.25",
+		hsqldb: "2.3.3"
 	]
 
   eclipse_url = 'http://ftp-stud.fht-esslingen.de/pub/Mirrors/eclipse/modeling/tmf/xtext/downloads/distros/eclipse-dsl-mars-1-linux-gtk-x86_64.tar.gz'
