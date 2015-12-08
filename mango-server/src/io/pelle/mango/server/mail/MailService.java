@@ -15,10 +15,16 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
+import io.pelle.mango.client.property.IPropertyService;
+import io.pelle.mango.server.ConfigurationParameters;
+
 public class MailService {
 
 	@Autowired
 	private JavaMailSender mailSender;
+
+	@Autowired
+	private IPropertyService propertyService;
 
 	@Autowired
 	private VelocityEngine velocityEngine;
@@ -34,7 +40,7 @@ public class MailService {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
 				message.setTo(mailTo);
-				message.setFrom(mailFrom);
+				message.setFrom(propertyService.getProperty(ConfigurationParameters.MAIL_SENDER_FROM));
 				String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, velocityTemplateLocation, StandardCharsets.UTF_8.name(), velocityTemplateModel);
 				message.setText(text, true);
 			}

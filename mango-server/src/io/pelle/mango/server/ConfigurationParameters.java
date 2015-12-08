@@ -9,13 +9,13 @@ public interface ConfigurationParameters {
 
 	public static IProperty<String> MAIL_SENDER_HOST = PropertyBuilder.getInstance().createStringProperty("mail.sender.host").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<String> MAIL_SENDER_PORT = PropertyBuilder.getInstance().createStringProperty("mail.sender.port").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<Integer> MAIL_SENDER_PORT = PropertyBuilder.getInstance().createIntegerProperty("mail.sender.port").system().fallbackToSpring().defaultValueWithPostfix();
 
 	public static IProperty<String> MAIL_SENDER_USERNAME = PropertyBuilder.getInstance().createStringProperty("mail.sender.username").system().fallbackToSpring().defaultValueWithPostfix();
 
 	public static IProperty<String> MAIL_SENDER_PASSWORD = PropertyBuilder.getInstance().createStringProperty("mail.sender.password").system().fallbackToSpring().defaultValueWithPostfix();
 
-	public static IProperty<String> MAIL_SENDER_FROM = PropertyBuilder.getInstance().createStringProperty("mail.sender.from").system().fallbackToSpring().defaultValueWithPostfix();
+	public static IProperty<String> MAIL_SENDER_FROM = PropertyBuilder.getInstance().createStringProperty("mail.sender.from").system().fallbackToSpring().defaultValueWithPostfix().defaultValue("info@localhost.com");
 
 	public static IProperty<Boolean> HIBERNATE_SQL_SHOW = PropertyBuilder.getInstance().createBooleanProperty("hibernate.sql.show").system().fallbackToSpring().defaultValueWithPostfix();
 
