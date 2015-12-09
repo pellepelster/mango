@@ -1,6 +1,7 @@
 package io.pelle.mango.server.mail;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
@@ -8,7 +9,6 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -29,20 +29,34 @@ public class MailService {
 	@Autowired
 	private VelocityEngine velocityEngine;
 
-	@Value("mail.sender.from")
-	private String mailFrom;
-
 	private static Logger LOG = Logger.getLogger(MailService.class.getName());
 
-	public void sendMail(final String mailTo, final String velocityTemplateLocation, final Map<String, Object> velocityTemplateModel) {
+	public void sendMail(final String mailTo, final String subject, final String velocityTemplateLocation, final Map<String, Object> velocityTemplateModel) {
+		sendMail(mailTo, subject, velocityTemplateLocation, velocityTemplateModel, Collections.<String, String> emptyMap());
+	}
+
+	public void sendMail(final String mailTo, final String subject, final String velocityTemplateLocation) {
+		sendMail(mailTo, subject, velocityTemplateLocation, Collections.<String, Object> emptyMap(), Collections.<String, String> emptyMap());
+	}
+
+	public void sendMail(final String mailTo, final String subject, final String velocityTemplateLocation, final Map<String, Object> velocityTemplateModel, final Map<String, String> headers) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
+
 				MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+
 				message.setTo(mailTo);
 				message.setFrom(propertyService.getProperty(ConfigurationParameters.MAIL_SENDER_FROM));
+
 				String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, velocityTemplateLocation, StandardCharsets.UTF_8.name(), velocityTemplateModel);
+
 				message.setText(text, true);
+				message.setSubject(subject);
+
+				for (Map.Entry<String, String> header : headers.entrySet()) {
+					mimeMessage.setHeader(header.getKey(), header.getValue());
+				}
 			}
 		};
 
@@ -53,7 +67,4 @@ public class MailService {
 		}
 	}
 
-	public void setMailFrom(String mailFrom) {
-		this.mailFrom = mailFrom;
-	}
 }
