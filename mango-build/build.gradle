@@ -16,7 +16,7 @@ buildscript {
 	}
 	
 	dependencies {
-		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '+'
+		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '0.3.27'
 		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+'
 		classpath group: 'de.undercouch', name: 'gradle-download-task', version: '2.0.0'
   }
@@ -32,7 +32,7 @@ ext {
 		xtext: "2.8.4",
 		metrics: "3.1.2",
 		xtend_gradle: "0.4.12",
-		xtext_gradle: "0.3.25",
+		xtext_gradle: "0.3.27",
 		hsqldb: "2.3.3"
 	]
 

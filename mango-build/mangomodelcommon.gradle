@@ -3,8 +3,6 @@
 apply plugin: "org.xtext.xtext"
 
 xtext {
-//	version = '2.5.3' // the current default, can be omitted
-//	encoding = 'UTF-8' //the default, can be omitted
 
 	languages{
 		
@@ -51,6 +49,7 @@ dependencies {
 	generatedServer group: "org.springframework.ws", name: "spring-ws-core", version: "2.2.0.RELEASE"
 	generatedServer group: "wsdl4j", name: "wsdl4j", version: "1.6.3"
 	generatedServer group: "org.apache.ws.xmlschema", name: "xmlschema-core", version: "2.1.0"
+	
 	xtextTooling 'org.eclipse.jdt.core.compiler:ecj:4.4.2'
 
 }
