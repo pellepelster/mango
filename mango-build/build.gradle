@@ -10,8 +10,8 @@ buildscript {
 			layout "maven"
 		}
 		
-    jcenter()
-    mavenCentral()
+    	jcenter()
+    	mavenCentral()
 
 	}
 	

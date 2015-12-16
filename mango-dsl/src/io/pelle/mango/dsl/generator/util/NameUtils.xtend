@@ -350,12 +350,24 @@ class NameUtils {
 		return voMapperFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
-	def springDBApplicationContextFullQualifiedFileName(Model model) {
-		return model.modelName.toFirstUpper + "DB-gen.xml"
+	def springApplicationContextPropertiesFullQualifiedFileName(Model model) {
+		return "mango-gen.properties";
 	}
 
 	def baseApplicationContextFullQualifiedFileName(Model model) {
-		return model.modelName.toFirstUpper + "BaseApplicationContext-gen.xml"
+		return model.baseApplicationContextFullQualifiedName.replaceAll("\\.", "/") + ".java"
+	}
+
+	def baseApplicationContextFullQualifiedName(Model model) {
+		return model.baseApplicationContextPackageName() + "." + model.baseApplicationContextName;
+	}
+
+	def baseApplicationContextPackageName(Model model) {
+		return modelPackageName(model)
+	}
+
+	def baseApplicationContextName(Model model) {
+		return model.modelName.toFirstUpper + "BaseApplicationContextGen"
 	}
 
 	def springPersistenceXMLFullQualifiedFileName(Model model) {

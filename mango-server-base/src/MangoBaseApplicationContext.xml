@@ -13,9 +13,9 @@
         				http://www.springframework.org/schema/mvc/spring-mvc.xsd
         				http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-	<import resource="classpath:/MangoBaseApplicationContext-gen.xml" />
 	<import resource="classpath:/MangoSpringServices-gen.xml" />
 
+<!-- 
 	<bean id="propertyConfigurer"
 		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
 		<property name="nullValue" value='""' />
@@ -27,7 +27,8 @@
 			</list>
 		</property>
 	</bean>
-
+ -->
+ 
  	<cache:annotation-driven cache-manager="cacheManager" />
 
 </beans>

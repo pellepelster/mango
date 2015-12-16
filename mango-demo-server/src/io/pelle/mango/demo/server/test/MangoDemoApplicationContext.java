@@ -2,13 +2,12 @@ package io.pelle.mango.demo.server.test;
 
 import static io.pelle.mango.server.state.StateBuilder.transition;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.core.env.Environment;
 
+import io.pelle.mango.demo.MangoDemoBaseApplicationContextGen;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.test.Entity1VO;
@@ -20,10 +19,10 @@ import io.pelle.mango.server.search.SearchIndexBuilder;
 import io.pelle.mango.server.state.StateBuilder;
 
 @Configuration
-@ImportResource({ "classpath:/MangoDemoWebservices-gen.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoDemoDB-gen.xml", "classpath:/MangoDemoBaseApplicationContext-gen.xml", "classpath:/MangoDemoSpringServices-gen.xml",
-		"classpath:/MangoSpringServices-gen.xml", "classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
-@Import({ MangoLoggerApplicationContext.class, MangoSecurityConfig.class, MangoMailApplicationContext.class })
-public class MangoDemoApplicationContext extends MangoServerApplicationContext {
+@Import({ MangoDemoBaseApplicationContextGen.class, MangoServerApplicationContext.class, MangoLoggerApplicationContext.class, MangoSecurityConfig.class, MangoMailApplicationContext.class })
+@ImportResource({ "classpath:/MangoDemoWebservices-gen.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoDemoSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml",
+		"classpath:/MangoDemoRestRemoteServices-gen.xml", "classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
+public class MangoDemoApplicationContext {
 
 	@Bean
 	public TestHierarchicalConfiguration testHierarchicalConfiguration() {
@@ -36,17 +35,14 @@ public class MangoDemoApplicationContext extends MangoServerApplicationContext {
 		return MangoDemoClientConfiguration.registerAll();
 	}
 
-	@Autowired
-	Environment env;
-
 	@Bean
 	public SearchIndexBuilder createEntity1Index() {
 
 		SearchIndexBuilder result = SearchIndexBuilder.createBuilder("index1").setDefault();
 
 		result.forDictionary(MangoDemoDictionaryModel.COMPANY).addAttributes(MangoDemoDictionaryModel.COMPANY.COMPANY_EDITOR.NAME1);
-		result.forDictionary(MangoDemoDictionaryModel.COUNTRY).addAttributes(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3,
-				MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2);
+		result.forDictionary(MangoDemoDictionaryModel.COUNTRY).addAttributes(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME,
+				MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2);
 
 		return result;
 	}

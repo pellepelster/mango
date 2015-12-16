@@ -1,16 +1,17 @@
 package io.pelle.mango.db.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+
 import io.pelle.mango.client.base.vo.IBaseEntity;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IEntityVOMapper;
 import io.pelle.mango.client.base.vo.IVOEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-public final class EntityVOMapper implements IEntityVOMapper {
+public class EntityVOMapper implements IEntityVOMapper {
 
 	private static EntityVOMapper instance;
 
@@ -21,7 +22,6 @@ public final class EntityVOMapper implements IEntityVOMapper {
 		return instance;
 	}
 
-	@Autowired
 	private List<IEntityVOMapper> entityVOMappers = new ArrayList<IEntityVOMapper>();
 
 	private EntityVOMapper() {
@@ -100,6 +100,8 @@ public final class EntityVOMapper implements IEntityVOMapper {
 		return result;
 	}
 
+	@Autowired
+	@Order( Integer.MAX_VALUE)
 	public void setEntityVOMappers(List<IEntityVOMapper> entityVOMappers) {
 
 		for (IEntityVOMapper entityVOMapper : entityVOMappers) {

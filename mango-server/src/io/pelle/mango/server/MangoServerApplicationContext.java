@@ -9,10 +9,13 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricFilter;
@@ -21,12 +24,14 @@ import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteReporter.Builder;
 
+import io.pelle.mango.MangoBaseApplicationContextGen;
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.api.entity.EntityApiController;
 import io.pelle.mango.server.api.entity.EntityApiIndexController;
 import io.pelle.mango.server.api.webhook.EntityWebhookRegistry;
 import io.pelle.mango.server.api.webhook.WebhookApiController;
+import io.pelle.mango.server.base.gwt.MangoRPCServiceExporterFactory;
 import io.pelle.mango.server.file.EntityFileUUIDCallback;
 import io.pelle.mango.server.file.FileController;
 import io.pelle.mango.server.file.FileEntityCallback;
@@ -47,9 +52,29 @@ import io.pelle.mango.server.xml.XmlVOImporter;
 import io.pelle.mango.server.xml.XmlVOMapper;
 
 @Configuration
-@ImportResource({ "classpath:/MangoServerApplicationContext.xml" })
 @PropertySources({ @PropertySource(value = "classpath:/mango.properties", ignoreResourceNotFound = true), @PropertySource("classpath:/mango_defaults.properties") })
-public class MangoServerApplicationContext extends MangoDBApplicationContext {
+@Import({ MangoBaseApplicationContextGen.class, MangoDBApplicationContext.class })
+@ImportResource({ "classpath:/MangoBaseApplicationContext.xml" })
+public class MangoServerApplicationContext {
+
+	@Bean
+	public FreeMarkerConfigurer freemarkerConfig() {
+		
+		FreeMarkerConfigurer result = new FreeMarkerConfigurer();
+		result.setTemplateLoaderPath("classpath:templates");
+		
+		return result;
+	}
+
+	@Bean
+	public FreeMarkerViewResolver viewResolver() {
+		
+		FreeMarkerViewResolver result = new FreeMarkerViewResolver();
+		result.setCache(true);
+		result.setSuffix(".ftl");
+		
+		return result;
+	}
 
 	@Autowired
 	private IPropertyService propertyService;
@@ -64,6 +89,11 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 		return new XmlVOImporter();
 	}
 
+	@Bean
+	public MangoRPCServiceExporterFactory rpcServiceExporterFactory() {
+		return new MangoRPCServiceExporterFactory();
+	}
+	
 	@Bean(name = "xmlVOExporter")
 	public XmlVOExporter XmlVOExporter() {
 		return new XmlVOExporter();
@@ -195,7 +225,8 @@ public class MangoServerApplicationContext extends MangoDBApplicationContext {
 
 		if (propertyService.getProperty(ConfigurationParameters.GRAPHITE_METRICS_ENABLED)) {
 
-			Graphite graphite = new Graphite(new InetSocketAddress(propertyService.getProperty(ConfigurationParameters.GRAPHITE_CARBON_HOST), propertyService.getProperty(ConfigurationParameters.GRAPHITE_CARBON_PORT)));
+			Graphite graphite = new Graphite(
+					new InetSocketAddress(propertyService.getProperty(ConfigurationParameters.GRAPHITE_CARBON_HOST), propertyService.getProperty(ConfigurationParameters.GRAPHITE_CARBON_PORT)));
 
 			Builder builder = GraphiteReporter.forRegistry(metricRegistry()).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).filter(MetricFilter.ALL);
 

@@ -1,6 +1,8 @@
 dependencies {
 
-	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xtext', version: versions.xtext
+	compile(group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xtext', version: versions.xtext) {
+        exclude module: 'org.eclipse.xtext.dependencies'
+    }
 	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.xbase', version: versions.xtext
 	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext', version: versions.xtext
 	compile group: 'org.eclipse.xtext', name: 'org.eclipse.xtext.builder.standalone', version: versions.xtext

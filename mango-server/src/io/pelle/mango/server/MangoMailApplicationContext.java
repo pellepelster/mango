@@ -10,11 +10,10 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
 import io.pelle.mango.client.property.IPropertyService;
-import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.mail.MailService;
 
 @Configuration
-public class MangoMailApplicationContext extends MangoDBApplicationContext {
+public class MangoMailApplicationContext {
 
 	@Autowired
 	private IPropertyService propertyService;
