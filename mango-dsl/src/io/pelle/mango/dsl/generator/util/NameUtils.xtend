@@ -354,21 +354,9 @@ class NameUtils {
 		return "mango-gen.properties";
 	}
 
-	def baseApplicationContextFullQualifiedFileName(Model model) {
-		return model.baseApplicationContextFullQualifiedName.replaceAll("\\.", "/") + ".java"
-	}
-
-	def baseApplicationContextFullQualifiedName(Model model) {
-		return model.baseApplicationContextPackageName() + "." + model.baseApplicationContextName;
-	}
-
-	def baseApplicationContextPackageName(Model model) {
-		return modelPackageName(model)
-	}
-
-	def baseApplicationContextName(Model model) {
-		return model.modelName.toFirstUpper + "BaseApplicationContextGen"
-	}
+	// -------------------------------------------------------------------------
+	// persistence unit
+	// -------------------------------------------------------------------------
 
 	def springPersistenceXMLFullQualifiedFileName(Model model) {
 		return "META-INF/persistence.xml"
@@ -395,6 +383,63 @@ class NameUtils {
 
 	def dictionaryI18NNameFullQualifiedNameFileName(Model model) {
 		return dictionaryI18NNameFullQualifiedName(model).replaceAll("\\.", "/") + ".properties";
+	}
+	
+	// -------------------------------------------------------------------------
+	// base application context
+	// -------------------------------------------------------------------------
+	def baseApplicationContextFullQualifiedFileName(Model model) {
+		return model.baseApplicationContextFullQualifiedName.replaceAll("\\.", "/") + ".java"
+	}
+
+	def baseApplicationContextFullQualifiedName(Model model) {
+		return model.baseApplicationContextPackageName() + "." + model.baseApplicationContextName;
+	}
+
+	def baseApplicationContextPackageName(Model model) {
+		return modelPackageName(model)
+	}
+
+	def baseApplicationContextName(Model model) {
+		return model.modelName.toFirstUpper + "BaseApplicationContextGen"
+	}
+	
+	// -------------------------------------------------------------------------
+	// rest remote services
+	// -------------------------------------------------------------------------
+	def restRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
+		return model.restRemoteServicesApplicationContextFullQualifiedName.replaceAll("\\.", "/") + ".java"
+	}
+
+	def restRemoteServicesApplicationContextFullQualifiedName(Model model) {
+		return model.restRemoteServicesApplicationContextPackageName() + "." + model.restRemoteServicesApplicationContextName;
+	}
+
+	def restRemoteServicesApplicationContextPackageName(Model model) {
+		return modelPackageName(model)
+	}
+
+	def restRemoteServicesApplicationContextName(Model model) {
+		return model.modelName.toFirstUpper + "RestRemoteServicesGen"
+	}
+	
+	// -------------------------------------------------------------------------
+	// gwt remote services
+	// -------------------------------------------------------------------------
+	def gwtRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
+		return model.gwtRemoteServicesApplicationContextFullQualifiedName.replaceAll("\\.", "/") + ".java"
+	}
+
+	def gwtRemoteServicesApplicationContextFullQualifiedName(Model model) {
+		return model.gwtRemoteServicesApplicationContextPackageName() + "." + model.gwtRemoteServicesApplicationContextName;
+	}
+
+	def gwtRemoteServicesApplicationContextPackageName(Model model) {
+		return modelPackageName(model)
+	}
+
+	def gwtRemoteServicesApplicationContextName(Model model) {
+		return model.modelName.toFirstUpper + "GWTRemoteServicesGen"
 	}
 	
 

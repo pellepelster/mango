@@ -107,14 +107,6 @@ class ServerNameUtils extends NameUtils {
 		
 	}
 
-	def restRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
-		return model.modelName.toFirstUpper + "RestRemoteServices-gen.xml"
-	}
-	
-	def gwtRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
-		return model.modelName.toFirstUpper + "GWTRemoteServices-gen.xml"
-	}
-
 	def serviceSpringServicesApplicationContextFullQualifiedFileName(Model model) {
 		return model.modelName.toFirstUpper + "SpringServices-gen.xml"
 	}
