@@ -1,9 +1,5 @@
 package io.pelle.mango.server;
 
-import java.net.InetSocketAddress;
-import java.util.concurrent.TimeUnit;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
@@ -17,25 +13,19 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-import com.codahale.metrics.JmxReporter;
-import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.graphite.Graphite;
-import com.codahale.metrics.graphite.GraphiteReporter;
-import com.codahale.metrics.graphite.GraphiteReporter.Builder;
 
 import io.pelle.mango.MangoBaseApplicationContextGen;
-import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.api.entity.EntityApiController;
 import io.pelle.mango.server.api.entity.EntityApiIndexController;
 import io.pelle.mango.server.api.webhook.EntityWebhookRegistry;
 import io.pelle.mango.server.api.webhook.WebhookApiController;
-import io.pelle.mango.server.base.gwt.MangoRPCServiceExporterFactory;
 import io.pelle.mango.server.file.EntityFileUUIDCallback;
 import io.pelle.mango.server.file.FileController;
 import io.pelle.mango.server.file.FileEntityCallback;
 import io.pelle.mango.server.file.FileStorage;
+import io.pelle.mango.server.gwt.MangoRPCServiceExporterFactory;
 import io.pelle.mango.server.hierarchy.HierarchicalVODecorator;
 import io.pelle.mango.server.hierarchy.HierarchyParentValidator;
 import io.pelle.mango.server.log.LogReferenceKeyMapperRegistry;
@@ -53,31 +43,28 @@ import io.pelle.mango.server.xml.XmlVOMapper;
 
 @Configuration
 @PropertySources({ @PropertySource(value = "classpath:/mango.properties", ignoreResourceNotFound = true), @PropertySource("classpath:/mango_defaults.properties") })
-@Import({ MangoBaseApplicationContextGen.class, MangoDBApplicationContext.class })
+@Import({ MangoBaseApplicationContextGen.class, MangoDBApplicationContext.class, MangoMetricsApplicationContext.class })
 @ImportResource({ "classpath:/MangoBaseApplicationContext.xml" })
 public class MangoServerApplicationContext {
 
 	@Bean
 	public FreeMarkerConfigurer freemarkerConfig() {
-		
+
 		FreeMarkerConfigurer result = new FreeMarkerConfigurer();
 		result.setTemplateLoaderPath("classpath:templates");
-		
+
 		return result;
 	}
 
 	@Bean
 	public FreeMarkerViewResolver viewResolver() {
-		
+
 		FreeMarkerViewResolver result = new FreeMarkerViewResolver();
 		result.setCache(true);
 		result.setSuffix(".ftl");
-		
+
 		return result;
 	}
-
-	@Autowired
-	private IPropertyService propertyService;
 
 	@Bean
 	public ConfigurationLogger ConfigurationLogger() {
@@ -93,7 +80,7 @@ public class MangoServerApplicationContext {
 	public MangoRPCServiceExporterFactory rpcServiceExporterFactory() {
 		return new MangoRPCServiceExporterFactory();
 	}
-	
+
 	@Bean(name = "xmlVOExporter")
 	public XmlVOExporter XmlVOExporter() {
 		return new XmlVOExporter();
@@ -215,30 +202,6 @@ public class MangoServerApplicationContext {
 	@Bean
 	public HierarchyParentValidator hierarchyParentValidator() {
 		return new HierarchyParentValidator();
-	}
-
-	@Bean
-	public JmxReporter jmxReporter() {
-
-		JmxReporter reporter = JmxReporter.forRegistry(metricRegistry()).build();
-		reporter.start();
-
-		if (propertyService.getProperty(ConfigurationParameters.GRAPHITE_METRICS_ENABLED)) {
-
-			Graphite graphite = new Graphite(
-					new InetSocketAddress(propertyService.getProperty(ConfigurationParameters.GRAPHITE_CARBON_HOST), propertyService.getProperty(ConfigurationParameters.GRAPHITE_CARBON_PORT)));
-
-			Builder builder = GraphiteReporter.forRegistry(metricRegistry()).convertRatesTo(TimeUnit.SECONDS).convertDurationsTo(TimeUnit.MILLISECONDS).filter(MetricFilter.ALL);
-
-			if (propertyService.getProperty(ConfigurationParameters.GRAPHITE_METRICS_PREFIX) != null) {
-				builder.prefixedWith(propertyService.getProperty(ConfigurationParameters.GRAPHITE_METRICS_PREFIX));
-			}
-
-			GraphiteReporter graphiteReporter = builder.build(graphite);
-			graphiteReporter.start(1, TimeUnit.MINUTES);
-		}
-
-		return reporter;
 	}
 
 }

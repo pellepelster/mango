@@ -1,4 +1,4 @@
-package io.pelle.mango.server.base.gwt;
+package io.pelle.mango.server.gwt;
 
 import org.gwtwidgets.server.spring.DefaultRPCServiceExporterFactory;
 import org.gwtwidgets.server.spring.RPCServiceExporter;
