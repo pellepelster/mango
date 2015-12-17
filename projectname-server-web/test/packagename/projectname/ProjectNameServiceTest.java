@@ -13,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 public class ProjectNameServiceTest extends BaseDBTest {
 
 	public ProjectNameServiceTest() {
-		super("projectname");
 	}
 
 	@Autowired

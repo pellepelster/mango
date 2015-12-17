@@ -7,8 +7,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- lib/gwt-sl-1.5.jar,
- lib/javax.servlet-api-3.1.0.jar,
  lib/guava-17.0.jar,
  lib/gwt-user-2.6.1.jar,
  lib/spring-security-config-3.2.4.RELEASE.jar,
@@ -23,8 +21,7 @@ Bundle-ClassPath: .,
  lib/spring-core-4.0.5.RELEASE.jar,
  lib/sirocco-text-table-formatter-1.0.jar,
  lib/spring-context-4.0.5.RELEASE.jar,
- lib/commons-lang3-3.3.2.jar,
- lib/spring-web-4.0.5.RELEASE.jar
+ lib/commons-lang3-3.3.2.jar
 Bundle-Vendor: pelle.io
 Export-Package: com.google.common.annotations,
  com.google.common.base,

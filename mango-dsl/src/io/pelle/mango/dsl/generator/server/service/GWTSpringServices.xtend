@@ -4,40 +4,43 @@
 package io.pelle.mango.dsl.generator.server.service
 
 import com.google.inject.Inject
+import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
+import java.util.HashMap
 import java.util.Map
-import org.gwtwidgets.server.spring.GWTHandler
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import java.util.HashMap
 
 class GWTSpringServices {
 
 	@Inject
 	extension ServerNameUtils
+
+	@Inject
+	ClientNameUtils clientNameUtils
 	
 	def gwtRemoteServicesApplicationContext(Model model) '''
 		package «model.gwtRemoteServicesApplicationContextPackageName»;
 
 		@«Configuration.name»
-		class «model.gwtRemoteServicesApplicationContextName» {
+		public class «model.gwtRemoteServicesApplicationContextName» {
 
 			«FOR service: model.eAllContents.toIterable.filter(Service)»
 			@«Autowired.name»
-			private «service.serviceInterfaceFullQualifiedName» «service.serviceSpringName»;
+			private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.serviceSpringName»;
 			
 			«ENDFOR»
 			
 			@«Bean.name»
 			@«Autowired.name»
-			public «GWTHandler.name» «model.modelName.toFirstLower»(RPCServiceExporterFactory serviceExporterFactory) {
-				«GWTHandler.name» result = new «GWTHandler.name»();
+			public org.gwtwidgets.server.spring.GWTHandler «model.modelName.toFirstLower»(org.gwtwidgets.server.spring.RPCServiceExporterFactory serviceExporterFactory) {
+				org.gwtwidgets.server.spring.GWTHandler result = new org.gwtwidgets.server.spring.GWTHandler();
 				result.setServiceExporterFactory(serviceExporterFactory);
 
-				«Map.name» mappings = new «HashMap.name»();
+				«Map.name»<«String.name»,«Object.name»> mappings = new «HashMap.name»<«String.name»,«Object.name»>();
 				
 				«FOR service: model.eAllContents.toIterable.filter(Service)»
 				mappings.put("/rpc/«service.serviceSpringName»", «service.serviceSpringName»);
@@ -54,7 +57,7 @@ class GWTSpringServices {
 	package «model.restRemoteServicesApplicationContextPackageName»;
 
 	@«Configuration.name»
-	class «model.restRemoteServicesApplicationContextName» {
+	public class «model.restRemoteServicesApplicationContextName» {
 	
 		«FOR service: model.eAllContents.toIterable.filter(Service)»
 		@«Bean.name»

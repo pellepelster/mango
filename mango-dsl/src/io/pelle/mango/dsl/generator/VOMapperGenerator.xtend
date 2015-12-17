@@ -6,7 +6,6 @@ import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
-import io.pelle.mango.server.base.BaseEntityVOMapper
 
 class VOMapperGenerator {
 
@@ -22,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @org.springframework.stereotype.Component
-public class «model.voMapperName» extends «BaseEntityVOMapper.name» implements «IEntityVOMapper.name» {
+public class «model.voMapperName» extends io.pelle.mango.server.base.BaseEntityVOMapper implements «IEntityVOMapper.name» {
 				
 	@java.lang.SuppressWarnings("serial")
 	private Map<Class<?>, Class<?>> entityVOMapper = new HashMap<Class<?>, Class<?>>() {

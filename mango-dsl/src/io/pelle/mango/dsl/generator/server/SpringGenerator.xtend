@@ -5,7 +5,6 @@ import io.pelle.mango.client.base.vo.IEntityVOMapper
 import io.pelle.mango.dsl.generator.xml.XmlNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
-import io.pelle.mango.server.base.MangoConstants
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
@@ -20,7 +19,7 @@ class SpringGenerator {
 	extension XmlNameUtils
 
 	def springApplicationContextProperties(Model model) '''
-	«MangoConstants.APPLICATION_NAME_PROPERTY_KEY»=«model.modelName.toLowerCase»
+	applicationName=«model.modelName.toLowerCase»
 	'''
 
 	def compileBaseApplicationContext(Model model) '''
