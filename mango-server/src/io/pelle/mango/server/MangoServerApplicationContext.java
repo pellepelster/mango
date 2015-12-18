@@ -33,6 +33,7 @@ import io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper;
 import io.pelle.mango.server.security.MangoGroupPermissionMerger;
 import io.pelle.mango.server.state.StateEntityCallback;
 import io.pelle.mango.server.util.ConfigurationLogger;
+import io.pelle.mango.server.util.DocumentationBean;
 import io.pelle.mango.server.validator.LengthValidator;
 import io.pelle.mango.server.validator.MandatoryValidator;
 import io.pelle.mango.server.validator.NaturalKeyValidator;
@@ -72,12 +73,17 @@ public class MangoServerApplicationContext {
 	}
 
 	@Bean
-	public ConfigurationLogger ConfigurationLogger() {
+	public ConfigurationLogger configurationLogger() {
 		return new ConfigurationLogger();
+	}
+	
+	@Bean
+	public DocumentationBean documentationBean() {
+		return new DocumentationBean();
 	}
 
 	@Bean(name = "xmlVOImporter")
-	public XmlVOImporter XmlVOImporter() {
+	public XmlVOImporter xmlVOImporter() {
 		return new XmlVOImporter();
 	}
 
