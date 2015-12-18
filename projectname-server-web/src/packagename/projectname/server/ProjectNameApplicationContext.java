@@ -7,8 +7,8 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import io.pelle.mango.server.MangoLoggerApplicationContext;
-import packagename.projectname.server.ProjectNameRestRemoteServicesGen;
-import packagename.projectname.server.ProjectNameBaseApplicationContextGen;
+import packagename.projectname.ProjectNameRestRemoteServicesGen;
+import packagename.projectname.ProjectNameBaseApplicationContextGen;
 
 @Configuration
 @ImportResource({ "classpath:/ProjectNameSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml" })
