@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Import;
 import io.pelle.mango.MangoGWTRemoteServicesGen;
 
 @Configuration
-@Import({ MangoWebMvcApplicationContext.class, MangoGWTRemoteServicesGen.class })
+@Import({ MangoWebMvcApplicationContext.class, MangoGWTRemoteServicesGen.class, MangoSecurityConfig.class })
 public class MangoWebApplicationContext {
 }

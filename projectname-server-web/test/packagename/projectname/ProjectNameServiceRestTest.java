@@ -39,17 +39,16 @@ public class ProjectNameServiceRestTest extends BaseDBTest {
 	}
 
 	public ProjectNameServiceRestTest() {
-		super("projectname");
 	}
 
 	@Test
 	@Ignore
 	public void testGetAll() throws Exception {
-		
+
 		baseEntityService.deleteAll(TodoVO.class.getName());
-		
+
 		mockMvc.perform(post("/projectnameservice/save").content("{ \"title\": \"buy milk\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
-		
+
 		mockMvc.perform(post("/projectnameservice/getall").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$.[0]title").value("buy milk"));
 	}
 
