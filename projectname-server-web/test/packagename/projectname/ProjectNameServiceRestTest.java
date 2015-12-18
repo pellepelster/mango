@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import org.springframework.test.context.ActiveProfiles;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.test.BaseDBTest;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 @WebAppConfiguration
 @ContextConfiguration( classes = { packagename.projectname.server.ProjectNameApplicationContext.class  })
+@ActiveProfiles("test")
 public class ProjectNameServiceRestTest extends BaseDBTest {
 
 	private MockMvc mockMvc;

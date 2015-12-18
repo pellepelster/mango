@@ -8,8 +8,10 @@ import packagename.projectname.client.TodoRequest;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ActiveProfiles;
 
 @ContextConfiguration( classes = { packagename.projectname.server.ProjectNameApplicationContext.class  })
+@ActiveProfiles("test")
 public class ProjectNameServiceTest extends BaseDBTest {
 
 	public ProjectNameServiceTest() {
