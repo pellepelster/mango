@@ -131,8 +131,8 @@ class NameUtils {
 		return getPackageName(valueObject) + "." + voName(valueObject);
 	}
 
-	def voFullQualifiedFileName(ValueObject valueObject) {
-		return voFullQualifiedName(valueObject).replaceAll("\\.", "/") + ".java";
+	def classFileName(String className) {
+		return className.replaceAll("\\.", "/") + ".java";
 	}
 
 	// -------------------------------------------------------------------------
@@ -173,10 +173,6 @@ class NameUtils {
 		return model.modelPackageName + "." + gwtClientConfigurationName(model);
 	}
 
-	def gwtClientConfigurationFullQualifiedNameFileName(Model model) {
-		return gwtClientConfigurationFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
-	}
-
 	// -------------------------------------------------------------------------
 	// service interface  
 	// -------------------------------------------------------------------------
@@ -186,10 +182,6 @@ class NameUtils {
 
 	def serviceInterfaceFullQualifiedName(Service service) {
 		return getPackageName(service) + "." + serviceInterfaceName(service);
-	}
-
-	def serviceInterfaceFullQualifiedFileName(Service service) {
-		return serviceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
 
 	// -------------------------------------------------------------------------
@@ -203,10 +195,6 @@ class NameUtils {
 		return getPackageName(service) + "." + gwtServiceInterfaceName(service);
 	}
 
-	def gwtServiceInterfaceFullQualifiedFileName(Service service) {
-		return gwtServiceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
-	}
-
 	// -------------------------------------------------------------------------
 	// GWT Async interface  
 	// -------------------------------------------------------------------------
@@ -216,10 +204,6 @@ class NameUtils {
 
 	def gwtAsyncServiceInterfaceFullQualifiedName(Service service) {
 		return getPackageName(service) + "." + gwtAsyncServiceInterfaceName(service);
-	}
-
-	def gwtAsyncServiceInterfaceFullQualifiedFileName(Service service) {
-		return gwtAsyncServiceInterfaceFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
 	}
 
 	// -------------------------------------------------------------------------
@@ -237,10 +221,6 @@ class NameUtils {
 		return getPackageName(service) + "." + gwtAsyncAdapterName(service);
 	}
 
-	def gwtAsyncAdapterFullQualifiedFileName(Service service) {
-		return gwtAsyncAdapterFullQualifiedName(service).replaceAll("\\.", "/") + ".java";
-	}
-
 	// -------------------------------------------------------------------------
 	// GWT remote service locator 
 	// -------------------------------------------------------------------------
@@ -250,10 +230,6 @@ class NameUtils {
 
 	def gwtRemoteServiceLocatorFullQualifiedName(Model model) {
 		return model.modelPackageName + "." + gwtRemoteServiceLocatorName(model);
-	}
-
-	def gwtRemoteServiceLocatorFullQualifiedFileName(Model model) {
-		return gwtRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
 	// -------------------------------------------------------------------------
@@ -267,10 +243,6 @@ class NameUtils {
 		return model.modelPackageName + "." + gwtAsyncAdapterRemoteServiceLocatorName(model);
 	}
 
-	def gwtAsyncAdapterRemoteServiceLocatorFullQualifiedFileName(Model model) {
-		return gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
-	}
-
 	// -------------------------------------------------------------------------
 	// GWT remote service locator interface 
 	// -------------------------------------------------------------------------
@@ -280,10 +252,6 @@ class NameUtils {
 
 	def gwtRemoteServiceLocatorInterfaceFullQualifiedName(Model model) {
 		return model.modelPackageName + "." + gwtRemoteServiceLocatorInterfaceName(model);
-	}
-
-	def gwtRemoteServiceLocatorInterfaceFullQualifiedFileName(Model model) {
-		return gwtRemoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
 	// -------------------------------------------------------------------------
@@ -297,10 +265,6 @@ class NameUtils {
 		return model.modelPackageName + "." + remoteServiceLocatorName(model);
 	}
 
-	def remoteServiceLocatorFullQualifiedFileName(Model model) {
-		return remoteServiceLocatorFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
-	}
-
 	// -------------------------------------------------------------------------
 	// GWT remote service locator interface 
 	// -------------------------------------------------------------------------
@@ -312,10 +276,6 @@ class NameUtils {
 		return model.modelPackageName + "." + remoteServiceLocatorInterfaceName(model);
 	}
 
-	def remoteServiceLocatorInterfaceFullQualifiedFileName(Model model) {
-		return remoteServiceLocatorInterfaceFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
-	}
-
 	// -------------------------------------------------------------------------
 	// module definition
 	// -------------------------------------------------------------------------
@@ -325,10 +285,6 @@ class NameUtils {
 
 	def baseModuleDefinitionFullQualifiedName(ModuleDefinition moduleDefinition) {
 		return getPackageName(moduleDefinition) + "." + baseModuleDefinitionName(moduleDefinition);
-	}
-
-	def baseModuleDefinitionFullQualifiedFileName(ModuleDefinition moduleDefinition) {
-		return baseModuleDefinitionFullQualifiedName(moduleDefinition).replaceAll("\\.", "/") + ".java";
 	}
 
 	def modelPackageName(Model model) {
@@ -344,10 +300,6 @@ class NameUtils {
 
 	def voMapperFullQualifiedName(Model model) {
 		return modelPackageName(model) + "." + voMapperName(model);
-	}
-
-	def voMapperFullQualifiedFileName(Model model) {
-		return voMapperFullQualifiedName(model).replaceAll("\\.", "/") + ".java";
 	}
 
 	def springApplicationContextPropertiesFullQualifiedFileName(Model model) {
@@ -388,10 +340,6 @@ class NameUtils {
 	// -------------------------------------------------------------------------
 	// base application context
 	// -------------------------------------------------------------------------
-	def baseApplicationContextFullQualifiedFileName(Model model) {
-		return model.baseApplicationContextFullQualifiedName.replaceAll("\\.", "/") + ".java"
-	}
-
 	def baseApplicationContextFullQualifiedName(Model model) {
 		return model.baseApplicationContextPackageName() + "." + model.baseApplicationContextName;
 	}
@@ -404,43 +352,4 @@ class NameUtils {
 		return model.modelName.toFirstUpper + "BaseApplicationContextGen"
 	}
 	
-	// -------------------------------------------------------------------------
-	// rest remote services
-	// -------------------------------------------------------------------------
-	def restRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
-		return model.restRemoteServicesApplicationContextFullQualifiedName.replaceAll("\\.", "/") + ".java"
-	}
-
-	def restRemoteServicesApplicationContextFullQualifiedName(Model model) {
-		return model.restRemoteServicesApplicationContextPackageName() + "." + model.restRemoteServicesApplicationContextName;
-	}
-
-	def restRemoteServicesApplicationContextPackageName(Model model) {
-		return modelPackageName(model)
-	}
-
-	def restRemoteServicesApplicationContextName(Model model) {
-		return model.modelName.toFirstUpper + "RestRemoteServicesGen"
-	}
-	
-	// -------------------------------------------------------------------------
-	// gwt remote services
-	// -------------------------------------------------------------------------
-	def gwtRemoteServicesApplicationContextFullQualifiedFileName(Model model) {
-		return model.gwtRemoteServicesApplicationContextFullQualifiedName.replaceAll("\\.", "/") + ".java"
-	}
-
-	def gwtRemoteServicesApplicationContextFullQualifiedName(Model model) {
-		return model.gwtRemoteServicesApplicationContextPackageName() + "." + model.gwtRemoteServicesApplicationContextName;
-	}
-
-	def gwtRemoteServicesApplicationContextPackageName(Model model) {
-		return modelPackageName(model)
-	}
-
-	def gwtRemoteServicesApplicationContextName(Model model) {
-		return model.modelName.toFirstUpper + "GWTRemoteServicesGen"
-	}
-	
-
 }

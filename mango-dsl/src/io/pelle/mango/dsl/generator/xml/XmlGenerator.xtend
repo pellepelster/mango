@@ -4,15 +4,13 @@
 package io.pelle.mango.dsl.generator.xml
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
-import io.pelle.mango.dsl.generator.xml.EntityImportExportWSDL
-import io.pelle.mango.dsl.generator.xml.XmlNameUtils
-import io.pelle.mango.dsl.generator.xml.XmlSchema
+import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.mango.Entity
+import io.pelle.mango.dsl.mango.Model
 import javax.inject.Inject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
-import io.pelle.mango.dsl.mango.Model
 
 class XmlGenerator implements IGenerator {
 
@@ -24,6 +22,9 @@ class XmlGenerator implements IGenerator {
 
 	@Inject
 	extension XmlNameUtils
+
+	@Inject
+	extension NameUtils
 
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 
@@ -38,7 +39,7 @@ class XmlGenerator implements IGenerator {
 			fsa.generateFile(entity.entityImportExportWSDLFullQualifiedFileName, GeneratorConstants.XML_GEN_OUTPUT,
 				entity.entityImportExportWSDL)
 
-			fsa.generateFile(entity.entityImportExportWebserviceEndpointFullQualifiedFileName,
+			fsa.generateFile(entity.entityImportExportWebserviceEndpointFullQualifiedName.classFileName,
 				GeneratorConstants.SERVER_GEN_OUTPUT, entity.entityImportExportWebserviceEndpoint)
 		}
 	}

@@ -9,8 +9,13 @@ import io.pelle.mango.dsl.generator.client.web.GWTServices
 import io.pelle.mango.dsl.generator.server.ServerNameUtils
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.mango.Service
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 
 class SpringServices {
+
+	@Inject
+	extension ServiceNameUtils
 
 	@Inject
 	extension ServerNameUtils
@@ -33,57 +38,50 @@ class SpringServices {
 		    }
 		
 			«FOR service : model.eAllContents.toIterable.filter(Service)» 
-				@org.springframework.beans.factory.annotation.Autowired
-				@org.springframework.beans.factory.annotation.Qualifier("«service.gwtAsyncAdapterBeanName»")
-				private «service.gwtAsyncAdapterFullQualifiedName» «service.serviceAttributeName»;
-				
-				public «clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service)» get«service.serviceName»() {
-					return «service.serviceAttributeName»;
-				}
-				
-				public void set«service.serviceName»(«service.gwtAsyncAdapterFullQualifiedName» «service.serviceAttributeName») {
-					this.«service.serviceAttributeName» = «service.serviceAttributeName»;
-				}
-				
+			@org.springframework.beans.factory.annotation.Autowired
+			@org.springframework.beans.factory.annotation.Qualifier("«service.gwtAsyncAdapterBeanName»")
+			private «service.gwtAsyncAdapterFullQualifiedName» «service.serviceAttributeName»;
+			
+			public «clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service)» get«service.serviceName»() {
+				return «service.serviceAttributeName»;
+			}
+			
+			public void set«service.serviceName»(«service.gwtAsyncAdapterFullQualifiedName» «service.serviceAttributeName») {
+				this.«service.serviceAttributeName» = «service.serviceAttributeName»;
+			}
 			«ENDFOR»
 		}
 	'''
 	
 	
 	def gwtRemoteServiceAsyncAdapter(Service service) '''
-	package «service.packageName»;
-	
-	public class «service.gwtAsyncAdapterName» implements «clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service)» {
-
-		@org.springframework.beans.factory.annotation.Autowired
-		private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.name.toFirstLower()»;
+		package «service.packageName»;
 		
-		«FOR method : service.remoteMethods»
+		public class «service.gwtAsyncAdapterName» implements «clientNameUtils.gwtAsyncServiceInterfaceFullQualifiedName(service)» {
+
+			@org.springframework.beans.factory.annotation.Autowired
+			private «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.serviceSpringName»;
+			
+			«FOR method : service.remoteMethods»
 			public «method.serviceMethodAsync» {
-				try
-				{
+				try {
 				«IF !method.returnsVoid»
 					callback.onSuccess((«method.returnType.qualifiedName»)this.«service.name.toFirstLower()».«method.name.toFirstLower()»(«FOR parameter : method.params SEPARATOR  ", "»«parameter.name»«ENDFOR»));
 				«ELSE»
 					this.«service.name.toFirstLower()».«method.name.toFirstLower()»(«FOR parameter : method.params SEPARATOR  ", "»«parameter.name»«ENDFOR»);
 					callback.onSuccess(null);
 				«ENDIF»
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					callback.onFailure(e);
 				}
-			
 			}
-		«ENDFOR»
-	
-		public void set«service.serviceName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.name.toFirstLower()»)
-		{
-			this.«service.name.toFirstLower()» = «service.name.toFirstLower()»;
+			«ENDFOR»
+		
+			public void set«service.serviceName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.name.toFirstLower()») {
+				this.«service.name.toFirstLower()» = «service.name.toFirstLower()»;
+			}
+		
 		}
-	
-	
-	}
 	'''
 	
 	//------------------------------------------------
@@ -94,7 +92,7 @@ class SpringServices {
 		
 		public class «model.remoteServiceLocatorName» implements «model.remoteServiceLocatorInterfaceName» {
 		
-		    private «model.remoteServiceLocatorName»() {
+		    public «model.remoteServiceLocatorName»() {
 		    }
 		
 			«FOR service : model.eAllContents.toIterable.filter(Service)» 
@@ -119,64 +117,79 @@ class SpringServices {
 			«FOR service : model.eAllContents.toIterable.filter(Service)» 
 			«clientNameUtils.serviceInterfaceFullQualifiedName(service)» get«service.serviceName»();
 			«ENDFOR»
-			}
+		}
 	'''
 	
 	def springServices(Model model) '''
-	<?xml version="1.0" encoding="UTF-8"?>
-	
-	<beans xmlns="http://www.springframework.org/schema/beans"
-	        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	        xmlns:context="http://www.springframework.org/schema/context"
-	        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-	
+		package «model.springServicesApplicationContextPackageName»;
+		
+		@«Configuration.name»
+		public class «model.springServicesApplicationContextName» {
+			
 			«FOR service: model.eAllContents.toIterable.filter(Service)»
-			<bean id="«service.serviceSpringName»" class="«service.serviceImplFullQualifiedName»" />
-			<bean id="«service.gwtAsyncAdapterBeanName»" class="«service.gwtAsyncAdapterFullQualifiedName»" />
+			@«Bean.name»
+			public «clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.serviceSpringName»() throws java.lang.Exception {
+				return («clientNameUtils.serviceInterfaceFullQualifiedName(service)») org.springframework.beans.BeanUtils.instantiateClass(Class.forName("«service.serviceImplFullQualifiedName»"));
+			}
+			
+			@«Bean.name»
+			public «service.gwtAsyncAdapterFullQualifiedName» «service.gwtAsyncAdapterBeanName»() {
+				return new «service.gwtAsyncAdapterFullQualifiedName»();
+			}
 			«ENDFOR»
 
-			<bean id="«model.remoteServiceLocatorName.toFirstLower»" class="«model.remoteServiceLocatorFullQualifiedName»" />
-			
-			<bean id="«model.gwtAsyncAdapterRemoteServiceLocatorName.toFirstLower»" class="«model.gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName»" />
-	</beans>
+			@«Bean.name»
+			public «model.remoteServiceLocatorFullQualifiedName» «model.remoteServiceLocatorName.toFirstLower»() {
+				return new «model.remoteServiceLocatorFullQualifiedName»();
+			}
+
+			@«Bean.name»
+			public «model.gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName» «model.gwtAsyncAdapterRemoteServiceLocatorName.toFirstLower»() {
+				return new «model.gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName»();
+			}
+
+		}
 	'''
 
 	def springHttpInvokerServices(Model model) '''
-	<?xml version="1.0" encoding="UTF-8"?>
-	
-	<beans xmlns="http://www.springframework.org/schema/beans"
-	        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	        xmlns:context="http://www.springframework.org/schema/context"
-	        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-	
-			«FOR service: model.eAllContents.toIterable.filter(Service)»
-			<bean name="/«service.serviceSpringInvokerName»" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-				<property name="service" ref="«service.serviceSpringName»" />
-				<property name="serviceInterface" value="«clientNameUtils.serviceInterfaceFullQualifiedName(service)»" />
-			</bean>
-			«ENDFOR»
+		package «model.springInvokerServicesApplicationContextPackageName»;
+		
+		@«Configuration.name»
+		public class «model.springInvokerServicesApplicationContextName» {
 
-	</beans>
+			«FOR service: model.eAllContents.toIterable.filter(Service)»
+			@«Bean.name»
+			@org.springframework.beans.factory.annotation.Autowired
+			public org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter «service.serviceSpringInvokerName»(«clientNameUtils.serviceInterfaceFullQualifiedName(service)» «service.serviceSpringName») {
+				
+				org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter result = new org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter();
+
+				result.setService(«service.serviceSpringName»);
+				result.setServiceInterface(«clientNameUtils.serviceInterfaceFullQualifiedName(service)».class);
+				
+				return result;
+			}
+			«ENDFOR»
+		}
 	'''
 	
 	def springHttpInvokerServicesClient(Model model) '''
-	<?xml version="1.0" encoding="UTF-8"?>
-	
-	<beans xmlns="http://www.springframework.org/schema/beans"
-	        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	        xmlns:context="http://www.springframework.org/schema/context"
-	        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-	        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-	
-			«FOR service: model.eAllContents.toIterable.filter(Service)»
-			<bean name="«service.serviceSpringInvokerProxyName»" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-				<property name="serviceUrl" value="${mango.base.remote.url}/remote/«service.serviceSpringInvokerName»" />
-				<property name="serviceInterface" value="«clientNameUtils.serviceInterfaceFullQualifiedName(service)»" />
-			</bean>
-			«ENDFOR»
+		package «model.springInvokerClientServicesApplicationContextPackageName»;
+		
+		@«Configuration.name»
+		public class «model.springInvokerClientServicesApplicationContextName» {
 
-	</beans>
+			«FOR service: model.eAllContents.toIterable.filter(Service)»
+			@«Bean.name»
+			public org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean «service.serviceSpringInvokerName»() {
+				org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean result = new org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean();
+
+				result.setServiceUrl("${mango.base.remote.url}/remote/«service.serviceSpringInvokerName»");
+				result.setServiceInterface(«clientNameUtils.serviceInterfaceFullQualifiedName(service)».class);
+				
+				return result;
+			}
+			«ENDFOR»
+		}
 	'''
 }

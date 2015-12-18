@@ -6,6 +6,7 @@ package io.pelle.mango.dsl.generator.server
 import io.pelle.mango.dsl.generator.GeneratorConstants
 import io.pelle.mango.dsl.generator.server.service.GWTSpringServices
 import io.pelle.mango.dsl.generator.server.service.RestServices
+import io.pelle.mango.dsl.generator.server.service.ServiceNameUtils
 import io.pelle.mango.dsl.generator.server.service.SpringServices
 import io.pelle.mango.dsl.generator.xml.XmlNameUtils
 import io.pelle.mango.dsl.generator.xml.XmlVOMapper
@@ -29,9 +30,6 @@ class ServerGenerator implements IGenerator {
 	extension XmlVOMapper
 	
 	@Inject
-	extension XmlNameUtils
-	
-	@Inject
 	extension SpringServices
 
 	@Inject
@@ -40,34 +38,40 @@ class ServerGenerator implements IGenerator {
 	@Inject
 	extension ServerNameUtils
 
+	@Inject
+	extension XmlNameUtils
+
+	@Inject
+	extension ServiceNameUtils
+
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 		
 		for (model : resource.allContents.toIterable.filter(Model)) {
-			fsa.generateFile(model.gwtAsyncAdapterRemoteServiceLocatorFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtAsyncAdapterRemoteServiceLocator)
-			fsa.generateFile(model.remoteServiceLocatorFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.remoteServiceLocator)
-			fsa.generateFile(model.remoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.remoteServiceLocatorInterface)
-			fsa.generateFile(model.gwtRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtRemoteServicesApplicationContext)
-			fsa.generateFile(model.restRemoteServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.restRemoteServicesApplicationContext)
-			fsa.generateFile(model.serviceSpringServicesApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springServices)
-			fsa.generateFile(model.serviceSpringServicesInvokerApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springHttpInvokerServices)
-			fsa.generateFile(model.serviceSpringServicesInvokerClientApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springHttpInvokerServicesClient)
-			fsa.generateFile(model.xmlVOMapperFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.xmlVOMapper)
+			fsa.generateFile(model.gwtAsyncAdapterRemoteServiceLocatorFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtAsyncAdapterRemoteServiceLocator)
+			fsa.generateFile(model.remoteServiceLocatorFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.remoteServiceLocator)
+			fsa.generateFile(model.remoteServiceLocatorInterfaceFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.remoteServiceLocatorInterface)
+			fsa.generateFile(model.gwtRemoteServicesApplicationContextFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.gwtRemoteServicesApplicationContext)
+			fsa.generateFile(model.restRemoteServicesApplicationContextFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.restRemoteServicesApplicationContext)
+			fsa.generateFile(model.springServicesApplicationContextFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springServices)
+			fsa.generateFile(model.springInvokerServicesApplicationContextFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springHttpInvokerServices)
+			fsa.generateFile(model.springInvokerClientServicesApplicationContextFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springHttpInvokerServicesClient)
+			fsa.generateFile(model.xmlVOMapperFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.xmlVOMapper)
 		}
 
 		for (entity : resource.allContents.toIterable.filter(Entity)) {
-			fsa.generateFile(entity.entityFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntity)
-			fsa.generateFile(entity.entityDAOFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntityDAO)
-			fsa.generateFile(entity.voDAOFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileVODAO)
-			fsa.generateFile(entity.entityDAOInterfaceFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntityDAOInterface)
-			fsa.generateFile(entity.voDAOInterfaceFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileVODAOInterface)
+			fsa.generateFile(entity.entityFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntity)
+			fsa.generateFile(entity.entityDAOFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntityDAO)
+			fsa.generateFile(entity.voDAOFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileVODAO)
+			fsa.generateFile(entity.entityDAOInterfaceFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileEntityDAOInterface)
+			fsa.generateFile(entity.voDAOInterfaceFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, entity.compileVODAOInterface)
 		}
 
 		for (service : resource.allContents.toIterable.filter(Service)) {
-			fsa.generateFile(service.restControllerFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, service.restServiceController)
-			fsa.generateFile(service.gwtAsyncAdapterFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, service.gwtRemoteServiceAsyncAdapter)
+			fsa.generateFile(service.restControllerFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, service.restServiceController)
+			fsa.generateFile(service.gwtAsyncAdapterFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, service.gwtRemoteServiceAsyncAdapter)
 			
 			for (method : service.remoteMethods) {
-				fsa.generateFile(restControllerRequestVOFullQualifiedFileName(service, method), GeneratorConstants.SERVER_GEN_OUTPUT, restServiceControllerRequetVO(service, method))
+				fsa.generateFile(restControllerRequestVOFullQualifiedName(service, method).classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, restServiceControllerRequetVO(service, method))
 			}
 		}
 		

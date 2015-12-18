@@ -3,18 +3,19 @@ package io.pelle.mango.server.state;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.state.IStateService;
 import io.pelle.mango.db.dao.IEntityCallback;
 import io.pelle.mango.server.base.BaseEntity;
 
 public class StateEntityCallback implements IEntityCallback {
 
 	@Autowired
-	private StateServiceImpl stateServiceImpl;
+	private IStateService stateService;
 
 	@Override
 	public void beforeCreate(IBaseEntity entity) {
 
-		StateBuilder sb = stateServiceImpl.getStateBuilder(entity);
+		StateBuilder sb = ((StateServiceImpl) stateService).getStateBuilder(entity);
 		
 		if (sb != null && sb.getCurrentState(entity) == null) {
 			sb.setInitalState(entity);

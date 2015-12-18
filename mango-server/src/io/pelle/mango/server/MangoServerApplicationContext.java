@@ -65,6 +65,11 @@ public class MangoServerApplicationContext {
 
 		return result;
 	}
+	
+	@Bean
+	public StateEntityCallback stateEntityCallback() {
+		return new StateEntityCallback();
+	}
 
 	@Bean
 	public ConfigurationLogger ConfigurationLogger() {
@@ -135,11 +140,6 @@ public class MangoServerApplicationContext {
 	@Bean
 	public FileEntityCallback fileEntityCallback() {
 		return new FileEntityCallback();
-	}
-
-	@Bean
-	public StateEntityCallback stateEntityCallback() {
-		return new StateEntityCallback();
 	}
 
 	@Bean

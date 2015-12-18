@@ -21,10 +21,6 @@ class ServerNameUtils extends NameUtils {
 		return getPackageName(entity) + "." + entityName(entity);
 	}
 
-	def entityFullQualifiedFileName(Entity entity) {
-		return entityFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
-	}
-
 	//-------------------------------------------------------------------------
 	// entity DAO
 	//-------------------------------------------------------------------------
@@ -40,10 +36,6 @@ class ServerNameUtils extends NameUtils {
 		return getPackageName(entity) + "." + entityDAOName(entity);
 	}
 
-	def entityDAOFullQualifiedFileName(Entity entity) {
-		return entityDAOFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
-	}
-
 	//-------------------------------------------------------------------------
 	// entity DAO interface
 	//-------------------------------------------------------------------------
@@ -53,10 +45,6 @@ class ServerNameUtils extends NameUtils {
 
 	def entityDAOInterfaceFullQualifiedName(Entity entity) {
 		return getPackageName(entity) + "." + entityDAOInterfaceName(entity);
-	}
-
-	def entityDAOInterfaceFullQualifiedFileName(Entity entity) {
-		return entityDAOInterfaceFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
 	}
 
 	//-------------------------------------------------------------------------
@@ -74,10 +62,6 @@ class ServerNameUtils extends NameUtils {
 		return getPackageName(entity) + "." + voDAOName(entity);
 	}
 
-	def voDAOFullQualifiedFileName(Entity entity) {
-		return voDAOFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
-	}
-
 	//-------------------------------------------------------------------------
 	// vo DAO interface
 	//-------------------------------------------------------------------------
@@ -88,11 +72,6 @@ class ServerNameUtils extends NameUtils {
 	def voDAOInterfaceFullQualifiedName(Entity entity) {
 		return getPackageName(entity) + "." + voDAOInterfaceName(entity);
 	}
-
-	def voDAOInterfaceFullQualifiedFileName(Entity entity) {
-		return voDAOInterfaceFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
-	}
-
 	
 	override dispatch String getPackageName(PackageDeclaration packageDeclaration) {
 		
@@ -107,18 +86,6 @@ class ServerNameUtils extends NameUtils {
 		
 	}
 
-	def serviceSpringServicesApplicationContextFullQualifiedFileName(Model model) {
-		return model.modelName.toFirstUpper + "SpringServices-gen.xml"
-	}
-
-	def serviceSpringServicesInvokerApplicationContextFullQualifiedFileName(Model model) {
-		return model.modelName.toFirstUpper + "SpringInvokerServices-gen.xml"
-	}
-
-	def serviceSpringServicesInvokerClientApplicationContextFullQualifiedFileName(Model model) {
-		return model.modelName.toFirstUpper + "SpringInvokerClientServices-gen.xml"
-	}
-	
 	def serviceImplFullQualifiedName(Service service) {
 		return getPackageName(service) + "." + service.serviceImplName;
 	}
@@ -161,10 +128,6 @@ class ServerNameUtils extends NameUtils {
 		return getPackageName(service) + "." + restControllerName(service);
 	}
 
-	def restControllerFullQualifiedFileName(Service service) {
-		return restControllerFullQualifiedName(service).replaceAll("\\.", "/")  + ".java";
-	}
-
 	// rest controller request vo
 	def restControllerRequestVOName(Service service, ServiceMethod method) {
 		return service.restControllerName + uniqueMethodName(service, method).toFirstUpper + "Request"
@@ -180,10 +143,6 @@ class ServerNameUtils extends NameUtils {
 
 	def restControllerRequestVOFullQualifiedName(Service service, ServiceMethod method) {
 		return service.getPackageName + "." + restControllerRequestVOName(service, method);
-	}
-
-	def restControllerRequestVOFullQualifiedFileName(Service service, ServiceMethod method) {
-		return restControllerRequestVOFullQualifiedName(service, method).replaceAll("\\.", "/")  + ".java";
 	}
 
 }

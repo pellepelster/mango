@@ -20,6 +20,9 @@ class GWTSpringServices {
 	extension ServerNameUtils
 
 	@Inject
+	extension ServiceNameUtils
+
+	@Inject
 	ClientNameUtils clientNameUtils
 	
 	def gwtRemoteServicesApplicationContext(Model model) '''

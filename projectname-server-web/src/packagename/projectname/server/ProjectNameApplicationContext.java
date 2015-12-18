@@ -7,12 +7,13 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import io.pelle.mango.server.MangoLoggerApplicationContext;
+import io.pelle.mango.MangoSpringServicesGen;
 import packagename.projectname.ProjectNameRestRemoteServicesGen;
 import packagename.projectname.ProjectNameBaseApplicationContextGen;
+import packagename.projectname.ProjectNameSpringServicesGen;
 
 @Configuration
-@ImportResource({ "classpath:/ProjectNameSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml" })
-@Import({ MangoLoggerApplicationContext.class, ProjectNameRestRemoteServicesGen.class, ProjectNameBaseApplicationContextGen.class  } )
+@Import({ MangoLoggerApplicationContext.class, ProjectNameRestRemoteServicesGen.class, ProjectNameBaseApplicationContextGen.class, MangoSpringServicesGen.class, ProjectNameSpringServicesGen.class  } )
 public class ProjectNameApplicationContext extends MangoServerApplicationContext {
 
 }

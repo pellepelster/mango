@@ -54,38 +54,38 @@ class ClientGenerator implements IGenerator {
 
 		for (model : resource.allContents.toIterable.filter(Model)) {
 
-			fsa.generateFile(model.gwtRemoteServiceLocatorFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocator)
-			fsa.generateFile(model.gwtRemoteServiceLocatorInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocatorInterface)
+			fsa.generateFile(model.gwtRemoteServiceLocatorFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocator)
+			fsa.generateFile(model.gwtRemoteServiceLocatorInterfaceFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtRemoteServiceLocatorInterface)
 			fsa.generateFile(model.gwtClientModuleFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientModule)
 	
 			fsa.generateFile(model.dictionaryI18NNameFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.dictionaryI18N)
-			fsa.generateFile(model.gwtClientConfigurationFullQualifiedNameFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientConfiguration)
+			fsa.generateFile(model.gwtClientConfigurationFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.gwtClientConfiguration)
 			model.dictionaryGenerator(fsa)
 			model.dictionaryNavigationGenerator(fsa)
-			fsa.generateFile(model.enumerationValueParserFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.compileEnumerationValueParser)
+			fsa.generateFile(model.enumerationValueParserFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.compileEnumerationValueParser)
 			
 		}
 
 		for (moduleDefinition : resource.allContents.toIterable.filter(ModuleDefinition)) {
-			fsa.generateFile(moduleDefinition.baseModuleDefinitionFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, moduleDefinition.compileBaseModuleDefinition)
+			fsa.generateFile(moduleDefinition.baseModuleDefinitionFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, moduleDefinition.compileBaseModuleDefinition)
 		}
 
 		for (entity : resource.allContents.toIterable.filter(Entity)) {
-			fsa.generateFile(entity.voFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, entity.compileVO)
+			fsa.generateFile(entity.voFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, entity.compileVO)
 		}
 
 		for (valueObject : resource.allContents.toIterable.filter(ValueObject)) {
-			fsa.generateFile(valueObject.voFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, valueObject.compileValueObject)
+			fsa.generateFile(valueObject.voFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, valueObject.compileValueObject)
 		}
 		
 		for (enumeration : resource.allContents.toIterable.filter(Enumeration)) {
-			fsa.generateFile(enumeration.enumerationFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, enumeration.compileEnumeration)
+			fsa.generateFile(enumeration.enumerationFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, enumeration.compileEnumeration)
 		}
 		
 		for (service : resource.allContents.toIterable.filter(Service)) {
-			fsa.generateFile(service.gwtAsyncServiceInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.gwtAsyncServiceInterface)
-			fsa.generateFile(service.gwtServiceInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.gwtServiceInterface)
-			fsa.generateFile(service.serviceInterfaceFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.serviceInterface)
+			fsa.generateFile(service.gwtAsyncServiceInterfaceFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.gwtAsyncServiceInterface)
+			fsa.generateFile(service.gwtServiceInterfaceFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.gwtServiceInterface)
+			fsa.generateFile(service.serviceInterfaceFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, service.serviceInterface)
 		}
 		
 	}

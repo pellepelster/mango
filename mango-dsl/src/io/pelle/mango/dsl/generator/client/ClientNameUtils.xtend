@@ -39,10 +39,6 @@ class ClientNameUtils extends NameUtils {
 		return getPackageName(entity) + "." + voName(entity);
 	}
 
-	def voFullQualifiedFileName(Entity entity) {
-		return voFullQualifiedName(entity).replaceAll("\\.", "/")  + ".java";
-	}
-	
 	//-------------------------------------------------------------------------
 	// enumeration
 	//-------------------------------------------------------------------------
@@ -66,10 +62,6 @@ class ClientNameUtils extends NameUtils {
 		return getPackageName(enumeration) + "." + enumerationName(enumeration);
 	}
 
-	def enumerationFullQualifiedFileName(Enumeration enumeration) {
-		return enumerationFullQualifiedName(enumeration).replaceAll("\\.", "/")  + ".java";
-	}
-
 	def enumerationFullQualifiedName(EnumerationEntityAttribute enumerationEntityAttribute) {
 		return getPackageName(enumerationEntityAttribute) + "." + enumerationName(enumerationEntityAttribute);
 	}
@@ -85,8 +77,4 @@ class ClientNameUtils extends NameUtils {
 		return model.modelPackageName + "." + model.enumerationValueParserName;
 	}
 
-	def enumerationValueParserFullQualifiedFileName(Model model) {
-		return model.enumerationValueParserFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-	
 }

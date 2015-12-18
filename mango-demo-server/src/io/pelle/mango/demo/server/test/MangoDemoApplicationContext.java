@@ -7,8 +7,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 
+import io.pelle.mango.MangoSpringInvokerServicesGen;
+import io.pelle.mango.MangoSpringServicesGen;
 import io.pelle.mango.demo.MangoDemoBaseApplicationContextGen;
 import io.pelle.mango.demo.MangoDemoRestRemoteServicesGen;
+import io.pelle.mango.demo.MangoDemoSpringInvokerServicesGen;
+import io.pelle.mango.demo.MangoDemoSpringServicesGen;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.test.Entity1VO;
@@ -20,9 +24,9 @@ import io.pelle.mango.server.search.SearchIndexBuilder;
 import io.pelle.mango.server.state.StateBuilder;
 
 @Configuration
-@Import({ MangoDemoBaseApplicationContextGen.class, MangoServerApplicationContext.class, MangoLoggerApplicationContext.class, MangoSecurityConfig.class, MangoMailApplicationContext.class, MangoDemoRestRemoteServicesGen.class })
-@ImportResource({ "classpath:/MangoDemoWebservices-gen.xml", "classpath:/MangoDemoApplicationContext.xml", "classpath:/MangoDemoSpringServices-gen.xml", "classpath:/MangoSpringServices-gen.xml",
-		"classpath:/MangoDemoSpringInvokerServices-gen.xml", "classpath:/MangoSpringInvokerServices-gen.xml" })
+@Import({ MangoSpringServicesGen.class, MangoDemoBaseApplicationContextGen.class, MangoServerApplicationContext.class, MangoLoggerApplicationContext.class, MangoSecurityConfig.class, MangoMailApplicationContext.class,
+		MangoDemoRestRemoteServicesGen.class, MangoDemoSpringServicesGen.class, MangoDemoSpringInvokerServicesGen.class, MangoSpringInvokerServicesGen.class })
+@ImportResource({ "classpath:/MangoDemoWebservices-gen.xml", "classpath:/MangoDemoApplicationContext.xml" })
 public class MangoDemoApplicationContext {
 
 	@Bean
@@ -42,8 +46,8 @@ public class MangoDemoApplicationContext {
 		SearchIndexBuilder result = SearchIndexBuilder.createBuilder("index1").setDefault();
 
 		result.forDictionary(MangoDemoDictionaryModel.COMPANY).addAttributes(MangoDemoDictionaryModel.COMPANY.COMPANY_EDITOR.NAME1);
-		result.forDictionary(MangoDemoDictionaryModel.COUNTRY).addAttributes(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3,
-				MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2);
+		result.forDictionary(MangoDemoDictionaryModel.COUNTRY).addAttributes(MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_NAME,
+				MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE3, MangoDemoDictionaryModel.COUNTRY.COUNTRY_EDITOR.COUNTRY_ISO_CODE2);
 
 		return result;
 	}

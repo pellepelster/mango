@@ -3,6 +3,7 @@ package io.pelle.mango.dsl.generator.client.dictionary
 import com.google.inject.Inject
 import io.pelle.mango.client.base.modules.dictionary.model.BaseModel
 import io.pelle.mango.client.base.modules.dictionary.model.DictionaryModel
+import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.CompositeModel
 import io.pelle.mango.client.base.modules.dictionary.model.containers.ICompositeModel
 import io.pelle.mango.client.base.modules.dictionary.model.controls.IBaseControlModel
@@ -24,7 +25,6 @@ import io.pelle.mango.dsl.mango.DictionarySearch
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import org.eclipse.xtext.generator.IFileSystemAccess
-import io.pelle.mango.client.base.modules.dictionary.model.IDictionaryModel
 
 class DictionaryGenerator {
 
@@ -46,7 +46,7 @@ class DictionaryGenerator {
 			dictionary.dictionaryGenerator(fsa)
 		}
 
-		fsa.generateFile(model.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.dictionaryClass)
+		fsa.generateFile(model.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, model.dictionaryClass)
 	}
 
 	def dictionaryClass(Model model) '''
@@ -110,10 +110,10 @@ class DictionaryGenerator {
 
 	def dictionaryGenerator(Dictionary dictionary, IFileSystemAccess fsa) {
 
-		fsa.generateFile(dictionary.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionary.dictionaryClass)
+		fsa.generateFile(dictionary.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionary.dictionaryClass)
 
 		for (dictionaryLabelControl : dictionary.labelcontrols) {
-			fsa.generateFile(dictionaryLabelControl.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryLabelControl.dictionaryControlClass)
+			fsa.generateFile(dictionaryLabelControl.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryLabelControl.dictionaryControlClass)
 		}
 
 		if (dictionary.dictionaryeditor != null) {
@@ -127,7 +127,7 @@ class DictionaryGenerator {
 	}
 
 	def dictionaryGenerator(DictionaryEditor dictionaryEditor, IFileSystemAccess fsa) {
-		fsa.generateFile(dictionaryEditor.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryEditor.dictionaryClass)
+		fsa.generateFile(dictionaryEditor.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryEditor.dictionaryClass)
 		dictionaryEditor.containercontents.dictionaryGenerator(fsa)
 	}
 
@@ -220,18 +220,18 @@ class DictionaryGenerator {
 	'''
 
 	def dictionaryFilterGenerator(DictionaryFilter dictionaryFilter, IFileSystemAccess fsa) {
-		fsa.generateFile(dictionaryFilter.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryFilter.dictionaryClass)
+		fsa.generateFile(dictionaryFilter.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryFilter.dictionaryClass)
 		dictionaryFilter.containercontents.dictionaryGenerator(fsa)
 	}
 
 	def dictionaryResultGenerator(DictionaryResult dictionaryResult, Entity entity, IFileSystemAccess fsa) {
-		fsa.generateFile(dictionaryResult.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryResult.dictionaryClass(entity))
+		fsa.generateFile(dictionaryResult.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryResult.dictionaryClass(entity))
 
 	}
 
 	def dictionaryGenerator(DictionarySearch dictionarySearch, Entity entity, IFileSystemAccess fsa) {
 
-		fsa.generateFile(dictionarySearch.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionarySearch.dictionaryClass)
+		fsa.generateFile(dictionarySearch.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionarySearch.dictionaryClass)
 
 		dictionarySearch.dictionaryresult.dictionaryResultGenerator(entity, fsa)
 

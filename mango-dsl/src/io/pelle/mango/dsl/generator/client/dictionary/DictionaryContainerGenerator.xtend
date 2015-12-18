@@ -92,13 +92,13 @@ class DictionaryContainerGenerator {
 
 	def dispatch dictionaryGenerator(DictionaryComposite dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dispatch dictionaryGenerator(DictionaryCustomComposite dictionaryContainer, IFileSystemAccess fsa) {
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
-		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeStub)
-		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeGwtClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeGwtStub)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeStub)
+		fsa.generateFile(dictionaryContainer.dictionaryCustomCompositeGwtClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_STUBS_OUTPUT, dictionaryContainer.dictionaryCustomCompositeGwtStub)
 	}
 
 	def dictionaryCustomCompositeStub(DictionaryCustomComposite customComposite) '''
@@ -149,20 +149,20 @@ class DictionaryContainerGenerator {
 	'''
 
 	def dispatch dictionaryGenerator(DictionaryReferenceList dictionaryContainer, IFileSystemAccess fsa) {
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dispatch dictionaryGenerator(DictionaryFileList dictionaryContainer, IFileSystemAccess fsa) {
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dispatch dictionaryGenerator(DictionaryState dictionaryContainer, IFileSystemAccess fsa) {
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dispatch dictionaryGenerator(DictionaryTabFolder dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.tabs.dictionaryGenerator(fsa)
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def layoutSetter(ColumnLayout columnLayout, ColumnLayoutData columnLayoutData) {
@@ -277,7 +277,7 @@ class DictionaryContainerGenerator {
 
 	def dispatch dictionaryGenerator(DictionaryEditableTable dictionaryContainer, IFileSystemAccess fsa) {
 		dictionaryContainer.containercontents.dictionaryGenerator(fsa)
-		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
+		fsa.generateFile(dictionaryContainer.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryContainer.dictionaryClass)
 	}
 
 	def dispatch dictionaryClass(DictionaryEditableTable dictionaryContainer) '''
@@ -312,7 +312,7 @@ class DictionaryContainerGenerator {
 		}
 
 		for (dictionaryControl : dictionaryContainerContents.filter(DictionaryControlGroup)) {
-			fsa.generateFile(dictionaryControl.dictionaryClassFullQualifiedFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryControl.dictionaryControlClass)
+			fsa.generateFile(dictionaryControl.dictionaryClassFullQualifiedName.classFileName, GeneratorConstants.CLIENT_GWT_GEN_OUTPUT, dictionaryControl.dictionaryControlClass)
 		}
 	}
 }

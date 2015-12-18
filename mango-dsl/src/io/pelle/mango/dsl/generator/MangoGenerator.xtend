@@ -42,8 +42,8 @@ class MangoGenerator implements IGenerator {
 				fsa.generateFile(model.springApplicationContextPropertiesFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.springApplicationContextProperties)
 			}
 			fsa.generateFile(model.springPersistenceXMLFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compilePersistenceXml)
-			fsa.generateFile(model.baseApplicationContextFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compileBaseApplicationContext)
-			fsa.generateFile(model.voMapperFullQualifiedFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compileVOMapper)
+			fsa.generateFile(model.baseApplicationContextFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compileBaseApplicationContext)
+			fsa.generateFile(model.voMapperFullQualifiedName.classFileName, GeneratorConstants.SERVER_GEN_OUTPUT, model.compileVOMapper)
 		}
 		
 	}

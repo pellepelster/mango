@@ -39,10 +39,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return model.modelPackageName + '.' + model.dictionaryClassName;
 	}
 
-	def dictionaryClassFullQualifiedFileName(Model model) {
-		return model.dictionaryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
 	//-------------------------------------------------------------------------
 	// Dictionary
 	//-------------------------------------------------------------------------
@@ -52,10 +48,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 
 	def dictionaryClassFullQualifiedName(Dictionary dictionary) {
 		return dictionary.packageName + '.' + dictionary.dictionaryClassName;
-	}
-
-	def dictionaryClassFullQualifiedFileName(Dictionary dictionary) {
-		return dictionary.dictionaryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
 	}
 
 	def dictionaryConstantName(Dictionary dictionary) {
@@ -77,10 +69,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return navigationNode.packageName + '.' + navigationNode.navigationNodeClassName;
 	}
 
-	def navigationNodeClassFullQualifiedFileName(NavigationNode navigationNode) {
-		return navigationNode.navigationyNodeClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
 	def navigationNodeConstantName(NavigationNode navigationNode) {
 		navigationNode.name.constantName
 	}
@@ -96,10 +84,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return model.modelPackageName + '.' + model.navigationNodeClassName;
 	}
 
-	def navigationNodeClassFullQualifiedFileName(Model model) {
-		return model.navigationyNodeClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-	
 	//-------------------------------------------------------------------------
 	// DictionaryEditor
 	//-------------------------------------------------------------------------
@@ -109,10 +93,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 
 	def dictionaryClassFullQualifiedName(DictionaryEditor dictionaryEditor) {
 		return dictionaryEditor.packageName + '.' + dictionaryEditor.dictionaryClassName;
-	}
-
-	def dictionaryClassFullQualifiedFileName(DictionaryEditor dictionaryEditor) {
-		return dictionaryEditor.dictionaryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
 	}
 
 	def dictionaryConstantName(DictionaryEditor dictionaryEditor) {
@@ -134,10 +114,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return dictionarySearch.packageName + '.' + dictionarySearch.dictionaryClassName;
 	}
 
-	def dictionaryClassFullQualifiedFileName(DictionarySearch dictionarySearch) {
-		return dictionarySearch.dictionaryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
 	def dictionaryConstantName(DictionarySearch dictionarySearch) {
 		dictionarySearch.name.constantName
 	}
@@ -155,10 +131,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 
 	def dictionaryClassFullQualifiedName(DictionaryFilter dictionaryFilter) {
 		return dictionaryFilter.packageName + '.' + dictionaryFilter.dictionaryClassName;
-	}
-
-	def dictionaryClassFullQualifiedFileName(DictionaryFilter dictionaryFilter) {
-		return dictionaryFilter.dictionaryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
 	}
 
 	def dictionaryConstantName(DictionaryFilter dictionaryFilter) {
@@ -180,10 +152,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return dictionaryResult.packageName + '.' + dictionaryResult.dictionaryClassName;
 	}
 
-	def dictionaryClassFullQualifiedFileName(DictionaryResult  dictionaryResult) {
-		return dictionaryResult.dictionaryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
 	def dictionaryConstantName(DictionaryResult  dictionaryResult) {
 		dictionaryResult.name.constantName
 	}
@@ -203,10 +171,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return dictionaryControl.packageName + '.' + dictionaryControl.dictionaryClassName;
 	}
 
-	def dictionaryClassFullQualifiedFileName(DictionaryControl dictionaryControl) {
-		return dictionaryControl.dictionaryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
 	def dictionaryConstantName(DictionaryControl dictionaryControl) {
 		ModelUtil.getControlName(dictionaryControl).constantName
 	}
@@ -220,10 +184,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 
 	def dictionaryClassFullQualifiedName(DictionaryContainer dictionaryContainer) {
 		return dictionaryContainer.packageName + '.' + dictionaryContainer.dictionaryClassName;
-	}
-
-	def dictionaryClassFullQualifiedFileName(DictionaryContainer dictionaryContainer) {
-		return dictionaryContainer.dictionaryClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
 	}
 
 	def dictionaryConstantName(DictionaryContainer dictionaryContainer) {
@@ -249,10 +209,6 @@ class DictionaryNameUtils extends ClientNameUtils {
 	// DictionaryCustomComposite (GWT)
 	//-------------------------------------------------------------------------
 
-	def dictionaryCustomCompositeClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
-		return dictionaryContainer.dictionaryCustomCompositeClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-
 	def customCompositeGwtPackageName(DictionaryCustomComposite dictionaryContainer) {
 		return ModelUtil.getRootModel(dictionaryContainer).modelPackageName +  "." + GeneratorConstants.CLIENT_PACKAGE_POSTFIX;
 	}
@@ -265,8 +221,4 @@ class DictionaryNameUtils extends ClientNameUtils {
 		return dictionaryContainer.customCompositeGwtPackageName + '.' + dictionaryContainer.dictionaryCustomCompositeGwtClassName;
 	}
 
-	def dictionaryCustomCompositeGwtClassFullQualifiedFileName(DictionaryCustomComposite dictionaryContainer) {
-		return dictionaryContainer.dictionaryCustomCompositeGwtClassFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
-	
 }

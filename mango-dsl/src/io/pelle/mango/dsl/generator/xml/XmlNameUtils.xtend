@@ -106,10 +106,6 @@ class XmlNameUtils {
 		return model.xmlVOMapperPackage + "." + model.xmlVOMapperName;
 	}
 	
-	def xmlVOMapperFullQualifiedFileName(Model model) {
-		return xmlVOMapperFullQualifiedName(model).replaceAll("\\.", "/")  + ".java";
-	}
-	
 	//=========================================================================
 	// webservice
 	//=========================================================================
@@ -157,10 +153,6 @@ class XmlNameUtils {
 		return entity.entityImportExportWebserviceEndpointPackage + "." + entity.entityImportExportWebserviceEndpointName;
 	}
 	
-	def entityImportExportWebserviceEndpointFullQualifiedFileName(Entity entity)
-	{
-		return entity.entityImportExportWebserviceEndpointFullQualifiedName.replaceAll("\\.", "/")  + ".java";
-	}
 
 	def entityImportExportWebserviceEndpointBeanId(Entity entity) {
 		return entity.name.toFirstLower + "WebserviceEndpoint";
