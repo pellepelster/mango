@@ -19,6 +19,8 @@ dependencies {
 	compile group: "org.springframework", name: "spring-web", version: versions.spring
 	compile group: "org.springframework", name: "spring-webmvc", version: versions.spring
 	compile group: "org.springframework", name: "spring-aop", version: versions.spring
+	compile group: "org.springframework.ws", name: "spring-ws-core", version: "2.2.0.RELEASE"
+	
 	compile group: "net.sf.gwt-widget", name: "gwt-sl", version: "1.5"
 	compile group: "org.ow2.sirocco", name: "sirocco-text-table-formatter", version: "1.0"
 	compile group: "org.apache.commons", name: "commons-lang3", version: "3.3.2"

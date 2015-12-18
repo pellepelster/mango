@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ImportResource;
 import io.pelle.mango.MangoSpringInvokerServicesGen;
 import io.pelle.mango.MangoSpringServicesGen;
 import io.pelle.mango.demo.MangoDemoBaseApplicationContextGen;
+import io.pelle.mango.demo.MangoDemoEntityImportExportServicesGen;
 import io.pelle.mango.demo.MangoDemoRestRemoteServicesGen;
 import io.pelle.mango.demo.MangoDemoSpringInvokerServicesGen;
 import io.pelle.mango.demo.MangoDemoSpringServicesGen;
@@ -25,8 +26,8 @@ import io.pelle.mango.server.state.StateBuilder;
 
 @Configuration
 @Import({ MangoSpringServicesGen.class, MangoDemoBaseApplicationContextGen.class, MangoServerApplicationContext.class, MangoLoggerApplicationContext.class, MangoSecurityConfig.class, MangoMailApplicationContext.class,
-		MangoDemoRestRemoteServicesGen.class, MangoDemoSpringServicesGen.class, MangoDemoSpringInvokerServicesGen.class, MangoSpringInvokerServicesGen.class })
-@ImportResource({ "classpath:/MangoDemoWebservices-gen.xml", "classpath:/MangoDemoApplicationContext.xml" })
+		MangoDemoRestRemoteServicesGen.class, MangoDemoSpringServicesGen.class, MangoDemoSpringInvokerServicesGen.class, MangoSpringInvokerServicesGen.class, MangoDemoEntityImportExportServicesGen.class })
+@ImportResource({"classpath:/MangoDemoApplicationContext.xml" })
 public class MangoDemoApplicationContext {
 
 	@Bean

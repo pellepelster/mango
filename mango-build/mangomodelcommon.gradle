@@ -46,7 +46,6 @@ dependencies {
 	
 	// webservices
 	generatedServer group: "org.springframework.ws", name: "spring-xml", version: "2.2.0.RELEASE"
-	generatedServer group: "org.springframework.ws", name: "spring-ws-core", version: "2.2.0.RELEASE"
 	generatedServer group: "wsdl4j", name: "wsdl4j", version: "1.6.3"
 	generatedServer group: "org.apache.ws.xmlschema", name: "xmlschema-core", version: "2.1.0"
 	

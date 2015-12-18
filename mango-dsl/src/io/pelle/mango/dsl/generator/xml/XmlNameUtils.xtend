@@ -158,12 +158,4 @@ class XmlNameUtils {
 		return entity.name.toFirstLower + "WebserviceEndpoint";
 	}
 	
-	//-------------------------------------------------------------------------
-	// application context
-	//-------------------------------------------------------------------------
-	def entityImportExportAppliationContextFullQualifiedFileName(Model model)
-	{
-		return model.modelName.toFirstUpper + "Webservices-gen.xml";
-	}
-	
 }

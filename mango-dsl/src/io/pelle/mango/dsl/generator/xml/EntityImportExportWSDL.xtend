@@ -1,12 +1,18 @@
 package io.pelle.mango.dsl.generator.xml
 
 import com.google.inject.Inject
+import io.pelle.mango.dsl.generator.server.service.ServiceNameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
 import io.pelle.mango.dsl.query.EntityQuery
+import io.pelle.mango.dsl.query.ModelQuery
 import java.util.ArrayList
 import java.util.List
-import io.pelle.mango.dsl.query.ModelQuery
+import java.util.Properties
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Import
 
 class EntityImportExportWSDL {
 
@@ -15,6 +21,9 @@ class EntityImportExportWSDL {
 	
 	@Inject
 	extension XmlNameUtils
+
+	@Inject
+	extension ServiceNameUtils
 
 	def entityImportExportWSDL(Entity entity) '''
 	<definitions name="«entity.name»ImportExport"
@@ -68,58 +77,58 @@ class EntityImportExportWSDL {
 	'''
 	
 	def entityImportExportAppliationContext(Model model) '''
-	<?xml version="1.0" encoding="UTF-8"?>
-
-	<beans xmlns="http://www.springframework.org/schema/beans"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:context="http://www.springframework.org/schema/context"
-		xmlns:mvc="http://www.springframework.org/schema/mvc"
-		xmlns:sws="http://www.springframework.org/schema/web-services"
-		xsi:schemaLocation="http://www.springframework.org/schema/beans  
-							http://www.springframework.org/schema/beans/spring-beans.xsd  
-							http://www.springframework.org/schema/web-services  
-							http://www.springframework.org/schema/web-services/web-services.xsd  
-							http://www.springframework.org/schema/context  
-							http://www.springframework.org/schema/context/spring-context.xsd
-							http://www.springframework.org/schema/mvc 
-							http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
-		<bean class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping"/>
-
-		<bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory" />
+		package «model.entityImportExportServicesApplicationContextPackageName»;
 		
-		<bean class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter">
-		    <property name="messageFactory" ref="messageFactory" />
-		</bean>
-		
-		<bean id="messageDispatcher" class="org.springframework.ws.soap.server.SoapMessageDispatcher" />
-		
-		<bean class="org.springframework.ws.transport.http.WsdlDefinitionHandlerAdapter" />
-		
-		<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		    <property name="mappings">
-		        <props>
-		        	«FOR entity : ModelQuery.createQuery(model).allEntities»
-		        	<prop key="«entity.entityImportExportWSDLFullQualifiedFileName»">«entity.entityImportExportWSDLBeanId»</prop>
-					«ENDFOR»
-		        </props>
-		    </property>
-		    <property name="defaultHandler" ref="messageDispatcher" />
-		</bean>
+		@«Configuration.name»
+		@«Import.name»({ io.pelle.mango.server.base.xml.MangoBaseXmlImportExportApplicationContext.class })
+		public class «model.entityImportExportServicesApplicationContextName» implements org.springframework.context.ResourceLoaderAware {
 
-		<mvc:resources mapping="schema/*" location="classpath:/schema/" />
-
-		«FOR entity : ModelQuery.createQuery(model).allEntities»
-			<!-- «entity» -->
-			<bean id="«entity.entityImportExportWebserviceEndpointBeanId»" class="«entity.entityImportExportWebserviceEndpointFullQualifiedName»">
-				<property name="xmlVOImporter" ref="xmlVOImporter" />
-			</bean>
+			private org.springframework.core.io.ResourceLoader resourceLoader;
 			
-			<bean id="«entity.entityImportExportWSDLBeanId»" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
-				<property name="wsdl" value="classpath:/«entity.entityImportExportWSDLFullQualifiedFileName»" />
-			</bean>
-		«ENDFOR»
-	</beans>  
+			@java.lang.Override
+			public void setResourceLoader(org.springframework.core.io.ResourceLoader resourceLoader) {
+				this.resourceLoader = resourceLoader;
+			}
+			
+			«FOR entity : ModelQuery.createQuery(model).allEntities»
+				@«Bean.name»
+				@org.springframework.beans.factory.annotation.Autowired
+				public «entity.entityImportExportWebserviceEndpointFullQualifiedName» «entity.entityImportExportWebserviceEndpointBeanId»(io.pelle.mango.server.base.xml.IXmlVOImporter xmlVOImporter) {
+					
+					«entity.entityImportExportWebserviceEndpointFullQualifiedName» result = new «entity.entityImportExportWebserviceEndpointFullQualifiedName»();
+					result.setXmlVOImporter(xmlVOImporter);
+					
+					return result;
+				}
+
+				@«Bean.name»
+				public org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition «entity.entityImportExportWSDLBeanId»() {
+					
+					org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition result = new org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition();
+					result.setWsdl(resourceLoader.getResource("classpath:/«entity.entityImportExportWSDLFullQualifiedFileName»"));
+					
+					return result;
+				}
+			«ENDFOR»
+
+			@«Bean.name»
+			@«Autowired.name»
+			public org.springframework.web.servlet.handler.SimpleUrlHandlerMapping «model.modelName.toFirstLower»XmlImportExportMappings(org.springframework.ws.soap.server.SoapMessageDispatcher soapMessageDispatcher) {
+				
+				org.springframework.web.servlet.handler.SimpleUrlHandlerMapping result = new org.springframework.web.servlet.handler.SimpleUrlHandlerMapping();
+
+				«Properties.name» mappings = new «Properties.name»();
+
+				«FOR entity : ModelQuery.createQuery(model).allEntities»
+				mappings.put("«entity.entityImportExportWSDLFullQualifiedFileName»", «entity.entityImportExportWSDLBeanId»());
+				«ENDFOR»
+		
+				result.setMappings(mappings);
+			    result.setDefaultHandler(soapMessageDispatcher);
+				
+				return result; 
+			}
+		}
 	'''
 	
 	def entityImportExportWebserviceEndpoint(Entity entity) '''

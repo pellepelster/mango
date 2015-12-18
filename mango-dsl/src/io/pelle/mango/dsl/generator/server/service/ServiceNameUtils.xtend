@@ -84,4 +84,19 @@ class ServiceNameUtils {
 		return model.modelName.toFirstUpper + "SpringInvokerClientServicesGen"
 	}
 
+	// -------------------------------------------------------------------------
+	// entity import export services
+	// -------------------------------------------------------------------------
+	def entityImportExportServicesApplicationContextFullQualifiedName(Model model) {
+		return model.entityImportExportServicesApplicationContextPackageName() + "." + model.entityImportExportServicesApplicationContextName;
+	}
+
+	def entityImportExportServicesApplicationContextPackageName(Model model) {
+		return modelPackageName(model)
+	}
+
+	def entityImportExportServicesApplicationContextName(Model model) {
+		return model.modelName.toFirstUpper + "EntityImportExportServicesGen"
+	}
+
 }

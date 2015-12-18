@@ -4,6 +4,7 @@
 package io.pelle.mango.dsl.generator.xml
 
 import io.pelle.mango.dsl.generator.GeneratorConstants
+import io.pelle.mango.dsl.generator.server.service.ServiceNameUtils
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.mango.Entity
 import io.pelle.mango.dsl.mango.Model
@@ -24,12 +25,15 @@ class XmlGenerator implements IGenerator {
 	extension XmlNameUtils
 
 	@Inject
+	extension ServiceNameUtils
+
+	@Inject
 	extension NameUtils
 
 	override void doGenerate(Resource resource, IFileSystemAccess fsa) {
 
 		for (model : resource.allContents.toIterable.filter(Model)) {
-			fsa.generateFile(model.entityImportExportAppliationContextFullQualifiedFileName,
+			fsa.generateFile(model.entityImportExportServicesApplicationContextFullQualifiedName.classFileName,
 				GeneratorConstants.SERVER_GEN_OUTPUT, model.entityImportExportAppliationContext)
 		}
 
