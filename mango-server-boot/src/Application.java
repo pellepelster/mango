@@ -1,14 +1,20 @@
 import java.util.Arrays;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration.EmbeddedJetty;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration.EmbeddedTomcat;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+
+import io.pelle.mango.demo.server.test.MangoDemoWebApplicationContext;
 
 @Configuration
-@Import({ EmbeddedJetty.class })
+@Import( { EmbeddedTomcat.class, MangoDemoWebApplicationContext.class })
+@ActiveProfiles("test")
+@EnableAutoConfiguration
 public class Application {
 
 	public static void main(String[] args) {

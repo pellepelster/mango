@@ -12,10 +12,10 @@ apply plugin: 'spring-boot'
 
 dependencies {
 	compile("org.springframework.boot:spring-boot-starter-web")
-	compile("org.springframework.boot:spring-boot-starter-jetty")
+	compile("org.springframework.boot:spring-boot-starter-tomcat")
+	compile 'javax.transaction:javax.transaction-api:1.2-b01'
+
+	compile project(':mango-server')
 	
-	compile(project(':mango-server')) {
-		exclude module: "slf4j-log4j12"
-	}
 }
 

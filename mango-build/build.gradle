@@ -27,7 +27,7 @@ ext {
 	versions = [
 		spring: "4.2.4.RELEASE",
 		spring_security: "4.0.2.RELEASE",
-		gwt: "2.6.1",
+		gwt: "2.7.0",
 		guava: "17.0",
 		xtext: "2.8.4",
 		metrics: "3.1.2",

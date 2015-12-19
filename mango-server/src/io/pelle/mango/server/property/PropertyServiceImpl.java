@@ -1,21 +1,8 @@
 package io.pelle.mango.server.property;
 
-import io.pelle.mango.client.base.property.IProperty;
-import io.pelle.mango.client.base.property.IPropertyCategory;
-import io.pelle.mango.client.base.util.CollectionUtils;
-import io.pelle.mango.client.base.util.MessageFormat;
-import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.client.core.property.PropertyBuilder;
-import io.pelle.mango.client.property.IPropertyService;
-import io.pelle.mango.db.dao.IBaseEntityDAO;
-import io.pelle.mango.server.ConfigurationParameters;
-import io.pelle.mango.server.Messages;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.transaction.Transactional;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -32,6 +19,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.MetricRegistry;
@@ -39,6 +27,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 import com.google.common.base.Optional;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import io.pelle.mango.client.base.property.IProperty;
+import io.pelle.mango.client.base.property.IPropertyCategory;
+import io.pelle.mango.client.base.util.CollectionUtils;
+import io.pelle.mango.client.base.util.MessageFormat;
+import io.pelle.mango.client.base.vo.query.SelectQuery;
+import io.pelle.mango.client.core.property.PropertyBuilder;
+import io.pelle.mango.client.property.IPropertyService;
+import io.pelle.mango.db.dao.IBaseEntityDAO;
+import io.pelle.mango.server.ConfigurationParameters;
+import io.pelle.mango.server.Messages;
 
 @Transactional
 public class PropertyServiceImpl implements IPropertyService, InitializingBean {
