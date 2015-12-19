@@ -573,8 +573,15 @@ ServiceOptions:
 ServiceMethod:
 	'method' ('<'typeParameter=JvmTypeParameter'>')? returnType = JvmTypeReference name=ValidID '('(params += FullJvmFormalParameter (', ' params += FullJvmFormalParameter)*)?')';
 
+Documentation:
+	{Documentation}
+	"<documentation>"
+	text=STRING
+	"<documentation>";
+
 Service:
 	{Service}
+	(documentation=Documentation)?
 	"service" name=ID "{"
 		("options1" "{" remoteServiceOptions=ServiceOptions "}")?
 		(remoteMethods+=ServiceMethod)*

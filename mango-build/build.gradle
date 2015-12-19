@@ -25,7 +25,7 @@ buildscript {
 ext {
 
 	versions = [
-		spring: "4.1.2.RELEASE",
+		spring: "4.2.4.RELEASE",
 		spring_security: "4.0.2.RELEASE",
 		gwt: "2.6.1",
 		guava: "17.0",

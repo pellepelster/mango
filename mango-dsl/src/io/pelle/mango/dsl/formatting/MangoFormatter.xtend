@@ -65,7 +65,7 @@ class MangoFormatter extends AbstractDeclarativeFormatter {
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.entityOptionsAccess.entityPluralLabelFieldParserRuleCall_2);
 
 		// service
-		defaultBlockFormat(c,m.serviceAccess.leftCurlyBracketKeyword_3, m.serviceAccess.rightCurlyBracketKeyword_6)
+		defaultBlockFormat(c,m.serviceAccess.leftCurlyBracketKeyword_4, m.serviceAccess.rightCurlyBracketKeyword_7)
 		c.setLinewrap(MIN_WRAPS, DEFAULT_WRAPS, MAX_WRAPS).before(m.serviceMethodRule);
 
 		// value object

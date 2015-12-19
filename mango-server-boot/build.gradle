@@ -1,0 +1,21 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.3.1.RELEASE")
+    }
+}
+
+apply plugin: 'spring-boot'
+
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-jetty")
+	
+	compile(project(':mango-server')) {
+		exclude module: "slf4j-log4j12"
+	}
+}
+

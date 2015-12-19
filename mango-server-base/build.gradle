@@ -26,7 +26,9 @@ dependencies {
 	compile group: "org.apache.commons", name: "commons-lang3", version: "3.3.2"
 	compile group: "net.vidageek", name: "mirror", version: "1.6.1"
 	
-	compile group: "org.squirrelframework", name: "squirrel-foundation", version: "0.3.8"
+	compile(group: "org.squirrelframework", name: "squirrel-foundation", version: "0.3.8") {
+		exclude module: "slf4j-log4j12"
+	}
 	
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.3.1'
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.3.1'
