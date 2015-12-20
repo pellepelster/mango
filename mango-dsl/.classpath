@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="xtend-gen"/>
 	<classpathentry kind="src" path="src-gen"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" exported="true"/>
-	<classpathentry kind="output" path="bin"/>
 	<classpathentry kind="src" path="/mango-client-base" exported="true"/>
 	<classpathentry kind="src" path="/mango-server-base" exported="true"/>
 	<classpathentry sourcepath="GRADLE_USER_HOME/caches/modules-2/files-2.1/log4j/log4j/1.2.17/677abe279b68c5e7490d6d50c6951376238d7d3e/log4j-1.2.17-sources.jar" kind="var" path="GRADLE_USER_HOME/caches/modules-2/files-2.1/log4j/log4j/1.2.17/5af35056b4d257e4b64b9e8069c0746e8b08629f/log4j-1.2.17.jar" exported="true"/>
@@ -46,6 +46,4 @@
 	<classpathentry sourcepath="GRADLE_USER_HOME/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/ecf26c7507d67782a3bbd148d170b31dfad001aa/commons-logging-1.2-sources.jar" kind="var" path="GRADLE_USER_HOME/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar" exported="true"/>
 	<classpathentry sourcepath="GRADLE_USER_HOME/caches/modules-2/files-2.1/com.google.guava/guava/17.0/7ca0efbeb87ca845b5d7a0ac9c21a4b7b95f7b28/guava-17.0-sources.jar" kind="var" path="GRADLE_USER_HOME/caches/modules-2/files-2.1/com.google.guava/guava/17.0/9c6ef172e8de35fd8d4d8783e4821e57cdef7445/guava-17.0.jar" exported="true"/>
 	<classpathentry sourcepath="GRADLE_USER_HOME/caches/modules-2/files-2.1/com.google.gwt/gwt-user/2.7.0/2abdc607f5101c9f431f1e671ee30061d42b8906/gwt-user-2.7.0-sources.jar" kind="var" path="GRADLE_USER_HOME/caches/modules-2/files-2.1/com.google.gwt/gwt-user/2.7.0/bdc7af42581745d3d79c2efe0b514f432b998a5b/gwt-user-2.7.0.jar"/>
-	<classpathentry sourcepath="GRADLE_USER_HOME/caches/modules-2/files-2.1/javax.validation/validation-api/1.0.0.GA/7a561191db2203550fbfa40d534d4997624cd369/validation-api-1.0.0.GA-sources.jar" kind="var" path="GRADLE_USER_HOME/caches/modules-2/files-2.1/javax.validation/validation-api/1.0.0.GA/b6bd7f9d78f6fdaa3c37dae18a4bd298915f328e/validation-api-1.0.0.GA.jar" exported="true"/>
-	<classpathentry sourcepath="GRADLE_USER_HOME/caches/modules-2/files-2.1/javax.validation/validation-api/1.0.0.GA/7a561191db2203550fbfa40d534d4997624cd369/validation-api-1.0.0.GA-sources.jar" kind="var" path="GRADLE_USER_HOME/caches/modules-2/files-2.1/javax.validation/validation-api/1.0.0.GA/7a561191db2203550fbfa40d534d4997624cd369/validation-api-1.0.0.GA-sources.jar" exported="true"/>
 </classpath>

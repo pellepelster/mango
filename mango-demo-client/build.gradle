@@ -23,11 +23,15 @@ configurations {
 }
 
 dependencies {
+	
 	compile project(path: ':mango-demo-model', configuration: 'generatedClientGWT')
 	compile project(path: ':mango-client-web-test')
 	compile project(path: ':mango-client-gwt')
-	gwtTest group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
-	//gwt group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
+	
+	gwtTest(group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt) {
+		exclude module: 'validation-api'
+	}
+	
 }
 
 gwt {

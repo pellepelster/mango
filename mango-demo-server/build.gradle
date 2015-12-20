@@ -49,8 +49,9 @@ dependencies {
 
 	compile group: "org.hsqldb", name: "hsqldb", version: "2.3.3"
 
-	provided group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
-
+	provided(group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt) {
+			exclude module: 'validation-api'
+	}
 	   
 }
 

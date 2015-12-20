@@ -71,7 +71,8 @@ allprojects {
 
 	eclipse.classpath.file {
 	    whenMerged { classpath ->
-	        classpath.entries.findAll { entry -> entry.kind == 'var' && entry.path.contains('com.google.gwt') }*.exported = false
+		    // prevent gwt messing up the classpath
+	        classpath.entries.findAll { entry -> entry.path.contains('validation-api-1.0.0.GA') ||  entry.path.contains('com.google.gwt') }*.exported = false
 	    }
 	}
 	

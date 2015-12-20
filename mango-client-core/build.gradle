@@ -3,7 +3,9 @@ dependencies {
 	compile project(path: ':mango-model', configuration: 'generatedClientGWT')
 	compile project(path: ':mango-client-base')
 	
-	provided group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
+	provided(group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt) {
+		exclude module: 'validation-api'
+	}
 }
 
 jar {

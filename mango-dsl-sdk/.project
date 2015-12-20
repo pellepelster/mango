@@ -4,15 +4,9 @@
 	<comment/>
 	<projects/>
 	<natures>
-		<nature>org.eclipse.pde.FeatureNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.springsource.ide.eclipse.gradle.core.nature</nature>
 	</natures>
 	<buildSpec>
-		<buildCommand>
-			<name>org.eclipse.pde.FeatureBuilder</name>
-			<arguments/>
-		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments/>
