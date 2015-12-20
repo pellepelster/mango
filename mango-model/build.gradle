@@ -1,2 +1,5 @@
 apply from: '../mango-build/mangomodelcommon.gradle'
 
+dependencies {
+	provided group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
+}

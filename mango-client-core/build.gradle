@@ -1,7 +1,9 @@
 dependencies {
+	
 	compile project(path: ':mango-model', configuration: 'generatedClientGWT')
 	compile project(path: ':mango-client-base')
-	provided project(path: ':mango-client-base', configuration: 'provided')
+	
+	provided group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
 }
 
 jar {

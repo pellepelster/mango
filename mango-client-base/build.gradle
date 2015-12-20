@@ -1,20 +1,12 @@
 dependencies {
-	compile project(':mango-base')
-	
-	compile( group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt) {
-		exclude module: 'validation-api'
-	}
-	compile( group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt) {
-		exclude module: 'validation-api'
-	}
-	provided( group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt) {
-		exclude module: 'validation-api'
-	}
-	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
 
-	compile( project(':mango-gwt-commons')) {
-		exclude module: 'validation-api'
-	}
+	compile project(':mango-base')
+	compile project(':mango-gwt-commons')
+	
+	provided group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
+	//provided group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt
+	//provided group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
+	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
 
 }
 

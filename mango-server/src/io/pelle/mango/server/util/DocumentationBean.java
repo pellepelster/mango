@@ -15,17 +15,14 @@ public class DocumentationBean implements ApplicationContextAware {
 
 		Map<String, Object> restControllers = applicationContext.getBeansWithAnnotation(RestController.class);
 
-		
-		for(Object restController : restControllers.values()) {
-			
+		for (Object restController : restControllers.values()) {
+
 			RequestMapping requestMapping = restController.getClass().getAnnotation(RequestMapping.class);
-			
+
 			if (requestMapping != null) {
-				
-				
+
 			}
 		}
-				
 	}
-	
+
 }

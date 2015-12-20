@@ -34,6 +34,8 @@ import io.pelle.mango.server.security.MangoGroupPermissionMerger;
 import io.pelle.mango.server.state.StateEntityCallback;
 import io.pelle.mango.server.util.ConfigurationLogger;
 import io.pelle.mango.server.util.DocumentationBean;
+import io.pelle.mango.server.util.DocumentationController;
+import io.pelle.mango.server.util.DocumentationController;
 import io.pelle.mango.server.validator.LengthValidator;
 import io.pelle.mango.server.validator.MandatoryValidator;
 import io.pelle.mango.server.validator.NaturalKeyValidator;
@@ -66,7 +68,12 @@ public class MangoServerApplicationContext {
 
 		return result;
 	}
-	
+
+	@Bean
+	public DocumentationController documentationController() {
+		return new DocumentationController();
+	}
+
 	@Bean
 	public StateEntityCallback stateEntityCallback() {
 		return new StateEntityCallback();
@@ -76,7 +83,7 @@ public class MangoServerApplicationContext {
 	public ConfigurationLogger configurationLogger() {
 		return new ConfigurationLogger();
 	}
-	
+
 	@Bean
 	public DocumentationBean documentationBean() {
 		return new DocumentationBean();

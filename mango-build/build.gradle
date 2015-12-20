@@ -11,6 +11,7 @@ buildscript {
 		}
 		
     	jcenter()
+    	
     	mavenCentral()
 
 	}
@@ -68,6 +69,12 @@ allprojects {
 
 	apply plugin: 'eclipse'
 
+	eclipse.classpath.file {
+	    whenMerged { classpath ->
+	        classpath.entries.findAll { entry -> entry.kind == 'var' && entry.path.contains('com.google.gwt') }*.exported = false
+	    }
+	}
+	
 	configurations {
 		provided
 	}

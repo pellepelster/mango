@@ -8,7 +8,9 @@ dependencies {
 	testCompile group: "com.jayway.restassured", name: "json-path", version: "2.5.0"
 	testCompile group: 'com.jayway.restassured', name: 'rest-assured', version: '2.5.0'
 	testCompile group: "com.jayway.awaitility", name: "awaitility", version: "1.6.3"
-	testCompile group: "com.github.tomakehurst", name: "wiremock", version: "1.57"
+	testCompile(group: "com.github.tomakehurst", name: "wiremock", version: "1.57")  {
+			exclude module: 'servlet-api'
+		}
 
 	compile group: "org.springframework", name: "spring-tx", version: versions.spring
 	compile group: "org.springframework", name: "spring-context", version: versions.spring

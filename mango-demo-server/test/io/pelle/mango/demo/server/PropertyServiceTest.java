@@ -8,11 +8,10 @@ import static org.junit.Assert.assertTrue;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gwt.thirdparty.guava.common.collect.Iterables;
+import com.google.common.collect.Iterables;
 
 import io.pelle.mango.client.base.property.IProperty;
 import io.pelle.mango.client.base.property.IPropertyCategory;

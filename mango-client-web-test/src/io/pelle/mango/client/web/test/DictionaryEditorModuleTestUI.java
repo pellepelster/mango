@@ -17,9 +17,9 @@ import java.util.List;
 import org.junit.Assert;
 
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
-import com.google.gwt.thirdparty.guava.common.base.Joiner;
 
 import io.pelle.mango.client.base.db.vos.Result;
 import io.pelle.mango.client.base.layout.IModuleUI;

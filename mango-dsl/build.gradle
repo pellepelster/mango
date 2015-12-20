@@ -18,6 +18,9 @@ dependencies {
 	compile 'commons-beanutils:commons-beanutils-core:1.8.3'
 	compile project(':mango-client-base')
 	compile project(':mango-server-base')
+	
+	provided group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
+	
 }
 
 apply plugin: 'org.xtend.xtend'
