@@ -1,7 +1,6 @@
 apply from: '../mango-build/mangomodelcommon.gradle'
 
 dependencies {
-	provided(group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt) {
-		exclude module: 'validation-api'
-	}
+	provided(group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt)
+	compile group: "javax.servlet", name: "javax.servlet-api", version: "3.1.0"
 }

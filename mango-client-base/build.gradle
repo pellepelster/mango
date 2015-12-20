@@ -1,20 +1,75 @@
+configurations {
+	gwt
+}
+
 dependencies {
 
 	compile project(':mango-base')
 	compile project(':mango-gwt-commons')
 	
-	provided(group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt) {
+	provided(group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt) {
 		exclude module: 'validation-api'
 	}
 	
 	//provided group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt
-	//provided group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
-	
-	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
+	provided group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
+	//gwt group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
 
+
+	gwt group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
+	gwt group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
+	compile files('build/gwt-user-repackaged.jar')
+	compile files('build/gwt-dev-repackaged.jar')
 }
 
 jar {
 	from sourceSets.main.allSource
 	from sourceSets.main.output.classesDir
 }
+
+eclipse {
+	classpath {
+		minusConfigurations += [ configurations.gwt ]
+	}
+}
+
+task expandGwtUserJar(type: Copy) {
+	from {
+		def jarFile = project.configurations.gwt.find { File file -> file.absolutePath =~ /.*gwt-user.*/ }
+		
+		if (!jarFile) { throw new Exception("gwt-user jar file not found!") }
+		zipTree(jarFile)
+	}
+	
+	into file("$buildDir/gwt-user")
+}
+
+task assembleGwtUserJar(type: Zip, dependsOn: expandGwtUserJar) {
+	destinationDir file("$buildDir")
+	archiveName 'gwt-user-repackaged.jar'
+	from file("$buildDir/gwt-user")
+	exclude 'javax/**'
+}
+
+eclipseClasspath.dependsOn("assembleGwtUserJar")
+
+task expandGwtDevJar(type: Copy) {
+	from {
+		def jarFile = project.configurations.gwt.find { File file -> file.absolutePath =~ /.*gwt-dev.*/ }
+		
+		if (!jarFile) { throw new Exception("gwt-dev jar file not found!") }
+		zipTree(jarFile)
+	}
+	
+	into file("$buildDir/gwt-dev")
+}
+
+task assembleGwtDevJar(type: Zip, dependsOn: expandGwtDevJar) {
+	destinationDir file("$buildDir")
+	archiveName 'gwt-dev-repackaged.jar'
+	from file("$buildDir/gwt-dev")
+	exclude 'javax/**'
+}
+
+eclipseClasspath.dependsOn("assembleGwtUserJar")
+eclipseClasspath.dependsOn("assembleGwtDevJar")

@@ -69,13 +69,6 @@ allprojects {
 
 	apply plugin: 'eclipse'
 
-	eclipse.classpath.file {
-	    whenMerged { classpath ->
-		    // prevent gwt messing up the classpath
-	        classpath.entries.findAll { entry -> entry.path.contains('validation-api-1.0.0.GA') ||  entry.path.contains('com.google.gwt') }*.exported = false
-	    }
-	}
-	
 	configurations {
 		provided
 	}

@@ -24,14 +24,14 @@ configurations {
 }
 
 dependencies {
-	provided(group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt) {
-		exclude module: 'validation-api'
-	}
-	gwtTest(group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt) {
-		exclude module: 'validation-api'
-	}
+	gwt group: 'com.google.gwt', name: 'gwt-user', version: '2.7.0'
+	compile files('build/gwt-user-repackaged.jar')
 	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
 	compile 'org.gwtbootstrap3:gwtbootstrap3:0.9.1'
+}
+
+configurations {
+	gwt
 }
 
 gwt {
@@ -40,4 +40,35 @@ gwt {
 	logLevel = 'ERROR'
 }
 
+
+eclipse {
+	classpath {
+		minusConfigurations += [ configurations.gwt ]
+	}
+}
+
+task expandGwtUserJar(type: Copy) {
+
+	from {
+	
+		def jarFile = project.configurations.gwt.find { File file -> file.absolutePath =~ /.*gwt-user.*/ }
+		
+		if (!jarFile) {
+		    throw new Exception("gwt-user jar file not found!")
+		}
+		
+		zipTree(jarFile)
+	}
+	
+	into file("$buildDir/gwt-user")
+}
+
+task assembleGwtUserJar(type: Zip, dependsOn: expandGwtUserJar) {
+	destinationDir file("$buildDir")
+	archiveName 'gwt-user-repackaged.jar'
+	from file("$buildDir/gwt-user")
+	exclude 'javax/**'
+}
+
+eclipseClasspath.dependsOn("assembleGwtUserJar")
 compileGwt.onlyIf { !project.hasProperty('skipCompileGwt') }
