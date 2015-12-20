@@ -71,4 +71,6 @@ task assembleGwtUserJar(type: Zip, dependsOn: expandGwtUserJar) {
 }
 
 eclipseClasspath.dependsOn("assembleGwtUserJar")
+compileJava.dependsOn("assembleGwtDevJar")
+
 compileGwt.onlyIf { !project.hasProperty('skipCompileGwt') }

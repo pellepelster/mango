@@ -52,6 +52,7 @@ task assembleGwtUserJar(type: Zip, dependsOn: expandGwtUserJar) {
 }
 
 eclipseClasspath.dependsOn("assembleGwtUserJar")
+compileJava.dependsOn("assembleGwtUserJar")
 
 task expandGwtDevJar(type: Copy) {
 	from {
@@ -71,5 +72,5 @@ task assembleGwtDevJar(type: Zip, dependsOn: expandGwtDevJar) {
 	exclude 'javax/**'
 }
 
-eclipseClasspath.dependsOn("assembleGwtUserJar")
 eclipseClasspath.dependsOn("assembleGwtDevJar")
+compileJava.dependsOn("assembleGwtDevJar")
