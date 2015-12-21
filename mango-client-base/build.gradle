@@ -62,13 +62,16 @@ task expandGwtDevJar(type: Copy) {
 		zipTree(jarFile)
 	}
 	
-	into file("$buildDir/gwt-dev")
+	def targetPath = file("$buildDir/gwt-dev") 
+	into targetPath
+	outputs.dir targetPath
 }
 
 task assembleGwtDevJar(type: Zip, dependsOn: expandGwtDevJar) {
 	destinationDir file("$buildDir")
 	archiveName 'gwt-dev-repackaged.jar'
 	from file("$buildDir/gwt-dev")
+	outputs.dir file("$buildDir/gwt-dev-repackaged.jar")
 	exclude 'javax/**'
 }
 

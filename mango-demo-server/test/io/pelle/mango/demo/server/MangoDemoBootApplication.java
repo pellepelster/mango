@@ -2,6 +2,7 @@ package io.pelle.mango.demo.server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.velocity.VelocityAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration.EmbeddedTomcat;
 import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.context.ApplicationContext;
@@ -16,7 +17,8 @@ import io.pelle.mango.server.boot.HelloController;
 @Configuration
 @Import({ EmbeddedTomcat.class, WebMvcAutoConfiguration.class, MangoDemoWebApplicationContext.class })
 @ActiveProfiles("test")
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = { VelocityAutoConfiguration.class })
+
 public class MangoDemoBootApplication {
 
 	public static void main(String[] args) {

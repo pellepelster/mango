@@ -15,6 +15,10 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.codahale.metrics.MetricRegistry;
 
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.ext.beans.BeansWrapperBuilder;
+import freemarker.template.DefaultObjectWrapperBuilder;
+import freemarker.template.Version;
 import io.pelle.mango.MangoBaseApplicationContextGen;
 import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.api.entity.EntityApiController;
@@ -33,7 +37,7 @@ import io.pelle.mango.server.log.VOEntityLogReferenceKeyMapper;
 import io.pelle.mango.server.security.MangoGroupPermissionMerger;
 import io.pelle.mango.server.state.StateEntityCallback;
 import io.pelle.mango.server.util.ConfigurationLogger;
-import io.pelle.mango.server.util.DocumentationBean;
+import io.pelle.mango.server.util.RestServiceDocumentationBean;
 import io.pelle.mango.server.util.DocumentationController;
 import io.pelle.mango.server.util.DocumentationController;
 import io.pelle.mango.server.validator.LengthValidator;
@@ -54,7 +58,16 @@ public class MangoServerApplicationContext {
 	public FreeMarkerConfigurer freemarkerConfig() {
 
 		FreeMarkerConfigurer result = new FreeMarkerConfigurer();
-		result.setTemplateLoaderPath("classpath:templates");
+		freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_21);
+		cfg.setClassForTemplateLoading(this.getClass(), "/templates");
+
+		
+//		DefaultObjectWrapperBuilder owb = new DefaultObjectWrapperBuilder(freemarker.template.Configuration.VERSION_2_3_21);
+//		owb.setExposureLevel(BeansWrapper.EXPOSE_ALL);
+//		owb.setExposeFields(true);
+//		cfg.setObjectWrapper(owb.build());
+		
+		result.setConfiguration(cfg);
 
 		return result;
 	}
@@ -85,8 +98,8 @@ public class MangoServerApplicationContext {
 	}
 
 	@Bean
-	public DocumentationBean documentationBean() {
-		return new DocumentationBean();
+	public RestServiceDocumentationBean documentationBean() {
+		return new RestServiceDocumentationBean();
 	}
 
 	@Bean(name = "xmlVOImporter")

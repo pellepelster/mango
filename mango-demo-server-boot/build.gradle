@@ -13,6 +13,11 @@ buildscript {
 apply plugin: 'spring-boot'
 
 dependencies {
+
+	compile project(':mango-demo-server')
+	compile project(':mango-server-boot')
+
     compile("org.springframework.boot:spring-boot-starter-web")
     testCompile("org.springframework.boot:spring-boot-starter-test")
+    
 }

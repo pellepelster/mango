@@ -1,20 +1,21 @@
 package io.pelle.mango.server.mail;
 
-import java.nio.charset.StandardCharsets;
+import java.io.StringReader;
 import java.util.Collections;
 import java.util.Map;
 
 import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
-import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
-import org.springframework.ui.velocity.VelocityEngineUtils;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.server.ConfigurationParameters;
 
@@ -26,20 +27,17 @@ public class MailService {
 	@Autowired
 	private IPropertyService propertyService;
 
-	@Autowired
-	private VelocityEngine velocityEngine;
-
 	private static Logger LOG = Logger.getLogger(MailService.class.getName());
 
-	public void sendMail(final String mailTo, final String subject, final String velocityTemplateLocation, final Map<String, Object> velocityTemplateModel) {
-		sendMail(mailTo, subject, velocityTemplateLocation, velocityTemplateModel, Collections.<String, String> emptyMap());
+	public void sendMail(final String mailTo, final String subject, final String templateLocation, final Map<String, Object> templateModel) {
+		sendMail(mailTo, subject, templateLocation, templateModel, Collections.<String, String> emptyMap());
 	}
 
-	public void sendMail(final String mailTo, final String subject, final String velocityTemplateLocation) {
-		sendMail(mailTo, subject, velocityTemplateLocation, Collections.<String, Object> emptyMap(), Collections.<String, String> emptyMap());
+	public void sendMail(final String mailTo, final String subject, final String templateLocation) {
+		sendMail(mailTo, subject, templateLocation, Collections.<String, Object> emptyMap(), Collections.<String, String> emptyMap());
 	}
 
-	public void sendMail(final String mailTo, final String subject, final String velocityTemplateLocation, final Map<String, Object> velocityTemplateModel, final Map<String, String> headers) {
+	public void sendMail(final String mailTo, final String subject, final String templateLocation, final Map<String, Object> templateModel, final Map<String, String> headers) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -49,7 +47,8 @@ public class MailService {
 				message.setTo(mailTo);
 				message.setFrom(propertyService.getProperty(ConfigurationParameters.MAIL_SENDER_FROM));
 
-				String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, velocityTemplateLocation, StandardCharsets.UTF_8.name(), velocityTemplateModel);
+				Template template = new Template("templateLocation", new StringReader(templateLocation), Configuration.getDefaultConfiguration());
+				String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, templateModel);
 
 				message.setText(text, true);
 				message.setSubject(subject);

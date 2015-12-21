@@ -1,13 +1,9 @@
 package io.pelle.mango.server;
 
-import java.util.Properties;
-
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.ui.velocity.VelocityEngineFactoryBean;
 
 import io.pelle.mango.client.property.IPropertyService;
 import io.pelle.mango.server.mail.MailService;
@@ -45,16 +41,5 @@ public class MangoMailApplicationContext {
 		return javaMailSender;
 	}
 
-	@Bean
-	public VelocityEngineFactoryBean velocityEngine() {
-
-		VelocityEngineFactoryBean velocityEngine = new VelocityEngineFactoryBean();
-
-		Properties properties = new Properties();
-		properties.setProperty("resource.loader", "class");
-		properties.setProperty("class.resource.loader.class", ClasspathResourceLoader.class.getName());
-		velocityEngine.setVelocityProperties(properties);
-		return velocityEngine;
-	}
 
 }
