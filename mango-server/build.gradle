@@ -43,7 +43,7 @@ dependencies {
 	compile group: "org.apache.tomcat", name: "tomcat-catalina", version: "8.0.15"
 	compile group: "org.apache.tomcat", name: "dbcp", version: "6.0.39"
 
-	compile group: "org.freemarker", name: "freemarker", version: "2.3.21"
+	compile group: "org.freemarker", name: "freemarker", version: "2.3.23"
 	compile 'com.googlecode.gwtupload:gwtupload:1.0.3'
 
 	compile group: 'io.dropwizard.metrics', name: 'metrics-servlets', version: versions.metrics

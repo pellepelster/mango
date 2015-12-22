@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.util.RestServiceDocumentationBean;
-import io.pelle.mango.server.util.RestServiceDocumentationBean.RestPackageDocumentation;
+import io.pelle.mango.server.util.RestServiceDocumentationBean.PackageDocumentation;
 
 public class DemoDocumentationBeanTest extends BaseDemoTest {
 
@@ -18,7 +18,7 @@ public class DemoDocumentationBeanTest extends BaseDemoTest {
 	@Test
 	public void testServiceDocumentationCount() {
 		
-		List<RestPackageDocumentation> packageDocumentations = documentationBean.getPackageDocumentations();
+		List<PackageDocumentation> packageDocumentations = documentationBean.getPackageDocumentations();
 		Assert.assertEquals(3, packageDocumentations.size());
 		
 	}

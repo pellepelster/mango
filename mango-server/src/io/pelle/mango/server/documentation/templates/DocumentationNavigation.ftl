@@ -1,7 +1,18 @@
+<#assign path = springMacroRequestContext.getRequestUri()?keep_after(navigationModel.baseUrl)>
+<#assign levelCount = path?split("/")?size-2>
+
+<#assign basePath = "">
+<#if levelCount == 0>
+	<#assign basePath = "./">
+<#else>
+	<#list 1..levelCount as level>
+	<#assign basePath += "../">
+	</#list>
+</#if>
+
 <nav class="navbar navbar-default navbar-static-top">
 	<div class="container">
 		<div class="navbar-header">
-		
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
@@ -9,13 +20,13 @@
 				<span class="icon-bar"></span>
 			</button>
 			
-			<a class="navbar-brand" href="./">${navigationModel.applicationName}</a>
+			<a class="navbar-brand" href="${basePath}index">${navigationModel.applicationName}</a>
 		</div>
 		
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<#list navigationModel.primaryNavigation as navigation>
-				<li><a href="${navigation.path}">${navigation.name}</a></li>
+				<li><a href="${basePath}${navigation.path}">${navigation.name}</a></li>
 				</#list>
 				<!--
 				<li class="dropdown">
@@ -35,3 +46,11 @@
 		</div><!--/.nav-collapse -->
 	</div>
 </nav>
+
+<ul class="breadcrumb">
+	<#list navigationModel.breadCrumbs as breadcrumb>
+	<li><a href="${basePath}${breadcrumb.path}">${breadcrumb.name}</a></li>
+	</#list>
+
+    <!-- <li class="active">Accessories</li> -->
+</ul>
