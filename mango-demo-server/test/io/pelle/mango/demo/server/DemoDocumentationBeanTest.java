@@ -7,21 +7,20 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.pelle.mango.demo.server.util.BaseDemoTest;
-import io.pelle.mango.server.util.RestServiceDocumentationBean;
-import io.pelle.mango.server.util.RestServiceDocumentationBean.PackageDocumentation;
+import io.pelle.mango.server.documentation.DocumentationRestApi;
+import io.pelle.mango.server.documentation.PackageDocumentation;
 
 public class DemoDocumentationBeanTest extends BaseDemoTest {
 
 	@Autowired
-	private RestServiceDocumentationBean documentationBean;
-	
+	private DocumentationRestApi documentationBean;
+
 	@Test
 	public void testServiceDocumentationCount() {
-		
-		List<PackageDocumentation> packageDocumentations = documentationBean.getPackageDocumentations();
-		Assert.assertEquals(3, packageDocumentations.size());
-		
-	}
 
+		List<PackageDocumentation> packageDocumentations = documentationBean.getPackageDocumentation();
+		Assert.assertEquals(3, packageDocumentations.size());
+
+	}
 
 }

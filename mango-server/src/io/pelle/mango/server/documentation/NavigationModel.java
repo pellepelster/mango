@@ -3,8 +3,6 @@ package io.pelle.mango.server.documentation;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.pelle.mango.server.documentation.IDocumentationBean.NavigationItem;
-
 public class NavigationModel {
 
 	private List<NavigationItem> primaryNavigation = new ArrayList<NavigationItem>();
@@ -35,7 +33,7 @@ public class NavigationModel {
 	public List<NavigationItem> getPrimaryNavigation() {
 		return primaryNavigation;
 	}
-	
+
 	public String getBaseUrl() {
 		return baseUrl;
 	}

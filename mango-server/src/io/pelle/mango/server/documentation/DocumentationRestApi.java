@@ -17,10 +17,11 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 
+import io.pelle.mango.server.Messages;
 import io.pelle.mango.server.base.meta.Documented;
 
-@RequestMapping(IDocumentationBean.DOCUMENTATION_BASE_PATH + "/" + DocumentationRestApi.REST_DOCUMENTATION_BASE_PATH)
-public class DocumentationRestApi implements ApplicationListener<ContextRefreshedEvent>, IDocumentationBean {
+@RequestMapping(IDocumentationContributor.DOCUMENTATION_BASE_PATH + "/" + DocumentationRestApi.REST_DOCUMENTATION_BASE_PATH)
+public class DocumentationRestApi implements ApplicationListener<ContextRefreshedEvent>, IDocumentationContributor {
 
 	public final static String REST_DOCUMENTATION_BASE_PATH = "rest";
 
@@ -36,9 +37,9 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 	public final static String SERVICE_DOCUMENTATION_TEMPLATE_VARIABLE = "serviceDocumentation";
 
-	private static final NavigationItem NAVIGATION_ITEM = new NavigationItem("DocumentationRestApi", "Rest API", REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH);
+	private static final NavigationItem NAVIGATION_ITEM = new NavigationItem(Messages.getString(IDocumentationContributor.DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY), REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH);
 
-	private static final BreadCrumb BREADCRUMB = new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH, "Rest API");
+	private static final BreadCrumb BREADCRUMB = new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH, Messages.getString(IDocumentationContributor.DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY));
 
 	@Autowired
 	private DocumentationService documentationService;
@@ -115,12 +116,10 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 	@Override
 	public List<NavigationItem> getPrimaryNavigation() {
-		return Arrays.asList(new NavigationItem[] {NAVIGATION_ITEM } );
+		return Arrays.asList(new NavigationItem[] { NAVIGATION_ITEM });
 	}
 
-	
-	
-	@RequestMapping(IDocumentationBean.INDEX_PATH)
+	@RequestMapping(IDocumentationContributor.INDEX_PATH)
 	public ModelAndView index() {
 
 		Map<String, Object> templateModel = documentationService.getDefaultTemplateModel(BREADCRUMB);
@@ -147,7 +146,7 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 		List<BreadCrumb> breadCrumbs = new ArrayList<BreadCrumb>();
 		breadCrumbs.add(BREADCRUMB);
-		
+
 		if (packageDocumentation.isPresent()) {
 			breadCrumbs.add(new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + packageDocumentation.get().getPackageName(), packageDocumentation.get().getPackageName()));
 		}
@@ -157,7 +156,7 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 		}
 
 		Map<String, Object> templateModel = documentationService.getDefaultTemplateModel(breadCrumbs.toArray(new BreadCrumb[0]));
-		
+
 		String view = null;
 		if (serviceDocumentation.isPresent()) {
 			templateModel.put(SERVICE_DOCUMENTATION_TEMPLATE_VARIABLE, serviceDocumentation.get());

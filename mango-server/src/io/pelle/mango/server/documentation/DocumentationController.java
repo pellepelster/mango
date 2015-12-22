@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(IDocumentationBean.DOCUMENTATION_BASE_PATH)
+@RequestMapping(IDocumentationContributor.DOCUMENTATION_BASE_PATH)
 public class DocumentationController {
 
 	@Autowired
@@ -18,11 +18,11 @@ public class DocumentationController {
 
 	@RequestMapping()
 	public String catchAll() {
-		 return "redirect:" + IDocumentationBean.DOCUMENTATION_BASE_PATH + "/" + IDocumentationBean.INDEX_PATH;
+		 return "redirect:" + IDocumentationContributor.DOCUMENTATION_BASE_PATH + "/" + IDocumentationContributor.INDEX_PATH;
 	}
 
 
-	@RequestMapping(value = IDocumentationBean.INDEX_PATH)
+	@RequestMapping(value = IDocumentationContributor.INDEX_PATH)
 	public ModelAndView index() {
 		return view(INDEX_VIEW_NAME);
 	}
