@@ -1,56 +1,37 @@
-<h3>Service <a href="${serviceDocumentation.className}">${serviceDocumentation.serviceName}</a></h3>
-
-<strong>Base URL:</strong><code>${serviceDocumentation.paths?first}</code><br/>
+<#assign serviceUUID><@uuid/></#assign>
+<h3><a class="" data-toggle="collapse" href="#${serviceUUID}" aria-expanded="false" aria-controls="${ serviceUUID}">${service.serviceName}</a></h3>
+<div class="collapse" id="${serviceUUID}">
 
 <#assign lastMethodName = "">
 
-<#list serviceDocumentation.methodDocumentations as methodDocumentation>
-<#assign methodName = "${methodDocumentation.paths?first}">
+<#list service.methods as method>
+<#assign methodName = "${method.paths?first}">
 <#if lastMethodName != methodName>
-<h4>Method: ${methodName}</h4>
+
+<div class="row">
+  <div class="col-md-1 bg-primary">${method.methods?first}</div>
+  <div class="col-md-11 bg-info"><strong>${service.paths?first}/${method.paths?first}</strong></div>
+</div>
 </#if>
 <#assign lastMethodName = methodName>
+<#assign indentDelimiter = "	">
 
-<strong>URL:</strong> <code>${serviceDocumentation.paths?first}/${methodDocumentation.paths?first}</code><br/> 
+<#macro restBody body indent>
+<#list body.attributes>
+${indent}<strong>{</strong>
+<#items as attribute>
+${indent}${indentDelimiter}<strong>${attribute.name}</strong> (<#if attribute.type.primitive>${attribute.type.typeName})<#else><#assign id><@uuid/></#assign><a class="" data-toggle="collapse" href="#${id}" aria-expanded="false" aria-controls="${id}">${attribute.type.typeName}</a>)<div class="collapse" id="${id}"><@restBody attribute.type indent + indentDelimiter /></div></#if>
+</#items>
+${indent}<strong>}</strong>
+</#list>
+</#macro>
 
-<#if methodDocumentation.response.primitive>
-<strong>Response:</strong> <code>${methodDocumentation.response.primitiveName}</code><br/>
+<#if method.returnType.primitive>
+<strong>Response:</strong> <code>${method.returnType.typeName}</code><br/>
 <#else>
-	<#list methodDocumentation.response.attributes>
-	<div class="panel panel-default">
-		<div class="panel-heading"><strong>Response</strong></div>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Attribute</th>
-					<th>Type</th>
-				</tr>
-			</thead>
-			<tbody>
-	    	<#items as attribute>
-				<tr>
-					<th>${attribute.name}</th>
-					<td>
-					-
-<!--
-<#assign id = serviceDocumentation.className?replace(".", "") + methodName + attribute.name>
-<a class="btn btn-primary" role="button" data-toggle="collapse" href="#${id}" aria-expanded="false" aria-controls="${id}">Link with href</a>
-<div class="collapse" id="${id}">
-<div class="well">
-Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-</div>
-</div>
--->				
-					</td>
-				</tr>
-		    </#items>
-			</tbody>
-		</table>
-	</div>
-	<#else>
-		<strong>Response:</strong> none<br/>
-	</#list>
-	
+<pre><@restBody method.returnType ""/></pre>
 </#if>
 <br/>
 </#list>
+
+</div>

@@ -4,6 +4,6 @@
 <p>${packageDocumentation.description}</p>
 </#if>
 
-<#list packageDocumentation.serviceDocumentations as serviceDocumentation>
+<#list packageDocumentation.services as service>
 	<#include "DocumentationRestApiService.ftl">
 </#list>

@@ -35,7 +35,7 @@ public abstract class MangoWebApplicationInitializer extends AbstractSecurityWeb
 	}
 
 	@Override
-	public void afterSpringSecurityFilterChain(ServletContext servletContext)  {
+	public void afterSpringSecurityFilterChain(ServletContext servletContext) {
 
 		WebApplicationContext context = getContext();
 

@@ -9,7 +9,7 @@ public class PackageDocumentation {
 
 	private final String packageName;
 
-	private List<RestServiceDocumentation> serviceDocumentations = new ArrayList<RestServiceDocumentation>();
+	private List<RestServiceDocumentation> services = new ArrayList<RestServiceDocumentation>();
 
 	private static final String DESCRIPTION_KEY = "description";
 
@@ -31,8 +31,8 @@ public class PackageDocumentation {
 		return packageName;
 	}
 
-	public List<RestServiceDocumentation> getServiceDocumentations() {
-		return serviceDocumentations;
+	public List<RestServiceDocumentation> getServices() {
+		return services;
 	}
 
 	public String getDescription() {

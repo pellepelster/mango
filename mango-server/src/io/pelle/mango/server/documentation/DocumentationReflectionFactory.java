@@ -7,42 +7,52 @@ import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.ClassUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.pelle.mango.client.base.vo.IBaseVO;
+import io.pelle.mango.client.base.vo.IValueObject;
 import io.pelle.mango.server.base.meta.Documented;
 
-public class DocumentationReflectionUtils {
+public class DocumentationReflectionFactory {
 
-	public static RestBodyDocumentation getRestBodyDocumentation(Class<?> clazz) {
+	private static Map<Class<?>, RestTypeDocumentation> types = new HashMap<Class<?>, RestTypeDocumentation>();
 
-		if (ClassUtils.isPrimitiveOrWrapper(clazz)) {
-			return new RestBodyDocumentation(clazz);
-		}
-		
-		List<RestBodyAttributeDocumentation> attributeDocumentations = new ArrayList<>();
+	public static RestTypeDocumentation getTypeDocumentation(Class<?> type) {
 
-		try {
-			BeanInfo beanInfo = Introspector.getBeanInfo(clazz);
+		if (!types.containsKey(type)) {
 
-			for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
+			if (IValueObject.class.isAssignableFrom(type) || IBaseVO.class.isAssignableFrom(type)) {
+				List<RestAttributeDocumentation> attributeDocumentations = new ArrayList<>();
 
-				if (propertyDescriptor.getReadMethod() != null && propertyDescriptor.getWriteMethod() != null) {
+				try {
+					BeanInfo beanInfo = Introspector.getBeanInfo(type);
 
-					RestBodyAttributeDocumentation attributeDocumentation = new RestBodyAttributeDocumentation(propertyDescriptor.getName());
-					attributeDocumentations.add(attributeDocumentation);
+					for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
+
+						if (propertyDescriptor.getReadMethod() != null && propertyDescriptor.getWriteMethod() != null) {
+
+							RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(propertyDescriptor.getName(), propertyDescriptor.getPropertyType());
+							attributeDocumentations.add(attributeDocumentation);
+						}
+					}
+
+					types.put(type, new RestTypeDocumentation(type, attributeDocumentations));
+				} catch (IntrospectionException e) {
+					throw new RuntimeException(e);
 				}
+			} else {
+				types.put(type, new RestTypeDocumentation(type));
 			}
 
-			return new RestBodyDocumentation(attributeDocumentations);
-		} catch (IntrospectionException e) {
-			throw new RuntimeException(e);
 		}
+		return types.get(type);
 
 	}
 
@@ -62,9 +72,9 @@ public class DocumentationReflectionUtils {
 
 				if (methodRequestMapping != null && responseBody != null) {
 
-					RestBodyDocumentation responseBodyDocumentation = getRestBodyDocumentation(method.getReturnType());
+					RestTypeDocumentation responseType = getTypeDocumentation(method.getReturnType());
 
-					RestMethodDocumentation methodDocumentation = new RestMethodDocumentation(ArrayUtils.addAll(methodRequestMapping.path(), methodRequestMapping.value()), responseBodyDocumentation);
+					RestMethodDocumentation methodDocumentation = new RestMethodDocumentation(ArrayUtils.addAll(methodRequestMapping.path(), methodRequestMapping.value()), responseType, methodRequestMapping.method());
 					methodDocumentations.add(methodDocumentation);
 
 					Annotation[][] annotations = method.getParameterAnnotations();
@@ -94,8 +104,7 @@ public class DocumentationReflectionUtils {
 
 			}
 
-			RestServiceDocumentation restDocumentation = new RestServiceDocumentation(clazz.getName(), ArrayUtils.addAll(serviceRequestMapping.path(), serviceRequestMapping.value()),
-					methodDocumentations);
+			RestServiceDocumentation restDocumentation = new RestServiceDocumentation(clazz.getName(), ArrayUtils.addAll(serviceRequestMapping.path(), serviceRequestMapping.value()), methodDocumentations);
 
 			return restDocumentation;
 		}

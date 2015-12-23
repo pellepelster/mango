@@ -11,16 +11,16 @@ public class RestServiceDocumentation {
 
 	private final String[] paths;
 
-	private final List<RestMethodDocumentation> methodDocumentations;
+	private final List<RestMethodDocumentation> methods;
 
-	public RestServiceDocumentation(String className, String[] paths, List<RestMethodDocumentation> methodDocumentations) {
+	public RestServiceDocumentation(String className, String[] paths, List<RestMethodDocumentation> methods) {
 		super();
 		this.className = className;
 		this.paths = paths;
-		this.methodDocumentations = methodDocumentations;
-		
+		this.methods = methods;
+
 		Ordering<RestMethodDocumentation> ordering = Ordering.natural().onResultOf(RestMethodDocumentation.ORDER_FUNCTION);
-		Collections.sort(this.methodDocumentations, ordering);
+		Collections.sort(this.methods, ordering);
 	}
 
 	public String getServiceName() {
@@ -34,9 +34,9 @@ public class RestServiceDocumentation {
 	public String[] getPaths() {
 		return paths;
 	}
-	
-	public List<RestMethodDocumentation> getMethodDocumentations() {
-		return methodDocumentations;
+
+	public List<RestMethodDocumentation> getMethods() {
+		return methods;
 	}
 
 }

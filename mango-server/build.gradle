@@ -49,5 +49,4 @@ dependencies {
 	compile group: 'io.dropwizard.metrics', name: 'metrics-servlets', version: versions.metrics
 	
 	provided group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt
-	
 }

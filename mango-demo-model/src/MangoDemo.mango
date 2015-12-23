@@ -1,4 +1,5 @@
 import io.pelle.mango.demo.client.test.ValueObject2
+import io.pelle.mango.demo.client.test.ValueObject1
 
 project MangoDemo {
 

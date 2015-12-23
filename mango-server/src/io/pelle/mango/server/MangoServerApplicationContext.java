@@ -24,6 +24,7 @@ import io.pelle.mango.server.api.webhook.WebhookApiController;
 import io.pelle.mango.server.documentation.DocumentationController;
 import io.pelle.mango.server.documentation.DocumentationRestApi;
 import io.pelle.mango.server.documentation.DocumentationService;
+import io.pelle.mango.server.documentation.UUIDDirective;
 import io.pelle.mango.server.file.EntityFileUUIDCallback;
 import io.pelle.mango.server.file.FileController;
 import io.pelle.mango.server.file.FileEntityCallback;
@@ -57,12 +58,13 @@ public class MangoServerApplicationContext {
 		freemarker.template.Configuration cfg = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_21);
 		cfg.setClassForTemplateLoading(this.getClass(), "/");
 		cfg.setDefaultEncoding("UTF-8");
-		
-//		DefaultObjectWrapperBuilder owb = new DefaultObjectWrapperBuilder(freemarker.template.Configuration.VERSION_2_3_21);
-//		owb.setExposureLevel(BeansWrapper.EXPOSE_ALL);
-//		owb.setExposeFields(true);
-//		cfg.setObjectWrapper(owb.build());
-		
+		cfg.setSharedVariable("uuid", new UUIDDirective());
+		// DefaultObjectWrapperBuilder owb = new
+		// DefaultObjectWrapperBuilder(freemarker.template.Configuration.VERSION_2_3_21);
+		// owb.setExposureLevel(BeansWrapper.EXPOSE_ALL);
+		// owb.setExposeFields(true);
+		// cfg.setObjectWrapper(owb.build());
+
 		result.setConfiguration(cfg);
 
 		return result;
@@ -89,7 +91,6 @@ public class MangoServerApplicationContext {
 		return new DocumentationService();
 	}
 
-	
 	@Bean
 	public StateEntityCallback stateEntityCallback() {
 		return new StateEntityCallback();

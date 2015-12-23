@@ -1,6 +1,7 @@
 package io.pelle.mango.demo.server.test;
 
 import io.pelle.mango.demo.client.test.IRestTest;
+import io.pelle.mango.demo.client.test.ValueObject1;
 import io.pelle.mango.demo.client.test.ValueObject2;
 
 public class RestTestImpl implements IRestTest {
@@ -14,8 +15,8 @@ public class RestTestImpl implements IRestTest {
 	}
 
 	@Override
-	public ValueObject2 methodWithValueObjectParameter(ValueObject2 valueObject2) {
-		return valueObject2;
+	public ValueObject1 methodWithValueObjectParameter(ValueObject2 valueObject2) {
+		return new ValueObject1();
 	}
 
 }

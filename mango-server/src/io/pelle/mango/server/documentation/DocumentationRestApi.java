@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -37,8 +39,7 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 	public final static String SERVICE_DOCUMENTATION_TEMPLATE_VARIABLE = "serviceDocumentation";
 
-	private static final NavigationItem NAVIGATION_ITEM = new NavigationItem(Messages.getString(IDocumentationContributor.DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY),
-			REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH);
+	private static final NavigationItem NAVIGATION_ITEM = new NavigationItem(Messages.getString(IDocumentationContributor.DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY), REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH);
 
 	private static final BreadCrumb BREADCRUMB = new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH, Messages.getString(IDocumentationContributor.DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY));
 
@@ -93,6 +94,9 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 	}
 
+	@Autowired
+	private ServletContext servletContext;
+
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 
@@ -108,8 +112,8 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 			if (documented != null && requestMapping != null) {
 				PackageDocumentation packageDocumentation = getOrInitRestPackageDocumentation(bean.getClass().getPackage().getName());
-				RestServiceDocumentation restDocumentation = DocumentationReflectionUtils.getDocumentationFor(beanClass);
-				packageDocumentation.getServiceDocumentations().add(restDocumentation);
+				RestServiceDocumentation restDocumentation = DocumentationReflectionFactory.getDocumentationFor(beanClass);
+				packageDocumentation.getServices().add(restDocumentation);
 			}
 		}
 	}
@@ -130,7 +134,7 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 	}
 
 	public class PackageOrService {
-		
+
 		private PackageDocumentation packageDocumentation;
 
 		private Optional<RestServiceDocumentation> serviceDocumentation = Optional.absent();
@@ -140,16 +144,16 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 			this.packageDocumentation = packageDocumentation;
 			this.serviceDocumentation = serviceDocumentation;
 		}
-		
+
 		public PackageDocumentation getPackage() {
 			return packageDocumentation;
 		}
-		
+
 		public Optional<RestServiceDocumentation> getService() {
 			return serviceDocumentation;
 		}
 	}
-	
+
 	public PackageOrService getPackageOrService(String path) {
 
 		Optional<PackageDocumentation> packageDocumentation = Iterables.tryFind(packageDocumentations, new PackageNamePredicate(path));
@@ -161,13 +165,13 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 			String packagePath = path.substring(0, path.lastIndexOf("."));
 
 			packageDocumentation = Iterables.tryFind(packageDocumentations, new PackageNamePredicate(packagePath));
-			serviceDocumentation = Iterables.tryFind(packageDocumentation.get().getServiceDocumentations(), new ServiceNamePredicate(path));
+			serviceDocumentation = Iterables.tryFind(packageDocumentation.get().getServices(), new ServiceNamePredicate(path));
 		}
 
 		return new PackageOrService(packageDocumentation.get(), serviceDocumentation);
 
 	}
-	
+
 	@RequestMapping("/{path}")
 	public ModelAndView packageIndex(@PathVariable String path) {
 

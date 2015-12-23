@@ -112,7 +112,7 @@ class VOGenerator extends BaseEntityGenerator {
 	def compileValueObject(ValueObject valueObject) '''
 		package «getPackageName(valueObject)»;
 		
-		public class «valueObject.voName» «IF valueObject.extends != null»extends «voFullQualifiedName(valueObject.extends)»«ENDIF» implements «Serializable.name» {
+		public class «valueObject.voName» «IF valueObject.extends != null»extends «voFullQualifiedName(valueObject.extends)»«ENDIF» implements «Serializable.name», io.pelle.mango.client.base.vo.IValueObject {
 		
 			public «valueObject.voName»() {
 			}
