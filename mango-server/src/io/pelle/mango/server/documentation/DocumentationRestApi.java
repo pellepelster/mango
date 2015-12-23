@@ -37,7 +37,8 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 	public final static String SERVICE_DOCUMENTATION_TEMPLATE_VARIABLE = "serviceDocumentation";
 
-	private static final NavigationItem NAVIGATION_ITEM = new NavigationItem(Messages.getString(IDocumentationContributor.DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY), REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH);
+	private static final NavigationItem NAVIGATION_ITEM = new NavigationItem(Messages.getString(IDocumentationContributor.DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY),
+			REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH);
 
 	private static final BreadCrumb BREADCRUMB = new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + INDEX_PATH, Messages.getString(IDocumentationContributor.DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY));
 
@@ -95,8 +96,6 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 
-		packageDocumentations.clear();
-
 		String[] beanNames = event.getApplicationContext().getBeanDefinitionNames();
 
 		for (String beanName : beanNames) {
@@ -105,10 +104,11 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 			Class<?> beanClass = AopProxyUtils.ultimateTargetClass(bean);
 
 			Documented documented = beanClass.getAnnotation(Documented.class);
+			RequestMapping requestMapping = beanClass.getAnnotation(RequestMapping.class);
 
-			if (documented != null) {
+			if (documented != null && requestMapping != null) {
 				PackageDocumentation packageDocumentation = getOrInitRestPackageDocumentation(bean.getClass().getPackage().getName());
-				RestServiceDocumentation restDocumentation = new RestServiceDocumentation(beanClass.getName());
+				RestServiceDocumentation restDocumentation = DocumentationReflectionUtils.getDocumentationFor(beanClass);
 				packageDocumentation.getServiceDocumentations().add(restDocumentation);
 			}
 		}
@@ -129,8 +129,28 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 	}
 
-	@RequestMapping("/{path}")
-	public ModelAndView packageIndex(@PathVariable String path) {
+	public class PackageOrService {
+		
+		private PackageDocumentation packageDocumentation;
+
+		private Optional<RestServiceDocumentation> serviceDocumentation = Optional.absent();
+
+		public PackageOrService(PackageDocumentation packageDocumentation, Optional<RestServiceDocumentation> serviceDocumentation) {
+			super();
+			this.packageDocumentation = packageDocumentation;
+			this.serviceDocumentation = serviceDocumentation;
+		}
+		
+		public PackageDocumentation getPackage() {
+			return packageDocumentation;
+		}
+		
+		public Optional<RestServiceDocumentation> getService() {
+			return serviceDocumentation;
+		}
+	}
+	
+	public PackageOrService getPackageOrService(String path) {
 
 		Optional<PackageDocumentation> packageDocumentation = Iterables.tryFind(packageDocumentations, new PackageNamePredicate(path));
 
@@ -144,25 +164,32 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 			serviceDocumentation = Iterables.tryFind(packageDocumentation.get().getServiceDocumentations(), new ServiceNamePredicate(path));
 		}
 
+		return new PackageOrService(packageDocumentation.get(), serviceDocumentation);
+
+	}
+	
+	@RequestMapping("/{path}")
+	public ModelAndView packageIndex(@PathVariable String path) {
+
+		PackageOrService packageOrService = getPackageOrService(path);
+
 		List<BreadCrumb> breadCrumbs = new ArrayList<BreadCrumb>();
 		breadCrumbs.add(BREADCRUMB);
 
-		if (packageDocumentation.isPresent()) {
-			breadCrumbs.add(new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + packageDocumentation.get().getPackageName(), packageDocumentation.get().getPackageName()));
-		}
+		breadCrumbs.add(new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + packageOrService.getPackage().getPackageName(), packageOrService.getPackage().getPackageName()));
 
-		if (serviceDocumentation.isPresent()) {
-			breadCrumbs.add(new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + serviceDocumentation.get().getClassName(), serviceDocumentation.get().getServiceName()));
+		if (packageOrService.getService().isPresent()) {
+			breadCrumbs.add(new BreadCrumb(REST_DOCUMENTATION_BASE_PATH + "/" + packageOrService.getService().get().getClassName(), packageOrService.getService().get().getServiceName()));
 		}
 
 		Map<String, Object> templateModel = documentationService.getDefaultTemplateModel(breadCrumbs.toArray(new BreadCrumb[0]));
 
 		String view = null;
-		if (serviceDocumentation.isPresent()) {
-			templateModel.put(SERVICE_DOCUMENTATION_TEMPLATE_VARIABLE, serviceDocumentation.get());
+		if (packageOrService.getService().isPresent()) {
+			templateModel.put(SERVICE_DOCUMENTATION_TEMPLATE_VARIABLE, packageOrService.getService().get());
 			view = SERVICE_VIEW_NAME;
 		} else {
-			templateModel.put(PACKAGE_DOCUMENTATION_TEMPLATE_VARIABLE, packageDocumentation.get());
+			templateModel.put(PACKAGE_DOCUMENTATION_TEMPLATE_VARIABLE, packageOrService.getPackage());
 			view = PACKAGE_VIEW_NAME;
 		}
 

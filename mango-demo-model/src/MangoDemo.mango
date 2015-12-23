@@ -457,7 +457,7 @@ project MangoDemo {
 
 			service RestTest {
 				method Boolean methodWithBooleanParameter ( Boolean onOff )
-				method ValueObject2 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
+				method ValueObject1 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
 			}
 
 			service DemoDataGenerator {
