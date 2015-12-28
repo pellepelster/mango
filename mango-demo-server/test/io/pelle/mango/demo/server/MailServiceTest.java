@@ -41,39 +41,37 @@ public class MailServiceTest extends BaseDemoTest {
 		model.put("link", "http://www.example.org");
 		model.put("username", "steve23");
 
-		mailService.sendMail("steve@yahoo.com", "subject1", "/mailtemplate.vm", model);
+		mailService.sendMail("steve@yahoo.com", "subject1", "/templates/mailtemplate.ftl", model);
 		greenMail.waitForIncomingEmail(1);
-		
-		URL url = Resources.getResource("mailtemplate.vm.expected");
+
+		URL url = Resources.getResource("/mailtemplate.ftl.expected");
 		String expectedMailContent = Resources.toString(url, Charsets.UTF_8);
-		
+
 		MimeMessage message = greenMail.getReceivedMessages()[0];
 		String mailContent = message.getContent().toString();
-		
-		Assert.assertTrue(expectedMailContent.replaceAll("\\s+","").equalsIgnoreCase(mailContent.replaceAll("\\s+","")));
-		Assert.assertEquals("subject1", message.getSubject());
-	}	
 
-	
+		Assert.assertTrue(expectedMailContent.replaceAll("\\s+", "").equalsIgnoreCase(mailContent.replaceAll("\\s+", "")));
+		Assert.assertEquals("subject1", message.getSubject());
+	}
+
 	@Test
 	public void testMailWithExtraHeader() throws IOException, MessagingException {
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put("X-HEADER-1", "value1");
-		
-		mailService.sendMail("steve@yahoo.com", "subject2", "/mailtemplate.vm", new HashMap<String, Object>(), headers);
+
+		mailService.sendMail("steve@yahoo.com", "subject2", "/templates/mailtemplate.ftl", new HashMap<String, Object>(), headers);
 
 		greenMail.waitForIncomingEmail(1);
 		MimeMessage message = greenMail.getReceivedMessages()[0];
 
-		Assert.assertTrue(Iterables.tryFind(Collections.<Header>list(message.getAllHeaders()), new Predicate<Header>() {
+		Assert.assertTrue(Iterables.tryFind(Collections.<Header> list(message.getAllHeaders()), new Predicate<Header>() {
 			@Override
 			public boolean apply(Header input) {
 				return input.getName().equals("X-HEADER-1") && input.getValue().equals("value1");
 			}
 		}).isPresent());
-		
+
 	}
 
-	
 }

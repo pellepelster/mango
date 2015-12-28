@@ -1,6 +1,5 @@
 package io.pelle.mango.server.mail;
 
-import java.io.StringReader;
 import java.util.Collections;
 import java.util.Map;
 
@@ -37,7 +36,7 @@ public class MailService {
 		sendMail(mailTo, subject, templateLocation, Collections.<String, Object> emptyMap(), Collections.<String, String> emptyMap());
 	}
 
-	public void sendMail(final String mailTo, final String subject, final String templateLocation, final Map<String, Object> templateModel, final Map<String, String> headers) {
+	public void sendMail(final String mailTo, final String subject, final String templateName, final Map<String, Object> templateModel, final Map<String, String> headers) {
 
 		MimeMessagePreparator preparator = new MimeMessagePreparator() {
 			public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -47,7 +46,10 @@ public class MailService {
 				message.setTo(mailTo);
 				message.setFrom(propertyService.getProperty(ConfigurationParameters.MAIL_SENDER_FROM));
 
-				Template template = new Template("templateLocation", new StringReader(templateLocation), Configuration.getDefaultConfiguration());
+				Configuration cfg = new Configuration(Configuration.VERSION_2_3_23);
+				cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(), "/");
+				Template template = cfg.getTemplate(templateName, "utf-8");
+
 				String text = FreeMarkerTemplateUtils.processTemplateIntoString(template, templateModel);
 
 				message.setText(text, true);
