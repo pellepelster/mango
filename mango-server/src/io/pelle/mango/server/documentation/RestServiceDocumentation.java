@@ -3,6 +3,8 @@ package io.pelle.mango.server.documentation;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
 
 public class RestServiceDocumentation {
@@ -17,10 +19,9 @@ public class RestServiceDocumentation {
 		super();
 		this.className = className;
 		this.paths = paths;
+		
 		this.methods = methods;
-
-		Ordering<RestMethodDocumentation> ordering = Ordering.natural().onResultOf(RestMethodDocumentation.ORDER_FUNCTION);
-		Collections.sort(this.methods, ordering);
+		Collections.sort(this.methods, Ordering.usingToString());
 	}
 
 	public String getServiceName() {
@@ -37,6 +38,11 @@ public class RestServiceDocumentation {
 
 	public List<RestMethodDocumentation> getMethods() {
 		return methods;
+	}
+	
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("paths", Joiner.on(", ").join(paths)).add("methods", Joiner.on(", ").join(methods)).toString();
 	}
 
 }

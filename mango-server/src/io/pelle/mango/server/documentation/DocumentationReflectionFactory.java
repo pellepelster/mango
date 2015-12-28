@@ -6,7 +6,10 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +17,7 @@ import java.util.Map;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import io.pelle.mango.client.base.vo.IBaseVO;
@@ -74,31 +78,40 @@ public class DocumentationReflectionFactory {
 
 					RestTypeDocumentation responseType = getTypeDocumentation(method.getReturnType());
 
-					RestMethodDocumentation methodDocumentation = new RestMethodDocumentation(ArrayUtils.addAll(methodRequestMapping.path(), methodRequestMapping.value()), responseType, methodRequestMapping.method());
-					methodDocumentations.add(methodDocumentation);
-
+					List<String> paths = Arrays.asList(ArrayUtils.addAll(methodRequestMapping.path(), methodRequestMapping.value()));
+					List<RestAttributeDocumentation> attributes = new ArrayList<RestAttributeDocumentation>();
+					
 					Annotation[][] annotations = method.getParameterAnnotations();
 					Class<?>[] parameterTypes = method.getParameterTypes();
 
+					// check parameters
 					int parameterIndex = 0;
 					for (Annotation[] outerAnnotation : annotations) {
 
 						for (Annotation innerAnnotation : outerAnnotation) {
+							
+							Class<?> parameterType = parameterTypes[parameterIndex];
 
 							if (innerAnnotation.annotationType().equals(RequestBody.class)) {
-								RequestBody requestBody = (RequestBody) innerAnnotation;
-								Class<?> parameterType = parameterTypes[parameterIndex];
-								parameterType.toString();
-
+								
+								RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(null, parameterType);
+								attributes.add(attributeDocumentation);
+								
+							} else 	if (innerAnnotation.annotationType().equals(RequestParam.class)) {
+								
+								RequestParam requestParam = (RequestParam) innerAnnotation;
+								
+								RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(requestParam.value(), parameterType);
+								attributes.add(attributeDocumentation);
 							}
+
 						}
 
 						parameterIndex++;
 					}
 
-					// RequestBody requestBody = method
-					// @RequestBody
-					// @RequestParam
+					RestMethodDocumentation methodDocumentation = new RestMethodDocumentation(paths, responseType, Arrays.asList(methodRequestMapping.method()), attributes);
+					methodDocumentations.add(methodDocumentation);
 
 				}
 

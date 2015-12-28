@@ -2,7 +2,7 @@ package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -37,27 +37,37 @@ public class DocumentationReflectionUtilsTest {
 
 		assertEquals(4, serviceDocumentation.getMethods().size());
 
+		// methodwithbooleanparameter (GET)
 		RestMethodDocumentation methodDocumentation = serviceDocumentation.getMethods().get(0);
-		assertArrayEquals(new RequestMethod[] { RequestMethod.GET }, methodDocumentation.getMethods());
-		assertArrayEquals(new String[] { "methodwithbooleanparameter" }, methodDocumentation.getPaths());
+		assertArrayEquals(new RequestMethod[] { RequestMethod.GET }, methodDocumentation.getHttpMethods().toArray());
+		assertArrayEquals(new String[] { "methodwithbooleanparameter" }, methodDocumentation.getPaths().toArray());
 		RestTypeDocumentation response = methodDocumentation.getReturnType();
 		assertTrue(response.isPrimitive());
 		assertEquals("Boolean", response.getTypeName());
 
+		// check attributes
+		assertEquals(1, methodDocumentation.getAttributes().size());
+		RestAttributeDocumentation attributeDocumentation = methodDocumentation.getAttributes().get(0);
+		assertEquals("onOff", attributeDocumentation.getName());
+		assertEquals("Boolean", attributeDocumentation.getType().getTypeName());
+
+		
+		// methodwithbooleanparameter (POST)
 		methodDocumentation = serviceDocumentation.getMethods().get(1);
-		assertArrayEquals(new RequestMethod[] { RequestMethod.POST }, methodDocumentation.getMethods());
-		assertArrayEquals(new String[] { "methodwithbooleanparameter" }, methodDocumentation.getPaths());
+		assertArrayEquals(new RequestMethod[] { RequestMethod.POST }, methodDocumentation.getHttpMethods().toArray());
+		assertArrayEquals(new String[] { "methodwithbooleanparameter" }, methodDocumentation.getPaths().toArray());
 		response = methodDocumentation.getReturnType();
 		assertTrue(response.isPrimitive());
 		assertEquals("Boolean", response.getTypeName());
 
+		// methodwithvalueobjectparameter
 		methodDocumentation = serviceDocumentation.getMethods().get(2);
-		assertArrayEquals(new String[] { "methodwithvalueobjectparameter" }, methodDocumentation.getPaths());
+		assertArrayEquals(new String[] { "methodwithvalueobjectparameter" }, methodDocumentation.getPaths().toArray());
 		response = methodDocumentation.getReturnType();
 		assertFalse(response.isPrimitive());
 		assertEquals(4, response.getAttributes().size());
 
-		RestAttributeDocumentation attributeDocumentation = response.getAttributes().get(0);
+		attributeDocumentation = response.getAttributes().get(0);
 		assertEquals("entity5", attributeDocumentation.getName());
 		assertFalse(attributeDocumentation.getType().isPrimitive());
 		assertEquals("Entity5VO", attributeDocumentation.getType().getTypeName());
@@ -78,11 +88,21 @@ public class DocumentationReflectionUtilsTest {
 		attributeDocumentation = response.getAttributes().get(3);
 		assertEquals("valueObjects2", attributeDocumentation.getName());
 
+		// methodwithvalueobjectparameter
 		methodDocumentation = serviceDocumentation.getMethods().get(3);
-		assertArrayEquals(new String[] { "methodwithvalueobjectparameter" }, methodDocumentation.getPaths());
+		assertArrayEquals(new String[] { "methodwithvalueobjectparameter" }, methodDocumentation.getPaths().toArray());
+
+		// check attributes
+		assertEquals(1, methodDocumentation.getAttributes().size());
+		attributeDocumentation = methodDocumentation.getAttributes().get(0);
+		assertNull(attributeDocumentation.getName());
+		assertEquals("ValueObject2", attributeDocumentation.getType().getTypeName());
+
+		// check response type
 		response = methodDocumentation.getReturnType();
 		assertFalse(response.isPrimitive());
 		assertEquals(4, response.getAttributes().size());
+		assertEquals("ValueObject1", response.getTypeName());
 		attributeDocumentation = response.getAttributes().get(0);
 		assertEquals("entity5", attributeDocumentation.getName());
 

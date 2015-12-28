@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import io.pelle.mango.demo.server.util.BaseDemoTest;
 import io.pelle.mango.server.documentation.DocumentationRestApi;
 import io.pelle.mango.server.documentation.DocumentationRestApi.PackageOrService;
-import io.pelle.mango.server.documentation.PackageDocumentation;
+import io.pelle.mango.server.documentation.RestPackageDocumentation;
 
 public class DemoDocumentationTest extends BaseDemoTest {
 
@@ -19,7 +19,7 @@ public class DemoDocumentationTest extends BaseDemoTest {
 	@Test
 	public void testServiceDocumentationCount() {
 
-		List<PackageDocumentation> packageDocumentations = documentationBean.getPackageDocumentation();
+		List<RestPackageDocumentation> packageDocumentations = documentationBean.getPackageDocumentation();
 		Assert.assertEquals(1, packageDocumentations.size());
 
 	}
@@ -41,6 +41,7 @@ public class DemoDocumentationTest extends BaseDemoTest {
 		PackageOrService packageOrService = documentationBean.getPackageOrService("io.pelle.mango.demo.server.test");
 		Assert.assertEquals("io.pelle.mango.demo.server.test", packageOrService.getPackage().getPackageName());
 		Assert.assertFalse("io.pelle.mango.demo.server.test", packageOrService.getService().isPresent());
+		Assert.assertTrue(packageOrService.getPackage().getDescription().startsWith("<p>The description for a specific package is read from a property file named"));
 		
 	}
 

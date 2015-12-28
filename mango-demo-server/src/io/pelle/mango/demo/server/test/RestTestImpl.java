@@ -16,7 +16,9 @@ public class RestTestImpl implements IRestTest {
 
 	@Override
 	public ValueObject1 methodWithValueObjectParameter(ValueObject2 valueObject2) {
-		return new ValueObject1();
+		ValueObject1 result = new ValueObject1();
+		result.setString1(valueObject2.getString2());
+		return result;
 	}
 
 }

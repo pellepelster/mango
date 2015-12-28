@@ -1,6 +1,7 @@
 package io.pelle.mango.server.documentation;
 
 import com.google.common.base.Function;
+import com.google.common.base.Objects;
 
 public class RestAttributeDocumentation {
 
@@ -26,6 +27,11 @@ public class RestAttributeDocumentation {
 
 	public RestTypeDocumentation getType() {
 		return type;
+	}
+	
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("name", name).add("type", type.toString()).toString();
 	}
 
 }

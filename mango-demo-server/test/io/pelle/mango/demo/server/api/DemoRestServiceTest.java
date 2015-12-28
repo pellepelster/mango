@@ -58,7 +58,7 @@ public class DemoRestServiceTest extends BaseDemoTest {
 	public void testMethodWithValueObjectParameter() throws Exception {
 
 		mockMvc.perform(post("/resttest/methodwithvalueobjectparameter").content("{ \"string2\": \"zzz\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.string2").value(Matchers.is("zzz")));
+				.andExpect(jsonPath("$.string1").value(Matchers.is("zzz")));
 	}
 
 }

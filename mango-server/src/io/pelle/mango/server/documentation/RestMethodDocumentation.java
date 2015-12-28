@@ -1,32 +1,41 @@
 package io.pelle.mango.server.documentation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.google.common.base.Function;
 import com.google.common.base.Joiner;
+import com.google.common.base.Objects;
+import com.google.common.collect.Ordering;
 
 public class RestMethodDocumentation {
 
-	private final String[] paths;
+	private final List<String> paths;
 
 	private final RestTypeDocumentation returnType;
 
-	private final RequestMethod[] methods;
+	private final List<RequestMethod> httpMethods;
 
-	public static final Function<RestMethodDocumentation, String> ORDER_FUNCTION = new Function<RestMethodDocumentation, String>() {
-		public String apply(RestMethodDocumentation methodDocumentation) {
-			return Joiner.on("").join(methodDocumentation.paths);
-		}
-	};
+	private List<RestAttributeDocumentation> attributes = new ArrayList<RestAttributeDocumentation>();
 
-	public RestMethodDocumentation(String[] paths, RestTypeDocumentation returnType, RequestMethod[] methods) {
+	public RestMethodDocumentation(List<String> paths, RestTypeDocumentation returnType, List<RequestMethod> methods, List<RestAttributeDocumentation> attributes) {
 		super();
+		
 		this.paths = paths;
+		Collections.sort(this.paths, Ordering.usingToString());
+		
 		this.returnType = returnType;
-		this.methods = methods;
+		
+		this.httpMethods = methods;
+		Collections.sort(this.httpMethods, Ordering.usingToString());
+		
+		this.attributes = attributes; 
+		Collections.sort(this.attributes, Ordering.usingToString());
 	}
 
-	public String[] getPaths() {
+	public List<String> getPaths() {
 		return paths;
 	}
 
@@ -34,7 +43,16 @@ public class RestMethodDocumentation {
 		return returnType;
 	}
 
-	public RequestMethod[] getMethods() {
-		return methods;
+	public List<RequestMethod> getHttpMethods() {
+		return httpMethods;
+	}
+	
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("paths", Joiner.on(", ").join(paths)).add("http methods", Joiner.on(", ").join(httpMethods)).toString();
+	}
+
+	public List<RestAttributeDocumentation> getAttributes() {
+		return attributes ;
 	}
 }

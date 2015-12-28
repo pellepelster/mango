@@ -10,12 +10,54 @@
 
 	<title>${navigationModel.title}</title>
 
-	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet" />
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'  type='text/css' />
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
 	<style type="text/css">
+	body {
+    	font-family: 'Open Sans', sans-serif;
+	}
+	
+	.http-method {
+	    padding: 0.5em;
+		display: inline-block;
+	}
+
+	.http-method-POST {
+    	background-color: #10a54a;
+	}
+
+	.http-method-GET {
+    	background-color: #0f6ab4;
+	}
+
+	.tab-pane {
+    	background-color: #fff;
+    	padding: 1em;
+	}
+	
+	.method-container {
+		margin-bottom: 1em;
+	}
+	
+	.method-container pre {
+		border-radius: 0px;
+	}
+	
+	    
+	.method-container-GET {
+		background-color: #e7f0f7;
+		border: 1px solid #c3d9ec;
+	}
+	
+	.method-container-POST {
+		background-color: #e7f6ec;
+		border: 1px solid #c3e8d1;
+	}
+	
 	</style>
 	
 	<!--[if lt IE 9]>

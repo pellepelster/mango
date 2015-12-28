@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class PackageDocumentation {
+public class RestPackageDocumentation {
 
 	private final String packageName;
 
@@ -15,7 +15,7 @@ public class PackageDocumentation {
 
 	private String description;
 
-	public PackageDocumentation(String packageName) {
+	public RestPackageDocumentation(String packageName) {
 		super();
 		this.packageName = packageName;
 

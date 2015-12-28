@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ResourceLoader;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Predicate;
@@ -30,6 +31,9 @@ public class MailServiceTest extends BaseDemoTest {
 	@Autowired
 	private MailService mailService;
 
+	@Autowired
+	private ResourceLoader resourceLoader;
+	
 	@Rule
 	public final GreenMailRule greenMail = new GreenMailRule(ServerSetupTest.SMTP);
 
@@ -44,7 +48,7 @@ public class MailServiceTest extends BaseDemoTest {
 		mailService.sendMail("steve@yahoo.com", "subject1", "/templates/mailtemplate.ftl", model);
 		greenMail.waitForIncomingEmail(1);
 
-		URL url = Resources.getResource("/mailtemplate.ftl.expected");
+		URL url = resourceLoader.getResource("classpath:mailtemplate.ftl.expected").getURL();
 		String expectedMailContent = Resources.toString(url, Charsets.UTF_8);
 
 		MimeMessage message = greenMail.getReceivedMessages()[0];
@@ -57,10 +61,15 @@ public class MailServiceTest extends BaseDemoTest {
 	@Test
 	public void testMailWithExtraHeader() throws IOException, MessagingException {
 
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("name", "Steve");
+		model.put("link", "http://www.example.org");
+		model.put("username", "steve23");
+
 		Map<String, String> headers = new HashMap<>();
 		headers.put("X-HEADER-1", "value1");
 
-		mailService.sendMail("steve@yahoo.com", "subject2", "/templates/mailtemplate.ftl", new HashMap<String, Object>(), headers);
+		mailService.sendMail("steve@yahoo.com", "subject2", "/templates/mailtemplate.ftl", model, headers);
 
 		greenMail.waitForIncomingEmail(1);
 		MimeMessage message = greenMail.getReceivedMessages()[0];

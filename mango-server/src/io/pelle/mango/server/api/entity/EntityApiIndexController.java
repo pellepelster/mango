@@ -1,9 +1,5 @@
 package io.pelle.mango.server.api.entity;
 
-import io.pelle.mango.client.base.vo.IBaseEntity;
-import io.pelle.mango.client.base.vo.IEntityDescriptor;
-import io.pelle.mango.server.vo.VOMetaDataService;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gwt.thirdparty.guava.common.base.Objects;
 
+import io.pelle.mango.client.base.vo.IBaseEntity;
+import io.pelle.mango.client.base.vo.IEntityDescriptor;
+import io.pelle.mango.server.vo.VOMetaDataService;
+
 @Controller
 public class EntityApiIndexController {
 
@@ -26,6 +26,8 @@ public class EntityApiIndexController {
 	public final static String BASE_URL_TEMPLATE_VARIABLE = "baseUrl";
 
 	public final static String INDEX_PATH = "index";
+
+	public final static String INDEX_VIEW_NAME = EntityApiIndexController.class.getPackage().getName().replace(".", "/") + "/templates/EntityApiIndex";
 
 	@Autowired
 	private VOMetaDataService voMetaDataService;
@@ -41,7 +43,7 @@ public class EntityApiIndexController {
 		templateVariables.put(ENTITY_LABEL_TEMPLATE_VARIABLE, Objects.firstNonNull(entityDescriptor.getLabel(), entityDescriptor.getName()));
 		templateVariables.put(BASE_URL_TEMPLATE_VARIABLE, getDefaultBaseUrl(request));
 
-		return new ModelAndView("EntityApiIndex", templateVariables);
+		return new ModelAndView(INDEX_VIEW_NAME, templateVariables);
 	}
 
 	private String getDefaultBaseUrl(HttpServletRequest request) {

@@ -3,6 +3,7 @@ package io.pelle.mango.server.documentation;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
 
 public class RestTypeDocumentation {
@@ -40,5 +41,10 @@ public class RestTypeDocumentation {
 
 	public Class<?> getType() {
 		return type;
+	}
+	
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("type", type.getName()).toString();
 	}
 }
