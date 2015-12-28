@@ -5,6 +5,8 @@ import java.util.ResourceBundle;
 
 public class RestBaseDocumentation {
 
+	private static final String NAME_KEY = "name";
+
 	private static final String DESCRIPTION_KEY = "description";
 
 	private static final String SHORT_DESCRIPTION_KEY = "description.short";
@@ -13,6 +15,8 @@ public class RestBaseDocumentation {
 
 	private String shortDescription;
 
+	private String name;
+
 	public RestBaseDocumentation(String bundleName) {
 		super();
 
@@ -20,6 +24,7 @@ public class RestBaseDocumentation {
 			ResourceBundle resourceBundle = ResourceBundle.getBundle(bundleName);
 			description = resourceBundle.getString(DESCRIPTION_KEY);
 			shortDescription = resourceBundle.getString(SHORT_DESCRIPTION_KEY);
+			name = resourceBundle.getString(NAME_KEY);
 		} catch (MissingResourceException e) {
 			// ignore
 		}
@@ -31,5 +36,9 @@ public class RestBaseDocumentation {
 	
 	public String getShortDescription() {
 		return shortDescription;
+	}
+	
+	public String getName() {
+		return name;
 	}
 }

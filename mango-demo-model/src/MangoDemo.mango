@@ -454,6 +454,14 @@ project MangoDemo {
 			}
 		}
 
+		package test1 {
+
+			service RestTest1 {
+				method Boolean method1 ( Boolean onOff )
+			}
+			
+		}
+		
 		package test {
 
 			service RestTest {
