@@ -2,29 +2,16 @@ package io.pelle.mango.server.documentation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
-public class RestPackageDocumentation {
+public class RestPackageDocumentation extends RestBaseDocumentation {
 
 	private final String packageName;
 
 	private List<RestServiceDocumentation> services = new ArrayList<RestServiceDocumentation>();
 
-	private static final String DESCRIPTION_KEY = "description";
-
-	private String description;
-
 	public RestPackageDocumentation(String packageName) {
-		super();
+		super(packageName + ".package");
 		this.packageName = packageName;
-
-		try {
-			ResourceBundle resourceBundle = ResourceBundle.getBundle(packageName + ".package");
-			description = resourceBundle.getString(DESCRIPTION_KEY);
-		} catch (MissingResourceException e) {
-			// ignore
-		}
 	}
 
 	public String getPackageName() {
@@ -35,7 +22,4 @@ public class RestPackageDocumentation {
 		return services;
 	}
 
-	public String getDescription() {
-		return description;
-	}
 }

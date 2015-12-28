@@ -58,6 +58,15 @@
 		border: 1px solid #c3e8d1;
 	}
 	
+	
+	.method-container {
+		padding-left: 0px;
+	}
+	
+	.documentation-service-container>.row {
+		margin-left: 0px;
+	}
+	
 	</style>
 	
 	<!--[if lt IE 9]>

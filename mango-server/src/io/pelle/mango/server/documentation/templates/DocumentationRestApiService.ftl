@@ -10,10 +10,19 @@ ${indent}<strong>}</strong>
 
 
 <#assign serviceUUID><@uuid/></#assign>
-<h3><a class="" data-toggle="collapse" href="#${serviceUUID}" aria-expanded="false" aria-controls="${serviceUUID}">${service.serviceName}</a></h3>
-
+<h3>
+	<a class="" data-toggle="collapse" href="#${serviceUUID}" aria-expanded="false" aria-controls="${serviceUUID}">${service.serviceName}</a>
+	<#if service.shortDescription??>
+	<small>${service.shortDescription}</small>
+	</#if>
+</h3>
+	
 <!-- service ${service.serviceName} -->
 <div class="collapse documentation-service-container" id="${serviceUUID}">
+
+	<#if service.description??>
+	<p>${service.description}</p>
+	</#if>
 
 	<#assign lastMethodName = "">
 	<#list service.methods as method>

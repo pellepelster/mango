@@ -32,8 +32,10 @@ public class DemoDocumentationTest extends BaseDemoTest {
 		Assert.assertTrue("io.pelle.mango.demo.server.test", packageOrService.getService().isPresent());
 		Assert.assertEquals("io.pelle.mango.demo.server.test.RestTestRestController", packageOrService.getService().get().getClassName());
 		Assert.assertEquals("RestTestRestController", packageOrService.getService().get().getServiceName());
-
-}
+		Assert.assertEquals("This service exists for the sole purpose of showcasing the different features of the automatic REST service generation.", packageOrService.getService().get().getDescription());
+		Assert.assertEquals("The short description is intended to be used in lists.", packageOrService.getService().get().getShortDescription());
+		
+	}
 
 	@Test
 	public void testGetPackageDocumentation() {
@@ -41,8 +43,8 @@ public class DemoDocumentationTest extends BaseDemoTest {
 		PackageOrService packageOrService = documentationBean.getPackageOrService("io.pelle.mango.demo.server.test");
 		Assert.assertEquals("io.pelle.mango.demo.server.test", packageOrService.getPackage().getPackageName());
 		Assert.assertFalse("io.pelle.mango.demo.server.test", packageOrService.getService().isPresent());
-		Assert.assertTrue(packageOrService.getPackage().getDescription().startsWith("<p>The description for a specific package is read from a property file named"));
-		
+		Assert.assertTrue(packageOrService.getPackage().getDescription().startsWith("The description for a specific package is read from a property file named"));
+
 	}
 
 }

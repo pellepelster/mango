@@ -7,7 +7,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
 
-public class RestServiceDocumentation {
+public class RestServiceDocumentation extends RestBaseDocumentation {
 
 	private final String className;
 
@@ -16,7 +16,7 @@ public class RestServiceDocumentation {
 	private final List<RestMethodDocumentation> methods;
 
 	public RestServiceDocumentation(String className, String[] paths, List<RestMethodDocumentation> methods) {
-		super();
+		super(className.toLowerCase());
 		this.className = className;
 		this.paths = paths;
 		
