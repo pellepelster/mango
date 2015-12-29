@@ -25,7 +25,7 @@ configurations {
 
 dependencies {
 	gwt group: 'com.google.gwt', name: 'gwt-user', version: '2.7.0'
-	compile files('build/gwt-user-repackaged.jar')
+	provided files('build/gwt-user-repackaged.jar')
 	compile group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
 	compile 'org.gwtbootstrap3:gwtbootstrap3:0.9.1'
 }

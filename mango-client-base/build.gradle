@@ -11,15 +11,11 @@ dependencies {
 		exclude module: 'validation-api'
 	}
 	
-	//provided group: 'com.google.gwt', name: 'gwt-servlet', version: versions.gwt
-	provided group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
-	//gwt group: 'com.google.guava', name: 'guava-gwt', version: versions.guava
-
-
 	gwt group: 'com.google.gwt', name: 'gwt-user', version: versions.gwt
 	gwt group: 'com.google.gwt', name: 'gwt-dev', version: versions.gwt
-	compile files('build/gwt-user-repackaged.jar')
-	compile files('build/gwt-dev-repackaged.jar')
+	
+	provided files('build/gwt-user-repackaged.jar')
+	provided files('build/gwt-dev-repackaged.jar')
 }
 
 jar {
