@@ -115,7 +115,7 @@ abstract class TypeUtils {
 				return BigDecimal.name
 			}
 			case BOOLEAN: {
-				return Boolean.name
+				return "boolean"
 			}
 			case INTEGER: {
 				return Integer.name
@@ -132,6 +132,17 @@ abstract class TypeUtils {
 		}
 	}
 
+	def dispatch String getWrapperType(SimpleTypes simpleTypes) {
+		switch (simpleTypes) {
+			case BOOLEAN: {
+				return typeof(Boolean).name
+			}
+			default: {
+				return simpleTypes.type
+			}
+		}
+	}
+
 	def dispatch String getMemberType(SimpleTypes simpleTypes) {
 		return getType(simpleTypes)
 	}
@@ -139,6 +150,11 @@ abstract class TypeUtils {
 	def dispatch String getType(SimpleTypeType simpleTypeType) {
 		simpleTypeType.type.type
 	}
+
+	def dispatch String getWrapperType(Object type) {
+		type.type
+	}
+
 
 	//-----------------
 	// Datatype
@@ -259,7 +275,7 @@ abstract class TypeUtils {
 	def dispatch String getType(BinaryDataType dataType) {
 		return "byte[]"
 	}
-
+	
 	def dispatch String getMemberType(BinaryDataType dataType) {
 		return getType(dataType)
 	}
@@ -272,7 +288,11 @@ abstract class TypeUtils {
 	// boolean
 	//-----------------
 	def dispatch String getType(BooleanDataType dataType) {
-		return typeof(Boolean).name
+		return "boolean"
+	}
+	
+	def dispatch String getWrapperType(BooleanDataType dataType) {
+		typeof(Boolean).name
 	}
 	
 	def dispatch String getMemberType(BooleanDataType dataType) {
@@ -280,7 +300,11 @@ abstract class TypeUtils {
 	}
 
 	def dispatch String getType(BooleanEntityAttribute entityAttribute) {
-		return typeof(Boolean).name
+		return "boolean"
+	}
+
+	def dispatch String getWrapperType(BooleanEntityAttribute dataType) {
+		typeof(Boolean).name
 	}
 
 	def dispatch compileEntityAttributeDescriptor(BooleanEntityAttribute entityAttribute, Entity entity) '''

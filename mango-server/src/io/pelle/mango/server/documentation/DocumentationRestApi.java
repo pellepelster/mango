@@ -2,6 +2,7 @@ package io.pelle.mango.server.documentation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Ordering;
 
 import io.pelle.mango.server.MangoServerApplicationContext;
 import io.pelle.mango.server.Messages;
@@ -92,6 +94,7 @@ public class DocumentationRestApi implements ApplicationListener<ContextRefreshe
 
 			RestPackageDocumentation packageDocumentation = new RestPackageDocumentation(packageName);
 			packageDocumentations.add(packageDocumentation);
+			Collections.sort(packageDocumentations, Ordering.usingToString());
 			return packageDocumentation;
 		}
 

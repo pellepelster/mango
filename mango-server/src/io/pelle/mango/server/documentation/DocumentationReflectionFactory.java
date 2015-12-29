@@ -6,8 +6,6 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,6 +31,7 @@ public class DocumentationReflectionFactory {
 		if (!types.containsKey(type)) {
 
 			if (IValueObject.class.isAssignableFrom(type) || IBaseVO.class.isAssignableFrom(type)) {
+				
 				List<RestAttributeDocumentation> attributeDocumentations = new ArrayList<>();
 
 				try {
@@ -40,8 +39,7 @@ public class DocumentationReflectionFactory {
 
 					for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
 
-						if (propertyDescriptor.getReadMethod() != null && propertyDescriptor.getWriteMethod() != null) {
-
+						if (propertyDescriptor.getReadMethod() != null &&propertyDescriptor.getWriteMethod() != null) {
 							RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(propertyDescriptor.getName(), propertyDescriptor.getPropertyType());
 							attributeDocumentations.add(attributeDocumentation);
 						}
@@ -60,66 +58,75 @@ public class DocumentationReflectionFactory {
 
 	}
 
-	public static RestServiceDocumentation getDocumentationFor(Class<?> clazz) {
+	public static List<RestMethodDocumentation> getServiceMethods(RestServiceDocumentation service) {
+		
+		List<RestMethodDocumentation> methodDocumentations = new ArrayList<RestMethodDocumentation>();
 
-		Documented documented = clazz.getAnnotation(Documented.class);
-		RequestMapping serviceRequestMapping = clazz.getAnnotation(RequestMapping.class);
+		for (Method method : service.getServiceClass().getMethods()) {
 
-		if (documented != null && serviceRequestMapping != null) {
+			RequestMapping methodRequestMapping = method.getAnnotation(RequestMapping.class);
+			ResponseBody responseBody = method.getAnnotation(ResponseBody.class);
 
-			List<RestMethodDocumentation> methodDocumentations = new ArrayList<RestMethodDocumentation>();
+			if (methodRequestMapping != null && responseBody != null) {
 
-			for (Method method : clazz.getMethods()) {
+				List<String> paths = Arrays.asList(ArrayUtils.addAll(methodRequestMapping.path(), methodRequestMapping.value()));
 
-				RequestMapping methodRequestMapping = method.getAnnotation(RequestMapping.class);
-				ResponseBody responseBody = method.getAnnotation(ResponseBody.class);
-
-				if (methodRequestMapping != null && responseBody != null) {
-
-					RestTypeDocumentation responseType = getTypeDocumentation(method.getReturnType());
-
-					List<String> paths = Arrays.asList(ArrayUtils.addAll(methodRequestMapping.path(), methodRequestMapping.value()));
-					List<RestAttributeDocumentation> attributes = new ArrayList<RestAttributeDocumentation>();
-					
-					Annotation[][] annotations = method.getParameterAnnotations();
-					Class<?>[] parameterTypes = method.getParameterTypes();
-
-					// check parameters
-					int parameterIndex = 0;
-					for (Annotation[] outerAnnotation : annotations) {
-
-						for (Annotation innerAnnotation : outerAnnotation) {
-							
-							Class<?> parameterType = parameterTypes[parameterIndex];
-
-							if (innerAnnotation.annotationType().equals(RequestBody.class)) {
-								
-								RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(null, parameterType);
-								attributes.add(attributeDocumentation);
-								
-							} else 	if (innerAnnotation.annotationType().equals(RequestParam.class)) {
-								
-								RequestParam requestParam = (RequestParam) innerAnnotation;
-								
-								RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(requestParam.value(), parameterType);
-								attributes.add(attributeDocumentation);
-							}
-
-						}
-
-						parameterIndex++;
-					}
-
-					RestMethodDocumentation methodDocumentation = new RestMethodDocumentation(paths, responseType, Arrays.asList(methodRequestMapping.method()), attributes);
-					methodDocumentations.add(methodDocumentation);
-
-				}
+				RestMethodDocumentation methodDocumentation = new RestMethodDocumentation(service, paths, method, Arrays.asList(methodRequestMapping.method()));
+				methodDocumentations.add(methodDocumentation);
 
 			}
 
-			RestServiceDocumentation restDocumentation = new RestServiceDocumentation(clazz.getName(), ArrayUtils.addAll(serviceRequestMapping.path(), serviceRequestMapping.value()), methodDocumentations);
+		}
 
-			return restDocumentation;
+		return methodDocumentations;
+	}
+	
+	public static List<RestAttributeDocumentation> getMethodAttributes(RestMethodDocumentation method) {
+		
+		List<RestAttributeDocumentation> attributes = new ArrayList<RestAttributeDocumentation>();
+		
+		Annotation[][] annotations = method.getMethod().getParameterAnnotations();
+		Class<?>[] parameterTypes = method.getMethod().getParameterTypes();
+		
+		// check parameters
+		int parameterIndex = 0;
+		for (Annotation[] outerAnnotation : annotations) {
+			
+			for (Annotation innerAnnotation : outerAnnotation) {
+				
+				Class<?> parameterType = parameterTypes[parameterIndex];
+				
+				if (innerAnnotation.annotationType().equals(RequestBody.class)) {
+					
+					RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(null, parameterType);
+					attributes.add(attributeDocumentation);
+					
+				} else 	if (innerAnnotation.annotationType().equals(RequestParam.class)) {
+					
+					RequestParam requestParam = (RequestParam) innerAnnotation;
+					
+					RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(requestParam.value(), parameterType);
+					attributes.add(attributeDocumentation);
+				}
+				
+			}
+			
+			parameterIndex++;
+		}
+		
+		return attributes;
+	}
+	
+	public static RestServiceDocumentation getDocumentationFor(Class<?> serviceClass) {
+
+		Documented documented = serviceClass.getAnnotation(Documented.class);
+		RequestMapping serviceRequestMapping = serviceClass.getAnnotation(RequestMapping.class);
+
+		if (documented != null && serviceRequestMapping != null) {
+
+			RestServiceDocumentation service = new RestServiceDocumentation(serviceClass, ArrayUtils.addAll(serviceRequestMapping.path(), serviceRequestMapping.value()));
+
+			return service;
 		}
 
 		return null;

@@ -27,17 +27,16 @@ public abstract class «moduleDefinition.baseModuleDefinitionName» extends «Ba
 	
 	public static final String «moduleDefinitionParameter.name.toUpperCase()»_PARAMETER_ID = "«moduleDefinitionParameter.name»";
 	
-	public «moduleDefinitionParameter.type.type» get«moduleDefinitionParameter.name.toFirstUpper()»() {
+	public «moduleDefinitionParameter.type.wrapperType» get«moduleDefinitionParameter.name.toFirstUpper()»() {
 
 		if (getParameters().containsKey("«moduleDefinitionParameter.name»"))
 		{
 			Object parameterValue = parameters.get("«moduleDefinitionParameter.name»");
 		
-			if (parameterValue instanceof «moduleDefinitionParameter.type.type»)
+			if (parameterValue instanceof «moduleDefinitionParameter.type.wrapperType»)
 			{
 				return («moduleDefinitionParameter.type.type») parameterValue;
 			}
-			
 			
 			if (parameterValue instanceof java.lang.String)
 			{

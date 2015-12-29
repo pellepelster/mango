@@ -21,9 +21,17 @@
     	font-family: 'Open Sans', sans-serif;
 	}
 	
+	.table td.fit, 
+	.table th.fit {
+		white-space: nowrap;
+		width: 1%;
+	}
+	
 	.http-method {
 	    padding: 0.5em;
 		display: inline-block;
+		width: 3.5em;
+		text-align: center;
 	}
 
 	.http-method-POST {
@@ -47,7 +55,10 @@
 		border-radius: 0px;
 	}
 	
-	    
+	.method-panel {
+		padding: 1em;
+	}
+	
 	.method-container-GET {
 		background-color: #e7f0f7;
 		border: 1px solid #c3d9ec;
@@ -66,6 +77,11 @@
 	.documentation-service-container>.row {
 		margin-left: 0px;
 	}
+	
+	.documentation-service-container {
+		margin-bottom: 3em;
+	}
+	
 	
 	</style>
 	

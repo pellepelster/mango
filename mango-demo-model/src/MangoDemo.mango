@@ -454,20 +454,25 @@ project MangoDemo {
 			}
 		}
 
-		package test1 {
+		package resttest1 {
 
-			service RestTest1 {
+			service RestService1 {
 				method Boolean method1 ( Boolean onOff )
 			}
 			
 		}
-		
-		package test {
 
-			service RestTest {
+		package resttest2 {
+
+			service RestService2 {
 				method Boolean methodWithBooleanParameter ( Boolean onOff )
 				method ValueObject1 methodWithValueObjectParameter ( ValueObject2 valueObject2 )
 			}
+
+			
+		}
+		
+		package test {
 
 			service DemoDataGenerator {
 				method void generate ( )

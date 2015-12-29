@@ -8,6 +8,39 @@ ${indent}<strong>}</strong>
 </#list>
 </#macro>
 
+<#macro attributesTable attributes>
+
+	<#list attributes>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="fit">Attribute</th>
+					<th>Type</th>
+				</tr>
+			</thead>
+			<tbody>
+			
+			<#items as attribute>
+				<tr>
+					<td class="fit">${attribute.name!"-"}</td>
+					<td>
+						<#if attribute.type.primitive>
+							<code>${attribute.type.typeName}</code><br/>
+						<#else>
+							<pre><@restBody attribute.type ""/></pre>
+						</#if>
+					</td>
+				</tr>
+	 		</#items>
+	 			
+			</tbody>
+		</table>
+	
+	</#list>
+
+</#macro>
+
 
 <#assign serviceUUID><@uuid/></#assign>
 <h3>
@@ -37,37 +70,67 @@ ${indent}<strong>}</strong>
 				<a class="" data-toggle="collapse" href="#${methodUUID}" aria-expanded="false" aria-controls="${serviceUUID}">${service.paths?first}/${method.paths?first}</a>
 				
 				<!-- method ${methodName} -->
-				<div class="collapse" id="${methodUUID}">
+				<div class="collapse method-panel" id="${methodUUID}">
 
-					<!-- response model -->					
+					<h4>Request</h4>
+					<!-- request model -->					
 					<div>
+					
 						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation" class="active"><a href="#${methodUUID}-request-model" aria-controls="${methodUUID}-request-model" role="tab" data-toggle="tab">Request Model</a></li>
+							<li role="presentation" class="active"><a href="#${methodUUID}-request-model" aria-controls="${methodUUID}-request-model" role="tab" data-toggle="tab">Model</a></li>
 						</ul>
+						
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane active" id="${methodUUID}-request-model">
 
-								<#list method.attributes as attribute>
-									<#if attribute.type??>
-									<pre><@restBody attribute.type ""/></pre>
+								<#if method.attributes?size == 0>
+								none
+								<#else>
+									<#if methodHttpMethod == "POST">
+										<#if method.attributes?size == 1 && !method.attributes[0].name??>
+											<pre><@restBody method.attributes[0].type ""/></pre>
+										<#else>
+											<@attributesTable method.attributes/>
+										</#if>
+									<#else>
+										<@attributesTable method.attributes/>
 									</#if>
-								</#list>
+								</#if>
+
 							</div>
 						</div>
 					</div>					
 
 					<!-- response model -->					
+					<h4>Response</h4>
 					<div>
 						<ul class="nav nav-tabs" role="tablist">
-							<li role="presentation" class="active"><a href="#${methodUUID}-model" aria-controls="${methodUUID}-model" role="tab" data-toggle="tab">Response Model</a></li>
+							<li role="presentation" class="active"><a href="#${methodUUID}-response-model" aria-controls="${methodUUID}-response-model" role="tab" data-toggle="tab">Model</a></li>
 						</ul>
 						<div class="tab-content">
-							<div role="tabpanel" class="tab-pane active" id="${methodUUID}-model">
+							<div role="tabpanel" class="tab-pane active" id="${methodUUID}-response-model">
 								<#assign indentDelimiter = "	">
-								<#if method.returnType.primitive>
-								<strong>Response:</strong> <code>${method.returnType.typeName}</code><br/>
+								<#if method.response.type.typeName == "void">
+								none
+								<#elseif method.response.type.primitive>
+								
+								<table class="table">
+									<thead>
+										<tr>
+											<th class="fit">Type</th>
+											<th>Description</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td class="fit"><code>${method.response.type.typeName}</code></td>
+											<td>${method.response.description!"-"}</td>
+										</tr>
+									</tbody>
+								</table>
+								
 								<#else>
-								<pre><@restBody method.returnType ""/></pre>
+								<pre><@restBody method.response.type ""/></pre>
 								</#if>
 							</div>
 						</div>

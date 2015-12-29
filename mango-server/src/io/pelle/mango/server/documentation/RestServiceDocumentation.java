@@ -9,27 +9,27 @@ import com.google.common.collect.Ordering;
 
 public class RestServiceDocumentation extends RestBaseDocumentation {
 
-	private final String className;
+	private final Class<?> serviceClass;
 
 	private final String[] paths;
 
 	private final List<RestMethodDocumentation> methods;
 
-	public RestServiceDocumentation(String className, String[] paths, List<RestMethodDocumentation> methods) {
-		super(className.toLowerCase());
-		this.className = className;
+	public RestServiceDocumentation(Class<?> serviceClass, String[] paths) {
+		super(serviceClass.getName().toLowerCase());
+		this.serviceClass = serviceClass;
 		this.paths = paths;
-		
-		this.methods = methods;
+
+		methods = DocumentationReflectionFactory.getServiceMethods(this);
 		Collections.sort(this.methods, Ordering.usingToString());
 	}
 
 	public String getServiceName() {
-		return className.substring(className.lastIndexOf(".") + 1);
+		return serviceClass.getSimpleName();
 	}
 
 	public String getClassName() {
-		return className;
+		return serviceClass.getName();
 	}
 
 	public String[] getPaths() {
@@ -38,6 +38,10 @@ public class RestServiceDocumentation extends RestBaseDocumentation {
 
 	public List<RestMethodDocumentation> getMethods() {
 		return methods;
+	}
+	
+	public Class<?> getServiceClass() {
+		return serviceClass;
 	}
 	
 	@Override

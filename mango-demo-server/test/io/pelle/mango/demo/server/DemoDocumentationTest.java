@@ -17,34 +17,39 @@ public class DemoDocumentationTest extends BaseDemoTest {
 	private DocumentationRestApi documentationBean;
 
 	@Test
-	public void testServiceDocumentationCount() {
+	public void testServiceDocumentationCountAndOrdering() {
 
 		List<RestPackageDocumentation> packageDocumentations = documentationBean.getPackageDocumentation();
-		Assert.assertEquals(1, packageDocumentations.size());
+		Assert.assertEquals(3, packageDocumentations.size());
 
+		Assert.assertEquals("io.pelle.mango.demo.server.resttest1", packageDocumentations.get(0).getPackageName());
+		Assert.assertEquals("io.pelle.mango.demo.server.resttest2", packageDocumentations.get(1).getPackageName());
+		Assert.assertEquals("io.pelle.mango.demo.server.test", packageDocumentations.get(2).getPackageName());
+		
 	}
 
 	@Test
-	public void testGetServiceDocumentation() {
+	public void testGetRestService1RestControllerDocumentation() {
 
-		PackageOrService packageOrService = documentationBean.getPackageOrService("io.pelle.mango.demo.server.test.RestTestRestController");
-		Assert.assertEquals("io.pelle.mango.demo.server.test", packageOrService.getPackage().getPackageName());
-		Assert.assertTrue("io.pelle.mango.demo.server.test", packageOrService.getService().isPresent());
-		Assert.assertEquals("io.pelle.mango.demo.server.test.RestTestRestController", packageOrService.getService().get().getClassName());
-		Assert.assertEquals("RestTestRestController", packageOrService.getService().get().getServiceName());
+		PackageOrService packageOrService = documentationBean.getPackageOrService("io.pelle.mango.demo.server.resttest1.RestService1RestController");
+		Assert.assertEquals("io.pelle.mango.demo.server.resttest1", packageOrService.getPackage().getPackageName());
+		Assert.assertTrue(packageOrService.getService().isPresent());
+		Assert.assertEquals("io.pelle.mango.demo.server.resttest1.RestService1RestController", packageOrService.getService().get().getClassName());
+		Assert.assertEquals("RestService1RestController", packageOrService.getService().get().getServiceName());
 		Assert.assertEquals("This service exists for the sole purpose of showcasing the different features of the automatic REST service generation.", packageOrService.getService().get().getDescription());
 		Assert.assertEquals("Demo Rest services", packageOrService.getService().get().getShortDescription());
 		
 	}
 
 	@Test
-	public void testGetPackageDocumentation() {
+	public void testGetRestTest1PackageDocumentation() {
 
-		PackageOrService packageOrService = documentationBean.getPackageOrService("io.pelle.mango.demo.server.test");
-		Assert.assertEquals("io.pelle.mango.demo.server.test", packageOrService.getPackage().getPackageName());
-		Assert.assertFalse("io.pelle.mango.demo.server.test", packageOrService.getService().isPresent());
-		Assert.assertTrue(packageOrService.getPackage().getDescription().startsWith("The description for a specific package is read from a property file named"));
-		Assert.assertEquals("Example package", packageOrService.getPackage().getName());
+		PackageOrService packageOrService = documentationBean.getPackageOrService("io.pelle.mango.demo.server.resttest1");
+		Assert.assertEquals("io.pelle.mango.demo.server.resttest1", packageOrService.getPackage().getPackageName());
+		Assert.assertFalse("io.pelle.mango.demo.server.resttest1", packageOrService.getService().isPresent());
+		Assert.assertTrue(packageOrService.getPackage().getDescription().startsWith("The description for a package is read from a property file named"));
+		Assert.assertEquals("Rest Example Package 1", packageOrService.getPackage().getName());
+		Assert.assertEquals("A short summary of the package content", packageOrService.getPackage().getShortDescription());
 
 	}
 

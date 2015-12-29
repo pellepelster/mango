@@ -38,7 +38,7 @@ class RestServices extends BaseServices {
 	import «i»;
 	«ENDFOR»
 
-	public class «restControllerRequestVOName(service, method)»«method.methodTypeParameter»  {
+	public class «restControllerRequestVOName(service, method)»«method.methodTypeParameter» implements io.pelle.mango.client.base.vo.IValueObject {
 		«FOR parameter : method.params»
 			«attribute(parameter.parameterType.qualifiedName, parameter.name)»
 			«getter(parameter.parameterType.qualifiedName, parameter.name)»

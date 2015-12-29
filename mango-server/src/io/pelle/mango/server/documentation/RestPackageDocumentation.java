@@ -3,6 +3,8 @@ package io.pelle.mango.server.documentation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.thirdparty.guava.common.base.Objects;
+
 public class RestPackageDocumentation extends RestBaseDocumentation {
 
 	private final String packageName;
@@ -20,6 +22,11 @@ public class RestPackageDocumentation extends RestBaseDocumentation {
 
 	public List<RestServiceDocumentation> getServices() {
 		return services;
+	}
+	
+	@Override
+	public String toString() {
+		return Objects.toStringHelper(this).add("packageName", packageName).toString();
 	}
 
 }
