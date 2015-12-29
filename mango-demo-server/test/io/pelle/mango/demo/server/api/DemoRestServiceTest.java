@@ -46,18 +46,18 @@ public class DemoRestServiceTest extends BaseDemoTest {
 
 	@Test
 	public void testMethodWithBooleanParameterGetUrlParameter() throws Exception {
-		mockMvc.perform(get("/resttest/methodwithbooleanparameter?onOff=true")).andDo(print()).andExpect(status().isOk()).andExpect(content().string("false"));
+		mockMvc.perform(get("/restservice2/methodwithbooleanparameter?onOff=true")).andDo(print()).andExpect(status().isOk()).andExpect(content().string("false"));
 	}
 
 	@Test
 	public void testMethodWithBooleanParameterPostRequestJsonBody() throws Exception {
-		mockMvc.perform(post("/resttest/methodwithbooleanparameter").content("{ \"onOff\": false }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(content().string("true"));
+		mockMvc.perform(post("/restservice2/methodwithbooleanparameter").content("{ \"onOff\": false }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk()).andExpect(content().string("true"));
 	}
 
 	@Test
 	public void testMethodWithValueObjectParameter() throws Exception {
 
-		mockMvc.perform(post("/resttest/methodwithvalueobjectparameter").content("{ \"string2\": \"zzz\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
+		mockMvc.perform(post("/restservice2/methodwithvalueobjectparameter").content("{ \"string2\": \"zzz\" }").contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk())
 				.andExpect(jsonPath("$.string1").value(Matchers.is("zzz")));
 	}
 
