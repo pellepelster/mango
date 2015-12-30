@@ -1,4 +1,5 @@
 buildscript {
+
     repositories {
         maven {
             url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/'

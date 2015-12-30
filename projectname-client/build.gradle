@@ -33,7 +33,6 @@ dependencies {
 }
 
 gwt {
-	gwtVersion = '2.6.1'
 	modules 'packagename.projectname.ProjectNameAdminClient'
 	logLevel = 'ERROR'
 }
