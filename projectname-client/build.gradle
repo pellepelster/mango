@@ -1,39 +1,45 @@
 buildscript {
 
 	repositories {
-	
+
 		maven {
 			url 'https://github.com/steffenschaefer/gwt-gradle-plugin/raw/maven-repo/'
 		}
-		
+
 		mavenCentral()
 	}
-	
+
 	dependencies {
 		classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:+'
 	}
-	
+
 }
 
 apply plugin: 'gwt'
 
 configurations {
-	gwt {
-		extendsFrom compile
-	}
-	gwtTest {
-		extendsFrom gwt
-	}
+	gwt
+	gwtTest
+	provided
 }
 
 dependencies {
 	compile group: "io.pelle.mango", name: "mango-client-web-test", version: '+'
 	compile group: "io.pelle.mango", name: "mango-client-gwt", version: '+'
-	compile project(path: ':projectname-model', configuration: 'generatedClientGWT')
+	compile group: "io.pelle.mango", name: "mango-client-gwt", version: '+', configuration: 'provided'
+
+	gwt group: 'com.google.gwt', name: 'gwt-user', version: '2.7.+'
+	gwt group: 'com.google.gwt', name: 'gwt-dev', version: '2.7.+'
+
+	provided files('build/gwt-user-repackaged.jar')
+	provided files('build/gwt-dev-repackaged.jar')
+
+
+	compile project(path: ':project1-model', configuration: 'generatedClientGWT')
 }
 
 gwt {
-	modules 'packagename.projectname.ProjectNameAdminClient'
+	modules 'org.example.project1.Project1AdminClient'
 	logLevel = 'ERROR'
 }
 
@@ -44,3 +50,54 @@ task copyGwtTestLibs(type: Copy) {
 	into gwtTestLibDir
 	from configurations.gwtTest
 }
+
+eclipse {
+	classpath {
+		minusConfigurations += [ configurations.gwt ]
+	}
+}
+
+task expandGwtUserJar(type: Copy) {
+	from {
+		def jarFile = project.configurations.gwt.find { File file -> file.absolutePath =~ /.*gwt-user.*/ }
+
+		if (!jarFile) { throw new Exception("gwt-user jar file not found!") }
+		zipTree(jarFile)
+	}
+
+	into file("$buildDir/gwt-user")
+}
+
+task assembleGwtUserJar(type: Zip, dependsOn: expandGwtUserJar) {
+	destinationDir file("$buildDir")
+	archiveName 'gwt-user-repackaged.jar'
+	from file("$buildDir/gwt-user")
+	exclude 'javax/**'
+}
+
+eclipseClasspath.dependsOn("assembleGwtUserJar")
+compileJava.dependsOn("assembleGwtUserJar")
+
+task expandGwtDevJar(type: Copy) {
+	from {
+		def jarFile = project.configurations.gwt.find { File file -> file.absolutePath =~ /.*gwt-dev.*/ }
+
+		if (!jarFile) { throw new Exception("gwt-dev jar file not found!") }
+		zipTree(jarFile)
+	}
+
+	def targetPath = file("$buildDir/gwt-dev")
+	into targetPath
+	outputs.dir targetPath
+}
+
+task assembleGwtDevJar(type: Zip, dependsOn: expandGwtDevJar) {
+	destinationDir file("$buildDir")
+	archiveName 'gwt-dev-repackaged.jar'
+	from file("$buildDir/gwt-dev")
+	outputs.dir file("$buildDir/gwt-dev-repackaged.jar")
+	exclude 'javax/**'
+}
+
+eclipseClasspath.dependsOn("assembleGwtDevJar")
+compileJava.dependsOn("assembleGwtDevJar")

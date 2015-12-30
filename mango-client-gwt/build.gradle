@@ -1,5 +1,6 @@
 dependencies {
-	compile project(':mango-client-web')
+	compile project(path: ':mango-client-web')
+	compile project(path: ':mango-client-web', configuration: 'provided')
 
 	compile 'com.googlecode.gwtupload:gwtupload:1.0.3'
 	compile 'org.gwtbootstrap3:gwtbootstrap3:0.9.1'

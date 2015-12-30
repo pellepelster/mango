@@ -26,6 +26,7 @@ dependencies {
 	compile group: "org.springframework", name: "spring-expression", version: versions.spring
 	compile group: "org.springframework", name: "spring-web", version: versions.spring
 	compile group: "org.springframework", name: "spring-webmvc", version: versions.spring
+	compile group: 'javax.transaction', name: 'javax.transaction-api', version: '1.2-b01'
 
 	compile group: "io.dropwizard.metrics", name: "metrics-servlets", version: versions.metrics
 	compile group: "io.dropwizard.metrics", name: "metrics-graphite", version: versions.metrics
