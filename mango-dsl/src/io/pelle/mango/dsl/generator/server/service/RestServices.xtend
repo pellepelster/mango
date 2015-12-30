@@ -14,7 +14,6 @@ import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
 import java.util.Date
 import org.eclipse.xtext.xbase.compiler.ImportManager
-import io.pelle.mango.server.base.meta.Documented
 
 class RestServices extends BaseServices {
 
@@ -66,7 +65,7 @@ class RestServices extends BaseServices {
 		@SuppressWarnings("all")
 		@org.springframework.web.bind.annotation.RestController
 		@org.springframework.web.bind.annotation.RequestMapping("«service.restMapping»")
-		@«Documented.name»
+		@io.pelle.mango.server.base.meta.Documented
 		public class «service.restControllerName»  {
 		
 			@org.springframework.beans.factory.annotation.Autowired
