@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import io.pelle.mango.demo.server.MangoDemoTestApplicationContext;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { MangoDemoTestApplicationContext.class })
 @TransactionConfiguration(defaultRollback = false)
 @Transactional()
-@ActiveProfiles("test")
 public abstract class BaseDemoTest extends AbstractTransactionalJUnit4SpringContextTests {
 }

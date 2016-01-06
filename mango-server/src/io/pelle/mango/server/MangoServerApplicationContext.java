@@ -16,7 +16,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import com.codahale.metrics.MetricRegistry;
 
 import io.pelle.mango.MangoBaseApplicationContextGen;
-import io.pelle.mango.db.MangoDBApplicationContext;
 import io.pelle.mango.server.api.entity.EntityApiController;
 import io.pelle.mango.server.api.entity.EntityApiIndexController;
 import io.pelle.mango.server.api.webhook.EntityWebhookRegistry;
@@ -47,8 +46,8 @@ import io.pelle.mango.server.xml.XmlVOMapper;
 
 @Configuration
 @PropertySources({ @PropertySource(value = "classpath:/mango.properties", ignoreResourceNotFound = true), @PropertySource("classpath:/mango_defaults.properties") })
-@Import({ MangoBaseApplicationContextGen.class, MangoDBApplicationContext.class, MangoMetricsApplicationContext.class })
 @ImportResource({ "classpath:/MangoBaseApplicationContext.xml" })
+@Import({ MangoBaseApplicationContextGen.class })
 public class MangoServerApplicationContext {
 
 	@Bean
@@ -59,11 +58,6 @@ public class MangoServerApplicationContext {
 		cfg.setClassForTemplateLoading(this.getClass(), "/");
 		cfg.setDefaultEncoding("UTF-8");
 		cfg.setSharedVariable("uuid", new UUIDDirective());
-		// DefaultObjectWrapperBuilder owb = new
-		// DefaultObjectWrapperBuilder(freemarker.template.Configuration.VERSION_2_3_21);
-		// owb.setExposureLevel(BeansWrapper.EXPOSE_ALL);
-		// owb.setExposeFields(true);
-		// cfg.setObjectWrapper(owb.build());
 
 		result.setConfiguration(cfg);
 

@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -18,13 +17,10 @@ import com.codahale.metrics.graphite.Graphite;
 import com.codahale.metrics.graphite.GraphiteReporter;
 import com.codahale.metrics.graphite.GraphiteReporter.Builder;
 
-import io.pelle.mango.MangoBaseApplicationContextGen;
 import io.pelle.mango.client.property.IPropertyService;
-import io.pelle.mango.db.MangoDBApplicationContext;
 
 @Configuration
 @PropertySources({ @PropertySource(value = "classpath:/mango.properties", ignoreResourceNotFound = true), @PropertySource("classpath:/mango_defaults.properties") })
-@Import({ MangoBaseApplicationContextGen.class, MangoDBApplicationContext.class })
 @ImportResource({ "classpath:/MangoBaseApplicationContext.xml" })
 public class MangoMetricsApplicationContext {
 

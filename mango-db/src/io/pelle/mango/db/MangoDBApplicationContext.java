@@ -10,7 +10,6 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -37,8 +36,6 @@ import io.pelle.mango.server.base.MangoConstants;
 @PropertySource(value = "classpath:/mango-gen.properties")
 public class MangoDBApplicationContext {
 
-    private JndiLocatorDelegate jndiLocatorDelegate = JndiLocatorDelegate.createDefaultResourceRefLocator();
-
 	@Value("${hibernate.sql.show:hibernate.sql.show.default}")
 	private String hibernateShowSQL;
 
@@ -49,23 +46,20 @@ public class MangoDBApplicationContext {
 	public PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		return new PropertyPlaceholderConfigurer();
 	}
-	
-	@Bean(destroyMethod = "")
-	@Profile("default")
-	@Autowired
-	public DataSource jndiDataSource(Environment environment) throws Exception {
-		String applicationName = environment.getProperty(MangoConstants.APPLICATION_NAME_PROPERTY_KEY);
-		return (DataSource) jndiLocatorDelegate.lookup("java:comp/env/jdbc/" + applicationName);
-	}
 
+	@Autowired
 	@Bean
-	@Profile("test")
-	@Autowired
-	public DataSource dataSource(Environment environment) {
-		String applicationName = environment.getProperty(MangoConstants.APPLICATION_NAME_PROPERTY_KEY);
-		return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL).setName(applicationName).build();
-	}
+	public DataSource dataSource(Environment environment) throws Exception {
 
+		String applicationName = environment.getProperty(MangoConstants.APPLICATION_NAME_PROPERTY_KEY);
+
+		if (JndiLocatorDelegate.isDefaultJndiEnvironmentAvailable()) {
+			JndiLocatorDelegate jndiLocatorDelegate = JndiLocatorDelegate.createDefaultResourceRefLocator();
+			return (DataSource) jndiLocatorDelegate.lookup("java:comp/env/jdbc/" + applicationName);
+		} else {
+			return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL).setName(applicationName).build();
+		}
+	}
 
 	@Bean
 	public PersistenceAnnotationBeanPostProcessor persistenceAnnotationBeanPostProcessor() {
@@ -89,69 +83,70 @@ public class MangoDBApplicationContext {
 		return EntityVOMapper.getInstance();
 	}
 
-	@Bean 
+	@Bean
 	public LocalSessionFactoryBean localSessionFactoryBean(DataSource dataSource) {
 
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource);
-		
+
 		return sessionFactory;
 	}
 
-	@Bean 
+	@Bean
 	public HibernateJpaVendorAdapter jpaAdapter() {
 
 		HibernateJpaVendorAdapter result = new HibernateJpaVendorAdapter();
-		
+
 		return result;
 	}
 
-	@Bean 
-	@Autowired 
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,JpaVendorAdapter jpaVendorAdapter, PersistenceUnitManager persistenceUnitManager, Environment environment) {
-		
+	@Bean
+	@Autowired
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter, PersistenceUnitManager persistenceUnitManager,
+			Environment environment) {
+
 		LocalContainerEntityManagerFactoryBean result = new LocalContainerEntityManagerFactoryBean();
 		String applicationName = environment.getProperty(MangoConstants.APPLICATION_NAME_PROPERTY_KEY);
-		
+
 		result.setDataSource(dataSource);
 		result.setJpaVendorAdapter(jpaVendorAdapter);
 		result.setPersistenceUnitName(applicationName);
 		result.setPersistenceUnitManager(persistenceUnitManager);
 		result.setPersistenceUnitManager(persistenceUnitManager);
-		
+
 		result.getJpaPropertyMap().put("hibernate.hbm2ddl.auto", "create");
 		result.getJpaPropertyMap().put("hibernate.query.substitutions", "true 1, false 0");
 		result.getJpaPropertyMap().put("hibernate.connection.autocommit", Boolean.TRUE);
 		result.getJpaPropertyMap().put("hibernate.FlushMode", FlushMode.AUTO);
 		result.getJpaPropertyMap().put("hibernate.show_sql", hibernateShowSQL);
 		result.getJpaPropertyMap().put("hibernate.format_sql", hibernateFormatSQL);
-		
+
 		return result;
 	}
 
-	@Bean 
-	@Autowired 
+	@Bean
+	@Autowired
 	public MergingPersistenceUnitPostProcessor persistenceUnitPostProcessors(Environment environment) {
-		
+
 		String applicationName = environment.getProperty(MangoConstants.APPLICATION_NAME_PROPERTY_KEY);
 		MergingPersistenceUnitPostProcessor result = new MergingPersistenceUnitPostProcessor();
 		result.setTargetPersistenceUnitName(applicationName);
-		
+
 		return result;
 	}
 
-	@Bean 
-	@Autowired 
+	@Bean
+	@Autowired
 	public DefaultPersistenceUnitManager persistenceUnitManager(DataSource dataSource, PersistenceUnitPostProcessor persistenceUnitPostProcessor) {
-		
+
 		DefaultPersistenceUnitManager result = new DefaultPersistenceUnitManager();
 
 		result.setPersistenceXmlLocation("classpath*:META-INF/persistence.xml");
-		
+
 		result.setPersistenceUnitPostProcessors(persistenceUnitPostProcessor);
 		result.setDefaultDataSource(dataSource);
-		
+
 		return result;
 	}
-	
+
 }

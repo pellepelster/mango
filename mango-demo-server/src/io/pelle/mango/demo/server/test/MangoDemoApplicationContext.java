@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 
-import io.pelle.mango.MangoSpringInvokerServicesGen;
-import io.pelle.mango.MangoSpringServicesGen;
 import io.pelle.mango.demo.MangoDemoBaseApplicationContextGen;
 import io.pelle.mango.demo.MangoDemoEntityImportExportServicesGen;
 import io.pelle.mango.demo.MangoDemoRestRemoteServicesGen;
@@ -17,18 +15,15 @@ import io.pelle.mango.demo.MangoDemoSpringServicesGen;
 import io.pelle.mango.demo.client.MangoDemoClientConfiguration;
 import io.pelle.mango.demo.client.MangoDemoDictionaryModel;
 import io.pelle.mango.demo.client.test.Entity1VO;
-import io.pelle.mango.server.MangoLoggerApplicationContext;
-import io.pelle.mango.server.MangoMailApplicationContext;
-import io.pelle.mango.server.MangoSecurityConfig;
-import io.pelle.mango.server.MangoServerApplicationContext;
+import io.pelle.mango.server.MangoApplicationContextConfigurer;
 import io.pelle.mango.server.search.SearchIndexBuilder;
 import io.pelle.mango.server.state.StateBuilder;
 
 @Configuration
-@Import({ MangoSpringServicesGen.class, MangoDemoBaseApplicationContextGen.class, MangoServerApplicationContext.class, MangoLoggerApplicationContext.class, MangoSecurityConfig.class, MangoMailApplicationContext.class,
-		MangoDemoRestRemoteServicesGen.class, MangoDemoSpringServicesGen.class, MangoDemoSpringInvokerServicesGen.class, MangoSpringInvokerServicesGen.class, MangoDemoEntityImportExportServicesGen.class })
-@ImportResource({"classpath:/MangoDemoApplicationContext.xml" })
-public class MangoDemoApplicationContext {
+@Import({ MangoDemoBaseApplicationContextGen.class, MangoDemoRestRemoteServicesGen.class, MangoDemoSpringServicesGen.class,
+		MangoDemoSpringInvokerServicesGen.class, MangoDemoEntityImportExportServicesGen.class })
+@ImportResource({ "classpath:/MangoDemoApplicationContext.xml" })
+public class MangoDemoApplicationContext extends MangoApplicationContextConfigurer {
 
 	@Bean
 	public TestHierarchicalConfiguration testHierarchicalConfiguration() {
