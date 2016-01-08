@@ -136,12 +136,6 @@ public class MangoServerApplicationContext {
 	}
 
 	@Bean
-	public MetricRegistry metricRegistry() {
-		MetricRegistry bean = new MetricRegistry();
-		return bean;
-	}
-
-	@Bean
 	public EntityApiController entityApiController() {
 		return new EntityApiController();
 	}
