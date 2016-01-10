@@ -25,8 +25,9 @@ abstract class BaseAttributeUtils {
 	// natural key
 	// -------------------------------------------------------------------------
 	def boolean hasNaturalKeyAttribute(EntityAttribute entityAttribute) {
-		return entityAttribute.parentEntity.naturalKeyFields.contains(entityAttribute)
+		return entityAttribute.parentIsEntity && entityAttribute.parentEntity.naturalKeyFields.contains(entityAttribute)
 	}
+	
 
 	def naturalKeyOrder(EntityAttribute entityAttribute) {
 		if (entityAttribute.hasNaturalKeyAttribute) {
@@ -38,10 +39,22 @@ abstract class BaseAttributeUtils {
 
 	}
 
+	def boolean parentIsEntity(EntityAttribute entityAttribute) {
+		return entityAttribute.eContainer instanceof Entity;
+	}
+
 	def Entity getParentEntity(EntityAttribute entityAttribute) {
 		return entityAttribute.eContainer as Entity;
 	}
-
+	
+	def boolean parentIsValueObject(EntityAttribute entityAttribute) {
+		return entityAttribute.eContainer instanceof ValueObject;
+	}
+	
+	def ValueObject getParentValueObject(EntityAttribute entityAttribute) {
+		return entityAttribute.eContainer as ValueObject;
+	}
+	
 	def attributeGetterSetter(String attributeType, String attributeName) '''
 		«attribute(attributeType, attributeName)»
 		«getter(attributeType, attributeName)»

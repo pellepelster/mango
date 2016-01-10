@@ -39,7 +39,7 @@ public class DocumentationReflectionFactory {
 
 					for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
 
-						if (propertyDescriptor.getReadMethod() != null &&propertyDescriptor.getWriteMethod() != null) {
+						if (propertyDescriptor.getReadMethod() != null && propertyDescriptor.getWriteMethod() != null) {
 							RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(propertyDescriptor.getName(), propertyDescriptor.getPropertyType());
 							attributeDocumentations.add(attributeDocumentation);
 						}

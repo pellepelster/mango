@@ -2,8 +2,7 @@
 
 <div class="container">
    <div class = "row">
-		<h1>Doc</h1>
-		
+		<h1>${navigationModel.title}</h1>
     </div>
 </div>
 

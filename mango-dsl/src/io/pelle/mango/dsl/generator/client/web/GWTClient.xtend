@@ -72,7 +72,7 @@ class GWTClient extends BaseServices {
 			public static void registerValueObjectEntityDescriptors()
 			{
 				«FOR entity : model.eAllContents().toIterable.filter(Entity)»
-				«VOMetaModelProvider.name».registerEntityDescriptor(«entity.voFullQualifiedName».«entity.entityConstantName»);
+				«VOMetaModelProvider.name».registerEntityDescriptor(«entity.voFullQualifiedName».«entity.metaDescriptorConstantName»);
 				«ENDFOR»
 			}
 

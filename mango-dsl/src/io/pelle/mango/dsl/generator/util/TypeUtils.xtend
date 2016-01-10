@@ -42,6 +42,7 @@ import io.pelle.mango.dsl.mango.SimpleTypeType
 import io.pelle.mango.dsl.mango.SimpleTypes
 import io.pelle.mango.dsl.mango.StringDataType
 import io.pelle.mango.dsl.mango.StringEntityAttribute
+import io.pelle.mango.dsl.mango.ValueObject
 import io.pelle.mango.dsl.mango.ValueObjectEntityAttribute
 import java.math.BigDecimal
 import java.util.ArrayList
@@ -103,7 +104,7 @@ abstract class TypeUtils {
 	}
 
 	def compileEntityAttributeDescriptor(Class<?> attributeType, String attributeName, Entity parentEntity) '''
-		public static «AttributeDescriptor.name»<«attributeType.name»> «attributeName.attributeDescriptorConstantName» = new «AttributeDescriptor.name»<«attributeType.name»>(«parentEntity.entityConstantName», "«attributeName»", «attributeType.name».class);
+		public static «AttributeDescriptor.name»<«attributeType.name»> «attributeName.attributeDescriptorConstantName» = new «AttributeDescriptor.name»<«attributeType.name»>(«parentEntity.metaDescriptorConstantName», "«attributeName»", «attributeType.name».class);
 	'''
 
 	//-----------------
@@ -194,16 +195,24 @@ abstract class TypeUtils {
 		getType(entity) + ".class"
 	}
 
+	def dispatch String getTypeClass(ValueObject valueObject) {
+		getType(valueObject) + ".class"
+	}
+
 	def dispatch String getRawType(Entity entity) {
 		getType(entity)
 	}
+	
+	def dispatch String getRawType(ValueObject valueObject) {
+		getType(valueObject)
+	}
 
-	def compileEntityAttributeDescriptorCommon(EntityAttribute entityAttribute, Entity entity) '''
-		public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)», false, «attributeUtils.naturalKeyOrder(entityAttribute)»);
+	def compileEntityAttributeDescriptorCommon(EntityAttribute entityAttribute, String metaDescriptorConstantName) '''
+		public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«metaDescriptorConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)», false, «attributeUtils.naturalKeyOrder(entityAttribute)»);
 	'''
 
-	def dispatch compileEntityAttributeDescriptor(EntityAttribute entityAttribute, Entity entity) {
-		entityAttribute.compileEntityAttributeDescriptorCommon(entity)
+	def dispatch compileEntityAttributeDescriptor(EntityAttribute entityAttribute, String metaDescriptorConstantName) {
+		entityAttribute.compileEntityAttributeDescriptorCommon(metaDescriptorConstantName)
 	}
 
 	def dispatch String getType(EntityAttribute entityAttribute) {
@@ -215,7 +224,11 @@ abstract class TypeUtils {
 	}
 
 	def dispatch String getRawType(EntityAttribute entityAttribute) {
-		getType(entityAttribute)
+		entityAttribute.type
+	}
+
+	def dispatch String getRawType(ValueObjectEntityAttribute entityAttribute) {
+		entityAttribute.type.type
 	}
 
 	def dispatch String getTypeClass(EntityAttribute entityAttribute) {
@@ -224,6 +237,10 @@ abstract class TypeUtils {
 
 	def dispatch String getRawTypeClass(EntityAttribute entityAttribute) {
 		getRawType(entityAttribute) + ".class"
+	}
+
+	def dispatch String getRawTypeClass(ValueObjectEntityAttribute entityAttribute) {
+		entityAttribute.type.rawTypeClass
 	}
 
 	//-----------------
@@ -265,8 +282,8 @@ abstract class TypeUtils {
 		return clientNameUtils.enumerationFullQualifiedName(enumeration)
 	}
 
-	def dispatch compileEntityAttributeDescriptor(EnumerationEntityAttribute entityAttribute, Entity entity) '''
-		public static «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»> «entityAttribute.name.attributeConstantName» = new «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «entityAttribute.typeClass», «entityAttribute.typeClass», «attributeUtils.naturalKeyOrder(entityAttribute)»);
+	def dispatch compileEntityAttributeDescriptor(EnumerationEntityAttribute entityAttribute, String metaDescriptorConstantName) '''
+		public static «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»> «entityAttribute.name.attributeConstantName» = new «EnumerationAttributeDescriptor.name»<«entityAttribute.type.type»>(«metaDescriptorConstantName», "«entityAttribute.name.attributeName»", «entityAttribute.typeClass», «entityAttribute.typeClass», «attributeUtils.naturalKeyOrder(entityAttribute)»);
 	'''
 
 	//-----------------
@@ -307,8 +324,8 @@ abstract class TypeUtils {
 		typeof(Boolean).name
 	}
 
-	def dispatch compileEntityAttributeDescriptor(BooleanEntityAttribute entityAttribute, Entity entity) '''
-		public static «BooleanAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BooleanAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
+	def dispatch compileEntityAttributeDescriptor(BooleanEntityAttribute entityAttribute, String metaDescriptorConstantName) '''
+		public static «BooleanAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BooleanAttributeDescriptor.name»(«metaDescriptorConstantName», "«entityAttribute.name.attributeName»");
 	'''
 
 	//-----------------
@@ -326,8 +343,8 @@ abstract class TypeUtils {
 		return BigDecimal.name
 	}
 
-	def dispatch compileEntityAttributeDescriptor(DecimalEntityAttribute entityAttribute, Entity entity) '''
-		public static «BigDecimalAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BigDecimalAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
+	def dispatch compileEntityAttributeDescriptor(DecimalEntityAttribute entityAttribute, String metaDescriptorConstantName) '''
+		public static «BigDecimalAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «BigDecimalAttributeDescriptor.name»(«metaDescriptorConstantName», "«entityAttribute.name.attributeName»");
 	'''
 
 	//-----------------
@@ -402,8 +419,8 @@ abstract class TypeUtils {
 		String.name
 	}
 
-	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, Entity entity) '''
-		public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.minLength», «entityAttribute.maxLength», «attributeUtils.naturalKeyOrder(entityAttribute)»);
+	def dispatch compileEntityAttributeDescriptor(StringEntityAttribute entityAttribute, String metaDescriptorConstantName) '''
+		public static «StringAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «StringAttributeDescriptor.name»(«metaDescriptorConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «entityAttribute.minLength», «entityAttribute.maxLength», «attributeUtils.naturalKeyOrder(entityAttribute)»);
 	'''
 
 	def getMaxLength(StringEntityAttribute stringEntityAttribute) {
@@ -425,8 +442,8 @@ abstract class TypeUtils {
 	//-----------------
 	// integer
 	//-----------------
-	def dispatch compileEntityAttributeDescriptor(IntegerEntityAttribute entityAttribute, Entity entity) '''
-		public static «IntegerAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «IntegerAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
+	def dispatch compileEntityAttributeDescriptor(IntegerEntityAttribute entityAttribute, String metaDescriptorConstantName) '''
+		public static «IntegerAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «IntegerAttributeDescriptor.name»(«metaDescriptorConstantName», "«entityAttribute.name.attributeName»");
 	'''
 
 	def dispatch String getMemberType(IntegerDataType dataType) {
@@ -444,8 +461,8 @@ abstract class TypeUtils {
 	//-----------------
 	// long
 	//-----------------
-	def dispatch compileEntityAttributeDescriptor(LongEntityAttribute entityAttribute, Entity entity) '''
-		public static «LongAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«entityAttribute.name.attributeName»");
+	def dispatch compileEntityAttributeDescriptor(LongEntityAttribute entityAttribute, String metaDescriptorConstantName) '''
+		public static «LongAttributeDescriptor.name» «entityAttribute.name.attributeConstantName» = new «LongAttributeDescriptor.name»(«metaDescriptorConstantName», "«entityAttribute.name.attributeName»");
 	'''
 	
 	def dispatch String getMemberType(LongDataType dataType) {
@@ -482,10 +499,6 @@ abstract class TypeUtils {
 		return getType(entityAttribute)
 	}
 
-	def dispatch String getRawType(ValueObjectEntityAttribute entityAttribute) {
-		entityAttribute.type.type
-	}
-
 	//-----------------
 	// EntityEntityAttribute
 	//-----------------
@@ -509,11 +522,11 @@ abstract class TypeUtils {
 		getRawType(entityAttribute.type) + ".class"
 	}
 
-	def dispatch compileEntityAttributeDescriptor(EntityEntityAttribute entityAttribute, Entity entity) '''
+	def dispatch compileEntityAttributeDescriptor(EntityEntityAttribute entityAttribute, String metaDescriptorConstantName) '''
 		«IF entityAttribute.cardinality == Cardinality.ONETOMANY»
-			«entityAttribute.compileEntityAttributeDescriptorCommon(entity)»
+			«entityAttribute.compileEntityAttributeDescriptorCommon(metaDescriptorConstantName)»
 		«ELSE»
-			public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»> «entityAttribute.name.attributeConstantName» = new «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»>(«entity.entityConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «attributeUtils.naturalKeyOrder(entityAttribute)»);
+			public static «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»> «entityAttribute.name.attributeConstantName» = new «EntityAttributeDescriptor.name»<«getRawType(entityAttribute.type)»>(«metaDescriptorConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «attributeUtils.naturalKeyOrder(entityAttribute)»);
 		«ENDIF»
 	'''
 

@@ -12,6 +12,8 @@ public interface IDocumentationContributor {
 
 	public final static String DOCUMENTATION_RESTAPI_NAME_MESSAGE_KEY = "documentation.restapi.name";
 
+	public final static String DOCUMENTATION_INDEX_TITLE_MESSAGE_KEY = "documentation.index.title";
+
 	List<NavigationItem> getPrimaryNavigation();
 
 }

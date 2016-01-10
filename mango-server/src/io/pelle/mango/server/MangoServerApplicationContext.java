@@ -64,6 +64,13 @@ public class MangoServerApplicationContext {
 		return result;
 	}
 
+	
+	@Bean
+	public MetricRegistry metricRegistry() {
+		MetricRegistry bean = new MetricRegistry();
+		return bean;
+	}
+
 	@Bean
 	public FreeMarkerViewResolver viewResolver() {
 

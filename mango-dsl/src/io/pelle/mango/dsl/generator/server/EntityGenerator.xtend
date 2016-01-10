@@ -3,6 +3,7 @@ package io.pelle.mango.dsl.generator.server
 import com.google.inject.Inject
 import io.pelle.mango.client.base.db.vos.IBaseHierarchical
 import io.pelle.mango.client.base.vo.EntityDescriptor
+import io.pelle.mango.client.base.vo.IEntity
 import io.pelle.mango.client.base.vo.IEntityDescriptor
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
@@ -20,7 +21,6 @@ import io.pelle.mango.dsl.mango.StringEntityAttribute
 import io.pelle.mango.dsl.query.EntityQuery
 import io.pelle.mango.dsl.query.datatype.StringDatatypeQuery
 import java.util.ArrayList
-import io.pelle.mango.client.base.vo.IEntity
 
 class EntityGenerator extends BaseEntityGenerator {
 
@@ -97,14 +97,14 @@ class EntityGenerator extends BaseEntityGenerator {
 		@SuppressWarnings("all")
 		public class «entity.entityName» extends «IF entity.extends != null»«entityFullQualifiedName(entity.extends)»«ELSEIF entity.jvmtype != null»«entity.jvmtype.qualifiedName»«ELSE»io.pelle.mango.server.base.BaseEntity«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity «IF entity.entityHierarchical», «IBaseHierarchical.name»«ENDIF» {
 		
-			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
+			public static final «IEntityDescriptor.name»<«entity.entityFullQualifiedName»> «entity.metaDescriptorConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
 
 			«entity.attributeDescriptorsFromExtends»
 
 			«entity.compileGetAttributeDescriptors»
 		
 			«IF entity.extends == null && !entity.entityDisableIdField»
-			public static «LongAttributeDescriptor.name» «IEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IEntity.ID_FIELD_NAME»");
+			public static «LongAttributeDescriptor.name» «IEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.metaDescriptorConstantName», "«IEntity.ID_FIELD_NAME»");
 
 			@Id
 			@Column(name = "«entity.entityTableIdColumnName»")
@@ -197,7 +197,7 @@ class EntityGenerator extends BaseEntityGenerator {
 	def changeTrackingAttributeGetterSetter(Entity entity, EntityAttribute attribute) '''
 		«compileEntityAttributeJpaAnnotations(entity, attribute)»
 		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
-		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity)»
+		«attribute.compileEntityAttributeDescriptor(attribute.parentEntity.metaDescriptorConstantName)»
 		«getter(getType(attribute), attribute.name.attributeName)»
 		«changeTrackingSetter(getType(attribute), attribute.name.attributeName)»
 	'''

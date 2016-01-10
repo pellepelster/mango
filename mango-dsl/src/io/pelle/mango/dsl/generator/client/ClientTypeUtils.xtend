@@ -72,7 +72,16 @@ class ClientTypeUtils extends TypeUtils {
 	override dispatch String getTypeClass(Entity entity) {
 		getType(entity) + ".class"
 	}
-
+	
+	def dispatch String getRawTypeClass(ValueObject valueObject) {
+		valueObject.voFullQualifiedName + ".class"
+	}
+	
+	override dispatch String getTypeClass(ValueObject valueObject) {
+		getType(valueObject) + ".class"
+	}
+	
+	
 	def dispatch String getType(ValueObjectType valueObjectType) {
 		return valueObjectType.type.voFullQualifiedName
 	}

@@ -2,12 +2,12 @@ package io.pelle.mango.dsl.generator
 
 import com.google.inject.Inject
 import io.pelle.mango.client.base.vo.IAttributeDescriptor
+import io.pelle.mango.client.base.vo.IEntity
 import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
 import io.pelle.mango.dsl.generator.util.NameUtils
 import io.pelle.mango.dsl.generator.util.TypeUtils
 import io.pelle.mango.dsl.mango.Entity
 import java.util.List
-import io.pelle.mango.client.base.vo.IEntity
 
 abstract class BaseEntityGenerator {
 
@@ -19,7 +19,7 @@ abstract class BaseEntityGenerator {
 	def attributeDescriptorsFromExtends(Entity entity) '''
 		«IF entity.extends != null»
 			«FOR attribute : entity.extends.attributes»
-				«typeUtils.compileEntityAttributeDescriptor(attribute,  entity)»
+				«typeUtils.compileEntityAttributeDescriptor(attribute,  entity.metaDescriptorConstantName)»
 			«ENDFOR»
 		«ENDIF»
 	'''

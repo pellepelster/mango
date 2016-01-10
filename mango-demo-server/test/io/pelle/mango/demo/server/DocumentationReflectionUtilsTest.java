@@ -1,7 +1,7 @@
 package io.pelle.mango.demo.server;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -161,6 +161,8 @@ public class DocumentationReflectionUtilsTest {
 
 		attribute = response.getAttributes().get(3);
 		assertEquals("valueObjects2", attribute.getName());
+		assertEquals("ValueObject2", attribute.getType());
+		assertTrue(attribute.isList());
 
 		// methodwithvalueobjectparameter (POST)
 		method = service.getMethods().get(3);

@@ -62,8 +62,16 @@ class NameUtils {
 		return attribute.toUpperCase
 	}
 
-	def entityConstantName(Entity entity) {
+	def metaDescriptorConstantName(Entity entity) {
 		return entity.name.toUpperCase;
+	}
+
+	def metaDescriptorConstantName(ValueObject valueObject) {
+		return valueObject.name.toUpperCase;
+	}
+
+	def valueObjectConstantName(ValueObject valueObject) {
+		return valueObject.name.toUpperCase;
 	}
 
 	def attributeDescriptorConstantName(String name) {

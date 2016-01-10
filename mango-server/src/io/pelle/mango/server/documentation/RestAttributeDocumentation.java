@@ -9,6 +9,8 @@ public class RestAttributeDocumentation {
 
 	private final RestTypeDocumentation type;
 
+	private boolean isList = false;
+
 	public static final Function<RestAttributeDocumentation, String> ORDER_FUNCTION = new Function<RestAttributeDocumentation, String>() {
 		public String apply(RestAttributeDocumentation attributeDocumentation) {
 			return attributeDocumentation.name;
@@ -32,6 +34,10 @@ public class RestAttributeDocumentation {
 	@Override
 	public String toString() {
 		return Objects.toStringHelper(this).add("name", name).add("type", type.toString()).toString();
+	}
+
+	public boolean isList() {
+		return isList ;
 	}
 
 }

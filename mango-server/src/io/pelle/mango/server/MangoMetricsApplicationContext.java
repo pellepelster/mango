@@ -28,12 +28,6 @@ public class MangoMetricsApplicationContext {
 	private IPropertyService propertyService;
 
 	@Bean
-	public MetricRegistry metricRegistry() {
-		MetricRegistry bean = new MetricRegistry();
-		return bean;
-	}
-
-	@Bean
 	@Autowired
 	public JmxReporter jmxReporter(MetricRegistry metricRegistry) {
 

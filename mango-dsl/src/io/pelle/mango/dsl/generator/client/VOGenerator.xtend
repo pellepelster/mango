@@ -2,10 +2,15 @@ package io.pelle.mango.dsl.generator.client
 
 import com.google.inject.Inject
 import io.pelle.mango.client.base.db.vos.IHierarchicalVO
+import io.pelle.mango.client.base.vo.AttributeDescriptor
 import io.pelle.mango.client.base.vo.BaseVO
 import io.pelle.mango.client.base.vo.EntityDescriptor
+import io.pelle.mango.client.base.vo.IAttributeDescriptor
+import io.pelle.mango.client.base.vo.IEntity
 import io.pelle.mango.client.base.vo.IEntityDescriptor
+import io.pelle.mango.client.base.vo.IValueObjectDescriptor
 import io.pelle.mango.client.base.vo.LongAttributeDescriptor
+import io.pelle.mango.client.base.vo.ValueObjectDescriptor
 import io.pelle.mango.dsl.generator.BaseEntityGenerator
 import io.pelle.mango.dsl.generator.server.EntityUtils
 import io.pelle.mango.dsl.generator.util.AttributeGeneratorFactory
@@ -17,7 +22,6 @@ import io.pelle.mango.dsl.mango.ValueObject
 import java.io.Serializable
 import java.util.ArrayList
 import java.util.List
-import io.pelle.mango.client.base.vo.IEntity
 
 class VOGenerator extends BaseEntityGenerator {
 
@@ -39,9 +43,9 @@ class VOGenerator extends BaseEntityGenerator {
 		@SuppressWarnings("all")
 		public class «entity.voName» extends «IF entity.extends != null»«voFullQualifiedName(entity.extends)»«ELSE»«typeof(BaseVO).name»«ENDIF» implements io.pelle.mango.client.base.db.vos.IInfoVOEntity «IF entity.entityHierarchical», «IHierarchicalVO.name»«ENDIF» {
 		
-			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.entityConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
+			public static final «IEntityDescriptor.name»<«entity.voFullQualifiedName»> «entity.metaDescriptorConstantName» = new «EntityDescriptor.name»<«entity.type»>(«entity.typeClass», "«entity.name»", "«entity.label»", "«entity.pluralLabel»");
 
-			public static «LongAttributeDescriptor.name» «IEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.entityConstantName», "«IEntity.ID_FIELD_NAME»");
+			public static «LongAttributeDescriptor.name» «IEntity.ID_FIELD_NAME.attributeConstantName» = new «LongAttributeDescriptor.name»(«entity.metaDescriptorConstantName», "«IEntity.ID_FIELD_NAME»");
 
 			public «entity.voName»() {
 			«FOR attribute : entity.attributes»
@@ -109,17 +113,35 @@ class VOGenerator extends BaseEntityGenerator {
 		«ENDIF»
 	'''
 
+
+	def compileGetAttributeDescriptors(ValueObject valueObject) '''
+		
+		public static «IAttributeDescriptor.name»<?>[] getAttributeDescriptors() {
+			
+			return new «IAttributeDescriptor.name»[]{
+
+				«FOR attribute : valueObject.attributes»
+					«attribute.name.attributeConstantName»,
+				«ENDFOR»
+				
+			};
+		}
+	'''	
 	def compileValueObject(ValueObject valueObject) '''
 		package «getPackageName(valueObject)»;
 		
 		public class «valueObject.voName» «IF valueObject.extends != null»extends «voFullQualifiedName(valueObject.extends)»«ENDIF» implements «Serializable.name», io.pelle.mango.client.base.vo.IValueObject {
-		
+
+			public static final «IValueObjectDescriptor.name»<«valueObject.voFullQualifiedName»> «valueObject.metaDescriptorConstantName» = new «ValueObjectDescriptor.name»<«valueObject.type»>(«valueObject.typeClass»);
+				
 			public «valueObject.voName»() {
 			}
 			
 			«compileValueObjectCloneConstructors(valueObject, valueObject)»
 
 			«valueObject.compileValueObjectSetterConstructors»
+
+			«valueObject.compileGetAttributeDescriptors»
 		
 			«FOR attribute : valueObject.attributes»
 			«attribute.compileValueObjectAttribute»
@@ -132,14 +154,19 @@ class VOGenerator extends BaseEntityGenerator {
 	def compileValueObjectConstructor(List<EntityAttribute> attributes) {
 	}
 
-	def compileValueObjectAttribute(EntityAttribute entityAttribute) '''
-		«attribute(getType(entityAttribute), entityAttribute.name, getInitializer(entityAttribute))»
-		«getter(getType(entityAttribute), entityAttribute.name.attributeName)»
-		«setter(getType(entityAttribute), entityAttribute.name.attributeName)»
+	def compileValueObjectAttributeDescriptorCommon(EntityAttribute entityAttribute, ValueObject valueObject) '''
+		public static «IAttributeDescriptor.name»<«getType(entityAttribute)»> «entityAttribute.name.attributeConstantName» = new «AttributeDescriptor.name»<«getType(entityAttribute)»>(«valueObject.valueObjectConstantName», "«entityAttribute.name.attributeName»", «getTypeClass(entityAttribute)», «getRawTypeClass(entityAttribute)», false, «attributeUtils.naturalKeyOrder(entityAttribute)»);
+	'''
+
+	def compileValueObjectAttribute(EntityAttribute attribute) '''
+		«attribute.compileEntityAttributeDescriptor(attribute.parentValueObject.metaDescriptorConstantName)»
+		«attribute(getType(attribute), attribute.name, getInitializer(attribute))»
+		«getter(getType(attribute), attribute.name.attributeName)»
+		«setter(getType(attribute), attribute.name.attributeName)»
 	'''
 
 	def changeTrackingAttributeGetterSetter(EntityAttribute attribute, Entity entity) '''
-		«attribute.compileEntityAttributeDescriptor(entity)»
+		«attribute.compileEntityAttributeDescriptor(entity.metaDescriptorConstantName)»
 		
 		«attribute(getMemberType(attribute), attribute.name, getInitializer(attribute))»
 		
