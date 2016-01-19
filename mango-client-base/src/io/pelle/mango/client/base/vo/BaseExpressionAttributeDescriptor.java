@@ -11,32 +11,32 @@ public abstract class BaseExpressionAttributeDescriptor<T> extends AttributeDesc
 
 	protected final PathExpression entityFieldExpression;
 
-	public BaseExpressionAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> attributeListType, int naturalKeyOrder) {
+	public BaseExpressionAttributeDescriptor(IMetaDescriptor<?> parent, String attributeName, Class<?> attributeType, Class<?> attributeListType, int naturalKeyOrder) {
 		super(parent, attributeName, attributeType, attributeListType, false, naturalKeyOrder);
 
 		String currentAttributeName = "";
 
 		IAttributeDescriptor<?> currentAttributeDescriptor = this;
-		IEntityDescriptor<?> entityDescriptor = null;
+		IMetaDescriptor<?> currentMetaDescriptor = null;
 		String delimiter = "";
 
-		while (entityDescriptor == null) {
+		while (currentMetaDescriptor == null) {
 
 			currentAttributeName = currentAttributeDescriptor.getAttributeName() + delimiter + currentAttributeName;
 			delimiter = ".";
 
-			if (currentAttributeDescriptor.getParent() instanceof IEntityDescriptor) {
-				entityDescriptor = (IEntityDescriptor<?>) currentAttributeDescriptor.getParent();
+			if (currentAttributeDescriptor.getParent() instanceof IMetaDescriptor) {
+				currentMetaDescriptor = (IMetaDescriptor<?>) currentAttributeDescriptor.getParent();
 			} else if (currentAttributeDescriptor.getParent() instanceof IAttributeDescriptor) {
 				currentAttributeDescriptor = (IAttributeDescriptor<?>) currentAttributeDescriptor.getParent();
 			}
 
 		}
 
-		entityFieldExpression = new PathExpression(entityDescriptor.getVOEntityClass().getName(), currentAttributeName);
+		entityFieldExpression = new PathExpression(currentMetaDescriptor.getVOEntityClass().getName(), currentAttributeName);
 	}
 
-	public BaseExpressionAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, int naturalKeyOrder) {
+	public BaseExpressionAttributeDescriptor(IMetaDescriptor<?> parent, String attributeName, Class<?> attributeType, int naturalKeyOrder) {
 		this(parent, attributeName, attributeType, attributeType, naturalKeyOrder);
 	}
 	

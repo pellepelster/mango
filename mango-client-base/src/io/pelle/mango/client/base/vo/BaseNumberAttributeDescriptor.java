@@ -8,7 +8,7 @@ import io.pelle.mango.client.base.vo.query.expressions.NumberExpression;
 @SuppressWarnings("serial")
 public class BaseNumberAttributeDescriptor<T extends Number> extends BaseExpressionAttributeDescriptor<T> {
 
-	public BaseNumberAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<T> numberClass) {
+	public BaseNumberAttributeDescriptor(IMetaDescriptor<?> parent, String attributeName, Class<T> numberClass) {
 		super(parent, attributeName, numberClass, AttributeDescriptor.NO_NATURAL_KEY);
 	}
 

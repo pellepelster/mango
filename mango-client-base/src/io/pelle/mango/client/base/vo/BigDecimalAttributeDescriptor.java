@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 @SuppressWarnings("serial")
 public class BigDecimalAttributeDescriptor extends BaseNumberAttributeDescriptor<BigDecimal> {
 
-	public BigDecimalAttributeDescriptor(IMetaDescriptor metaDescriptor, String attributeName) {
+	public BigDecimalAttributeDescriptor(IMetaDescriptor<?> metaDescriptor, String attributeName) {
 		super(metaDescriptor, attributeName, BigDecimal.class);
 	}
 

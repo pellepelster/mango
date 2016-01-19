@@ -17,7 +17,7 @@ import io.pelle.mango.client.base.vo.query.expressions.PathExpression;
 import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 import io.pelle.mango.db.query.ServerSelectQuery;
 import io.pelle.mango.db.voquery.AttributesDescriptorQuery;
-import io.pelle.mango.db.voquery.VOClassQuery;
+import io.pelle.mango.db.voquery.EntityVOClassQuery;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +52,7 @@ public class EntityUtils {
 
 		ReferenceTree result = new ReferenceTree();
 
-		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(voEntityClass).attributesDescriptors();
+		AttributesDescriptorQuery<?> attributesDescriptorQuery = EntityVOClassQuery.createQuery(voEntityClass).attributesDescriptors();
 		StringTokenizer referenceTreeTokenizer = new StringTokenizer(referenceTree, ",");
 
 		while (referenceTreeTokenizer.hasMoreTokens()) {
@@ -119,7 +119,7 @@ public class EntityUtils {
 
 	public static <T extends IVOEntity> IExpression createExpression(SpelNode spelNode, Class<T> voEntityClass) {
 
-		VOClassQuery voClassQuery = VOClassQuery.createQuery(voEntityClass);
+		EntityVOClassQuery voClassQuery = EntityVOClassQuery.createQuery(voEntityClass);
 
 		if (spelNode instanceof OpAnd) {
 			OpAnd node = (OpAnd) spelNode;
@@ -177,11 +177,11 @@ public class EntityUtils {
 		return ComparisonOperator.EQUALS_NO_CASE;
 	}
 	
-	public static StringAttributeDescriptor createStringAttributeDescriptor(Class<? extends  IBaseVO> voClass, String attributeName) {
-		return new StringAttributeDescriptor(new EntityDescriptor<IBaseVO>(voClass, null, null, null), attributeName);
+	public static StringAttributeDescriptor createStringAttributeDescriptor(Class<? extends IBaseVO> voClass, String attributeName) {
+		return new StringAttributeDescriptor(new EntityDescriptor(voClass, null, null, null), attributeName);
 	}
 
 	public static LongAttributeDescriptor createLongAttributeDescriptor(Class<? extends  IBaseVO> voClass, String attributeName) {
-		return new LongAttributeDescriptor(new EntityDescriptor<IBaseVO>(voClass, null, null, null), attributeName);
+		return new LongAttributeDescriptor(new EntityDescriptor(voClass, null, null, null), attributeName);
 	}
 }

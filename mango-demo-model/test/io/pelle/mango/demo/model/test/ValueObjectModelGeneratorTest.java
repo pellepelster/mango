@@ -26,6 +26,8 @@ public class ValueObjectModelGeneratorTest {
 		ValueObject1 valueObject1 = new ValueObject1();
 		valueObject1.setString1("xxx");
 		assertEquals("xxx", valueObject1.getString1());
+		
+		assertEquals(String.class, ValueObject1.STRING1.getAttributeType());
 	}
 
 	@Test

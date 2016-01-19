@@ -38,7 +38,7 @@ public class LogServiceImpl implements ILogService {
 	}
 
 	@Override
-	public List<LogEntryVO> getLog(int count, Serializable reference) {
+	public List<LogEntryVO> getLog(Integer count, Serializable reference) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(String.format("retrieving %d log entries for reference '%s'", count, reference));
@@ -49,7 +49,7 @@ public class LogServiceImpl implements ILogService {
 	}
 
 	@Override
-	public List<LogEntryVO> getLogBefore(Long timestamp, int count, Serializable reference) {
+	public List<LogEntryVO> getLogBefore(Long timestamp, Integer count, Serializable reference) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(String.format("retrieving %d log entries before %tc for reference '%s'", count, timestamp, reference));
@@ -67,7 +67,7 @@ public class LogServiceImpl implements ILogService {
 	}
 
 	@Override
-	public List<LogEntryVO> getLogAfter(Long timestamp, int count, Serializable reference) {
+	public List<LogEntryVO> getLogAfter(Long timestamp, Integer count, Serializable reference) {
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug(String.format("retrieving %d log entries after %tc for reference '%s'", count, timestamp, reference));

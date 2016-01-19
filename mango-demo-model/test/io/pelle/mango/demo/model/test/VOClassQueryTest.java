@@ -10,24 +10,33 @@ import org.junit.Test;
 import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
 import io.pelle.mango.db.voquery.AttributesDescriptorQuery;
-import io.pelle.mango.db.voquery.VOClassQuery;
+import io.pelle.mango.db.voquery.EntityVOClassQuery;
+import io.pelle.mango.db.voquery.ValueObjectClassQuery;
 import io.pelle.mango.demo.client.test.Entity1VO;
 import io.pelle.mango.demo.client.test.Entity4VO;
 import io.pelle.mango.demo.client.test.Entity5VO;
+import io.pelle.mango.demo.client.test.ValueObject1;
 
 public class VOClassQueryTest {
 
 	@Test
-	public void testAttributesDescriptorQuery() {
+	public void testEntityVOAttributesDescriptorQuery() {
 
-		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors();
+		AttributesDescriptorQuery<?> attributesDescriptorQuery = EntityVOClassQuery.createQuery(Entity1VO.class).attributesDescriptors();
 		assertEquals(24, attributesDescriptorQuery.getCount());
+	}
+
+	@Test
+	public void testValueObjectAttributesDescriptorQuery() {
+
+		AttributesDescriptorQuery<?> attributesDescriptorQuery = ValueObjectClassQuery.createQuery(ValueObject1.class).attributesDescriptors();
+		assertEquals(4, attributesDescriptorQuery.getCount());
 	}
 
 	@Test
 	public void testAttributesDescriptorQueryByType() {
 
-		AttributesDescriptorQuery<StringAttributeDescriptor> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byType(StringAttributeDescriptor.class);
+		AttributesDescriptorQuery<StringAttributeDescriptor> attributesDescriptorQuery = EntityVOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byType(StringAttributeDescriptor.class);
 
 		assertEquals(6, attributesDescriptorQuery.getCount());
 		assertEquals(String.class, attributesDescriptorQuery.iterator().next().getAttributeType());
@@ -37,10 +46,10 @@ public class VOClassQueryTest {
 	@Test
 	public void testAttributesDescriptorQueryByName() {
 
-		AttributesDescriptorQuery<StringAttributeDescriptor> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDatatype1");
+		AttributesDescriptorQuery<StringAttributeDescriptor> attributesDescriptorQuery = EntityVOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDatatype1");
 		assertEquals("stringDatatype1", attributesDescriptorQuery.getSingleResult().getAttributeName());
 
-		attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDATatype1");
+		attributesDescriptorQuery = EntityVOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("stringDATatype1");
 		assertEquals("stringDatatype1", attributesDescriptorQuery.getSingleResult().getAttributeName());
 
 	}
@@ -48,7 +57,7 @@ public class VOClassQueryTest {
 	@Test
 	public void testQueryEntity1FileEntityDatatypes1() {
 
-		AttributesDescriptorQuery attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("fileEntityDatatypes1");
+		AttributesDescriptorQuery attributesDescriptorQuery = EntityVOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().byName("fileEntityDatatypes1");
 		assertTrue(attributesDescriptorQuery.hasExactlyOne());
 
 	}
@@ -56,7 +65,7 @@ public class VOClassQueryTest {
 	@Test
 	public void testEntity5VOAttributesDescriptorQueryNaturalKeys() {
 
-		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity5VO.class).attributesDescriptors().naturalKeys();
+		AttributesDescriptorQuery<?> attributesDescriptorQuery = EntityVOClassQuery.createQuery(Entity5VO.class).attributesDescriptors().naturalKeys();
 
 		assertEquals(2, attributesDescriptorQuery.getCount());
 
@@ -75,7 +84,7 @@ public class VOClassQueryTest {
 	@Test
 	public void testAttributesDescriptorQueryNaturalKeys() {
 
-		AttributesDescriptorQuery<?> attributesDescriptorQuery = VOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().naturalKeys();
+		AttributesDescriptorQuery<?> attributesDescriptorQuery = EntityVOClassQuery.createQuery(Entity1VO.class).attributesDescriptors().naturalKeys();
 
 		assertEquals(1, attributesDescriptorQuery.getCount());
 

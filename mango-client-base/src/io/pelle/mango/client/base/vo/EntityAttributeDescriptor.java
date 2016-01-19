@@ -8,19 +8,19 @@ import io.pelle.mango.client.base.vo.query.expressions.NumberExpression;
 @SuppressWarnings("serial")
 public class EntityAttributeDescriptor<T extends IVOEntity> extends BaseExpressionAttributeDescriptor<T> {
 
-	public EntityAttributeDescriptor(IMetaDescriptor metaDescriptor, String attributeName, Class<T> entityType, int naturalKeyOrder) {
+	public EntityAttributeDescriptor(IMetaDescriptor<?> metaDescriptor, String attributeName, Class<T> entityType, int naturalKeyOrder) {
 		super(metaDescriptor, attributeName, entityType, entityType, naturalKeyOrder);
 	}
 
-	public EntityAttributeDescriptor(IMetaDescriptor metaDescriptor, String attributeName, Class<T> entityType) {
+	public EntityAttributeDescriptor(IMetaDescriptor<?> metaDescriptor, String attributeName, Class<T> entityType) {
 		super(metaDescriptor, attributeName, entityType, entityType, AttributeDescriptor.NO_NATURAL_KEY);
 	}
 
-	public EntityAttributeDescriptor(IMetaDescriptor metaDescriptor, String attributeName) {
+	public EntityAttributeDescriptor(IMetaDescriptor<?> metaDescriptor, String attributeName) {
 		super(metaDescriptor, attributeName, String.class, AttributeDescriptor.NO_NATURAL_KEY);
 	}
 
-	public EntityAttributeDescriptor(IMetaDescriptor metaDescriptor, String attributeName, int naturalKeyOrder) {
+	public EntityAttributeDescriptor(IMetaDescriptor<?> metaDescriptor, String attributeName, int naturalKeyOrder) {
 		super(metaDescriptor, attributeName, String.class, naturalKeyOrder);
 	}
 
@@ -29,8 +29,8 @@ public class EntityAttributeDescriptor<T extends IVOEntity> extends BaseExpressi
 		return new EntityCompareExpression(entityFieldExpression, ComparisonOperator.EQUALS, new NumberExpression(value.getId()));
 	}
 
-	protected EntityAttributeDescriptor cloneWithNewParent(IAttributeDescriptor<?> parentAttributeDescriptor) {
-		EntityAttributeDescriptor clone = new EntityAttributeDescriptor(parentAttributeDescriptor, getAttributeName(), getNaturalKeyOrder());
+	protected EntityAttributeDescriptor<?> cloneWithNewParent(IAttributeDescriptor<?> parentAttributeDescriptor) {
+		EntityAttributeDescriptor<?> clone = new EntityAttributeDescriptor(parentAttributeDescriptor, getAttributeName(), getNaturalKeyOrder());
 		return clone;
 	}
 }

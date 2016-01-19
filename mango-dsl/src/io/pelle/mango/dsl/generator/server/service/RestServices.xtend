@@ -4,6 +4,8 @@
 package io.pelle.mango.dsl.generator.server.service
 
 import com.google.inject.Inject
+import io.pelle.mango.client.base.vo.AttributeDescriptor
+import io.pelle.mango.client.base.vo.IAttributeDescriptor
 import io.pelle.mango.dsl.generator.client.ClientNameUtils
 import io.pelle.mango.dsl.generator.client.web.BaseServices
 import io.pelle.mango.dsl.generator.server.ServerAttributeUtils
@@ -13,6 +15,13 @@ import io.pelle.mango.dsl.mango.Service
 import io.pelle.mango.dsl.mango.ServiceMethod
 import io.pelle.mango.dsl.mango.ValueObject
 import java.util.Date
+import org.eclipse.xtext.common.types.JvmFormalParameter
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
+import org.eclipse.xtext.common.types.JvmType
+import org.eclipse.xtext.common.types.JvmTypeConstraint
+import org.eclipse.xtext.common.types.JvmTypeParameter
+import org.eclipse.xtext.common.types.JvmTypeReference
+import org.eclipse.xtext.common.types.JvmUpperBound
 import org.eclipse.xtext.xbase.compiler.ImportManager
 
 class RestServices extends BaseServices {
@@ -36,15 +45,68 @@ class RestServices extends BaseServices {
 	«FOR i : importManager.imports»
 	import «i»;
 	«ENDFOR»
+	import io.pelle.mango.client.base.vo.ValueObjectDescriptor;
 
 	public class «restControllerRequestVOName(service, method)»«method.methodTypeParameter» implements io.pelle.mango.client.base.vo.IValueObject {
+
+		public static ValueObjectDescriptor<«restControllerRequestVOName(service, method)»> «restControllerRequestVOName(service, method).metaDescriptorConstantName» = new ValueObjectDescriptor<«restControllerRequestVOName(service, method)»>(«restControllerRequestVOName(service, method)».class);
+		
+		public static «IAttributeDescriptor.name»<?>[] getAttributeDescriptors() {
+			return new «IAttributeDescriptor.name»[]{
+
+			«FOR parameter : method.params»
+				«parameter.name.attributeConstantName»,
+			«ENDFOR»
+			};
+		}
+		
 		«FOR parameter : method.params»
-			«attribute(parameter.parameterType.qualifiedName, parameter.name)»
-			«getter(parameter.parameterType.qualifiedName, parameter.name)»
-			«setter(parameter.parameterType.qualifiedName, parameter.name)»
+
+
+		«var type = parameter.jvmFormalParameter»
+		public static «IAttributeDescriptor.name»<«type»> «parameter.name.attributeConstantName» = new «AttributeDescriptor.name»<«type»>(«restControllerRequestVOName(service, method).metaDescriptorConstantName», "«parameter.name.attributeName»", «type».class, «type».class);
+
+		«attribute(parameter.parameterType.qualifiedName, parameter.name)»
+		«getter(parameter.parameterType.qualifiedName, parameter.name)»
+		«setter(parameter.parameterType.qualifiedName, parameter.name)»
 		«ENDFOR»
 	}
 	'''
+	
+	def jvmFormalParameter(JvmFormalParameter jvmFormalParameter) {
+		jvmFormalParameter.parameterType.jvmTypeReference
+	}
+
+
+	def dispatch jvmTypeReference(JvmParameterizedTypeReference jvmTypeReference) {
+		jvmTypeReference.type.jvmType
+	}
+
+	def dispatch jvmTypeReference(JvmTypeReference jvmTypeReference) {
+		jvmTypeReference.type.jvmType
+	}
+
+	def dispatch jvmType(JvmType jvmType) {
+		jvmType.qualifiedName
+	}
+	
+	def dispatch jvmType(JvmTypeParameter jvmType) {
+
+		if (jvmType.constraints.isEmpty) {
+			jvmType.qualifiedName
+		} else {
+			jvmType.constraints.get(0).jvmTypeConstraint
+		}	
+	}
+	
+
+	def dispatch jvmTypeConstraint(JvmTypeConstraint jvmTypeConstraint) {
+		throw new RuntimeException("not implemented")
+	}
+	
+	def dispatch jvmTypeConstraint(JvmUpperBound jvmTypeConstraint) {
+		jvmTypeConstraint.typeReference.qualifiedName	
+	}
 
 	def restServiceController(Service service) '''
 		

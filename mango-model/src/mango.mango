@@ -286,9 +286,9 @@ project Mango {
 			}
 			
     		service LogService {
-				method List<LogEntryVO> getLog(int count, java.io.Serializable ^reference)
-				method List<LogEntryVO> getLogBefore(Long timestamp, int count, java.io.Serializable ^reference)
-				method List<LogEntryVO> getLogAfter(Long timestamp, int count, java.io.Serializable ^reference)
+				method List<LogEntryVO> getLog(Integer count, java.io.Serializable ^reference)
+				method List<LogEntryVO> getLogBefore(Long timestamp, Integer count, java.io.Serializable ^reference)
+				method List<LogEntryVO> getLogAfter(Long timestamp, Integer count, java.io.Serializable ^reference)
 			}
 			
 		}

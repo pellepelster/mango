@@ -17,10 +17,11 @@ public class RestAttributeDocumentation {
 		}
 	};
 
-	public RestAttributeDocumentation(String name, Class<?> type) {
+	public RestAttributeDocumentation(String name, Class<?> type, boolean isList) {
 		super();
 		this.name = name;
 		this.type = DocumentationReflectionFactory.getTypeDocumentation(type);
+		this.isList = isList;
 	}
 
 	public String getName() {

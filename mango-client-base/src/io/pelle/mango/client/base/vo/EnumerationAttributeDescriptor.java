@@ -8,7 +8,7 @@ import io.pelle.mango.client.base.vo.query.expressions.StringExpression;
 @SuppressWarnings("serial")
 public class EnumerationAttributeDescriptor<ENUM_TYPE> extends BaseExpressionAttributeDescriptor<ENUM_TYPE> implements IAttributeDescriptor<ENUM_TYPE> {
 
-	public EnumerationAttributeDescriptor(IMetaDescriptor parent, String attributeName, Class<?> attributeType, Class<?> collectionType, int naturalKeyOrder) {
+	public EnumerationAttributeDescriptor(IMetaDescriptor<?> parent, String attributeName, Class<?> attributeType, Class<?> collectionType, int naturalKeyOrder) {
 		super(parent, attributeName, collectionType, attributeType, naturalKeyOrder);
 	}
 

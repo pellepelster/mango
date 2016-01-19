@@ -231,8 +231,8 @@ abstract class TypeUtils {
 		entityAttribute.type.type
 	}
 
-	def dispatch String getTypeClass(EntityAttribute entityAttribute) {
-		getType(entityAttribute) + ".class"
+	def dispatch String getTypeClass(ValueObjectEntityAttribute entityAttribute) {
+		getTypeClassWithCardinality(entityAttribute.cardinality, getType(entityAttribute.type))
 	}
 
 	def dispatch String getRawTypeClass(EntityAttribute entityAttribute) {
@@ -299,6 +299,10 @@ abstract class TypeUtils {
 	
 	def dispatch String getType(BinaryEntityAttribute entityAttribute) {
 		return "byte[]"
+	}
+
+	def dispatch String getTypeClass(EntityAttribute entityAttribute) {
+		return entityAttribute.type + ".class"
 	}
 
 	//-----------------

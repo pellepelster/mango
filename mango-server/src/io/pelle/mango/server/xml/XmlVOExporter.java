@@ -5,7 +5,7 @@ import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.entity.IBaseEntityService;
 import io.pelle.mango.db.util.BeanUtils;
-import io.pelle.mango.db.voquery.VOClassQuery;
+import io.pelle.mango.db.voquery.EntityVOClassQuery;
 
 import java.io.OutputStream;
 import java.util.Arrays;
@@ -168,7 +168,7 @@ public class XmlVOExporter extends BaseXmlVOHandler {
 		eventWriter.add(this.eventFactory.createStartElement("", "", referenceElementName));
 		eventWriter.add(this.END);
 
-		Iterator<? extends IAttributeDescriptor<?>> naturalKeyAttributeDescriptors = VOClassQuery.createQuery(vo.getClass()).attributesDescriptors().naturalKeys().iterator();
+		Iterator<? extends IAttributeDescriptor<?>> naturalKeyAttributeDescriptors = EntityVOClassQuery.createQuery(vo.getClass()).attributesDescriptors().naturalKeys().iterator();
 
 		if (naturalKeyAttributeDescriptors.hasNext()) {
 			createAttributeNode(eventWriter, IBaseVO.FIELD_ID.getAttributeName(), vo.getOid(), indentation + 1);

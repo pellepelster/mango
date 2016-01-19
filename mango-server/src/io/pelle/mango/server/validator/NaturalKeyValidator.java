@@ -6,7 +6,7 @@ import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
 import io.pelle.mango.db.dao.BaseVODAO;
-import io.pelle.mango.db.voquery.VOClassQuery;
+import io.pelle.mango.db.voquery.EntityVOClassQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +47,7 @@ public class NaturalKeyValidator implements IValidator {
 
 		boolean hasNaturalKeys = false;
 
-		for (IAttributeDescriptor naturalKeyAttributeDescriptor : VOClassQuery.createQuery(vo.getClass()).attributesDescriptors().naturalKeys()) {
+		for (IAttributeDescriptor naturalKeyAttributeDescriptor : EntityVOClassQuery.createQuery(vo.getClass()).attributesDescriptors().naturalKeys()) {
 
 			hasNaturalKeys = true;
 			Object naturalKeyValue = vo.get(naturalKeyAttributeDescriptor.getAttributeName());

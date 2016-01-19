@@ -5,7 +5,7 @@ import io.pelle.mango.client.base.messages.ValidationMessage;
 import io.pelle.mango.client.base.util.CollectionUtils;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.StringAttributeDescriptor;
-import io.pelle.mango.db.voquery.VOClassQuery;
+import io.pelle.mango.db.voquery.EntityVOClassQuery;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class LengthValidator implements IValidator {
 
 		List<IValidationMessage> result = new ArrayList<IValidationMessage>();
 
-		for (StringAttributeDescriptor attributeDescriptor : VOClassQuery.createQuery(vo).attributesDescriptors().byType(StringAttributeDescriptor.class)) {
+		for (StringAttributeDescriptor attributeDescriptor : EntityVOClassQuery.createQuery(vo).attributesDescriptors().byType(StringAttributeDescriptor.class)) {
 
 			Object value = vo.get(attributeDescriptor.getAttributeName());
 

@@ -10,7 +10,7 @@ import io.pelle.mango.client.base.vo.query.Entity;
 import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 import io.pelle.mango.client.base.vo.query.Join;
 import io.pelle.mango.client.base.vo.query.SelectQuery;
-import io.pelle.mango.db.voquery.VOClassQuery;
+import io.pelle.mango.db.voquery.EntityVOClassQuery;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -102,7 +102,7 @@ public final class DBUtil {
 
 			for (String attributeName : classLoadAssociation.getValue()) {
 
-				IAttributeDescriptor<?> attributeDescriptor = VOClassQuery.createQuery(classLoadAssociation.getKey()).attributesDescriptors().byName(attributeName).getSingleResult();
+				IAttributeDescriptor<?> attributeDescriptor = EntityVOClassQuery.createQuery(classLoadAssociation.getKey()).attributesDescriptors().byName(attributeName).getSingleResult();
 
 				if (IBaseVO.class.isAssignableFrom(attributeDescriptor.getListAttributeType())) {
 					addNaturalKeyAttributes((Class<? extends IVOEntity>) attributeDescriptor.getListAttributeType(), classLoadAssociations);
@@ -113,7 +113,7 @@ public final class DBUtil {
 
 	public static void addNaturalKeyAttributes(Class<? extends IVOEntity> voEntityClass, Map<Class<? extends IVOEntity>, Set<String>> classLoadAssociations) {
 
-		for (IAttributeDescriptor<?> naturalKey : VOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys()) {
+		for (IAttributeDescriptor<?> naturalKey : EntityVOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys()) {
 
 			if (IBaseVO.class.isAssignableFrom(naturalKey.getListAttributeType())) {
 				getAssociations(voEntityClass, classLoadAssociations).add(naturalKey.getAttributeName());
@@ -179,7 +179,7 @@ public final class DBUtil {
 
 	public static <T extends IVOEntity> void populateNaturalKeyQuery(Class<T> voEntityClass, SelectQuery selectQuery, IAttributeDescriptor<?> parentAttribute, String naturalKey) {
 
-		for (IAttributeDescriptor naturalKeyAttributeDescriptor : VOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys()) {
+		for (IAttributeDescriptor naturalKeyAttributeDescriptor : EntityVOClassQuery.createQuery(voEntityClass).attributesDescriptors().naturalKeys()) {
 
 			if (IBaseVO.class.isAssignableFrom(naturalKeyAttributeDescriptor.getListAttributeType())) {
 

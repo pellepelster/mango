@@ -4,7 +4,7 @@ import io.pelle.mango.client.base.vo.query.IBooleanExpression;
 
 import com.google.common.base.Optional;
 
-public interface IAttributeDescriptor<AttributeType> extends IMetaDescriptor {
+public interface IAttributeDescriptor<AttributeType> extends IMetaDescriptor<AttributeType> {
 
 	String getAttributeName();
 

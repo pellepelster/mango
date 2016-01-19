@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.pelle.mango.client.base.vo.IAttributeDescriptor;
 import io.pelle.mango.client.base.vo.IBaseVO;
 import io.pelle.mango.client.base.vo.IValueObject;
+import io.pelle.mango.db.voquery.ValueObjectClassQuery;
 import io.pelle.mango.server.base.meta.Documented;
 
 public class DocumentationReflectionFactory {
@@ -34,21 +36,14 @@ public class DocumentationReflectionFactory {
 				
 				List<RestAttributeDocumentation> attributeDocumentations = new ArrayList<>();
 
-				try {
-					BeanInfo beanInfo = Introspector.getBeanInfo(type);
+				for (IAttributeDescriptor<?> attributeDescriptor : ValueObjectClassQuery.createQuery((Class<? extends IValueObject>) type).attributesDescriptors().getCollection()) {
+					
+					RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(attributeDescriptor.getAttributeName(), attributeDescriptor.getListAttributeType(), attributeDescriptor.getListAttributeType() != attributeDescriptor.getAttributeType());
+					attributeDocumentations.add(attributeDocumentation);
 
-					for (PropertyDescriptor propertyDescriptor : beanInfo.getPropertyDescriptors()) {
-
-						if (propertyDescriptor.getReadMethod() != null && propertyDescriptor.getWriteMethod() != null) {
-							RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(propertyDescriptor.getName(), propertyDescriptor.getPropertyType());
-							attributeDocumentations.add(attributeDocumentation);
-						}
-					}
-
-					types.put(type, new RestTypeDocumentation(type, attributeDocumentations));
-				} catch (IntrospectionException e) {
-					throw new RuntimeException(e);
 				}
+				
+				types.put(type, new RestTypeDocumentation(type, attributeDocumentations));
 			} else {
 				types.put(type, new RestTypeDocumentation(type));
 			}
@@ -59,7 +54,7 @@ public class DocumentationReflectionFactory {
 	}
 
 	public static List<RestMethodDocumentation> getServiceMethods(RestServiceDocumentation service) {
-		
+
 		List<RestMethodDocumentation> methodDocumentations = new ArrayList<RestMethodDocumentation>();
 
 		for (Method method : service.getServiceClass().getMethods()) {
@@ -80,43 +75,43 @@ public class DocumentationReflectionFactory {
 
 		return methodDocumentations;
 	}
-	
+
 	public static List<RestAttributeDocumentation> getMethodAttributes(RestMethodDocumentation method) {
-		
+
 		List<RestAttributeDocumentation> attributes = new ArrayList<RestAttributeDocumentation>();
-		
+
 		Annotation[][] annotations = method.getMethod().getParameterAnnotations();
 		Class<?>[] parameterTypes = method.getMethod().getParameterTypes();
-		
+
 		// check parameters
 		int parameterIndex = 0;
 		for (Annotation[] outerAnnotation : annotations) {
-			
+
 			for (Annotation innerAnnotation : outerAnnotation) {
-				
+
 				Class<?> parameterType = parameterTypes[parameterIndex];
-				
+
 				if (innerAnnotation.annotationType().equals(RequestBody.class)) {
-					
-					RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(null, parameterType);
+
+					RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(null, parameterType, false);
 					attributes.add(attributeDocumentation);
-					
-				} else 	if (innerAnnotation.annotationType().equals(RequestParam.class)) {
-					
+
+				} else if (innerAnnotation.annotationType().equals(RequestParam.class)) {
+
 					RequestParam requestParam = (RequestParam) innerAnnotation;
-					
-					RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(requestParam.value(), parameterType);
+
+					RestAttributeDocumentation attributeDocumentation = new RestAttributeDocumentation(requestParam.value(), parameterType, false);
 					attributes.add(attributeDocumentation);
 				}
-				
+
 			}
-			
+
 			parameterIndex++;
 		}
-		
+
 		return attributes;
 	}
-	
+
 	public static RestServiceDocumentation getDocumentationFor(Class<?> serviceClass) {
 
 		Documented documented = serviceClass.getAnnotation(Documented.class);

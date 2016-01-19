@@ -22,9 +22,13 @@ Require-Bundle: org.eclipse.xtext.ui,
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.xbase.lib
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: io.pelle.mango.dsl.ui.quickfix,
+Export-Package: io.pelle.mango.dsl.ui,
  io.pelle.mango.dsl.ui.contentassist,
  io.pelle.mango.dsl.ui.contentassist.antlr,
+ io.pelle.mango.dsl.ui.contentassist.antlr.internal,
  io.pelle.mango.dsl.ui.internal,
- io.pelle.mango.dsl.ui.contentassist.antlr.internal
+ io.pelle.mango.dsl.ui.labeling,
+ io.pelle.mango.dsl.ui.outline,
+ io.pelle.mango.dsl.ui.quickfix
 Bundle-Activator: io.pelle.mango.dsl.ui.internal.MangoActivator
+Bundle-ClassPath: .

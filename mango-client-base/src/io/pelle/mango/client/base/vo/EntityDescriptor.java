@@ -5,7 +5,7 @@ import com.google.common.base.Objects;
 @SuppressWarnings("serial")
 public class EntityDescriptor<T extends IVOEntity> implements IEntityDescriptor<T> {
 
-	private Class<? extends IVOEntity> voEntityClass;
+	private Class<T> voEntityClass;
 
 	private String label;
 
@@ -16,7 +16,7 @@ public class EntityDescriptor<T extends IVOEntity> implements IEntityDescriptor<
 	public EntityDescriptor() {
 	}
 
-	public EntityDescriptor(Class<? extends IVOEntity> voEntityClass, String name, String label, String pluralLabel) {
+	public EntityDescriptor(Class<T> voEntityClass, String name, String label, String pluralLabel) {
 		super();
 		this.voEntityClass = voEntityClass;
 		this.name = name;
@@ -25,12 +25,12 @@ public class EntityDescriptor<T extends IVOEntity> implements IEntityDescriptor<
 	}
 
 	@Override
-	public Class<? extends IVOEntity> getVOEntityClass() {
+	public Class<T> getVOEntityClass() {
 		return voEntityClass;
 	}
 
 	@Override
-	public IMetaDescriptor getParent() {
+	public IMetaDescriptor<?> getParent() {
 		return null;
 	}
 

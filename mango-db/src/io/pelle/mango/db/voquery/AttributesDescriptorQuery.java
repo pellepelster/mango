@@ -19,7 +19,7 @@ import com.google.common.collect.Collections2;
 
 public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> extends BaseCollectionQuery<T> {
 
-	private Class<? extends IVOEntity> voEntityClass;
+	private Class<?> voEntityClass;
 
 	public static AttributesDescriptorQuery<?> createQuery(Class<? extends IVOEntity> voEntityClass) {
 		return new AttributesDescriptorQuery(voEntityClass, (Collection) Arrays.asList(BeanUtils.getAttributeDescriptors(voEntityClass)));
@@ -31,7 +31,7 @@ public class AttributesDescriptorQuery<T extends IAttributeDescriptor<?>> extend
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static AttributesDescriptorQuery<?> createQuery(Class<? extends IVOEntity> voEntityClass, IAttributeDescriptor<?>[] attributeDescriptors) {
+	public static AttributesDescriptorQuery<?> createQuery(Class<?> voEntityClass, IAttributeDescriptor<?>[] attributeDescriptors) {
 		return new AttributesDescriptorQuery(voEntityClass, Arrays.asList(attributeDescriptors));
 	}
 
