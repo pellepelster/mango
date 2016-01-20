@@ -17,23 +17,23 @@ public abstract class BaseExpressionAttributeDescriptor<T> extends AttributeDesc
 		String currentAttributeName = "";
 
 		IAttributeDescriptor<?> currentAttributeDescriptor = this;
-		IMetaDescriptor<?> currentMetaDescriptor = null;
+		IEntityDescriptor<?> currentEntityDescriptor = null;
 		String delimiter = "";
 
-		while (currentMetaDescriptor == null) {
+		while (currentEntityDescriptor == null) {
 
 			currentAttributeName = currentAttributeDescriptor.getAttributeName() + delimiter + currentAttributeName;
 			delimiter = ".";
 
-			if (currentAttributeDescriptor.getParent() instanceof IMetaDescriptor) {
-				currentMetaDescriptor = (IMetaDescriptor<?>) currentAttributeDescriptor.getParent();
+			if (currentAttributeDescriptor.getParent() instanceof IEntityDescriptor) {
+				currentEntityDescriptor = (IEntityDescriptor<?>) currentAttributeDescriptor.getParent();
 			} else if (currentAttributeDescriptor.getParent() instanceof IAttributeDescriptor) {
 				currentAttributeDescriptor = (IAttributeDescriptor<?>) currentAttributeDescriptor.getParent();
 			}
 
 		}
 
-		entityFieldExpression = new PathExpression(currentMetaDescriptor.getVOEntityClass().getName(), currentAttributeName);
+		entityFieldExpression = new PathExpression(currentEntityDescriptor.getVOEntityClass().getName(), currentAttributeName);
 	}
 
 	public BaseExpressionAttributeDescriptor(IMetaDescriptor<?> parent, String attributeName, Class<?> attributeType, int naturalKeyOrder) {
