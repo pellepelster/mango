@@ -60,9 +60,9 @@ public class MangoSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new AuthenticatedVoter();
 	}
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().accessDecisionManager(accessDecisionManager()).anyRequest().authenticated();
-	}
-
+@Override
+protected void configure(HttpSecurity http) throws Exception {
+	// TODO Auto-generated method stub
+	super.configure(http);
+}
 }
