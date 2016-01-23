@@ -6,7 +6,7 @@ import javax.servlet.ServletRegistration;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.util.Log4jConfigListener;
 
@@ -20,24 +20,14 @@ public abstract class MangoWebApplicationInitializer extends AbstractSecurityWeb
 
 	private static final String REMOTE_SERVLET_NAME = "remote";
 
-	private String configLocation;
-
-	private Class<?> configLocationClass;
-
-	public MangoWebApplicationInitializer(String configLocation) {
-		super();
-		this.configLocation = configLocation;
-	}
-
-	public MangoWebApplicationInitializer(Class<?> configLocationClass) {
-		super();
-		this.configLocationClass = configLocationClass;
+	public MangoWebApplicationInitializer(Class<?> ...configLocationClasses) {
+		super(configLocationClasses);
 	}
 
 	@Override
 	public void afterSpringSecurityFilterChain(ServletContext servletContext) {
 
-		WebApplicationContext context = getContext();
+		WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
 
 		servletContext.addListener(new ContextLoaderListener(context));
 		servletContext.addListener(new AwsRdsMysqlJndiInjector());
@@ -52,21 +42,6 @@ public abstract class MangoWebApplicationInitializer extends AbstractSecurityWeb
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("/" + REMOTE_SERVLET_NAME + "/*");
 
-	}
-
-	private AnnotationConfigWebApplicationContext getContext() {
-
-		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-
-		if (configLocation != null) {
-			context.setConfigLocation(configLocation);
-		}
-
-		if (configLocationClass != null) {
-			context.setConfigLocation(configLocationClass.getName());
-		}
-
-		return context;
 	}
 
 }
