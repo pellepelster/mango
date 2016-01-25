@@ -71,6 +71,7 @@ allprojects {
 
 	configurations {
 		provided
+		providedGwt
 	}
 
 	sourceSets {
