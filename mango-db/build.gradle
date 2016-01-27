@@ -19,7 +19,8 @@ dependencies {
 	compile group: "org.springframework", name: "spring-tx", version: versions.spring
 	
 	compile group: "aopalliance", name: "aopalliance", version: "1.0"
-	compile group: "cglib", name: "cglib", version: "3.1"
+	compile group: "cglib", name: "cglib", version: "3.2.0"
+	compile 'org.ow2.asm:asm:5.0.4'
 
 	compile group: 'io.dropwizard.metrics', name: 'metrics-core', version: versions.metrics
 
