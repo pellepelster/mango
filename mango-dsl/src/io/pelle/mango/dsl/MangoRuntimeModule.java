@@ -3,29 +3,9 @@
  */
 package io.pelle.mango.dsl;
 
-import io.pelle.mango.dsl.generator.MangoGenerator;
-
-import org.eclipse.xtext.generator.IGenerator;
-import org.eclipse.xtext.generator.IOutputConfigurationProvider;
-
-import com.google.inject.Binder;
-import com.google.inject.Singleton;
-
 /**
- * Use this class to register components to be used at runtime / without the
- * Equinox extension registry.
+ * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 public class MangoRuntimeModule extends io.pelle.mango.dsl.AbstractMangoRuntimeModule {
-
-	@Override
-	public void configure(Binder binder) {
-		super.configure(binder);
-		binder.bind(IOutputConfigurationProvider.class).to(OutputConfigurationProvider.class).in(Singleton.class);
-	}
-
-	@Override
-	public Class<? extends IGenerator> bindIGenerator() {
-		return MangoGenerator.class;
-	}
 
 }

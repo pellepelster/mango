@@ -1,17 +1,10 @@
 package io.pelle.mango.dsl.jvmmodel
 
 import com.google.inject.Inject
-import io.pelle.mango.dsl.generator.client.ClientNameUtils
-import io.pelle.mango.dsl.generator.server.ServerNameUtils
-import io.pelle.mango.dsl.mango.Entity
-import io.pelle.mango.dsl.mango.Enumeration
-import io.pelle.mango.dsl.mango.ModelRoot
-import io.pelle.mango.dsl.mango.ValueObject
-import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
+import io.pelle.mango.dsl.mango.ModelRoot
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -21,36 +14,29 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
  */
 class MangoJvmModelInferrer extends AbstractModelInferrer {
 
-	@Inject
-	extension JvmTypesBuilder
-
-	@Inject
-	ClientNameUtils clientNameUtils
-
-	@Inject
-	ServerNameUtils serverNameUtils
-	
-	/**
-     * convenience API to build and initialize JVM types and t heir members.
+    /**
+     * convenience API to build and initialize JVM types and their members.
      */
+	@Inject extension JvmTypesBuilder
+
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the
 	 * given element's type that is contained in a resource.
 	 * 
 	 * @param element
 	 *            the model to create one or more
-	 *            {@link JvmDeclaredType declared
+	 *            {@link org.eclipse.xtext.common.types.JvmDeclaredType declared
 	 *            types} from.
 	 * @param acceptor
 	 *            each created
-	 *            {@link JvmDeclaredType type}
+	 *            {@link org.eclipse.xtext.common.types.JvmDeclaredType type}
 	 *            without a container should be passed to the acceptor in order
 	 *            get attached to the current resource. The acceptor's
 	 *            {@link IJvmDeclaredTypeAcceptor#accept(org.eclipse.xtext.common.types.JvmDeclaredType)
 	 *            accept(..)} method takes the constructed empty type for the
 	 *            pre-indexing phase. This one is further initialized in the
 	 *            indexing phase using the closure you pass to the returned
-	 *            {@link IPostIndexingInitializing#initializeLater(org.eclipse.xtext.xbase.lib.Procedures.Procedure1)
+	 *            {@link org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor.IPostIndexingInitializing#initializeLater(org.eclipse.xtext.xbase.lib.Procedures.Procedure1)
 	 *            initializeLater(..)}.
 	 * @param isPreIndexingPhase
 	 *            whether the method is called in a pre-indexing phase, i.e.
@@ -58,40 +44,19 @@ class MangoJvmModelInferrer extends AbstractModelInferrer {
 	 *            rely on linking using the index if isPreIndexingPhase is
 	 *            <code>true</code>.
 	 */
-	def dispatch void infer(ModelRoot modelRoot, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-
-		for (Entity entity : modelRoot.eAllContents.toIterable.filter(Entity)) {
-			infer(entity, acceptor, isPreIndexingPhase);
-		}
-
-		for (ValueObject valueObject : modelRoot.eAllContents.toIterable.filter(ValueObject)) {
-			infer(valueObject, acceptor, isPreIndexingPhase);
-		}
-
-		for (Enumeration enumeration : modelRoot.eAllContents.toIterable.filter(Enumeration)) {
-			infer(enumeration, acceptor, isPreIndexingPhase);
-		}
-	}
-
-	def dispatch void infer(ValueObject valueObject, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
-		acceptor.accept(valueObject.toClass(clientNameUtils.voFullQualifiedName(valueObject))).initializeLater [
-			documentation = valueObject.documentation
-		]
-	}
-
-	def dispatch void infer(Enumeration enumeration, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
-		acceptor.accept(enumeration.toClass(clientNameUtils.enumerationFullQualifiedName(enumeration))).initializeLater [
-			documentation = enumeration.documentation
-		]
-	}
-
-	def dispatch void infer(Entity entity, IJvmDeclaredTypeAcceptor acceptor, boolean isPrelinkingPhase) {
-		acceptor.accept(entity.toClass(serverNameUtils.entityFullQualifiedName(entity))).initializeLater [
-			documentation = entity.documentation
-		]
-		acceptor.accept(entity.toClass(clientNameUtils.voFullQualifiedName(entity))).initializeLater [
-			documentation = entity.documentation
-		]
-	}
-
+   	def dispatch void infer(ModelRoot element, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
+   		// Here you explain how your model is mapped to Java elements, by writing the actual translation code.
+   		
+   		// An implementation for the initial hello world example could look like this:
+//   		acceptor.accept(element.toClass("my.company.greeting.MyGreetings")) [
+//   			for (greeting : element.greetings) {
+//   				members += greeting.toMethod("hello" + greeting.name, typeRef(String)) [
+//   					body = '''
+//							return "Hello «greeting.name»";
+//   					'''
+//   				]
+//   			}
+//   		]
+   	}
 }
+

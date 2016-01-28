@@ -1,6 +1,4 @@
-
-
-apply plugin: "org.xtext.xtext"
+apply plugin: "org.xtext.builder"
 
 xtext {
 
@@ -8,7 +6,7 @@ xtext {
 		
 		mango {
 			setup = 'io.pelle.mango.dsl.MangoStandaloneSetup'
-			consumesJava = true
+	        generator.outlet.producesJava = true
 		}
 	}
 }
@@ -34,9 +32,9 @@ configurations.archives {
 
 dependencies {
 	
-	xtextTooling project(':mango-dsl')
-	xtextTooling project(':mango-db')
-	xtextTooling project(':mango-server-base')
+	xtextLanguages project(':mango-dsl')
+	//xtextTooling project(':mango-db')
+	//xtextTooling project(':mango-server-base')
 	
 	compile project(':mango-db')
 	compile project(':mango-server-base')
@@ -49,7 +47,8 @@ dependencies {
 	generatedServer group: "wsdl4j", name: "wsdl4j", version: "1.6.3"
 	generatedServer group: "org.apache.ws.xmlschema", name: "xmlschema-core", version: "2.1.0"
 	
-	xtextTooling 'org.eclipse.jdt.core.compiler:ecj:4.4.2'
+	//xtextTooling 'org.eclipse.jdt.core.compiler:ecj:4.4.2'
+    //xtextLanguages 'org.example:org.example.mydsl:3.3.3'
 
 }
 
@@ -152,14 +151,14 @@ signing {
 	sign generatedServerJar,  generatedServerSourceJar, generatedClientGWTJar, generatedClientGWTSourceJar, generatedXmlJar, generatedXmlSourceJar
 }
 
-compileGeneratedServerJava.dependsOn("xtextGenerate")
-processGeneratedServerResources.dependsOn("xtextGenerate")
+//compileGeneratedServerJava.dependsOn("xtextGenerate")
+//processGeneratedServerResources.dependsOn("xtextGenerate")
 
-compileGeneratedClientGWTJava.dependsOn("xtextGenerate")
-processGeneratedClientGWTResources.dependsOn("xtextGenerate")
+//compileGeneratedClientGWTJava.dependsOn("xtextGenerate")
+//processGeneratedClientGWTResources.dependsOn("xtextGenerate")
 
-compileGeneratedXmlJava.dependsOn("xtextGenerate")
-processGeneratedXmlResources.dependsOn("xtextGenerate")
+//compileGeneratedXmlJava.dependsOn("xtextGenerate")
+//processGeneratedXmlResources.dependsOn("xtextGenerate")
 
 build.onlyIf { !project.hasProperty('skipGenerate') }
 

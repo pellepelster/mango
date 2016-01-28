@@ -54,6 +54,12 @@ allprojects {
 		mavenCentral()
 
 		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+
+    	jcenter()
+    	
+		maven {
 			name "gwt-sl"
 			url "https://raw.github.com/ggeorgovassilis/gwt-sl/mvn-repo/"
 		}

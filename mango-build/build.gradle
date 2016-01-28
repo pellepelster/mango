@@ -10,17 +10,19 @@ buildscript {
 			layout "maven"
 		}
 		
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+
     	jcenter()
     	
-    	mavenCentral()
-
 	}
 	
 	dependencies {
-		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '0.3.27'
+		classpath group: 'org.xtext', name: 'xtext-gradle-plugin', version: '+'
 		classpath group: 'io.pelle.mango', name: 'mango-gradle-plugin', version: '+'
 		classpath group: 'de.undercouch', name: 'gradle-download-task', version: '2.0.0'
-  }
+	}
 }
 
 ext {
@@ -30,7 +32,7 @@ ext {
 		spring_security: "4.0.2.RELEASE",
 		gwt: "2.7.0",
 		guava: "17.0",
-		xtext: "2.8.4",
+		xtext: "2.9.1",
 		metrics: "3.1.2",
 		xtend_gradle: "0.4.12",
 		xtext_gradle: "0.3.27",
@@ -77,22 +79,22 @@ allprojects {
 	sourceSets {
 		main {
 			java { 
-				srcDirs = ["src"]
+				srcDirs = ["src/main/java"]
 		        compileClasspath += configurations.provided
 				//runtimeClasspath += configurations.provided
 			}
 			resources { 
-				srcDirs = ["src"]
+				srcDirs = ["src/main/resources"]
 			}
 		}
 		test {
 			java {
-				srcDirs = ["test"]
+				srcDirs = ["src/test/java"]
 	    	    compileClasspath += configurations.provided
 	    	    //runtimeClasspath += configurations.provided
 			}
 			resources {
-				srcDirs = ["test"]
+				srcDirs = ["src/test/resources"]
 			}
 		}
 	}

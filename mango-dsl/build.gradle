@@ -29,24 +29,34 @@ buildscript {
 }
 
 sourceSets {
-	main {
-		java {
-			srcDirs = [
-				'src',
-				'xtend-gen',
-				'src-gen'
-			]
-		}
-		resources {
-			srcDirs = [
-				'src',
-				'xtend-gen',
-				'src-gen'
-			]
-		}
 
+	main {
+	
+		java { 
+			srcDirs = [ 'src/main/java', 'xtend-gen', 'src-gen' ]
+	        compileClasspath += configurations.provided
+		}
+		resources { 
+			srcDirs = [ 'src/main/resources', 'xtend-gen', 'src-gen']
+		}
+		
 		xtendOutputDir = 'xtend-gen'
+		
 	}
+	
+	test {
+	
+		java {
+			srcDirs = [ 'src/test/java' ]
+    	    compileClasspath += configurations.provided
+		}
+		
+		resources {
+			srcDirs = [ 'src/test/resources' ]
+		}
+		
+	}
+	
 }
 
 eclipse {
@@ -58,9 +68,10 @@ eclipse {
 
 task generateXtext(type: JavaExec) {
 	main = "org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher"
-	//    classpath = fileTree(classpath).exclude('**/system.properties')   
+	//classpath = fileTree(classpath).exclude('**/system.properties')   
 	classpath = configurations.compile.filter { !it.path.endsWith(".pom") }
-	classpath += files('src')
+	classpath += files('src/main/java')
+	classpath += files('src/main/resources')
 	//jvmArgs = ["-Xdebug", "-Xnoagent", "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8000"]
 	args = [
 		"classpath:///io/pelle/mango/dsl/GenerateMango.mwe2"
