@@ -4,7 +4,9 @@ dependencies {
 }
 
 buildscript {
-	repositories { mavenCentral() }
+	repositories { 
+		mavenCentral()
+	}
 	dependencies { 
 		classpath group: 'org.xtend', name: 'xtend-gradle-plugin', version: versions.xtend_gradle
 	}

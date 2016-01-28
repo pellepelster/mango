@@ -34,8 +34,8 @@ ext {
 		guava: "17.0",
 		xtext: "2.9.1",
 		metrics: "3.1.2",
-		xtend_gradle: "0.4.12",
-		xtext_gradle: "0.3.27",
+		xtend_gradle: "+",
+		xtext_gradle: "+",
 		hsqldb: "2.3.3"
 	]
 
