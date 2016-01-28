@@ -1,0 +1,21 @@
+
+.toolStripBottomBorder {
+	border-bottom: 1px solid #A7ABB4;
+	background:url("./images/ListGrid/header.png") repeat-x scroll left bottom #FFFFFF;
+}
+
+
+.errorListGridCell,
+.errorListGridCellOver,
+.errorListGridCellOverDark,
+.errorListGridCellDark {
+	font-family:Verdana,Bitstream Vera Sans,sans-serif; font-size:11px; text-overflow:ellipsis;
+	color:black;
+	border-bottom:1px solid #ffc0c0; border-top:1px solid #ffc0c0;
+	background-color:#ffc0c0;
+}
+
+
+.countryResultRow {
+	color: #ff00ff;
+}

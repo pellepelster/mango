@@ -1,0 +1,3 @@
+Hello ${name},
+
+welcome to ${link}, your username is ${username}

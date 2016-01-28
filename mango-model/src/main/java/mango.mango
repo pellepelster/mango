@@ -1,0 +1,412 @@
+import java.util.List
+import io.pelle.mango.client.base.modules.hierarchical.HierarchicalConfigurationVO
+import java.util.Map
+import io.pelle.mango.client.base.vo.IBaseVO
+import io.pelle.mango.client.base.messages.IValidationMessage
+import io.pelle.mango.client.base.db.vos.Result
+import io.pelle.mango.client.base.vo.query.SelectQuery
+import io.pelle.mango.client.base.vo.query.DeleteQuery
+import io.pelle.mango.client.hierarchy.DictionaryHierarchicalNodeVO
+import io.pelle.mango.client.system.Systeminformation
+import io.pelle.mango.client.log.LogEntryVO
+import io.pelle.mango.client.security.MangoPermissionVO
+import io.pelle.mango.client.api.webhook.WebhookDefinition
+import io.pelle.mango.client.api.webhook.WebhookVO
+import io.pelle.mango.client.state.Transition
+import io.pelle.mango.client.state.CurrentState
+import io.pelle.mango.client.base.property.IProperty
+import io.pelle.mango.client.base.property.IPropertyCategory
+import java.io.Serializable
+import io.pelle.mango.client.base.db.vos.IHierarchicalVO;
+import io.pelle.mango.client.search.SearchResultItem
+
+project Mango {
+
+	package io.pelle.^mango {
+
+		package api {
+		
+			package webhook {
+			
+				moduledefinition Webhook {
+					parameters {
+					}
+				}
+	
+				valueobject WebhookDefinition {
+					string id
+					string name
+					string 0..n events
+				}
+			
+				entity Webhook {
+					string definitionId
+					string name
+					string ^type
+					string url
+					map string string config
+					string 0..n events
+				}
+				
+				service WebhookService {
+					method List<WebhookVO> getWebhooks()
+					method Result<WebhookVO> addWebhook(WebhookVO webhook)
+					method Boolean removeWebhook(WebhookVO webhook)
+				}
+			}
+		}
+		
+		package state {
+
+			valueobject CurrentState {
+				string stateId
+				valueobject Transition 0..n transitions
+			}
+		
+			valueobject Transition {
+				string id
+				valueobject Event event
+			}
+		
+			valueobject Event {
+				string id
+			}
+			
+			service StateService {
+				method CurrentState getCurrentState(Long id, String voClassName )
+				method CurrentState triggerEvent(String eventId, Long id, String voClassName )
+			}
+		}
+				
+		package ^entity {
+		
+			service BaseEntityService {
+				method <NewVOType extends IBaseVO> NewVOType getNewVO ( String voClassName, Map<String,String> properties )
+				method <CreateVOType extends IBaseVO> CreateVOType create ( CreateVOType vo )
+				method <ValidateVOType extends IBaseVO> List<IValidationMessage> validate ( ValidateVOType vo )
+				method <ValidateAndSaveVOType extends IBaseVO> Result<ValidateAndSaveVOType> validateAndSave ( ValidateAndSaveVOType vo )
+				method <ValidateAndCreateVOType extends IBaseVO> Result<ValidateAndCreateVOType> validateAndCreate ( ValidateAndCreateVOType vo )
+				method <SaveVOType extends IBaseVO> SaveVOType save ( SaveVOType vo )
+				method <FilterVOType extends IBaseVO> List<FilterVOType> filter ( SelectQuery<FilterVOType> selectQuery )
+				method <ReadVOType extends IBaseVO> ReadVOType read ( SelectQuery<ReadVOType> selectQuery )
+				method void deleteAll ( String voClassName )
+				method <DeleteVOType extends IBaseVO> void delete ( DeleteVOType vo )
+				method <DeleteVOType extends IBaseVO> void deleteQuery ( DeleteQuery<DeleteVOType> deleteQuery )
+				method <ReadVOType extends IBaseVO> ReadVOType read ( Long id, String voClassName )
+				method <NatKeyVOType extends IBaseVO> List<NatKeyVOType> searchByNaturalKey ( String voClassName, String naturalKey )
+				
+			}
+		}
+		
+		package search {
+
+			moduledefinition Search {
+				parameters {
+				}
+			}
+			
+			valueobject SearchResultItem {
+				string dictionaryId
+				long id
+				string ^label
+				map string string attributes
+			}
+		
+			service SearchService {
+				method List<SearchResultItem> search(String indexId, String searchText)
+				method List<SearchResultItem> searchDefaultIndex(String searchText)
+			}
+			
+			
+		}
+
+		package security {
+			
+			stringdatatype MangoUserName { }
+
+			stringdatatype MangoGroupName { }
+
+			stringdatatype MangoPermissionId { }
+
+			stringdatatype MangoOperationId { }
+
+			entitydatatype MangoPermission {
+				entity MangoPermission
+			}
+
+			entity MangoPermission {
+				string MangoPermissionId permissionId
+				entity MangoOperation 0..n operations
+			}
+
+			entitydatatype MangoOperation {
+				entity MangoOperation
+			}
+
+			entity MangoOperation {
+				string MangoOperationId operationId
+			}
+			
+			entitydatatype MangoGroup {
+				entity MangoGroup
+			}
+
+			entity MangoUser {
+				string MangoUserName userName
+				entity MangoGroup 0..n userGroups		
+			}
+
+			entity MangoGroup {
+				string MangoGroupName groupName
+				entity MangoPermission 0..n permissions		
+			}
+			
+			service SecurityService {
+				method List<MangoPermissionVO> getAvailablePermissions( )
+			}
+				
+			dictionary MangoUser {
+				
+				entity MangoUser
+				
+				label "User"
+				pluralLabel "Users"
+				
+				dictionarycontrols {
+					textcontrol MangoUserName {
+						entityattribute userName
+					}
+				}
+				
+				dictionarysearch MangoUserSearch {
+					
+					dictionaryfilter MangoUserFilter {
+						textcontrol ref MangoUserName
+					}
+					
+					dictionaryresult MangoUserResult {
+						textcontrol ref MangoUserName
+					}
+					
+				}
+
+				dictionaryeditor MangoUserEditor {
+					
+					composite UserRootComposite {
+						textcontrol ref MangoUserName
+					}
+					
+					referencelist UserGroups {
+						entityattribute userGroups
+						dictionary MangoGroup
+					}
+					
+				}
+				
+			}
+			
+			dictionary MangoGroup {
+				
+				entity MangoGroup
+				
+				dictionarycontrols {
+					textcontrol MangoGroupName {
+						entityattribute groupName
+					}
+					
+				}
+				
+				dictionarysearch MangoGroupSearch {
+					
+					dictionaryfilter MangoGroupFilter {
+						textcontrol ref MangoGroupName
+					}
+					
+					dictionaryresult MangoGroupResult {
+						textcontrol ref MangoGroupName
+					}
+					
+				}
+
+				dictionaryeditor MangoGroupEditor {
+					composite MangoGroupCommon {
+						textcontrol ref MangoGroupName
+					}
+					custom MangoGroupPermissions {
+						entityattribute permissions
+						type Permissions
+					}
+				}
+			}
+		}
+		
+		package property {
+
+			moduledefinition Property {
+				parameters {
+				}
+			}
+			
+			entity PropertyValue {
+				string key
+				string value
+			}
+			
+			service PropertyService {
+				method <VALUETYPE extends Serializable> VALUETYPE getProperty ( IProperty<VALUETYPE> property )
+				method <VALUETYPE extends Serializable> VALUETYPE getPropertyDefault ( IProperty<VALUETYPE> property )
+				method <VALUETYPE extends Serializable> void setProperty ( IProperty<VALUETYPE> property, VALUETYPE value )
+				method Map getPropertyValues ( IPropertyCategory propertyCategory )
+			}
+
+		}
+		
+		package log {
+		
+			moduledefinition Log {
+				parameters {
+				}
+			}
+			
+			longdatatype LogEntryTimestamp { }
+			stringdatatype LogEntryMessage { }
+			stringdatatype LogEntryReference { }
+			enumeration LogLevel {
+				INFO
+				WARNING
+				ERROR
+			}
+			
+			entity LogEntry {
+				entityoptions { disableIdField true }
+				long LogEntryTimestamp timestamp
+				string LogEntryMessage message
+				string LogEntryReference ^reference
+				enumeration LogLevel level
+			}
+			
+    		service LogService {
+				method List<LogEntryVO> getLog(Integer count, java.io.Serializable ^reference)
+				method List<LogEntryVO> getLogBefore(Long timestamp, Integer count, java.io.Serializable ^reference)
+				method List<LogEntryVO> getLogAfter(Long timestamp, Integer count, java.io.Serializable ^reference)
+			}
+			
+		}
+
+		package system {
+
+			valueobject Systeminformation {
+				string hostName
+				string ipAddress
+			}
+
+			service SystemService {
+				method Systeminformation getSystemInformation ()
+			}
+		}
+
+		package hierarchy {
+		
+			entity DictionaryHierarchicalNode {
+				string ^label
+				string dictionaryName
+				long voId
+				string voClassName
+				string parentClassName
+				long parentVOId
+				boolean hasChildren
+				entity DictionaryHierarchicalNode 0..n children
+			}
+			
+			service HierarchicalService {
+				method List<DictionaryHierarchicalNodeVO> getRootNodes ( String id )
+				method HierarchicalConfigurationVO getConfigurationById  ( String id )
+				method HierarchicalConfigurationVO getConfigurationByDictionaryId  ( String dictionaryId )
+				method List<HierarchicalConfigurationVO> getConfigurations ()
+				method Boolean hasChildren ( String voClassName, Long voId )
+				method List<DictionaryHierarchicalNodeVO> getChildNodes ( String id, Long voId, String voClassName )
+				method List<DictionaryHierarchicalNodeVO> getParentNodes ( String id, IHierarchicalVO hierarchicalVO )
+			}
+		}
+		
+		entity DictionaryLabelSearchIndex {
+			string dictionaryName
+			string voClassName
+			long voId
+			string ^text
+		}
+
+		stringdatatype FileName {
+		}
+		
+		binarydatatype FileContent {
+		}
+
+		stringdatatype FileUUID {
+		}
+
+		entity File  {
+			string FileName fileName
+			binary FileContent fileContent
+			string FileUUID fileUUID
+		}
+				
+		package modules {
+
+			moduledefinition ModuleNavigation {
+				parameters {
+					parameter NavigationTreeElementName {
+						type string
+					} 
+				}
+			}
+
+			moduledefinition ModuleHierarchicalTree {
+				parameters {
+					parameter HierarchicalTreeId {
+						type string
+					} 
+					parameter ShowAddNodes {
+						type boolean
+					} 
+				}
+			}
+
+		
+			moduledefinition DictionarySearch {
+			
+				parameters {
+				
+					parameter SearchDictionaryName {
+						type string
+					}
+					 
+					parameter SearchText {
+						type string
+					} 
+					parameter SearchTimestamp {
+						type integer
+					} 
+				}
+			}
+
+			moduledefinition DictionaryQuery {
+			}
+
+			moduledefinition DictionaryEditor {
+			
+				parameters {
+				
+					parameter EditorDictionaryName {
+						type string
+					} 
+					
+					parameter Id {
+						type long
+					} 
+					
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,144 @@
+module io.pelle.mango.dsl.GenerateMango
+
+import org.eclipse.emf.mwe.utils.*
+import org.eclipse.xtext.generator.*
+import org.eclipse.xtext.ui.generator.*
+
+var grammarURI = "classpath:/io/pelle/mango/dsl/Mango.xtext"
+var file.extensions = "mango"
+var projectName = "mango-dsl"
+var runtimeProject = "../${projectName}"
+var generateXtendStub = true
+var generateStub = true
+var antlrOptions = parser.antlr.AntlrOptions {
+	classSplitting = true
+	fieldsPerClass = "1000"
+	methodsPerClass = "1000"
+}
+
+Workflow {
+
+	bean = StandaloneSetup {
+		scanClassPath = true
+		registerGeneratedEPackage = "org.eclipse.xtext.xbase.XbasePackage"
+		registerGenModelFile = "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel"
+		platformUri = ".."
+	}
+
+	component = DirectoryCleaner {
+		directory = "${runtimeProject}/src-gen"
+	}
+
+	component = DirectoryCleaner {
+		directory = "${runtimeProject}-ui/src-gen"
+	}
+
+	component = DirectoryCleaner {
+		directory = "${runtimeProject}-tests/src-gen"
+	}
+
+	component = Generator {
+		pathRtProject = runtimeProject
+		pathUiProject = "${runtimeProject}-ui"
+		pathTestProject = "${runtimeProject}-tests"
+		projectNameRt = projectName
+		projectNameUi = "${projectName}-ui"
+		language = {
+
+			uri = grammarURI
+			fileExtensions = file.extensions
+			fragment = Xtend2GeneratorFragment auto-inject {}
+
+			// Java API to access grammar elements (required by several other fragments)
+			fragment = grammarAccess.GrammarAccessFragment {}
+
+			// Generate java classes for Ecore models
+			fragment = ecore.EMFGeneratorFragment {
+				emfRuntimeVersion = "2.10"
+			}
+
+			// the serialization component
+			fragment = serializer.SerializerFragment {
+				generateXtendStub = generateXtendStub
+				generateStub = generateStub
+			}
+
+			// a custom ResourceFactory for use with EMF 
+			fragment = resourceFactory.ResourceFactoryFragment {
+				fileExtensions = file.extensions
+			}
+
+			// the following fragment generates an Antlr parser 
+			fragment = parser.antlr.XtextAntlrGeneratorFragment {
+				options = antlrOptions
+			}
+
+			// java-based API for validation 
+			fragment = org.eclipse.xtext.generator.validation.JavaValidatorFragment {
+			//				composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
+			}
+
+			// scoping API 
+			fragment = scoping.ImportNamespacesScopingFragment {
+				generateStub = false
+			}
+			fragment = exporting.QualifiedNamesFragment {}
+
+			//fragment = org.eclipse.xtext.generator.xbase.XbaseGeneratorFragment {}
+
+			// testing API
+			fragment = junit.Junit4Fragment {}
+
+			// formatter API 
+			fragment = formatting.FormatterFragment {
+				generateXtendStub = generateXtendStub
+				generateStub = generateStub
+			}
+
+			// labeling API 
+			fragment = labeling.LabelProviderFragment {
+				generateXtendStub = generateXtendStub
+				generateStub = generateStub
+			}
+
+			// outline API
+			fragment = outline.OutlineTreeProviderFragment {
+				generateXtendStub = generateXtendStub
+				generateStub = generateStub
+			}
+
+			fragment = outline.QuickOutlineFragment {}
+
+			// java-based API for content assistance 
+			fragment = contentAssist.JavaBasedContentAssistFragment {}
+			fragment = parser.antlr.XtextAntlrUiGeneratorFragment {
+				options = antlrOptions
+			}
+
+			fragment = builder.BuilderIntegrationFragment {}
+
+			// quickfix API 
+			fragment = quickfix.QuickfixProviderFragment {
+				generateXtendStub = generateXtendStub
+				generateStub = generateStub
+			}
+
+			// rename refactoring
+			fragment = refactoring.RefactorElementNameFragment {}
+
+			// provides a compare view
+			fragment = compare.CompareFragment {
+				fileExtensions = file.extensions
+			}
+
+			// Xbase support
+			fragment = types.TypesGeneratorFragment {}
+			fragment = xbase.XbaseGeneratorFragment {}
+
+			// Code generator
+			fragment = generator.GeneratorFragment {}
+
+			fragment = templates.CodetemplatesGeneratorFragment {}
+		}
+	}
+}

@@ -1,0 +1,13 @@
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+	http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+		<persistence-unit name="MangoDBTest">
+		<class>io.pelle.mango.db.test.mockup.entities.DBTest1</class>
+		<class>io.pelle.mango.db.test.mockup.entities.DBTest2</class>
+		<class>io.pelle.mango.db.test.mockup.entities.DBTest3</class>
+		<exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+	</persistence-unit>
+</persistence>

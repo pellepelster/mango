@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.6.4//EN" "http://google-web-toolkit.googlecode.com/svn/tags/1.6.4/distro-source/core/src/gwt-module.dtd">
+<module>
+
+	<inherits name='io.pelle.mango.MangoClientWeb' />
+	<inherits name="com.google.gwt.resources.Resources" />
+	<inherits name="com.google.gwt.user.Debug"/>
+ 	<inherits name="gwtupload.GWTUpload"/>
+	<inherits name='io.pelle.mango.gwt.commons.MangoGwtCommons' />
+	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
+	<inherits name="org.gwtbootstrap3.GwtBootstrap3"/>
+	 
+ 	<stylesheet src="css/mango-standard.css"/>
+ 
+	<source path="client.gwt" />
+	<public path="client/gwt/public" />
+
+	<entry-point class="io.pelle.mango.client.gwt.MangoClientGwt" />
+
+	<generate-with
+		class="io.pelle.mango.gwt.rebind.CustomGwtCompositeFactoryGenerator">
+		<when-type-is class="io.pelle.mango.client.gwt.utils.ICustomGwtCompositeFactory" />
+	</generate-with>
+
+</module>
